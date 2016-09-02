@@ -456,17 +456,20 @@ input[type="reset"].unstyled:focus {
 	position: fixed;
 	z-index: 999;
 	width: auto;
-	height: 38px;
 	right: 20px;
 	bottom: 20px;
 	margin: 0;
-	padding: 0.5rem;
+	padding: 0.2rem 1rem;
 	border-radius: 30px;
 	opacity: 0.6;
 	text-shadow: none;
 }
+	.bt.edit, .bt.add, .bt.top { 
+		height: 38px;
+		padding: 0.5rem;
+	}
 	.bt.fixed.edit { 	
-		transition: right .1s;
+		transition: right .1s;		
 	}
 	.bt.fixed.add { 
 		margin-bottom: 10px;

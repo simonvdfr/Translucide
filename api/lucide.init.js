@@ -25,16 +25,23 @@ add_translation = function(new_translation) {
 add_translation(translation);
 
 
-// Get cookie content
-getCookie = function(key) {
+// Obtenir le contenu d'un cookie
+get_cookie = function(key) {
 	var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
 	return keyValue ? keyValue[2] : '';
+}
+
+// Crée un cookie
+set_cookie = function(key, val, days) {
+	var expire = new Date();
+	expire.setTime(expire.getTime() + (days*24*60*60*1000));
+	document.cookie = key + "="+ val +"; expires="+ expire.toGMTString() +"; path=/";
 }
 
 
 // Traduit un texte
 __ = function(txt) {
-	if(translation[txt][getCookie('lang')]) return translation[txt][getCookie('lang')];	
+	if(translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
 	else return txt;
 }
 
@@ -161,7 +168,7 @@ $(document).ready(function()
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-chevron-up bigger vam'></i></a>");
 	
 	// Page désactivé => message admin
-	if(typeof state !== 'undefined' && state && state != "active" && getCookie("auth").indexOf("edit_content")) {
+	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit_content")) {
 		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam'></i>"+ __("State") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
@@ -176,7 +183,7 @@ $(document).ready(function()
 	$("a.bt.edit").click(function() 
 	{
 		// Si la page n'est pas activée  et que l'on n'est pas admin on callback un reload
-		edit_launcher(((state != "active" && !getCookie("auth").indexOf("edit_content")) ? "reload":"edit_launcher"));
+		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit_content")) ? "reload":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
 		$("a.bt.fixed.add").fadeOut();
@@ -230,7 +237,7 @@ $(document).ready(function()
 			if(!$("#admin-bar").length && !$("#dialog-connect").length)
 			{
 				// Affichage du bouton d'édition  avec 50px de marge OU si on est admin
-				if(($(document).height() - 50) <= ($(window).height() + $(window).scrollTop()) || getCookie("auth").indexOf("edit_content")) 
+				if(($(document).height() - 50) <= ($(window).height() + $(window).scrollTop()) || get_cookie("auth").indexOf("edit_content")) 
 				{	
 					// Décale l'icone si il y a le bt to top
 					if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit").css("right","70px");
@@ -251,7 +258,7 @@ $(document).ready(function()
 	}
 	
 	// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
-	if(getCookie("auth").indexOf("edit_content") && !$("#admin-bar").length && !$("#dialog-connect").length)
+	if(get_cookie("auth").indexOf("edit_content") && !$("#admin-bar").length && !$("#dialog-connect").length)
 	{
 		// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
 		$(document).keyup(function(event) {			
