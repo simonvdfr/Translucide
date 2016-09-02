@@ -1381,7 +1381,7 @@ switch($_GET['mode'])
 					// Icône de chargement
 					$("#setup button i").removeClass("fa-spin fa-cog").addClass("fa-cogs");
 					
-					// Désactive le submit
+					// Active le submit
 					$("#setup button").attr("disabled", false);
 				}
 
