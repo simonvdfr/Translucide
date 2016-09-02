@@ -1,0 +1,3 @@
+User-agent: *
+Sitemap: api/sitemap.php
+Allow: /

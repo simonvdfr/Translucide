@@ -1,0 +1,234 @@
+/* Typo */
+@import url('//fonts.googleapis.com/css?family=Montserrat');
+@import url('//fonts.googleapis.com/css?family=Raleway');
+@import url('//fonts.googleapis.com/css?family=Yellowtail');
+
+body {
+	font-family: Raleway;
+	-webkit-font-smoothing: antialiased;
+}
+
+a { 
+	/*text-decoration: none;*/
+	transition: color .2s;
+}
+a:hover { color: #BB9F5D; }
+
+nav, h1, h2 { font-family: Montserrat; }
+h3 { font-family: Raleway; }
+
+p { line-height: 1.8; }
+
+
+
+header {
+	position: relative;
+	z-index: 1;
+}
+	header #header-logo { transition: opacity .5s; }
+		header #header-logo:hover { opacity: 0.6; }
+	
+
+	/* BOUTON BURGER & Animation */
+	header nav .burger {
+		display: none;
+		position: relative;
+		overflow: hidden;
+		float: right;
+		right: 0;
+		margin: 0 1rem;
+		padding: 0;
+		width: 30px;
+		height: 30px;
+		font-size: 0;
+		text-indent: -9999px;
+		appearance: none;
+		box-shadow: none;
+		border-radius: none;
+		border: none;
+		cursor: pointer;
+		transition: background 0.3s;
+
+		background-color: #000;
+	}
+	.burger span {
+		display: block;
+		position: absolute;
+		top: 14px;
+		left: 6px;
+		right: 6px;
+		height: 2px;
+		background: white;
+
+		transition: background 0.3s;
+	}
+
+	.burger span::before,
+	.burger span::after {
+		position: absolute;
+		display: block;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background-color: #fff;
+		content: "";
+
+		transition-duration: 0.3s, 0.3s;
+		transition-delay: 0.3s, 0s;
+	}
+
+	.burger span::before { top: -6px; transition-property: top, transform; }
+	.burger span::after { bottom: -6px; transition-property: bottom, transform; }
+
+	/* active state, i.e. menu open */
+	.burger.active { background-color: #cb0032; }
+	.burger.active span { background: none; }
+	.burger.active span::before { top: 0; transform: rotate(45deg);	}
+	.burger.active span::after { bottom: 0; transform: rotate(-45deg); }
+	.burger.active span::before,
+	.burger.active span::after { transition-delay: 0s, 0.3s;	}
+
+	
+	/* MENU DE NAVIGATION */
+	header nav ul {
+		list-style: none;
+		display: inline-block;
+		padding: 0;
+		margin-top: 2rem;
+		/*background-color: rgba(255,255,255,0.70);*/
+		/*box-shadow: inset 0 0 18px 8px #fff;
+		border-radius: 5px;*/
+	}
+		header nav li {
+			float: left;
+			padding: 0 0.5rem;
+			margin: 0 0.5rem;
+			/*border-radius: 5px;
+			transition: background .5s;*/
+		}
+		header nav li:hover {
+			/*background-color: #fff;*/
+		}
+		header nav a { text-decoration: none; }
+
+
+/* Bloc avec grande image en bg sous le menu */
+.under-header {
+	margin-top: -100px;/* !default par sécurité pour etre sur qu'il est bien sous le header meme si le js ne s'execute pas */
+    height: 320px;
+    padding-top: 100px;	
+	position: relative;
+	z-index: 0;
+}
+.under-header * {	
+	position: relative;
+	z-index: 1;
+}
+	.overlay {
+		background-color: rgba(0, 0, 0, 0.2);
+
+		position: absolute;
+
+		top: 0;
+		left: 0;
+
+		z-index: 0;
+
+		width: 100%;
+		height: 100%;
+	}
+
+
+/* Bloc avec effet de paralax */
+.parallax {
+	background-size: cover !important;
+	text-shadow: 1px 1px 1px #000;	
+	background-position: 50% 0%;
+	/*transition: background-position-y .1s;*/
+}
+	.parallax h1, .parallax h2 { 
+		font-family: Yellowtail;
+		font-size: 5rem;
+	}
+	.parallax h3 { font-family: Montserrat;	}
+
+
+/* bloc jaune de lien */
+.link-box a {
+    background-color: #f2ce3e;
+
+	margin: 10px 0;
+	padding: 5px 20px;
+
+	display: inline-block;
+
+	color: #fff;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: Montserrat;
+
+	transition: background .2s;
+}
+	.link-box a:hover {
+		background-color: #BB9F5D;
+	}
+
+
+
+/* Effet de remplissage */
+.wave-wine {
+
+	display: none;
+
+	z-index: 1000;
+
+	position: fixed;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+	background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAARMBAMAAADRn7O7AAAAIVBMVEUAAAD////////////////////////////////////////PIev5AAAACnRSTlMADDAcXkalfu3JfKLRDQAAA3dJREFUeNrt1D1OAkEYgOFZvQA/F1AIGjtWMfaIEloEvYAkhhrEC4gJtZHEAxDiKTUmGlD+dkNB8bz9TJ7Zb2bDx04WsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwdob11msW42yYLXtWqj+kZQ17zUKp9ThKD7oqZsLyovNGYlYnnln+lFg07K8U/ZZrJGBNbv4erNJNQKrGIUGV981Yr+VFq/dvNyFN7w9D4iqj9axOJuW5vkz9OKQqOlnNmlyuuQrLb9m0k9L03V53KWvc3OCWRscLv3ia2c13sXiSm2+Qv5sf5rhaDlsoOlqgek62R77Qqg8GtXYhzoSt9W8SLwdhN8pdzzzqctihotNSq9b++Rt/AgFOXeihTZnjAAAAAElFTkSuQmCC');
+	background-repeat: repeat-x;
+	background-color: #8f2e39;
+
+	background-position: 0 -1100px;/* image positionnée hors ecran */
+
+	transition: background-position 1000ms ease;
+}
+
+
+
+
+aside { border: 2px solid #000; }
+aside > div { 
+	border: 1px solid #000;
+	height: 100%;
+}
+
+
+footer {
+	background-color: #000;
+	color: #fff;
+}
+	.gold a { background-color: #bb9f5d; }	
+
+	.social .fa a {
+		background-color: #222222;
+		color: #fff;
+
+		width: 1.5em;
+
+		padding: 0.5rem;	
+		margin: 0.5rem;
+
+		display: inline-block;
+
+		text-decoration: none;
+		
+		transition: background .3s;
+	}	
+		.social a[href*='facebook']:hover { background-color: #3a5795; }
+		.social a[href*='google']:hover { background-color: #dd4b39; }
