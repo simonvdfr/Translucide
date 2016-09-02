@@ -107,9 +107,10 @@ function add_translation($add_translation)
 function __($txt)
 {
 	// Si une traduction existe
-	if($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]) $txt = utf8_encode($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
+	if($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]) 
+		$txt = $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
 
-	return $txt;
+	return utf8_encode($txt);
 }
 
 // Affichage d'une traduction
