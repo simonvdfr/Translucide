@@ -150,7 +150,7 @@ else// Affichage du formulaire
 
 	<section class="mod">
 
-		<?include("plugin/googlemap.php")?>
+		<?include("plugin/google-map.php")?>
 
 	</section>
 	<?
