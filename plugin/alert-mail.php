@@ -94,7 +94,7 @@ else// Affichage du formulaire
 		$.ajax(
 		{
 			type: "POST",
-			url: "<?=$GLOBALS['path']."plugin/alertmail.php"?>",				
+			url: "<?=$GLOBALS['path']."plugin/alert-mail.php"?>",				
 			data: $(this).serializeArray(),
 			success: function(html){ $("body").append(html); }
 		});
