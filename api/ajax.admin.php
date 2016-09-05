@@ -184,7 +184,7 @@ switch($_GET['mode'])
 
 
 		// MENU DE NAVIGATION
-		if($_POST['nav'])
+		if(isset($_POST['nav']))
 		{
 			// On regarde s'il y a déjà des données
 			$sel_nav = $connect->query("SELECT * FROM ".$table_meta." WHERE type='nav' AND cle='".$lang."' LIMIT 1");

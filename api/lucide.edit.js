@@ -730,6 +730,15 @@ $(document).ready(function()
 
 		if($(this).parent().hasClass("add-empty")) $("header nav ul:first").append($(this).parent().clone());// Copie
 		else $($(this).parent()).appendTo("header nav ul:first");// Déplace
+		
+		// Rends editable les éléments du menu
+		$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+		editable_event();
+
+		tosave();// A sauvegarder
+			
+		// Désactive les liens dans le menu d'ajout
+		$("#add-nav ul a").click(function() { return false; });
 	});
 	
 	// Drag & Drop des éléments du menu principal
@@ -745,7 +754,8 @@ $(document).ready(function()
 		},
 		stop: function() {
 			$("#add-nav .open").removeClass("del").children().removeClass("fa-trash").addClass("fa-plus");
-
+			
+			// Rends editable les éléments du menu
 			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
 			editable_event();
 

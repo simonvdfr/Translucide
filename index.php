@@ -218,12 +218,6 @@ else // Pas de contenu a chargé
 
 echo"</div>";
 
-//echo "_SESSION<br>"; highlight_string(print_r($_SESSION, true));
-//echo "_COOKIE<br>"; highlight_string(print_r($_COOKIE, true));
-//echo "_REQUEST<br>"; highlight_string(print_r($_REQUEST, true));
-//echo "_SERVER<br>"; highlight_string(print_r($_SERVER, true));
-
-
 include_once("theme/".$GLOBALS['theme']."footer.php");
 ?>
 

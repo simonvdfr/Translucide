@@ -540,6 +540,7 @@ ul.toolbox {
 		box-sizing: border-box;
 
 		border: 1px solid #d3d3d3;
+		border-radius: inherit;
 
 		cursor: pointer;
 
@@ -548,7 +549,10 @@ ul.toolbox {
 		height: 24px;
 		min-width: 24px;
 
-		margin: 0 0 0 -1px;		
+		margin: 0 0 0 -1px;			    
+		padding: 0.3rem;
+
+		color: #000;
 	}
 		ul.toolbox button:hover {
 			background: #E5F6F1 linear-gradient(#e5f6f1, #6fcdd5) repeat scroll 0 0;
