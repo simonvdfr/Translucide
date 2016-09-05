@@ -77,8 +77,7 @@ get_content = function(content)
 	
 	// Contenu des bg images éditables
 	$(document).find(content+" [data-editable='bg']").each(function() {
-		var bg = $(this).attr('style').replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '').replace(/background-position-y: .*;/, '');
-		if(bg) data[content_array][this.id] = bg;
+		if($(this).attr("data-bg")) data[content_array][this.id] = $(this).attr("data-bg");
 	});
 
 	// Contenu des input hidden éditables
@@ -539,6 +538,7 @@ get_img = function(id)
 				exec_tool("insertImage", final_file);
 			}
 			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond
+				$("#"+$("#dialog-media-source").val()+"").attr("data-bg", final_file);
 				$("#"+$("#dialog-media-source").val()).css("background-image", "url("+final_file+")");
 			}
 

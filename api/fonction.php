@@ -148,7 +148,7 @@ function bg($key = null)
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
 
-	echo" id='".encode($key)."' data-editable='bg' style=\"".(isset($GLOBALS['content'][$key]) ? "background-image: url(".$GLOBALS['content'][$key].")" : "")."\"";
+	echo" id='".encode($key)."' data-editable='bg' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\"";
 
 	$GLOBALS['editkey']++;
 }

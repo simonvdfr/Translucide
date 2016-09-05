@@ -156,7 +156,10 @@ edit_launcher = function(callback)
 
 $(document).ready(function()
 {
-	hover_add = false;
+	// On met en background les images data-bg
+	$("[data-bg]").css("background-image", function() {
+		return "url(" + $(this).attr("data-bg") + ")";
+	});
 
 	// Bouton ajout de page/article
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add a page") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
@@ -164,14 +167,15 @@ $(document).ready(function()
 	// Bouton d'édition si la page existe dans la base
 	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></a>");
 
-	// Bouton pour remonter en haut au scroll
-	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-chevron-up bigger vam'></i></a>");
-	
 	// Page désactivé => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit_content")) {
 		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam'></i>"+ __("State") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
+	
+	// Bouton pour remonter en haut au scroll
+	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-chevron-up bigger vam'></i></a>");	
+
 
 	// Smoothscroll to top
 	$("a.bt.fixed.top").click(function() {
@@ -189,12 +193,14 @@ $(document).ready(function()
 		$("a.bt.fixed.add").fadeOut();
 	});	
 
-	// Bind le bouton d'édition
+	// Bind le bouton d'ajout
 	$("a.bt.add").click(function() 
 	{
 		add_page();
 	});	
 
+
+	hover_add = false;
 
 	// Affichage du bouton add
 	$("a.bt.fixed.edit").hover(
@@ -256,6 +262,7 @@ $(document).ready(function()
 			if(state) $("a.bt.fixed.edit").delay("2500").fadeIn("slow");
 			else $("a.bt.fixed.add").delay("2500").fadeIn("slow");	
 	}
+
 	
 	// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
 	if(get_cookie("auth").indexOf("edit_content") && !$("#admin-bar").length && !$("#dialog-connect").length)
