@@ -204,7 +204,7 @@ header('Content-type: text/html; charset=UTF-8');
 <?
 include_once("theme/".$GLOBALS['theme']."header.php");
 
-echo"<div class='content'>";
+echo"<div class='content".($res['tpl']?" tpl-".encode($res['tpl']):"")."'>";
 
 if($res['tpl']) // On a une page
 {
@@ -227,3 +227,4 @@ include_once("theme/".$GLOBALS['theme']."footer.php");
 <?
 $connect->close();
 ?>
+<script>console.log("<?=benchmark()?>")</script>
