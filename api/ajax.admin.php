@@ -341,7 +341,7 @@ switch($_GET['mode'])
 			else 
 				$menu[] = $connect->real_escape_string($val);
 		}
-		
+
 		// Liste les pages abs du menu
 		$sql = "SELECT * FROM ".$table_content." WHERE url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
 		//echo $sql."<br>";
@@ -1106,7 +1106,9 @@ switch($_GET['mode'])
 						$email = $GLOBALS['connect']->real_escape_string($email);
 
 						// Crée un hash si pas déjà un chargé par le config maison
-						if(!$GLOBALS['hash']) $GLOBALS['hash'] = $_POST['hash'] = make_pwd(64, true, true);
+						if(!$GLOBALS['pub_hash']) $GLOBALS['pub_hash'] = $_POST['pub_hash'] = make_pwd(mt_rand(32, 64), true, true);
+						if(!$GLOBALS['priv_hash']) $GLOBALS['priv_hash'] = $_POST['priv_hash'] = make_pwd(mt_rand(32, 64), true, true);
+						if(!$GLOBALS['pwd_hash_loop']) $GLOBALS['pwd_hash_loop'] = $_POST['pwd_hash_loop'] = mt_rand(60536, 6536);
 
 						// Email pour le login automatique
 						$_POST['email'] = $email;
