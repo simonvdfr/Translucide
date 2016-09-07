@@ -830,13 +830,15 @@ $(document).ready(function()
 
 	// Barre d'outils de mise en forme : toolbox
 	toolbox = "<ul id='txt_tool' class='toolbox'>";
-	toolbox+= "<li><button onclick=\"exec_tool('bold')\"><span class='icon bold'></span></button></li>";
-	toolbox+= "<li><button onclick=\"exec_tool('italic')\"><span class='icon italic'></span></button></li>";
-	toolbox+= "<li><button onclick=\"exec_tool('underline')\"><span class='icon underline'></span></button></li>";
-	toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><span class='icon fa'></span></button></li>";
-	toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><span class='icon media'></span></button></li>";
-	//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><span class='icon unlink'></span></button></li>";
-	toolbox+= "<li><button onclick=\"link_option(); $('#txt_tool #option #link').select();\" title=\""+__("Add Link")+"\"><span class='icon link'></span></button></li>";
+	toolbox+= "<li><button onclick=\"exec_tool('formatBlock','h2')\"><i class='fa fa-fw fa-header'></i></button></li>";
+	toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
+	toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
+	toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
+	toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
+	toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
+	toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture-o'></i></button></li>";
+	//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
+	toolbox+= "<li><button onclick=\"link_option(); $('#txt_tool #option #link').select();\" title=\""+__("Add Link")+"\"><i class='fa fa-fw fa-link'></i></button></li>";
 	toolbox+= "<li id='option'>";
 		toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
 		toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target_blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
