@@ -229,7 +229,7 @@ function hash_pwd($pwd, $salt = null)
 		
 	// Boucle pour encoder x fois le pwd avec le salt unique
 	for($i = 0; $i < $GLOBALS['pwd_hash_loop']; $i++) {
-		$pwd = hash('sha256', $pwd . $unique_salt . $GLOBALS['hash']);
+		$pwd = hash('sha256', $pwd . $unique_salt . $GLOBALS['priv_hash']);
 	} 
 
 	if($salt) 
@@ -298,7 +298,7 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de m
 	$_SESSION['expires'] = $time;
 	
 	// Faire en sorte que le token soit plus complet et autonome sans trop de variable dans la session
-	$_SESSION['token'] = $token = hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['hash']);
+	$_SESSION['token'] = $token = hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']);
 	
 	// Niveau de sécurité élever, on enregistre le token dans la bdd
 	if($GLOBALS['security'] == 'high') 
@@ -314,7 +314,7 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de m
 // Création d'un token light (utile lors des changements de mot de passe et donne la possibiliter le log sur plusieurs machines)
 function token_light($uid, $salt)
 {	
-	$_SESSION['token_light'] = $token_light = hash("sha256", $uid . $salt . $GLOBALS['hash']);
+	$_SESSION['token_light'] = $token_light = hash("sha256", $salt . $uid . $GLOBALS['pub_hash']);
 
 	return $token_light;
 }
@@ -322,7 +322,7 @@ function token_light($uid, $salt)
 // Vérifie si le token est bon
 function token_check($token)
 {	
-	if($token == hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['hash']) and time() < $_SESSION['expires'])
+	if($token == hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']) and time() < $_SESSION['expires'])
 	{
 		// On update la date d'expiration de la session
 		token($_SESSION['uid'], $_SESSION['email']);
