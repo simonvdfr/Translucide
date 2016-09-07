@@ -78,7 +78,8 @@ $GLOBALS['microsoft_api_secret'] = "";
 
 
 // Clé hash pour les cryptages
-$GLOBALS['hash'] = "";
+$GLOBALS['pub_hash'] = "";
+$GLOBALS['priv_hash'] = "";
 
 
 // Compte public autorisé
@@ -94,7 +95,7 @@ $GLOBALS['auth_level'] = array("edit_admin", "edit_user", "edit_config", "edit_c
 $GLOBALS['security'] = "medium";
 
 // Nom de boucle de hashage du mdp
-$GLOBALS['pwd_hash_loop'] = 65536;
+$GLOBALS['pwd_hash_loop'] = "";
 
 // Temps d'expiration des sessions de connexion
 $GLOBALS['session_expiration'] = 60*60*24*30;
