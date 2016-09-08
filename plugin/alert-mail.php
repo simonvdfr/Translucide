@@ -66,13 +66,13 @@ else// Affichage du formulaire
 
 	<form id="alertmail" class="mas">
 
-		<input type="email" name="email" placeholder="nom.prenom@mail.fr" required maxlength="100" class="w50 mbs">
+		<input type="email" name="email" placeholder="Mon e-mail" required maxlength="100" class="w50 mbs">
 				
 		<input type="hidden" name="champ_vide" value="">
 
 		<input type="hidden" name="nonce_alertmail" value="<?=nonce("nonce_alertmail");?>">
 
-		<button class="mbs"><i class="fa fa-fw fa-envelope"></i> <?_e("M'avertir de l'avancée du projet")?></button>
+		<button class="mbs"><i class="fa fa-fw fa-envelope"></i> <?_e("M'avertir de l'avancée de ".$GLOBALS['sitename'])?></button>
 
 	</form>
 
