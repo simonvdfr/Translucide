@@ -23,8 +23,11 @@ add_translation({
 	"Permanent link: 'home' if homepage" : {"fr" : "Lien permanent: 'home' si c'est la page d'accueil"},
 	"Home page" : {"fr" : "Page d'accueil"},
 	"Regenerate address" : {"fr" : "R\u00e9g\u00e9n\u00e9rer l'adresse"},
+	"Title H2" : {"fr" : "Titre H2"},	
+	"Separator" : {"fr" : "S\u00e9parateur"},	
 	"Media Library" : {"fr" : "Biblioth\u00e8que des m\u00e9dias"},		
 	"Icon Library" : {"fr" : "Biblioth\u00e8que d'ic\u00f4ne"},		
+	"See the source code" : {"fr" : "Voir le code source"},		
 	"Link" : {"fr" : "Lien"},		
 	"Add Link" : {"fr" : "Ajouter le lien"},		
 	"Change Link" : {"fr" : "Modifier le lien"},		
@@ -67,7 +70,9 @@ get_content = function(content)
 
 	// Contenu des champs éditables
 	$(document).find(content+" .editable").not("header nav .editable").each(function() {
-		if($(this).html()) data[content_array][this.id] = $(this).html();
+		// Si on est en mode pour voir le code source
+		if($(this).hasClass("view-source")) var content_editable = $(this).text(); else var content_editable = $(this).html();
+		if($(this).html()) data[content_array][this.id] = content_editable;
 	});
 	
 	// Contenu des images éditables
@@ -202,13 +207,13 @@ exec_tool = function(command, value, ui) {
 		if(command == "CreateLink")
 		{
 			// Si Target = blank
-			if($("#target_blank").hasClass("checked")) memo_selection.anchorNode.parentElement.target = "_blank";// @todo verif marche sous firefox ??
+			if($("#target-blank").hasClass("checked")) memo_selection.anchorNode.parentElement.target = "_blank";// @todo verif marche sous firefox ??
 			else $(memo_node).removeAttr("target");
 			
-			$("#txt_tool #option").hide("slide", 300);// Cache le menu d'option avec animation
+			$("#txt-tool #option").hide("slide", 300);// Cache le menu d'option avec animation
 		}
 		else
-			$("#txt_tool #option").hide();// Cache le menu d'option rapidement
+			$("#txt-tool #option").hide();// Cache le menu d'option rapidement
 
 		$("#unlink").remove();// Supprime les boutons de unlink
 	}
@@ -225,32 +230,45 @@ exec_tool = function(command, value, ui) {
 // Menu avec les options d'ajout/modif de lien
 link_option = function()
 {		
-	$("#txt_tool #option").hide();// Réinitialise le menu d'option
-	$("#target_blank").removeClass("checked");// Réinitialise la colorisation du target _blank
+	$("#txt-tool #option").hide();// Réinitialise le menu d'option
+	$("#target-blank").removeClass("checked");// Réinitialise la colorisation du target _blank
 
 	var href = $(memo_node).closest('a').attr('href');// On récupère le href de la sélection en cours
 
 	if(href) {
 		// Si target = blank
-		if(memo_node.target == "_blank") $("#target_blank").addClass("checked");
+		if(memo_node.target == "_blank") $("#target-blank").addClass("checked");
 
-		$("#txt_tool #option #link").val(href);
-		$("#txt_tool #option button span").text(__("Change Link"));
-		$("#txt_tool #option button i").removeClass("fa-plus").addClass("fa-save");
+		$("#txt-tool #option #link").val(href);
+		$("#txt-tool #option button span").text(__("Change Link"));
+		$("#txt-tool #option button i").removeClass("fa-plus").addClass("fa-save");
 	}
 	else {
-		$("#txt_tool #option #link").val('');
-		$("#txt_tool #option button span").text(__("Add Link"));
-		$("#txt_tool #option button i").removeClass("fa-save").addClass("fa-plus");
+		$("#txt-tool #option #link").val('');
+		$("#txt-tool #option button span").text(__("Add Link"));
+		$("#txt-tool #option button i").removeClass("fa-save").addClass("fa-plus");
 	}
 	
-	$("#txt_tool #option").show("slide", 300);
+	$("#txt-tool #option").show("slide", 300);
 }
 
 // Si target blank
 target_blank = function(mode) {
-	if(mode == true || !$("#target_blank").hasClass("checked")) $("#target_blank").addClass("checked");
-	else $("#target_blank").removeClass("checked");
+	if(mode == true || !$("#target-blank").hasClass("checked")) $("#target-blank").addClass("checked");
+	else $("#target-blank").removeClass("checked");
+}
+
+// Voir le code source
+view_source = function(memo){
+	// Si on est déjà en mode view source on remet en html
+	if($(memo).hasClass("view-source")) {
+		$("#view-source").removeClass("checked");
+		$(memo).removeClass("view-source").html($(memo).text());
+	}
+	else {
+		$("#view-source").addClass("checked");
+		$(memo).addClass("view-source").text($(memo).html()).html();
+	}
 }
 
 
@@ -461,7 +479,7 @@ upload = function(source, file, resize)
 						// Détruis le layer de progressbar
 						$("#"+progressid).fadeOut("medium", function() { 
 							this.remove();
-							source.addClass("checked");// Icone checked avec fadeinout
+							source.addClass("uploaded");// Icone uploaded avec fadeinout
 						});
 
 						$(".supp", source).css("visibility","visible");// Affiche l'option de suppression
@@ -829,21 +847,22 @@ $(document).ready(function()
 	/************** TOOLBOX **************/
 
 	// Barre d'outils de mise en forme : toolbox
-	toolbox = "<ul id='txt_tool' class='toolbox'>";
-	toolbox+= "<li><button onclick=\"exec_tool('formatBlock','h2')\"><i class='fa fa-fw fa-header'></i></button></li>";
-	toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
-	toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
-	toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
-	toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
-	toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
-	toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture-o'></i></button></li>";
-	//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
-	toolbox+= "<li><button onclick=\"link_option(); $('#txt_tool #option #link').select();\" title=\""+__("Add Link")+"\"><i class='fa fa-fw fa-link'></i></button></li>";
-	toolbox+= "<li id='option'>";
-		toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
-		toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target_blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
-		toolbox+= "<button onclick=\"exec_tool('CreateLink', $('#txt_tool #option #link').val())\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
-	toolbox+= "</li>";
+	toolbox = "<ul id='txt-tool' class='toolbox'>";
+		toolbox+= "<li><button onclick=\"exec_tool('formatBlock','h2')\" title=\""+__("Title H2")+"\"><i class='fa fa-fw fa-header'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Separator")+"\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
+		toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
+		toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture-o'></i></button></li>";
+		toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
+		//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
+		toolbox+= "<li><button onclick=\"link_option(); $('#txt-tool #option #link').select();\" title=\""+__("Add Link")+"\"><i class='fa fa-fw fa-link'></i></button></li>";
+		toolbox+= "<li id='option'>";
+			toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
+			toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
+			toolbox+= "<button onclick=\"exec_tool('CreateLink', $('#txt-tool #option #link').val())\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+		toolbox+= "</li>";
 	toolbox+= "</ul>";
 	
 	// Init la toolbox
@@ -855,16 +874,23 @@ $(document).ready(function()
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
 				memo_focus = this;// Pour memo le focus en cours
+
+				// Si on est en mode view source on colore le bt view-source
+				if($(memo_focus).hasClass("view-source"))
+					$("#view-source").addClass("checked");
+				else
+					$("#view-source").removeClass("checked");
 				
-				$("#txt_tool")
+				// Affichage de la boîte à outils texte
+				$("#txt-tool")
 					.show()
 					.offset({
-						top: ( $(this).offset().top - $("#txt_tool").height() - 8 ),
+						top: ( $(this).offset().top - $("#txt-tool").height() - 8 ),
 						left: ( $(this).offset().left )
 					});	
 			},
 			"blur.editable": function() {
-				if($("#txt_tool:not(:hover)").val()=="") $("#txt_tool").hide();// ferme la toolbox
+				if($("#txt-tool:not(:hover)").val()=="") $("#txt-tool").hide();// ferme la toolbox
 				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
@@ -882,7 +908,7 @@ $(document).ready(function()
 			"mouseup.editable": function(event)// Si on click dans un contenu éditable
 			{			
 				$("#unlink").remove();// Supprime les boutons de unlink
-				$("#txt_tool #option").hide();// Cache le menu d'option		
+				$("#txt-tool #option").hide();// Cache le menu d'option		
 
 				// @todo voir si le fait de ne pas raz les memo_ ne crée pas de problème colatéraux...
 				
@@ -929,10 +955,10 @@ $(document).ready(function()
 
 
 	// Action sur le input de lien si keyup Enter
-	$("#txt_tool #option #link").keyup(function(event) { if(event.keyCode == 13) exec_tool("CreateLink", $("#txt_tool #option #link").val()) });
+	$("#txt-tool #option #link").keyup(function(event) { if(event.keyCode == 13) exec_tool("CreateLink", $("#txt-tool #option #link").val()) });
 
 	// Si focus dans les options de lien on supp le bt unlink
-	$("#txt_tool #option").on("click", function() { $("#unlink").remove() });
+	$("#txt-tool #option").on("click", function() { $("#unlink").remove() });
 
 
 

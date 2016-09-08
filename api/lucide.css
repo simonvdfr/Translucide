@@ -477,7 +477,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		position: absolute;
 		width: 120px;
 	}
-	.checked:before {
+	.uploaded:before {
 		font-family: FontAwesome;
 		font-size: 5rem;
 		color: #5eba7d;
