@@ -267,6 +267,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .txtleft, .tl { text-align: left; }
 .txtright, .tr { text-align: right; }
 .txtcenter, .tc { text-align: center; }
+.txtjustify, .tj { text-align: justify; }
 
 .fl { float: left; }
 .fr { float: right; }
