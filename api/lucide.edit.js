@@ -96,6 +96,9 @@ get_content = function(content)
 save = function(callback) 
 {
 	// @todo: disable/unbind sur save pour dire que l'on est en train de sauvegarder
+	
+	// Si image sélectionnée : raz propriétés image (sécurité pour ne pas enregistrer de ui-wrapper)
+	if(memo_img) img_leave();
 
 	// Animation sauvegarde en cours (loading)
 	$("#save i").removeClass("fa-save").addClass("fa-spin fa-cog");
@@ -256,6 +259,19 @@ link_option = function()
 target_blank = function(mode) {
 	if(mode == true || !$("#target-blank").hasClass("checked")) $("#target-blank").addClass("checked");
 	else $("#target-blank").removeClass("checked");
+}
+
+// Ajout/Suppression d'un element html
+html_tool = function(html){
+	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
+	if($(memo_node).closest(html).length){
+		$("#"+html).removeClass("checked");
+		$(memo_node).replaceWith($(memo_node).html());	
+	}
+	else {
+		$("#"+html).addClass("checked");
+		exec_tool('formatBlock', html);
+	}
 }
 
 // Voir le code source
@@ -848,7 +864,7 @@ $(document).ready(function()
 
 	// Barre d'outils de mise en forme : toolbox
 	toolbox = "<ul id='txt-tool' class='toolbox'>";
-		toolbox+= "<li><button onclick=\"exec_tool('formatBlock','h2')\" title=\""+__("Title H2")+"\"><i class='fa fa-fw fa-header'></i></button></li>";
+		toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title H2")+"\"><i class='fa fa-fw fa-header'></i></button></li>";
 		toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
 		toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
 		toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
@@ -918,12 +934,16 @@ $(document).ready(function()
 					memo_range = memo_selection.getRangeAt(0);
 					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
 				}
+				
+				// Si on est sur un h2 on check l'outil dans la toolbox
+				if($(memo_node).closest("h2").length) $("#txt-tool #h2").addClass("checked");
+				else $("#txt-tool #h2").removeClass("checked");
 
 				// Si on sélectionne un contenu
 				if(memo_selection.toString().length > 0)
 				{
 					// Si on est sur un lien
-					if($(memo_node).closest('a').length)
+					if($(memo_node).closest("a").length)
 					{
 						// Ouverture du menu lien en mode modif
 						link_option();
