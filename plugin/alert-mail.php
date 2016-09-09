@@ -28,15 +28,17 @@ if($_POST["email"] and !$_POST["champ_vide"])// champ_vide pour éviter les bots 
 			if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))*/
 
 
-			//CREATE TABLE IF NOT EXISTS `".$GLOBALS['db_prefix']."email` (`email` varchar(100) NOT NULL, `ip` varchar(16) NOT NULL, `date` datetime NOT NULL, UNIQUE KEY `email` (`email`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+			//CREATE TABLE IF NOT EXISTS `".$GLOBALS['db_prefix']."email` (`email` varchar(100) NOT NULL, `nom` varchar(100) NOT NULL, `tel` varchar(50) NOT NULL, `ip` varchar(16) NOT NULL, `date` datetime NOT NULL, UNIQUE KEY `email` (`email`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 			include_once("../api/fonction.php");
 			include_once("../api/db.php");
 
+			$nom = $GLOBALS['connect']->real_escape_string($_POST["nom"]);
+			$tel = $GLOBALS['connect']->real_escape_string($_POST["tel"]);
 			$email = $GLOBALS['connect']->real_escape_string($email);
 			$ip = $GLOBALS['connect']->real_escape_string(ip());
 
-			if($GLOBALS['connect']->query("REPLACE INTO ".$GLOBALS['db_prefix']."email SET email='".addslashes($email)."', ip='".addslashes($ip)."', date=NOW()"))
+			if($GLOBALS['connect']->query("REPLACE INTO ".$GLOBALS['db_prefix']."email SET email='".($email)."', nom='".($nom)."', tel='".($tel)."', ip='".($ip)."', date=NOW()"))
 			{
 				?>
 				<script>
@@ -65,6 +67,12 @@ else// Affichage du formulaire
 	<div><?txt('txt-attente')?></div>
 
 	<form id="alertmail" class="mas">
+
+		<input type="text" name="nom" placeholder="Nom Pr&eacute;nom" required maxlength="100" class="w50 mbs">
+
+		<input type="text" name="tel" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone" required maxlength="50" class="w40 mbs">
+
+		<br>
 
 		<input type="email" name="email" placeholder="Mon e-mail" required maxlength="100" class="w50 mbs">
 				
