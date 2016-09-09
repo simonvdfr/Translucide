@@ -189,23 +189,47 @@ exec_tool = function(command, value, ui) {
 		memo_selection.addRange(memo_range);		
 	}
 	
-	// Si image on ajoute un float left
-	if(command == "insertImage") {
-		command = "insertHTML";
-		value = "<img src=\""+ value +"\" class='fl'>";
-	}	
-
-	// Si icône
-	if(command == "insertIcon") {
-		command = "insertHTML";
-		value = "<span class='fa'>&#x"+ value +";</span>";
-	}	
-	
 	if(command)
 	{
-		document.execCommand(command, ui, value);// Exécution de la commande
+			
+		// Si image on ajoute un float left
+		if(command == "insertImage") {
+			command = "insertHTML";
+			value = "<img src=\""+ value +"\" class='fl'>";
+		}	
 
-		tosave();// A sauvegarder	
+		// Si icône
+		if(command == "insertIcon") {
+			command = "insertHTML";
+			value = "<span class='fa'>&#x"+ value +";</span>";
+		}
+		
+		// Si alignement
+		if(/justify/.test(command)) {
+			$(memo_node).removeAttr("align").css("text-align","");
+		}
+		
+
+		// Exécution de la commande
+		document.execCommand(command, ui, value);
+		
+
+		// A sauvegarder	
+		tosave();
+
+		// Si on justify on supprime l'éventuel span intérieur
+		if(/justify/.test(command))
+		{
+			// Désélectionne les alignements
+			$("[class*='fa-align']").parent().removeClass("checked");			
+
+			// check le bt d'alignement
+			$("#align-"+command.match(/justify(.*)/)[1].toLowerCase()).addClass("checked");
+			
+			// Si il y a un span avec des style on le supprime (chrome)
+			if($("span", $(memo_node))[0])
+				$("div", memo_node).html($("span", $(memo_node).context.innerHTML).html());
+		}
 
 		if(command == "CreateLink")
 		{
@@ -266,7 +290,7 @@ html_tool = function(html){
 	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
 	if($(memo_node).closest(html).length){
 		$("#"+html).removeClass("checked");
-		$(memo_node).replaceWith($(memo_node).html());	
+		$(memo_node).replaceWith($(memo_node).html());
 	}
 	else {
 		$("#"+html).addClass("checked");
@@ -868,6 +892,10 @@ $(document).ready(function()
 		toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
 		toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
 		toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('justifyLeft')\" id='align-left'><i class='fa fa-fw fa-align-left'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('justifyCenter')\" id='align-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('justifyRight')\" id='align-right'><i class='fa fa-fw fa-align-right'></i></button></li>";
+		toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
 		toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Separator")+"\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
 		toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 		toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture-o'></i></button></li>";
@@ -935,9 +963,26 @@ $(document).ready(function()
 					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
 				}
 				
+
 				// Si on est sur un h2 on check l'outil dans la toolbox
 				if($(memo_node).closest("h2").length) $("#txt-tool #h2").addClass("checked");
 				else $("#txt-tool #h2").removeClass("checked");
+					
+
+				// Désélectionne les alignements
+				$("[class*='fa-align']").parent().removeClass("checked");
+				
+				var align = null;
+
+				// On cherche le type d'alignement si on est dans un bloc aligné avec les style
+				if($(memo_node).closest("div [style*='text-align']")[0]) var align = $(memo_node).closest("div [style*='text-align']").css("text-align");
+				
+				// On cherche le type d'alignement si on est dans un bloc aligné avec align=
+				if($(memo_node).closest("div [align]")[0]) var align = $(memo_node).closest("div [align]").attr("align");
+								
+				// On check le bon alignement
+				if(align) $("#align-"+align).addClass("checked");
+
 
 				// Si on sélectionne un contenu
 				if(memo_selection.toString().length > 0)

@@ -126,7 +126,7 @@ function txt($key = null)
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<span class='editable' id='".encode($key)."'>".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</span>";
+	echo"<div class='editable' id='".encode($key)."'>".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</div>";
 
 	$GLOBALS['editkey']++;
 }

@@ -600,7 +600,7 @@ s,m,l,n = small, medium, large, none
 
 /* Contenu éditable */
 div.editable {
-	display: inline-block;/*inline-flex inline-block*/
+	display: inherit;/*inline-flex inline-block*/
 	/* @todo voir car il y a un bug avec les contenu pas très large */
 }
 
