@@ -195,13 +195,6 @@ exec_tool = function(command, value, ui) {
 	
 	if(command)
 	{
-			
-		// Si image on ajoute un float left // Plus utilisé
-		if(command == "insertImage") {
-			command = "insertHTML";
-			value = "<img src=\""+ value +"\" class='fl'>";
-		}	
-
 		// Si icône
 		if(command == "insertIcon") {
 			command = "insertHTML";
@@ -597,7 +590,7 @@ get_img = function(id, link)
 				$("#"+$("#dialog-media-source").val()).attr("src", final_file);
 			}
 			else if($("#dialog-media-target").val() == "intext") {// Ajout dans un contenu texte
-				if(typeof link !== 'undefined') exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\" class='zoom'><img src=\""+ final_file +"\" class='fl'></a>");
+				if(typeof link !== 'undefined') exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
 				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond

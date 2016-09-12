@@ -440,7 +440,8 @@ switch($_GET['mode'])
 			}
 
 			// Resize d'image avec lien
-			resize_img = function(id) {
+			resize_img = function(id)
+			{
 				if(!$("#resize-width").val() && !$("#resize-height").val())
 				{
 					$("#resize-width, #resize-height").css("border-color","red");
