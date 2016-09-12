@@ -71,7 +71,8 @@ $title = strip_tags($res['title']);
 $description = strip_tags($res['description']);
 
 // Les contenus
-if($res['content']) $GLOBALS['content'] = json_decode($res['content'], true);
+if($res['content'] and $res['content'] != '""') $GLOBALS['content'] = json_decode($res['content'], true);
+else $GLOBALS['content'] = array();
 
 
 // MENU DE NAVIGATION
