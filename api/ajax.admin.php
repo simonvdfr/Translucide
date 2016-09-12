@@ -405,8 +405,12 @@ switch($_GET['mode'])
 				// Switch sur le 1er onglet avec tous les médias
 				$(".dialog-media").tabs("option", "active", 0);
 
+				// Option de resize à afficher ?
+				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
+					var resize = "<a class='resize' title=\"<?_e("Get resized image");?>\"><i class='fa fa-fw fa-compress bigger'></i></a>";
+
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
-				$("#media .add-file").after("<li class='pat mat tc uploading' id='"+ id +"' data-file=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
+				$("#media .add-file").after("<li class='pat mat tc uploading' id='"+ id +"' data-file=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" + resize : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
 
 				// Converti la date unix en date lisible
 				var date = new Date();
@@ -435,12 +439,58 @@ switch($_GET['mode'])
 				return id;
 			}
 
+			// Resize d'image avec lien
+			resize_img = function(id) {
+				if(!$("#resize-width").val() && !$("#resize-height").val())
+				{
+					$("#resize-width, #resize-height").css("border-color","red");
+				}
+				else 
+				{
+					$("#dialog-media-width").val($("#resize-width").val());
+					$("#dialog-media-height").val($("#resize-height").val());
+					get_img(id, $('#resize-tool fa-expand').hasClass('checked'));
+				}
+			}
+
 
 			$(document).ready(function()
 			{
 				// Pour la construction d'id unique
 				now = new Date().getTime();
-				
+
+
+				// On demande une version redimensionnée de l'image
+				$(".dialog-media").on("click", ".resize", function(event)
+				{
+					event.stopPropagation();
+
+					var id = $(this).parent().attr("id");
+					var top = $(this).parent().offset().top;
+					var left = $(this).offset().left;
+					var width = $(this).prev("img")[0].naturalWidth;
+					var height = $(this).prev("img")[0].naturalHeight;
+
+					// Boîte à outils resize
+					resize_tool = "<div id='resize-tool' class='toolbox'>";
+						resize_tool+= __("Width") +": <input type='text' id='resize-width' placeholder='"+ width +"' required class='w50p'> ";
+						resize_tool+= __("Height") +": <input type='text' id='resize-height' placeholder='"+ height +"' class='w50p'>";
+						resize_tool+= "<a href=\"javascript:$('#resize-tool .fa-expand').toggleClass('checked');void(0);\"><i class='fa fa-fw fa-expand'></i>"+ __("Zoom link") +"</a> ";
+						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='fa fa-fw fa-cogs'></i> "+ __("Add") +"</button>";
+					resize_tool+= "</div>";
+
+					$(".ui-dialog").append(resize_tool);
+
+					$("#resize-tool")
+						.css("z-index", parseInt($(".ui-dialog").css("z-index")) + 1)
+						.show()
+						.offset({
+							top: top - $(this).height() - 8,
+							left: left
+						});				
+				});
+
+
 				// On supp une image
 				$(".dialog-media").on("click", ".supp", function(event)
 				{
@@ -622,9 +672,8 @@ switch($_GET['mode'])
 
 					$i++;
 				}
-			}
-			
-	}
+			}			
+		}
 
 		// Tri du tableau
 		if(!$sort) {								
@@ -692,10 +741,13 @@ switch($_GET['mode'])
 					// Affichage du fichier
 					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode($_GET['filter'])."-".$i."\" data-file=\"media/".($_GET['filter'] == "resize"?"resize/":"").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
 
-						if($type == "image") echo"<img src=\"media/".($_GET['filter'] == "resize"?"resize/":"").$val['filename']."\">";
+						if($type == "image") {
+							echo"<img src=\"media/".($_GET['filter'] == "resize"?"resize/":"").$val['filename']."\">";
+							echo"<a class='resize' title=\"".__("Get resized image")."\"><i class='fa fa-fw fa-compress bigger'></i></a>";
+						}
 						else echo"<div class='file'><i class='fa fa-fw fa-".$fa." mega'></i><div>".utf8_encode($val['filename'])."</div></div>";
 
-						echo"
+						echo"						
 						<div class='infos'>".$info." - ".$val['size']."</div>
 						<a class='supp' title=\"".__("Delete file")."\"><i class='fa fa-fw fa-trash bigger'></i></a>
 					</li>";
@@ -706,6 +758,13 @@ switch($_GET['mode'])
 
 		?>
 		</ul>
+
+		<script>
+			$(document).ready(function()
+			{
+				if($("#dialog-media-width").val() || $("#dialog-media-height").val()) $(".dialog-media .resize").remove();
+			});
+		</script>
 		<?
 	break;
 

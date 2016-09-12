@@ -39,6 +39,7 @@ $add_translation = array(
 	"Files" => array("fr" => "Fichiers"),
 	"Videos" => array("fr" => "Vidéos"),
 	"Audios" => array("fr" => "Audios"),
+	"Get resized image" => array("fr" => "Obtenir une image redimensionnée"),
 
 	"Size of source file unspecified" => array("fr" => "Taille du fichier source non précisée"),
 	"Unsupported file type" => array("fr" => "Type de fichier non pris en charge"),

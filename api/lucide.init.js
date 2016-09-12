@@ -41,7 +41,7 @@ set_cookie = function(key, val, days) {
 
 // Traduit un texte
 __ = function(txt) {
-	if(translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
+	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
 	else return txt;
 }
 

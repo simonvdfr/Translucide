@@ -399,6 +399,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		transition: opacity .5s;
 	}
 
+
 	.dialog-media li .infos { 
 		box-shadow: inset 0px -22px 10px -10px #fff;/*0 0 0 1px rgba(0, 0, 0, 0.15) inset*/
 
@@ -416,17 +417,27 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		animation: fade-in .2s;
 	}
 
-	.dialog-media li .supp { 
-		bottom: 0;
-		right: 0;
 
+	.dialog-media li .resize, .dialog-media li .supp { 
 		line-height: 18px;
 
 		position: absolute;			
 		display: none;
-		opacity: 0.8;
+		opacity: 0.5;
+
+		z-index: 1;
 	}
-		.dialog-media li .supp:hover { opacity: 1; }
+		.dialog-media li .resize:hover, .dialog-media li .supp:hover { opacity: 1; }
+
+	.dialog-media li .resize { 
+		bottom: -1px;
+		left: 2px;
+	}
+		
+	.dialog-media li .supp { 
+		bottom: -1px;
+		right: 2px;
+	}
 
 	.dialog-media li.add-file {
 		background: #f5f5f5;
@@ -441,7 +452,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		}
 
 	.dialog-media li:hover { background: #fff; }
-	.dialog-media li:hover > .infos, .dialog-media li:hover > .supp { display: block; }
+	.dialog-media li:hover > .infos, .dialog-media li:hover > .supp, .dialog-media li:hover > .resize { display: block; }
+
 
 	/* Onglet */
 	.ui-tabs { padding: 0 !important; }
@@ -511,7 +523,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 }
 
 /* Style et initialisation de la toolbox */
-ul.toolbox {	
+.toolbox {	
 	border-radius: 4px;
 
 	list-style: none;
@@ -519,7 +531,7 @@ ul.toolbox {
 	padding: 0;	
 	margin: 0;
 
-	height: 24px;
+	/*height: 24px; SUPP ?*/
 
 	position: absolute;
 	display: none;
@@ -530,11 +542,11 @@ ul.toolbox {
 	animation: fadeInToolbox .3s ease-in;
 	transition: all .24s ease-in-out;
 }
-	ul.toolbox li {
+	.toolbox li {
 		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 		float: left;		
 	}
-	ul.toolbox button {
+	.toolbox button {
 		background: #fff linear-gradient(#ffffff, #eaeaea) repeat scroll 0 0;
 		box-shadow: 0 0 0 1px #fff inset;
 
@@ -545,7 +557,7 @@ ul.toolbox {
 
 		cursor: pointer;
 
-		vertical-align: bottom;
+		/*vertical-align: bottom; SUPP ?*/
 
 		height: 24px;
 		min-width: 24px;
@@ -557,25 +569,26 @@ ul.toolbox {
 
 		font-size: 1.2rem;
 	}
-		ul.toolbox button:hover {
+		.toolbox button:hover {
 			background: #E5F6F1 linear-gradient(#e5f6f1, #6fcdd5) repeat scroll 0 0;
 			box-shadow: 0 0 0 1px #e5f6f1 inset;
 		}
-		ul.toolbox button:focus {
+		.toolbox button:focus {
 			background: #6fcdd5 linear-gradient(#6fcdd5, #e5f6f1) repeat scroll 0 0;
 			box-shadow: 0 0 0 1px #6fcdd5 inset;
 		}
-		ul.toolbox li:first-child, ul.toolbox li:last-child button {
+		.toolbox li:first-child, .toolbox li:last-child button {
 			border-radius: 4px 0 0 4px;
 		}
-		ul.toolbox li:last-child, ul.toolbox li:last-child button {
+		.toolbox li:last-child, .toolbox li:last-child button {
 			border-radius: 0 4px 4px 0;
 		}
 
-	ul.toolbox:hover {
+	.toolbox:hover {
 		opacity: 1;
 	}
-	ul.toolbox:after {/* Fleche sous la toolbox */
+	/* Fleche sous la toolbox */
+	.toolbox:after {
 		border: 6px solid transparent;
 		border-top-color: #d3d3d3;
 		content: ' ';
@@ -586,15 +599,32 @@ ul.toolbox {
 		height: 0px;
 		width: 0px;
 	}
+	/* Fleche au dessu de la toolbox */
+	.toolbox.under:after { 
+		border-bottom-color: #d4d4d4;
+		border-top-color: transparent;
+		top: -12px;
+	}
 
-	ul.toolbox #option {
+	.toolbox #option {
 		background-color: #eaeaea;
 		height: 100%;
 		display: none;
 	}
-		ul.toolbox #option input {
+		.toolbox #option input {
 			height: 100%;
 		}
+	
+	.toolbox#resize-tool {
+		background-color: #eaeaea;
+		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+		padding: 0.2rem;
+	}
+		.toolbox#resize-tool input {
+			height: 22px;
+		}
+
+
 
 #unlink {
 	color: #9E1E1E;

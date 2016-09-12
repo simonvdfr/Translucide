@@ -34,7 +34,11 @@ add_translation({
 	"Open link in new window" : {"fr" : "Ouvre le lien dans une nouvelle fen\u00eatre"},		
 	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la s\u00e9lection"},
 	"Delete image" : {"fr" : "Supprimer l'image"},		
-	"Delete file" : {"fr" : "Supprimer le fichier"}		
+	"Delete file" : {"fr" : "Supprimer le fichier"},
+	"Zoom link" : {"fr" : "Lien zoom"},
+	"Add" : {"fr" : "Ajouter"},
+	"Width" : {"fr" : "Largeur"},
+	"Height" : {"fr" : "Hauteur"}
 });
 
 
@@ -192,7 +196,7 @@ exec_tool = function(command, value, ui) {
 	if(command)
 	{
 			
-		// Si image on ajoute un float left
+		// Si image on ajoute un float left // Plus utilisé
 		if(command == "insertImage") {
 			command = "insertHTML";
 			value = "<img src=\""+ value +"\" class='fl'>";
@@ -568,7 +572,7 @@ get_file = function(id)
 
 
 // Insertion d'une image depuis la dialog media
-get_img = function(id)
+get_img = function(id, link)
 {	
 	//@todo ajouter un loading pour informer que l'on resize l'image avant fermeture de la dialog
 	//@todo voir pour faire un fade opacity en js, car en css ça fait un bug lors de l'ouverture de la dialog
@@ -593,7 +597,8 @@ get_img = function(id)
 				$("#"+$("#dialog-media-source").val()).attr("src", final_file);
 			}
 			else if($("#dialog-media-target").val() == "intext") {// Ajout dans un contenu texte
-				exec_tool("insertImage", final_file);
+				if(typeof link !== 'undefined') exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\" class='zoom'><img src=\""+ final_file +"\" class='fl'></a>");
+				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond
 				$("#"+$("#dialog-media-source").val()+"").attr("data-bg", final_file);
@@ -1033,9 +1038,11 @@ $(document).ready(function()
 	// @todo: voir si on ne peux pas le déplacer sur le blur des event .editable
 	$("body").click(function(event) {
 		// Si on n'est pas sur une image dans un contenu éditable on supp la toolbox image
-		if(!$(event.target).is('.editable img')) {
-			img_leave();// Raz Propriétés image
-		}		
+		if(!$(event.target).is('.editable img')) img_leave();// Raz Propriétés image
+		
+		// Supprime le layer de redimensionnement d'image
+		if($("#resize-tool").html() != undefined && !$(event.target).closest("#resize-tool").is('#resize-tool')) $("#resize-tool").remove();
+		
 	});
 
 	// Affiche les options de gestion d'alignement sur les images ajouter

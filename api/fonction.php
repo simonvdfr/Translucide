@@ -536,9 +536,9 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 	// Récupération de l'extension
 	$source_ext = pathinfo($source_file, PATHINFO_EXTENSION);
 
-	// file_name : on récup le nom du fichier, on lui supp l'extension (qui ne passe pas l'encode), on l'encode, on lui ajoute une extension uniformisée
+	// file_name : on récup le nom du fichier, on lui supp l'extension (qui ne passe pas l'encode), on l'encode
 	$root_dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'];	
-	$file_name = encode(basename(basename($source_file), ".".$source_ext)).".".$source_ext;
+	$file_name = encode(basename(basename($source_file), ".".$source_ext));
 	
 	// Si image à réduire ou à forcer
 	if(($final_width and $source_width > $final_width) or ($final_height and $source_height > $final_height) or $force)
@@ -601,12 +601,15 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
           case 8: $deg = 90; break;
 		}
 		if($deg) $final_img = imagerotate($final_img, $deg, 0);
+		
+		// Ajoute la taille de la nouvelle image
+		$file_name_ext = $file_name."-".round($final_width)."x".round($final_height).".".$source_ext;
 
 		// Création de l'image finale dans le bon type		
 		switch($type) {
-			case 1: imagegif($final_img, $root_dir.$dir.$file_name); break;
-			case 2: imagejpeg($final_img, $root_dir.$dir.$file_name, $GLOBALS['jpg_quality']); break;// $GLOBALS['png_quality']
-			case 3: imagepng($final_img, $root_dir.$dir.$file_name); break;
+			case 1: imagegif($final_img, $root_dir.$dir.$file_name_ext); break;
+			case 2: imagejpeg($final_img, $root_dir.$dir.$file_name_ext, $GLOBALS['jpg_quality']); break;
+			case 3: imagepng($final_img, $root_dir.$dir.$file_name_ext); break;// $GLOBALS['png_quality']
 		}		
 		
 		imagedestroy($final_img);// Libère la mémoire	
@@ -614,12 +617,13 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 	else// Copie l'image si elle est plus petite ou à la bonne taille
 	{
 		$dir = "media/";
+		$file_name_ext = $file_name.".".$source_ext;
 		
 		@mkdir($root_dir.$dir, 0705, true);// Crée les dossiers
 
-		copy($source_file, $root_dir.$dir.$file_name);
+		copy($source_file, $root_dir.$dir.$file_name_ext);
 	}
 
-	return $dir.$file_name."?".time();// Time pour forcer le refresh
+	return $dir.$file_name_ext."?".time();// Time pour forcer le refresh
 }
 ?>
