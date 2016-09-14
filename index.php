@@ -159,21 +159,15 @@ header('Content-type: text/html; charset=UTF-8');
 		ga('create', '<?=$GLOBALS['google_analytics'];?>', 'auto');
 		ga('send', 'pageview');
 		<? } ?>
-		
+
+
 		<? if($GLOBALS['facebook_api_id']) { ?>
 		// Facebook
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId: '<?=$GLOBALS['facebook_api_id'];?>',
-				cookie: true,
-				version: 'v2.4'
-			});
-		};
 		(function(d, s, id){
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) {return;}
 			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/fr_FR/sdk.js";
+			js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.7&cookie=true&appId=<?=$GLOBALS['facebook_api_id'];?>";
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 		<? } ?>
