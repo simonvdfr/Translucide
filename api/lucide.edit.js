@@ -1229,7 +1229,7 @@ $(document).ready(function()
 						
 						// Pour fermer l'admin user quand on click en dehors
 						close = false;
-						$(document).on('click',	
+						$(document).on("click",	
 							function(event) {
 								if(!$(event.target).parents().is("#user .layer") && $("#user .layer").is(":visible") && close == false)//event.type == 'click'
 									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si pas sauvegardé on shake
