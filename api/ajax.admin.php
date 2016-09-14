@@ -450,7 +450,6 @@ switch($_GET['mode'])
 				}
 				else 
 				{
-					console.log($('#resize-tool .fa-expand').hasClass('checked'));
 					$("#dialog-media-width").val($("#resize-width").val());
 					$("#dialog-media-height").val($("#resize-height").val());
 					get_img(id, $('#resize-tool .fa-expand').hasClass('checked'));
