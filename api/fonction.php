@@ -602,7 +602,9 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 		}
 		if($deg) $final_img = imagerotate($final_img, $deg, 0);
 		
-		// Ajoute la taille de la nouvelle image
+		// Ajoute la taille de la nouvelle image en supprimant l'ancienne si besoin
+		preg_match("/(-[0-9]+x[0-9]+)$/", $file_name, $matches);
+		$file_name = str_replace($matches[0], "", $file_name);
 		$file_name_ext = $file_name."-".round($final_width)."x".round($final_height).".".$source_ext;
 
 		// Création de l'image finale dans le bon type		
