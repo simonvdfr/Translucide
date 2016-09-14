@@ -408,6 +408,8 @@ switch($_GET['mode'])
 				// Option de resize à afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
 					var resize = "<a class='resize' title=\"<?_e("Get resized image");?>\"><i class='fa fa-fw fa-compress bigger'></i></a>";
+				else 
+					var resize = "";
 
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
 				$("#media .add-file").after("<li class='pat mat tc uploading' id='"+ id +"' data-file=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" + resize : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
@@ -448,9 +450,10 @@ switch($_GET['mode'])
 				}
 				else 
 				{
+					console.log($('#resize-tool .fa-expand').hasClass('checked'));
 					$("#dialog-media-width").val($("#resize-width").val());
 					$("#dialog-media-height").val($("#resize-height").val());
-					get_img(id, $('#resize-tool fa-expand').hasClass('checked'));
+					get_img(id, $('#resize-tool .fa-expand').hasClass('checked'));
 				}
 			}
 
@@ -469,26 +472,29 @@ switch($_GET['mode'])
 					var id = $(this).parent().attr("id");
 					var top = $(this).parent().offset().top;
 					var left = $(this).offset().left;
-					var width = $(this).prev("img")[0].naturalWidth;
-					var height = $(this).prev("img")[0].naturalHeight;
 
 					// Boîte à outils resize
 					resize_tool = "<div id='resize-tool' class='toolbox'>";
-						resize_tool+= __("Width") +": <input type='text' id='resize-width' placeholder='"+ width +"' required class='w50p'> ";
-						resize_tool+= __("Height") +": <input type='text' id='resize-height' placeholder='"+ height +"' class='w50p'>";
+						resize_tool+= __("Width") +": <input type='text' id='resize-width' class='w50p'> ";
+						resize_tool+= __("Height") +": <input type='text' id='resize-height' class='w50p'>";
 						resize_tool+= "<a href=\"javascript:$('#resize-tool .fa-expand').toggleClass('checked');void(0);\"><i class='fa fa-fw fa-expand'></i>"+ __("Zoom link") +"</a> ";
 						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='fa fa-fw fa-cogs'></i> "+ __("Add") +"</button>";
 					resize_tool+= "</div>";
-
+			
 					$(".ui-dialog").append(resize_tool);
-
+					
+					// On l'affiche et la positionne
 					$("#resize-tool")
 						.css("z-index", parseInt($(".ui-dialog").css("z-index")) + 1)
 						.show()
 						.offset({
 							top: top - $(this).height() - 8,
 							left: left
-						});				
+						});			
+					
+					// On affiche la taille de l'image originale dans les placeholder
+					$("#resize-tool #resize-width").attr("placeholder", $(this).prev("img")[0].naturalWidth);
+					$("#resize-tool #resize-height").attr("placeholder", $(this).prev("img")[0].naturalHeight);
 				});
 
 
@@ -857,14 +863,24 @@ switch($_GET['mode'])
 
 						// Image trop grande (> global) pour le web : on la redimensionne
 						if($source_width > $max_width or $source_height > $max_height or $force) 
-							resize($root_file, $max_width, $max_height, "media/", $force);
+						{
+							$src_file = resize($root_file, $max_width, $max_height, "media/", $force);// Redimensionne
+
+							unlink($root_file);// Supprime l'image originale puisque l'on ne garde que la maxsize
+
+							$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];// La maxsize devient l'image root (explode: supp le timer)
+						}
 						
 
 						// L'interface a demandé un redimensionnement ?
 						$final_width = (int)$_POST['width'];
 						$final_height = (int)$_POST['height'];
 						if($_POST['resize'] and ($final_width and $source_width > $final_width) or ($final_height and $source_height > $final_height)) 
-							echo resize($root_file, $final_width, $final_height, "media/resize/");
+						{
+							echo resize($root_file, $final_width, $final_height, "media/resize/");// Redimensionne
+
+							//unlink($root_file);// Si on a redimensionné on supp l'image de base
+						}
 						else
 							echo $src_file;// Retourne l'url du fichier original si pas de redimensionnement	
 					}		
