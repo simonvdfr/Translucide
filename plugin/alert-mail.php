@@ -66,21 +66,25 @@ else// Affichage du formulaire
 
 	<div><?txt('txt-attente')?></div>
 
-	<form id="alertmail" class="mas">
+	<form id="alertmail" class="mls mtm">
 
 		<input type="text" name="nom" placeholder="Nom Pr&eacute;nom" required maxlength="100" class="w50 mbs">
 
-		<input type="text" name="tel" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone" required maxlength="50" class="w40 mbs">
+		<br>
+
+		<input type="text" name="tel" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone" required maxlength="50" class="w50 mbs">
 
 		<br>
 
 		<input type="email" name="email" placeholder="Mon e-mail" required maxlength="100" class="w50 mbs">
+
+		<br>
 				
 		<input type="hidden" name="champ_vide" value="">
 
 		<input type="hidden" name="nonce_alertmail" value="<?=nonce("nonce_alertmail");?>">
 
-		<button class="mbs"><i class="fa fa-fw fa-envelope"></i> <?_e("M'avertir de l'avancée de ".$GLOBALS['sitename'])?></button>
+		<button class="mbs w50"><i class="fa fa-fw fa-envelope"></i> <?_e("M'avertir de l'avancée de ".$GLOBALS['sitename'])?></button>
 
 	</form>
 
