@@ -446,6 +446,8 @@ upload = function(source, file, resize)
 			// Affiche la preview si image
 			if(mime[0] == "image") 
 			{
+				$("img", source).addClass("to50");// On fade à moitié (50%)
+
 				var reader = new FileReader();
 				reader.onload = function(theFile) {
 					// On crée un objet image pour s'assurer que l'image est bien chargée dans le browser avant de prendre sa taille pour le layer de progression d'upload
@@ -453,12 +455,14 @@ upload = function(source, file, resize)
 					image.src = theFile.target.result;
 
 					image.onload = function() {// Image bien chargée dans le navigateur
-						if($("#"+progressid).length) {					
-							
-							$("img", source).attr("src", this.src).addClass("to50");// On colle le bin de l'image dans le src et on fade à moitié (50%)
-							$("#"+progressid).css("height", source.outerHeight()+"px");// On force la taille de progression d'upload
+						if($("#"+progressid).length) {			
+							// Si l'upload n'est pas déjà fini on calle la source et la hauteur de la progress bar
+							if(!$("img", source).attr("src")) {
+								$("img", source).attr("src", this.src);// On colle le bin de l'image dans le src
+								$("#"+progressid).css("height", source.outerHeight()+"px");// On force la taille de progression d'upload
+							}
 						}
-					};							
+					};	
 				}
 				reader.readAsDataURL(file);
 			}
@@ -503,8 +507,8 @@ upload = function(source, file, resize)
 						// Si c'est une image
 						if(mime[0] == "image") 
 						{
-							$("img", source).attr("src", path);// Affiche l'image finale 
 							$("img", source).removeClass("to50");// On remet l'image à l'opacité normale
+							$("img", source).attr("src", path);// Affiche l'image finale 
 						}
 						
 						// Nom du fichier final si dialog médias
@@ -590,7 +594,7 @@ get_img = function(id, link)
 				$("#"+$("#dialog-media-source").val()).attr("src", final_file);
 			}
 			else if($("#dialog-media-target").val() == "intext") {// Ajout dans un contenu texte
-				if(typeof link !== 'undefined') exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
+				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
 				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond
@@ -656,7 +660,7 @@ img_leave = function()
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
 $(window).on("beforeunload", function(){
-	//if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
+	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
 });
 
 
