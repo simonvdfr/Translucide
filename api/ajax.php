@@ -78,10 +78,10 @@ switch($_GET['mode'])
 			<?}?>
 
 			<a href="javascript:login('internal');void(0);" class="bt connect internal"><?_e("Connection with");?> <?=$GLOBALS['sitename'];?></a>
-			<?if($GLOBALS['facebook_api_id']){?><a href="javascript:login('facebook');void(0);" class="bt connect facebook"><?_e("Connection with");?> Facebook</a><?}?>
-			<?if($GLOBALS['google_api_id']){?><a href="javascript:login('google');void(0);" class="bt connect google"><?_e("Connection with");?> Google</a><?}?>
-			<?if($GLOBALS['yahoo_api_id']){?><a href="javascript:login('yahoo');void(0);" class="bt connect yahoo"><?_e("Connection with");?> Yahoo</a><?}?>
-			<?if($GLOBALS['microsoft_api_id']){?><a href="javascript:login('microsoft');void(0);" class="bt connect microsoft"><?_e("Connection with");?> Hotmail - Microsoft</a><?}?>
+			<?if($GLOBALS['facebook_api_secret']){?><a href="javascript:login('facebook');void(0);" class="bt connect facebook"><?_e("Connection with");?> Facebook</a><?}?>
+			<?if($GLOBALS['google_api_secret']){?><a href="javascript:login('google');void(0);" class="bt connect google"><?_e("Connection with");?> Google</a><?}?>
+			<?if($GLOBALS['yahoo_api_secret']){?><a href="javascript:login('yahoo');void(0);" class="bt connect yahoo"><?_e("Connection with");?> Yahoo</a><?}?>
+			<?if($GLOBALS['microsoft_api_secret']){?><a href="javascript:login('microsoft');void(0);" class="bt connect microsoft"><?_e("Connection with");?> Hotmail - Microsoft</a><?}?>
 
 		</div>
 		<?
