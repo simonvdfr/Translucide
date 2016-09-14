@@ -1212,7 +1212,7 @@ $(document).ready(function()
 
 	/************** USERS **************/
 
-	// Ouverture de l'admin des users 
+	// Ouverture de l'admin des users
 	$("#user i").on('click mouseenter',	// touchstart click
 		function(event) {
 
@@ -1232,7 +1232,7 @@ $(document).ready(function()
 						$(document).on("click",	
 							function(event) {
 								if(!$(event.target).parents().is("#user .layer") && $("#user .layer").is(":visible") && close == false)//event.type == 'click'
-									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si pas sauvegardé on shake
+									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegardé on shake
 										$("#user .layer > div").effect("highlight");
 									else
 										$("#user .layer").fadeOut("fast", function(){ close = true; });
