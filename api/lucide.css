@@ -52,6 +52,8 @@ body { transition: margin-top 0.2s linear; }
 		border-bottom: 1px dotted #9cabad;
 		font-family: Arial;
 		padding: initial;
+		box-shadow: none;
+		border-radius: 0;
 	}
 
 
@@ -583,6 +585,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		.toolbox li:last-child, .toolbox li:last-child button {
 			border-radius: 0 4px 4px 0;
 		}
+
 
 	.toolbox:hover {
 		opacity: 1;

@@ -504,6 +504,18 @@ input[type="reset"].unstyled:focus {
 	padding-right: 0 !important;
 }
 
+/* Image dans le fond d'un input */
+.wrapper {
+	color: rgba(0, 0, 0, 0.3);
+	position: relative;
+	display: inline-block;
+	vertical-align: text-bottom;
+	text-align: center;
+	top: 3px;
+	width: 22px;
+	margin-left: -28px;
+}
+
 
 /* @todo: Intégrer les grid ici */
 
