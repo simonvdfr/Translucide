@@ -19,13 +19,13 @@ switch($_GET['mode'])
 		login('high', 'edit_content');// Vérifie que l'on a le droit d'éditer les contenus
 		
 		// Si on doit recharger la page avant de lancer le mode édition
-		if($_REQUEST['callback'] == "reload")
+		if($_REQUEST['callback'] == "reload_edit")
 		{
 			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
 			setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
 			?>
 			<script>
-			document.location.href = clean_url();
+			reload();
 			</script>
 		<?}
 		else 
@@ -380,10 +380,10 @@ switch($_GET['mode'])
 			<ul class="small">
 				<li data-filter="all"><a href="#media" title="<?_e("Media")?>"><i class="fa fa-files-o"></i> <span><?_e("Media")?></span></a></li>
 				<li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?_e("Images")?>"><i class="fa fa-picture-o"></i> <span><?_e("Images")?></span></a></li>
-				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?_e("Resized")?>"><i class="fa fa-arrows-alt"></i> <span><?_e("Resized")?></span></a></li>
+				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?_e("Resized")?>"><i class="fa fa-compress"></i> <span><?_e("Resized")?></span></a></li>
 				<li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?_e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Files")?></span></a></li>				
-				<li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?_e("Videos")?>"><i class="fa fa-film"></i> <span><?_e("Videos")?></span></a></li>
-				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?_e("Audios")?>"><i class="fa fa-volume-up"></i> <span><?_e("Audios")?></span></a></li>
+				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?_e("Videos")?>"><i class="fa fa-film"></i> <span><?_e("Videos")?></span></a></li>
+				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?_e("Audios")?>"><i class="fa fa-volume-up"></i> <span><?_e("Audios")?></span></a></li> -->
 			</ul>
 			
 			<div id="media" class="test">
