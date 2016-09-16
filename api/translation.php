@@ -11,7 +11,7 @@ $add_translation = array(
 
 	"Log in" => array("fr" => "Connexion"),
 	"Connection with" => array("fr" => "Connexion avec"),
-	"Connexion error" => array("fr" => "Erreur de connexion"),
+	"Connection error" => array("fr" => "Erreur de connexion"),
 	"Unknown user" => array("fr" => "Utilisateur inconnu"),
 	"Unable to find the user number" => array("fr" => "Impossible de trouver le numéro d'utilisateur"),
 	"Unable to find the access token" => array("fr" => "Impossible de trouver le jeton d'accès"),
@@ -19,6 +19,13 @@ $add_translation = array(
 	"Connection required" => array("fr" => "Connexion requise"),
 
 	"Validate the connection in the popup" => array("fr" => "Validez la connexion dans la fenêtre qui vient de s'ouvrir"),
+
+	"My email" => array("fr" => "Mon e-mail"),
+	"My password" => array("fr" => "Mon mot de passe"),
+	"Remember me" => array("fr" => "Se souvenir de moi"),
+	"Forgot your password" => array("fr" => "Mot de passe oublié"),
+	"Not a member yet ?" => array("fr" => "Pas encore membre ?"),
+	"Sign up" => array("fr" => "Inscrivez-vous"),
 
 
 	"Add a page" => array("fr" => "Ajouter une page"),
