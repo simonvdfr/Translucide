@@ -8,10 +8,19 @@ function benchmark() {
 
 /********** URL **********/
 // Nettoie et encode les mots
-function encode($value, $separator = "-") 
+function encode($value, $separator = "-", $pass = null) 
 {
 	$tofind = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>";
     $replac = "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ";
+	
+	// Si on doit laisser certains caractères
+	if(count($pass)) {
+		foreach($pass as $char){
+			$strpos = strpos($tofind, $char);
+			$tofind[$strpos] = "";
+			$replac[$strpos] = "";
+		}
+	}
 
 	$value = strtolower(strtr(utf8_decode($value), $tofind, $replac));// Supp les caractères indésirables
 	$value = preg_replace("/ /", $separator, preg_replace("/ {2,}/", $separator, trim($value)));// Supp les espaces et remplace par des tirés {1,}
@@ -277,9 +286,15 @@ function ip()// Retourne l'adresse IP du client (utilisé pour empêcher le détour
 
 // Création d'un token
 function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de mettre le mail et pas le name ou rien
-{	
-	// Date d'expiration
-	$time = time() + $GLOBALS['session_expiration'];
+{
+	// Si la fonction de memorisation de connexion de l'utilisateur et coché
+	if($_POST['rememberme']) {
+		setcookie("rememberme", encode($_POST['rememberme']), 0, $GLOBALS['path'], $GLOBALS['domain']);
+		$_COOKIE['rememberme'] = encode($_POST['rememberme']);
+	}
+
+	// Date d'expiration (si on ne mémorise pas l'utilisateur on crée une session de 30min
+	$time = time() + ($_COOKIE['rememberme'] == "false" ? (30*60) : $GLOBALS['session_expiration']);
 
 	// Id de l'utilisateur
 	$_SESSION['uid'] = (int)$uid;
@@ -291,7 +306,7 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de m
 	if($auth) {
 		$array_auth = explode(",", $auth);
 		while(list($cle, $val) = each($array_auth)) { $_SESSION['auth'][$val] = true; }
-		setcookie("auth", encode($auth, ","), $time, $GLOBALS['path'], $GLOBALS['domain']);
+		setcookie("auth", encode($auth, ",", array("_")), $time, $GLOBALS['path'], $GLOBALS['domain']);
 	}
 	
 	// Date d'expiration du login
@@ -383,7 +398,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 						return true;
 					}
 				}
-				else $msg = __("Connexion error")." 2";
+				else $msg = __("Connection error")." 2";
 			}
 			else $msg = __("Unknown user");
 		}
@@ -394,7 +409,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 			{
 				if(!token_check($_SESSION['token']))// Vérification du contenu du token
 				{
-					$msg = __("Connexion error")." 3";
+					$msg = __("Connection error")." 3";
 					logout();
 				}
 				else if(isset($auth))// Vérifie les autorisations utilisateur dans la bdd si c'est demandée
@@ -430,7 +445,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 				elseif($level == 'high' and $res['token'] == $_SESSION['token_light']) return true;// Verification du token light (changement de pwd...)
 				else 
 				{
-					$msg = __("Connexion error")." 4";
+					$msg = __("Connection error")." 4";
 					logout();
 				}
 			}
@@ -500,6 +515,11 @@ function logout($redirect = null)
 	
 	// Supprime le cookie d'autorisation user
 	@setcookie("auth", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
+	
+	// Supprime le cookie de memorisation de l'utilisateur
+	@setcookie("rememberme", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
+
+	echo"logout<br>";
 
 	// Si redirection
 	if($redirect == "login") {
