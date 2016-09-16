@@ -106,13 +106,11 @@ switch($_GET['mode'])
 				var timer = null;
 				$(".dialog-add #title").keyup(function() 
 				{
-					console.log("keyup")
 					if(timer != null) clearTimeout(timer);
 
 					timer = setTimeout(function() {
 						timer = null;
 						refresh_permalink(".dialog-add");
-						console.log("timer")
 					}, '500');
 				});
 
