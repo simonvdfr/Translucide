@@ -49,17 +49,12 @@ $.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
 $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
 
-// Url en cours nettoyé
-clean_url = function() {
-	return location.protocol+'//'+location.host+location.pathname;
-}
-
 // Déconnexion
 logout = function() {
 	$.ajax({
 		url: "api/ajax.php?mode=logout",
 		success: function(html){ 
-			document.location.href = clean_url();// Recharge la page	
+			reload();// Recharge la page	
 		}
 	});
 }
@@ -1264,13 +1259,13 @@ $(document).ready(function()
 
 	// Si on ferme l'admin
 	$("#close").click(function() {	
-		document.location.href = clean_url();
+		reload();
 	});
 
 	// On rétablit la page en mode visiteur
 	$("#preview").click(function() {
 		save(function() {
-			document.location.href = clean_url();
+			reload();
 		});				
 	});
 
