@@ -1,6 +1,6 @@
 <?
-include_once("../config.php");// Les variables
-include_once("fonction.php");// Fonction
+@include_once("../config.php");// Les variables
+@include_once("fonction.php");// Fonction
 
 
 $lang = get_lang();// Sélectionne la langue
@@ -19,6 +19,75 @@ switch($_GET['mode'])
 		{	
 			// S'il y a un callback à exécuter
 			if(callback) eval(callback + "()");
+		});
+		</script>
+		<?
+
+	break;
+
+	case "public-login":// Login pour les utilisateurs publique
+		
+		// @Todo:
+		// faire la procedure de récup de mot de passe
+		?>
+		<form id="public-login" class="pas">
+			
+			<input type="email" id="email" placeholder="<?_e("My email");?>" required class="w100 mtt mbs"><span class="wrapper big bold">@</span>
+
+			<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
+
+			<div class="mbt"><input type="checkbox" id="rememberme" class="mts"> <label for="rememberme"><?_e("Remember me");?></label></div>
+								
+			<button class="w100 mts mbm bold">
+				<?_e("Log in")?>
+				<i class="fa fa-key"></i>
+			</button>
+
+			<input type="hidden" id="champ_vide" value="">
+
+			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
+			
+			<div>
+				<?_e("Not a member yet ?");?><br>
+				<a href="inscription"><?_e("Sign up");?></a>
+				<!-- <div class="tr fr"><a href=""><?_e("Forgot your password");?></a></div> -->
+			</div>
+			
+		</form>
+
+
+		<script>
+		$(document).ready(function()
+		{
+			// Login
+			$("#public-login").submit(function(event) 
+			{
+				event.preventDefault();
+				
+				// Désactive le submit
+				$("#public-login input[type='submit']").attr("disabled", true);
+				$("#public-login").off("submit");
+
+				$.ajax(
+				{ 
+					type: "POST",
+					url: "api/ajax.php?mode=login",
+					data: { 
+						email: $("#public-login #email").val(),
+						password: $("#public-login #password").val(),
+						rememberme: $("#public-login #rememberme").prop("checked"),
+						nonce: $("#public-login #nonce").val(),
+						callback: callback = "reload"
+					}
+				})
+				.done(function(html) { 
+					// On ferme le layer
+					$("#login-dialog").fadeOut("fast", function(){ close = true; });			
+					
+					// On exécute le retour
+					$("body").append(html);
+				});
+			});
 		});
 		</script>
 		<?
@@ -94,11 +163,11 @@ switch($_GET['mode'])
 
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<label for="email" class="w40 tr prt"><?_e("Mail")?> : </label><input type="email" id="email" placeholder="exemple@mymail.com" required class="w60 vatt"><br>
+			<div class="mbs"><input type="email" id="email" placeholder="<?_e("My email");?>" required class="w100"><span class="wrapper big bold">@</span></div>
 
-			<label for="password" class="w40 tr prt"><?_e("Password")?> : </label><input type="password" id="password" required class="w60 vatt">
+			<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
 
-			<button class="bt internal fr mrn mts pat">
+			<button class="bt internal fr mrn mtm pat">
 				<?_e("Log in")?>
 				<i class="fa fa-key"></i>
 			</button>
@@ -174,10 +243,10 @@ switch($_GET['mode'])
 				<?}?>				
 
 				<div class="load">
-				<?
+					<?
 					$_GET['mode'] = "profil";
 					include("ajax.php");
-				?>
+					?>
 				</div>
 
 			</div>
@@ -938,7 +1007,7 @@ switch($_GET['mode'])
 			}
 			else $msg = __("Unable to find the access token");
 		}
-		else $msg = __("Connexion error")." 1";
+		else $msg = __("Connection error")." 1";
 
 		if($msg) echo $msg;
 
