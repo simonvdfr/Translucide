@@ -519,8 +519,6 @@ function logout($redirect = null)
 	// Supprime le cookie de memorisation de l'utilisateur
 	@setcookie("rememberme", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
 
-	echo"logout<br>";
-
 	// Si redirection
 	if($redirect == "login") {
 		header("Location: ajax.php");
