@@ -10,7 +10,8 @@ translation = {
 	"State" : {"fr" : "Etat"},
 	"Active" : {"fr" : "Actif"},
 	"Deactivate" : {"fr" : "D\u00e9sactiv\u00e9"},
-	"Visitors do not see this content" : {"fr" : "Les visiteurs ne voient pas ce contenu"}
+	"Visitors do not see this content" : {"fr" : "Les visiteurs ne voient pas ce contenu"},
+	"Disconnection" : {"fr" : "D\u00e9connexion"}
 }
 
 // Fonction d'ajout d'une liste de traduction
@@ -27,8 +28,8 @@ add_translation(translation);
 
 // Obtenir le contenu d'un cookie
 get_cookie = function(key) {
-	var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
-	return keyValue ? keyValue[2] : '';
+	var value = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+	return value ? value[2] : '';
 }
 
 // Crée un cookie
@@ -36,6 +37,7 @@ set_cookie = function(key, val, days) {
 	var expire = new Date();
 	expire.setTime(expire.getTime() + (days*24*60*60*1000));
 	document.cookie = key + "="+ val +"; expires="+ expire.toGMTString() +"; path=/";
+	if(days == 0) document.cookie = key + "="+ val +"; expires="+ expire.toGMTString() +"; path=/; domain="+ location.hostname +";";
 }
 
 
@@ -57,6 +59,16 @@ error = function(txt){
 light = function(txt){		
 	alert(txt);
 	//$(body).html("<div class='ui-state-highlight ui-corner-all'><p><span class='ui-icon ui-icon-info'></span>" + txt + "</p></div>");
+}
+
+// Url en cours nettoyé
+clean_url = function() {
+	return location.protocol+'//'+location.host+location.pathname;
+}
+
+// Recharge la page en cours
+reload = function() {
+	document.location.href = clean_url();
 }
 
 
@@ -134,8 +146,8 @@ close_dialog_connect = function()
 }
 
 // Recharge la page et lance le mode édition
-reload = function() {	
-	edit_launcher("reload");
+reload_edit = function() {	
+	edit_launcher("reload_edit");
 }
 
 // Lance le mode édition
@@ -152,6 +164,7 @@ edit_launcher = function(callback)
 		});
 	}
 };
+
 
 
 $(document).ready(function()
@@ -187,7 +200,7 @@ $(document).ready(function()
 	$("a.bt.edit").click(function() 
 	{
 		// Si la page n'est pas activée  et que l'on n'est pas admin on callback un reload
-		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit_content")) ? "reload":"edit_launcher"));
+		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit_content")) ? "reload_edit":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
 		$("a.bt.fixed.add").fadeOut();
