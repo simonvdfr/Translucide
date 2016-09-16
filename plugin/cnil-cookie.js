@@ -15,7 +15,7 @@ $(document).ready(function()
 		// Au click sur le bandeau
 		$("#cnilcookie").click(function(){
 			$(this).fadeOut();
-			set_cookie('cnilcookie', 'hide', '365');
+			set_cookie("cnilcookie", "hide", "365");
 			return false;
 		});
 
