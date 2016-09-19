@@ -58,17 +58,17 @@ img_zoom = function(event)
 
 	// Initialise la barre de progression de download
 	$("#progress"+id+" .progress-bar").css({
-		backgroundColor: "#66cccc",
+		backgroundColor: "#ffcc33",
 		width: "0",
 		height: "3px",
-		boxShadow: "0 1px 2px 0 rgba(102, 204, 204, 0.8)",
+		boxShadow: "0 1px 2px 0 rgba(255, 204, 51, 0.8)",
 		transition: "all .2s"
 	})
 
 	// Initialise l'icone de chargement
 	$("#progress"+id+" .fa-spin").css({
 		position: "absolute",
-		color: "#66cccc",
+		color: "#ffcc33",
 		top: ((original_height - $("#progress"+id+" .fa-spin").height()) / 2),
 		left: ((original_width - $("#progress"+id+" .fa-spin").width()) / 2)
 	})
