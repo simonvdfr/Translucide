@@ -139,6 +139,26 @@ refresh_permalink = function(target) {
 }
 
 
+// Renvoi un mot de passe
+$.fn.make_password = function() {
+	var $this = this;
+
+	// Animation de chargement
+	$(".fa-refresh").addClass("fa-spin");
+
+	// Récupère un password
+	$.ajax({
+		type: "POST",
+		url: "api/ajax.php?mode=make-password",
+		data: {"nonce": $("#nonce").val()},
+		success: function(password){ 
+			$(".fa-refresh").removeClass("fa-spin");
+			$this.attr("type","text").val(password);
+		}
+	});
+}
+
+
 // Fermeture de la dialog de connexion
 close_dialog_connect = function() 
 {	
