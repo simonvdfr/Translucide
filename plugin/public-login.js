@@ -45,11 +45,11 @@ $(document).ready(function()
 				var $this = this;
 
 				// Layer qui va contenir le form de login
-				$("body").append("<div id='login-dialog' class='login none' style='position: absolute;'></div>");
+				$("body").append("<div id='login-dialog' class='none' style='position: absolute;'></div>");
 
 				// Ouverture du login
 				$.ajax({
-					url: "api/ajax.php?mode=public-login",
+					url: "plugin/public-login.php",
 					success: function(html){ 
 
 						// Formulaire de login
