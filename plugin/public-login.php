@@ -59,6 +59,9 @@ load_translation('api');// Chargement des traductions du système
 <script>
 $(document).ready(function()
 {
+	// Update les nonces dans la page courante pour éviter de perdre le nonce
+	$("#nonce").val('<?=$_SESSION['nonce']?>');
+
 	// Login
 	$("#public-login").submit(function(event) 
 	{

@@ -32,11 +32,14 @@ switch($_GET['mode'])
 		{				
 			// JS pour mettre en mode édit les contenus et ajout d'un nonce pour signer les formulaires
 			?>
-			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
+			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
 
 			<link rel="stylesheet" href="api/lucide.css?0.1">
 
 			<script>				
+				// Update les nonces dans la page courante pour éviter de perdre le nonce
+				$("#nonce").val('<?=$_SESSION['nonce']?>');
+			
 				// Lib qui rend le contenu éditable
 				var script = document.createElement('SCRIPT');
 				script.src = "api/lucide.edit.js?0.1";
@@ -91,6 +94,9 @@ switch($_GET['mode'])
 			<script>
 			$(document).ready(function()
 			{
+				// Update les nonces dans la page courante pour éviter de perdre le nonce
+				$("#nonce").val('<?=$_SESSION['nonce']?>');
+
 				// Changement au click de la checkbox homepage
 				$(".dialog-add #homepage").change(function() {
 					if(this.checked) $(".dialog-add #permalink").val("home");
@@ -1434,23 +1440,6 @@ switch($_GET['mode'])
 			<script src="api/lucide.init.js"></script>
 
 			<script>
-				make_password = function() {
-					// Animation de chargement
-					$("#password").next(".fa").addClass("fa-spin");
-
-					// Récupère un password
-					$.ajax({
-						type: "POST",
-						url: "api/ajax.php?mode=make-password",
-						data: {"nonce": $("#nonce").val()},
-						success: function(password){ 
-							$("#password").next(".fa").removeClass("fa-spin");
-							$("#password").attr("type","text");
-							$("#password").val(password);
-						}
-					});
-				}
-
 				submittable = function() {
 					// Icône de chargement
 					$("#setup button i").removeClass("fa-spin fa-cog").addClass("fa-cogs");
@@ -1548,7 +1537,7 @@ switch($_GET['mode'])
 							<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
 							<input type="password" id="password" required class="w60 vatt">
 							<a href="javascript:if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
-							<a href="javascript:make_password(); void(0);" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a>
+							<a href="javascript:$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a>
 						</li>
 
 						<!-- 

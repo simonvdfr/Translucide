@@ -107,6 +107,9 @@ switch($_GET['mode'])
 		<script>
 		$(document).ready(function()
 		{
+			// Update les nonces dans la page courante pour éviter de perdre le nonce
+			$("#nonce").val('<?=$_SESSION['nonce']?>');
+
 			// Affichage du formulaire de login interne
 			$("#internal-login").slideDown("slow");
 
@@ -121,9 +124,6 @@ switch($_GET['mode'])
 				// Désactive le submit
 				$("#internal-login input[type='submit']").attr("disabled", true);
 				$("#internal-login").off("submit");
-
-				// Si admin ouverte on update le nonce d'admin
-				$("#nonce").val($("#internal-login #nonce").val())
 
 				$.ajax(
 				{ 
@@ -468,7 +468,12 @@ switch($_GET['mode'])
 
 			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=$res['email']?>" maxlength="100" class="w60"></div>
 
-			<div class="mbs"><label class="w100p tr mrt" for="password"><?_e("Password")?></label> <input type="password" id="password" class="w60" autocomplete="new-password"></div>
+			<div class="mbs">
+				<label class="w100p tr mrt" for="password"><?_e("Password")?></label>
+				<input type="password" id="password" class="w50" autocomplete="new-password">
+				<a href="javascript:if($('#user-profil #password').attr('type') == 'password') $('#user-profil #password').attr('type','text'); else $('#user-profil #password').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
+				<a href="javascript:$('#user-profil #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh vam"></i></a>
+			</div>
 
 			<div class="mbt"><label class="w100p tr mrt" for="facebook"><?_e("Facebook id")?></label> <input type="text" id="oauth[facebook]" value="<?=$oauth['facebook']?>" class="w60 small search_user_id"></div>
 			<div class="mbt"><label class="w100p tr mrt" for="google"><?_e("Google id")?></label> <input type="text" id="oauth[google]" value="<?=$oauth['google']?>" class="w60 small search_user_id"></div>
