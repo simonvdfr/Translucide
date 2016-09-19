@@ -115,7 +115,7 @@ header('Content-type: text/html; charset=UTF-8');
 	
 	<meta charset="utf-8">
 
-	<title><?=$title;?></title>
+	<title><?=$title;?> - <?=$GLOBALS['sitename'];?></title>
 
 	<?if($description){?><meta name="description" content="<?=strip_tags($description);?>" /><?}?>
 
@@ -216,10 +216,7 @@ echo"</div>";
 include_once("theme/".$GLOBALS['theme']."footer.php");
 ?>
 
-
+<script>console.log("<?=benchmark()?>")</script>
 </body>
 </html>
-<?
-$connect->close();
-?>
-<script>console.log("<?=benchmark()?>")</script>
+<? $connect->close(); ?>
