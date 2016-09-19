@@ -703,7 +703,7 @@ switch($_GET['mode'])
 	break;
 
 	case "make-password":// Crée un password aléatoirement		
-		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(8);
+		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(8,12));
 	break;
 
 	case "get-external-uid":// Cherche l'id d'un utilisateur sur une api tiers

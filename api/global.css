@@ -220,6 +220,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 /* Text color */
 .white { color: #fff !important; }
 .black { color: #000 !important; }
+.grey { color: #808080 !important; }
 .checked { 
 	color: #1ba238 !important;
 	opacity: 1 !important;
@@ -296,6 +297,7 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 .block { display: block; }
 .none { display: none; }
 .hidden { visibility: hidden; }
+.visible { visibility: visible !important; }
 
 /* Forms */
 form, fieldset {

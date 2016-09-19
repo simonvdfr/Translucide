@@ -1358,7 +1358,6 @@ switch($_GET['mode'])
 
 			"Administrator email" => array("fr" => "Email administrateur"),
 			"Administrator password" => array("fr" => "Mot de passe administrateur"),
-			"Suggest a password" => array("fr" => "Suggérer un mot de passe"),
 
 			"Option" => array("fr" => "Option"),
 
@@ -1501,7 +1500,7 @@ switch($_GET['mode'])
 
 				<form id="setup">
 
-					<input type="hidden" id="nonce" name="nonce" value="<?=nonce("nonce");?>" class="w100">
+					<input type="hidden" id="nonce" name="nonce" value="<?=nonce("nonce");?>">
 					
 					<h2><?_e("Site Installation");?></h2>
 
@@ -1546,9 +1545,10 @@ switch($_GET['mode'])
 							<label class="w30 bold"><i class="fa fa-fw fa-user-secret"></i> <?_e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
 						</li>
 						<li>
-							<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label> <input type="password" id="password" required class="w60 vatt">
+							<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
+							<input type="password" id="password" required class="w60 vatt">
 							<a href="javascript:if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
-							<a href="javascript:make_password(); void(0);" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a>	
+							<a href="javascript:make_password(); void(0);" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a>
 						</li>
 
 						<!-- 
