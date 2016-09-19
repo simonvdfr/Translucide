@@ -1528,7 +1528,7 @@ switch($_GET['mode'])
 							<select id="theme" required class="vatt">
 							<?
 							// Un thème dans la racine
-							if(file_exists("theme/header.php")) echo"<option".($GLOBALS['theme'] == "" ? " selected":"").">/</option>";
+							if(file_exists("theme/header.php")) echo"<option value=\"\"".($GLOBALS['theme'] == "" ? " selected":"").">/</option>";
 							
 							// Des dossiers de thème
 							$scandir = array_diff(scandir("theme/"), array('..', '.', 'tpl'));
