@@ -86,7 +86,10 @@ $GLOBALS['priv_hash'] = "";
 $GLOBALS['public_account'] = false;
 
 // Statue d'activation par défaut des comptes utilisateur
-$GLOBALS['default_state_account'] = "active";// moderate / mail / active / deactivate
+$GLOBALS['default_state'] = "active";// moderate / mail / active / deactivate
+
+// Niveaux d'authentification par défaut des comptes utilisateur
+$GLOBALS['default_auth'] = "edit_public,upload_public";
 
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array("edit_admin", "edit_user", "edit_config", "edit_content", "add_page", "upload_file", "edit_nav", "edit_header", "edit_footer", "edit_article", "edit_product", "edit_public", "upload_public");
