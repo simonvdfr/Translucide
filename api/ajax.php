@@ -595,6 +595,7 @@ switch($_GET['mode'])
 	case "save-user":// CREATION D'UN COMPTE | SAUVEGARDER DES INFOS UTILISATEUR
 		
 		//@todo : ajouter un captcha pour éviter les spam d'ajout d'utilisateur. si admin pas de check
+		//@todo : ajouter une verification du NONCE pour eviter les spam !!!! verifier le mail
 
 		include_once("db.php");// Connexion à la db		
 		
@@ -613,39 +614,54 @@ switch($_GET['mode'])
 		// Hashage du pwd avec le salt unique
 		$password = null;
 		if($_POST['password']) list($password, $unique_salt) = hash_pwd($_POST['password']);
-		
+
 		// Suppression des caractères indésirable pour la sécurité et des espaces de début et fin
 		$_POST = array_map("secure_value", $_POST);
+
+		// Sécurisation supplémentaire
+		$_POST = array_map(function($value) use($connect) { return $connect->real_escape_string($value); }, $_POST);
+
 
 		// Construction de la requête mysql
 		if($_REQUEST['uid']) 
 			$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
 		else 
 			$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
-
-		if($_SESSION['auth']['edit_user'])
-			$sql .= "state = '".addslashes($_POST['state'])."', ";
+		
+		// État d'activation
+		if($_SESSION['auth']['edit_user'] and $_POST['state'])
+			$sql .= "state = '".($_POST['state'])."', ";
 		elseif(!$_REQUEST['uid']) 
-			$sql .= "state = '".addslashes($GLOBALS['default_state_account'])."', ";
+			$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
+		
+		// Droit d'accès
+		if($_SESSION['auth']['edit_admin'] and $_POST['auth'])
+			$sql .= "auth = '".(implode(",", $_POST['auth']))."', ";
+		elseif(!$_REQUEST['uid']) 
+			$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
 
-		if($_SESSION['auth']['edit_admin'])
-			$sql .= "auth = '".addslashes(implode(",", $_POST['auth']))."', ";
-
-		$sql .= "name = '".addslashes($_POST['name'])."', ";
-		$sql .= "email = '".addslashes($_POST['email'])."', ";
-
+		$sql .= "name = '".($_POST['name'])."', ";
+		$sql .= "email = '".($_POST['email'])."', ";
+		
+		// Mot de passe
 		if($password) {
 			$sql .= "password = '".addslashes($password)."', ";
 			$sql .= "salt = '".addslashes($unique_salt)."', ";
-			if($GLOBALS['security'] != 'high') $sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
-		}
 
-		$sql .= "oauth = '".addslashes(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE))."', ";
+			// Création du token light
+			if($GLOBALS['security'] != 'high' and (int)$_REQUEST['uid']) $sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
+		}
+		
+		// Token d'api externe
+		if($_POST['oauth'])
+			$sql .= "oauth = '".(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE))."', ";
 
 		$sql .= "date_update = NOW() ";
 
 		if($_REQUEST['uid'])
 			$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
+		else
+			$sql .= ", date_insert = NOW() ";
 		
 		// Exécution de la requête
 		$connect->query($sql);
@@ -654,7 +670,7 @@ switch($_GET['mode'])
 		//echo $sql;
 
 		// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
-		// @todo: ajouter l'envoi de mail à l'admin si default_state_account = moderate dans conf
+		// @todo: ajouter l'envoi de mail à l'admin si default_state = moderate dans conf
 		
 		?>
 		<script>
