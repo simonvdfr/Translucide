@@ -17,6 +17,7 @@ $add_translation = array(
 	"Unable to find the access token" => array("fr" => "Impossible de trouver le jeton d'accès"),
 	"Bad credential" => array("fr" => "Vous n'avez pas le niveau d'accès requis"),
 	"Connection required" => array("fr" => "Connexion requise"),
+	"You are already connected" => array("fr" => "Vous êtes déjà connecté"),
 
 	"Validate the connection in the popup" => array("fr" => "Validez la connexion dans la fenêtre qui vient de s'ouvrir"),
 
