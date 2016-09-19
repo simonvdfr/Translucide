@@ -1,5 +1,5 @@
 
-body { transition: margin-top 0.2s linear; }
+body { transition: margin-top .2s linear; }
 .body-margin-top { margin-top: 35px; }
 
 #admin-bar {		
