@@ -7,6 +7,7 @@ tag.src = "https://www.youtube.com/player_api";
 var firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+
 // Fonction de l'api youtube pour instancier les vidéos
 function onYouTubePlayerAPIReady(){
 	
@@ -14,6 +15,7 @@ function onYouTubePlayerAPIReady(){
 	$("[data-youtube]").each(function(i)
 	{
 		var contener = this;
+		var addsize = 100;
 
 		// Récupère l'id du bloc qui doit contenir une vidéo ou en crée un
 		if(!$(contener).attr("id")) uid_bg_video = $(contener).attr("id", "youtube-" + i);
@@ -33,6 +35,7 @@ function onYouTubePlayerAPIReady(){
 		// Création d'une div pour la metre en bg
 		 $(contener).append("<div id='video-"+uid_bg_video+"' style='position: absolute; top: 0; left: 0; z-index: 1; opacity: 0; transition: opacity .5s;'></div>");
 
+
 		// Injection de la vidéo hd1080 hd720
 		player = new YT.Player("video-"+uid_bg_video, {
 			events: {
@@ -43,8 +46,25 @@ function onYouTubePlayerAPIReady(){
 				"onStateChange": function(event){
 					//console.log(event.data);
 
-					// Vidéo chargée : on l'affiche progressivement
-					if(event.data === 1) $("#video-"+uid_bg_video).css("opacity","1");
+					// Vidéo chargée
+					if(event.data === 1)
+					{						
+						// On étire un peut la vidéo pour cacher le logo Youtube
+							// Dimension du conteneur supérieur
+							var h = $(contener).height() + addsize;
+							
+							// Taille du player
+							player.setSize(h*16/9, h);
+							
+							// Position du player
+							$("#video-"+uid_bg_video).css({
+								"top": - addsize / 2,
+								"left": ($(contener).width() - $("#video-"+uid_bg_video).width()) / 2
+							});
+						
+						// On l'affiche progressivement la vidéo
+						$("#video-"+uid_bg_video).css("opacity","1");						
+					}
 
 					// Vidéo terminée : on la relance (loop maison)
 					if(event.data === YT.PlayerState.ENDED) player.playVideo(id_video);
@@ -62,22 +82,6 @@ function onYouTubePlayerAPIReady(){
 				iv_load_policy: 3}
 		});
 
-		var addsize = 100;
-		
-		// On étire un peut la vidéo pour cacher le logo Youtube
-		$(window).on("load", function(){
-			// Dimension du conteneur supérieur
-			var h = $(contener).height() + addsize;
-			
-			// Taille du player
-			player.setSize(h*16/9, h);
-			
-			// Position du player
-			$("#video-"+uid_bg_video).css({
-				"top": - addsize / 2,
-				"left": ($(contener).width() - $("#video-"+uid_bg_video).width()) / 2
-			});
-		});
 
 		// Si on redimensionne la fenêtre (responsive)
 		$(window).on("resize", function(){
@@ -86,6 +90,7 @@ function onYouTubePlayerAPIReady(){
 				"left": ($(contener).width() - $("#video-"+uid_bg_video).width()) / 2
 			});
 		});
+
 
 		// Désactive les vidéos lors du mode édition
 		edit.push(function() {
