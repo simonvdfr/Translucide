@@ -369,7 +369,8 @@ function login($level = 'low', $auth = null, $quiet = null)
 			if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
 
 			// Extraction des données de l'utilisateur
-			$email = $GLOBALS['connect']->real_escape_string($_POST['email']);
+			$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+			$email = $GLOBALS['connect']->real_escape_string($email);
 			$sel = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_user']." WHERE email='".$email."' AND state='active' LIMIT 1");
 			$res = $sel->fetch_assoc();
 
