@@ -121,7 +121,7 @@ $GLOBALS['png_quality'] = 9;
 $GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css";
 $GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js";
 $GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js";
-$GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css";// cupertino flick smoothness base 
+$GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
 
 
 // Sécurité / défaut
