@@ -115,7 +115,7 @@ header('Content-type: text/html; charset=UTF-8');
 	
 	<meta charset="utf-8">
 
-	<title><?=$title;?> - <?=$GLOBALS['sitename'];?></title>
+	<title><?=$title;?></title>
 
 	<?if($description){?><meta name="description" content="<?=strip_tags($description);?>" /><?}?>
 
