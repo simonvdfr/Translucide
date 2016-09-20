@@ -381,6 +381,8 @@ switch($_GET['mode'])
 		// @todo: checkbox pour permet de voir le pwd quand on le tape (change le type de input)
 		// @todo: autocomplet sur les champs de connexion d'api tiers (fb, g+...)
 
+		// @TODO: AJOUTER L'AFFICHAGE DES METAS DE L'UTILISATEUR
+
 		include_once("db.php");// Connexion à la db
 
 		if($_GET['mode'] != "add-user") 
@@ -471,7 +473,9 @@ switch($_GET['mode'])
 			<div class="mbs">
 				<label class="w100p tr mrt" for="password"><?_e("Password")?></label>
 				<input type="password" id="password" class="w50" autocomplete="new-password">
+
 				<a href="javascript:if($('#user-profil #password').attr('type') == 'password') $('#user-profil #password').attr('type','text'); else $('#user-profil #password').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
+
 				<a href="javascript:$('#user-profil #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh vam"></i></a>
 			</div>
 
@@ -595,129 +599,220 @@ switch($_GET['mode'])
 	case "save-user":// CREATION D'UN COMPTE | SAUVEGARDER DES INFOS UTILISATEUR
 		
 		//@todo : ajouter un captcha pour éviter les spam d'ajout d'utilisateur. si admin pas de check
-		//@todo : ajouter une verification du NONCE pour eviter les spam !!!! verifier le mail
 
-		include_once("db.php");// Connexion à la db		
-		
-		// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
-		if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('medium', 'edit_user');
-		elseif($_REQUEST['uid'])
+		if($_SESSION['nonce'] == $_REQUEST['nonce'])
 		{
-			// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
-			if($_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit_user');
-			else login('medium');
+			include_once("db.php");// Connexion à la db		
 
-			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
-			$res = $sel->fetch_assoc();
-		}
-		
-		// Hashage du pwd avec le salt unique
-		$password = null;
-		if($_POST['password']) list($password, $unique_salt) = hash_pwd($_POST['password']);
-
-		// Suppression des caractères indésirable pour la sécurité et des espaces de début et fin
-		$_POST = array_map("secure_value", $_POST);
-
-		// Sécurisation supplémentaire
-		$_POST = array_map(function($value) use($connect) { return $connect->real_escape_string($value); }, $_POST);
-
-
-		// Construction de la requête mysql
-		if($_REQUEST['uid']) 
-			$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
-		else 
-			$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
-		
-		// État d'activation
-		if($_SESSION['auth']['edit_user'] and $_POST['state'])
-			$sql .= "state = '".($_POST['state'])."', ";
-		elseif(!$_REQUEST['uid']) 
-			$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
-		
-		// Droit d'accès
-		if($_SESSION['auth']['edit_admin'] and $_POST['auth'])
-			$sql .= "auth = '".(implode(",", $_POST['auth']))."', ";
-		elseif(!$_REQUEST['uid']) 
-			$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
-
-		$sql .= "name = '".($_POST['name'])."', ";
-		$sql .= "email = '".($_POST['email'])."', ";
-		
-		// Mot de passe
-		if($password) {
-			$sql .= "password = '".addslashes($password)."', ";
-			$sql .= "salt = '".addslashes($unique_salt)."', ";
-
-			// Création du token light
-			if($GLOBALS['security'] != 'high' and (int)$_REQUEST['uid']) $sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
-		}
-		
-		// Token d'api externe
-		if($_POST['oauth'])
-			$sql .= "oauth = '".(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE))."', ";
-
-		$sql .= "date_update = NOW() ";
-
-		if($_REQUEST['uid'])
-			$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
-		else
-			$sql .= ", date_insert = NOW() ";
-		
-		// Exécution de la requête
-		$connect->query($sql);
+			$uid = $insert_user = $insert_meta = null;
 			
-		//echo "_POST<br>"; highlight_string(print_r($_POST, true));
-		//echo $sql;
+			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
+			if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('medium', 'edit_user');
+			elseif($_REQUEST['uid'])
+			{
+				// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
+				if($_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit_user');
+				else login('medium');
 
-		// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
-		// @todo: ajouter l'envoi de mail à l'admin si default_state = moderate dans conf
-		
-		?>
-		<script>
-		$(document).ready(function()
-		{
-			<?
-			if(!$connect->error){
-				if($_REQUEST['uid']){?>// Update réussit
-
-					$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
-					$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
-
-				<?}
-				elseif($connect->insert_id){?>// Ajout d'un utilisateur
-
-					$("#user .load #uid").val("<?=$connect->insert_id?>");// On met l'id de l'utilisateur dans le input pour le mode save
-
-					$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
-					$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
-					
-					<?if($_SESSION['auth']['edit_user']){?>// Peut éditer les users
-
-						$("#save-user span").html("<?_e("Save")?>");
-
-					<?}else{?>// Inscription
-
-						$("#save-user span").html("<?_e("Account created")?>");
-
-						// @todo: bouton de sauvegarde readonly (pour éviter re-submit) + message si validation par mail/admin requise 
-
-					<?}?>
-
-				<?}
+				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
+				$res = $sel->fetch_assoc();
 			}
-			else {?>
-				error("<?=$connect->error;?>");
-			<?}?>
-		});
-		</script>
-		<?
 
+			// Nettoyage du email
+			$_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+			
+			// Hashage du pwd avec le salt unique
+			$password = null;
+			if($_POST['password']) list($password, $unique_salt) = hash_pwd($_POST['password']);
+
+			// Suppression des caractères indésirable pour la sécurité et des espaces de début et fin
+			$_POST = array_map("secure_value", $_POST);
+
+			// Sécurisation supplémentaire
+			$_POST = array_map(function($value) use($connect) {
+				if(is_array($value)) { while(list($cle, $val) = each($value)) $value[$cle] = $connect->real_escape_string($val); }
+				else $value = $connect->real_escape_string($value);
+				return $value; 
+			}, $_POST);
+
+
+			// UPDATE / INSERT INFOS DE CONNEXION
+			if($_REQUEST['uid']) 
+				$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
+			else 
+				$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
+			
+			// État d'activation
+			if($_SESSION['auth']['edit_user'] and $_POST['state'])
+				$sql .= "state = '".$_POST['state']."', ";
+			elseif(!$_REQUEST['uid']) 
+				$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
+			
+			// Droit d'accès
+			if($_SESSION['auth']['edit_admin'] and $_POST['auth'])
+				$sql .= "auth = '".implode(",", $_POST['auth'])."', ";
+			elseif(!$_REQUEST['uid']) 
+				$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
+
+			$sql .= "name = '".$_POST['name']."', ";
+			$sql .= "email = '".$_POST['email']."', ";
+			
+			// Mot de passe
+			if($password) {
+				$sql .= "password = '".addslashes($password)."', ";
+				$sql .= "salt = '".addslashes($unique_salt)."', ";
+
+				// Création du token light
+				if($GLOBALS['security'] != 'high' and (int)$_REQUEST['uid']) $sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
+			}
+			
+			// Token d'api externe
+			if($_POST['oauth'])
+				$sql .= "oauth = '".addslashes(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE))."', ";
+
+			$sql .= "date_update = NOW() ";
+
+			if($_REQUEST['uid'])
+				$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
+			else
+				$sql .= ", date_insert = NOW() ";
+			
+			// Exécution de la requête
+			$connect->query($sql);
+				
+			//echo "_POST<br>"; highlight_string(print_r($_POST, true));
+			//echo $sql;
+
+
+			// Pas d'erreur sur les infos de connexion
+			if(!$connect->error)
+			{
+				// Id de l'utilisateur crée
+				if($connect->insert_id) $insert_user = $uid = $connect->insert_id;
+				elseif((int)$_REQUEST['uid']) $uid = (int)$_REQUEST['uid'];
+
+				if($uid) 
+				{
+					// On regarde si il n'y a pas déjà des donnée dans la base
+					$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE type='user_info' AND cle='".(int)$uid."' LIMIT 1");
+					$res_meta = $sel_meta->fetch_assoc();
+
+					// AJOUT DES DONNÉE EN MÉTA
+					if($insert_user and is_array($_POST['meta'])) {
+						if($res_meta['id']) 
+							$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
+						else 
+							$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
+						
+						$sql .= "val = '".addslashes(json_encode($_POST['meta'], JSON_UNESCAPED_UNICODE))."' ";
+
+						if($res_meta['id']) 
+							$sql .= "WHERE type = 'user_info' AND cle = '".(int)$uid."' LIMIT 1";
+						else 
+							$sql .= ", type = 'user_info', cle = '".(int)$uid."'";
+						
+						$connect->query($sql);
+						
+						//echo "_POST['meta']<br>"; highlight_string(print_r($_POST['meta'], true));
+						//echo $sql;
+
+						if(!$connect->error) 
+							if($connect->insert_id) $insert_meta = $connect->insert_id;
+					}
+
+					// @TODO : AJOUTER UN LIEN VERS L'ADMIN DE L'UTILISATEUR POUR ACTIVER SON COMPTE
+ 
+					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
+					/*$subject = "[".$GLOBALS['sitename']."] ".htmlspecialchars($_POST['email']);
+
+					$message = nl2br(strip_tags($_POST["message"]));
+
+					$message .= "<br /><br />-------------------------------------------------------<br />";
+
+					if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."<br />";
+
+					$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br />";
+					$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br />";		
+					$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br />";
+					$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br />";
+
+					$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST['email'] ? htmlspecialchars($_POST['email']) : $GLOBALS['email_contact']);
+
+					mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header);*/
+
+
+					// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
+				}
+			
+				?>
+				<script>
+				$(document).ready(function()
+				{
+					<?
+					if(!$connect->error){
+						if($_REQUEST['uid']){?>// Update réussit
+
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+
+						<?}
+						elseif($insert_user){?>// Ajout d'un utilisateur
+
+							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
+
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+							
+							<?if($_SESSION['auth']['edit_user']){?>// Peut éditer les users
+
+								$("#save-user span").html("<?_e("Save")?>");
+
+							<?}else{?>// Inscription
+
+								$("#save-user span").html("<?_e("Account created")?>");
+
+								// @todo: bouton de sauvegarde readonly (pour éviter re-submit) + message si validation par mail/admin requise 
+
+							<?}?>
+
+						<?}
+					}
+					else {?>
+						error("<?=$connect->error;?>");
+					<?}?>
+				});
+				</script>
+				<?
+			}
+		}
 	break;
 
 
-	case "check-email":// Check en ajax si le mail est conforme et d'un mx existant
-		//if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+	case "check-email":// Check en ajax si le mail est conforme, mx existant, et pas déjà dans la base
+
 		// @todo: check mx : nous n'avons pas réussi à vérifier si votre fournisseur de mail fonctionne correctement
+
+		if($_SESSION['nonce'] == $_REQUEST['nonce'])
+		{
+			$_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+
+			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+			{
+				include_once("db.php");
+
+				$email = $GLOBALS['connect']->real_escape_string($_POST['email']);
+
+				$sel = $GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']." WHERE email='".$email."' LIMIT 1");
+
+				if($res = $sel->fetch_assoc()) 
+					echo "existing account";
+				else 
+					echo "true";
+			}
+			else echo "false mail";
+		}
+		else echo "false nonce";
+
 	break;
 
 	case "check-password":// Check en ajax si le password est un minimum sécurisé
