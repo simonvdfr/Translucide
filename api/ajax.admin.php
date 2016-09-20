@@ -1149,8 +1149,8 @@ switch($_GET['mode'])
 								`date_update` datetime NOT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
-								KEY `state` (`state`),
-								KEY `email` (`email`)
+								UNIQUE KEY `email` (`email`),
+								KEY `state` (`state`)								
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 						");
 
