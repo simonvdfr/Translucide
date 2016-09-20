@@ -27,6 +27,11 @@ load_translation('api');// Chargement des traductions du système
 		height: 0px;
 		width: 0px;
 	}
+
+@media (max-width: 480px) 
+{
+	#login-dialog { left: 0px !important; }
+}
 </style>
 <?
 
