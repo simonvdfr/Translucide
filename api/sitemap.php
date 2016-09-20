@@ -7,7 +7,7 @@ header('Content-Type:text/xml;');
 
 echo"<?xml version='1.0' encoding='UTF-8'?>\n<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9' xmlns:image='http://www.google.com/schemas/sitemap-image/1.1'>\n";
 
-$sel = $connect->query("SELECT url, date_update FROM ".$GLOBALS['db_prefix']."content WHERE state='active' ORDER BY date_update DESC");
+$sel = $connect->query("SELECT url, date_update FROM ".$GLOBALS['table_content']." WHERE state='active' ORDER BY date_update DESC");
 while($res = $sel->fetch_assoc()) 
 {
 	$date_update=explode(" ", $res['date_update']);
