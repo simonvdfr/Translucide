@@ -210,6 +210,19 @@ function slideshow($key = null)
 }
 
 
+/********** SÉCURISATION **********/
+function secure_value($value) {
+
+	// htmlentities htmlspecialchars
+	if(is_array($value)) {
+		while(list($cle, $val) = each($value)) $value[$cle] = trim(htmlspecialchars($val, ENT_QUOTES));
+	}
+	else $value = trim(htmlspecialchars($value, ENT_QUOTES));
+
+	return $value;
+}
+
+
 /********** Connexion **********/
 function curl($url, $params = null) 
 {
@@ -368,10 +381,12 @@ function login($level = 'low', $auth = null, $quiet = null)
 		{
 			if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
 
-			// Extraction des données de l'utilisateur
+			// Nettoyage du mail envoyé
 			$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 			$email = $GLOBALS['connect']->real_escape_string($email);
-			$sel = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_user']." WHERE email='".$email."' AND state='active' LIMIT 1");
+
+			// Extraction des données de l'utilisateur
+			$sel = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_user']." WHERE email='".$email."' ".($level == 'low' ? "" : "AND state='active'")." LIMIT 1");
 			$res = $sel->fetch_assoc();
 
 			if($res['email']) 
@@ -531,17 +546,6 @@ function logout($redirect = null)
 	}
 }
 
-/********** SÉCURISATION **********/
-function secure_value($value) {
-
-	// htmlentities htmlspecialchars
-	if(is_array($value)) {
-		while(list($cle, $val) = each($value)) $value[$cle] = trim(htmlspecialchars($val, ENT_QUOTES));
-	}
-	else $value = trim(htmlspecialchars($value, ENT_QUOTES));
-
-	return $value;
-}
 
 
 /********** RESIZE IMAGE **********/
