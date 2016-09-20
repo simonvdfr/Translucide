@@ -123,5 +123,4 @@ else // Pas de contenu a chargé
 
 $connect->close();
 ?>
-
 <script>console.log("<?=benchmark()?>")</script>
