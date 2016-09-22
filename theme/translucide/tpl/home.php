@@ -31,7 +31,7 @@
 
 <section class="fullpage" <?bg('bg-2')?>>		
 	
-	<h2 class="top mts tc"><?txt('titre-cms')?></h2>
+	<h2 class="top mts tc"><span><?txt('titre-cms')?></span></h2>
 
 	<article class="w50 pal tofadein">		
 		<p><?txt('txt-cms')?></p>
@@ -42,7 +42,7 @@
 
 <section class="fullpage" <?bg('bg-3')?>>		
 	
-	<h2 class="top"><?txt('titre-real')?></h2>
+	<h2 class="top"><span><?txt('titre-real')?></span></h2>
 
 	<article class="right pal tofadein w50">		
 		<? include("plugin/work.php"); ?>
@@ -53,7 +53,7 @@
 
 <section class="fullpage" <?bg('bg-4')?>>		
 	
-	<h2 class="top"><?txt('titre-contact')?></h2>
+	<h2 class="top"><span><?txt('titre-contact')?></span></h2>
 
 	<article class="right pal tofadein">		
 		<p><?txt('txt-contact')?></p>
