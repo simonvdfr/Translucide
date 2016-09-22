@@ -53,7 +53,7 @@ switch($_GET['mode'])
 					// Création d'un popup qui charge le site de connexion tierce
 					width = 420;
 					height = 510;
-					window.open("api/ajax.php?mode=external-login&login_api="+login_api, "popup_connect", "top="+((screen.height / 2) - (height / 2))+", left="+((screen.width / 2) - (width / 2))+", width="+width+", height="+height+", location=no, menubar=no, directories=no, status=no, scrollbars=auto");
+					window.open("<?=$GLOBALS['path']?>api/ajax.php?mode=external-login&login_api="+login_api, "popup_connect", "top="+((screen.height / 2) - (height / 2))+", left="+((screen.width / 2) - (width / 2))+", width="+width+", height="+height+", location=no, menubar=no, directories=no, status=no, scrollbars=auto");
 				}
 				else// On utilise le système de login interne
 				{
@@ -67,7 +67,7 @@ switch($_GET['mode'])
 					$(bt).addClass("nohover");
 
 					// Injection du formulaire de login en dessous du bt
-					$.ajax({url: "api/ajax.php?mode=internal-login"}).done(function(html) { $("#dialog-connect").append(html); });
+					$.ajax({url: "<?=$GLOBALS['path']?>api/ajax.php?mode=internal-login"}).done(function(html) { $("#dialog-connect").append(html); });
 				}
 			};
 			</script>		
@@ -128,7 +128,7 @@ switch($_GET['mode'])
 				$.ajax(
 				{ 
 					type: "POST",
-					url: "api/ajax.php?mode=login",
+					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=login",
 					data: { 
 						email: $("#internal-login #email").val(),
 						password: $("#internal-login #password").val(),
@@ -147,6 +147,60 @@ switch($_GET['mode'])
 		});
 		</script>
 		<?
+	break;
+
+
+	case "quick-view-user":// AFFICHAGE RAPIDE D'UN COMPTE UTILISATEUR
+	
+		?>
+		<!DOCTYPE html>
+		<html lang="<?=$lang;?>">
+		<head>			
+			<meta charset="utf-8">
+			<title><?=__("User profile")." ".(int)$_REQUEST['uid'];?></title>
+			<meta name="robots" content="noindex, nofollow">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
+			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
+			<link rel="stylesheet" href="global.css?">
+			<link rel="stylesheet" href="lucide.css?">
+			<script src="<?=$GLOBALS['jquery'];?>"></script>
+			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
+			<script src="lucide.init.js"></script>
+			<style>
+				.layer { width: 100%; }
+				.tooltip { 
+					max-width: 420px;
+					margin: auto;
+				}
+				.fa-refresh { display: none; }
+				.fa-sign-out { display: none; }
+			</style>
+		</head>
+		<body>
+			
+			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
+
+			<div id="admin-bar" class="mtm">				
+				<div id="user">				
+					<center><i class="fa fa-spin fa-cog biggest mtl" style="position: absolute"></i></center>
+				</div>
+			</div>
+
+			<script>
+			$(document).ready(function()
+			{
+				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=user&uid=<?=(int)$_REQUEST['uid']?>&callback=reload", data: { nonce: $("#nonce").val() } })
+					.done(function(html) { 
+						$("#user").html(html);
+					});
+			});
+			</script>
+
+		</body>
+		</html>
+		<?
+
 	break;
 
 
@@ -186,15 +240,15 @@ switch($_GET['mode'])
 		$(document).ready(function()
 		{
 			$("#profil").click(function() {// Voir mon profil
-				$.ajax({ url: "api/ajax.php?mode=profil", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
+				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=profil", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
 			});
 
 			$("#add-user").click(function() {// Ajouter un utilisateur
-				$.ajax({ url: "api/ajax.php?mode=add-user", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
+				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=add-user", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
 			});
 
 			$("#list-user").click(function() {// Liste des utilisateurs
-				$.ajax({ url: "api/ajax.php?mode=list-user", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
+				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=list-user", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
 			});
 
 			$("#logout").click(function() {	
@@ -304,7 +358,7 @@ switch($_GET['mode'])
 
 				$.ajax({
 					type: "POST",
-					url: "api/ajax.php?mode=list-user",
+					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=list-user",
 					data: { page: page, search: $("#user .search").val(), nonce: $("#nonce").val() }
 				})
 				.done(function(html) {
@@ -322,7 +376,7 @@ switch($_GET['mode'])
 			
 			// Voir un profil
 			select_user = function(uid) {
-				$.ajax({ url: "api/ajax.php?mode=profil", data: { uid: uid, nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
+				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=profil", data: { uid: uid, nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
 			}
 			
 			// Recherche un utilisateur
@@ -335,7 +389,7 @@ switch($_GET['mode'])
 
 				$.ajax({
 						type: "POST",
-						url: "api/ajax.php?mode=list-user",
+						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=list-user",
 						data: { search: $("#user .search").val(), nonce: $("#nonce").val() }
 					})
 					.done(function(html) {
@@ -470,7 +524,7 @@ switch($_GET['mode'])
 
 			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=$res['email']?>" maxlength="100" class="w60"></div>
 
-			<div class="mbs">
+			<div class="mbs nowrap">
 				<label class="w100p tr mrt" for="password"><?_e("Password")?></label>
 				<input type="password" id="password" class="w50" autocomplete="new-password">
 
@@ -519,7 +573,7 @@ switch($_GET['mode'])
 					
 					// Chargement des résultats
 					$.ajax({
-						url: "api/ajax.php?mode=get-external-uid",
+						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=get-external-uid",
 						dataType: "json",
 						data: {
 							search: request.term,
@@ -547,7 +601,7 @@ switch($_GET['mode'])
 				event.preventDefault();
 				if(confirm(__("Delete user")+" "+ $("#uid").val() +" ?")) {
 					$.ajax({ 
-						url: "api/ajax.php?mode=del-user",
+						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=del-user",
 						data: { uid: $("#uid").val(), nonce: $("#nonce").val() }
 					}).done(function(html) { 
 						$("#user .load").html(html); 
@@ -580,7 +634,7 @@ switch($_GET['mode'])
 				// On sauvegarde en ajax les contenus éditables
 				$.ajax({
 					type: "POST",
-					url: "api/ajax.php?mode=save-user",
+					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=save-user",
 					data: data
 				})
 				.done(function(html) {
@@ -698,7 +752,7 @@ switch($_GET['mode'])
 					$res_meta = $sel_meta->fetch_assoc();
 
 					// AJOUT DES DONNÉE EN MÉTA
-					if($insert_user and is_array($_POST['meta'])) {
+					if($uid and is_array($_POST['meta'])) {
 						if($res_meta['id']) 
 							$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
 						else 
@@ -720,25 +774,36 @@ switch($_GET['mode'])
 							if($connect->insert_id) $insert_meta = $connect->insert_id;
 					}
 
-					// @TODO : AJOUTER UN LIEN VERS L'ADMIN DE L'UTILISATEUR POUR ACTIVER SON COMPTE
  
 					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
-					/*$subject = "[".$GLOBALS['sitename']."] ".htmlspecialchars($_POST['email']);
+					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state']) 
+					{
+						// Pour le garder secret
+						$password = $_POST['password'];
+						unset($_POST['password'], $_POST['password_confirm']);
+						
+						// Sujet
+						$subject = "[".$GLOBALS['sitename']."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
+						
+						// Lien vers la fiche admin pour activation
+						$message = "<br><a href='".make_url("", true)."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
+						
+						$message .= "<pre>";
+						$message .= print_r($_POST, true);
+						$message .= "</pre><br>-------------------------------------------------------<br>";
 
-					$message = nl2br(strip_tags($_POST["message"]));
+						$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br>";
+						$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br>";		
+						$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br>";
+						$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br>";
 
-					$message .= "<br /><br />-------------------------------------------------------<br />";
+						$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST['email'] ? htmlspecialchars($_POST['email']) : $GLOBALS['email_contact']);
 
-					if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."<br />";
-
-					$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br />";
-					$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br />";		
-					$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br />";
-					$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br />";
-
-					$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST['email'] ? htmlspecialchars($_POST['email']) : $GLOBALS['email_contact']);
-
-					mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header);*/
+						mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header);
+						
+						// Pour l'auto-login
+						$_POST['password'] = $password;
+					}
 
 
 					// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).

@@ -86,6 +86,9 @@ $add_translation = array(
 	"Blacklist" => array("fr" => "Liste noire"),
 	"Deactivate" => array("fr" => "Désactivé"),
 
+	"New user to activate" => array("fr" => "Nouvel utilisateur a activé"),
+	"User profile" => array("fr" => "Profil de l'utilisateur"),
+
 
 	"Managing admins" => array("fr" => "Gestion des admins"),
 	"Managing users" => array("fr" => "Gestion des utilisateurs"),
