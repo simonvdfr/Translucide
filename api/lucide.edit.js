@@ -49,16 +49,6 @@ $.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
 $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
 
-// Déconnexion
-logout = function() {
-	$.ajax({
-		url: "api/ajax.php?mode=logout",
-		success: function(html){ 
-			reload();// Recharge la page	
-		}
-	});
-}
-
 
 // Rapatrie le contenu
 get_content = function(content)

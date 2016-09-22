@@ -16,16 +16,8 @@ $(document).ready(function()
 		$("a[href=deconnexion]").on("click", function(event)
 		{
 			event.preventDefault();
-
-			// Déconnexion
-			$.ajax({
-				url: "api/ajax.php?mode=logout",
-				success: function(html){ 
-					$("body").html(html);// Retour
-					reload();// recharge la page
-				}
-			});
-
+			
+			logout();// Déconnexion
 		});
 
 		// Si mode édition on rétablit le lien original

@@ -41,6 +41,18 @@ set_cookie = function(key, val, days) {
 }
 
 
+// Déconnexion
+logout = function() {
+	$.ajax({
+		url: "api/ajax.php?mode=logout",
+		success: function(html){ 
+			$("body").html(html);// Retour
+			reload();// Recharge la page	
+		}
+	});
+}
+
+
 // Traduit un texte
 __ = function(txt) {
 	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
@@ -61,9 +73,10 @@ light = function(txt){
 	//$(body).html("<div class='ui-state-highlight ui-corner-all'><p><span class='ui-icon ui-icon-info'></span>" + txt + "</p></div>");
 }
 
+
 // Url en cours nettoyé
 clean_url = function() {
-	return location.protocol+'//'+location.host+location.pathname;
+	return location.protocol +'//'+ location.host + location.pathname + location.search;
 }
 
 // Recharge la page en cours

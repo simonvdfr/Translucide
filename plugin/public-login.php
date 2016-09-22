@@ -57,16 +57,8 @@ if($_SESSION['uid'])
 		$("#logout").on("click", function(event)
 		{
 			event.preventDefault();
-
-			// Déconnexion
-			$.ajax({
-				url: "api/ajax.php?mode=logout",
-				success: function(html){ 
-					$("body").html(html);// Retour
-					reload();// recharge la page
-				}
-			});
-
+			
+			logout();// Déconnexion
 		});
 	});
 	</script>
