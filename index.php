@@ -28,7 +28,8 @@ if($connect->error) {
 	header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
 	exit($connect->error);
 }
-else $res = $sel->fetch_assoc();
+else $res = $sel->fetch_assoc();// On récupère les données de la page
+
 
 // Pas de page existante
 if(!$res) 
@@ -45,26 +46,35 @@ if(!$res)
 
 	$robots = "noindex, nofollow";
 }
-elseif($res['state'] != "active")// Page non activé
+else// Une page existe
 {
-	// Si pas admin on affiche page en construction
-	if(!$_SESSION['auth']['edit_content']) 
+	// On verifie l'url pour eviter les duplicates : si erreur = redirection
+	if(($_SERVER['REQUEST_SCHEME']?$_SERVER['REQUEST_SCHEME']."://":$GLOBALS['scheme']).$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], true))
 	{
-		// On regarde si une template 503 est définie
-		$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
-		$res = $sel->fetch_assoc();
-
-		header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
-			
-		if(!$res) $res['title'] = $msg = __("Under Construction");
+		header($_SERVER['SERVER_PROTOCOL']." 301 Moved Permanently");
+		header("location: ".make_url($res['url'], true));
+		exit;
 	}
 
-	$robots = "noindex, follow";
+	if($res['state'] != "active")// Page non activé
+	{
+		// Si pas admin on affiche page en construction
+		if(!$_SESSION['auth']['edit_content']) 
+		{
+			// On regarde si une template 503 est définie
+			$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
+			$res = $sel->fetch_assoc();
+
+			header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
+				
+			if(!$res) $res['title'] = $msg = __("Under Construction");
+		}
+
+		$robots = "noindex, follow";
+	}
+	else $robots = $GLOBALS['robots'];// Si la page est active elle est référençable (on utilise la config)
 }
-else// Si la page est active elle est référençable (on utilise la config)
-{
-	$robots = $GLOBALS['robots'];
-}
+
 
 // Information pour les metas
 $title = strip_tags($res['title']);
