@@ -267,6 +267,12 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 	.editable img {	cursor: default; }
 
 
+/* On se met en mode pour voir le code source */
+.view-source {
+	text-align: left;
+}
+
+
 /* image éditable */
 .editable-img {
 	display: inline-block;
