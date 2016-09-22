@@ -61,9 +61,9 @@ elseif($res['state'] != "active")// Page non activé
 
 	$robots = "noindex, follow";
 }
-else// Si la page est active elle est référençable
+else// Si la page est active elle est référençable (on utilise la config)
 {
-	$robots = "index, follow";
+	$robots = $GLOBALS['robots'];
 }
 
 // Information pour les metas
