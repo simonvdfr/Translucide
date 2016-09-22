@@ -20,14 +20,14 @@ if($_POST["email"] and !$_POST["champ_vide"])// champ_vide pour éviter les bots 
 
 			$subject = "[".$GLOBALS['sitename']."] Inscription alerte mail ".htmlspecialchars($email);
 
-			$message .= htmlspecialchars($nom)."<br />".htmlspecialchars($email)."<br />".htmlspecialchars($tel)."<br />";
+			$message .= htmlspecialchars($nom)."<br>".htmlspecialchars($email)."<br>".htmlspecialchars($tel)."<br>";
 
-			$message .= "<br /><br />-------------------------------------------------------<br />";
+			$message .= "<br><br>-------------------------------------------------------<br>";
 
-			$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br />";
-			$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br />";		
-			$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br />";
-			$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br />";
+			$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br>";
+			$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br>";		
+			$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br>";
+			$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br>";
 
 			$header="Content-type:text/html; charset=utf-8\r\nFrom:".($email ? htmlspecialchars($email) : $GLOBALS['email_contact']);
 
