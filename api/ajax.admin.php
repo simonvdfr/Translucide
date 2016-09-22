@@ -1394,7 +1394,7 @@ switch($_GET['mode'])
 		if($GLOBALS['scheme'] and $GLOBALS['domain'] and $GLOBALS['path'])
 			$scheme_domain_path = $GLOBALS['scheme'] . $GLOBALS['domain'] . $GLOBALS['path'];
 		else {
-			if($_SERVER['[REQUEST_SCHEME']) $scheme_domain_path .= $_SERVER['[REQUEST_SCHEME']."://";
+			if($_SERVER['[REQUEST_SCHEME']) $scheme_domain_path .= $_SERVER['REQUEST_SCHEME']."://";
 			else $scheme_domain_path .= "http://";
 			
 			$scheme_domain_path .= $_SERVER['SERVER_NAME'];
