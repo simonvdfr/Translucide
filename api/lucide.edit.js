@@ -645,7 +645,7 @@ img_leave = function()
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
 $(window).on("beforeunload", function(){
-	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
+	//if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
 });
 
 
@@ -739,9 +739,9 @@ $(document).ready(function()
 		// Pour corriger les div qui ne prennent pas toutes la largeur a cause des img en float
 		var style = null;
 		if($(this).parent().is("article")) style = "width: "+$(this).parent().width()+"px;";//if($(this).parent().children().length <= 1)
-		
+
 		// Remplace span > div 
-		return $('<div/>', { class: 'editable', id: this.id, html: this.innerHTML, style: style });
+		return $("<div/>", { class: "editable", id: this.id, html: this.innerHTML, style: style, placeholder: $(this).attr("placeholder") });
 	});
 
 	// Rends les textes éditables

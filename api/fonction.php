@@ -131,11 +131,11 @@ function _e($txt)
 
 /********** CONTENT **********/
 // Contenu texte
-function txt($key = null)
+function txt($key = null, $placeholder = null)
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<div class='editable' id='".encode($key)."'>".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</div>";
+	echo"<div class='editable' id='".encode($key)."'".($placeholder?" placeholder=\"".utf8_encode($placeholder)."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</div>";
 
 	$GLOBALS['editkey']++;
 }
