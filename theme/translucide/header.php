@@ -1,7 +1,7 @@
 <?if(!$GLOBALS['microtime']) exit;?>
 
 <!-- @todo menu float onscroll to top display -->
-<header class="mod tc pts pbs none">	
+<!-- <header class="mod tc pts pbs none">	
 	
 	<span class="fl"><a href="<?=$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']?>"><?img('header-logo')?></a></span>
 	
@@ -21,4 +21,4 @@
 
 	</nav>
 
-</header>
+</header> -->

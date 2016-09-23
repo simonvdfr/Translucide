@@ -179,6 +179,7 @@ header {
 	position: relative;
 	background-size: cover;
 	min-height: 100vh;
+	overflow: hidden;
 }
 
 /* Alignement des contenus */

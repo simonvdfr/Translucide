@@ -31,21 +31,10 @@
 
 <section class="fullpage" <?bg('bg-2')?>>		
 	
-	<h2 class="top mts tc"><span><?txt('titre-cms')?></span></h2>
-
-	<article class="w50 pal tofadein">		
-		<p><?txt('txt-cms')?></p>
-	</article>
-
-</section>
-
-
-<section class="fullpage" <?bg('bg-3')?>>		
-	
-	<h2 class="top"><span><?txt('titre-real')?></span></h2>
+	<h2 class="top"><span><?txt('titre-cms')?></span></h2>
 
 	<article class="right pal tofadein w50">		
-		<? include("plugin/work.php"); ?>
+		<p><?txt('txt-cms')?></p>
 	</article>
 
 </section>
