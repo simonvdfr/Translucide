@@ -4,31 +4,34 @@ $(document).ready(function()
 	// Si déjà connecter on change le bouton connexion en déconnexion
 	if(get_cookie("auth"))
 	{
-		var cible = "a[href=connexion], a[href=connection], a[href=deconnexion]";
+		var connexion = "a[href=connexion], a[href=login], a[href=deconnexion], a[href=logout]";
+		var inscription = "a[href=inscription], a[href=compte], a[href=registration], a[href=account]";
 
 		// Sauvegarde de l'ancien lien
-		var old_dom = $(cible).parent().html();
+		var old_connexion = $(connexion).parent().html();
+		var old_inscription = $(connexion).parent().html();
 
 		// Changement
-		$(cible).html(__("Disconnection")).attr("href","deconnexion");			
+		$(connexion).html(__("Disconnection")).attr("href","deconnexion");			
+		$(inscription).html(__("Mon compte")).attr("href","compte");			
 
 		// Au clique sur les liens de déconnexion
-		$("a[href=deconnexion]").on("click", function(event)
+		$(connexion).on("click", function(event)
 		{
 			event.preventDefault();
-			
 			logout();// Déconnexion
 		});
 
-		// Si mode édition on rétablit le lien original
+		// Si mode édition on rétablit les liens originaux
 		edit.push(function() {
-			$(cible).parent().html(old_dom);
+			$(connexion).parent().html(old_connexion);
+			$(inscription).parent().html(old_inscription);
 		});
 	}
 	else
 	{
 		// Au clique sur les liens de connexion
-		$("a[href=connexion], a[href=connection]").on("click", function(event)
+		$("a[href=connexion], a[href=login]").on("click", function(event)
 		{
 			event.preventDefault();
 
