@@ -1265,10 +1265,6 @@ switch($_GET['mode'])
 							}
 						}
 
-						// Login automatique
-						login();
-
-
 						// ECRITURE DE LA CONFIGRATION
 												
 						// Ouverture du fichier config. Si pas de config on prend le sample
@@ -1306,7 +1302,11 @@ switch($_GET['mode'])
 						chmod($config_final_file, 0666);
 
 
-						// Message de bienvenue et d'information qu'il faut créé la page d'accueil du site
+						// LOGIN AUTOMATIQUE
+						login();
+
+
+						// MESSAGE DE BIENVENUE et d'information qu'il faut créé la page d'accueil du site
 						?>
 						<script>
 							light("<?_e("Successful installation ! create your homepage !")?>");
