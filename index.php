@@ -131,7 +131,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<meta name="robots" content="<?=$robots;?>">
 
-	<meta property="og:site_name" content="<?=$GLOBALS['sitename'];?>" />
+	<meta property="og:site_name" content="<?=utf8_encode($GLOBALS['sitename']);?>" />
 	<meta property="og:title" content="<?=$title;?>" />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="<?=$GLOBALS['scheme'].$GLOBALS['domain'];?>" />

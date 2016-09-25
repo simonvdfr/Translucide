@@ -1286,7 +1286,7 @@ switch($_GET['mode'])
 							$key = $match[1];
 							
 							// Changement de la ligne et ajout de la nouvelle variable
-							if(isset($_POST[$key])) $config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".addcslashes($_POST[$key], "\\'")."\";\r\n";							
+							if(isset($_POST[$key])) $config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".addcslashes(utf8_encode($_POST[$key]), "\\'")."\";\r\n";							
 						}
 
 						unset($line);
@@ -1403,7 +1403,7 @@ switch($_GET['mode'])
 
 		// Nom du site
 		$domains = explode('.', $_SERVER['SERVER_NAME']);
-		$sitename = ($GLOBALS['sitename'] ? $GLOBALS['sitename'] : ucfirst($domains[count($domains)-2]));
+		$sitename = ($GLOBALS['sitename'] ? utf8_encode($GLOBALS['sitename']) : ucfirst($domains[count($domains)-2]));
 
 
 		header('Content-type: text/html; charset=UTF-8');

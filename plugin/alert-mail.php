@@ -18,7 +18,7 @@ if($_POST["email"] and !$_POST["champ_vide"])// champ_vide pour éviter les bots 
 			$email = $GLOBALS['connect']->real_escape_string($email);
 			$ip = $GLOBALS['connect']->real_escape_string(ip());
 
-			$subject = "[".$GLOBALS['sitename']."] Inscription alerte mail ".htmlspecialchars($email);
+			$subject = "[".utf8_encode($GLOBALS['sitename'])."] Inscription alerte mail ".htmlspecialchars($email);
 
 			$message .= htmlspecialchars($nom)."<br>".htmlspecialchars($email)."<br>".htmlspecialchars($tel)."<br>";
 
@@ -93,7 +93,7 @@ else// Affichage du formulaire
 
 		<input type="hidden" name="nonce_alertmail" value="<?=nonce("nonce_alertmail");?>">
 
-		<button class="mbs w50"><span><i class="fa fa-fw fa-envelope"></i> <?_e("M'avertir de l'avancée de ".$GLOBALS['sitename'])?></span></button>
+		<button class="mbs w50"><span><i class="fa fa-fw fa-envelope"></i> <?_e("M'avertir de l'avancée de ".utf8_encode($GLOBALS['sitename']))?></span></button>
 
 	</form>
 
