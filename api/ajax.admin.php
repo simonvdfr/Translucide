@@ -1286,7 +1286,7 @@ switch($_GET['mode'])
 							$key = $match[1];
 							
 							// Changement de la ligne et ajout de la nouvelle variable
-							if(isset($_POST[$key])) $config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".addcslashes(utf8_encode($_POST[$key]), "\\'")."\";\r\n";							
+							if(isset($_POST[$key])) $config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".addcslashes(utf8_decode($_POST[$key]), "\\'")."\";\r\n";							
 						}
 
 						unset($line);
