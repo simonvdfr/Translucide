@@ -382,7 +382,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 			if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
 
 			// Nettoyage du mail envoyé
-			$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+			$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 			$email = $GLOBALS['connect']->real_escape_string($email);
 
 			// Extraction des données de l'utilisateur
