@@ -740,8 +740,14 @@ $(document).ready(function()
 		var style = null;
 		if($(this).parent().is("article")) style = "width: "+$(this).parent().width()+"px;";//if($(this).parent().children().length <= 1)
 
-		// Remplace span > div 
-		return $("<div/>", { class: "editable", id: this.id, html: this.innerHTML, style: style, placeholder: $(this).attr("placeholder") });
+		// Clean la dom
+		return $("<"+ $(this)[0].tagName.toLowerCase() +"/>", { 
+			class: "editable",
+			id: this.id,
+			html: this.innerHTML,
+			style: style,
+			placeholder: $(this).attr("placeholder")
+		});
 	});
 
 	// Rends les textes éditables
