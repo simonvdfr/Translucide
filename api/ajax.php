@@ -28,7 +28,7 @@ switch($_GET['mode'])
 	case "select-login-mode":
 		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
 		?>
-		<div id="dialog-connect" title="<?_e("Log in");?>">
+		<div id="dialog-connect" title="<?_e("Administrator Login");?>">
 
 			<script>
 			// S'il y a une fonction de callback
@@ -265,9 +265,15 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 
-		if($_REQUEST['uid'] != $_SESSION['uid']) {
+		if($_REQUEST['uid'] != $_SESSION['uid']) 
+		{
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
+			{
+				// Supprime les métas
+				$connect->query("DELETE FROM ".$table_meta." WHERE type='user_info' AND cle='".(int)$_REQUEST['uid']."'");
+
 				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
+			}
 			else
 				$msg = $connect->error;
 		}
@@ -446,9 +452,14 @@ switch($_GET['mode'])
 			else login('medium');
 
 			$uid = ($_REQUEST['uid'] ? $_REQUEST['uid'] : $_SESSION['uid']);
-
+			
+			// Récupérationd des données de base de l'utilisateur
 			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
 			$res = $sel->fetch_assoc();
+
+			// Récupération des infos sur l'utilisateur
+			$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE type='user_info' AND cle='".(int)$uid."' LIMIT 1");
+			$res_meta = $sel_meta->fetch_assoc();
 
 			$array_auth = explode(",", $res['auth']);// Les autorisations
 
@@ -533,10 +544,30 @@ switch($_GET['mode'])
 				<a href="javascript:$('#user-profil #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh vam"></i></a>
 			</div>
 
-			<div class="mbt"><label class="w100p tr mrt" for="facebook"><?_e("Facebook id")?></label> <input type="text" id="oauth[facebook]" value="<?=$oauth['facebook']?>" class="w60 small search_user_id"></div>
-			<div class="mbt"><label class="w100p tr mrt" for="google"><?_e("Google id")?></label> <input type="text" id="oauth[google]" value="<?=$oauth['google']?>" class="w60 small search_user_id"></div>
-			<div class="mbt"><label class="w100p tr mrt" for="yahoo"><?_e("Yahoo id")?></label> <input type="text" id="oauth[yahoo]" value="<?=$oauth['yahoo']?>" class="w60 small search_user_id"></div>
-			<div class="mbs"><label class="w100p tr mrt" for="microsoft"><?_e("Microsoft id")?></label> <input type="text" id="oauth[microsoft]" value="<?=$oauth['microsoft']?>" class="w60 small search_user_id"></div>
+			<?if($GLOBALS['facebook_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="facebook"><?_e("Facebook id")?></label> <input type="text" id="oauth[facebook]" value="<?=$oauth['facebook']?>" class="w60 small search_user_id"></div><?}?>
+
+			<?if($GLOBALS['google_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="google"><?_e("Google id")?></label> <input type="text" id="oauth[google]" value="<?=$oauth['google']?>" class="w60 small search_user_id"></div><?}?>
+
+			<?if($GLOBALS['yahoo_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="yahoo"><?_e("Yahoo id")?></label> <input type="text" id="oauth[yahoo]" value="<?=$oauth['yahoo']?>" class="w60 small search_user_id"></div><?}?>
+
+			<?if($GLOBALS['microsoft_api_secret']){?><div class="mbs"><label class="w100p tr mrt" for="microsoft"><?_e("Microsoft id")?></label> <input type="text" id="oauth[microsoft]" value="<?=$oauth['microsoft']?>" class="w60 small search_user_id"></div><?}?>
+
+			<?
+			// Si il y a des méta/infos complementaire pour cette utilisateur
+			if($res_meta['val']) 
+			{		
+				?>
+				<div class="mbs"><?
+
+					$metas = json_decode($res_meta['val'], true);
+					while(list($cle, $val) = each($metas))
+					{
+						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($cle)?></label> <input type="text" id="meta[<?=$cle?>]" value="<?=$val?>" class="w60"></div><?
+					}			
+					
+				?></div><?
+			}
+			?>
 
 			<?if($res['date_update']){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
 			<?if($res['date_insert']){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
@@ -628,7 +659,7 @@ switch($_GET['mode'])
 
 				// Contenu des input
 				$(document).find("#user .load input, #user .load select").each(function() {
-					if($(this).val()) data[$(this).attr("id")] = $(this).val();
+					data[$(this).attr("id")] = $(this).val();
 				});
 
 				// On sauvegarde en ajax les contenus éditables

@@ -10,6 +10,7 @@ $add_translation = array(
 	"Text" => array("fr" => "Texte"),
 
 	"Log in" => array("fr" => "Connexion"),
+	"Administrator Login" => array("fr" => "Connexion Administrateur"),
 	"Connection with" => array("fr" => "Connexion avec"),
 	"Connection error" => array("fr" => "Erreur de connexion"),
 	"Unknown user" => array("fr" => "Utilisateur inconnu"),
