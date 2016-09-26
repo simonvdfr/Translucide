@@ -9,7 +9,7 @@ $(document).ready(function()
 
 		// Sauvegarde de l'ancien lien
 		var old_connexion = $(connexion).parent().html();
-		var old_inscription = $(connexion).parent().html();
+		var old_inscription = $(inscription).parent().html();
 
 		// Changement
 		$(connexion).html(__("Disconnection")).attr("href","deconnexion");			
