@@ -215,7 +215,7 @@ $(document).ready(function()
 
 	// Page désactivé => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit_content")) {
-		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam'></i>"+ __("State") +" : "+ __(state) +"</a>");
+		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("State") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 	
