@@ -256,7 +256,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 	.editable:hover { border-bottom: 1px dotted rgba(61, 128, 179, 1) !important; }
 
 	[contenteditable=true]:empty:before { content: attr(id); }
-	[contenteditable=true]:empty:before { content: attr(placeholder); }
+	[contenteditable=true][placeholder]:empty:before { content: attr(placeholder); }
 
 	.editable .ui-wrapper {		
 		overflow: inherit !important;
