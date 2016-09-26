@@ -131,11 +131,11 @@ function _e($txt)
 
 /********** CONTENT **********/
 // Contenu texte
-function txt($key = null, $placeholder = null)
+function txt($key = null, $placeholder = null, $tag = "div")
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<div class='editable' id='".encode($key)."'".($placeholder?" placeholder=\"".utf8_encode($placeholder)."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</div>";
+	echo"<".$tag." class='editable' id='".encode($key)."'".($placeholder?" placeholder=\"".utf8_encode($placeholder)."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".$tag.">";
 
 	$GLOBALS['editkey']++;
 }
@@ -162,6 +162,26 @@ function bg($key = null)
 	$GLOBALS['editkey']++;
 }
 
+// Contenu champ checkbox
+function checkbox($key = null)
+{
+	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
+
+	echo"<i class='editable-checkbox fa ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."  id='".encode($key)."></i>";
+	
+	$GLOBALS['editkey']++;
+}
+
+// Contenu champ select
+function select($key = null, $option = null)
+{
+	$key = ($key ? $key : "select-".$GLOBALS['editkey']);
+
+	echo"<span id='".encode($key)."' class='editable-select ".$class."' data-option=\"".json_encode($option)."\" data-selected=\"".$GLOBALS['content'][$key]."\">".$option[$GLOBALS['content'][$key]]."</span>";
+	
+	$GLOBALS['editkey']++;
+}
+
 // Contenu champ hidden
 function hidden($key = null, $class = null)
 {
@@ -183,9 +203,7 @@ function hidden_label($content = null, $class = null)
 function href($key = null)
 {
 	$key = ($key ? $key : "href-".$GLOBALS['editkey']);
-
 	echo" href=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" id='".encode($key)."' data-editable='href'";
-
 	$GLOBALS['editkey']++;
 }
 
@@ -193,9 +211,7 @@ function href($key = null)
 function ico($key = null)
 {
 	$key = ($key ? $key : "ico-".$GLOBALS['editkey']);
-
 	echo"<i class='editable fontawesome-icon circle-yes icon-eur'></i>";
-
 	$GLOBALS['editkey']++;
 }
 
@@ -203,9 +219,7 @@ function ico($key = null)
 function slideshow($key = null)
 {
 	$key = ($key ? $key : "slide-".$GLOBALS['editkey']);
-
 	echo"<span class='editable' id='".encode($key)."'>".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</span>";
-
 	$GLOBALS['editkey']++;
 }
 
