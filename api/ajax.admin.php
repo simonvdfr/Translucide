@@ -347,7 +347,7 @@ switch($_GET['mode'])
 		}
 
 		// Liste les pages abs du menu
-		$sql = "SELECT * FROM ".$table_content." WHERE url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
+		$sql = "SELECT * FROM ".$table_content." WHERE type = 'page' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
 		//echo $sql."<br>";
 
 		$sel = $connect->query($sql);
@@ -846,46 +846,8 @@ switch($_GET['mode'])
 					// Si c'est une image
 					if($type == "image")
 					{
-						$force = null;
-
-						// Taille de l'image uploadée
-						list($source_width, $source_height, $type) = getimagesize($root_file);
-						
-						// Limite max de taille d'image pour l'upload global
-						list($max_width, $max_height) = explode("x", $GLOBALS['max_image_size']);
-						
-						// On vérifie la bonne orientation de l'image jpeg
-						if($type == 2) {// Exif ne fonctionne qu'avec les jpeg
-							$exif = exif_read_data($root_file);
-							if($exif['Orientation'] != 1) {
-								$max_width = ($source_width > $max_width ? $max_width : $source_width);
-								$max_height = ($source_height > $max_height ? $max_height : $source_height);
-								$force = $exif['Orientation'];
-							}
-						}
-
-						// Image trop grande (> global) pour le web : on la redimensionne
-						if($source_width > $max_width or $source_height > $max_height or $force) 
-						{
-							$src_file = resize($root_file, $max_width, $max_height, "media/", $force);// Redimensionne
-
-							unlink($root_file);// Supprime l'image originale puisque l'on ne garde que la maxsize
-
-							$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];// La maxsize devient l'image root (explode: supp le timer)
-						}
-						
-
-						// L'interface a demandé un redimensionnement ?
-						$final_width = (int)$_POST['width'];
-						$final_height = (int)$_POST['height'];
-						if($_POST['resize'] and ($final_width and $source_width > $final_width) or ($final_height and $source_height > $final_height)) 
-						{
-							echo resize($root_file, $final_width, $final_height, "media/resize/");// Redimensionne
-
-							//unlink($root_file);// Si on a redimensionné on supp l'image de base
-						}
-						else
-							echo $src_file;// Retourne l'url du fichier original si pas de redimensionnement	
+						// Resize l'image si besoin
+						echo img_process($root_file, $dest = "media/", $des_resize = "media/resize/", (int)$_POST['width'], (int)$_POST['height'], $_POST['resize']);
 					}		
 					else 
 						echo $src_file;// Retourne l'url du fichier original		
