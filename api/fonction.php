@@ -131,11 +131,11 @@ function _e($txt)
 
 /********** CONTENT **********/
 // Contenu texte
-function txt($key = null, $placeholder = null, $tag = "div")
+function txt($key = null, $placeholder = null, $tag = "div", $readonly = false)
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<".$tag." class='editable' id='".encode($key)."'".($placeholder?" placeholder=\"".utf8_encode($placeholder)."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".$tag.">";
+	echo"<".$tag." class='editable".($readonly?" readonly":"")."' id='".encode($key)."'".($placeholder?" placeholder=\"".utf8_encode($placeholder)."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".$tag.">";
 
 	$GLOBALS['editkey']++;
 }
@@ -147,7 +147,7 @@ function img($key = null, $size = null, $zoom = null)
 
 	if($size) $size = explode("x", $size);
 
-	echo"<span class='editable-img'><img src=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\"".(isset($size[0])?" width='".$size[0]."'":"")."".(isset($size[1])?" height='".$size[1]."'":"")." atl=\"\" class='".((isset($size[0]) and isset($size[1]))?" crop":"")."".($zoom?" zoom":"")."' id='".encode($key)."'></span>";
+	echo"<span class='editable-img'><img src=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\"".(isset($size[0])?" width='".$size[0]."'":"")."".(isset($size[1])?" height='".$size[1]."'":"")." atl=\"\" class='".((isset($size[0]) and isset($size[1]))?"crop":"")."".($zoom?" zoom":"")."' id='".encode($key)."'></span>";
 
 	$GLOBALS['editkey']++;
 }
@@ -167,17 +167,28 @@ function checkbox($key = null)
 {
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
-	echo"<i class='editable-checkbox fa ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."  id='".encode($key)."></i>";
+	echo"<i class='editable-checkbox fa fa-fw ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."' id='".encode($key)."'></i>";
 	
 	$GLOBALS['editkey']++;
 }
 
 // Contenu champ select
-function select($key = null, $option = null)
+function select($key = null, $option = null, $placeholder = null)
 {
 	$key = ($key ? $key : "select-".$GLOBALS['editkey']);
 
-	echo"<span id='".encode($key)."' class='editable-select ".$class."' data-option=\"".json_encode($option)."\" data-selected=\"".$GLOBALS['content'][$key]."\">".$option[$GLOBALS['content'][$key]]."</span>";
+	$option_decode = json_decode($option, true);
+
+	if($option_decode[$GLOBALS['content'][$key]]) {
+		$selected_key = $GLOBALS['content'][$key];
+		$selected_option = $option_decode[$GLOBALS['content'][$key]];
+	}
+	else  {
+		$selected_key = key($option_decode);
+		$selected_option = $option_decode[$selected_key];
+	}
+
+	echo"<span id='".encode($key)."' class='editable-select' data-option='".$option."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
 	
 	$GLOBALS['editkey']++;
 }
@@ -562,9 +573,13 @@ function logout($redirect = null)
 
 
 
-/********** RESIZE IMAGE **********/
-function resize($source_file, $final_width = null, $final_height = null, $dest_dir = null, $force = null)
+/********** IMAGE **********/
+
+function resize($source_file, $new_width = null, $new_height = null, $dest_dir = null, $option = null)
 {	
+	// Supprime les arguments après l'extension (timer...)
+	$source_file = explode("?", $source_file)[0];
+
 	// Récupération des informations de l'image source
 	list($source_width, $source_height, $type, $attr) = getimagesize($source_file);
 
@@ -578,7 +593,7 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 	$file_name = encode(basename(basename($source_file), ".".$source_ext));
 	
 	// Si image à réduire ou à forcer
-	if(($final_width and $source_width > $final_width) or ($final_height and $source_height > $final_height) or $force)
+	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
 	{		
 		// Dossier final d'image redimensionnée
 		$dir = ($dest_dir ? $dest_dir : "media/");
@@ -593,27 +608,64 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 			case 3: $source_img = imagecreatefrompng($source_file); break;
 			default: exit(__("Unsupported file type")); break;
 		}  
+			
+		// Callage de l'image
+		$x = $y = 0;
 
-		if($final_width and $final_height)// On redimensionne dans tous les sens
+		if($new_width and $new_height)// On redimensionne dans tous les sens
 		{
-			$ratio_width = $source_width / $final_width;
-			$ratio_height = $source_height / $final_height;
+			$ratio_width = $source_width / $new_width;
+			$ratio_height = $source_height / $new_height;
 
 			if($ratio_width > 1 or $ratio_height > 1)// Taille maximale dépassée dans un sens ?
 			{
-				if($ratio_width < $ratio_height)
-					$final_width = $source_width / $ratio_height;				
-				else 
-					$final_height = $source_height / $ratio_width;				
+				if($option == "crop")
+				{
+					if($ratio_width < $ratio_height) {
+						$dest_width = $new_width;
+						$dest_height = $source_height / $ratio_width;
+					}
+					else {
+						$dest_width = $source_width / $ratio_height;				
+						$dest_height = $new_height;				
+					}
+					
+					// Positionnement de l'image cropé
+					$x = ($new_width - $dest_width) / 2;
+					$y = ($new_height - $dest_height) / 5;// Paramètre pour callé en hauteur le crop (2 à l'origine)
+				}
+				else// Si pas crop on resize la taille la plus grande
+				{
+					if($ratio_width < $ratio_height) {
+						$dest_width = $new_width = $source_width / $ratio_height;				
+						$dest_height = $new_height;				
+					}
+					else {
+						$dest_width = $new_width;	
+						$dest_height = $new_height = $source_height / $ratio_width;		
+					}
+				}
 			}
+			else// Image carrée
+			{
+				$dest_width = $new_width;
+				$dest_height = $new_height;
+			}
+
 		}
-		elseif($final_width and !$final_height) // On force la largeur => on calcule la nouvelle hauteur
-			$final_height = $final_width * $source_height / $source_width;
-		elseif(!$final_width and $final_height) // On force la hauteur => on calcule la nouvelle largeur
-			$final_width = $final_height * $source_width / $source_height;
+		elseif($new_width and !$new_height)// On force la largeur => on calcule la nouvelle hauteur
+		{ 
+			$new_width = $dest_width = $new_width;
+			$new_height = $dest_height = $new_width * $source_height / $source_width;
+		}
+		elseif(!$new_width and $new_height)// On force la hauteur => on calcule la nouvelle largeur
+		{
+			$new_width = $dest_width = $new_height * $source_width / $source_height;
+			$new_height = $dest_height = $new_height;
+		}
 		
 		// Création de l'image vide de base pour y coller l'image finale
-		$final_img = imagecreatetruecolor($final_width, $final_height);
+		$final_img = imagecreatetruecolor($new_width, $new_height);
 		
 		// S'il y a une transparence on la conserve
 		switch($type) {
@@ -626,13 +678,13 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 		}  
 		
 		// On copie et resize l'image dans l'image de base finale
-		imagecopyresampled($final_img, $source_img, 0, 0, 0, 0, $final_width, $final_height, $source_width, $source_height);
+		imagecopyresampled($final_img, $source_img, $x, $y, 0, 0, $dest_width, $dest_height, $source_width, $source_height);
 		
 		// Libère la mémoire
 		imagedestroy($source_img);
 
 		// Si l'image n'a pas la bonne orientation (consomme pas mal de mémoire)
-		switch ($force) {
+		switch ($option) {
 		  case 3: $deg = 180; break;
           case 6: $deg = 270; break;
           case 8: $deg = 90; break;
@@ -642,7 +694,7 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 		// Ajoute la taille de la nouvelle image en supprimant l'ancienne si besoin
 		preg_match("/(-[0-9]+x[0-9]+)$/", $file_name, $matches);
 		$file_name = str_replace($matches[0], "", $file_name);
-		$file_name_ext = $file_name."-".round($final_width)."x".round($final_height).".".$source_ext;
+		$file_name_ext = $file_name."-".round($new_width)."x".round($new_height).".".$source_ext;
 
 		// Création de l'image finale dans le bon type		
 		switch($type) {
@@ -664,5 +716,50 @@ function resize($source_file, $final_width = null, $final_height = null, $dest_d
 	}
 
 	return $dir.$file_name_ext."?".time();// Time pour forcer le refresh
+}
+
+
+function img_process($root_file, $dest = "media/", $des_resize = "media/resize/", $new_width = null, $new_height = null, $resize = null)
+{
+	// Valeur par défaut
+	$option = null;
+	$src_file = $dest.basename($root_file)."?".time();
+
+	// Taille de l'image uploadée
+	list($source_width, $source_height, $type) = getimagesize($root_file);
+	
+	// Limite max de taille d'image pour l'upload global
+	list($max_width, $max_height) = explode("x", $GLOBALS['max_image_size']);
+	
+	// On vérifie la bonne orientation de l'image jpeg
+	if($type == 2) {// Exif ne fonctionne qu'avec les jpeg
+		$exif = exif_read_data($root_file);
+		if($exif['Orientation'] != 1) {
+			$max_width = ($source_width > $max_width ? $max_width : $source_width);
+			$max_height = ($source_height > $max_height ? $max_height : $source_height);
+			$option = $exif['Orientation'];
+		}
+	}
+
+	// Image trop grande (> global) pour le web : on la redimensionne
+	if($source_width > $max_width or $source_height > $max_height or $option) 
+	{
+		$src_file = resize($root_file, $max_width, $max_height, $dest, $option);// Redimensionne sans crop
+
+		unlink($root_file);// Supprime l'image originale puisque l'on ne garde que la maxsize
+
+		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];// La maxsize devient l'image root (explode: supp le timer)
+	}
+	
+
+	// L'interface a demandé un redimensionnement ?
+	if($resize and (($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height)))
+	{
+		return resize($root_file, $new_width, $new_height, $des_resize, $resize);// Redimensionne
+
+		//unlink($root_file);// Si on a redimensionné on supp l'image de base
+	}
+	else
+		return $src_file;// Retourne l'url du fichier original si pas de redimensionnement	
 }
 ?>
