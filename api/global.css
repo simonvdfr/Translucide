@@ -217,16 +217,20 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .normal { font-weight: normal; }
 .bold { font-weight: bold; }
 
-/* Text color */
+/* Color */
 .white { color: #fff !important; }
 .black { color: #000 !important; }
 .grey { color: #808080 !important; }
+
 .yes { color: #3e9c30 !important; }
 .no { color: #9f2d2d !important; }
-.checked { 
-	color: #1ba238 !important;
-	opacity: 1 !important;
-}
+
+.checked { color: #1ba238 !important; opacity: 1 !important; }
+
+.color { color: #77d1d0; }
+.bg-color { background-color: #77d1d0; }
+.box-shadow { box-shadow: 0 1px 2px 0 rgba(150, 150, 150, 0.8); }
+
 
 /* Transparence */
 .o50 { opacity: 0.5; }
@@ -238,10 +242,10 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .ho1:hover { opacity: 1; }
 
 /* Alignement */
-.vat { vertical-align: top; }
-.vam { vertical-align: middle; }
-.vab { vertical-align: bottom; }
-.vatt { vertical-align: text-top; }
+.vat { vertical-align: top !important; }
+.vam { vertical-align: middle !important; }
+.vab { vertical-align: bottom !important; }
+.vatt { vertical-align: text-top !important; }
 .nowrap { white-space: nowrap; }
 
 
@@ -300,6 +304,8 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 .none { display: none; }
 .hidden { visibility: hidden; }
 .visible { visibility: visible !important; }
+.absolute { position: absolute; }
+
 
 /* Forms */
 form, fieldset {
@@ -369,6 +375,14 @@ input[type="reset"].unstyled:focus {
   box-shadow: none;
   outline: none;
 }
+
+
+/* Curseur */
+.pointer { cursor: pointer; }
+
+
+/* Légère transition sur les FontAwesome */
+.fa {transition: all 0.5s;}
 
 /* Pour ajouter des pictos dans les menus select */
 .fa-select { font-family: FontAwesome, Helvetica, Arial, sans-serif; }
@@ -672,6 +686,20 @@ s,m,l,n = small, medium, large, none
 div.editable {
 	display: inherit;/*inline-flex inline-block*/
 	/* @todo voir car il y a un bug avec les contenu pas très large */
+}
+
+
+/* Barre de progression */
+.progress {
+	/*background-color: rgba(122, 210, 217, 0.8);*/	
+	position: absolute;
+	top: 0;
+	left: 0;
+	max-width: 100%;
+	min-height: 3px;
+	z-index: 10;
+	opacity: .8;
+	transition: all .3s;
 }
 
 
