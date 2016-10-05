@@ -255,8 +255,14 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 }
 	.editable:hover { border-bottom: 1px dotted rgba(61, 128, 179, 1) !important; }
 
-	[contenteditable=true]:empty:before { content: attr(id); }
-	[contenteditable=true][placeholder]:empty:before { content: attr(placeholder); }
+	[contenteditable=true]:empty:before { 
+		content: attr(id);
+		opacity: .6;
+	}
+	[contenteditable=true][placeholder]:empty:before { 
+		content: attr(placeholder); 
+		opacity: .6;
+	}
 
 	.editable .ui-wrapper {		
 		overflow: inherit !important;
@@ -305,17 +311,6 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		padding: 10px;
 		text-shadow: 1px 1px 1px #2c5f66;
 		display: none;
-	}
-
-	.progress {
-		position: absolute;
-		top: 0;
-		left: 0;
-		max-width: 100%;
-		z-index: 10;
-		background-color: rgba(122, 210, 217, 0.8);
-
-		transition: width .3s;
 	}
 
 
