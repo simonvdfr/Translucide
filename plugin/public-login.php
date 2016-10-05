@@ -1,9 +1,11 @@
 <?
-@include_once("../config.php");// Les variables
-@include_once("../api/fonction.php");// Fonction
+if($_GET['ajax']) {
+	@include_once("../config.php");// Les variables
+	@include_once("../api/fonction.php");// Fonction
 
-$lang = get_lang();// Sélectionne la langue
-load_translation('api');// Chargement des traductions du système
+	$lang = get_lang();// Sélectionne la langue
+	load_translation('api');// Chargement des traductions du système
+}
 
 // @Todo: faire la procedure de récup de mot de passe
 
@@ -17,7 +19,7 @@ load_translation('api');// Chargement des traductions du système
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 	/* Fleche au dessu de la box de login */
-	#login-dialog #public-login:after { 
+	#login-dialog #public-login:before, #login-dialog #public-login:after { 
 		border: 10px solid transparent;
 		border-bottom-color: rgba(190, 190, 190, 0.6);
 		content: ' ';
@@ -27,6 +29,10 @@ load_translation('api');// Chargement des traductions du système
 		height: 0px;
 		width: 0px;
 	}
+		#login-dialog #public-login:after { 
+			border-bottom-color: #fff;
+			top: -18px;
+		}
 
 @media (max-width: 480px) 
 {
