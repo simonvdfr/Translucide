@@ -44,7 +44,7 @@ img_zoom = function(event)
 	})
 
 	// Ajout le bloc de progression
-	$("#clone"+id).after("<div id='progress"+ id +"'><div class='progress-bar'></div><i class='fa fa-fw fa-refresh fa-spin biggest tc'></i></div>");
+	$("#clone"+id).after("<div id='progress"+ id +"'><div class='progress bg-color box-shadow'></div><i class='fa fa-fw fa-refresh fa-spin biggest tc color'></i></div>");
 
 	// Initialise le bloc de progression
 	$("#progress"+ id).css({
@@ -57,18 +57,11 @@ img_zoom = function(event)
 	})
 
 	// Initialise la barre de progression de download
-	$("#progress"+id+" .progress-bar").css({
-		backgroundColor: "#ffcc33",
-		width: "0",
-		height: "3px",
-		boxShadow: "0 1px 2px 0 rgba(255, 204, 51, 0.8)",
-		transition: "all .2s"
-	})
+	//$("#progress"+id+" .progress").css("width", "0")
 
 	// Initialise l'icone de chargement
 	$("#progress"+id+" .fa-spin").css({
 		position: "absolute",
-		color: "#ffcc33",
 		top: ((original_height - $("#progress"+id+" .fa-spin").height()) / 2),
 		left: ((original_width - $("#progress"+id+" .fa-spin").width()) / 2)
 	})
@@ -82,7 +75,7 @@ img_zoom = function(event)
 			xhr.addEventListener("progress", function(event){// Download progress
 				if(event.lengthComputable) {
 					var p100 = (event.loaded * 100 / event.total);
-					$("#progress"+id+" .progress-bar").css("width", p100+"%");//Math.floor(p100)
+					$("#progress"+id+" .progress").css("width", p100+"%");//Math.floor(p100)
 				}
 			}, false);
 			return xhr;
@@ -102,7 +95,7 @@ img_zoom = function(event)
 			$("#clone"+id).one("load", function()
 			{				
 				// Supprime le loading
-				$(".progress-bar").remove();
+				$(".progress").remove();
 				$("#progress"+id).fadeOut("fast", function(){ $(this).remove() });
 
 				// Calcule de la position de l'image zoomé
