@@ -423,7 +423,7 @@ upload = function(source, file, resize)
 
 			// Layer pour la progressbar
 			var progressid = "progress-" + source.attr("id");
-			source.append("<div id='"+progressid+"' class='progress small' style='height: "+source.outerHeight()+"px;'></div>");			
+			source.append("<div id='"+progressid+"' class='progress bg-color small' style='height: "+source.outerHeight()+"px;'></div>");			
 			
 			// Type mime du fichier
 			var mime = file.type.split("/");
@@ -532,8 +532,7 @@ upload = function(source, file, resize)
 		}
 
 		//console.log(data.files[0].type);
-	}   
-	
+	}   	
 }
 
 
@@ -687,10 +686,9 @@ $(document).ready(function()
 
 		adminbar+= "<button id='preview' class='fr mat small' title=\""+ __("Save & View") +"\"><span class='no-small-screen'>"+ __("Save & View") +"</span> <i class='fa fa-fw fa-eye big'></i></button>";
 
-		adminbar+= "<div id='close' class='fr bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-times-circle-o'></i></div>";
-
 		adminbar+= "<select id='state' class='fr mat fa-select'><option value='active'>&#xf00c; "+ __("Active") +"</option><option value='deactivate'>&#xf00d; "+ __("Deactivate") +"</option></select>";
 
+		adminbar+= "<div id='close' class='fr bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-times-circle-o'></i></div>";
 
 	adminbar+= "</div>";
 
@@ -827,7 +825,7 @@ $(document).ready(function()
 	// Page disponible absente du menu
 	add_page = false;
 	$("header").on({
-		'mouseenter' : function(event) {
+		"mouseenter": function(event) {
 			if(!add_page) 
 			{
 				// Liste les pages déjà dans le menu
@@ -871,7 +869,7 @@ $(document).ready(function()
 			}
 			else $("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
 		},
-		'mouseleave' : function(event) {
+		"mouseleave": function(event) {
 			$("#add-nav").fadeOut("fast");
 		}
 	});
@@ -1204,7 +1202,7 @@ $(document).ready(function()
 	/************** USERS **************/
 
 	// Ouverture de l'admin des users
-	$("#user i").on('click mouseenter',	// touchstart click
+	$("#user i").on("click mouseenter",	// touchstart click
 		function(event) {
 
 			event.stopPropagation();
