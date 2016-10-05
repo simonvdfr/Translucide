@@ -60,17 +60,62 @@ __ = function(txt) {
 }
 
 
-//@todo: A finir : init en display none, animation qui vien du haut en fade, au click dessus on ferme, croix pour fermer
 // Affichage d'un message d'erreur
 error = function(txt){		
-	alert(txt);
-	//$(body).html("<div class='ui-state-error ui-corner-all'><p><span class='ui-icon ui-icon-alert'></span>" + txt + "</p></div>");
+	$("#error, #under-error").remove();
+
+	// Ajout du fond gris
+	$("body").append("<div id='under-error' class='none absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 101; top: 0; left: 0; right: 0;'></div>");
+		
+	// Donne la bonne taille au fond gris et l'affiche
+	$("#under-error")
+	.css({
+		width: $(document).width(),
+		height: $(document).height()
+	})
+	.fadeIn();
+
+	// Box avec le message d'erreur
+	$("body").append("<div id='error' class='ui-state-error ui-corner-all pointer pam absolute no tc'><i class='fa fa-exclamation-triangle mrs'></i>" + txt + "<i class='fa fa-times absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
+	var height = $("#error").outerHeight();
+	
+	// Affichage de la box
+	$("#error")
+		.css({
+			zIndex: 102,
+			opacity: 0,
+			top: -height,
+			left: (($(window).width() - $("#error").outerWidth()) / 2),
+		})
+		.animate({
+			opacity: 1,
+			top: (($(window).height() - height) / 2)
+		}, 500)
+		.on("click", function(){ 
+			$("#error, #under-error").fadeOut("fast", function(){ $(this).remove() });
+		});
 }
 
 // Affichage d'un message positif
 light = function(txt){		
-	alert(txt);
-	//$(body).html("<div class='ui-state-highlight ui-corner-all'><p><span class='ui-icon ui-icon-info'></span>" + txt + "</p></div>");
+	$("#highlight").remove();
+	
+	// Box avec le message d'information
+	$("body").append("<div id='highlight' class='ui-state-highlight ui-corner-all pointer pam absolute tc'><i class='fa fa-info-circle color mrs'></i>" + txt + "</div>");
+	var height = $("#highlight").outerHeight();
+	
+	// Affichage
+	$("#highlight")
+		.css({
+			opacity: 0,
+			top: -height,
+			left: (($(window).width() - $("#highlight").outerWidth()) / 2),
+		})
+		.animate({
+			opacity: 1,
+			top: (($(window).height() - height) / 2)
+		}, 500)
+		.on("click", function(){ $(this).fadeOut("fast", function(){ $(this).remove() }); });
 }
 
 
