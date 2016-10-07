@@ -11,31 +11,9 @@ if($_GET['ajax']) {
 
 ?>
 <style>
-#public-login { 
-	background-color: #ffffff;
-	border-top: 1px solid #cccccc;
-	border-radius: 4px;
-	max-width: 300px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-}
-	/* Fleche au dessu de la box de login */
-	#login-dialog #public-login:before, #login-dialog #public-login:after { 
-		border: 10px solid transparent;
-		border-bottom-color: rgba(190, 190, 190, 0.6);
-		content: ' ';
-		position: absolute;
-		top: -20px;
-		left: 40px;
-		height: 0px;
-		width: 0px;
-	}
-		#login-dialog #public-login:after { 
-			border-bottom-color: #fff;
-			top: -18px;
-		}
+#public-login { max-width: 300px; }
 
-@media (max-width: 480px) 
-{
+@media (max-width: 480px) {
 	#login-dialog { left: 0px !important; }
 }
 </style>
@@ -73,7 +51,7 @@ if($_SESSION['uid'])
 else// Sinon FORMULAIRE DE CONNEXION
 {
 ?>
-	<form id="public-login" class="center pas">
+	<form id="public-login" class="layer center pas">
 		
 		<input type="email" id="email" placeholder="<?_e("My email");?>" required class="w100 mtt mbs"><span class="wrapper big bold">@</span>
 
