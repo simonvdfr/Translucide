@@ -278,7 +278,7 @@ switch($_GET['mode'])
 		
 		// CONTENU
 		// Supprime les url avec le domaine pour faciliter le transport du site
-		$_POST['content'] = str_replace($GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'], "", $_POST['content']);
+		$_POST['content'] = str_replace($GLOBALS['home'], "", $_POST['content']);
 
 		// Encode le contenu
 		$json_content = json_encode($_POST['content'], JSON_UNESCAPED_UNICODE);
@@ -340,7 +340,7 @@ switch($_GET['mode'])
 		while(list($cle, $val) = each($_REQUEST['menu']))
 		{
 			// Si c'est un lien vers la home
-			if($val == $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'] or $val == $GLOBALS['path'])
+			if($val == $GLOBALS['home'] or $val == $GLOBALS['path'])
 				$menu[] = "home";
 			else 
 				$menu[] = $connect->real_escape_string($val);
@@ -1354,7 +1354,7 @@ switch($_GET['mode'])
 		// Chemin complet du site
 		$scheme_domain_path = "";
 		if($GLOBALS['scheme'] and $GLOBALS['domain'] and $GLOBALS['path'])
-			$scheme_domain_path = $GLOBALS['scheme'] . $GLOBALS['domain'] . $GLOBALS['path'];
+			$scheme_domain_path = $GLOBALS['home'];
 		else {
 			if($_SERVER['[REQUEST_SCHEME']) $scheme_domain_path .= $_SERVER['REQUEST_SCHEME']."://";
 			else $scheme_domain_path .= "http://";
