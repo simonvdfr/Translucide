@@ -265,6 +265,8 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 
+		login('high', 'edit_user');
+
 		if($_REQUEST['uid'] != $_SESSION['uid']) 
 		{
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
@@ -432,7 +434,7 @@ switch($_GET['mode'])
 		
 		include_once("db.php");// Connexion à la db
 
-		login('medium', 'edit_user');
+		login('high', 'edit_user');
 
 
 	case "profil":// AFFICHAGE DU FORMULAIRE UTILISATEUR
@@ -692,12 +694,12 @@ switch($_GET['mode'])
 			$uid = $insert_user = $insert_meta = null;
 			
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
-			if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('medium', 'edit_user');
+			if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('high', 'edit_user');
 			elseif($_REQUEST['uid'])
 			{
 				// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
-				if($_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit_user');
-				else login('medium');
+				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit_user');
+				else login('high');
 
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
 				$res = $sel->fetch_assoc();
@@ -817,7 +819,7 @@ switch($_GET['mode'])
 						$subject = "[".utf8_encode($GLOBALS['sitename'])."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
 						
 						// Lien vers la fiche admin pour activation
-						$message = "<br><a href='".make_url("", true)."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
+						$message = "<br><a href='".make_url("", array("domaine" => true))."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
 						
 						$message .= "<pre>";
 						$message .= print_r($_POST, true);
@@ -976,14 +978,14 @@ switch($_GET['mode'])
 		else exit(false);
 
 		// Variable générique
-		$redirect_uri = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/ajax.php?mode=external-login&login_api=";
+		$redirect_uri = $GLOBALS['home']."api/ajax.php?mode=external-login&login_api=";
 
 		if(!$_REQUEST["code"]) nonce('state');// CSRF protection
 
 		
-		// FACEBOOK params 
+		// FACEBOOK params &scope=user_photos
 
-		$get_code['facebook'] = "https://graph.facebook.com/oauth/authorize?client_id=".$GLOBALS['facebook_api_id']."&state=".$_SESSION['state']."&display=popup&scope=user_photos&redirect_uri=".urlencode($redirect_uri)."facebook";
+		$get_code['facebook'] = "https://graph.facebook.com/oauth/authorize?client_id=".$GLOBALS['facebook_api_id']."&state=".$_SESSION['state']."&display=popup&redirect_uri=".urlencode($redirect_uri)."facebook";
 
 		$token_return_type['facebook'] = "url";
 
