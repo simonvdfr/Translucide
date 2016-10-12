@@ -122,7 +122,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 	cursor: pointer;
 }
 
-button[disabled], html input[disabled] { 
+button[disabled], html input[disabled], .disabled { 
 	background-color: buttonface !important;
 	color: graytext;
 	box-shadow: none;
