@@ -148,7 +148,7 @@ img_zoom = function(event)
 						'slow',
 						function() {			
 							// Supprime les clones
-							$(".clone").remove();
+							$(".clone").fadeOut("fast", function(){ $(this).remove() });
 
 							// Re-active le lien sur l'image
 							$(this_source).on("click.zoom", img_zoom);
