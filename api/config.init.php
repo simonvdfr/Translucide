@@ -17,12 +17,7 @@ if(!isset($_SESSION))
 	ini_set('session.use_only_cookies', 1);  // Force cookies for session (phpsessionID forbidden in URL)
 	ini_set('session.use_trans_sid', false); // Prevent php to use session ID in URL if cookies are disabled.
 
-	if(!isset($cron)) {
-		session_start();
-		
-		// Change constamment l'id de la session pour éviter le vol de session 
-		session_regenerate_id(true);
-	}
+	if(!isset($cron)) session_start();
 }
 
 // Définition de la zone horaire
@@ -134,9 +129,11 @@ $image = null;
 $mode = null;
 $uid = null;
 $error = null;
+$GLOBALS['filtre'] = array();
 $GLOBALS['translation'] = array();
 $GLOBALS['content'] = array();
 $GLOBALS['editkey'] = 1;
+$GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
 
 
 // Navigation par page
