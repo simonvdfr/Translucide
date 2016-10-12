@@ -36,24 +36,58 @@ function get_url($url_source = null)
 
 	// Parse l'url pour ne garder que la partie rewrite sans le chemin de base du site
 	$parse_url = parse_url($url_source);
-	$path = str_replace($GLOBALS['path'], "", $parse_url['path']);
+	$path = ltrim($parse_url['path'], $GLOBALS['path']);
 
-	// Si l'url est vide = home
-	if(!encode($path)) $url = "home"; else $url = encode($path);
+	// Si l'url est vide : url = home
+	if(!encode($path)) $url = "home"; 
+	else
+	{
+		// Si il y a des filtres dans l'url
+		if(strstr($parse_url['path'], "/")) {
+			$explode_path = explode("/", $path);
+
+			$url = $explode_path[0];// Url raçine
+			unset($explode_path[0]);// Supp la racine des filtres
+
+			while(list($cle, $dir) = each($explode_path)) {
+				$explode_dir = array_map("encode", explode("_", $dir));
+				$GLOBALS["filtre"][$explode_dir[0]] = $explode_dir[1];
+			}
+		}
+		else $url = encode($path);
+	}
 
 	return $url;
 }
 
 // Retourne l'url rewriter
-function make_url($url, $domaine = false)
+function make_url($url, $filtre = array())
 {
-	if($domaine) {
-		if($url == "home") $url = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
-		else $url = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'].encode($url);
+	if(is_array($filtre))
+	{
+		// Force le domaine
+		if($filtre['domaine']) $domaine = $filtre['domaine'];
+		unset($filtre['domaine']);
+
+		// Création des dossier dans l'url en fonction des filtres
+		while(list($cle, $val) = each($filtre)) {
+			if($cle == "page" and $val == 1) unset($filtre['page']);// Si Page == 1 on ne l'affiche pas dans l'url
+			elseif($val) $dir .= "/".$cle."_".$val;
+		}
+	}
+
+	if($url == "home") 
+	{
+		$url = $GLOBALS['path'];
+
+		if($domaine) $url = $GLOBALS['home'];
 	}
 	else {
-		if($url == "home") $url = $GLOBALS['path'];
-		else $url = encode($url);
+		$url = encode($url);
+
+		if($domaine) $url = $GLOBALS['home'] . $url;
+
+		if($dir) $url = trim($url, "/") . $dir;
 	}	
 
 	return $url;
@@ -147,7 +181,7 @@ function img($key = null, $size = null, $zoom = null)
 
 	if($size) $size = explode("x", $size);
 
-	echo"<span class='editable-img'><img src=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\"".(isset($size[0])?" width='".$size[0]."'":"")."".(isset($size[1])?" height='".$size[1]."'":"")." atl=\"\" class='".((isset($size[0]) and isset($size[1]))?"crop":"")."".($zoom?" zoom":"")."' id='".encode($key)."'></span>";
+	echo"<span class='editable-img'><img src=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"".(isset($size[0])?" width='".$size[0]."'":"")."".(isset($size[1])?" height='".$size[1]."'":"")." atl=\"\" class='".((isset($size[0]) and isset($size[1]))?"crop":"")."".($zoom?" zoom":"")."' id='".encode($key)."'></span>";
 
 	$GLOBALS['editkey']++;
 }
@@ -157,7 +191,7 @@ function bg($key = null)
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
 
-	echo" id='".encode($key)."' data-editable='bg' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\"";
+	echo" id='".encode($key)."' data-editable='bg' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"";
 
 	$GLOBALS['editkey']++;
 }
@@ -406,6 +440,9 @@ function login($level = 'low', $auth = null, $quiet = null)
 		{
 			if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
 
+			// Supprime l'ancienne session
+			session_regenerate_id(true);
+
 			// Nettoyage du mail envoyé
 			$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 			$email = $GLOBALS['connect']->real_escape_string($email);
@@ -419,8 +456,6 @@ function login($level = 'low', $auth = null, $quiet = null)
 				// Création d'un token maison
 				if($res['password'] == hash_pwd($_POST['password'], $res['salt']))
 				{
-					// Supprime l'ancienne session
-					session_regenerate_id(true);
 
 					if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// Vérifie les auth d'utilisateur si c'est demandée 
 					{
@@ -473,6 +508,8 @@ function login($level = 'low', $auth = null, $quiet = null)
 			else if(($GLOBALS['security'] == 'high' or $level == 'high') and token_check($_SESSION['token']))// Comparaison avec le token dans la bdd
 			{
 				if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
+
+				session_regenerate_id(true);// Supprime l'ancienne session
 
 				$sel = $GLOBALS['connect']->query("SELECT auth, token FROM ".$GLOBALS['table_user']." WHERE id='".(int)$_SESSION['uid']."' AND state='active' LIMIT 1");
 				$res = $sel->fetch_assoc();
@@ -566,7 +603,7 @@ function logout($redirect = null)
 		exit;
 	}
 	elseif($redirect == "home") {
-		header("Location: ".$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']);
+		header("Location: ".$GLOBALS['home']);
 		exit;
 	}
 }
