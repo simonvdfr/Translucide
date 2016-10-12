@@ -14,7 +14,7 @@ while($res = $sel->fetch_assoc())
 
 	echo"<url>\n";
 
-	echo"<loc>".make_url($res['url'], true)."</loc><lastmod>".$date_update[0]."</lastmod>\n";
+	echo"<loc>".make_url($res['url'], array("domaine" => true))."</loc><lastmod>".$date_update[0]."</lastmod>\n";
 
 	//if($res[photo]) echo"<image:image><image:loc>".make_url()."</image:loc></image:image>\n";
 
