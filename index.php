@@ -4,6 +4,8 @@ include_once("api/fonction.php");// Fonctions
 
 include_once("api/db.php");// Connexion à la db
 
+// Change l'id de la session pour éviter le vol de session 
+session_regenerate_id(true);
 
 // Pour éviter le duplicate avec index.php
 if(stristr($_SERVER['REQUEST_URI'], 'index.php')){
@@ -49,10 +51,10 @@ if(!$res)
 else// Une page existe
 {
 	// On verifie l'url pour eviter les duplicates : si erreur = redirection
-	if(($_SERVER['REQUEST_SCHEME']?$_SERVER['REQUEST_SCHEME']."://":$GLOBALS['scheme']).$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], true))
+	if(($_SERVER['REQUEST_SCHEME']?$_SERVER['REQUEST_SCHEME']."://":$GLOBALS['scheme']).$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filtre'], array("domaine" => true))))
 	{
-		header($_SERVER['SERVER_PROTOCOL']." 301 Moved Permanently");
-		header("location: ".make_url($res['url'], true));
+		header($_SERVER['SERVER_PROTOCOL']." 301 Moved Permanently");		
+		header("location: ".make_url($res['url'], array_merge($GLOBALS['filtre'], array("domaine" => true))));
 		exit;
 	}
 
@@ -127,17 +129,17 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<title><?=$title;?></title>
 
-	<?if($description){?><meta name="description" content="<?=strip_tags($description);?>" /><?}?>
+	<?if($description){?><meta name="description" content="<?=strip_tags($description);?>"><?}?>
 
 	<meta name="robots" content="<?=$robots;?>">
 
-	<meta property="og:site_name" content="<?=utf8_encode($GLOBALS['sitename']);?>" />
-	<meta property="og:title" content="<?=$title;?>" />
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="<?=$GLOBALS['scheme'].$GLOBALS['domain'];?>" />
-	<?if($description){?><meta property="og:description" content="<?=strip_tags($description);?>" /><?}?>
-	<?if($image){?><meta property="og:image" content="<?=$GLOBALS['scheme'].$GLOBALS['domain'].$image;?>" /><?}?>
-	<?if($GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>" /><?}?>
+	<meta property="og:site_name" content="<?=utf8_encode($GLOBALS['sitename']);?>">
+	<meta property="og:title" content="<?=$title;?>">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="<?=$GLOBALS['scheme'].$GLOBALS['domain'];?>">
+	<?if($description){?><meta property="og:description" content="<?=strip_tags($description);?>"><?}?>
+	<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
+	<?if($GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -147,17 +149,17 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
 
-	<link rel="stylesheet" href="api/global.css?">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global.css?">	
 
-	<link rel="stylesheet" href="theme/<?=$GLOBALS['theme']?>style.css?">	
-	<link rel="stylesheet" href="theme/<?=$GLOBALS['theme']?>responsive.css?">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style.css?">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>responsive.css?">	
 
-	<link rel="shortcut icon" type="image/x-icon" href="media/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
 
 	<script src="<?=$GLOBALS['jquery']?>"></script>
 	<script src="<?=$GLOBALS['jquery_ui']?>"></script>
 
-	<script src="api/lucide.init.js"></script>
+	<script src="<?=$GLOBALS['path']?>api/lucide.init.js"></script>
 
 	<script>
 		<? if($GLOBALS['google_analytics']) { ?>
@@ -213,8 +215,7 @@ echo"<div class='content".($res['tpl']?" tpl-".encode($res['tpl']):"")."'>";
 
 if($res['tpl']) // On a une page
 {
-	// On charge la template du thème pour afficher le contenu
-	include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");
+	include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
 }
 else // Pas de contenu a chargé
 {
