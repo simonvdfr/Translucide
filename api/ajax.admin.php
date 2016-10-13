@@ -1068,7 +1068,7 @@ switch($_GET['mode'])
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_meta']."` (
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-								`type` varchar(20) NOT NULL,
+								`type` varchar(32) NOT NULL,
 								`cle` varchar(255) NOT NULL,
 								`val` text NOT NULL,
 								PRIMARY KEY (`id`) USING BTREE,
@@ -1475,7 +1475,7 @@ switch($_GET['mode'])
 						<li>
 							<label class="w30"><?_e("Site theme");?></label>
 
-							<select id="theme" required class="vatt">
+							<select id="theme" class="vatt">
 							<?
 							// Un thème dans la racine
 							if(file_exists("theme/header.php")) echo"<option value=\"\"".($GLOBALS['theme'] == "" ? " selected":"").">/</option>";
