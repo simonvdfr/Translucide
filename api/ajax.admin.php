@@ -196,7 +196,8 @@ switch($_GET['mode'])
 			
 			// On remplace le chemin absolut du site par la clé : home (utilise pour éviter les bug lors des mises en lignes)
 			array_walk($_POST['nav'], 
-				function(&$key) { 
+				function(&$key) { 					
+					$key['href'] = str_replace($GLOBALS['home'], "", $key['href']);// Supprime les url avec le domaine pour faciliter le transport du site
 					if($key['href'] == $GLOBALS['path']) $key['href'] = "home";
 				}
 			);
@@ -233,7 +234,10 @@ switch($_GET['mode'])
 		{
 			// On regarde s'il y a déjà des données
 			$sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
-			$res_header = $sel_header->fetch_assoc();		
+			$res_header = $sel_header->fetch_assoc();	
+			
+			// Supprime les url avec le domaine pour faciliter le transport du site
+			$_POST['header'] = str_replace($GLOBALS['home'], "", $_POST['header']);
 			
 			// On  encode les données
 			$json_header = json_encode($_POST['header'], JSON_UNESCAPED_UNICODE);
@@ -258,6 +262,9 @@ switch($_GET['mode'])
 			// On regarde s'il y a déjà des données
 			$sel_footer = $connect->query("SELECT * FROM ".$table_meta." WHERE type='footer' AND cle='".$lang."' LIMIT 1");
 			$res_footer = $sel_footer->fetch_assoc();		
+
+			// Supprime les url avec le domaine pour faciliter le transport du site
+			$_POST['footer'] = str_replace($GLOBALS['home'], "", $_POST['footer']);
 			
 			// On  encode les données
 			$json_footer = json_encode($_POST['footer'], JSON_UNESCAPED_UNICODE);

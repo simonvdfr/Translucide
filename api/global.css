@@ -696,7 +696,7 @@ div.editable {
 	top: 0;
 	left: 0;
 	max-width: 100%;
-	min-height: 3px;
+	min-height: 4px;
 	z-index: 10;
 	opacity: .8;
 	transition: all .3s;

@@ -10,7 +10,7 @@ echo"<?xml version='1.0' encoding='UTF-8'?>\n<urlset xmlns='http://www.sitemaps.
 $sel = $connect->query("SELECT url, date_update FROM ".$GLOBALS['table_content']." WHERE state='active' ORDER BY date_update DESC");
 while($res = $sel->fetch_assoc()) 
 {
-	$date_update=explode(" ", $res['date_update']);
+	$date_update = explode(" ", $res['date_update']);
 
 	echo"<url>\n";
 
