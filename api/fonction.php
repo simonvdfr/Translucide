@@ -165,11 +165,11 @@ function _e($txt)
 
 /********** CONTENT **********/
 // Contenu texte
-function txt($key = null, $placeholder = null, $tag = "div", $readonly = false)
+function txt($key = null, $filtre = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<".$tag." class='editable".($readonly?" readonly":"")."' id='".encode($key)."'".($placeholder?" placeholder=\"".utf8_encode($placeholder)."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".$tag.">";
+	echo"<".($filtre['tag']?$filtre['tag']:"div")." class='editable".($filtre['class']?" ".$filtre['class']:"")."' id='".encode($key)."'".($filtre['placeholder']?" placeholder=\"".utf8_encode($filtre['placeholder'])."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".($filtre['tag']?$filtre['tag']:"div").">";
 
 	$GLOBALS['editkey']++;
 }
@@ -207,7 +207,7 @@ function checkbox($key = null)
 }
 
 // Contenu champ select
-function select($key = null, $option = null, $placeholder = null)
+function select($key = null, $option = null)
 {
 	$key = ($key ? $key : "select-".$GLOBALS['editkey']);
 
