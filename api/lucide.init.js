@@ -44,7 +44,7 @@ set_cookie = function(key, val, days) {
 // Déconnexion
 logout = function() {
 	$.ajax({
-		url: "api/ajax.php?mode=logout",
+		url: path+"api/ajax.php?mode=logout",
 		success: function(html){ 
 			$("body").html(html);// Retour
 			reload();// Recharge la page	
@@ -137,7 +137,7 @@ edit = [];
 // Formulaire d'ajout d'une page
 add_page = function()
 {	
-	$.ajax({url: "api/ajax.admin.php?mode=add-page&callback=add_page"})
+	$.ajax({url: path+"api/ajax.admin.php?mode=add-page&callback=add_page"})
 		.done(function(html) {	
 			// Contenu de la dialog d'ajout
 			$("body").append(html);		
@@ -152,7 +152,7 @@ add_page = function()
 						else {
 							$.ajax({
 								type: "POST",
-								url: "api/ajax.admin.php?mode=insert",
+								url: path+"api/ajax.admin.php?mode=insert",
 								data: {
 									"title": $(".dialog-add #title").val(),
 									"tpl": $(".dialog-add #tpl").val(),
@@ -183,7 +183,7 @@ refresh_permalink = function(target) {
 	// Récupère l'url encodée
 	$.ajax({
 		type: "POST",
-		url: "api/ajax.admin.php?mode=make-permalink",
+		url: path+"api/ajax.admin.php?mode=make-permalink",
 		data: {"title": $(target+" #title").val(), "nonce": $("#nonce").val()},
 		success: function(url){ 
 			$(target+" #refresh-permalink i").removeClass("fa-spin");
@@ -207,7 +207,7 @@ $.fn.make_password = function() {
 	// Récupère un password
 	$.ajax({
 		type: "POST",
-		url: "api/ajax.php?mode=make-password",
+		url: path+"api/ajax.php?mode=make-password",
 		data: {"nonce": $("#nonce").val()},
 		success: function(password){ 
 			$(".fa-refresh").removeClass("fa-spin");
@@ -236,7 +236,7 @@ edit_launcher = function(callback)
 	// Si le mode édition n'est pas déjà lancé
 	if(!$("#admin-bar").length) 
 	{
-		$.ajax({url: "api/ajax.admin.php?mode=edit"+(callback?"&callback="+callback:""), cache: false})
+		$.ajax({url: path+"api/ajax.admin.php?mode=edit"+(callback?"&callback="+callback:""), cache: false})
 		.done(function(html) {				
 			$("body").append(html);
 		});

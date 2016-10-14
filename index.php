@@ -198,6 +198,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 		state = "<?=$res['state']?>";
 		permalink = "<?=$res['url']?>";
+		path = "<?=$GLOBALS['path']?>";
 	</script>
 
 	<!--[if lt IE 9]>

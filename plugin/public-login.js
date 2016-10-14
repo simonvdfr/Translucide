@@ -4,16 +4,20 @@ $(document).ready(function()
 	// Si déjà connecter on change le bouton connexion en déconnexion
 	if(get_cookie("auth"))
 	{
-		var connexion = "a[href=connexion], a[href=login], a[href=deconnexion], a[href=logout]";
-		var inscription = "a[href=inscription], a[href=compte], a[href=registration], a[href=account]";
+		var connexion = "a[href$=connexion], a[href$=login], a[href$=deconnexion], a[href$=logout]";
+		var inscription = "a[href$=inscription], a[href$=compte], a[href$=registration], a[href$=account]";
 
 		// Sauvegarde de l'ancien lien
 		var old_connexion = $(connexion).parent().html();
 		var old_inscription = $(inscription).parent().html();
 
 		// Changement
-		$(connexion).html(__("Disconnection")).attr("href","deconnexion");			
-		$(inscription).html(__("Mon compte")).attr("href","compte");			
+		$(connexion).html(__("Disconnection")).attr("href", function(i, val) {
+			return val.replace("connexion", "deconnexion");
+		});			
+		$(inscription).html(__("Mon compte")).attr("href", function(i, val) {
+			return val.replace("inscription", "compte");
+		});				
 
 		// Au clique sur les liens de déconnexion
 		$(connexion).on("click", function(event)
@@ -31,7 +35,7 @@ $(document).ready(function()
 	else
 	{
 		// Au clique sur les liens de connexion
-		$("a[href=connexion], a[href=login]").on("click", function(event)
+		$("a[href$=connexion], a[href$=login]").on("click", function(event)
 		{
 			event.preventDefault();
 

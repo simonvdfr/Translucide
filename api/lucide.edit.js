@@ -128,7 +128,7 @@ save = function(callback)
 	// On sauvegarde en ajax les contenus éditables
 	$.ajax({
 		type: "POST",
-		url: "api/ajax.admin.php?mode=update",
+		url: path+"api/ajax.admin.php?mode=update",
 		data: data
 	})
 	.done(function(html) {
@@ -301,7 +301,7 @@ dialog_transfert = function(mode, source, target, callback) {
 	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle apparaît/disparaît. Pas juste visibility:hidden/visible...
 
 	$.ajax({
-			url: "api/ajax.admin.php?mode=dialog-"+mode, 
+			url: path+"api/ajax.admin.php?mode=dialog-"+mode, 
 			data: {
 				"target": target,
 				"source": source.id || $("img", source).attr("id"),
@@ -463,7 +463,7 @@ upload = function(source, file, resize)
 
 			$.ajax({
 				type: "POST",
-				url: "api/ajax.admin.php?mode=upload-file",
+				url: path+"api/ajax.admin.php?mode=upload-file",
 				xhr: function() {
 					var xhr = $.ajaxSettings.xhr();
 					if(xhr.upload) {									
@@ -565,7 +565,7 @@ get_img = function(id, link)
 	// Resize de l'image et insertion dans la source
 	$.ajax({
 		type: "POST",
-		url: "api/ajax.admin.php?mode=get-img",
+		url: path+"api/ajax.admin.php?mode=get-img",
 		data: {
 			"img": $("#"+id).attr("data-file"),
 			"width": $("#dialog-media-width").val(),
@@ -834,7 +834,7 @@ $(document).ready(function()
 
 				// Cherche dans la base les pages manquantes
 				$.ajax({
-					url: "api/ajax.admin.php?mode=add-nav",
+					url: path+"api/ajax.admin.php?mode=add-nav",
 					data: {
 						"menu" : menu,
 						"nonce": $("#nonce").val()
@@ -1211,7 +1211,7 @@ $(document).ready(function()
 			if(!$("#user .layer").length && event.type == "mouseenter")
 			{
 				$.ajax({
-					url: "api/ajax.php?mode=user",
+					url: path+"api/ajax.php?mode=user",
 					data: {"nonce": $("#nonce").val()},
 					success: function(html){ 
 						$("#user").append(html);						
