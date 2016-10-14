@@ -50,8 +50,8 @@ function get_url($url_source = null)
 			unset($explode_path[0]);// Supp la racine des filtres
 
 			while(list($cle, $dir) = each($explode_path)) {
-				$explode_dir = array_map("encode", explode("_", $dir));
-				$GLOBALS["filtre"][$explode_dir[0]] = $explode_dir[1];
+				$explode_dir = explode("_", $dir);	
+				$GLOBALS["filtre"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_"));
 			}
 		}
 		else $url = encode($path);
@@ -72,7 +72,7 @@ function make_url($url, $filtre = array())
 		// Création des dossier dans l'url en fonction des filtres
 		while(list($cle, $val) = each($filtre)) {
 			if($cle == "page" and $val == 1) unset($filtre['page']);// Si Page == 1 on ne l'affiche pas dans l'url
-			elseif($val) $dir .= "/".$cle."_".$val;
+			elseif($val) $dir .= "/".encode($cle)."_".encode($val, "-", array(".","_"));
 		}
 	}
 
@@ -83,7 +83,7 @@ function make_url($url, $filtre = array())
 		if($domaine) $url = $GLOBALS['home'];
 	}
 	else {
-		$url = encode($url, "-", array("."));
+		$url = encode($url);
 
 		if($domaine) $url = $GLOBALS['home'] . $url;
 
