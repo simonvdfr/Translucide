@@ -23,25 +23,25 @@ body { transition: margin-top .2s linear; }
 	#admin-bar h3 { font-family: arial; }
 
 	#admin-bar #user i { color: #75898c; cursor: pointer; }
-		#admin-bar #user .layer { position: absolute; }
-		#admin-bar #user .layer .load { min-width: 298px; }
-		#admin-bar #user .layer i { color: #75898c; transition: color .3s; }
-		#admin-bar #user .layer i:hover { color: #6b6f7a; }
-		#admin-bar #user .layer li { 
+		#admin-bar #user .absolute { position: absolute; }
+		#admin-bar #user .absolute .load { min-width: 298px; }
+		#admin-bar #user .absolute i { color: #75898c; transition: color .3s; }
+		#admin-bar #user .absolute i:hover { color: #6b6f7a; }
+		#admin-bar #user .absolute li { 
 			background-color: #ffffff;
 			cursor: pointer;
 			transition: background-color .2s linear;
 		}
-			#admin-bar #user .layer li:nth-child(odd) { 
+			#admin-bar #user .absolute li:nth-child(odd) { 
 				background-color: #eaecec;
 			}
-			#admin-bar #user .layer li.next {
+			#admin-bar #user .absolute li.next {
 				background-color: #dbdfe0;
 				box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 				border-radius: 0 0 3px 3px;
 				text-align: center;
 			}
-			#admin-bar #user .layer li:hover { 
+			#admin-bar #user .absolute li:hover { 
 				background-color: #d8caa9;
 			}
 
