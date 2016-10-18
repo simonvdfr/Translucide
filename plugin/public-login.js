@@ -48,7 +48,7 @@ $(document).ready(function()
 
 				// Ouverture du login
 				$.ajax({
-					url: "plugin/public-login.php?ajax=true",
+					url: path+"plugin/public-login.php?ajax=true",
 					success: function(html){ 
 
 						// Formulaire de login
