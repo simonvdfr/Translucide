@@ -1208,7 +1208,7 @@ $(document).ready(function()
 			event.stopPropagation();
 			event.preventDefault();			
 
-			if(!$("#user .layer").length && event.type == "mouseenter")
+			if(!$("#user .absolute").length && event.type == "mouseenter")
 			{
 				$.ajax({
 					url: path+"api/ajax.php?mode=user",
@@ -1220,24 +1220,24 @@ $(document).ready(function()
 						close = false;
 						$(document).on("click",	
 							function(event) {
-								if(!$(event.target).parents().is("#user .layer") && $("#user .layer").is(":visible") && close == false)//event.type == 'click'
+								if(!$(event.target).parents().is("#user .absolute") && $("#user .absolute").is(":visible") && close == false)//event.type == 'click'
 									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegardé on shake
-										$("#user .layer > div").effect("highlight");
+										$("#user .absolute > div").effect("highlight");
 									else
-										$("#user .layer").fadeOut("fast", function(){ close = true; });
+										$("#user .absolute").fadeOut("fast", function(){ close = true; });
 							}
 						);
 					}
 				});
 			}
-			else if($("#user .layer").length && !$("#user .layer").is(":visible")&& close == true)// Si on click et que l'ajax a déjà été fait
+			else if($("#user .absolute").length && !$("#user .absolute").is(":visible")&& close == true)// Si on click et que l'ajax a déjà été fait
 			{
 				close = true;
-				$("#user .layer").fadeIn("fast", function(){ close = false; });
+				$("#user .absolute").fadeIn("fast", function(){ close = false; });
 			}
-			else if(event.type == 'click' && $("#user .layer").is(":visible") && close == false )// Si on click sur le bt user de l'admin-bar
+			else if(event.type == 'click' && $("#user .absolute").is(":visible") && close == false )// Si on click sur le bt user de l'admin-bar
 			{
-				$("#user .layer").fadeOut("fast", function(){ close = true; });
+				$("#user .absolute").fadeOut("fast", function(){ close = true; });
 			}
 		}
 	);
