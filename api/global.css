@@ -305,6 +305,7 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 .hidden { visibility: hidden; }
 .visible { visibility: visible !important; }
 .absolute { position: absolute; }
+.relative { position: relative; }
 
 
 /* Forms */
