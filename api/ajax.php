@@ -168,8 +168,8 @@ switch($_GET['mode'])
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
 			<script src="lucide.init.js"></script>
 			<style>
-				.layer { width: 100%; }
-				.tooltip { 
+				#user .absolute { width: 100%; }
+				#user .tooltip { 
 					max-width: 420px;
 					margin: auto;
 				}
@@ -215,7 +215,7 @@ switch($_GET['mode'])
 		login('medium');
 
 		?>
-		<div class="layer">
+		<div class="absolute">
 			<div class="tooltip slide-left pas mas mlt mod">
 				
 				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-sign-out big"></i></div>
@@ -272,7 +272,7 @@ switch($_GET['mode'])
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
 			{
 				// Supprime les métas
-				$connect->query("DELETE FROM ".$table_meta." WHERE type='user_info' AND cle='".(int)$_REQUEST['uid']."'");
+				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
 
 				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
 			}
@@ -460,7 +460,7 @@ switch($_GET['mode'])
 			$res = $sel->fetch_assoc();
 
 			// Récupération des infos sur l'utilisateur
-			$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE type='user_info' AND cle='".(int)$uid."' LIMIT 1");
+			$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
 			$res_meta = $sel_meta->fetch_assoc();
 
 			$array_auth = explode(",", $res['auth']);// Les autorisations
@@ -781,7 +781,7 @@ switch($_GET['mode'])
 				if($uid) 
 				{
 					// On regarde si il n'y a pas déjà des donnée dans la base
-					$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE type='user_info' AND cle='".(int)$uid."' LIMIT 1");
+					$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
 					$res_meta = $sel_meta->fetch_assoc();
 
 					// AJOUT DES DONNÉE EN MÉTA
@@ -794,9 +794,9 @@ switch($_GET['mode'])
 						$sql .= "val = '".addslashes(json_encode($_POST['meta'], JSON_UNESCAPED_UNICODE))."' ";
 
 						if($res_meta['id']) 
-							$sql .= "WHERE type = 'user_info' AND cle = '".(int)$uid."' LIMIT 1";
+							$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";
 						else 
-							$sql .= ", type = 'user_info', cle = '".(int)$uid."'";
+							$sql .= ", type = 'user_info', id = '".(int)$uid."'";
 						
 						$connect->query($sql);
 						

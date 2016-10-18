@@ -221,7 +221,7 @@ switch($_GET['mode'])
 			$sql .= "type = 'nav', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_nav)."' ";
-			if($res_nav['id']) $sql .= "WHERE id = '".$res_nav['id']."'";
+			if($res_nav['id']) $sql .= "WHERE type='nav' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
 
@@ -248,7 +248,7 @@ switch($_GET['mode'])
 			$sql .= "type = 'header', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_header)."' ";
-			if($res_header['id']) $sql .= "WHERE id = '".$res_header['id']."'";
+			if($res_header['id']) $sql .= "WHERE type='header' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
 
@@ -275,7 +275,7 @@ switch($_GET['mode'])
 			$sql .= "type = 'footer', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_footer)."' ";
-			if($res_footer['id']) $sql .= "WHERE id = '".$res_footer['id']."'";
+			if($res_footer['id']) $sql .= "WHERE type='footer' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
 
@@ -1074,13 +1074,12 @@ switch($_GET['mode'])
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_meta']."` (
-								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+								`id` bigint(20) UNSIGNED NOT NULL,
 								`type` varchar(32) NOT NULL,
 								`cle` varchar(255) NOT NULL,
 								`val` text NOT NULL,
-								PRIMARY KEY (`id`) USING BTREE,
-								KEY `type` (`type`),
-								KEY `cle` (`cle`)
+								PRIMARY KEY (`id`,`type`,`cle`),
+								KEY `type` (`type`,`cle`)
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 						");
 
