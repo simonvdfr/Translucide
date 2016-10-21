@@ -172,19 +172,21 @@ function txt($key = null, $filtre = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<".($filtre['tag']?$filtre['tag']:"div")." class='editable".($filtre['class']?" ".$filtre['class']:"")."' id='".encode($key)."'".($filtre['placeholder']?" placeholder=\"".utf8_encode($filtre['placeholder'])."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".($filtre['tag']?$filtre['tag']:"div").">";
+	echo"<".($filtre['tag']?$filtre['tag']:"div")." class='".($filtre['editable']?$filtre['editable']:"editable").($filtre['class']?" ".$filtre['class']:"")."' id='".encode($key)."'".($filtre['placeholder']?" placeholder=\"".utf8_encode($filtre['placeholder'])."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".($filtre['tag']?$filtre['tag']:"div").">";
 
 	$GLOBALS['editkey']++;
 }
 
 // Contenu image
-function img($key = null, $size = null, $zoom = null)
+function img($key = null, $filtre = array())
 {
 	$key = ($key ? $key : "img-".$GLOBALS['editkey']);
 
-	if($size) $size = explode("x", $size);
+	if(!is_array($filtre)) $filtre = array("size" => $filtre);
 
-	echo"<span class='editable-img'><img src=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"".(isset($size[0])?" width='".$size[0]."'":"")."".(isset($size[1])?" height='".$size[1]."'":"")." atl=\"\" class='".((isset($size[0]) and isset($size[1]))?"crop":"")."".($zoom?" zoom":"")."' id='".encode($key)."'></span>";
+	if($filtre['size']) $size = explode("x", $filtre['size']);
+
+	echo"<span class='".($filtre['editable']?$filtre['editable']:"editable-img")."'><img src=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"".(isset($size[0])?" width='".$size[0]."'":"")."".(isset($size[1])?" height='".$size[1]."'":"")." atl=\"\" class='".((isset($size[0]) and isset($size[1]))?"crop":"")."".($filtre['zoom']?" zoom":"")."' id='".encode($key)."'></span>";
 
 	$GLOBALS['editkey']++;
 }
@@ -194,27 +196,29 @@ function bg($key = null)
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
 
-	echo" id='".encode($key)."' data-editable='bg' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"";
+	echo" data-id='".encode($key)."' data-editable='bg' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"";
 
 	$GLOBALS['editkey']++;
 }
 
 // Contenu champ checkbox
-function checkbox($key = null)
+function checkbox($key = null, $filtre = array())
 {
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
-	echo"<i class='editable-checkbox fa fa-fw ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."' id='".encode($key)."'></i>";
+	echo"<i class='".($filtre['editable']?$filtre['editable']:"editable-checkbox")." fa fa-fw ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."' id='".encode($key)."'></i>";
 	
 	$GLOBALS['editkey']++;
 }
 
 // Contenu champ select
-function select($key = null, $option = null)
+function select($key = null, $filtre = array())
 {
 	$key = ($key ? $key : "select-".$GLOBALS['editkey']);
 
-	$option_decode = json_decode($option, true);
+	if(!is_array($filtre)) $filtre = array("option" => $filtre);
+
+	$option_decode = json_decode($filtre['option'], true);
 
 	if($option_decode[$GLOBALS['content'][$key]]) {
 		$selected_key = $GLOBALS['content'][$key];
@@ -225,7 +229,7 @@ function select($key = null, $option = null)
 		$selected_option = $option_decode[$selected_key];
 	}
 
-	echo"<span id='".encode($key)."' class='editable-select' data-option='".$option."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
+	echo"<span id='".encode($key)."' class='".($filtre['editable']?$filtre['editable']:"editable-select")."' data-option='".$filtre['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
 	
 	$GLOBALS['editkey']++;
 }
