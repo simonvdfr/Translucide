@@ -95,7 +95,7 @@ else// Sinon FORMULAIRE DE CONNEXION
 			$.ajax(
 			{ 
 				type: "POST",
-				url: "api/ajax.php?mode=login",
+				url: path+"api/ajax.php?mode=login",
 				data: { 
 					email: $("#public-login #email").val(),
 					password: $("#public-login #password").val(),
