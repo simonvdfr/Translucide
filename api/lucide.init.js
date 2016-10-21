@@ -259,7 +259,7 @@ $(document).ready(function()
 	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></a>");
 
 	// Page désactivé => message admin
-	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit_content")) {
+	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-content")) {
 		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("State") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
@@ -278,7 +278,7 @@ $(document).ready(function()
 	$("a.bt.edit").click(function() 
 	{
 		// Si la page n'est pas activée  et que l'on n'est pas admin on callback un reload
-		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit_content")) ? "reload_edit":"edit_launcher"));
+		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit-content")) ? "reload_edit":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
 		$("a.bt.fixed.add").fadeOut();
@@ -334,7 +334,7 @@ $(document).ready(function()
 			if(!$("#admin-bar").length && !$("#dialog-connect").length)
 			{
 				// Affichage du bouton d'édition  avec 50px de marge OU si on est admin
-				if(($(document).height() - 50) <= ($(window).height() + $(window).scrollTop()) || get_cookie("auth").indexOf("edit_content")) 
+				if(($(document).height() - 50) <= ($(window).height() + $(window).scrollTop()) || get_cookie("auth").indexOf("edit-content")) 
 				{	
 					// Décale l'icone si il y a le bt to top
 					if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit").css("right","70px");
@@ -356,7 +356,7 @@ $(document).ready(function()
 
 	
 	// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
-	if(get_cookie("auth").indexOf("edit_content") && !$("#admin-bar").length && !$("#dialog-connect").length)
+	if(get_cookie("auth").indexOf("edit-content") && !$("#admin-bar").length && !$("#dialog-connect").length)
 	{
 		// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
 		$(document).keyup(function(event) {			

@@ -232,7 +232,7 @@ switch($_GET['mode'])
 				
 				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-sign-out big"></i></div>
 
-				<?if($_SESSION['auth']['edit_user']) {?>
+				<?if($_SESSION['auth']['edit-user']) {?>
 				<div id="add-user" class="fr prs" title="<?_e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
 				<div id="list-user" class="fr prs" title="<?_e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
 				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-user"></i></div>
@@ -277,7 +277,7 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 
-		login('high', 'edit_user');
+		login('high', 'edit-user');
 
 		if($_REQUEST['uid'] != $_SESSION['uid']) 
 		{
@@ -297,7 +297,7 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 
-		login('medium', 'edit_user');
+		login('medium', 'edit-user');
 		
 		if(!isset($_POST['search']) and !isset($_POST['page']))
 		{
@@ -321,7 +321,7 @@ switch($_GET['mode'])
 		$sql .= "WHERE 1 ";
 		
 		// L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
-		if(!$_SESSION['auth']['edit_admin']) $sql .= "AND FIND_IN_SET('edit_admin', auth)=0 ";
+		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
 
 		if($search)
 		{
@@ -446,7 +446,7 @@ switch($_GET['mode'])
 		
 		include_once("db.php");// Connexion à la db
 
-		login('high', 'edit_user');
+		login('high', 'edit-user');
 
 
 	case "profil":// AFFICHAGE DU FORMULAIRE UTILISATEUR
@@ -459,7 +459,7 @@ switch($_GET['mode'])
 		if($_GET['mode'] != "add-user") 
 		{
 			// Si l'utilisateur a affiché est diff de l'utilisateur en cours on vérifie que l'on est admin
-			if($_REQUEST['uid'] and $_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit_user');
+			if($_REQUEST['uid'] and $_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit-user');
 			else login('medium');
 
 			$uid = ($_REQUEST['uid'] ? $_REQUEST['uid'] : $_SESSION['uid']);
@@ -477,7 +477,7 @@ switch($_GET['mode'])
 			$oauth = json_decode($res['oauth'], true);// Les api tiers
 			
 			// On vérifie que l'on a le droit d'éditer les utilisateurs admin si fiche admin
-			if(array_search("edit_admin", $array_auth) !== false) login('medium', 'edit_admin');
+			if(array_search("edit-admin", $array_auth) !== false) login('medium', 'edit-admin');
 		}
 		
 		if($_GET['mode'] == "add-user") $h3 = __("Add user");
@@ -493,7 +493,7 @@ switch($_GET['mode'])
 
 			<div class="mbt">
 				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
-				<? if($_SESSION['auth']['edit_user']){?>
+				<? if($_SESSION['auth']['edit-user']){?>
 					<select id="state" class="fa-select">
 						<option value="active">&#xf00c; <?_e("Active")?></option>
 						<option value="moderate">&#xf06e; <?_e("Moderate")?></option>
@@ -509,27 +509,27 @@ switch($_GET['mode'])
 
 			<div class="mbs" style="max-height: 100px;">
 				<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
-				<select id="auth" class="fa-select" multiple <?=(!$_SESSION['auth']['edit_admin']?"disabled":"");?>>
-					<option value="edit_admin">&#xf21b; <?_e("Managing admins")?></option>
-					<option value="edit_user">&#xf007; <?_e("Managing users")?></option>
+				<select id="auth" class="fa-select" multiple <?=(!$_SESSION['auth']['edit-admin']?"disabled":"");?>>
+					<option value="edit-admin">&#xf21b; <?_e("Managing admins")?></option>
+					<option value="edit-user">&#xf007; <?_e("Managing users")?></option>
 
-					<option value="edit_config">&#xf013; <?_e("Edit Config")?></option>
+					<option value="edit-config">&#xf013; <?_e("Edit Config")?></option>
 
-					<option value="edit_content">&#xf0f6; <?_e("Edit content")?></option>
-					<option value="add_page">&#xf067; <?_e("Add page")?></option>
+					<option value="edit-content">&#xf0f6; <?_e("Edit content")?></option>
+					<option value="add-page">&#xf067; <?_e("Add page")?></option>
 
-					<option value="upload_file">&#xf093; <?_e("Send Files")?></option>
+					<option value="upload-file">&#xf093; <?_e("Send Files")?></option>
 
-					<option value="edit_nav">&#xf0ca; <?_e("Edit menu")?></option>
-					<option value="edit_header">&#xf0a6; <?_e("Edit header")?></option>
-					<option value="edit_footer">&#xf0a7; <?_e("Edit footer")?></option>
+					<option value="edit-nav">&#xf0ca; <?_e("Edit menu")?></option>
+					<option value="edit-header">&#xf0a6; <?_e("Edit header")?></option>
+					<option value="edit-footer">&#xf0a7; <?_e("Edit footer")?></option>
 
-					<option value="edit_article">&#xf09e; <?_e("Edit article")?></option>
+					<option value="edit-article">&#xf09e; <?_e("Edit article")?></option>
 
-					<option value="edit_product">&#xf07a; <?_e("Edit product")?></option>
+					<option value="edit-product">&#xf07a; <?_e("Edit product")?></option>
 
-					<option value="edit_public">&#xf0a1; <?_e("Public content")?></option>
-					<option value="upload_public">&#xf114; <?_e("Public file")?></option>
+					<option value="edit-public">&#xf0a1; <?_e("Public content")?></option>
+					<option value="upload-public">&#xf114; <?_e("Public file")?></option>
 				</select>
 				<script>
 				$.each("<?=$res['auth']?>".split(','), function(cle, val){ 
@@ -704,11 +704,11 @@ switch($_GET['mode'])
 			$uid = $insert_user = $insert_meta = null;
 			
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
-			if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('high', 'edit_user');
+			if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('high', 'edit-user');
 			elseif($_REQUEST['uid'])
 			{
 				// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
-				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit_user');
+				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
 				else login('high');
 
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
@@ -740,13 +740,13 @@ switch($_GET['mode'])
 				$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
 			
 			// État d'activation
-			if($_SESSION['auth']['edit_user'] and $_POST['state'])
+			if($_SESSION['auth']['edit-user'] and $_POST['state'])
 				$sql .= "state = '".$_POST['state']."', ";
 			elseif(!$_REQUEST['uid']) 
 				$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
 			
 			// Droit d'accès
-			if($_SESSION['auth']['edit_admin'] and $_POST['auth'])
+			if($_SESSION['auth']['edit-admin'] and $_POST['auth'])
 				$sql .= "auth = '".implode(",", $_POST['auth'])."', ";
 			elseif(!$_REQUEST['uid']) 
 				$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
@@ -871,7 +871,7 @@ switch($_GET['mode'])
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 							
-							<?if($_SESSION['auth']['edit_user']){?>// Peut éditer les users
+							<?if($_SESSION['auth']['edit-user']){?>// Peut éditer les users
 
 								$("#save-user span").html("<?_e("Save")?>");
 

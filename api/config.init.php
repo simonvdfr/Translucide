@@ -86,13 +86,13 @@ $GLOBALS['public_account'] = false;
 $GLOBALS['default_state'] = "active";// moderate / mail / active / deactivate
 
 // Niveaux d'authentification par défaut des comptes utilisateur
-$GLOBALS['default_auth'] = "edit_public,upload_public";
+$GLOBALS['default_auth'] = "edit-public,upload-public";
 
 // Info supplémentaire sur l'utilisateur
 $GLOBALS['meta_user'] = null;
 
 // Niveaux d'authentification possible
-$GLOBALS['auth_level'] = array("edit_admin", "edit_user", "edit_config", "edit_content", "add_page", "upload_file", "edit_nav", "edit_header", "edit_footer", "edit_article", "edit_product", "edit_public", "upload_public");
+$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-content", "add-page", "upload-file", "edit-nav", "edit-header", "edit-footer", "edit-article", "edit-product", "edit-public", "upload-public");
 
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = "medium";

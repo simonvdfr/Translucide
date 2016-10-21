@@ -16,7 +16,7 @@ switch($_GET['mode'])
 				
 		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
 		
-		login('high', 'edit_content');// Vérifie que l'on a le droit d'éditer les contenus
+		login('high', 'edit-content');// Vérifie que l'on a le droit d'éditer les contenus
 		
 		// Si on doit recharger la page avant de lancer le mode édition
 		if($_REQUEST['callback'] == "reload_edit")
@@ -61,7 +61,7 @@ switch($_GET['mode'])
 
 		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
 
-		login('medium', 'add_page');// Vérifie que l'on a le droit d'ajouter une page
+		login('medium', 'add-page');// Vérifie que l'on a le droit d'ajouter une page
 
 		// Dialog : titre, template, langue
 		?>
@@ -135,7 +135,7 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 		
-		login('high', 'add_page');// Vérifie que l'on a le droit d'ajouter une page
+		login('high', 'add-page');// Vérifie que l'on a le droit d'ajouter une page
 
 		$url = (encode($_POST['permalink']) ? encode($_POST['permalink']) : encode($_POST['title']));
 
@@ -169,7 +169,7 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 		
-		login('high', 'edit_content');// Vérifie que l'on peut éditer une page
+		login('high', 'edit-content');// Vérifie que l'on peut éditer une page
 
 		//highlight_string(print_r($_POST['content'], true)); exit;
 		
@@ -329,7 +329,7 @@ switch($_GET['mode'])
 
 	case "make-permalink":// Construit un permalink
 
-		login('medium', 'edit_content');// Vérifie que l'on a le droit d'éditer une page
+		login('medium', 'edit-content');// Vérifie que l'on a le droit d'éditer une page
 
 		echo encode($_POST['title']);
 
@@ -338,7 +338,7 @@ switch($_GET['mode'])
 
 	case "add-nav":// Liste les pages absente du menu
 		
-		login('medium', 'edit_nav');// Vérifie que l'on est admin
+		login('medium', 'edit-nav');// Vérifie que l'on est admin
 
 		$menu = array();
 
@@ -367,7 +367,7 @@ switch($_GET['mode'])
 
 	case "dialog-media":// Affichage des médias
 		
-		login('medium', 'upload_file');// Vérifie que l'on est admin
+		login('medium', 'upload-file');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		
@@ -643,7 +643,7 @@ switch($_GET['mode'])
 		// @todo: mettre player html5 si vidéo ou audio pour avoir la preview et possibilité de jouer les médias en mode zoom
 		// @todo: ajouter un bouton de nettoyage qui scanne les contenus et regarde si les fichiers sont utilisés
 		
-		login('medium', 'upload_file');// Vérifie que l'on est admin
+		login('medium', 'upload-file');// Vérifie que l'on est admin
 
 		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".($_GET['filter'] == "resize" ? "resize/":"");
 		
@@ -788,7 +788,7 @@ switch($_GET['mode'])
 	
 	case "del-file":// Supprime un fichier
 
-		login('medium', 'upload_file');// Vérifie que l'on est admin
+		login('medium', 'upload-file');// Vérifie que l'on est admin
 
 		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		
@@ -797,7 +797,7 @@ switch($_GET['mode'])
 
 	case "get-img":// Renvoi une image et la resize si nécessaire
 
-		login('medium', 'upload_file');// Vérifie que l'on est admin
+		login('medium', 'upload-file');// Vérifie que l'on est admin
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
@@ -810,7 +810,7 @@ switch($_GET['mode'])
 
 	case "upload-file":// Envoi d'une image sur le serveur et la resize si nécessaire
 			
-		login('medium', 'upload_file');// Vérifie que l'on est admin
+		login('medium', 'upload-file');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		//echo "_FILES:<br>"; highlight_string(print_r($_FILES, true));
@@ -868,7 +868,7 @@ switch($_GET['mode'])
 
 	case "dialog-icon":// Affichage des médias
 		
-		login('medium', 'edit_content');// Vérifie que l'on est admin
+		login('medium', 'edit-content');// Vérifie que l'on est admin
 
 		// @todo: ajouter une recherche en js (qui masque)
 		?>
@@ -952,7 +952,7 @@ switch($_GET['mode'])
 				
 		//@todo: check si access token facebook disponible
 
-		login('medium', 'edit_content');// Vérifie que l'on est admin
+		login('medium', 'edit-content');// Vérifie que l'on est admin
 
 		// https://graph.facebook.com/me/albums
 		// https://graph.facebook.com/id-album/photos?fields=source,name,id,link&access_token=
