@@ -43,7 +43,8 @@ function get_url($url_source = null)
 	else
 	{
 		// Si il y a des filtres dans l'url
-		if(strstr($parse_url['path'], "/")) {
+		if(strstr($parse_url['path'], "/")) 
+		{
 			$explode_path = explode("/", $path);
 
 			$url = $explode_path[0];// Url raçine
@@ -72,7 +73,7 @@ function make_url($url, $filtre = array())
 		// Création des dossier dans l'url en fonction des filtres
 		while(list($cle, $val) = each($filtre)) {
 			if($cle == "page" and $val == 1) unset($filtre['page']);// Si Page == 1 on ne l'affiche pas dans l'url
-			elseif($val) $dir .= "/".encode($cle)."_".encode($val, "-", array(".","_"));
+			elseif($val) $dir .= "/" . (($cle and $cle !=$val) ? encode($cle)."_" : "") . encode($val, "-", array(".","_"));
 		}
 	}
 
@@ -147,8 +148,10 @@ function add_translation($add_translation)
 }
 
 // Retourne une traduction
-function __($txt)
+function __($singulier, $pluriel = "", $num = 0)
 {
+	if($num > 1) $txt = $pluriel; else $txt = $singulier;
+
 	// Si une traduction existe
 	if($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]) 
 		$txt = $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
@@ -157,9 +160,9 @@ function __($txt)
 }
 
 // Affichage d'une traduction
-function _e($txt)
+function _e($singulier, $pluriel = "", $num = 0)
 {
-	echo __($txt);
+	echo __($singulier, $pluriel, $num);
 }
 
 
