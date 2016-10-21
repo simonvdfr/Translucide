@@ -71,7 +71,17 @@ get_content = function(content)
 	
 	// Contenu des bg images éditables
 	$(document).find(content+" [data-editable='bg']").each(function() {
-		if($(this).attr("data-bg")) data[content_array][this.id] = $(this).attr("data-bg");
+		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
+	});
+	
+	// Checkbox fa
+	$(document).find(content+" .editable-checkbox").each(function() {
+		if($(this).hasClass("fa-check")) data[content_array][$(this).attr("id")] = true;							
+	});
+
+	// Contenu des input
+	$(document).find(content+" input, "+content+" select").each(function() {
+		data[content_array][$(this).attr("id")] = $(this).val();
 	});
 
 	// Contenu des input hidden éditables
@@ -148,6 +158,12 @@ save = function(callback)
 tosave = function() {	
 	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
 	$("#save, #preview").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
+}
+
+
+// Champs requis
+$.fn.required = function(txt){						
+	$(this).addClass("invalid").attr("title", txt).tooltip().tooltip("open").focus().effect("highlight");
 }
 
 
@@ -752,6 +768,20 @@ $(document).ready(function()
 	$(".editable").attr("contenteditable","true");
 
 
+	// Si readonly
+	$(".editable.readonly").attr("contenteditable", false);
+
+	// Si champ numerique on ne garde que les chiffre et les points
+	$(".editable.number").on("keypress", function(event){//input keyup keydown change
+		if(
+			(!/^(46|44)$/.test(event.keyCode) && !(event.keyCode >= 48 && event.keyCode <= 57))// Si pas point/virgule et pas chiffre
+			||
+			(/^(46|44)$/.test(event.keyCode) && /[.,]/.test(this.innerHTML))// Si point/virgule si déjà présent
+		) 
+		event.preventDefault(); 
+	});
+
+
 
 	/************** MENU NAV **************/
 
@@ -826,7 +856,7 @@ $(document).ready(function()
 	add_page = false;
 	$("header").on({
 		"mouseenter": function(event) {
-			if(!add_page) 
+			if(!add_page)
 			{
 				// Liste les pages déjà dans le menu
 				var menu = {};
@@ -1186,6 +1216,38 @@ $(document).ready(function()
 	});
 	$("label.none").slideDown();
 	$(".editable-hidden").slideDown();
+
+
+	/************** CHAMPS SELECT **************/
+	$(".editable-select").attr("data-option", function(i, data) {
+		
+		// Option sélectionnée
+		var selected = $(".editable-select").attr("data-selected");
+
+		// Extraction du json
+		var json = jQuery.parseJSON(data);							
+		
+		// Création des options avec le json
+		var html = '';
+		$.each(json, function(cle, val){ html += '<option value="'+ cle +'"'+(cle == selected?" selected":"")+'>'+ val +'</option>'; });
+		
+		// Les attribue
+		var attr = {};
+		$.each(this.attributes, function() { attr[this.name] = this.value; });
+		
+		// Remplace les select
+		$(".editable-select").replaceWith($("<select/>", attr).html(html));
+	})
+
+
+	/************** CHAMPS CHECKBOX **************/
+	$(".editable-checkbox, [for]").on("click", function(event) {//@todo voir si le [for] ne crée pas de bug collatérale
+		if($(this).attr("for")) id = $(this).attr("for");
+		else id = this.id;
+
+		if($("#"+id).hasClass("fa-check")) $("#"+id).removeClass("fa-check yes").addClass("fa-times no");
+		else $("#"+id).removeClass("fa-times no").addClass("fa-check yes");
+	})
 
 
 	/************** SLIDESHOW **************/
