@@ -167,6 +167,10 @@ switch($_GET['mode'])
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
 			<script src="lucide.init.js"></script>
+			
+			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
+			<?if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."admin.init.js")){?><script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>admin.init.js"></script><?}?>
+
 			<style>
 				#user .absolute { width: 100%; }
 				#user .tooltip { 
@@ -188,11 +192,19 @@ switch($_GET['mode'])
 			</div>
 
 			<script>
+			path = "<?=$GLOBALS['path']?>";
+
 			$(document).ready(function()
 			{
+				// Injection du la fiche user
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=user&uid=<?=(int)$_REQUEST['uid']?>&callback=reload", data: { nonce: $("#nonce").val() } })
 					.done(function(html) { 
 						$("#user").html(html);
+
+						// Execution des fonctions d'edition des plugins
+						$(edit).each(function(key, funct){
+							funct();
+						});
 					});
 			});
 			</script>
@@ -440,10 +452,7 @@ switch($_GET['mode'])
 	case "profil":// AFFICHAGE DU FORMULAIRE UTILISATEUR
 
 		// @todo ajouter une icône a coté du picto de state pour re-envoyer le mail d'activation à l'utilisateur / bt pour passer l'utilisateur en 'active' si en mode 'moderate'
-		// @todo: checkbox pour permet de voir le pwd quand on le tape (change le type de input)
 		// @todo: autocomplet sur les champs de connexion d'api tiers (fb, g+...)
-
-		// @TODO: AJOUTER L'AFFICHAGE DES METAS DE L'UTILISATEUR
 
 		include_once("db.php");// Connexion à la db
 
@@ -556,15 +565,16 @@ switch($_GET['mode'])
 
 			<?
 			// Si il y a des méta/infos complementaire pour cette utilisateur
-			if($res_meta['val']) 
+			if(is_array($GLOBALS['meta_user'])) 
 			{		
 				?>
-				<div class="mbs"><?
+				<div class="meta mbs"><?
+					
+					if($res_meta['val']) $metas = json_decode($res_meta['val'], true);
 
-					$metas = json_decode($res_meta['val'], true);
-					while(list($cle, $val) = each($metas))
+					while(list($cle, $val) = each($GLOBALS['meta_user']))
 					{
-						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($cle)?></label> <input type="text" id="meta[<?=$cle?>]" value="<?=$val?>" class="w60"></div><?
+						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="meta[<?=$cle?>]" value="<?=$metas[$cle]?>" class="w60"></div><?
 					}			
 					
 				?></div><?
