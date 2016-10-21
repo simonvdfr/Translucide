@@ -15,7 +15,7 @@ function onYouTubePlayerAPIReady(){
 	$("[data-youtube]").each(function(i)
 	{
 		var contener = this;
-		var addsize = 100;
+		var addsize = 0;//100
 
 		// Récupère l'id du bloc qui doit contenir une vidéo ou en crée un
 		if(!$(contener).attr("id")) uid_bg_video = $(contener).attr("id", "youtube-" + i);
@@ -52,13 +52,16 @@ function onYouTubePlayerAPIReady(){
 						// On étire un peut la vidéo pour cacher le logo Youtube
 							// Dimension du conteneur supérieur
 							var h = $(contener).height() + addsize;
+							var w = $(contener).width() + addsize;
 							
 							// Taille du player
-							player.setSize(h*16/9, h);
+							//player.setSize(h*16/9, h);
+							player.setSize(w, w/(16/9));
 							
 							// Position du player
 							$("#video-"+uid_bg_video).css({
-								"top": - addsize / 2,
+								//"top": - addsize / 2,
+								"top": - (( (w/(16/9)) / 2) - h),
 								"left": ($(contener).width() - $("#video-"+uid_bg_video).width()) / 2
 							});
 						
