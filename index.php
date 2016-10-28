@@ -4,8 +4,6 @@ include_once("api/fonction.php");// Fonctions
 
 include_once("api/db.php");// Connexion à la db
 
-// Change l'id de la session pour éviter le vol de session 
-session_regenerate_id(true);
 
 // Pour éviter le duplicate avec index.php
 if(stristr($_SERVER['REQUEST_URI'], 'index.php')){
