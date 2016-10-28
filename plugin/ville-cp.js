@@ -28,6 +28,8 @@ function autocomplete_ville(form, ville, cp, id)
 			$(form+" "+ville).val(ui.item.label);
 			$(form+" "+cp).val(ui.item.value);
 			$(form+" "+id).val(ui.item.id);
+
+			$(form+" "+ville)[0].setCustomValidity("");
 			
 			// Si on a trouvé une ville dans la base
 			if($(form+" "+id).val() != "") $(form+" .fa-globe").fadeIn().attr("title", "G\u00e9olocalisation sur "+ ui.item.label+ " - "+ ui.item.value);
