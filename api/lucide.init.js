@@ -41,6 +41,12 @@ set_cookie = function(key, val, days) {
 }
 
 
+// Detect si on est sur mobile
+ismobile = function(){
+	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return true; else return false;
+}
+
+
 // Déconnexion
 logout = function() {
 	$.ajax({
