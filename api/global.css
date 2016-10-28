@@ -271,9 +271,9 @@ em, .italic, address, cite, i, var { font-style: italic; }
 		display: block !important;
 	}
 
-.txtleft, .tl { text-align: left; }
-.txtright, .tr { text-align: right; }
-.txtcenter, .tc { text-align: center; }
+.txtleft, .tl { text-align: left !important; }
+.txtright, .tr { text-align: right !important; }
+.txtcenter, .tc { text-align: center !important; }
 .txtjustify, .tj { text-align: justify; }
 
 .fl { float: left; }
@@ -380,6 +380,10 @@ input[type="reset"].unstyled:focus {
 
 /* Curseur */
 .pointer { cursor: pointer; }
+
+/* Lien */
+.tdn { text-decoration: none !important; }
+.tdn:hover { text-decoration: none !important; }
 
 
 /* Légère transition sur les FontAwesome */
@@ -489,7 +493,8 @@ input[type="reset"].unstyled:focus {
 		padding: 0.5rem;
 	}
 	.bt.fixed.edit { 	
-		transition: right .1s;		
+		transition: right .1s;	
+		opacity: 0.2;
 	}
 	.bt.fixed.add { 
 		margin-bottom: 10px;
