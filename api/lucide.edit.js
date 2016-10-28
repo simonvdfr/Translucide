@@ -79,8 +79,8 @@ get_content = function(content)
 		if($(this).hasClass("fa-check")) data[content_array][$(this).attr("id")] = true;							
 	});
 
-	// Contenu des input
-	$(document).find(content+" input, "+content+" select").each(function() {
+	// Contenu des select // content+" input, "+
+	$(document).find(content+" .editable-select").each(function() {
 		data[content_array][$(this).attr("id")] = $(this).val();
 	});
 
