@@ -34,7 +34,7 @@ switch($_GET['mode'])
 			?>
 			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
 
-			<link rel="stylesheet" href="api/lucide.css?0.1">
+			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
 
 			<script>				
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
@@ -42,7 +42,7 @@ switch($_GET['mode'])
 			
 				// Lib qui rend le contenu éditable
 				var script = document.createElement('SCRIPT');
-				script.src = "api/lucide.edit.js?0.1";
+				script.src = path+"api/lucide.edit.js?0.1";
 				document.body.appendChild(script);
 			</script>
 			<?
