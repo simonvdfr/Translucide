@@ -216,12 +216,12 @@ switch($_GET['mode'])
 			$json_nav = json_encode($_POST['nav'], JSON_UNESCAPED_UNICODE);
 			
 			// Insert ou update ?
-			if($res_nav['id']) $sql = "UPDATE"; else $sql = "INSERT INTO";
+			if($res_nav['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
 			$sql .= " ".$table_meta." SET ";
 			$sql .= "type = 'nav', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_nav)."' ";
-			if($res_nav['id']) $sql .= "WHERE type='nav' AND cle='".$lang."' LIMIT 1";
+			if($res_nav['type']) $sql .= "WHERE type='nav' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
 
@@ -243,12 +243,12 @@ switch($_GET['mode'])
 			$json_header = json_encode($_POST['header'], JSON_UNESCAPED_UNICODE);
 			
 			// Insert ou update ?
-			if($res_header['id']) $sql = "UPDATE"; else $sql = "INSERT INTO";
+			if($res_header['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
 			$sql .= " ".$table_meta." SET ";
 			$sql .= "type = 'header', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_header)."' ";
-			if($res_header['id']) $sql .= "WHERE type='header' AND cle='".$lang."' LIMIT 1";
+			if($res_header['type']) $sql .= "WHERE type='header' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
 
@@ -270,12 +270,12 @@ switch($_GET['mode'])
 			$json_footer = json_encode($_POST['footer'], JSON_UNESCAPED_UNICODE);
 			
 			// Insert ou update ?
-			if($res_footer['id']) $sql = "UPDATE"; else $sql = "INSERT INTO";
+			if($res_footer['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
 			$sql .= " ".$table_meta." SET ";
 			$sql .= "type = 'footer', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_footer)."' ";
-			if($res_footer['id']) $sql .= "WHERE type='footer' AND cle='".$lang."' LIMIT 1";
+			if($res_footer['type']) $sql .= "WHERE type='footer' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
 
