@@ -1,7 +1,7 @@
 <?
 if($_GET['ajax']) {
 	@include_once("../config.php");// Les variables
-	@include_once("../api/fonction.php");// Fonction
+	@include_once("../api/function.php");// Fonction
 
 	$lang = get_lang();// Sélectionne la langue
 	load_translation('api');// Chargement des traductions du système

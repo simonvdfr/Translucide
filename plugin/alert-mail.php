@@ -10,7 +10,7 @@ if($_POST["email"] and !$_POST["champ_vide"])// champ_vide pour éviter les bots 
 
 		if(filter_var($email, FILTER_VALIDATE_EMAIL))// Email valide
 		{
-			include_once("../api/fonction.php");
+			include_once("../api/function.php");
 			include_once("../api/db.php");
 
 			$nom = $GLOBALS['connect']->real_escape_string($_POST["nom"]);

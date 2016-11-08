@@ -1,7 +1,7 @@
 <?
 if($_GET['mode'] == "setup-update") include_once("config.init.php");// Les variables par défaut
 @include_once(($_GET['mode'] == "setup" ? "" : "../")."config.php");// Les variables mais avec if au cas où  on lance depuis l'install
-include_once("fonction.php");// Fonction
+include_once("function.php");// Fonction
 
 $lang = get_lang();// Sélectionne  la langue
 load_translation('api');// Chargement des traductions du système

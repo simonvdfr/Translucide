@@ -1,6 +1,6 @@
 <?
 @include_once("config.php");// Variables
-include_once("api/fonction.php");// Fonctions
+include_once("api/function.php");// Fonctions
 
 include_once("api/db.php");// Connexion à la db
 

@@ -1,6 +1,6 @@
 <?
 include_once("../config.php");// Les variables
-include_once("fonction.php");// Fonction
+include_once("function.php");// Fonction
 include_once("db.php");// Connexion à la db
 
 header('Content-Type:text/xml;');
