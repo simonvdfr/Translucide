@@ -168,6 +168,8 @@ header:hover .dragger { display: block; }
 /* Menu d'ajout/supp au menu */
 #add-nav {
 	position: fixed;
+
+	right: -3rem;/*@todo voir si ça ne crée pas de bug*/
     	
 	min-width: 210px;
     margin-left: -6rem;
