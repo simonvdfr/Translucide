@@ -795,17 +795,13 @@ div.editable {
     100% { transform: translateY(0); }
 }
 @keyframes slide-right {
-    0% { transform: translateX(200%); }
+    0% { transform: translateX(100%); }
     100% { transform: translateX(0); }
 }
 @keyframes slide-left {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(0); }
 }
-
-.slide-left { animation: slide-left .3s 1 ease-out; }
-.slide-right { animation: slide-right .3s 1 ease-out; }
-
 
 /* Animation onscroll */
 .animation { transition: all 1s ease-out; }
@@ -818,21 +814,25 @@ div.editable {
 		backface-visibility: hidden;
 	}
 
-	.slide-right {
-		opacity: 0;
-		transform: translate3d(100px, 0, 0);
-		backface-visibility: hidden;
-	}
 	.slide-left {
 		opacity: 0;
 		transform: translate3d(-100px, 0, 0);
 		backface-visibility: hidden;
+
+		animation: slide-left .3s 1 ease-out;
+	}
+	.slide-right {
+		opacity: 0;
+		transform: translate3d(100px, 0, 0);
+		backface-visibility: hidden;
+		
+		animation: slide-right .3s 1 ease-out;
 	}
 
-	.fire {
-		opacity: 1;
-		transform: translate3d(0, 0, 0);
-	}
+		.fire {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
 
 
 

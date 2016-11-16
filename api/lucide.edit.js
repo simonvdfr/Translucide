@@ -683,7 +683,7 @@ $(document).ready(function()
 		adminbar+= "<div id='meta' class='fl mat w30 no-small-screen'>";
 			adminbar+= "<input type='text' id='title' value=\""+ document.title +"\" title=\""+ __("Page title") +"\" maxlength='60' class='w100 bold'>";
 			adminbar+= "<div class='w50'>";
-				adminbar+= "<div class='tooltip slide-left pas mas mlt'>";
+				adminbar+= "<div class='tooltip slide-left fire pas mas mlt'>";
 
 					adminbar+= "<div class='small'>"+ __("Description for search engines") +" :</div>";
 					adminbar+= "<input type='text' id='description' value=\""+ ($('meta[name=description]').attr("content") != undefined ? $('meta[name=description]').attr("content") : "") +"\" maxlength='160' class='w100'>";
@@ -739,7 +739,7 @@ $(document).ready(function()
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on('click',	function() {
-		$("#meta").addClass("tooltip slide-left pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle();			
+		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle();			
 	});
 
 
