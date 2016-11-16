@@ -757,7 +757,7 @@ div.editable {
 
 
 
-/* Animation générique */
+/* Animation keyframes */
 @keyframes fade-in {
 	0% { opacity: 0; }
 	100% { opacity: 1; }
@@ -806,7 +806,34 @@ div.editable {
 .slide-left { animation: slide-left .3s 1 ease-out; }
 .slide-right { animation: slide-right .3s 1 ease-out; }
 
-.tofadein { opacity: 0; }
+
+/* Animation onscroll */
+.animation { transition: all 1s ease-out; }
+
+	.fade-in { opacity: 0; }
+
+	.slide-up {
+		opacity: 0;
+		transform: translate3d(0, 100px, 0);
+		backface-visibility: hidden;
+	}
+
+	.slide-right {
+		opacity: 0;
+		transform: translate3d(100px, 0, 0);
+		backface-visibility: hidden;
+	}
+	.slide-left {
+		opacity: 0;
+		transform: translate3d(-100px, 0, 0);
+		backface-visibility: hidden;
+	}
+
+	.fire {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+
 
 
 /* hiding content */
