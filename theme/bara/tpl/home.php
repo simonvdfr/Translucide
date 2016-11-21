@@ -1,12 +1,16 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
 
-<!-- <section class="slideshow">	
-	<?slideshow('portfolio')?>	
-</section> -->
+<section class="fullpage zoom">	
+	<div style="background-image: url(media/z0.jpg);" class="z0"></div>
+	<div style="background-image: url(media/z1.png);" class="z1"></div>
+	<div style="background-image: url(media/z2.png);" class="z2"></div>
+	<div style="background-image: url(media/z3.png);" class="z3"></div>
+	<div style="background-image: url(media/dust.png);" class="dust"></div>
+</section>
 
 
-<section class="mw960p mod center">		
+<section class="mw960p mod center mtm">		
 
 	<div class="w50 fl txtcenter no-small-screen tofadein">
 		<?img('img-1')?>

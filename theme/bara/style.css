@@ -23,7 +23,7 @@ p { line-height: 1.8; }
 
 header {
 	position: relative;
-	z-index: 1;
+	z-index: 10;
 }
 	header #header-logo { transition: opacity .5s; }
 		header #header-logo:hover { opacity: 0.6; }
@@ -137,6 +137,112 @@ header {
 		width: 100%;
 		height: 100%;
 	}
+
+
+/* Bg cover toutes la fenetre */
+.fullpage {
+	position: relative;
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+	
+
+	.zoom { margin-top: -80px; }
+
+	.zoom div {
+		position: absolute;
+		width: 100%;
+		min-height: 100vh;
+		background-size: cover;
+
+	    transform: scale(1.1);/* pour pouvoir un zoomout sur le fond on se cale à x0.1 a l'init */
+	}
+
+		@keyframes z0 {
+			0% { 
+				transform: scale(1.1) rotate(0.1deg);
+			}
+			50% { 
+				transform: scale(1) rotate(0.1deg);
+			}
+			100% { 
+				transform: scale(1.1) rotate(0.1deg);
+			}
+		}
+		.z0 {
+			z-index: 0;
+			animation: z0 20s 2;
+		}
+			/*.zoom:hover > .z0 { 
+				transform-origin: 50% 50%;
+				transform: scale(1) rotate(0.1deg);
+			}*/
+		
+		@keyframes z1 {
+			0% { 
+				transform-origin: 50% 50%;
+			}
+			50% { 
+				transform-origin: 20% 50%;
+			}
+			100% { 
+				transform-origin: 50% 50%;
+			}
+		}
+		.z1 {
+			z-index: 1;
+			animation: z1 20s 2;
+		}
+			/*.zoom:hover > .z1 { 
+				transform-origin: 20% 50%;
+			}*/
+		
+		.z2 {z-index: 2;}
+
+		@keyframes z3 {
+			0% { 
+				transform-origin: 50% 50%;
+				transform: scale(1.1) rotate(0.1deg);
+			}
+			50% { 
+				transform-origin: 40% 100%;
+				transform: scale(1.15) rotate(0.1deg);
+			}
+			100% { 
+				transform-origin: 50% 50%;
+				transform: scale(1.1) rotate(0.1deg);
+			}
+		}
+		.z3 {
+			z-index: 3;
+			animation: z3 20s 2;
+		}
+			/*.zoom:hover > .z3 { 
+				transform-origin: 40% 100%;
+				transform: scale(1.2) rotate(0.1deg);
+			}*/
+		
+		@keyframes dust {
+			0% { 
+				transform: scale(1) rotate(0deg);
+			}
+			50% { 
+				transform: scale(1.3) rotate(20deg);
+			}
+			100% { 
+				transform: scale(1) rotate(0deg);
+			}
+		}
+		.dust {
+			z-index: 4;
+			mix-blend-mode: screen;
+			animation: dust 20s 2;
+		}
+			/*.zoom:hover > .dust { 
+				transform: scale(1.3) rotate(20deg);
+			}*/
+
 
 
 /* Bloc avec effet de paralax */
