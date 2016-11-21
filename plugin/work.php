@@ -1,6 +1,6 @@
 <?if(!$work) $work = "work";?>
 
-<ul id="<?=$work?>" class="tofadein">
+<ul id="<?=$work?>" class="animation fade-in">
 <?
 // Extrait les données work du tableau des contenu
 $keys = array_keys($GLOBALS['content']);

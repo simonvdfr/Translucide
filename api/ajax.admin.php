@@ -1282,7 +1282,7 @@ switch($_GET['mode'])
 								 $(".ui-state-highlight").slideUp("slow").fadeOut(function() {
 									 window.location.reload();// window.location = window.location.href;
 								 });
-							}, 5000);
+							}, 4000);
 						</script>
 						<?
 
@@ -1393,12 +1393,20 @@ switch($_GET['mode'])
 			<link rel="stylesheet" href="api/global.css?">
 
 			<style>
+			label { 
+				text-align: right;
+				padding-right: 1rem;
+			}
+
 			@media screen and (max-width: 640px) 
 			{
 				.w80 { width: 95%; }
 				.w10, .w20, .w30, .w50, .w60 { width: 90%; }
 
-				label { display: block; }
+				label { 
+					display: block;
+					text-align: left;
+				}
 			}
 			</style>
 
@@ -1453,98 +1461,102 @@ switch($_GET['mode'])
 		</head>
 		<body>
 
-			<div class="center w80">
+			<div class="w80 center">
 
-				<form id="setup">
+				<h2><?_e("Site Installation");?></h2>
 
-					<input type="hidden" id="nonce" name="nonce" value="<?=nonce("nonce");?>">
-					
-					<h2><?_e("Site Installation");?></h2>
+				<div class="layer mod pam mbm">
 
-					<ul class="unstyled">
+					<form id="setup">
 
-						<li><label class="w30"><?_e("Address database");?></label> <input type="text" id="db_server" value="<?=$GLOBALS['db_server'];?>" placeholder="localhost" required class="w60 vatt"></li>
-						
-						<li><label class="w30"><?_e("Name of the data base");?></label> <input type="text" id="db" value="<?=$GLOBALS['db'];?>" required class="w60 vatt"></li>
-						
-						<li><label class="w30"><?_e("MySQL Username");?></label> <input type="text" id="db_user" value="<?=$GLOBALS['db_user'];?>" placeholder="root" required class="w60 vatt"></li>
-						
-						<li>
-							<label class="w30"><?_e("MySQL User Password");?></label> <input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="w60 vatt">
-							<a href="javascript:if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
-						</li>
-						
-						<li><label class="w30"><?_e("Table Prefix");?></label> <input type="text" id="db_prefix" value="<?=$GLOBALS['db_prefix'];?>" placeholder="tl_" class="w10 vatt"></li>
+						<input type="hidden" id="nonce" name="nonce" value="<?=nonce("nonce");?>">
 
+						<ul class="unstyled">
 
-						<li class="mtm"><label class="w30 bold"><?_e("Name of the site");?></label> <input type="text" id="sitename" value="<?=$sitename;?>" class="w60 vatt"></li>
-						<li>
-							<label class="w30"><?_e("Site theme");?></label>
-
-							<select id="theme" class="vatt">
-							<?
-							// Un thème dans la racine
-							if(file_exists("theme/header.php")) echo"<option value=\"\"".($GLOBALS['theme'] == "" ? " selected":"").">/</option>";
+							<li><label class="w30"><?_e("Address database");?></label> <input type="text" id="db_server" value="<?=$GLOBALS['db_server'];?>" placeholder="localhost" required class="w60 vatt"></li>
 							
-							// Des dossiers de thème
-							$scandir = array_diff(scandir("theme/"), array('..', '.', 'tpl'));
-							while(list($cle, $file) = each($scandir)) { 
-								if(is_dir("theme/".$file)) echo"<option value=\"".$file."/\"".($GLOBALS['theme'] == $file."/" ? " selected":"").">".$file."</option>";
-							}							
-							?>					
-							</select>
+							<li><label class="w30"><?_e("Name of the data base");?></label> <input type="text" id="db" value="<?=$GLOBALS['db'];?>" required class="w60 vatt"></li>
 							
-						</li>
-						<li><label class="w30"><?_e("Site Location");?></label> <input type="text" id="scheme_domain_path" value="<?=$scheme_domain_path;?>" required class="w60 vatt"></li>
+							<li><label class="w30"><?_e("MySQL Username");?></label> <input type="text" id="db_user" value="<?=$GLOBALS['db_user'];?>" placeholder="root" required class="w60 vatt"></li>
+							
+							<li>
+								<label class="w30"><?_e("MySQL User Password");?></label> <input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="w60 vatt">
+								<a href="javascript:if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
+							</li>
+							
+							<li><label class="w30"><?_e("Table Prefix");?></label> <input type="text" id="db_prefix" value="<?=$GLOBALS['db_prefix'];?>" placeholder="tl_" class="w10 vatt"></li>
 
 
-						<li class="mtm">
-							<label class="w30 bold"><i class="fa fa-fw fa-user-secret"></i> <?_e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
-						</li>
-						<li>
-							<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
-							<input type="password" id="password" required class="w60 vatt">
-							<a href="javascript:if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
-							<a href="javascript:$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a>
-						</li>
+							<li class="mtm"><label class="w30 bold"><?_e("Name of the site");?></label> <input type="text" id="sitename" value="<?=$sitename;?>" class="w60 vatt"></li>
+							<li>
+								<label class="w30"><?_e("Site theme");?></label>
 
-						<!-- 
-						<li class="mtl bold"><?_e("Option");?></li>
+								<select id="theme" class="vatt">
+								<?
+								// Un thème dans la racine
+								if(file_exists("theme/header.php")) echo"<option value=\"\"".($GLOBALS['theme'] == "" ? " selected":"").">/</option>";
+								
+								// Des dossiers de thème
+								$scandir = array_diff(scandir("theme/"), array('..', '.', 'tpl'));
+								while(list($cle, $file) = each($scandir)) { 
+									if(is_dir("theme/".$file)) echo"<option value=\"".$file."/\"".($GLOBALS['theme'] == $file."/" ? " selected":"").">".$file."</option>";
+								}							
+								?>					
+								</select>
+								
+							</li>
+							<li><label class="w30"><?_e("Site Location");?></label> <input type="text" id="scheme_domain_path" value="<?=$scheme_domain_path;?>" required class="w60 vatt"></li>
 
-						<li><label class="w30"><i class="fa fa-fw fa-line-chart"></i> <?_e("Google analytics code");?></label> <input type="text" id="google_analytics" placeholder="UA-00000000-1" class="w20 vatt"></li>
+
+							<li class="mtm">
+								<label class="w30 bold"><i class="fa fa-fw fa-user-secret"></i> <?_e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
+							</li>
+							<li>
+								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
+								<input type="password" id="password" required class="w60 vatt">
+								<a href="javascript:if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
+								<a href="javascript:$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a>
+							</li>
+
+							<!-- 
+							<li class="mtl bold"><?_e("Option");?></li>
+
+							<li><label class="w30"><i class="fa fa-fw fa-line-chart"></i> <?_e("Google analytics code");?></label> <input type="text" id="google_analytics" placeholder="UA-00000000-1" class="w20 vatt"></li>
 
 
-						<li class="mtm bold"><?_e("System login third");?></li>
+							<li class="mtm bold"><?_e("System login third");?></li>
 
-						<li class="mts">
-							<label class="w30"><i class="fa fa-fw fa-facebook-f"></i> <?_e("Id of the app facebook");?></label> <input type="text" id="facebook_api_id" placeholder="" class="w60 vatt">
-							<a href="https://developers.facebook.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-						</li>
-						<li><label class="w30"><?_e("Secret key of the app facebook");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
+							<li class="mts">
+								<label class="w30"><i class="fa fa-fw fa-facebook-f"></i> <?_e("Id of the app facebook");?></label> <input type="text" id="facebook_api_id" placeholder="" class="w60 vatt">
+								<a href="https://developers.facebook.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
+							</li>
+							<li><label class="w30"><?_e("Secret key of the app facebook");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
 
-						<li class="mts">
-							<label class="w30"><i class="fa fa-fw fa-google"></i> <?_e("Id of the app google");?></label> <input type="text" id="google_api_id" placeholder="" class="w60 vatt">
-							<a href="https://console.developers.google.com/apis/credentials/oauthclient" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-						</li>
-						<li><label class="w30"><?_e("Secret Key to google app");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
-						
-						<li class="mts">
-							<label class="w30"><i class="fa fa-fw fa-yahoo"></i> <?_e("Id of the app yahoo");?></label> <input type="text" id="yahoo_api_id" placeholder="" class="w60 vatt">
-							<a href="https://developer.yahoo.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-						</li>
-						<li><label class="w30"><?_e("Secret key to the app yahoo");?></label> <input type="text" id="yahoo_api_secret" placeholder="" class="w60 vatt"></li>
+							<li class="mts">
+								<label class="w30"><i class="fa fa-fw fa-google"></i> <?_e("Id of the app google");?></label> <input type="text" id="google_api_id" placeholder="" class="w60 vatt">
+								<a href="https://console.developers.google.com/apis/credentials/oauthclient" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
+							</li>
+							<li><label class="w30"><?_e("Secret Key to google app");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
+							
+							<li class="mts">
+								<label class="w30"><i class="fa fa-fw fa-yahoo"></i> <?_e("Id of the app yahoo");?></label> <input type="text" id="yahoo_api_id" placeholder="" class="w60 vatt">
+								<a href="https://developer.yahoo.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
+							</li>
+							<li><label class="w30"><?_e("Secret key to the app yahoo");?></label> <input type="text" id="yahoo_api_secret" placeholder="" class="w60 vatt"></li>
 
-						<li class="mts">
-							<label class="w30"><i class="fa fa-fw fa-windows"></i> <?_e("Id of the app microsoft");?></label> <input type="text" id="microsoft_api_id" placeholder="" class="w60 vatt">
-							<a href="https://account.live.com/developers/applications/create" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-						</li>
-						<li><label class="w30"><?_e("Secret key of microsoft app");?></label> <input type="text" id="microsoft_api_secret" placeholder="" class="w60 vatt"></li>
-						 -->
-					</ul>
+							<li class="mts">
+								<label class="w30"><i class="fa fa-fw fa-windows"></i> <?_e("Id of the app microsoft");?></label> <input type="text" id="microsoft_api_id" placeholder="" class="w60 vatt">
+								<a href="https://account.live.com/developers/applications/create" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
+							</li>
+							<li><label class="w30"><?_e("Secret key of microsoft app");?></label> <input type="text" id="microsoft_api_secret" placeholder="" class="w60 vatt"></li>
+							 -->
+						</ul>
 
-					<button class="fr mam mbl bold"><?_e("Start installation");?> <i class="fa fa-fw fa-cogs"></i></button>
+						<button class="fr mam bold"><?_e("Start installation");?> <i class="fa fa-fw fa-cogs"></i></button>
 
-				</form>
+					</form>
+
+				</div>
 
 			</div>
 

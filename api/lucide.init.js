@@ -95,7 +95,7 @@ error = function(txt){
 		})
 		.animate({
 			opacity: 1,
-			top: (($(window).height() - height) / 2)
+			top: ($(window).scrollTop() + (($(window).height() - height) / 2))
 		}, 500)
 		.on("click", function(){ 
 			$("#error, #under-error").fadeOut("fast", function(){ $(this).remove() });
@@ -119,7 +119,7 @@ light = function(txt){
 		})
 		.animate({
 			opacity: 1,
-			top: (($(window).height() - height) / 2)
+			top: ($(window).scrollTop() + (($(window).height() - height) / 2))
 		}, 500)
 		.on("click", function(){ $(this).fadeOut("fast", function(){ $(this).remove() }); });
 }

@@ -3,7 +3,7 @@
 <?hidden('lat', 'vat mat')?>
 <?hidden('lng', 'vat mat')?>
 
-<div id="google-map" class="tofadein"></div>
+<div id="google-map" class="animation fade-in"></div>
 
 <script>
 add_translation({

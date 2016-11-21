@@ -228,7 +228,7 @@ switch($_GET['mode'])
 
 		?>
 		<div class="absolute">
-			<div class="tooltip slide-left pas mas mlt mod">
+			<div class="tooltip slide-left fire pas mas mlt mod">
 				
 				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-sign-out big"></i></div>
 
