@@ -782,6 +782,9 @@ $(document).ready(function()
 	});
 
 
+	// Place les contenus au-dessus pour les rendre éditables à coup sur
+	$(".editable").parent().css("z-index", "10");
+
 
 	/************** MENU NAV **************/
 
