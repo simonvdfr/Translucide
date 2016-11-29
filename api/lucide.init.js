@@ -321,14 +321,16 @@ $(document).ready(function()
 	});
 
 
+	var $window = $(window);
+	
 	// Si on a une scrollbar
-	if ($("body").height() > $(window).height()) 
+	if ($("body").height() > $window.height()) 
 	{        
 		// Au scroll on affiche ou pas les boutons flottants
-		$(window).scroll(function() 
+		$window.on("scroll", function() 
 		{
 			// Affichage du bouton scroll to top
-			if($(window).scrollTop() > 50) $("a.bt.fixed.top").show();
+			if($window.scrollTop() > 50) $("a.bt.fixed.top").show();
 			else
 			{
 				$("a.bt.fixed.top").fadeOut("fast", function(){
@@ -340,7 +342,7 @@ $(document).ready(function()
 			if(!$("#admin-bar").length && !$("#dialog-connect").length)
 			{
 				// Affichage du bouton d'édition  avec 50px de marge OU si on est admin
-				if(($(document).height() - 50) <= ($(window).height() + $(window).scrollTop()) || get_cookie("auth").indexOf("edit-content")) 
+				if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-content")) 
 				{	
 					// Décale l'icone si il y a le bt to top
 					if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit").css("right","70px");
