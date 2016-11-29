@@ -9,7 +9,7 @@
 {
 	header nav .burger { 
 		display: block;
-	    z-index: 2;
+	    z-index: 12;
 	}
 
 	header nav > ul {
@@ -29,7 +29,7 @@
 		margin: 0;
 		padding-top: 0.5rem;
 
-		z-index: 1;
+		z-index: 10;
 
 		transition-duration: 0.3s;
 		transform: translateX(-100%); 
@@ -66,6 +66,23 @@
 	.dragger { display: none !important; }
 	#add-nav { display: none !important; }
 
+
+	/* Animation zoom*/
+	.zoom h1 {	
+		top: 150px;
+	    left: auto;
+
+	    font-size: 2.5em;
+	    text-align: center;
+	}
+	.zoom h2 {	
+		top: 205px;
+	    left: auto;
+
+	    font-size: 1.5em;
+	    text-align: center;
+	}
+
 }
 
 @media (max-width: 480px) 
@@ -75,6 +92,7 @@
 		float: none;
 	}
 
+	.plm { padding-left: 0; }
 	.prl { padding-right: 0; }
 
 	article { 

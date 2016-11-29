@@ -44,7 +44,7 @@ header {
 		text-indent: -9999px;
 		appearance: none;
 		box-shadow: none;
-		border-radius: none;
+		border-radius: 3px;
 		border: none;
 		cursor: pointer;
 		transition: background 0.3s;
@@ -109,7 +109,11 @@ header {
 		header nav li:hover {
 			/*background-color: #fff;*/
 		}
-		header nav a { text-decoration: none; }
+		header nav a { 
+			text-decoration: none;
+			color: #fff;
+			text-shadow: 1px 2px 2px rgb(153, 153, 153);
+		}
 
 
 /* Bloc avec grande image en bg sous le menu */
@@ -146,115 +150,159 @@ header {
 	overflow: hidden;
 }
 
-	
-
-	.zoom { margin-top: -80px; }
+	.zoom { margin-top: -85px; }
 
 	.zoom div {
 		position: absolute;
 		width: 100%;
 		min-height: 100vh;
 		background-size: cover;
-
-	    transform: scale(1.1);/* pour pouvoir un zoomout sur le fond on se cale à x0.1 a l'init */
 	}
-
-		@keyframes z0 {
-			0% { 
-				transform: scale(1.1) rotate(0.1deg);
-			}
-			50% { 
-				transform: scale(1) rotate(0.1deg);
-			}
-			100% { 
-				transform: scale(1.1) rotate(0.1deg);
-			}
-		}
-		.z0 {
-			z-index: 0;
-			animation: z0 20s 2;
-		}
-			/*.zoom:hover > .z0 { 
-				transform-origin: 50% 50%;
-				transform: scale(1) rotate(0.1deg);
-			}*/
-		
-		@keyframes z1 {
-			0% { 
-				transform-origin: 50% 50%;
-			}
-			50% { 
-				transform-origin: 20% 50%;
-			}
-			100% { 
-				transform-origin: 50% 50%;
-			}
-		}
-		.z1 {
+		/* TITRE */			
+		.zoom h1, .zoom h2 {	
+			position: absolute;
+			width: 100%;
 			z-index: 1;
-			animation: z1 20s 2;
+			color: #fff;			
 		}
-			/*.zoom:hover > .z1 { 
-				transform-origin: 20% 50%;
-			}*/
+			@keyframes h1 {
+				0% { opacity: 0; transform: translate3d(0, -100px, 0); }
+				100% { opacity: 1; transform: translate3d(0, 0, 0); }
+			}	
+			.zoom h1 {	
+				top: 200px;
+				left: 20%;	
+				animation: h1 5s;
+			}
+			@keyframes h2 {
+				0% { opacity: 0; transform: translate3d(100px, 0, 0); }
+				100% { opacity: 1; transform: translate3d(0, 0, 0); }
+			}	
+			.zoom h2 {
+				top: 300px;
+				left: 60%;	
+				animation: h2 5s;	
+			}
 		
-		.z2 {z-index: 2;}
-
-		@keyframes z3 {
-			0% { 
-				transform-origin: 50% 50%;
-				transform: scale(1.1) rotate(0.1deg);
-			}
-			50% { 
-				transform-origin: 40% 100%;
-				transform: scale(1.15) rotate(0.1deg);
-			}
-			100% { 
-				transform-origin: 50% 50%;
-				transform: scale(1.1) rotate(0.1deg);
-			}
+		/* FOND */
+		@keyframes zfond {
+			0% { transform: scale(1) rotate(0.1deg); }
+			50% { transform: scale(1.1) rotate(0.1deg); }
+			100% { transform: scale(1) rotate(0.1deg); }
 		}
-		.z3 {
+		.zfond {
+			z-index: 0;
+			animation: zfond 20s 2;
+		}
+		
+		/* BOUTEILLE */
+		@keyframes zbouteille {
+			0% { transform: scale(1.1) translate3d(30px, 0, 0); }
+			50% { transform: scale(1.1) translate3d(0, 0, 0); }
+			100% { transform: scale(1.1) translate3d(30px, 0, 0); }
+		}
+		.zbouteille {
+			z-index: 1;
+			transform: scale(1.1) translate3d(30px, 0, 0);
+			animation: zbouteille 20s 2;
+		}
+		
+		/* VERRE */	
+		@keyframes zverre {
+			0% { transform: scale(1) rotate(0.1deg); opacity: 0.7; }
+			50% { transform: scale(1.1) rotate(0.1deg); opacity: 0.5; }
+			100% { transform: scale(1) rotate(0.1deg); opacity: 0.7; }
+		}
+		.zverre {
+			z-index: 2;
+			opacity: 0.5;
+			animation: zverre 20s 2;
+		}
+		
+		/* BURGER rotate(0.1deg) */
+		@keyframes zburger {
+			0% { transform: scale(1.15) translate3d(0, -30px, 0); }
+			50% { transform: scale(1.1) translate3d(0, 0, 0); }
+			100% { transform: scale(1.15) translate3d(0, -30px, 0); }
+		}
+		.zburger {
 			z-index: 3;
-			animation: z3 20s 2;
+			transform: scale(1.15) translate3d(0, -30px, 0);
+			animation: zburger 20s 2;
 		}
-			/*.zoom:hover > .z3 { 
-				transform-origin: 40% 100%;
-				transform: scale(1.2) rotate(0.1deg);
-			}*/
 		
-		@keyframes dust {
-			0% { 
-				transform: scale(1) rotate(0deg);
-			}
-			50% { 
-				transform: scale(1.3) rotate(20deg);
-			}
-			100% { 
-				transform: scale(1) rotate(0deg);
-			}
+		/* POUSSIERE */
+		@keyframes zdust {
+			0% { transform: scale(1.1) rotate(0deg); }
+			50% { transform: scale(1.4) rotate(20deg); }
+			100% { transform: scale(1.1) rotate(0deg); }
 		}
-		.dust {
+		.zdust {
 			z-index: 4;
+			display: none;
 			mix-blend-mode: screen;
-			animation: dust 20s 2;
+			animation: zdust 20s 2;
 		}
-			/*.zoom:hover > .dust { 
-				transform: scale(1.3) rotate(20deg);
-			}*/
+		@supports(mix-blend-mode: screen) {
+			.zdust {
+				display: block;
+			}
+		}
+
+		/* BOUTON POUR DESCENDRE */
+		.zoom a {
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translate(-20px, -20%);
+			width: 40px;
+			height: 60px;
+
+			opacity: .9;
+
+			z-index: 5;
+			
+
+			transition: opacity .3s;
+		}
+			.zoom a:hover { opacity: .5; }
+
+			.zoom a span {
+				position: absolute;
+				top: 0;
+				left: 50%;
+				width: 24px;
+				height: 24px;
+				margin-left: -12px;
+
+				border-left: 1px solid #fff;
+				border-bottom: 1px solid #fff;
+
+				transform: rotate(-45deg);
+
+				animation: scrolldown 1.5s infinite 5s;
+
+				box-sizing: border-box;
+			}
+			@keyframes scrolldown {
+				0% { transform: rotate(-45deg) translate(0, 0); opacity: 0; }
+				50% { opacity: 1; }
+				100% { transform: rotate(-45deg) translate(-20px, 20px); opacity: 0; }
+			}
+
 
 
 
 /* Bloc avec effet de paralax */
-.parallax {
+.parallax, .fullpage {
 	background-size: cover !important;
-	text-shadow: 1px 1px 1px #000;	
+	text-shadow: 1px 1px 1px #545454;	
 	background-position: 50% 0%;
 	/*transition: background-position-y .1s;*/
 }
-	.parallax h1, .parallax h2 { 
+	.parallax h1, .parallax h2, .fullpage h1 { 
 		font-family: Yellowtail;
-		font-size: 5rem;
+		font-size: 5em;
 	}
 	.parallax h3 { font-family: Montserrat;	}
 

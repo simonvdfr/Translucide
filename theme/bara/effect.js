@@ -1,17 +1,3 @@
-// Fonction qui fade les éléments présents à l'écran
-fadein_onscroll = function(){
-	$(".tofadein").each( function(i){            
-		var bottom_of_object = $(this).offset().top + 200;//$(this).offset().top + $(this).outerHeight()
-		var bottom_of_window = $(window).scrollTop() + $(window).height() ;//$(window).scrollTop() + $(window).height()
-
-		// Si l'objet est complètement visible dans la fenêtre = fade
-		if(bottom_of_window  > bottom_of_object && $(this).css("opacity") == 0){
-			$(this).animate({"opacity":"1"}, 800);					
-		}
-	});
-}
-
-
 $(document).ready(function()
 {
 	// MENU BURGER
@@ -33,6 +19,13 @@ $(document).ready(function()
 		
 		// Ouverture du menu
 		$("body").toggleClass("responsiv-nav");		
+	});
+
+
+	// SMOOTHSCOLL SUR LES ANCRES
+	$("a[href*='#']").on("click", function(event) {
+		event.preventDefault();
+		$("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top}, 1000, "linear");
 	});
 
 
@@ -58,53 +51,63 @@ $(document).ready(function()
 	if($(".under-header").length) {
 		$(".under-header").css("margin-top", -$("header").outerHeight());// Calage
 		$(".under-header").append("<div class='overlay'></div>");// Diminue l'opacité
-		$("header a").css("color", "#fff");// Lien en blanc
-		$("header #header-logo, header .burger").css({// Couleur du logo inversé
+		//$("header a").css("color", "#fff");// Lien en blanc
+		/*$("header #header-logo, header .burger").css({// Couleur du logo inversé
 			"-webkit-filter": "invert(1)",
 			"filter": "invert(1)"
-		});		
+		});*/	
 	}
 
 
-	// AFFICHE LES ÉLÉMENTS DÉJÀ VISIBLE
-	fadein_onscroll();
 
+	// ANIMATION SUR LES ONSCROLL
+    var $animation = $(".animation");
+    var $window = $(window);
 
-	$(window).scroll(function(e) {
+	$window.on("scroll resize load", function () {
 
 		// ANIMATION SUR LES CONTENUS
-		fadein_onscroll();
+		var window_height = $window.outerHeight();//height
+    	var window_top = $window.scrollTop();
+    	var window_bottom = (window_top + window_height);
+
+    	$.each($animation, function() {
+    		var $element = $(this);
+    		var element_height = $element.outerHeight();
+    		var element_top = $element.offset().top;
+    		var element_bottom = (element_top + element_height);
+
+			//check to see if this current container is within viewport
+			if ((element_bottom >= window_top) &&
+				(element_top <= window_bottom)) {
+				$element.addClass("fire");
+			}
+			else $element.removeClass("fire");			
+		});
+
 
 		// PARALLAX DES BG
-		var window_scrolltop = $(window).scrollTop();
-		var window_height = $(window).outerHeight();
-		var window_bottom = window_scrolltop + window_height;
-		
-		//console.log("window_scrolltop: "+ window_scrolltop +" / window_height: "+ window_height +" / window_bottom: "+ window_bottom)
-
 		$(".parallax").each(function() {
 			var parallax_top = $(this).offset().top;
 			var parallax_height = $(this).outerHeight();
 			var parallax_bottom = parallax_top + parallax_height;
 
-			//console.log("parallax_top: "+ parallax_top +" / parallax_height: "+ parallax_height +" / parallax_bottom: "+ parallax_bottom)
-			
 			// Si un bg parallax entre dans le champ de vision on le scroll
-			if((parallax_top <= window_bottom) && (parallax_bottom >= window_scrolltop))
+			if((parallax_top <= window_bottom) && (parallax_bottom >= window_top))
 			{
 				// / 2|4 => on divise pour un défilement plus lent
 				// Si bg déjà visible quand on arrive sur la page on change le calcule
 				if(parallax_top < window_height)
-					p100 = parseInt(((window_scrolltop) * 100 / (parallax_bottom))) / 4;		
+					p100 = parseInt(((window_top) * 100 / (parallax_bottom))) / 4;		
 				else 
 					p100 = parseInt(((window_bottom - parallax_top) * 100 / (window_height + parallax_height))) / 2;		
-				
-				//console.log(p100)
-				
+		
 				$(this).css("background-position", "50% " + p100 + "%");
 			}
 		});
 
 	});
+
+	$window.trigger("scroll");
 
 });	
