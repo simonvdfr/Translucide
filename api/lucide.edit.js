@@ -320,7 +320,7 @@ dialog_transfert = function(mode, source, target, callback) {
 			url: path+"api/ajax.admin.php?mode=dialog-"+mode, 
 			data: {
 				"target": target,
-				"source": source.id || $("img", source).attr("id"),
+				"source": (target == "bg" ? $(source).attr("data-id") : (source.id || $("img", source).attr("id"))),
 				"width": $(source).hasClass("editable-img") ? $("img", source).attr("width") : "",
 				"height": $(source).hasClass("editable-img") ? $("img", source).attr("height") : "",
 				"nonce": $("#nonce").val()
@@ -598,8 +598,8 @@ get_img = function(id, link)
 				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond
-				$("#"+$("#dialog-media-source").val()+"").attr("data-bg", final_file);
-				$("#"+$("#dialog-media-source").val()).css("background-image", "url("+final_file+")");
+				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", final_file);
+				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+final_file+")");
 			}
 
 			// Fermeture de la dialog
