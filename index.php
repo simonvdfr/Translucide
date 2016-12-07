@@ -78,7 +78,7 @@ else// Une page existe
 
 // Information pour les metas
 $title = strip_tags($res['title']);
-$description = strip_tags($res['description']);
+$description = htmlspecialchars(strip_tags($res['description']), ENT_COMPAT);
 
 // Les contenus
 if($res['content'] and $res['content'] != '""') $GLOBALS['content'] = json_decode($res['content'], true);
@@ -127,7 +127,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<title><?=$title;?></title>
 
-	<?if($description){?><meta name="description" content="<?=strip_tags($description);?>"><?}?>
+	<?if($description){?><meta name="description" content="<?=$description;?>"><?}?>
 
 	<meta name="robots" content="<?=$robots;?>">
 
@@ -135,7 +135,7 @@ header('Content-type: text/html; charset=UTF-8');
 	<meta property="og:title" content="<?=$title;?>">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="<?=$GLOBALS['scheme'].$GLOBALS['domain'];?>">
-	<?if($description){?><meta property="og:description" content="<?=strip_tags($description);?>"><?}?>
+	<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 	<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
 	<?if($GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 	
