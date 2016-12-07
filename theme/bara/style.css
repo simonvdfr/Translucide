@@ -241,7 +241,7 @@ header {
 			z-index: 4;
 			display: none;
 			mix-blend-mode: screen;
-			animation: zdust 20s 2;
+			animation: zdust 40s 2;
 		}
 		@supports(mix-blend-mode: screen) {
 			.zdust {
