@@ -943,22 +943,39 @@ $(document).ready(function()
 			"focus.editable": function() {// On positionne la toolbox
 				memo_focus = this;// Pour memo le focus en cours
 
+				adminbar_height = $("#admin-bar").outerHeight();
+				toolbox_height = $("#txt-tool").outerHeight();
+				this_offset_top = $(memo_focus).offset().top;
+
 				// Si on est en mode view source on colore le bt view-source
 				if($(memo_focus).hasClass("view-source"))
 					$("#view-source").addClass("checked");
 				else
 					$("#view-source").removeClass("checked");
-				
+
 				// Affichage de la boîte à outils texte
+				if($("#txt-tool").css("display") == "none")// Si pas visible				
 				$("#txt-tool")
 					.show()
 					.offset({
-						top: ( $(this).offset().top - $("#txt-tool").height() - 8 ),
+						top: ( this_offset_top - toolbox_height - 8 ),
 						left: ( $(this).offset().left )
 					});	
+
+				// Scroll la toolbox si on descend
+				$window.on("scroll click.scroll-toolbox", function(event) {
+					// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
+					if(($window.scrollTop() + adminbar_height + toolbox_height + 12) > this_offset_top) 
+						$("#txt-tool").css({top: adminbar_height + 5 + "px", position: "fixed"});	
+					else
+						$("#txt-tool").css({top: this_offset_top - toolbox_height - 8 + "px", position: "absolute"});
+				});
 			},
 			"blur.editable": function() {
-				if($("#txt-tool:not(:hover)").val()=="") $("#txt-tool").hide();// ferme la toolbox
+				if($("#txt-tool:not(:hover)").val()=="") {
+					$("#txt-tool").hide();// ferme la toolbox
+					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
+				}
 				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
