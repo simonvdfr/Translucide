@@ -321,7 +321,7 @@ $(document).ready(function()
 	});
 
 
-	var $window = $(window);
+	$window = $(window);
 	
 	// Si on a une scrollbar
 	if ($("body").height() > $window.height()) 
