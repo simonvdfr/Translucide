@@ -617,7 +617,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		display: none;
 	}
 		.toolbox #option input {
-			height: 100%;
+			color: #516062;
+			height: 100%;			
+			border-radius: 0;
+			padding: 0.4em 0.5rem 0.4rem;
 		}
 	
 	.toolbox#resize-tool {
@@ -628,6 +631,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 		.toolbox#resize-tool input {
 			height: 22px;
 		}
+
+	/*couleur icone */
+	.toolbox .fa-picture-o { color: #56aead; }
+	.toolbox .fa-link { color: #b64e4e; }
 
 
 
