@@ -154,9 +154,9 @@ function __($singulier, $pluriel = "", $num = 0)
 
 	// Si une traduction existe
 	if($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]) 
-		$txt = utf8_encode($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
+		$txt = $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
 
-	return $txt;
+	return utf8_encode($txt);
 }
 
 // Affichage d'une traduction
