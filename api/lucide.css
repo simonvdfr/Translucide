@@ -48,6 +48,7 @@ body { transition: margin-top .2s linear; }
 
 	#admin-bar input {			
 		background-color: transparent;
+		color: #516062;
 		border: none;
 		border-bottom: 1px dotted #9cabad;
 		font-family: Arial;
