@@ -4,6 +4,7 @@ J'ai créé le CMS Translucide pour répondre à certains besoins personnels que
 
 En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel. Le moteur du site tien en très peu de fichiers, et pourtant il fait déjà pas mal de chose.
 
+[Translucide](http://www.translucide.net)
 
 ## Installation
 Décompresser les fichiers du site sur votre FTP et avec votre navigateur allers à l'adresse où se trouve `index.php`
