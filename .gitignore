@@ -1,7 +1,7 @@
 # Fichier unique du CMS
 config.php
 media/
-private/
+theme/
 
 # Windows image file caches
 Thumbs.db
