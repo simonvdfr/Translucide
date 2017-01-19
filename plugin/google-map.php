@@ -3,6 +3,13 @@
 <?hidden('lat', 'vat mat')?>
 <?hidden('lng', 'vat mat')?>
 
+<style>
+	#google-map {
+		height: 100%;
+		min-height: 400px;
+	}
+</style>
+
 <div id="google-map" class="animation fade-in"></div>
 
 <script>
@@ -14,7 +21,7 @@ function init_map(zoomable)
 {			
 	if($("#lat").val() && $("#lng").val())
 	{
-		$("#google-map").css("height", "400px")
+		//$("#google-map").css({"min-height":"600px", "height":"100%"})
 
 		latlng = {lat: $("#lat").val()*1, lng: $("#lng").val()*1};
 
