@@ -1282,7 +1282,7 @@ switch($_GET['mode'])
 								 $(".ui-state-highlight").slideUp("slow").fadeOut(function() {
 									 window.location.reload();// window.location = window.location.href;
 								 });
-							}, 4000);
+							}, 3000);
 						</script>
 						<?
 
