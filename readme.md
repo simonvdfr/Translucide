@@ -2,7 +2,7 @@
 
 J'ai créé le CMS Translucide pour répondre à certains besoins personnels que j'ai en tant que développeur et intégrateur, mais aussi pour permettre aux clients de modifier plus simplement leur site sans casser le travail graphique fait en amont.
 
-En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel. Le moteur du site tient en très peu de fichiers, et pourtant il fait déjà pas mal de choses.
+En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel, le tout avec le moins de dépendance possible (uniquement jQuery, jQuery UI, Font Awesome). Le moteur du site tient en très peu de fichiers, et pourtant il fait déjà pas mal de choses.
 
 ## Installation
 Décompresser les fichiers du site sur votre FTP et avec votre navigateur aller à l'adresse où se trouve `index.php`
@@ -39,6 +39,10 @@ Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/test�
 
 ## Configuration du système de connexion tierce (Facebook, Google, Yahoo, Hotmail/Outlook)
 Bientôt ... :)
+
+## Wordpress VS Translucide
+J'ai tenté de passer un site que j'avais fait sous Wordpress sous Translucide avec les mêmes fonctionnalités et aspect visuel et le résultat était plutôt édifiant.
+Pour le même site on est passé de plus de 1000 fichiers avec Wordpress à moins de 100 images comprises pour Translucide. Et de 50 mégaoctet à 5 mégaoctet pour la version CMS Translucide. Niveau temps d'exécution en général on diviste par 2 le temps de chargement d'une page est ceci sans utiliser de système de cache spécifique. Comatons l'obésiciel ensemble :)
 
 
 ## FAQ
