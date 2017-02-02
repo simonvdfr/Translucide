@@ -51,4 +51,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 theme
-theme
+
+!theme/
+!theme/*/
