@@ -42,7 +42,7 @@ Bientôt ... :)
 
 ## Wordpress VS Translucide
 J'ai tenté de passer un site que j'avais fait sous Wordpress sous Translucide avec les mêmes fonctionnalités et aspect visuel et le résultat était plutôt édifiant.
-Pour le même site on est passé de plus de 1000 fichiers avec Wordpress à moins de 100 images comprises pour Translucide. Et de 50 mégaoctet à 5 mégaoctet pour la version CMS Translucide. Niveau temps d'exécution en général on diviste par 2 le temps de chargement d'une page est ceci sans utiliser de système de cache spécifique. Comatons l'obésiciel ensemble :)
+Pour le même site on est passé de plus de 1000 fichiers avec Wordpress à moins de 100 images comprises pour Translucide. Et de 50 mégaoctet à 5 mégaoctet pour la version CMS Translucide. Niveau temps d'exécution en général on diviste par 2 le temps de chargement d'une page est ceci sans utiliser de système de cache spécifique. Combattons l'obésiciel ensemble :)
 
 
 ## FAQ
