@@ -1,6 +1,6 @@
 <?if(!$work) $work = "work";?>
 
-<ul id="<?=$work?>" class="animation fade-in">
+<ul id="<?=$work?>">
 <?
 // Extrait les données work du tableau des contenu
 $keys = array_keys($GLOBALS['content']);
@@ -18,12 +18,14 @@ $array_work[0]['titre'] = "";
 // Affichage des éléments existant
 while(list($key, $val) = each($array_work)) { 
 	echo"
-	<li>
-		<!-- <a href=\"".$array_work[$key]['href']."\" class='editable-href' id='".$work."-href-".(int)$key."'> -->
-			<h2><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$key]['titre']."</span></h2>
-			<div><span class='editable-img'><img src=\"".$array_work[$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
-			<div class='none'><span class='editable' id='".$work."-txt-".(int)$key."'>".$array_work[$key]['txt']."</span></div>
-		<!-- </a> -->
+	<li class='animation slide-up mtl tc'>
+
+		<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$key]['titre']."</span></h2>
+
+		<div class='w150p'><span class='editable-img'><img src=\"".$array_work[$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
+
+		<div class='none w100 mod pts'><span class='editable' id='".$work."-txt-".(int)$key."'>".$array_work[$key]['txt']."</span></div>
+
 	</li>";
 }
 ?>
@@ -35,19 +37,27 @@ while(list($key, $val) = each($array_work)) {
 	});
 
 	add_work = function() {
+
+//@todo : pas de tooltips sur les champs editable, peux-etre relancer la fonction editable
+		
+		if($("#<?=$work?> li").size() > 1) li = $("#<?=$work?> li:last-child").prev().find(".editable");
+		else li = $("#<?=$work?> li:last-child .editable");
+
 		// Crée un id unique
-		id = parseInt($("#<?=$work?> li:first-child .editable").attr("id").split("-").pop()) + 1;
-			
+		id = parseInt(li.attr("id").split("-").pop()) + 1;
+		
+			console.log(id);
+
 		// Crée un block
-		$("#<?=$work?> li:last-child").prev().clone().prependTo("#<?=$work?>").show("400", function() {
+		$("#<?=$work?> li:last-child").clone().prependTo("#<?=$work?>").show("400", function() {
 			// Vide le titre et change l'id
-			$("h2 div", this).attr("id", "<?=$work?>-titre-"+ id);
+			$("h2 div", this).attr("id", "<?=$work?>-titre-" + id);
 
 			// Vide l'image et change l'id
 			$(".editable-img img", this).attr({
-				id: "<?=$work?>-img-"+id,
+				id: "<?=$work?>-img-" + id,
 				src: ""
-			});	
+			});
 
 			// Rends déplaçables le nouveau bloc
 
@@ -65,12 +75,12 @@ while(list($key, $val) = each($array_work)) {
 		$("#<?=$work?> li:last-child").hide();
 
 		// Rends déplaçables les blocs
-		$("#<?=$work?>").sortable();
+		//$("#<?=$work?>").sortable();
 
 		// Action si on lance le mode d'edition
 		edit.push(function() {
 			// Ajoute le bouton pour dupliquer le bloc vide de défaut
-			$("#<?=$work?> li:last-child").after("<li><a href='javascript:add_work();' class='add-elem'><i class='fa fa-fw fa-plus-square-o'></i>"+__("Add a block")+"</a></li>");	
+			$("#<?=$work?>").after("<a href='javascript:add_work();' class='add-elem'><i class='fa fa-fw fa-plus-square-o'></i> "+__("Add a block")+"</a>");
 		});
 	});
 </script>
