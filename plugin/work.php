@@ -38,26 +38,27 @@ while(list($key, $val) = each($array_work)) {
 
 	add_work = function() {
 
-//@todo : pas de tooltips sur les champs editable, peux-etre relancer la fonction editable
-		
-		if($("#<?=$work?> li").size() > 1) li = $("#<?=$work?> li:last-child").prev().find(".editable");
-		else li = $("#<?=$work?> li:last-child .editable");
-
 		// Crée un id unique
-		id = parseInt(li.attr("id").split("-").pop()) + 1;
+		id = parseInt($("#<?=$work?> li:first-child .editable").attr("id").split("-").pop()) + 1;
 		
-			console.log(id);
-
 		// Crée un block
 		$("#<?=$work?> li:last-child").clone().prependTo("#<?=$work?>").show("400", function() {
 			// Vide le titre et change l'id
-			$("h2 div", this).attr("id", "<?=$work?>-titre-" + id);
+			$("h2 .editable", this).attr("id", "<?=$work?>-titre-" + id);
 
 			// Vide l'image et change l'id
 			$(".editable-img img", this).attr({
 				id: "<?=$work?>-img-" + id,
 				src: ""
 			});
+
+			// Unbind les events toolbox
+			$(".editable").off();
+
+		// @todo voir pour changer l'event dans le edit.js pour qu'ils supp bien toutes les instances de .editable comme au dessu
+
+			// Bind la toolbox
+			editable_event();
 
 			// Rends déplaçables le nouveau bloc
 
