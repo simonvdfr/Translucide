@@ -1,7 +1,6 @@
-<?if(!$work) $work = "work";?>
-
-<ul id="<?=$work?>">
 <?
+if(!$work) $work = "work";
+
 // Extrait les données work du tableau des contenu
 $keys = array_keys($GLOBALS['content']);
 foreach($keys as $key) {
@@ -14,7 +13,11 @@ foreach($keys as $key) {
 
 // Bloc vide pour l'ajout de nouveau élément
 $array_work[0]['titre'] = "";
+?>
 
+
+<ul id="<?=$work?>">
+<?
 // Affichage des éléments existant
 while(list($key, $val) = each($array_work)) { 
 	echo"
@@ -31,13 +34,16 @@ while(list($key, $val) = each($array_work)) {
 ?>
 </ul>
 
+
 <script>
 	add_translation({
-		"Add a block" : {"fr" : "Ajouter un bloc"}
+		"Add a block" : {"fr" : "Ajouter un bloc"},
+		"Move" : {"fr" : "D\u00e9placer"}
+		
 	});
 
-	add_work = function() {
-
+	add_work = function()
+	{
 		// Crée un id unique
 		id = parseInt($("#<?=$work?> li:first-child .editable").attr("id").split("-").pop()) + 1;
 		
@@ -52,16 +58,13 @@ while(list($key, $val) = each($array_work)) {
 				src: ""
 			});
 
+		// @todo voir pour changer l'event dans le edit.js pour qu'ils supp bien toutes les instances de .editable comme au dessu
+
 			// Unbind les events toolbox
 			$(".editable").off();
 
-		// @todo voir pour changer l'event dans le edit.js pour qu'ils supp bien toutes les instances de .editable comme au dessu
-
 			// Bind la toolbox
 			editable_event();
-
-			// Rends déplaçables le nouveau bloc
-
 		});
 
 		// Relance les events images
@@ -70,18 +73,36 @@ while(list($key, $val) = each($array_work)) {
 	}
 
 
+	// Rends déplaçables les blocs
+	move_work = function() {
+
+		// Change le style du bouton et l'action
+		$(".work-bt .fa-arrows").css("transform","scale(.5)");
+
+		// Désactive l'edition
+		$(".editable-img").off(".editable-img");
+		$(".editable").off();
+
+		// @todo ajout du curser / verif pour ça lag au deplacement / ajouter un hilight sur la zone movable
+
+		// Les rend déplaçable
+		$("#<?=$work?>").sortable();
+	}
+
+
 	$(document).ready(function()
 	{		
 		// Masque le bloc duplicable vide de défaut
 		$("#<?=$work?> li:last-child").hide();
-
-		// Rends déplaçables les blocs
-		//$("#<?=$work?>").sortable();
-
+		
 		// Action si on lance le mode d'edition
 		edit.push(function() {
+
 			// Ajoute le bouton pour dupliquer le bloc vide de défaut
-			$("#<?=$work?>").after("<a href='javascript:add_work();' class='add-elem'><i class='fa fa-fw fa-plus-square-o'></i> "+__("Add a block")+"</a>");
+			$("#<?=$work?>").after("<div class='work-bt'><a href='javascript:move_work();'><i class='fa fa-fw fa-arrows'></i> "+__("Move")+"</a> <a href='javascript:add_work();'><i class='fa fa-fw fa-plus-square-o'></i> "+__("Add a block")+"</a></div>");
+			
+			// Force le parent en relatif pour bien positionner les boutons d'ajout
+			$(".work-bt").parent().addClass("relative");
 		});
 	});
 </script>
