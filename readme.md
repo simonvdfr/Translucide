@@ -1,4 +1,4 @@
-# [Translucide](http://www.translucide.net) - Un simple CMS
+# [CMS Translucide](http://www.translucide.net) - Léger et puissant
 
 J'ai créé le CMS Translucide pour répondre à certains besoins personnels que j'ai en tant que développeur et intégrateur, mais aussi pour permettre aux clients de modifier plus simplement leur site sans casser le travail graphique fait en amont.
 
