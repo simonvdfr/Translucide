@@ -831,7 +831,7 @@ $(document).ready(function()
 		start: function(event) {
 			$("#add-nav .open").addClass("del").children().removeClass("fa-plus").addClass("fa-trash");
 
-			$("body").off('.editable');		
+			$(".editable").off();//$("body").off(".editable");		
 			$("header nav ul:first li").attr("contenteditable","false").removeClass("editable");
 		},
 		stop: function() {
@@ -882,7 +882,7 @@ $(document).ready(function()
 						$("#add-nav ul").sortable({
 							connectWith: "header nav ul",
 							start: function() {
-								$("body").off('.editable');
+								$(".editable").off();//$("body").off(".editable");
 								$("header nav ul:first li").attr("contenteditable","false").removeClass("editable");									
 							},
 							stop: function() {
@@ -941,6 +941,7 @@ $(document).ready(function()
 	editable_event = function() {		
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
+				console.log("debug bind "+ Math.random());
 				memo_focus = this;// Pour memo le focus en cours
 
 				adminbar_height = $("#admin-bar").outerHeight();
@@ -979,7 +980,7 @@ $(document).ready(function()
 				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
-				$("body").off('.editable-img');// Désactive les events image
+				$("body").off(".editable-img");// Désactive les events image
 				$("#img_tool").remove();// Supprime la barre d'outil image
 			},
 			"dragend.editable": function() {// drop dragend
@@ -1128,7 +1129,7 @@ $(document).ready(function()
 			.on({
 				"dragover.editable-img": function(event) {// Highlight les zone on hover dragover/dragenter
 					event.stopPropagation();
-					$("body").off('.editable');// Désactive les events sur les contenu éditables
+					$(".editable").off();//$("body").off(".editable");// Désactive les events sur les contenu éditables
 					$(".editable-img").addClass("drag-zone");
 					$(".editable-img img").addClass("drag-img");
 			},

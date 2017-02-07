@@ -317,7 +317,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 	}
 
 
-/* Image éditable en bg */
+/* Image éditable en bg & Bouton Work */
 .editable-bg {
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
 	
@@ -325,7 +325,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 	position: relative;
 	transition: background .3s;
 }
-	.editable-bg > .open-dialog-media, .add-elem {
+	.editable-bg > .open-dialog-media, .work-bt a {
 		box-shadow: inset 0px 1px 3px 0px #91b3b8;
 		background-color: rgba(117, 137, 140, 0.6);
 		border-radius: 5px;
@@ -337,14 +337,16 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 
 		top: 0;
 		right: 0;
-		padding: 5px;
-		margin: 10px;
+		padding: 6px 8px;
+		margin: 10px 10px 10px 0px;
+
+		z-index: 10;
 
 		text-shadow: 1px 1px 1px #2c5f66;
 		text-decoration: none;
 		transition: background .2s;
 	}
-	.editable-bg > .open-dialog-media:hover, .add-elem:hover {
+	.editable-bg > .open-dialog-media:hover, .work-bt a:hover {
 		background-color: rgba(117, 137, 140, 1);
 		color: #7AD2D9;	
 	}
@@ -352,6 +354,15 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 			top: initial;
 			bottom: 10px;
 		}
+
+
+/* Work */
+.work-bt {
+	position: absolute;
+	top: 0;
+    right: 0;
+}
+	.work-bt a { position: relative; }
 
 
 /* Hidden éditable */
