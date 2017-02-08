@@ -363,6 +363,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
     right: 0;
 }
 	.work-bt a { position: relative; }
+	.work .ui-sortable-handle { 
+		box-shadow: rgba(122, 210, 217, 0.5) 0px 0px 20px 2px !important;
+		cursor:  move;
+	}
 
 
 /* Hidden éditable */

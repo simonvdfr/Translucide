@@ -1,4 +1,8 @@
 <?
+// @todo: lien au dessu du bloc
+// @todo: edition du tooltips
+
+
 if(!$work) $work = "work";
 
 // Extrait les données work du tableau des contenu
@@ -16,7 +20,7 @@ $array_work[0]['titre'] = "";
 ?>
 
 
-<ul id="<?=$work?>">
+<ul id="<?=$work?>" class="work">
 <?
 // Affichage des éléments existant
 while(list($key, $val) = each($array_work)) { 
@@ -38,8 +42,8 @@ while(list($key, $val) = each($array_work)) {
 <script>
 	add_translation({
 		"Add a block" : {"fr" : "Ajouter un bloc"},
-		"Move" : {"fr" : "D\u00e9placer"}
-		
+		"Move" : {"fr" : "D\u00e9placer"},
+		"Remove" : {"fr" : "Supprimer"}
 	});
 
 	add_work = function()
@@ -83,12 +87,29 @@ while(list($key, $val) = each($array_work)) {
 		$(".editable-img").off(".editable-img");
 		$(".editable").off();
 
-		// @todo ajout du curser / verif pour ça lag au deplacement / ajouter un hilight sur la zone movable
+		// Change l'action sur le lien 'move'
+		$(".work-bt [href='javascript:move_work();']").attr("href","javascript:unmove_work();");
 
 		// Les rend déplaçable
 		$("#<?=$work?>").sortable();
 	}
 
+	// Désactive le déplacement des blocs
+	unmove_work = function() {
+
+		// Change le style du bouton et l'action
+		$(".work-bt .fa-arrows").css("transform","scale(1)");
+
+		// Change l'action sur le lien 'move'
+		$(".work-bt [href='javascript:unmove_work();']").attr("href","javascript:move_work();");
+
+		// Active l'edition
+		editable_event();
+		editable_img_event();
+
+		// Les rend déplaçable
+		$("#<?=$work?>").sortable("destroy");
+	}
 
 	$(document).ready(function()
 	{		
@@ -98,11 +119,28 @@ while(list($key, $val) = each($array_work)) {
 		// Action si on lance le mode d'edition
 		edit.push(function() {
 
+			// Désactive les animations pour rendre plus fluide les déplacements et l'edition
+			$("#<?=$work?> .fire").css({
+				"opacity": "1",
+				"transform": "translate3d(0, 0, 0)"
+			});
+			$("#<?=$work?> .animation").removeClass("animation fire");
+
 			// Ajoute le bouton pour dupliquer le bloc vide de défaut
 			$("#<?=$work?>").after("<div class='work-bt'><a href='javascript:move_work();'><i class='fa fa-fw fa-arrows'></i> "+__("Move")+"</a> <a href='javascript:add_work();'><i class='fa fa-fw fa-plus-square-o'></i> "+__("Add a block")+"</a></div>");
 			
 			// Force le parent en relatif pour bien positionner les boutons d'ajout
 			$(".work-bt").parent().addClass("relative");
+
+			// Ajout de la suppresion au survole d'un bloc
+			$("#<?=$work?> li").append("<a href='javascript:void(0)'><i class='fa fa-close absolute none' style='top: -5px; right: -5px;' title='"+ __("Remove") +"'></i></a>");
+
+			// Supprime un bloc
+			$("#<?=$work?> li .fa-close").fadeIn().on("click", function(event) {
+				$(this).closest("li").fadeOut("slow", function() {
+					this.remove();
+				});
+			});
 		});
 	});
 </script>
