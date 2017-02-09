@@ -1,7 +1,5 @@
 <?
-// @todo: lien au dessu du bloc
-// @todo: edition du tooltips
-
+// @todo voir pour changer l'event dans le edit.js pour qu'ils supp bien toutes les instances de .editable comme au dessu
 
 if(!$work) $work = "work";
 
@@ -25,13 +23,19 @@ $array_work[0]['titre'] = "";
 // Affichage des éléments existant
 while(list($key, $val) = each($array_work)) { 
 	echo"
-	<li class='animation slide-up mtl tc'>
+	<li class='animation slide-up mtl tc' title=\"".$array_work[$key]['txt']."\">
 
-		<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$key]['titre']."</span></h2>
+		<a href=\"".$array_work[$key]['link']."\">
 
-		<div class='w150p'><span class='editable-img'><img src=\"".$array_work[$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
+			<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$key]['titre']."</span></h2>
 
-		<div class='none w100 mod pts'><span class='editable' id='".$work."-txt-".(int)$key."'>".$array_work[$key]['txt']."</span></div>
+			<div class='w150p'><span class='editable-img'><img src=\"".$array_work[$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
+
+			<input type='hidden' id='".$work."-tooltips-".(int)$key."' value=\"".$array_work[$key]['tooltips']."\" class='editable-hidden tooltips block w80'>
+
+			<input type='hidden' id='".$work."-link-".(int)$key."' value=\"".$array_work[$key]['link']."\" class='editable-hidden link block w80'>
+
+		</a>
 
 	</li>";
 }
@@ -49,31 +53,40 @@ while(list($key, $val) = each($array_work)) {
 	add_work = function()
 	{
 		// Crée un id unique
-		id = parseInt($("#<?=$work?> li:first-child .editable").attr("id").split("-").pop()) + 1;
-		
+		key = parseInt($("#<?=$work?> li:first-child .editable").attr("id").split("-").pop()) + 1;
+
+		// Unbind les events d'edition
+		$(".editable").off();
+		$(".editable-img").off(".editable-img");
+
 		// Crée un block
-		$("#<?=$work?> li:last-child").clone().prependTo("#<?=$work?>").show("400", function() {
-			// Vide le titre et change l'id
-			$("h2 .editable", this).attr("id", "<?=$work?>-titre-" + id);
+		$("#<?=$work?> li:last-child").clone().prependTo("#<?=$work?>").show("400", function()
+		{
+			// Vide le titre et change la key
+			$("h2 .editable", this).attr("id", "<?=$work?>-titre-" + key);
 
 			// Vide l'image et change l'id
 			$(".editable-img img", this).attr({
-				id: "<?=$work?>-img-" + id,
+				id: "<?=$work?>-img-" + key,
 				src: ""
 			});
 
-		// @todo voir pour changer l'event dans le edit.js pour qu'ils supp bien toutes les instances de .editable comme au dessu
+			// Change les key des champs hidden
+			$(".editable-hidden.tooltips", this).attr({
+				id: "<?=$work?>-tooltips-" + key,
+				placeholder: "<?=$work?>-tooltips-" + key,
+				title: "<?=$work?>-tooltips-" + key
+			});
+			$(".editable-hidden.link", this).attr({
+				id: "<?=$work?>-link-" + key,
+				placeholder: "<?=$work?>-link-" + key,
+				title: "<?=$work?>-link-" + key
+			});
 
-			// Unbind les events toolbox
-			$(".editable").off();
-
-			// Bind la toolbox
+			// Relance les events d'edition
 			editable_event();
-		});
-
-		// Relance les events images
-		$(".editable-img").off(".editable-img");
-		editable_img_event();
+			editable_img_event();
+		});	
 	}
 
 
@@ -111,6 +124,7 @@ while(list($key, $val) = each($array_work)) {
 		$("#<?=$work?>").sortable("destroy");
 	}
 
+
 	$(document).ready(function()
 	{		
 		// Masque le bloc duplicable vide de défaut
@@ -118,6 +132,9 @@ while(list($key, $val) = each($array_work)) {
 		
 		// Action si on lance le mode d'edition
 		edit.push(function() {
+
+			// Désactive le lien sur le bloc
+			$("#<?=$work?> li a").attr("href", "javascript:void(0)").css("cursor","default");
 
 			// Désactive les animations pour rendre plus fluide les déplacements et l'edition
 			$("#<?=$work?> .fire").css({
