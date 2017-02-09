@@ -170,7 +170,7 @@ header:hover .dragger { display: block; }
 #add-nav {
 	position: fixed;
 
-	right: -3rem;/*@todo voir si ça ne crée pas de bug*/
+	right: -3rem;/*@todo voir si Ã§a ne crÃ©e pas de bug*/
     	
 	min-width: 210px;
     margin-left: -6rem;
@@ -245,13 +245,13 @@ header:hover .dragger { display: block; }
 
 /* CONTENT */
 
-/* block éditable */
+/* block Ã©ditable */
 
-article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la largeur */
+article { /*width: 100%;*/ }/* pour que le bloc Ã©ditable prenne bien toute la largeur */
 
 .editable {
 	border-bottom: 1px dotted rgba(61, 128, 179, 0.2) !important;
-	outline: none;/* supp le bord bleu de sélection chrome */
+	outline: none;/* supp le bord bleu de sÃ©lection chrome */
 
 	/*display: initial;inline-block*//* SUPP ?? doublon avec la valeur dans global css */
 	/*width: inherit;*//* en lien avec w article 100% */
@@ -280,7 +280,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 }
 
 
-/* image éditable */
+/* image Ã©ditable */
 .editable-img {
 	display: inline-block;
     position: relative;
@@ -317,7 +317,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 	}
 
 
-/* Image éditable en bg & Bouton Work */
+/* Image Ã©ditable en bg & Bouton Work */
 .editable-bg {
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
 	
@@ -369,7 +369,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 	}
 
 
-/* Hidden éditable */
+/* Hidden Ã©ditable */
 .editable-hidden {	
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
 
@@ -378,7 +378,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 
 
 
-/* Fenêtre de gestion des médias */
+/* FenÃªtre de gestion des mÃ©dias */
 .ui-dialog { text-shadow: none !important; }
 .dialog-media li { 
 	background: #eee none repeat scroll 0 0;
@@ -525,7 +525,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 	}
 
 
-/* Fenêtre de gestion des icônes */
+/* FenÃªtre de gestion des icÃ´nes */
 .dialog-icon li i { cursor: pointer; }
 	.dialog-icon li i:hover { color: #6b6f7a; }
 
@@ -658,7 +658,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la la
 }
 
 
-/* Couleur de sélection de textes */
+/* Couleur de sÃ©lection de textes */
 *::-moz-selection {/* @TODO FAIRE FONCTIONNER */
     background: #6FCDD5;
     color: white;

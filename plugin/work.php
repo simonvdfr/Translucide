@@ -23,17 +23,17 @@ $array_work[0]['titre'] = "";
 // Affichage des éléments existant
 while(list($key, $val) = each($array_work)) { 
 	echo"
-	<li class='animation slide-up mtl tc' title=\"".$array_work[$key]['txt']."\">
+	<li class='animation slide-up mtl tc'>
 
-		<a href=\"".$array_work[$key]['link']."\">
+		<a href=\"".$array_work[$key]['link']."\" title=\"".$array_work[$key]['tooltip']."\">
 
 			<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$key]['titre']."</span></h2>
 
 			<div class='w150p'><span class='editable-img'><img src=\"".$array_work[$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
-
-			<input type='hidden' id='".$work."-tooltips-".(int)$key."' value=\"".$array_work[$key]['tooltips']."\" class='editable-hidden tooltips block w80'>
-
-			<input type='hidden' id='".$work."-link-".(int)$key."' value=\"".$array_work[$key]['link']."\" class='editable-hidden link block w80'>
+			
+			<div class='absolute'>
+				<input type='hidden' id='".$work."-tooltip-".(int)$key."' value=\"".$array_work[$key]['tooltip']."\" class='editable-hidden tooltip w50'><input type='hidden' id='".$work."-link-".(int)$key."' value=\"".$array_work[$key]['link']."\" class='editable-hidden link w50'>
+			</div>
 
 		</a>
 
@@ -41,6 +41,9 @@ while(list($key, $val) = each($array_work)) {
 }
 ?>
 </ul>
+<script>$("li a").tooltip({
+	position: {my: "left bottom-10"}
+});</script>
 
 
 <script>
@@ -72,10 +75,10 @@ while(list($key, $val) = each($array_work)) {
 			});
 
 			// Change les key des champs hidden
-			$(".editable-hidden.tooltips", this).attr({
-				id: "<?=$work?>-tooltips-" + key,
-				placeholder: "<?=$work?>-tooltips-" + key,
-				title: "<?=$work?>-tooltips-" + key
+			$(".editable-hidden.tooltip", this).attr({
+				id: "<?=$work?>-tooltip-" + key,
+				placeholder: "<?=$work?>-tooltip-" + key,
+				title: "<?=$work?>-tooltip-" + key
 			});
 			$(".editable-hidden.link", this).attr({
 				id: "<?=$work?>-link-" + key,
@@ -135,6 +138,9 @@ while(list($key, $val) = each($array_work)) {
 
 			// Désactive le lien sur le bloc
 			$("#<?=$work?> li a").attr("href", "javascript:void(0)").css("cursor","default");
+
+			// Désactive les bulles d'information
+			$("#<?=$work?> li a").tooltip("disable");
 
 			// Désactive les animations pour rendre plus fluide les déplacements et l'edition
 			$("#<?=$work?> .fire").css({
