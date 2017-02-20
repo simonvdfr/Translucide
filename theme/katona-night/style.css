@@ -20,7 +20,8 @@ body {
 }
 
 a { 
-	/*text-decoration: none;*/
+	color: #c3a4eb;
+	text-decoration: none;
 	transition: color .2s;
 }
 a:hover { color: #BB9F5D; }

@@ -19,7 +19,8 @@ body {
 }
 
 a { 
-	/*text-decoration: none;*/
+	color: #c89100;
+	text-decoration: none;
 	transition: color .2s;
 }
 a:hover { color: #BB9F5D; }
