@@ -1,6 +1,8 @@
 <?
 // @todo voir pour changer l'event dans le edit.js pour qu'ils supp bien toutes les instances de .editable comme au dessu
 
+// @todo ajouter un scroll auto sur l'image lors du mousehover http://eco-nature.cmsmasters.net/landing/
+
 if(!$work) $work = "work";
 
 // Extrait les données work du tableau des contenu
