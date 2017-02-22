@@ -84,7 +84,7 @@ function make_url($url, $filtre = array())
 		if($domaine) $url = $GLOBALS['home'];
 	}
 	else {
-		$url = encode($url);
+		$url = encode($url, "-", array("#"));
 
 		if($domaine) $url = $GLOBALS['home'] . $url;
 
