@@ -941,7 +941,7 @@ $(document).ready(function()
 	editable_event = function() {		
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
-				console.log("debug bind "+ Math.random());
+
 				memo_focus = this;// Pour memo le focus en cours
 
 				adminbar_height = $("#admin-bar").outerHeight();
