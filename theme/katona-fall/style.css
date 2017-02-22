@@ -1,26 +1,26 @@
 /* Typo */
 @font-face {
 	font-family: 'Katona';
-	src: url('/theme/katona-sunny/font/KatonaI-UltraLight.eot');
-	src: url('/theme/katona-sunny/font/KatonaI-UltraLight.eot?#iefix') format('embedded-opentype'),
-		url('/theme/katona-sunny/font/KatonaI-UltraLight.woff2') format('woff2'),
-		url('/theme/katona-sunny/font/KatonaI-UltraLight.woff') format('woff'),
-		url('/theme/katona-sunny/font/KatonaI-UltraLight.ttf') format('truetype');
+	src: url('/theme/katona-fall/font/KatonaI-UltraLight.eot');
+	src: url('/theme/katona-fall/font/KatonaI-UltraLight.eot?#iefix') format('embedded-opentype'),
+		url('/theme/katona-fall/font/KatonaI-UltraLight.woff2') format('woff2'),
+		url('/theme/katona-fall/font/KatonaI-UltraLight.woff') format('woff'),
+		url('/theme/katona-fall/font/KatonaI-UltraLight.ttf') format('truetype');
 	font-weight: 200;
 	font-style: normal;
 }
 
 
 body {
-	background-color: #ade2f7;
+	background-color: #c1bd03;
 	font-family: Katona;
 	color: #fff;
 	-webkit-font-smoothing: antialiased;
 }
 
 a { 
-	color: #c89100;
-	text-decoration: none;
+	color: #cc7a19;
+    text-decoration: none;
 	transition: color .2s;
 }
 a:hover { color: #BB9F5D; }
@@ -129,36 +129,24 @@ header {
 		}
 
 
-#sun {
-	background-color: #eee868;
-    width: 300px;
-    height: 300px;
-    border-radius: 300px;
-    box-shadow:
-	    inset -20px -20px 20px 7px rgba(0, 0, 0, 0.05),
-	    inset 1px 1px 2px 0px rgb(255, 255, 255),
-	    12px 12px 20px 0px rgba(0, 0, 0, 0.3);
-    margin: 10px;
-}
-
 #cloud {
-	background: url('/theme/katona-sunny/img/cloud.png') no-repeat center top;
+	background: url('/theme/katona-fall/img/cloud.png') no-repeat center top;
 	position: relative;
-    margin-bottom: -205px;
+    margin-bottom: -200px;
     width: 100%;
-    height: 905px;
+    height: 930px;
     z-index: 10;
 }
 
 #paper {
 	background:
-		url('/theme/katona-sunny/img/flower-yellow.png') no-repeat center 10%,
-		url('/theme/katona-sunny/img/flower-red.png') no-repeat center 50%,
-		url('/theme/katona-sunny/img/paper.png') repeat-y center center;
+		url('/theme/katona-fall/img/leaf-right.png') no-repeat center 10%,
+		url('/theme/katona-fall/img/leaf-left.png') no-repeat center 50%,
+		url('/theme/katona-fall/img/paper.png') repeat-y center center;
 	z-index: 5;
 }
 	#paper article {
-		padding: 200px 100px 1000px 30px;
+		padding: 200px 100px 800px 30px;
 		color: #000;
 		font-size: 4em;
 		text-shadow: 1px 1px 0px #fff;
@@ -166,45 +154,52 @@ header {
 
 
 #hills {
-	background: url('/theme/katona-sunny/img/hills.png') no-repeat center top;
+	background: url('/theme/katona-fall/img/hills.png') no-repeat center top;
 	position: relative;
     margin-top: -950px;
     width: 100%;
-    height: 950px;
+    height: 757px;
     z-index: 10;
 }
 
 #wave {
-	background: url('/theme/katona-sunny/img/wave-blue.png') repeat-x center top;
+	background: url('/theme/katona-fall/img/wave-blue.png') repeat-x center top;
 	position: relative;
-	margin-top: -45px;
+	margin-top: -85px;
     width: 100%;
-    height: 110px;
+    height: 220px;
     z-index: 15;
 }
-	.seconde {
+	#wave.seconde {
 		z-index: 30 !important;
-		height: 280px !important;
+		margin-top: -165px !important;
+		background-position-x: -5% !important;
+	}
+
+#wave-light {
+	background: url('/theme/katona-fall/img/wave-blue-light.png') repeat-x 20% top;
+	position: relative;
+	margin-top: -150px;
+    width: 100%;
+    height: 220px;
+    z-index: 15;
+}
+	#wave-light.seconde {
+		z-index: 30 !important;
+		margin-top: -140px !important;
+		background-position-x: -7% !important;
 	}
 
 #hill-green {
-	background: url('/theme/katona-sunny/img/hill-green.png') no-repeat center top;
+	background: url('/theme/katona-fall/img/hill-green.png') no-repeat center top;
 	position: relative;
-	margin-top: -292px;
-	margin-left: -300px;
+    margin-top: -280px;
+    margin-left: -400px;
     width: 100%;
-    height: 292px;
+    height: 250px;
     z-index: 20;
 }
 
-#wave-light {
-	background: url('/theme/katona-sunny/img/wave-blue-light.png') repeat-x 18% top;
-	position: relative;
-	margin-top: -50px;
-    width: 100%;
-    height: 120px;
-    z-index: 25;
-}
 
 
 footer {

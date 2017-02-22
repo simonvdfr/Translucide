@@ -9,6 +9,7 @@ body { transition: margin-top .2s linear; }
 
 	text-shadow: none;
 	color: #000000;
+	font-family: Arial;
 
 	position: fixed;
 	top: 0;
@@ -546,6 +547,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	border-radius: 4px;
 
 	list-style: none;
+
+	font-family: Arial;
 
 	padding: 0;	
 	margin: 0;
