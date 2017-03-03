@@ -689,9 +689,11 @@ $(document).ready(function()
 					adminbar+= "<input type='text' id='description' value=\""+ ($('meta[name=description]').attr("content") != undefined ? $('meta[name=description]').attr("content") : "") +"\" maxlength='160' class='w100'>";
 
 					adminbar+= "<div class='small mtt'>"+ __("Formatted web address") +" :</div>";
-					adminbar+= "<input type='text' id='permalink' value=\""+ permalink +"\" placeholder=\""+ __("Permanent link: 'home' if homepage") +"\" maxlength='60' class='w50 mrm'>";
-					adminbar+= "<input type='checkbox' id='homepage'"+ (permalink == "home" ? " checked" : "") +"> <label for='homepage' class='mrs'>"+ __("Home page") + "</label>";
-					adminbar+= "<label id='refresh-permalink'><i class='fa fa-fw fa-refresh'></i>"+ __("Regenerate address") + "</label>";
+					adminbar+= "<div class='grid'>";
+						adminbar+= "<input type='text' id='permalink' value=\""+ permalink +"\" placeholder=\""+ __("Permanent link: 'home' if homepage") +"\" maxlength='60' class='w50 mrm'>";
+						adminbar+= "<span><input type='checkbox' id='homepage'"+ (permalink == "home" ? " checked" : "") +"> <label for='homepage' class='mrs'>"+ __("Home page") + "</label></span>";
+						adminbar+= "<label id='refresh-permalink'><i class='fa fa-fw fa-refresh'></i>"+ __("Regenerate address") + "</label>";
+					adminbar+= "</div>";
 					
 				adminbar+= "</div>";
 			adminbar+= "</div>";
