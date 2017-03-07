@@ -23,6 +23,7 @@ add_translation({
 	"Permanent link: 'home' if homepage" : {"fr" : "Lien permanent: 'home' si c'est la page d'accueil"},
 	"Home page" : {"fr" : "Page d'accueil"},
 	"Regenerate address" : {"fr" : "R\u00e9g\u00e9n\u00e9rer l'adresse"},
+	"Image on social networks" : {"fr" : "Image sur les r\u00e9seaux sociaux"},
 	"Title H2" : {"fr" : "Titre H2"},	
 	"Separator" : {"fr" : "S\u00e9parateur"},	
 	"Media Library" : {"fr" : "Biblioth\u00e8que des m\u00e9dias"},		
@@ -120,6 +121,8 @@ save = function(callback)
 	get_content("header");// Contenu du header
 
 	get_content("footer");// Contenu du footer
+
+	data["content"]["og-image"] = $("#admin-bar #og-image").attr("src");// Image pour les réseaux sociaux
 
 	// Contenu du menu de navigation
 	data["nav"] = {};
@@ -688,12 +691,15 @@ $(document).ready(function()
 					adminbar+= "<div class='small'>"+ __("Description for search engines") +" :</div>";
 					adminbar+= "<input type='text' id='description' value=\""+ ($('meta[name=description]').attr("content") != undefined ? $('meta[name=description]').attr("content") : "") +"\" maxlength='160' class='w100'>";
 
-					adminbar+= "<div class='small mtt'>"+ __("Formatted web address") +" :</div>";
+					adminbar+= "<div class='small mts'>"+ __("Formatted web address") +" :</div>";
 					adminbar+= "<div class='grid'>";
 						adminbar+= "<input type='text' id='permalink' value=\""+ permalink +"\" placeholder=\""+ __("Permanent link: 'home' if homepage") +"\" maxlength='60' class='w50 mrm'>";
 						adminbar+= "<span><input type='checkbox' id='homepage'"+ (permalink == "home" ? " checked" : "") +"> <label for='homepage' class='mrs'>"+ __("Home page") + "</label></span>";
 						adminbar+= "<label id='refresh-permalink'><i class='fa fa-fw fa-refresh'></i>"+ __("Regenerate address") + "</label>";
 					adminbar+= "</div>";
+					
+					adminbar+= "<div class='small mts'>"+ __("Image on social networks") +" :</div>";
+					adminbar+= "<div class=''><span class='editable-img'><img src='' id='og-image'></span></div>";
 					
 				adminbar+= "</div>";
 			adminbar+= "</div>";
@@ -714,7 +720,7 @@ $(document).ready(function()
 	
 	// Ajout des variables dans les inputs (pour le problème de double cote ")
 	$("#admin-bar #title").val(document.title);
-	$("#admin-bar #description").val(($('meta[name=description]').attr("content") != undefined ? $('meta[name=description]').attr("content") : ""));
+	$("#admin-bar #description").val(($("meta[name=description]").attr("content") != undefined ? $('meta[name=description]').attr("content") : ""));
 
 	// Etat de la checkbox homepage onready
 	if($("#admin-bar #permalink").val() == "home") {
@@ -735,6 +741,15 @@ $(document).ready(function()
 	$("#admin-bar #refresh-permalink").click(function() {
 		refresh_permalink("#admin-bar");
 	});
+
+	// On récupère og:image des meta
+	if($("meta[property='og:image']").attr("content") != undefined) {
+		// Bind l'image
+		$("#admin-bar #og-image").attr("src", $("meta[property='og:image']").attr("content"));
+
+		// Option de suppression de l'image
+		$("#admin-bar #og-image").parent().after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
+	}
 
 	// Ajout de l'état de la page
 	$("#admin-bar #state").val(state);

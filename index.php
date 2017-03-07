@@ -84,6 +84,9 @@ $description = htmlspecialchars(strip_tags($res['description']), ENT_COMPAT);
 if($res['content'] and $res['content'] != '""') $GLOBALS['content'] = json_decode($res['content'], true);
 else $GLOBALS['content'] = array();
 
+// Image pour les réseaux sociaux
+if($GLOBALS['content']['og-image']) $image = $GLOBALS['content']['og-image'];
+
 
 // MENU DE NAVIGATION
 
@@ -134,7 +137,7 @@ header('Content-type: text/html; charset=UTF-8');
 	<meta property="og:site_name" content="<?=utf8_encode($GLOBALS['sitename']);?>">
 	<meta property="og:title" content="<?=$title;?>">
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="<?=$GLOBALS['scheme'].$GLOBALS['domain'];?>">
+	<meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>">
 	<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 	<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
 	<?if($GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
@@ -210,6 +213,10 @@ header('Content-type: text/html; charset=UTF-8');
 <?
 include_once("theme/".$GLOBALS['theme']."header.php");
 
+
+//highlight_string(print_r($GLOBALS, true));
+
+
 echo"<div class='content".($res['tpl']?" tpl-".encode($res['tpl']):"")."'>";
 
 if($res['tpl']) // On a une page
@@ -222,6 +229,7 @@ else // Pas de contenu a chargé
 }
 
 echo"</div>";
+
 
 include_once("theme/".$GLOBALS['theme']."footer.php");
 ?>
