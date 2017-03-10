@@ -367,6 +367,9 @@ footer {
 	background-color: #000;
 	color: #fff;
 }
+
+	#webmaster a { color: #bb9f5d; }
+
 	.gold a { background-color: #bb9f5d; }	
 
 	.social .fa a {

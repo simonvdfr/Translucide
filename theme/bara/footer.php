@@ -23,6 +23,7 @@
 		</section>
 
 		<section class="w33 fl">
+
 			<h2 class="mbm medium up"><i class='fa fa-map-marker'></i> <?txt('footer-titre-adresse')?></h2>
 
 			<div class="bold mbt"><?txt('footer-adresse')?></div>
@@ -34,6 +35,8 @@
 		</section>
 
 	</section>
+
+	<?if($res['url'] == "home"){?><section class="mod w100 tc ptm"><?txt('webmaster')?></section><?}?>
 
 </footer>
 
