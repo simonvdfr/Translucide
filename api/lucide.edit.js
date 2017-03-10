@@ -1227,10 +1227,10 @@ $(document).ready(function()
 	editable_bg_event = function() {
 		$("[data-editable='bg']")
 			.on({
-				"mouseenter.bg": function(event) {// Hover zone upload		
+				"mouseenter.editable-bg": function(event) {// Hover zone upload		
 					$("> .open-dialog-media", this).fadeIn("fast");
 				},
-				"mouseleave.bg": function(event) {// Out
+				"mouseleave.editable-bg": function(event) {// Out
 					$("> .open-dialog-media", this).fadeOut("fast");
 				}
 			});		
@@ -1239,8 +1239,8 @@ $(document).ready(function()
 	// Exécute l'event sur les images
 	editable_bg_event();
 
-	// Ouverture de la fenêtre des médias
-	$("[data-editable='bg'] > .open-dialog-media").click(function() {
+	// Ouverture de la fenêtre des médias pour changer le bg
+	$("body").on("click", ".editable-bg > .open-dialog-media", function() {
 		media($(this).parent()[0], 'bg');
 	});
 
