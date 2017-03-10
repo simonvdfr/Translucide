@@ -38,7 +38,9 @@ reset($array_work[$work]);
 
 				<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$work][$key]['titre']."</span></h2>
 
-				<div class='w150p'><span class='editable-img'><img src=\"".$array_work[$work][$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
+				<div class='w150p' data-id='".$work."-bg-".(int)$key."' data-editable='bg' data-bg='".$array_work[$work][$key]['bg']."' style='background-image: url(".$array_work[$work][$key]['bg'].");'></div>
+
+				<div class='w150p none'><span class='editable-img'><img src=\"".$array_work[$work][$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
 				
 				<div class='absolute'>
 					<input type='hidden' id='".$work."-tooltip-".(int)$key."' value=\"".$array_work[$work][$key]['tooltip']."\" class='editable-hidden tooltip w50'><input type='hidden' id='".$work."-link-".(int)$key."' value=\"".$array_work[$work][$key]['link']."\" class='editable-hidden link w50'>
@@ -56,7 +58,7 @@ reset($array_work[$work]);
 <?if(!$jswork) {?>
 <script>
 	// Affichage des bulles d'informations
-	$("li a").tooltip({
+	$(".work li a").tooltip({
 		position: {my: "left bottom-10"}
 	});
 
@@ -71,30 +73,57 @@ reset($array_work[$work]);
 	{
 		work = $(event).parent().prev("ul").attr("id");
 
-		// Crée un id unique
-		key = parseInt($("#" + work + " li:first-child .editable").attr("id").split("-").pop()) + 1;
+		// Crée un id unique => bug prend juste le dernier qui n'est pas forcement le + grand
+		//key = parseInt($("#" + work + " li:first-child .editable").attr("id").split("-").pop()) + 1;
+
+		// Prend l'id le plus elever
+		var max = $.map($(".work .editable"), function(elem) {
+			return parseInt(elem.id.match(/\d+/));
+		}).sort(function(a, b) {
+			return(b-a); /* reverse sort */
+		});
+		key = max[0] + 1;
 
 		// Unbind les events d'edition
 		$(".editable").off();
 		$(".editable-img").off(".editable-img");
+		//$(".editable-bg").off();
 
 		// Crée un block
 		$("#" + work + " li:last-child").clone().prependTo("#" + work).show("400", function()
 		{
-			// Modifie les cles
-			$("[class*='editable']", this).each(function() {
-				old_key = $(this).attr("id");
-				if(old_key == undefined) old_key = $("[id*='" + work + "-']", this).attr("id");
+			// Modifie les cles txt et img
+			$("[class*='editable']", this).each(function() {			
 				
-				$("#" + old_key).attr({
-					id: old_key.replace("-0", "-"+ key),
-					src: ""
-				});
+				if($(this).hasClass("editable-img")) // Image
+				{
+					old_key = $("[id*='" + work + "-']", this).attr("id");
+
+					$("#" + old_key).attr({
+						id: old_key.replace("-0", "-"+ key),
+						src: ""
+					});
+				}
+				else if($(this).hasClass("editable-bg"))// Bg
+				{
+					$(this).attr("data-id", $(this).attr("data-id").replace("-0", "-"+ key));
+				}
+				else// Autre (txt, hidden...)
+				{
+					new_key = $(this).attr("id").replace("-0", "-"+ key);
+
+					$(this).attr({
+						id: new_key,
+						placeholder: new_key,
+						title: new_key
+					});
+				}
 			});
 
 			// Relance les events d'edition
 			editable_event();
 			editable_img_event();
+			editable_bg_event();
 		});
 	}
 
@@ -128,6 +157,7 @@ reset($array_work[$work]);
 		// Active l'edition
 		editable_event();
 		editable_img_event();
+		editable_bg_event();
 
 		// Désactive le déplacement
 		$(".work").sortable("destroy");
@@ -145,9 +175,6 @@ reset($array_work[$work]);
 			// Désactive le lien sur le bloc
 			$(".work li a").attr("href", "javascript:void(0)").css("cursor","default");
 
-			// Désactive les bulles d'information
-			$(".work li a").tooltip("disable");
-
 			// Désactive les animations pour rendre plus fluide les déplacements et l'edition
 			$(".work .fire").css({
 				"opacity": "1",
@@ -162,7 +189,7 @@ reset($array_work[$work]);
 			$(".work-bt").parent().addClass("relative");
 
 			// Ajout de la suppresion au survole d'un bloc
-			//$(".work li").append("<a href='javascript:void(0)' onclick='remove_work(this)'><i class='fa fa-close absolute none' style='top: -5px; right: -5px;' title='"+ __("Remove") +"'></i></a>");
+			$(".work li").append("<a href='javascript:void(0)' onclick='remove_work(this)'><i class='fa fa-close absolute none' style='top: -5px; right: -5px;' title='"+ __("Remove") +"'></i></a>");
 
 			// Affiche les boutons de suppression
 			$(".work li .fa-close").fadeIn();
