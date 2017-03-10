@@ -32,7 +32,7 @@ reset($array_work[$work]);
 	while(list($key, $val) = each($array_work[$work]))
 	{ 
 		echo"
-		<li class='animation slide-up mtl tc'>
+		<li class='animation slide-up mtl tc small'>
 
 			<a href=\"".$array_work[$work][$key]['link']."\" title=\"".$array_work[$work][$key]['tooltip']."\">
 
