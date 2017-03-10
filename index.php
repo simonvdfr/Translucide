@@ -138,8 +138,10 @@ header('Content-type: text/html; charset=UTF-8');
 	<meta property="og:title" content="<?=$title;?>">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>">
+	
 	<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 	<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
+
 	<?if($GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
