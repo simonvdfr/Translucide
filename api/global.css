@@ -436,6 +436,9 @@ input[type="reset"].unstyled:focus {
 	padding: 8px;
 	margin: 0 0 5px 0;
 	width: 100%;   
+
+	overflow: hidden;
+    text-overflow: ellipsis;
 	
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
