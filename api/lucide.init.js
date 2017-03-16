@@ -2,7 +2,7 @@
 translation = {
 	"" : {"fr" : ""},
 	"Edit the content of the page" : {"fr" : "Modifier le contenu de la page"},
-	"Add a page" : {"fr" : "Ajouter une page"},
+	"Add a content" : {"fr" : "Ajouter un contenu"},
 	"Thank you to select a template" : {"fr" : "Merci de s\u00e9lectionner un model de page"},
 	"Back to Top" : {"fr" : "Retour en haut"},
 	"Error" : {"fr" : "Erreur"},
@@ -141,9 +141,10 @@ edit = [];
 
 
 // Formulaire d'ajout d'une page
-add_page = function()
+add_content = function()
 {	
-	$.ajax({url: path+"api/ajax.admin.php?mode=add-page&callback=add_page"})
+	//@todo envoyer les bonnes informations si on crée une page ou si c'est un article ou autre
+	$.ajax({url: path+"api/ajax.admin.php?mode=add-content&callback=add_content"})
 		.done(function(html) {	
 			// Contenu de la dialog d'ajout
 			$("body").append(html);		
@@ -151,18 +152,22 @@ add_page = function()
 			// Création de la dialog
 			$(".dialog-add").dialog({
 				modal: true,
-				width: "80%",
+				width: "60%",
 				buttons: {
 					"OK": function() {
-						if(!$(".dialog-add #tpl").val()) error(__("Thank you to select a template"));
+						// Dans quel onglet on se situe
+						type = $(".ui-tabs-nav .ui-state-active").data("filter");
+
+						if(!$(".dialog-add #add-"+type+" #tpl").val()) error(__("Thank you to select a template"));
 						else {
 							$.ajax({
 								type: "POST",
-								url: path+"api/ajax.admin.php?mode=insert",
+								url: path + "api/ajax.admin.php?mode=insert",
 								data: {
-									"title": $(".dialog-add #title").val(),
-									"tpl": $(".dialog-add #tpl").val(),
-									"permalink": $(".dialog-add #permalink").val(),
+									"title": $(".dialog-add #add-"+type+" #title").val(),
+									"tpl": $(".dialog-add #add-"+type+" #tpl").val(),
+									"permalink": $(".dialog-add #add-"+type+" #permalink").val(),
+									"type": type,
 									"nonce": $("#nonce").val()// Pour la signature du formulaire
 								}
 							})
@@ -172,6 +177,15 @@ add_page = function()
 							});
 						}
 					}
+				},
+				create: function() 
+				{
+					// Création des onglets
+					$(".dialog-add").tabs();
+
+					// Place les onglets à la place du titre de la dialog
+					$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+					
 				},
 				close: function() {
 					$(".dialog-add").remove();					
@@ -190,7 +204,7 @@ refresh_permalink = function(target) {
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=make-permalink",
-		data: {"title": $(target+" #title").val(), "nonce": $("#nonce").val()},
+		data: {"title": $(target+" #title").val(), "type": type, "nonce": $("#nonce").val()},
 		success: function(url){ 
 			$(target+" #refresh-permalink i").removeClass("fa-spin");
 			$(target+" #permalink").val(url);
@@ -242,7 +256,7 @@ edit_launcher = function(callback)
 	// Si le mode édition n'est pas déjà lancé
 	if(!$("#admin-bar").length) 
 	{
-		$.ajax({url: path+"api/ajax.admin.php?mode=edit"+(callback?"&callback="+callback:""), cache: false})
+		$.ajax({url: path+"api/ajax.admin.php?mode=edit&type="+type+(callback?"&callback="+callback:""), cache: false})
 		.done(function(html) {				
 			$("body").append(html);
 		});
@@ -259,13 +273,13 @@ $(document).ready(function()
 	});
 
 	// Bouton ajout de page/article
-	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add a page") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
+	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add a content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
 	
 	// Bouton d'édition si la page existe dans la base
 	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></a>");
 
 	// Page désactivé => message admin
-	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-content")) {
+	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
 		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("State") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
@@ -284,7 +298,7 @@ $(document).ready(function()
 	$("a.bt.edit").click(function() 
 	{
 		// Si la page n'est pas activée  et que l'on n'est pas admin on callback un reload
-		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit-content")) ? "reload_edit":"edit_launcher"));
+		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit-page")) ? "reload_edit":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
 		$("a.bt.fixed.add").fadeOut();
@@ -293,7 +307,7 @@ $(document).ready(function()
 	// Bind le bouton d'ajout
 	$("a.bt.add").click(function() 
 	{
-		add_page();
+		add_content();
 	});	
 
 
@@ -342,7 +356,7 @@ $(document).ready(function()
 			if(!$("#admin-bar").length && !$("#dialog-connect").length)
 			{
 				// Affichage du bouton d'édition  avec 50px de marge OU si on est admin
-				if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-content")) 
+				if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-page")) 
 				{	
 					// Décale l'icone si il y a le bt to top
 					if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit").css("right","70px");
@@ -363,8 +377,8 @@ $(document).ready(function()
 	}
 
 	
-	// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
-	if(get_cookie("auth").indexOf("edit-content") && !$("#admin-bar").length && !$("#dialog-connect").length)
+	// Verifi les droits, si l'admin n'est pas lancé
+	if(get_cookie("auth").indexOf("edit-page") && !$("#admin-bar").length && !$("#dialog-connect").length)
 	{
 		// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
 		$(document).keyup(function(event) {			

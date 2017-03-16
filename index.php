@@ -59,7 +59,7 @@ else// Une page existe
 	if($res['state'] != "active")// Page non activé
 	{
 		// Si pas admin on affiche page en construction
-		if(!$_SESSION['auth']['edit-content']) 
+		if(!$_SESSION['auth']['edit-'.$res['type']]) 
 		{
 			// On regarde si une template 503 est définie
 			$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
@@ -188,7 +188,7 @@ header('Content-type: text/html; charset=UTF-8');
 		<? } ?>
 		
 						
-		<?if($_COOKIE['autoload_edit'] and $_SESSION['auth']['edit-content']){?>// Si demande l'autoload du mode édition et si admin
+		<?if($_COOKIE['autoload_edit'] and $_SESSION['auth']['edit-page']){?>// Si demande l'autoload du mode édition et si admin
 			$(document).ready(function()
 			{
 				edit_launcher();
@@ -201,6 +201,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 		state = "<?=$res['state']?>";
 		permalink = "<?=$res['url']?>";
+		type = "<?=$res['type']?>";
 		path = "<?=$GLOBALS['path']?>";
 	</script>
 

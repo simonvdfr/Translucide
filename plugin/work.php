@@ -34,7 +34,7 @@ reset($array_work[$work]);
 		echo"
 		<li class='animation slide-up mtl tc small'>
 
-			<a href=\"".$array_work[$work][$key]['link']."\" title=\"".$array_work[$work][$key]['tooltip']."\">
+			<a href=\"".$array_work[$work][$key]['link']."\" title=\"".$array_work[$work][$key]['tooltip']."\" class='block' target='_blank'>
 
 				<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$work][$key]['titre']."</span></h2>
 
@@ -59,7 +59,7 @@ reset($array_work[$work]);
 <script>
 	// Affichage des bulles d'informations
 	$(".work li a").tooltip({
-		position: {my: "left bottom-10"}
+		position: {my: "left top"}
 	});
 
 	add_translation({

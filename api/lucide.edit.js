@@ -115,6 +115,8 @@ save = function(callback)
 	data["description"] = $("#admin-bar #description").val();// Description pour les serp
 
 	data["state"] = $("#admin-bar #state").val();// Etat d'activation de la page
+
+	data["type"] = type;// Type de contenu
 	
 	get_content(".content");// Contenu de la page
 
@@ -694,6 +696,7 @@ $(document).ready(function()
 					adminbar+= "<div class='small mts'>"+ __("Formatted web address") +" :</div>";
 					adminbar+= "<div class='grid'>";
 						adminbar+= "<input type='text' id='permalink' value=\""+ permalink +"\" placeholder=\""+ __("Permanent link: 'home' if homepage") +"\" maxlength='60' class='w50 mrm'>";
+						if(type == "page")
 						adminbar+= "<span><input type='checkbox' id='homepage'"+ (permalink == "home" ? " checked" : "") +"> <label for='homepage' class='mrs'>"+ __("Home page") + "</label></span>";
 						adminbar+= "<label id='refresh-permalink'><i class='fa fa-fw fa-refresh'></i>"+ __("Regenerate address") + "</label>";
 					adminbar+= "</div>";

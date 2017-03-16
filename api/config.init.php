@@ -92,7 +92,7 @@ $GLOBALS['default_auth'] = "edit-public,upload-public";
 $GLOBALS['meta_user'] = null;
 
 // Niveaux d'authentification possible
-$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-content", "add-page", "upload-file", "edit-nav", "edit-header", "edit-footer", "edit-article", "edit-product", "edit-public", "upload-public");
+$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "upload-file", "add-page", "add-article", "add-product", "edit-page", "edit-article", "edit-product",  "edit-public", "upload-public");
 
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = "medium";

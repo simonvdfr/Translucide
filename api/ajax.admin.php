@@ -16,7 +16,7 @@ switch($_GET['mode'])
 				
 		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
 		
-		login('high', 'edit-content');// Vérifie que l'on a le droit d'éditer les contenus
+		login('high', 'edit-'.encode($_GET['type']));// Vérifie que l'on a le droit d'éditer les contenus
 		
 		// Si on doit recharger la page avant de lancer le mode édition
 		if($_REQUEST['callback'] == "reload_edit")
@@ -57,38 +57,76 @@ switch($_GET['mode'])
 	break;
 
 
-	case "add-page":// Dialog pour ajouter une page
+	case "add-content":// Dialog pour ajouter une page
 
 		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
 
-		login('medium', 'add-page');// Vérifie que l'on a le droit d'ajouter une page
+		login('medium');
 
 		// Dialog : titre, template, langue
 		?>
-		<div class="dialog-add" title="<?_e("Add a page")?>">
+		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
 
+		<div class="dialog-add" title="<?_e("Add a content")?>">
+			
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<div class="">
-				<input type="text" id="title" placeholder="<?_e("Page title")?>" maxlength="60" class="w60 bold">
+			<ul class="small">
+				<li data-filter="page"><a href="#add-page" title="<?_e("Add a page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add a page")?></span></a></li>
+				<li data-filter="article"><a href="#add-article" title="<?_e("Add an article")?>"><i class="fa fa-feed"></i> <span><?_e("Add an article")?></span></a></li>		
+				<!-- <li data-filter="product"><a href="#add-product"></" title="<?_e("Product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Product")?></span></a></li> -->
+			</ul>			
 
-				<select id="tpl" required class="w30">
-					<option value=""><?_e("Select page template")?></option>
-					<?
-					$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
-					while(list($cle, $filename) = each($scandir))				
-					{			
-						$filename = pathinfo($filename, PATHINFO_FILENAME);
-						echo"<option value=\"".$filename."\">".$filename."</option>";
-					}
-					?>					
-				</select>
+			<div id="add-page">
+
+				<div class="mas">
+					<input type="text" id="title" placeholder="<?_e("Page title")?>" maxlength="60" class="w60 bold">
+
+					<select id="tpl" required class="w30">
+						<option value=""><?_e("Select page template")?></option>
+						<?
+						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
+						while(list($cle, $filename) = each($scandir))				
+						{			
+							$filename = pathinfo($filename, PATHINFO_FILENAME);
+							echo"<option value=\"".$filename."\">".$filename."</option>";
+						}
+						?>					
+					</select>
+				</div>
+
+				<div class="mas">
+					<input type="text" id="permalink" placeholder="<?_e("Permanent link: 'home' if homepage")?>" maxlength="60" class="w50 mrm">
+					<label for="homepage" class="mrs mtn"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
+					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
+				</div>
+
 			</div>
 
-			<div class="mtt">
-				<input type="text" id="permalink" placeholder="<? _e("Permanent link: 'home' if homepage"); ?>" maxlength="60" class="w50 mrm">
-				<label for="homepage" class="mrs mtn"><input type="checkbox" id="homepage"> <? _e("Home page"); ?></label>
-				<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><? _e("Regenerate address"); ?></label>
+
+			<div id="add-article">
+
+				<div class="mas">
+					<input type="text" id="title" placeholder="<?_e("Title of article")?>" maxlength="60" class="w60 bold">
+
+					<select id="tpl" required class="w30">
+						<option value=""><?_e("Select article template")?></option>
+						<?
+						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
+						while(list($cle, $filename) = each($scandir))				
+						{			
+							$filename = pathinfo($filename, PATHINFO_FILENAME);
+							echo"<option value=\"".$filename."\"".($filename == "article"?" selected":"").">".$filename."</option>";
+						}
+						?>					
+					</select>
+				</div>
+
+				<div class="mas">
+					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
+					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
+				</div>
+
 			</div>
 
 			<script>
@@ -99,27 +137,29 @@ switch($_GET['mode'])
 
 				// Changement au click de la checkbox homepage
 				$(".dialog-add #homepage").change(function() {
-					if(this.checked) $(".dialog-add #permalink").val("home");
-					else refresh_permalink(".dialog-add");
+					if(this.checked) $(".dialog-add #add-page #permalink").val("home");
+					else refresh_permalink(".dialog-add #add-page");
 				});
 
 				// Click refresh permalink
 				$(".dialog-add #refresh-permalink").click(function() {
-					refresh_permalink(".dialog-add");
+					refresh_permalink("#" + $(this).parent().parent().attr("id"));
 				});
 
 				// Création du permalink lors de la saisie du title
 				var timer = null;
 				$(".dialog-add #title").keyup(function() 
 				{
+					// Id du parent qui contient le title edité en cours
+					var id = $(this).parent().parent().attr("id");
+
 					if(timer != null) clearTimeout(timer);
 
 					timer = setTimeout(function() {
 						timer = null;
-						refresh_permalink(".dialog-add");
+						refresh_permalink("#" + id);
 					}, '500');
 				});
-
 				
 				// Fermeture de la dialog de connexion
 				$("#dialog-connect").dialog("close");
@@ -134,8 +174,10 @@ switch($_GET['mode'])
 	case "insert":// Crée une nouvelle page
 
 		include_once("db.php");// Connexion à la db
-		
-		login('high', 'add-page');// Vérifie que l'on a le droit d'ajouter une page
+
+		$type = encode($_POST['type']);
+
+		login('high', 'add-'.$type);// Vérifie que l'on a le droit d'ajouter une page
 
 		$url = (encode($_POST['permalink']) ? encode($_POST['permalink']) : encode($_POST['title']));
 
@@ -145,6 +187,7 @@ switch($_GET['mode'])
 		$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
 		$sql .= "url = '".$url."', ";
 		$sql .= "lang = '".$lang."', ";
+		$sql .= "type = '".$type."', ";
 		$sql .= "user_insert = '".(int)$_SESSION['uid']."', ";
 		$sql .= "date_insert = NOW() ";
 		$connect->query($sql);
@@ -169,9 +212,11 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 		
-		login('high', 'edit-content');// Vérifie que l'on peut éditer une page
+		//highlight_string(print_r($_POST, true)); exit;
 
-		//highlight_string(print_r($_POST['content'], true)); exit;
+		$type = encode($_POST['type']);// Type de contenu
+
+		login('high', 'edit-'.$type);// Vérifie que l'on peut éditer une page
 		
 		// PREPARATION POUR LE CONTENU ET NAVIGATION
 		// On récupère les données de la page pour comparaison
@@ -182,7 +227,7 @@ switch($_GET['mode'])
 		if($res['url'] != encode($_POST['permalink']) or (encode($_POST['title']) and !encode($_POST['permalink']))) 
 		{
 			if(!encode($_POST['permalink']) and encode($_POST['title'])) $change_url = encode($_POST['title']);
-			elseif(!encode($_POST['permalink']) and !encode($_POST['title'])) $change_url = "page-".$res['id'];
+			elseif(!encode($_POST['permalink']) and !encode($_POST['title'])) $change_url = $type."-".$res['id'];
 			else $change_url = encode($_POST['permalink']);
 		}
 
@@ -329,7 +374,9 @@ switch($_GET['mode'])
 
 	case "make-permalink":// Construit un permalink
 
-		login('medium', 'edit-content');// Vérifie que l'on a le droit d'éditer une page
+		$type = encode($_POST['type']);// Type de contenu
+
+		login('medium', 'edit-'.$type);// Vérifie que l'on a le droit d'éditer une page
 
 		echo encode($_POST['title']);
 
@@ -397,7 +444,7 @@ switch($_GET['mode'])
 				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?_e("Audios")?>"><i class="fa fa-volume-up"></i> <span><?_e("Audios")?></span></a></li> -->
 			</ul>
 			
-			<div id="media" class="test">
+			<div id="media" class="">
 				<?
 				$_GET['mode'] = "media";
 				include("ajax.admin.php");
@@ -543,6 +590,7 @@ switch($_GET['mode'])
 					else get_file(id);
 				});
 
+
 				// Init variable d'upload
 				source_queue = [];// @todo: voir si on les re-active
 				file_queue = [];
@@ -580,6 +628,7 @@ switch($_GET['mode'])
 				// Pour éviter les highlight des zones draggables du fond
 				$("body").off(".editable").off(".editable-img");
 				$(".editable-img").off(".editable-img");
+
 
 				// On drag&drop des médias dans la fenêtre
 				$("body")
@@ -868,7 +917,7 @@ switch($_GET['mode'])
 
 	case "dialog-icon":// Affichage des médias
 		
-		login('medium', 'edit-content');// Vérifie que l'on est admin
+		login('medium', 'edit-page');// Vérifie que l'on est admin
 
 		// @todo: ajouter une recherche en js (qui masque)
 		?>
@@ -952,7 +1001,7 @@ switch($_GET['mode'])
 				
 		//@todo: check si access token facebook disponible
 
-		login('medium', 'edit-content');// Vérifie que l'on est admin
+		login('medium', 'edit-page');// Vérifie que l'on est admin
 
 		// https://graph.facebook.com/me/albums
 		// https://graph.facebook.com/id-album/photos?fields=source,name,id,link&access_token=

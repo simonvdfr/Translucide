@@ -47,7 +47,7 @@ body { transition: margin-top .2s linear; }
 			}
 
 
-	#admin-bar input {			
+	#admin-bar input, .ui-dialog input {			
 		background-color: transparent;
 		color: #516062;
 		border: none;
@@ -475,7 +475,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.dialog-media li:hover > .infos, .dialog-media li:hover > .supp, .dialog-media li:hover > .resize { display: block; }
 
 
-	/* Onglet */
+	/* Onglet JQuery UI */
 	.ui-tabs { padding: 0 !important; }
 
 		.ui-tabs .ui-dialog-title {

@@ -32,12 +32,19 @@ $add_translation = array(
 	"Sign up" => array("fr" => "Inscrivez-vous"),
 
 
+	"Add a content" => array("fr" => "Ajouter un contenu"),
+
 	"Add a page" => array("fr" => "Ajouter une page"),
 	"Page title" => array("fr" => "Titre de la page"),
 	"Select page template" => array("fr" => "Sélectionnez modèle de page"),
-
 	"Permanent link: 'home' if homepage" => array("fr" => "Lien permanent: 'home' si c'est la page d'accueil"),
 	"Home page" => array("fr" => "Page d'accueil"),
+
+	"Add an article" => array("fr" => "Ajouter un article"),
+	"Title of article" => array("fr" => "Titre de l'article"),
+	"Select article template" => array("fr" => "Sélectionner un modèle d'article"),
+	"Permanent link" => array("fr" => "Lien Permanent"),
+
 	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
 
 
@@ -95,18 +102,19 @@ $add_translation = array(
 	"Managing users" => array("fr" => "Gestion des utilisateurs"),
 
 	"Edit Config" => array("fr" => "Modifier la config"),
-
-	"Edit content" => array("fr" => "Edition des contenus"),
-	"Add page" => array("fr" => "Ajouter une page"),
-
-	"Send Files" => array("fr" => "Envoyer des fichiers"),
-
+	
 	"Edit menu" => array("fr" => "Edition du menu"),
 	"Edit header" => array("fr" => "Modifier l'en-tête"),
 	"Edit footer" => array("fr" => "Modifier le pied de page"),
 
-	"Edit article" => array("fr" => "Edition des articles"),
+	"Send Files" => array("fr" => "Envoyer des fichiers"),
 
+	"Add page" => array("fr" => "Ajouter une page"),
+	"Add article" => array("fr" => "Ajouter un article"),
+	"Add product" => array("fr" => "Ajouter un produit"),
+
+	"Edit page" => array("fr" => "Edition des pages"),
+	"Edit article" => array("fr" => "Edition des articles"),
 	"Edit product" => array("fr" => "Edition des produits"),
 
 	"Public content" => array("fr" => "Contenu public"),
