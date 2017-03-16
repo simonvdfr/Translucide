@@ -78,4 +78,4 @@ Le dossier `plugin` est plus fait pour des fonctions génériques pas forcément
 Le processus est plus fait pour qu'un graphiste|intégrateur ou/et un développeur web construisent une template simple en HTML et y intégrent les 4/5 balises de contenu type là où ils veulent que ça soit éditable. Le CMS fait le reste pour que l'utilisateur final puisse modifier en live son site avec le moins de clic possible.
 
 ### Est-il multiplate-forme et responsive ?
-Autant que possible ! J'utilise <a href="https://www.browserstack.com"><img src="http://hpics.li/81150de" widht="100" alt="browserstack" style="max-width:100px; vertical-align:middle;"></a> pour faire mes tests.
+Autant que possible ! J'utilise <a href="https://www.browserstack.com"><img src="http://img4.hostingpics.net/pics/659921browserstacklogo.png" widht="100" alt="browserstack" style="max-width:100px; vertical-align:middle;"></a> pour faire mes tests.
