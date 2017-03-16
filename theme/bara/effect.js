@@ -77,7 +77,7 @@ $(document).ready(function()
     		var element_top = $element.offset().top;
     		var element_bottom = (element_top + element_height);
 
-			//check to see if this current container is within viewport
+			// Vérifier si ce conteneur actuel est dans la fenêtre
 			if ((element_bottom >= window_top) &&
 				(element_top <= window_bottom)) {
 				$element.addClass("fire");
