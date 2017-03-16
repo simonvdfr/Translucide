@@ -16,7 +16,7 @@ switch($_GET['mode'])
 				
 		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
 		
-		login('high', 'edit-'.encode($_GET['type']));// Vérifie que l'on a le droit d'éditer les contenus
+		login('high', 'edit-'.($_GET['type']?encode($_GET['type']):"page"));// Vérifie que l'on a le droit d'éditer les contenus
 		
 		// Si on doit recharger la page avant de lancer le mode édition
 		if($_REQUEST['callback'] == "reload_edit")
@@ -214,7 +214,7 @@ switch($_GET['mode'])
 		
 		//highlight_string(print_r($_POST, true)); exit;
 
-		$type = encode($_POST['type']);// Type de contenu
+		$type = ($_POST['type']?encode($_POST['type']):"page");// Type de contenu
 
 		login('high', 'edit-'.$type);// Vérifie que l'on peut éditer une page
 		
@@ -374,9 +374,7 @@ switch($_GET['mode'])
 
 	case "make-permalink":// Construit un permalink
 
-		$type = encode($_POST['type']);// Type de contenu
-
-		login('medium', 'edit-'.$type);// Vérifie que l'on a le droit d'éditer une page
+		login('medium', 'edit-'.($_POST['type']?encode($_POST['type']):"page"));// Vérifie que l'on a le droit d'éditer une page
 
 		echo encode($_POST['title']);
 
