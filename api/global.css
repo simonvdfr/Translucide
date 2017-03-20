@@ -829,7 +829,10 @@ div.editable {
 /* Animation onscroll */
 .animation { transition: all 1s ease-out; }
 
-	.fade-in { opacity: 0; }
+	.fade-in { 
+		opacity: 0;
+		transition-delay: .5s;
+	}
 
 	.slide-up {
 		opacity: 0;
