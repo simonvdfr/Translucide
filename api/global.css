@@ -831,7 +831,7 @@ div.editable {
 
 	.fade-in { 
 		opacity: 0;
-		transition-delay: .5s;
+		transition-delay: .3s;
 	}
 
 	.slide-up {
