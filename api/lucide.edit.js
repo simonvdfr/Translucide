@@ -826,21 +826,27 @@ $(document).ready(function()
 	$("header nav ul").after(addnav);
 	
 	// Déplace un élément du menu add vers le menu courant au click sur le +
-	$("#add-nav").on("click", ".dragger", function(event) {
-		event.preventDefault();  
-		//event.stopPropagation();
+	hover_add_nav = false;	
+	$("#add-nav").on({
+		"click.dragger": function(event) {
+			event.preventDefault();  
+			//event.stopPropagation();
 
-		if($(this).parent().hasClass("add-empty")) $("header nav ul:first").append($(this).parent().clone());// Copie
-		else $($(this).parent()).appendTo("header nav ul:first");// Déplace
-		
-		// Rends editable les éléments du menu
-		$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
-		editable_event();
-
-		tosave();// A sauvegarder
+			if($(this).parent().hasClass("add-empty")) $("header nav ul:first").append($(this).parent().clone());// Copie
+			else $($(this).parent()).appendTo("header nav ul:first");// Déplace
 			
-		// Désactive les liens dans le menu d'ajout
-		$("#add-nav ul a").click(function() { return false; });
+			// Rends editable les éléments du menu
+			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+			editable_event();
+
+			tosave();// A sauvegarder
+				
+			// Désactive les liens dans le menu d'ajout
+			$("#add-nav ul a").click(function() { return false; });
+		},
+		// On check si on est sur le menu d'ajout de page au menu
+		"mouseenter": function(event) { hover_add_nav = true; },
+		"mouseleave": function(event) {	hover_add_nav = false; }
 	});
 	
 	// Drag & Drop des éléments du menu principal
@@ -922,8 +928,11 @@ $(document).ready(function()
 			}
 			else $("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
 		},
+		// Si on sort du header, on check si on est sur le menu d'ajout de page avant de le fermer
 		"mouseleave": function(event) {
-			$("#add-nav").fadeOut("fast");
+			setTimeout(function() { 
+				if(!hover_add_nav) $("#add-nav").fadeOut("fast");
+			}, 1000);			
 		}
 	});
 

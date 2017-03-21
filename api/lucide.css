@@ -135,9 +135,11 @@ header {
 
 
 /* Menu de navigation */
-header nav ul { 
-	position: relative;
-}
+header nav ul { position: relative; }
+	header nav .tooltip ul { 
+		background-color: transparent;
+		box-shadow: none;
+	}
 	header nav li { 
 		position: relative;
 		white-space: nowrap;
