@@ -30,6 +30,28 @@ switch($_GET['mode'])
 		?>
 		<div id="dialog-connect" title="<?_e("Administrator Login");?>">
 
+			<style>
+				/* Font Awesome pour bt connexion */
+				.loading:before {
+					content: "\f013" !important;
+					animation: fa-spin 2s infinite linear;
+
+					border-right: none !important;
+					padding-right: 0 !important;
+				}
+				.down:before {
+					content: "\f0a7" !important;
+					animation: bounce-light .35s ease 6 alternate;
+
+					border-right: none !important;
+					padding-right: 0 !important;
+				}				
+					@keyframes bounce-light {
+						from { transform: translateY(0);}
+						to { transform: translateY(-5px);}
+					}
+			</style>
+
 			<script>
 			// S'il y a une fonction de callback
 			callback = <?if($_REQUEST['callback']){ echo'"'.encode($_REQUEST['callback'], "_").'"';} else echo"null";?>;

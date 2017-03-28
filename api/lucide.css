@@ -19,6 +19,11 @@ body { transition: margin-top .2s linear; }
 	transition: background-color .3s linear;
 	animation: slide-down .3s 1 ease-out;
 }
+	@keyframes slide-down {
+	    0% { transform: translate3d(0, -100%, 0); }
+	    100% { transform: translateY(0, 0, 0); }
+	}
+
 	#admin-bar:hover { background-color: rgba(240, 240, 240, 0.95); }
 
 	#admin-bar h3 { font-family: arial; }
@@ -432,8 +437,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		vertical-align: middle;
 		transition: opacity .5s;
 	}
-
-
+	
 	.dialog-media li .infos { 
 		box-shadow: inset 0px -22px 10px -10px #fff;/*0 0 0 1px rgba(0, 0, 0, 0.15) inset*/
 
@@ -450,6 +454,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		animation: fade-in .2s;
 	}
+		@keyframes fade-in {
+			0% { opacity: 0; }
+			100% { opacity: 1; }
+		}
 
 
 	.dialog-media li .resize, .dialog-media li .supp { 
@@ -488,6 +496,16 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.dialog-media li:hover { background: #fff; }
 	.dialog-media li:hover > .infos, .dialog-media li:hover > .supp, .dialog-media li:hover > .resize { display: block; }
 
+	/* Image à moitié transparante */
+	.to50 {
+		opacity: 0.5;
+		animation: fade-50 .5s 1;
+	}
+		@keyframes fade-50 {
+			0% { opacity: 0; }
+			100% { opacity: 0.5; }
+		}
+
 
 	/* Onglet JQuery UI */
 	.ui-tabs { padding: 0 !important; }
@@ -508,8 +526,9 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		.ui-tabs .ui-state-active { background: #f1f4f7; }
 			.ui-tabs li.ui-state-active { box-shadow: none; }
-	
+
 	/* Icone Upload */
+	
 	.uploading:before {
 		font-family: FontAwesome;
 		font-size: 4rem;
@@ -517,7 +536,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		content: "\f1ce";
 
-		animation: rotate 2s infinite linear;
+		animation: fa-spin 2s infinite linear;
 
 		display: block;
 		position: absolute;
@@ -538,6 +557,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		position: absolute;
 		width: 120px;
 	}
+		@keyframes fade-in-out {
+			0%,100% { opacity: 0; }
+			50% { opacity: 1; }
+		}
 
 
 /* Fenêtre de gestion des icônes */
@@ -550,11 +573,6 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	box-shadow: 0 0 15px rgba(0, 0, 0, 1) inset;
 }
 
-
-@keyframes fadeInToolbox {
-	0% { opacity: 0; }
-	100% { opacity: 0.8; }
-}
 
 /* Style et initialisation de la toolbox */
 .toolbox {	
@@ -578,6 +596,11 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	animation: fadeInToolbox .3s ease-in;
 	transition: all .24s ease-in-out;
 }
+	@keyframes fadeInToolbox {
+		0% { opacity: 0; }
+		100% { opacity: 0.8; }
+	}
+
 	.toolbox li {
 		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 		float: left;		

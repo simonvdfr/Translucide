@@ -812,7 +812,7 @@ $(document).ready(function()
 	$("header nav li").prepend("<div class='dragger'></div>");
 	
 	// Bloc d'option pour le menu de navigation
-	addnav = "<div id='add-nav'>";
+	addnav = "<div id='add-nav' class='black'>";
 		addnav+= "<div class='open zone' title='"+ __("Add to menu") +"'><i class='fa fa-fw fa-plus bigger vam'></i></div>";
 		addnav+= "<div class='tooltip pat'>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
