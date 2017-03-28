@@ -33,6 +33,8 @@ add_translation({
 	"Add Link" : {"fr" : "Ajouter le lien"},		
 	"Change Link" : {"fr" : "Modifier le lien"},		
 	"Open link in new window" : {"fr" : "Ouvre le lien dans une nouvelle fen\u00eatre"},		
+	"Destination URL" : {"fr" : "URL de destination"},	
+
 	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la s\u00e9lection"},
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
@@ -58,35 +60,30 @@ get_content = function(content)
 
 	data[content_array] = {};
 
-	// Contenu des champs éditables
+	// Contenu des champs Ã©ditables
 	$(document).find(content+" .editable").not("header nav .editable").each(function() {
 		// Si on est en mode pour voir le code source
 		if($(this).hasClass("view-source")) var content_editable = $(this).text(); else var content_editable = $(this).html();
 		if($(this).html()) data[content_array][this.id] = content_editable;
 	});
 	
-	// Contenu des images éditables
+	// Contenu des images Ã©ditables
 	$(document).find(content+" .editable-img img").each(function() {
 		if($(this).attr("src")) data[content_array][this.id] = $(this).attr("src");
 	});
 	
-	// Contenu des bg images éditables
-	$(document).find(content+" [data-editable='bg']").each(function() {
+	// Contenu des bg images Ã©ditables
+	$(document).find(content+" [data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
-	
+		
 	// Checkbox fa
 	$(document).find(content+" .editable-checkbox").each(function() {
-		if($(this).hasClass("fa-check")) data[content_array][$(this).attr("id")] = true;							
+		if($(this).hasClass("fa-check")) data[content_array][this.id] = true;							
 	});
 
-	// Contenu des select // content+" input, "+
-	$(document).find(content+" .editable-select").each(function() {
-		data[content_array][$(this).attr("id")] = $(this).val();
-	});
-
-	// Contenu des input hidden éditables
-	$(document).find(content+" .editable-hidden").each(function() {
+	// Contenu des select, input hidden, href Ã©ditables // content+" input, "+
+	$(document).find(content+" .editable-select, "+content+" .editable-hidden, "+content+" .editable-href").each(function() {
 		if($(this).val()) data[content_array][this.id] = $(this).val();
 	});
 }
@@ -97,7 +94,7 @@ save = function(callback)
 {
 	// @todo: disable/unbind sur save pour dire que l'on est en train de sauvegarder
 	
-	// Si image sélectionnée : raz propriétés image (sécurité pour ne pas enregistrer de ui-wrapper)
+	// Si image sÃ©lectionnÃ©e : raz propriÃ©tÃ©s image (sÃ©curitÃ© pour ne pas enregistrer de ui-wrapper)
 	if(memo_img) img_leave();
 
 	// Animation sauvegarde en cours (loading)
@@ -107,7 +104,7 @@ save = function(callback)
 	
 	data["nonce"] = $("#nonce").val();// Pour la signature du formulaire
 
-	data["url"] = clean_url();// Url de la page en cours d'édition
+	data["url"] = clean_url();// Url de la page en cours d'Ã©dition
 
 	data["permalink"] = $("#admin-bar #permalink").val();// Permalink
 
@@ -124,7 +121,7 @@ save = function(callback)
 
 	get_content("footer");// Contenu du footer
 
-	data["content"]["og-image"] = $("#admin-bar #og-image").attr("src");// Image pour les réseaux sociaux
+	data["content"]["og-image"] = $("#admin-bar #og-image").attr("src");// Image pour les rÃ©seaux sociaux
 
 	// Contenu du menu de navigation
 	data["nav"] = {};
@@ -140,14 +137,14 @@ save = function(callback)
 
 	//console.log(data)
 	
-	// On sauvegarde en ajax les contenus éditables
+	// On sauvegarde en ajax les contenus Ã©ditables
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=update",
 		data: data
 	})
 	.done(function(html) {
-		// Affichage/exécution du retour
+		// Affichage/exÃ©cution du retour
 		$("body").append(html);
 
 		// S'il y a une fonction de retour
@@ -159,9 +156,9 @@ save = function(callback)
 }
 
 
-// Changement d'état des boutons de sauvegarde
+// Changement d'Ã©tat des boutons de sauvegarde
 tosave = function() {	
-	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
+	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'icÃ´ne disant qu'il faut sauvegarder sur le bt save	
 	$("#save, #preview").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
 
@@ -172,18 +169,18 @@ $.fn.required = function(txt){
 }
 
 
-// Fonctions pour catcher la sélection
+// Fonctions pour catcher la sÃ©lection
 range_selects_single_node = function(range) {
 	var start_node = range.startContainer;
 	return start_node === range.endContainer && start_node.hasChildNodes() && range.endOffset === range.startOffset + 1;
 }
 
 selected_element = function(range) {
-	if (range_selects_single_node(range))// La sélection comprend un seul élément
+	if (range_selects_single_node(range))// La sÃ©lection comprend un seul Ã©lÃ©ment
 		return range.startContainer.childNodes[range.startOffset];
-	else if (range.startContainer.nodeType === 3)// La sélection commence à l'intérieur d'un noeud de texte, donc obtenir son parent
+	else if (range.startContainer.nodeType === 3)// La sÃ©lection commence Ã  l'intÃ©rieur d'un noeud de texte, donc obtenir son parent
 		return range.startContainer.parentNode;
-	else// La sélection commence à l'intérieur d'un élément
+	else// La sÃ©lection commence Ã  l'intÃ©rieur d'un Ã©lÃ©ment
 		return range.startContainer;
 }
 
@@ -193,7 +190,7 @@ exec_tool = function(command, value, ui) {
 	ui = ui || false;
 	value = value || null;	
 				
-	// Sélectionne le contenu car on a perdu le focus en entrant dans les options
+	// SÃ©lectionne le contenu car on a perdu le focus en entrant dans les options
 	if((command == "CreateLink" || command == "insertImage" || command == "insertIcon" || command == "insertHTML" || command == "insertText") && memo_selection && memo_range) {
 		memo_selection.removeAllRanges();
 		memo_selection.addRange(memo_range);		
@@ -201,7 +198,7 @@ exec_tool = function(command, value, ui) {
 	
 	if(command)
 	{
-		// Si icône
+		// Si icÃ´ne
 		if(command == "insertIcon") {
 			command = "insertHTML";
 			value = "<span class='fa'>&#x"+ value +";</span>";
@@ -213,17 +210,17 @@ exec_tool = function(command, value, ui) {
 		}
 		
 
-		// Exécution de la commande
+		// ExÃ©cution de la commande
 		document.execCommand(command, ui, value);
 		
 
 		// A sauvegarder	
 		tosave();
 
-		// Si on justify on supprime l'éventuel span intérieur
+		// Si on justify on supprime l'Ã©ventuel span intÃ©rieur
 		if(/justify/.test(command))
 		{
-			// Désélectionne les alignements
+			// DÃ©sÃ©lectionne les alignements
 			$("[class*='fa-align']").parent().removeClass("checked");			
 
 			// check le bt d'alignement
@@ -248,9 +245,9 @@ exec_tool = function(command, value, ui) {
 		$("#unlink").remove();// Supprime les boutons de unlink
 	}
 
-	$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
+	$(memo_focus).focus();// On focus le contenu Ã©ditÃ© pour faire fonctionner onblur = close toolbox
 
-	// Recrée une sélection en fonction des changements de la dom
+	// RecrÃ©e une sÃ©lection en fonction des changements de la dom
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);
 	memo_node = selected_element(memo_range);
@@ -260,10 +257,10 @@ exec_tool = function(command, value, ui) {
 // Menu avec les options d'ajout/modif de lien
 link_option = function()
 {		
-	$("#txt-tool #option").hide();// Réinitialise le menu d'option
-	$("#target-blank").removeClass("checked");// Réinitialise la colorisation du target _blank
+	$("#txt-tool #option").hide();// RÃ©initialise le menu d'option
+	$("#target-blank").removeClass("checked");// RÃ©initialise la colorisation du target _blank
 
-	var href = $(memo_node).closest('a').attr('href');// On récupère le href de la sélection en cours
+	var href = $(memo_node).closest('a').attr('href');// On rÃ©cupÃ¨re le href de la sÃ©lection en cours
 
 	if(href) {
 		// Si target = blank
@@ -290,7 +287,7 @@ target_blank = function(mode) {
 
 // Ajout/Suppression d'un element html
 html_tool = function(html){
-	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
+	// Si on est dÃ©jÃ  dans un Ã©lÃ©ment entourÃ© du 'HTML' demandÃ© : on le supp
 	if($(memo_node).closest(html).length){
 		$("#"+html).removeClass("checked");
 		$(memo_node).replaceWith($(memo_node).html());
@@ -303,7 +300,7 @@ html_tool = function(html){
 
 // Voir le code source
 view_source = function(memo){
-	// Si on est déjà en mode view source on remet en html
+	// Si on est dÃ©jÃ  en mode view source on remet en html
 	if($(memo).hasClass("view-source")) {
 		$("#view-source").removeClass("checked");
 		$(memo).removeClass("view-source").html($(memo).text());
@@ -319,7 +316,7 @@ view_source = function(memo){
 // Dialog box avec effet de transfert
 dialog_transfert = function(mode, source, target, callback) {
 
-	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle apparaît/disparaît. Pas juste visibility:hidden/visible...
+	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle apparaÃ®t/disparaÃ®t. Pas juste visibility:hidden/visible...
 
 	$.ajax({
 			url: path+"api/ajax.admin.php?mode=dialog-"+mode, 
@@ -336,10 +333,10 @@ dialog_transfert = function(mode, source, target, callback) {
 			// Pour ne pas instancier plusieurs fois la dialog
 			$(".dialog-"+mode).remove();
 			
-			// Création de la dialog invisible
+			// CrÃ©ation de la dialog invisible
 			$("body").append(html);
 
-			// Si l'ajax renvoie bien la dialog demandée
+			// Si l'ajax renvoie bien la dialog demandÃ©e
 			if($(".dialog-"+mode).length) 
 			{			
 				// Instanciation de la dialog en mode invisible
@@ -360,21 +357,21 @@ dialog_transfert = function(mode, source, target, callback) {
 					{
 						$(".dialog-"+mode).remove();
 						
-						// S'il y a une fonction de callback on l'exécute
+						// S'il y a une fonction de callback on l'exÃ©cute
 						if(typeof callback === "function") callback();
 					},
 					create: function() 
 					{
 						if(mode == "media") 
 						{
-							// Création des onglets
+							// CrÃ©ation des onglets
 							$(".dialog-media").tabs({
 								beforeLoad: function(event, ui) {
 									ui.ajaxSettings.url += ( /\?/.test(ui.ajaxSettings.url) ? "&" : "?" ) + 'nonce=' + $("#nonce").val();											
 								}
 							});
 
-							// Place les onglets à la place du titre de la dialog
+							// Place les onglets Ã  la place du titre de la dialog
 							$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 						}
 					},
@@ -392,7 +389,7 @@ dialog_transfert = function(mode, source, target, callback) {
 					},
 					resize: function(event, ui) 
 					{
-						// Masque le texte dans les tab si on réduit trop la fenêtre
+						// Masque le texte dans les tab si on rÃ©duit trop la fenÃªtre
 						if(ui.size.width < 635) $(".ui-tabs-nav span").hide();
 						else $(".ui-tabs-nav span").show();
 					}						
@@ -404,13 +401,13 @@ dialog_transfert = function(mode, source, target, callback) {
 }
 
 
-// Ouvre la fenêtre pour ajouter une image dans la galerie des medias (intext, isolate, bg)
+// Ouvre la fenÃªtre pour ajouter une image dans la galerie des medias (intext, isolate, bg)
 media = function(source, target) {
-	//$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
+	//$(memo_focus).focus();// On focus le contenu Ã©ditÃ© pour faire fonctionner onblur = close toolbox
 	
 	// Dialog de gestion des medias
 	dialog_transfert("media", source, target, function() {					
-			// Unbind le drag&drop pour l'ajout de média
+			// Unbind le drag&drop pour l'ajout de mÃ©dia
 			$("body").off(".dialog-media");
 
 			// Relance les autres events
@@ -422,12 +419,12 @@ media = function(source, target) {
 }
 
 
-// Upload d'un média (image)
+// Upload d'un mÃ©dia (image)
 upload = function(source, file, resize)
 {
 	uploading = true;
 
-	// Type de fichier supporté pour l'upload
+	// Type de fichier supportÃ© pour l'upload
 	var mime_supported = [
 		"image/jpg","image/jpeg","image/pjpeg","image/png","image/x-png","image/gif","image/x-icon",
 		"application/pdf","application/zip","text/plain"		
@@ -438,7 +435,7 @@ upload = function(source, file, resize)
 
 	if(file) 
 	{
-		if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supporté
+		if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supportÃ©
 		{				
 			// @todo: ajouter un cog loading en sur l'image (a coter du % ?)
 
@@ -452,17 +449,17 @@ upload = function(source, file, resize)
 			// Affiche la preview si image
 			if(mime[0] == "image") 
 			{
-				$("img", source).addClass("to50");// On fade à moitié (50%)
+				$("img", source).addClass("to50");// On fade Ã  moitiÃ© (50%)
 
 				var reader = new FileReader();
 				reader.onload = function(theFile) {
-					// On crée un objet image pour s'assurer que l'image est bien chargée dans le browser avant de prendre sa taille pour le layer de progression d'upload
+					// On crÃ©e un objet image pour s'assurer que l'image est bien chargÃ©e dans le browser avant de prendre sa taille pour le layer de progression d'upload
 					var image = new Image();
 					image.src = theFile.target.result;
 
-					image.onload = function() {// Image bien chargée dans le navigateur
+					image.onload = function() {// Image bien chargÃ©e dans le navigateur
 						if($("#"+progressid).length) {			
-							// Si l'upload n'est pas déjà fini on calle la source et la hauteur de la progress bar
+							// Si l'upload n'est pas dÃ©jÃ  fini on calle la source et la hauteur de la progress bar
 							if(!$("img", source).attr("src")) {
 								$("img", source).attr("src", this.src);// On colle le bin de l'image dans le src
 								$("#"+progressid).css("height", source.outerHeight()+"px");// On force la taille de progression d'upload
@@ -508,22 +505,22 @@ upload = function(source, file, resize)
 					{
 						source.removeClass("uploading");// Supprime le spin d'upload
 
-						$("#"+progressid).css("width", "100%").css("height", source.outerHeight()+"px").html("100%");// Pour être sur d'afficher 100%
+						$("#"+progressid).css("width", "100%").css("height", source.outerHeight()+"px").html("100%");// Pour Ãªtre sur d'afficher 100%
 						
 						// Si c'est une image
 						if(mime[0] == "image") 
 						{
-							$("img", source).removeClass("to50");// On remet l'image à l'opacité normale
+							$("img", source).removeClass("to50");// On remet l'image Ã  l'opacitÃ© normale
 							$("img", source).attr("src", path);// Affiche l'image finale 
 						}
 						
-						// Nom du fichier final si dialog médias
+						// Nom du fichier final si dialog mÃ©dias
 						if(source.attr("data-file")) {
 							source.attr("data-file", path);// Pour la manipulation							
 							$(".file div", source).html(path.split('/').pop());// Pour l'affichage 
 						}
 						
-						// Détruis le layer de progressbar
+						// DÃ©truis le layer de progressbar
 						$("#"+progressid).fadeOut("medium", function() { 
 							this.remove();
 							source.addClass("uploaded");// Icone uploaded avec fadeinout
@@ -577,7 +574,7 @@ get_file = function(id)
 get_img = function(id, link)
 {	
 	//@todo ajouter un loading pour informer que l'on resize l'image avant fermeture de la dialog
-	//@todo voir pour faire un fade opacity en js, car en css ça fait un bug lors de l'ouverture de la dialog
+	//@todo voir pour faire un fade opacity en js, car en css Ã§a fait un bug lors de l'ouverture de la dialog
 	
 	// Focus sur l'image choisie
 	$(".dialog-media li").css("opacity","0.4");
@@ -595,7 +592,7 @@ get_img = function(id, link)
 		},
 		success: function(final_file)
 		{ 
-			if($("#dialog-media-target").val() == "isolate") {// Insert dans un bloc isolé
+			if($("#dialog-media-target").val() == "isolate") {// Insert dans un bloc isolÃ©
 				$("#"+$("#dialog-media-source").val()).attr("src", final_file);
 			}
 			else if($("#dialog-media-target").val() == "intext") {// Ajout dans un contenu texte
@@ -620,7 +617,7 @@ img_position = function(align) {
 	$(memo_img).removeClass("center fl fr").addClass(align);
 }
 
-// Supprime l'image sélectionnée du contenu
+// Supprime l'image sÃ©lectionnÃ©e du contenu
 img_remove = function() {
 	$(memo_img).remove();
 	$("#img_tool").remove();
@@ -639,7 +636,7 @@ img_transfert_style = function(event) {
 	$(event).removeClass("ui-resizable");
 }
 
-// Si on focus-out/drag-leave d'une image dans bloc éditable
+// Si on focus-out/drag-leave d'une image dans bloc Ã©ditable
 img_leave = function() 
 {
 	// Supprime la barre d'outil image
@@ -649,7 +646,7 @@ img_leave = function()
 	if($('.editable .ui-wrapper img').length) $('.editable .ui-wrapper img').resizable('destroy');
 	else if($('.editable .ui-wrapper').length) $('.editable .ui-wrapper').remove();
 		
-	// Supprime le style sur l'image sélectionnée et le transfert sur la dom de l'image
+	// Supprime le style sur l'image sÃ©lectionnÃ©e et le transfert sur la dom de l'image
 	if(memo_img) {
 		img_transfert_style(memo_img);
 		memo_img = null;
@@ -663,7 +660,7 @@ img_leave = function()
 
 
 
-// Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
+// VÃ©rifie que le contenu est sauvegardÃ© en cas d'action de fermeture ou autres
 $(window).on("beforeunload", function(){
 	//if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
 });
@@ -721,7 +718,7 @@ $(document).ready(function()
 
 	$("body").append(adminbar).addClass("body-margin-top");
 	
-	// Ajout des variables dans les inputs (pour le problème de double cote ")
+	// Ajout des variables dans les inputs (pour le problÃ¨me de double cote ")
 	$("#admin-bar #title").val(document.title);
 	$("#admin-bar #description").val(($("meta[name=description]").attr("content") != undefined ? $('meta[name=description]').attr("content") : ""));
 
@@ -745,7 +742,7 @@ $(document).ready(function()
 		refresh_permalink("#admin-bar");
 	});
 
-	// On récupère og:image des meta
+	// On rÃ©cupÃ¨re og:image des meta
 	if($("meta[property='og:image']").attr("content") != undefined) {
 		// Bind l'image
 		$("#admin-bar #og-image").attr("src", $("meta[property='og:image']").attr("content"));
@@ -754,10 +751,10 @@ $(document).ready(function()
 		$("#admin-bar #og-image").parent().after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
 	}
 
-	// Ajout de l'état de la page
+	// Ajout de l'Ã©tat de la page
 	$("#admin-bar #state").val(state);
 
-	// Ouverture de l'édition du title si en mode responsive
+	// Ouverture de l'Ã©dition du title si en mode responsive
 	$("#meta-responsive i").on('click',	function() {
 		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle();			
 	});
@@ -784,7 +781,7 @@ $(document).ready(function()
 		});
 	});
 
-	// Rends les textes éditables
+	// Rends les textes Ã©ditables
 	$(".editable").attr("contenteditable","true");
 
 
@@ -796,22 +793,22 @@ $(document).ready(function()
 		if(
 			(!/^(46|44)$/.test(event.keyCode) && !(event.keyCode >= 48 && event.keyCode <= 57))// Si pas point/virgule et pas chiffre
 			||
-			(/^(46|44)$/.test(event.keyCode) && /[.,]/.test(this.innerHTML))// Si point/virgule si déjà présent
+			(/^(46|44)$/.test(event.keyCode) && /[.,]/.test(this.innerHTML))// Si point/virgule si dÃ©jÃ  prÃ©sent
 		) 
 		event.preventDefault(); 
 	});
 
 
-	// Place les contenus au-dessus pour les rendre éditables à coup sur
+	// Place les contenus au-dessus pour les rendre Ã©ditables Ã  coup sur
 	$(".editable").parent().css("z-index", "10");
 
 
 	/************** MENU NAV **************/
 
-	// Rends le menu de navigation éditable
+	// Rends le menu de navigation Ã©ditable
 	$("header nav li").attr("contenteditable","true").addClass("editable");
 
-	// Ajout d'une zone de drag pour chaque élément
+	// Ajout d'une zone de drag pour chaque Ã©lÃ©ment
 	$("header nav li").prepend("<div class='dragger'></div>");
 	
 	// Bloc d'option pour le menu de navigation
@@ -825,7 +822,7 @@ $(document).ready(function()
 	addnav+= "</div>";	
 	$("header nav ul").after(addnav);
 	
-	// Déplace un élément du menu add vers le menu courant au click sur le +
+	// DÃ©place un Ã©lÃ©ment du menu add vers le menu courant au click sur le +
 	hover_add_nav = false;	
 	$("#add-nav").on({
 		"click.dragger": function(event) {
@@ -833,15 +830,15 @@ $(document).ready(function()
 			//event.stopPropagation();
 
 			if($(this).parent().hasClass("add-empty")) $("header nav ul:first").append($(this).parent().clone());// Copie
-			else $($(this).parent()).appendTo("header nav ul:first");// Déplace
+			else $($(this).parent()).appendTo("header nav ul:first");// DÃ©place
 			
-			// Rends editable les éléments du menu
+			// Rends editable les Ã©lÃ©ments du menu
 			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
 			editable_event();
 
 			tosave();// A sauvegarder
 				
-			// Désactive les liens dans le menu d'ajout
+			// DÃ©sactive les liens dans le menu d'ajout
 			$("#add-nav ul a").click(function() { return false; });
 		},
 		// On check si on est sur le menu d'ajout de page au menu
@@ -849,7 +846,7 @@ $(document).ready(function()
 		"mouseleave": function(event) {	hover_add_nav = false; }
 	});
 	
-	// Drag & Drop des éléments du menu principal
+	// Drag & Drop des Ã©lÃ©ments du menu principal
 	$("header nav ul:first").sortable({
 		connectWith: "header nav ul",
 		handle: ".dragger",
@@ -863,13 +860,13 @@ $(document).ready(function()
 		stop: function() {
 			$("#add-nav .open").removeClass("del").children().removeClass("fa-trash").addClass("fa-plus");
 			
-			// Rends editable les éléments du menu
+			// Rends editable les Ã©lÃ©ments du menu
 			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
 			editable_event();
 
 			tosave();// A sauvegarder
 			
-			// désactive les liens dans le menu d'ajout
+			// dÃ©sactive les liens dans le menu d'ajout
 			$("#add-nav ul a").click(function() { return false; });
 		}
 	});
@@ -887,7 +884,7 @@ $(document).ready(function()
 		"mouseenter": function(event) {
 			if(!add_page)
 			{
-				// Liste les pages déjà dans le menu
+				// Liste les pages dÃ©jÃ  dans le menu
 				var menu = {};
 				$(document).find("header nav ul a").each(function(index) { menu[index] = $(this).attr('href'); });
 
@@ -901,7 +898,7 @@ $(document).ready(function()
 					success: function(html){ 
 						$("#add-nav ul").append(html);		
 						
-						// Pour éviter de relancer l'ajax
+						// Pour Ã©viter de relancer l'ajax
 						add_page = true;
 
 						// Rends draggable les pages manquantes du menu
@@ -918,7 +915,7 @@ $(document).ready(function()
 							}
 						});
 							
-						// désactive les liens
+						// dÃ©sactive les liens
 						$("#add-nav ul a").click(function() { return false; });
 						
 						// Affichage du menu d'ajout
@@ -966,7 +963,7 @@ $(document).ready(function()
 	$("body").append(toolbox);
 	
 
-	// Action sur les champs éditables
+	// Action sur les champs Ã©ditables
 	editable_event = function() {		
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
@@ -983,7 +980,7 @@ $(document).ready(function()
 				else
 					$("#view-source").removeClass("checked");
 
-				// Affichage de la boîte à outils texte
+				// Affichage de la boÃ®te Ã  outils texte
 				if($("#txt-tool").css("display") == "none")// Si pas visible				
 				$("#txt-tool")
 					.show()
@@ -1004,12 +1001,12 @@ $(document).ready(function()
 			"blur.editable": function() {
 				if($("#txt-tool:not(:hover)").val()=="") {
 					$("#txt-tool").hide();// ferme la toolbox
-					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
+					$window.off(".scroll-toolbox");// DÃ©sactive le scroll de la toolbox
 				}
 				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
-			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
-				$("body").off(".editable-img");// Désactive les events image
+			"dragstart.editable": function() {// Pour Ã©viter les interfÃ©rences avec les drag&drop d'image dans les champs images
+				$("body").off(".editable-img");// DÃ©sactive les events image
 				$("#img_tool").remove();// Supprime la barre d'outil image
 			},
 			"dragend.editable": function() {// drop dragend
@@ -1018,16 +1015,16 @@ $(document).ready(function()
 				body_editable_img_event();
 
 				memo_img = null;
-				img_leave();// Raz Propriétés image
+				img_leave();// Raz PropriÃ©tÃ©s image
 			},
-			"mouseup.editable": function(event)// Si on click dans un contenu éditable
+			"mouseup.editable": function(event)// Si on click dans un contenu Ã©ditable
 			{			
 				$("#unlink").remove();// Supprime les boutons de unlink
 				$("#txt-tool #option").hide();// Cache le menu d'option		
 
-				// @todo voir si le fait de ne pas raz les memo_ ne crée pas de problème colatéraux...
+				// @todo voir si le fait de ne pas raz les memo_ ne crÃ©e pas de problÃ¨me colatÃ©raux...
 				
-				// Mémorise la sélection pour la retrouver au focus après ajout de lien
+				// MÃ©morise la sÃ©lection pour la retrouver au focus aprÃ¨s ajout de lien
 				memo_selection = window.getSelection();				
 				if(memo_selection.anchorNode) {
 					memo_range = memo_selection.getRangeAt(0);
@@ -1040,22 +1037,22 @@ $(document).ready(function()
 				else $("#txt-tool #h2").removeClass("checked");
 					
 
-				// Désélectionne les alignements
+				// DÃ©sÃ©lectionne les alignements
 				$("[class*='fa-align']").parent().removeClass("checked");
 				
 				var align = null;
 
-				// On cherche le type d'alignement si on est dans un bloc aligné avec les style
+				// On cherche le type d'alignement si on est dans un bloc alignÃ© avec les style
 				if($(memo_node).closest("div [style*='text-align']")[0]) var align = $(memo_node).closest("div [style*='text-align']").css("text-align");
 				
-				// On cherche le type d'alignement si on est dans un bloc aligné avec align=
+				// On cherche le type d'alignement si on est dans un bloc alignÃ© avec align=
 				if($(memo_node).closest("div [align]")[0]) var align = $(memo_node).closest("div [align]").attr("align");
 								
 				// On check le bon alignement
 				if(align) $("#align-"+align).addClass("checked");
 
 
-				// Si on sélectionne un contenu
+				// Si on sÃ©lectionne un contenu
 				if(memo_selection.toString().length > 0)
 				{
 					// Si on est sur un lien
@@ -1072,13 +1069,13 @@ $(document).ready(function()
 						$("body").append("<a href=\"javascript:exec_tool('unlink');void(0);\" id='unlink'><i class='fa fa-close' style='position: absolute; left:"+ left +"px; top:"+ top +"px;' title='"+ __("Remove the link from the selection") +"'></i></a>");
 					}
 				}
-				//else memo_selection = memo_range = memo_node = null;// RAZ Sélection		
+				//else memo_selection = memo_range = memo_node = null;// RAZ SÃ©lection		
 			}
 			
 		});
 	}
 
-	// Exécute l'event sur les champs éditables
+	// ExÃ©cute l'event sur les champs Ã©ditables
 	editable_event();
 
 	
@@ -1101,10 +1098,10 @@ $(document).ready(function()
 	/************** IMAGES DANS LES BLOCS TEXTE **************/
 	memo_img = null;
 
-	// @todo: voir si on ne peux pas le déplacer sur le blur des event .editable
+	// @todo: voir si on ne peux pas le dÃ©placer sur le blur des event .editable
 	$("body").click(function(event) {
-		// Si on n'est pas sur une image dans un contenu éditable on supp la toolbox image
-		if(!$(event.target).is('.editable img')) img_leave();// Raz Propriétés image
+		// Si on n'est pas sur une image dans un contenu Ã©ditable on supp la toolbox image
+		if(!$(event.target).is('.editable img')) img_leave();// Raz PropriÃ©tÃ©s image
 		
 		// Supprime le layer de redimensionnement d'image
 		if($("#resize-tool").html() != undefined && !$(event.target).closest("#resize-tool").is('#resize-tool')) $("#resize-tool").remove();
@@ -1116,7 +1113,7 @@ $(document).ready(function()
 		
 		event.stopPropagation();
 		
-		// Mémorise l'image sélectionnée
+		// MÃ©morise l'image sÃ©lectionnÃ©e
 		memo_img = this;		
 		
 		// Si Chrome on ajoute le resizer jquery
@@ -1125,12 +1122,12 @@ $(document).ready(function()
 			// Rend l'image resizeable
 			$(this).resizable({aspectRatio: true});
 			
-			// Pour styler le block image sélectionné (Même alignement et display entre le div et l'img)
+			// Pour styler le block image sÃ©lectionnÃ© (MÃªme alignement et display entre le div et l'img)
 			$(this).parent(".ui-wrapper").addClass($(this).attr('class'));
 			$(this).parent(".ui-wrapper").css('display', $(this).css('display'));
 		}
 		
-		// Boîte à outils image
+		// BoÃ®te Ã  outils image
 		option = "<ul id='img_tool' class='toolbox'>";
 			option+= "<li><button onclick=\"img_position('fl')\"><i class='fa fa-fw fa-align-left'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('center')\"><i class='fa fa-fw fa-align-center'></i></button></li>";
@@ -1152,30 +1149,30 @@ $(document).ready(function()
 
 	/************** IMAGES SEUL **************/
 	
-	// On highlight les zones où l'on peut droper des fichiers
+	// On highlight les zones oÃ¹ l'on peut droper des fichiers
 	body_editable_img_event = function() {
 		$("body")
 			.on({
 				"dragover.editable-img": function(event) {// Highlight les zone on hover dragover/dragenter
 					event.stopPropagation();
-					$(".editable").off();//$("body").off(".editable");// Désactive les events sur les contenu éditables
+					$(".editable").off();//$("body").off(".editable");// DÃ©sactive les events sur les contenu Ã©ditables
 					$(".editable-img").addClass("drag-zone");
 					$(".editable-img img").addClass("drag-img");
 			},
 				"dragleave.editable-img": function(event) {// Clean les highlight on out
 					event.stopPropagation();
-					editable_event();// Active les events sur les contenus éditables
+					editable_event();// Active les events sur les contenus Ã©ditables
 					$(".editable-img").removeClass("drag-zone");
 					$(".editable-img img").removeClass("drag-img");
 				}
 			});
 	}
 
-	// Exécute l'event sur le body pour les images
+	// ExÃ©cute l'event sur le body pour les images
 	body_editable_img_event();
 
 
-	// Rends éditables les images
+	// Rends Ã©ditables les images
 	$(".editable-img").append("<div class='open-dialog-media'><i class='fa fa-upload'></i> "+__("Upload file")+"</div>");
 	editable_img_event = function() {
 		$(".editable-img")
@@ -1198,7 +1195,7 @@ $(document).ready(function()
 					$(this).removeClass("drag-over");
 					$("img", this).removeClass("drag-img");
 					
-					// Upload du fichier dropé
+					// Upload du fichier dropÃ©
 					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], true);
 				},
 				"mouseenter.editable-img": function(event) {// Hover zone upload		
@@ -1211,8 +1208,8 @@ $(document).ready(function()
 					$("img", this).removeClass("drag-img");
 					$(".open-dialog-media", this).hide();
 				},
-				"click.editable-img": function(event) {// Ouverture de la fenêtre des médias
-					// Masque le hover de l'image sélectionnée
+				"click.editable-img": function(event) {// Ouverture de la fenÃªtre des mÃ©dias
+					// Masque le hover de l'image sÃ©lectionnÃ©e
 					$(this).removeClass("drag-over");
 					$("img", this).removeClass("drag-img");
 					$(".open-dialog-media", this).hide();
@@ -1224,20 +1221,20 @@ $(document).ready(function()
 			});
 	}
 
-	// Exécute l'event sur les images
+	// ExÃ©cute l'event sur les images
 	editable_img_event();
 
 
 
 	/************** IMAGES BACKGROUND **************/
 	
-	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
-	$("[data-editable='bg']").addClass("editable-bg");
-	$("[data-editable='bg']").append("<a href=\"javascript:void(0)\" class='open-dialog-media'><i class='fa fa-picture-o'></i> "+__("Change the background image")+"</a>");
+	// Ajout un fond hachurÃ© au cas ou il n'y ai pas de bg 
+	$("[data-bg]").addClass("editable-bg");
+	$("[data-bg]").append("<a href=\"javascript:void(0)\" class='open-dialog-media'><i class='fa fa-picture-o'></i> "+__("Change the background image")+"</a>");
 
-	// Rends éditables les images en background
+	// Rends Ã©ditables les images en background
 	editable_bg_event = function() {
-		$("[data-editable='bg']")
+		$("[data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
 					$("> .open-dialog-media", this).fadeIn("fast");
@@ -1248,10 +1245,10 @@ $(document).ready(function()
 			});		
 	}
 
-	// Exécute l'event sur les images
+	// ExÃ©cute l'event sur les images
 	editable_bg_event();
 
-	// Ouverture de la fenêtre des médias pour changer le bg
+	// Ouverture de la fenÃªtre des mÃ©dias pour changer le bg
 	$("body").on("click", ".editable-bg > .open-dialog-media", function() {
 		media($(this).parent()[0], 'bg');
 	});
@@ -1271,13 +1268,13 @@ $(document).ready(function()
 	/************** CHAMPS SELECT **************/
 	$(".editable-select").attr("data-option", function(i, data) {
 		
-		// Option sélectionnée
+		// Option sÃ©lectionnÃ©e
 		var selected = $(".editable-select").attr("data-selected");
 
 		// Extraction du json
 		var json = jQuery.parseJSON(data);							
 		
-		// Création des options avec le json
+		// CrÃ©ation des options avec le json
 		var html = '';
 		$.each(json, function(cle, val){ html += '<option value="'+ cle +'"'+(cle == selected?" selected":"")+'>'+ val +'</option>'; });
 		
@@ -1291,7 +1288,7 @@ $(document).ready(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox, [for]").on("click", function(event) {//@todo voir si le [for] ne crée pas de bug collatérale
+	$(".editable-checkbox, [for]").on("click", function(event) {//@todo voir si le [for] ne crÃ©e pas de bug collatÃ©rale
 		if($(this).attr("for")) id = $(this).attr("for");
 		else id = this.id;
 
@@ -1300,14 +1297,33 @@ $(document).ready(function()
 	})
 
 
-	/************** SLIDESHOW **************/
+	/************** HREF EDITABLE **************/
+	
+	// Ajoute un input pour ajouter l'url du href
+	$("[data-href]").append(function() {
+		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"'>";
+	});
 
-	// Rends les slideshow éditable
-	//$(".editable-slide")
+	// Rends Ã©ditables les images en background
+	// Note: on utilise animate car l'e 'input est inline-block par dÃ©faut avec le fadeIn
+	editable_href_event = function(event) {
+		$("[data-href]")
+			.on({
+				"click.editable-href": function(event) {// Supprime l'action de click sur le lien
+					event.stopPropagation();
+					event.preventDefault();
+				},
+				"mouseenter.editable-href": function(event) {// Hover zone href		
+					$(".editable-href", this).animate({'opacity':'1'}, 'fast');
+				},
+				"mouseleave.editable-href": function(event) {// Out
+					$(".editable-href", this).animate({'opacity':'0'}, 'fast');
+				}
+			});		
+	}
 
-
-	// Rends les icônes éditable
-	//$(".editable-icon")
+	// ExÃ©cute l'event sur les images
+	editable_href_event();
 
 
 
@@ -1333,7 +1349,7 @@ $(document).ready(function()
 						$(document).on("click",	
 							function(event) {
 								if(!$(event.target).parents().is("#user .absolute") && $("#user .absolute").is(":visible") && close == false)//event.type == 'click'
-									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegardé on shake
+									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegardÃ© on shake
 										$("#user .absolute > div").effect("highlight");
 									else
 										$("#user .absolute").fadeOut("fast", function(){ close = true; });
@@ -1342,7 +1358,7 @@ $(document).ready(function()
 					}
 				});
 			}
-			else if($("#user .absolute").length && !$("#user .absolute").is(":visible")&& close == true)// Si on click et que l'ajax a déjà été fait
+			else if($("#user .absolute").length && !$("#user .absolute").is(":visible")&& close == true)// Si on click et que l'ajax a dÃ©jÃ  Ã©tÃ© fait
 			{
 				close = true;
 				$("#user .absolute").fadeIn("fast", function(){ close = false; });
@@ -1368,7 +1384,7 @@ $(document).ready(function()
 		reload();
 	});
 
-	// On rétablit la page en mode visiteur
+	// On rÃ©tablit la page en mode visiteur
 	$("#preview").click(function() {
 		save(function() {
 			reload();
@@ -1390,10 +1406,10 @@ $(document).ready(function()
 				save();		
 			}
 		}
-		// Si on utilise tape du texte dans un contenu éditable on change le statut du bouton sauvegardé
+		// Si on utilise tape du texte dans un contenu Ã©ditable on change le statut du bouton sauvegardÃ©
 		else if(event.target.className == 'editable' || event.target.id == 'title' || event.target.id == 'description' || event.target.id == 'permalink') 
 		{
-			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 13)// Caractères texte ou entrée
+			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 13)// CaractÃ¨res texte ou entrÃ©e
 			{
 				tosave();// A sauvegarder
 			}
@@ -1415,7 +1431,7 @@ $(document).ready(function()
 		tosave();// A sauvegarder
 	});
 
-	// Désactive le click pour ne pas relancer l'admin
+	// DÃ©sactive le click pour ne pas relancer l'admin
 	$(".bt.edit").off("click");
 
 });	

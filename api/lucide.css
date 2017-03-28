@@ -372,12 +372,24 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	}
 
 
-/* Hidden éditable */
-.editable-hidden {	
+/* Hidden éditable & Href éditable */
+.editable-hidden, .editable-href {	
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
-
 	border-style: dotted;
 }
+
+/* Href éditable */
+[data-href] {	
+	position: relative;
+    display: inline-block;
+}
+	.editable-href {	
+		position: absolute;
+		text-align: center;		
+		width: 100%;
+		display: block;
+		opacity:  0;
+	}
 
 
 

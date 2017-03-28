@@ -38,7 +38,7 @@ reset($array_work[$work]);
 
 				<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$work][$key]['titre']."</span></h2>
 
-				<div class='w150p' data-id='".$work."-bg-".(int)$key."' data-editable='bg' data-bg='".$array_work[$work][$key]['bg']."' style='background-image: url(".$array_work[$work][$key]['bg'].");'></div>
+				<div class='w150p' data-id='".$work."-bg-".(int)$key."' data-bg='".$array_work[$work][$key]['bg']."' style='background-image: url(".$array_work[$work][$key]['bg'].");'></div>
 
 				<div class='w150p none'><span class='editable-img'><img src=\"".$array_work[$work][$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
 				

@@ -196,7 +196,7 @@ function bg($key = null)
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
 
-	echo" data-id='".encode($key)."' data-editable='bg' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"";
+	echo" data-id='".encode($key)."' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"";
 
 	$GLOBALS['editkey']++;
 }
@@ -250,28 +250,13 @@ function hidden_label($content = null, $class = null)
 	echo"<label class='none ".$class."'>".$content."</label>";
 }
 
-
-// Lien éditable // @todo: A SUPP ??
+// Lien éditable
 function href($key = null)
 {
 	$key = ($key ? $key : "href-".$GLOBALS['editkey']);
-	echo" href=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" id='".encode($key)."' data-editable='href'";
-	$GLOBALS['editkey']++;
-}
 
-// Icône fonts // @todo: A SUPP ??
-function ico($key = null)
-{
-	$key = ($key ? $key : "ico-".$GLOBALS['editkey']);
-	echo"<i class='editable fontawesome-icon circle-yes icon-eur'></i>";
-	$GLOBALS['editkey']++;
-}
+	echo"href=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" data-href='".encode($key)."'";
 
-// Slideshow // @todo: A SUPP ??
-function slideshow($key = null)
-{
-	$key = ($key ? $key : "slide-".$GLOBALS['editkey']);
-	echo"<span class='editable' id='".encode($key)."'>".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</span>";
 	$GLOBALS['editkey']++;
 }
 
