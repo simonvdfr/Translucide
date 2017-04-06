@@ -203,13 +203,13 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 
 /* alternate font-sizing */
-.smaller { font-size: 0.6em; }
-.small { font-size: 0.8em; }
-.medium { font-size: 1em; }
-.big { font-size: 1.2em; }
-.bigger { font-size: 1.5em; }
-.biggest { font-size: 2em; }
-.mega { font-size: 4em; }
+.smaller { font-size: 0.6em !important; }
+.small { font-size: 0.8em !important; }
+.medium { font-size: 1em !important; }
+.big { font-size: 1.2em !important; }
+.bigger { font-size: 1.5em !important;  }
+.biggest { font-size: 2em !important; }
+.mega { font-size: 4em !important; }
 
 
 /* Text effect */
@@ -383,7 +383,7 @@ input[type="reset"].unstyled:focus {
 
 
 /* Légère transition sur les FontAwesome */
-.fa {transition: all 0.5s;}
+.fa { transition: all 0.3s; }
 
 /* Pour ajouter des pictos dans les menus select */
 .fa-select { font-family: FontAwesome, Helvetica, Arial, sans-serif; }
@@ -392,20 +392,24 @@ input[type="reset"].unstyled:focus {
 /* Bouton */
 .bt {
 	background-color: #f5f5f5;		
-	color: #507075;		
+	color: #507075;
 	text-align: center;
 	text-decoration: none;
+
 	display: inline-block;
-	/*margin: 20px 5px 5px; PAS UTILE ?? */
-	padding: 0 6px 1px;		
-	border-radius: 5px;
+
+	/* padding: 0 6px 1px; */	
+
+	border-radius: 3px;
 	border: 1px solid rgba(117, 137, 140, 0.5);
-	box-shadow: 0px 20px 15px -10px rgba(255, 255, 255, 0.8) inset;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+
+	overflow: hidden;
+    text-overflow: ellipsis;
+
 	transition: all .3s;
 }
-	.bt:focus,
-	input[type="button"]:focus,
-	button:focus {
+	.bt:focus, input[type="button"]:focus, button:focus {
 	  -webkit-tap-highlight-color: transparent;
 	  -webkit-user-select: none;
 	  -moz-user-select: none;
@@ -414,9 +418,14 @@ input[type="reset"].unstyled:focus {
 	}
 	.bt:hover {
 		color: #ffffff;
-		box-shadow: none;
-		background-color: #75898c;
 		text-decoration: none;
+		box-shadow: none;
+		background-color: #75898c;		
+
+		box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset;
+	}
+	.bt:active { 
+		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(0, 0, 0, 0.1) inset;
 	}
 
 /* Bouton de connexion */
@@ -431,16 +440,8 @@ input[type="reset"].unstyled:focus {
 
 	padding: 8px;
 	margin: 0 0 5px 0;
-	width: 100%;   
-
-	overflow: hidden;
-    text-overflow: ellipsis;
-	
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	width: 100%;	
 }
-	.bt.connect:hover { box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset; }
-	.bt.connect:active { box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(0, 0, 0, 0.1) inset; }
 	.bt.connect:before {
 		font-family: FontAwesome;
 		font-size: 15px;
@@ -478,12 +479,16 @@ input[type="reset"].unstyled:focus {
 	display: none;	
 	position: fixed;
 	z-index: 999;
+
 	width: auto;
 	right: 20px;
 	bottom: 20px;
+
 	margin: 0;
 	padding: 0.2rem 1rem;
-	border-radius: 30px;
+
+	border-radius: 100%;
+
 	opacity: 0.6;
 	text-shadow: none;
 }

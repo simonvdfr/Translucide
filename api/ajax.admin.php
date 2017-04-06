@@ -11,6 +11,11 @@ switch($_GET['mode'])
 	default:	
 	break;
 
+	case "adminbar":// @todo mettre ici la barre d'administration pour y afficher les infos venant de la base (langue, template dispo, état...)
+		// SUPP ???
+
+	break;
+
 
 	case "edit":// Lancement du mode édition du contenu de la page
 				
@@ -33,9 +38,10 @@ switch($_GET['mode'])
 			// JS pour mettre en mode édit les contenus et ajout d'un nonce pour signer les formulaires
 			?>
 			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
-
+			
+			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
 			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
-
+			
 			<script>				
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
@@ -51,12 +57,6 @@ switch($_GET['mode'])
 	break;
 
 
-	case "adminbar":// @todo mettre ici la barre d'administration pour y afficher les infos venant de la base (langue, template dispo, état...)
-		// SUPP ???
-
-	break;
-
-
 	case "add-content":// Dialog pour ajouter une page
 
 		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
@@ -65,6 +65,7 @@ switch($_GET['mode'])
 
 		// Dialog : titre, template, langue
 		?>
+		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
 
 		<div class="dialog-add" title="<?_e("Add content")?>">
@@ -411,7 +412,7 @@ switch($_GET['mode'])
 				<?}?>
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
-				$("#save, #preview").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
 			</script>
 			<?
@@ -980,27 +981,27 @@ switch($_GET['mode'])
 			//$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
 			//$pattern = '/\\.(fa-\\w+):before{content:"(\\\\\w+)"}/';	
 			$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';	
-			
+
 			// On récupère la css qui contient les icônes
-			$subject = file_get_contents($GLOBALS['font_awesome']);
+			$subject = file_get_contents($GLOBALS['icons']);
 			
 			// On extrait seulement les icônes
 			preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
 			//highlight_string(print_r($matches, true));
 			
 			// On crée un tableau propre
-			foreach($matches as $match){ $icons[$match[1]] = $match[2];	}			
+			foreach($matches as $match){ $list[$match[1]] = $match[2];	}			
 
 			?>
 			<ul id="icon" class="unstyled pan man smaller">	
 			<?
 				// S'il y a des fichiers dans la biblio
-				if($icons)
+				if($list)
 				{
-					//uksort($icons, 'strnatcmp');// Tri Ascendant
-					//if($sort == 'DESC') $icons = array_reverse($icons, true);// Tri Descendant
+					//uksort($list, 'strnatcmp');// Tri Ascendant
+					//if($sort == 'DESC') $list = array_reverse($list, true);// Tri Descendant
 					
-					while(list($cle, $val) = each($icons)) 
+					while(list($cle, $val) = each($list)) 
 					{						
 						echo"<li class='pat fl' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
 					}
@@ -1339,6 +1340,9 @@ switch($_GET['mode'])
 						$_POST['scheme'] = $parse_url['scheme']."://";
 						$_POST['domain'] = $parse_url['host'];
 						$_POST['path'] = $parse_url['path'];
+
+						// Formate le nom du site
+						$_POST['sitename'] = stripslashes($_POST['sitename']);
 
 						// On parcourt le fichier config
 						foreach($config_file as $line_num => $line) 

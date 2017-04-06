@@ -150,7 +150,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-	<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
+	<?if($GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
 
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
 

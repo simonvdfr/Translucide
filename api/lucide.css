@@ -141,7 +141,7 @@ body { transition: margin-top .2s linear; }
 		/* Croix du désactivé */
 		#admin-bar .switch label:before {
 			font-family: FontAwesome;
-			content: "\f00d";/* Off */
+			content: "\f070";/* Off f00d */
 			margin-left: 18px;
 			transition: all .2s ease;
 		}
@@ -153,7 +153,7 @@ body { transition: margin-top .2s linear; }
 			/* Activé */
 			#admin-bar .switch input[type=checkbox]:checked ~ label:before {
 				font-family: FontAwesome;
-				content: "\f00c";/* On */
+				content: "\f06e";/* On f00c */
 				margin-left: 6px;
 			}
 			/* Calage du bouton si activé */
@@ -170,7 +170,7 @@ body { transition: margin-top .2s linear; }
 			display: block;
 
 			top: -2px;
-			right: 24px;
+			right: 25px;
 			width: 18px;
 			height: 18px;
 			border-radius: 18px;
@@ -426,18 +426,20 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		border: 1px solid #909090;	
 
 		color: #7AD2D9;	
+		font-size: inherit;
+		text-shadow: 1px 1px 1px #2c5f66;
+		text-decoration: none;
 		
 		position: absolute;
 
 		top: 0;
 		right: 0;
+		width: inherit;
 		padding: 6px 8px;
 		margin: 10px 10px 10px 0px;
 
 		z-index: 10;
-
-		text-shadow: 1px 1px 1px #2c5f66;
-		text-decoration: none;
+		
 		transition: background .2s;
 	}
 	.editable-bg > .open-dialog-media:hover, .work-bt a:hover {

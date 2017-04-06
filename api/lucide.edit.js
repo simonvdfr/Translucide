@@ -164,7 +164,7 @@ save = function(callback)
 // Changement d'état des boutons de sauvegarde
 tosave = function() {	
 	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
-	$("#save, #preview").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
+	$("#save").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
 
 
@@ -753,7 +753,7 @@ $(document).ready(function()
 
 		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
 
-		adminbar+= "<button id='preview' class='fr mat small' title=\""+ __("Save & View") +"\"><span class='no-small-screen'>"+ __("Save & View") +"</span> <i class='fa fa-fw fa-eye big'></i></button>";
+		//adminbar+= "<button id='preview' class='fr mat small' title=\""+ __("Save & View") +"\"><span class='no-small-screen'>"+ __("Save & View") +"</span> <i class='fa fa-fw fa-eye big'></i></button>";
 
 		adminbar+= "<div class='fr mat mrs switch'><input type='checkbox' id='state' class='none'><label for='state' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
@@ -1442,11 +1442,11 @@ $(document).ready(function()
 	});
 
 	// On rétablit la page en mode visiteur
-	$("#preview").click(function() {
+	/*$("#preview").click(function() {
 		save(function() {
 			reload();
 		});				
-	});
+	});*/
 
 	// Si on sauvegarde
 	$("#save").click(function() {	

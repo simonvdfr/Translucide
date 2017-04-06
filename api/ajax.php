@@ -119,7 +119,7 @@ switch($_GET['mode'])
 
 			<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
 
-			<button class="bt internal fr mrn mtm pat">
+			<button class="bt internal fr mrn mtm pat white">
 				<?_e("Log in")?>
 				<i class="fa fa-key"></i>
 			</button>
@@ -184,11 +184,11 @@ switch($_GET['mode'])
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
 			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
-			<link rel="stylesheet" href="global.css?">
+			<link rel="stylesheet" href="global<?=$GLOBALS['min']?>.css?">
 			<link rel="stylesheet" href="lucide.css?">
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
-			<script src="lucide.init.js"></script>
+			<script src="lucide.init<?=$GLOBALS['min']?>.js"></script>
 			
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
 			<?if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."admin.init.js")){?><script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>admin.init.js"></script><?}?>
