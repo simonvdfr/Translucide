@@ -67,23 +67,35 @@ switch($_GET['mode'])
 		?>
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
 
-		<div class="dialog-add" title="<?_e("Add a content")?>">
+		<div class="dialog-add" title="<?_e("Add content")?>">
 			
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
 			<ul class="small">
-				<li data-filter="page"><a href="#add-page" title="<?_e("Add a page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add a page")?></span></a></li>
-				<li data-filter="article"><a href="#add-article" title="<?_e("Add an article")?>"><i class="fa fa-feed"></i> <span><?_e("Add an article")?></span></a></li>		
+
+				<?if($_SESSION['auth']['add-page']){?>
+				<li data-filter="page"><a href="#add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
+				<?}?>
+				
+				<?if($_SESSION['auth']['add-article']){?>
+				<li data-filter="article"><a href="#add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
+				<?}?>
+				
+				<?if($_SESSION['auth']['add-file']){?>
+				<li data-filter="file"><a href="#add-file" title="<?_e("Add file")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add file")?></span></a></li>
+				<?}?>
+
 				<!-- <li data-filter="product"><a href="#add-product"></" title="<?_e("Product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Product")?></span></a></li> -->
 			</ul>			
-
+			
+			<?if($_SESSION['auth']['add-page']){?>
 			<div id="add-page">
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Page title")?>" maxlength="60" class="w60 bold">
+					<input type="text" id="title" placeholder="<?_e("Page Title")?>" maxlength="60" class="w60 bold">
 
 					<select id="tpl" required class="w30">
-						<option value=""><?_e("Select page template")?></option>
+						<option value=""><?_e("Select template")?></option>
 						<?
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
 						while(list($cle, $filename) = each($scandir))				
@@ -102,15 +114,17 @@ switch($_GET['mode'])
 				</div>
 
 			</div>
+			<?}?>
 
 
+			<?if($_SESSION['auth']['add-article']){?>
 			<div id="add-article">
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Title of article")?>" maxlength="60" class="w60 bold">
+					<input type="text" id="title" placeholder="<?_e("Article Title")?>" maxlength="60" class="w60 bold">
 
 					<select id="tpl" required class="w30">
-						<option value=""><?_e("Select article template")?></option>
+						<option value=""><?_e("Select template")?></option>
 						<?
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
 						while(list($cle, $filename) = each($scandir))				
@@ -128,6 +142,36 @@ switch($_GET['mode'])
 				</div>
 
 			</div>
+			<?}?>
+
+			
+			<?if($_SESSION['auth']['add-file']){?>
+			<div id="add-file">
+
+				<div class="mas">
+					<input type="text" id="title" placeholder="<?_e("File Title")?>" maxlength="60" class="w60 bold">
+
+					<select id="tpl" required class="w30">
+						<option value=""><?_e("Select template")?></option>
+						<?
+						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
+						while(list($cle, $filename) = each($scandir))				
+						{			
+							$filename = pathinfo($filename, PATHINFO_FILENAME);
+							echo"<option value=\"".$filename."\"".($filename == "fichier"?" selected":"").">".$filename."</option>";
+						}
+						?>					
+					</select>
+				</div>
+
+				<div class="mas">
+					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
+					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
+				</div>
+
+			</div>
+			<?}?>
+
 
 			<script>
 			$(document).ready(function()
@@ -195,10 +239,14 @@ switch($_GET['mode'])
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
 		else // Sauvegarde réussit
 		{
+			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
+			setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
+			
 			?>
 			<script>
 			$(document).ready(function()
-			{
+			{		
+				// Redirection vers la page crée
 				document.location.href = "<?=make_url($url);?>";
 			});
 			</script>
@@ -412,7 +460,7 @@ switch($_GET['mode'])
 
 	case "dialog-media":// Affichage des médias
 		
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-file');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		
@@ -595,7 +643,7 @@ switch($_GET['mode'])
 				if(typeof uploading === "undefined") uploading = false;
 
 				// Si on choisit des images pour l'upload avec le bouton
-				$("#upload-file").change(function()
+				$("#add-file").change(function()
 				{
 					// Inverse le tableau pour l'afficher comme dans le dossier
 					$.merge(uploads = [], this.files);
@@ -624,8 +672,8 @@ switch($_GET['mode'])
 
 
 				// Pour éviter les highlight des zones draggables du fond
-				$("body").off(".editable").off(".editable-img");
-				$(".editable-img").off(".editable-img");
+				$("body").off(".editable").off(".editable-media");
+				$(".editable-media").off(".editable-media");
 
 
 				// On drag&drop des médias dans la fenêtre
@@ -690,7 +738,7 @@ switch($_GET['mode'])
 		// @todo: mettre player html5 si vidéo ou audio pour avoir la preview et possibilité de jouer les médias en mode zoom
 		// @todo: ajouter un bouton de nettoyage qui scanne les contenus et regarde si les fichiers sont utilisés
 		
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-file');// Vérifie que l'on est admin
 
 		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".($_GET['filter'] == "resize" ? "resize/":"");
 		
@@ -749,10 +797,10 @@ switch($_GET['mode'])
 		?>
 		<ul class="unstyled pan man smaller">	
 	
-			<li class="add-file pas mat tc big" onclick="document.getElementById('upload-file').click();">
+			<li class="add-file pas mat tc big" onclick="document.getElementById('add-file').click();">
 				<i class="fa fa-upload biggest pbs"></i><br>
 				<?_e("Drag and drop a file here or click me");?>
-				<input type="file" id="upload-file" style="display: none" multiple>
+				<input type="file" id="add-file" style="display: none" multiple>
 			</li>
 			<?
 
@@ -835,7 +883,7 @@ switch($_GET['mode'])
 	
 	case "del-file":// Supprime un fichier
 
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-file');// Vérifie que l'on est admin
 
 		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		
@@ -844,7 +892,7 @@ switch($_GET['mode'])
 
 	case "get-img":// Renvoi une image et la resize si nécessaire
 
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-file');// Vérifie que l'on est admin
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
@@ -855,9 +903,9 @@ switch($_GET['mode'])
 	break;
 
 
-	case "upload-file":// Envoi d'une image sur le serveur et la resize si nécessaire
+	case "add-file":// Envoi d'une image sur le serveur et la resize si nécessaire
 			
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-file');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		//echo "_FILES:<br>"; highlight_string(print_r($_FILES, true));
@@ -1154,7 +1202,7 @@ switch($_GET['mode'])
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_user']."` (
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'active',
-								`auth` set('".implode("','", $GLOBALS['auth_level'])."') NOT NULL,
+								`auth` varchar(255) NOT NULL,
 								`name` varchar(60) NOT NULL,
 								`email` varchar(100) NOT NULL,
 								`password` char(64) DEFAULT NULL,

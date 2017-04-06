@@ -30,7 +30,7 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 
 ## Balises maison
 - `text()`
-- `img('nom-de-la-zone' [,'100x100'])` L'argument final et optionnel, il force une taille
+- `media('nom-de-la-zone' [,'100x100'])` L'argument final et optionnel, il force une taille
 - `bg()` A placer dans un <div> ou autres pour rendre l'image de fond éditable
 ....
 

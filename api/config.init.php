@@ -86,13 +86,13 @@ $GLOBALS['public_account'] = false;
 $GLOBALS['default_state'] = "active";// moderate / mail / active / deactivate
 
 // Niveaux d'authentification par défaut des comptes utilisateur
-$GLOBALS['default_auth'] = "edit-public,upload-public";
+$GLOBALS['default_auth'] = "add-file-public,edit-public";
 
 // Info supplémentaire sur l'utilisateur
 $GLOBALS['meta_user'] = null;
 
 // Niveaux d'authentification possible
-$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "upload-file", "add-page", "add-article", "add-product", "edit-page", "edit-article", "edit-product", "edit-public", "upload-public");
+$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "add-file", "add-page", "add-article", "add-product", "edit-file", "edit-page", "edit-article", "edit-product", "add-file-public", "edit-public");
 
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = "medium";
@@ -123,6 +123,8 @@ $GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.j
 $GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js";
 $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
 
+// Utilisation de librairie minifier
+$GLOBALS['min'] = "";// .min
 
 // Sécurité / défaut
 $title = null;

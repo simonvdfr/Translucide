@@ -3,7 +3,7 @@
 
 <header class="mw960p mod center tc pts pbs none">	
 	
-	<span class="fl"><a href="<?=$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']?>"><?img('header-logo')?></a></span>
+	<span class="fl"><a href="<?=$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']?>"><?media('header-logo')?></a></span>
 	
 	<nav>
 				

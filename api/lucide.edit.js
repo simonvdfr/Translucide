@@ -47,7 +47,7 @@ add_translation({
 
 // Type de navigateur
 $.browser = {};
-$.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit    /.test(navigator.userAgent.toLowerCase());
+$.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
 $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
@@ -68,18 +68,23 @@ get_content = function(content)
 	});
 	
 	// Contenu des images éditables
-	$(document).find(content+" .editable-img img").each(function() {
-		if($(this).attr("src")) data[content_array][this.id] = $(this).attr("src");
+	$(document).find(content+" .editable-media img").each(function() {
+		if($(this).attr("src")) data[content_array][$(this).parent().attr("id")] = $(this).attr("src");
+	});
+
+	// Contenu des fichiers éditables
+	$(document).find(content+" .editable-media > .fa").each(function() {
+		if($(this).attr("title")) data[content_array][$(this).parent().attr("id")] = $(this).attr("title");
 	});
 	
-	// Contenu des bg images éditables
+	// Contenu des background images éditables
 	$(document).find(content+" [data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 		
 	// Checkbox fa
 	$(document).find(content+" .editable-checkbox").each(function() {
-		if($(this).hasClass("fa-check")) data[content_array][this.id] = true;							
+		if($(this).hasClass("fa-check")) data[content_array][this.id] = true;					
 	});
 
 	// Contenu des select, input hidden, href éditables // content+" input, "+
@@ -111,7 +116,7 @@ save = function(callback)
 	data["title"] = $("#admin-bar #title").val();// Titre de la page
 	data["description"] = $("#admin-bar #description").val();// Description pour les serp
 
-	data["state"] = $("#admin-bar #state").val();// Etat d'activation de la page
+	data["state"] = ($("#admin-bar #state").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
 
 	data["type"] = type;// Type de contenu
 	
@@ -322,9 +327,9 @@ dialog_transfert = function(mode, source, target, callback) {
 			url: path+"api/ajax.admin.php?mode=dialog-"+mode, 
 			data: {
 				"target": target,
-				"source": (target == "bg" ? $(source).attr("data-id") : (source.id || $("img", source).attr("id"))),
-				"width": $(source).hasClass("editable-img") ? $("img", source).attr("width") : "",
-				"height": $(source).hasClass("editable-img") ? $("img", source).attr("height") : "",
+				"source": (target == "bg" ? $(source).attr("data-id") : source.id),
+				"width": $(source).data("width") || "",
+				"height": $(source).data("height") || "",
 				"nonce": $("#nonce").val()
 			}
 		})
@@ -401,7 +406,7 @@ dialog_transfert = function(mode, source, target, callback) {
 }
 
 
-// Ouvre la fenêtre pour ajouter une image dans la galerie des medias (intext, isolate, bg)
+// Ouvre la fenêtre pour ajouter une image/fichier dans la galerie des medias (intext, isolate, bg)
 media = function(source, target) {
 	//$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
 	
@@ -412,14 +417,14 @@ media = function(source, target) {
 
 			// Relance les autres events
 			editable_event();
-			editable_img_event();
-			body_editable_img_event();
+			editable_file_event();
+			body_editable_file_event();
 		}
 	);
 }
 
 
-// Upload d'un média (image)
+// Upload d'un média
 upload = function(source, file, resize)
 {
 	uploading = true;
@@ -430,8 +435,8 @@ upload = function(source, file, resize)
 		"application/pdf","application/zip","text/plain"		
 	];
 
-	var width = $("img", source).attr("width") || "";
-	var height = $("img", source).attr("height") || "";
+	var width = $(source).data("width") || "";
+	var height = $(source).data("height") || "";
 
 	if(file) 
 	{
@@ -449,7 +454,14 @@ upload = function(source, file, resize)
 			// Affiche la preview si image
 			if(mime[0] == "image") 
 			{
-				$("img", source).addClass("to50");// On fade à moitié (50%)
+				// Si pas de tag img on le crée
+				if($("img", source).html() == undefined) $(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+">");
+
+				// Supprime les fichiers autres que image
+				$("> .fa", source).remove();
+
+				// On fade à moitié (50%)
+				$("img", source).addClass("to50");
 
 				var reader = new FileReader();
 				reader.onload = function(theFile) {
@@ -481,7 +493,7 @@ upload = function(source, file, resize)
 
 			$.ajax({
 				type: "POST",
-				url: path+"api/ajax.admin.php?mode=upload-file",
+				url: path+"api/ajax.admin.php?mode=add-file",
 				xhr: function() {
 					var xhr = $.ajaxSettings.xhr();
 					if(xhr.upload) {									
@@ -512,6 +524,14 @@ upload = function(source, file, resize)
 						{
 							$("img", source).removeClass("to50");// On remet l'image à l'opacité normale
 							$("img", source).attr("src", path);// Affiche l'image finale 
+						}
+						else if(!source.attr("data-file"))// Si c'est un fichier autre et isolé
+						{
+							// Supprime les images
+							$("img", source).remove();
+
+							// On crée un bloc fichier
+							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ path +'"></i>');	
 						}
 						
 						// Nom du fichier final si dialog médias
@@ -559,9 +579,17 @@ get_file = function(id)
 {	
 	$(".dialog-media li").css("opacity","0.4");
 	$("#"+id).css("opacity","1");
-	
-	// Insertion du lien vers le fichier
-	exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\">"+ $("#"+id).attr("data-file").split('/').pop() +"</a>");
+
+	if($("#dialog-media-target").val() == "isolate")// Insert dans un bloc isolé
+	{	
+		// Supprime les images
+		$("#"+$("#dialog-media-source").val()+" img").remove();
+
+		// Ajoute le fichier
+		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-file") +'"></i>');	
+	}
+	else// Insertion du lien vers le fichier dans bloc texte
+		exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\">"+ $("#"+id).attr("data-file").split('/').pop() +"</a>");
 
 	// Fermeture de la dialog
 	$(".dialog-media").dialog("close");
@@ -580,26 +608,42 @@ get_img = function(id, link)
 	$(".dialog-media li").css("opacity","0.4");
 	$("#"+id).css("opacity","1");
 	
+	var width = $("#dialog-media-width").val();
+	var height = $("#dialog-media-height").val();
+	
 	// Resize de l'image et insertion dans la source
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=get-img",
 		data: {
 			"img": $("#"+id).attr("data-file"),
-			"width": $("#dialog-media-width").val(),
-			"height": $("#dialog-media-height").val(),
+			"width": width,
+			"height": height,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
 		{ 
-			if($("#dialog-media-target").val() == "isolate") {// Insert dans un bloc isolé
-				$("#"+$("#dialog-media-source").val()).attr("src", final_file);
+			if($("#dialog-media-target").val() == "isolate")// Insert dans un bloc isolé
+			{
+				// Si pas encore de tag img
+				if($("#"+$("#dialog-media-source").val()+" img").html() == undefined)
+				{
+					// Supprime les fichiers
+					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
+
+					// Ajoute l'image
+					$("#"+$("#dialog-media-source").val()).append('<img src="'+final_file+'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"")+'>');
+				}
+				else
+					$("#"+$("#dialog-media-source").val()+" img").attr("src", final_file);
 			}
-			else if($("#dialog-media-target").val() == "intext") {// Ajout dans un contenu texte
+			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
+			{
 				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
 				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
-			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond
+			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
+			{
 				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", final_file);
 				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+final_file+")");
 			}
@@ -677,7 +721,7 @@ $(document).ready(function()
 	// Barre du haut avec bouton sauvegarder			
 	adminbar = "<div id='admin-bar'>";
 
-		adminbar+= "<div id='user' class='fl pat'><i class='fa fa-fw fa-user bigger' title=\""+ __("Show user info") +"\"></i></div>";
+		adminbar+= "<div id='user' class='fl pat'><i class='fa fa-fw fa-user-circle bigger' title=\""+ __("Show user info") +"\"></i></div>";
 
 
 		adminbar+= "<div id='meta-responsive' class='fl mat none small-screen'><i class='fa fa-fw fa-pencil bigger' title=\""+ __("Page title") +"\"></i></div>";
@@ -699,22 +743,22 @@ $(document).ready(function()
 					adminbar+= "</div>";
 					
 					adminbar+= "<div class='small mts'>"+ __("Image on social networks") +" :</div>";
-					adminbar+= "<div class=''><span class='editable-img'><img src='' id='og-image'></span></div>";
+					adminbar+= "<div class=''><span class='editable-media'><img src='' id='og-image'></span></div>";
 					
 				adminbar+= "</div>";
 			adminbar+= "</div>";
 		adminbar+= "</div>";		
 
+		adminbar+= "<div id='close' class='fr mrt bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-window-close-o'></i></div>";
 
 		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
 
 		adminbar+= "<button id='preview' class='fr mat small' title=\""+ __("Save & View") +"\"><span class='no-small-screen'>"+ __("Save & View") +"</span> <i class='fa fa-fw fa-eye big'></i></button>";
 
-		adminbar+= "<select id='state' class='fr mat fa-select'><option value='active'>&#xf00c; "+ __("Active") +"</option><option value='deactivate'>&#xf00d; "+ __("Deactivate") +"</option></select>";
-
-		adminbar+= "<div id='close' class='fr bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-times-circle-o'></i></div>";
+		adminbar+= "<div class='fr mat mrs switch'><input type='checkbox' id='state' class='none'><label for='state' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
 	adminbar+= "</div>";
+
 
 	$("body").append(adminbar).addClass("body-margin-top");
 	
@@ -723,27 +767,29 @@ $(document).ready(function()
 	$("#admin-bar #description").val(($("meta[name=description]").attr("content") != undefined ? $('meta[name=description]').attr("content") : ""));
 
 	// Etat de la checkbox homepage onready
-	if($("#admin-bar #permalink").val() == "home") {
-		$("#admin-bar #homepage").prop("checked", true);
-	}
+	if($("#admin-bar #permalink").val() == "home") $("#admin-bar #homepage").prop("checked", true);
+	
 	// Si on change le permalink on verif que c'est 'home'
 	$("#admin-bar #permalink").keyup(function() {
 		if($(this).val() == "home") $("#admin-bar #homepage").prop("checked", true);
 		else $("#admin-bar #homepage").prop("checked", false);
 	});
+
 	// Changement au click de la checkbox homepage
 	$("#admin-bar #homepage").change(function() {
 		if(this.checked) $("#admin-bar #permalink").val("home");
 		else refresh_permalink("#admin-bar");
 		tosave();// A sauvegarder
 	});
+
 	// Click refresh permalink
 	$("#admin-bar #refresh-permalink").click(function() {
 		refresh_permalink("#admin-bar");
 	});
 
 	// On récupère og:image des meta
-	if($("meta[property='og:image']").attr("content") != undefined) {
+	if($("meta[property='og:image']").attr("content") != undefined) 
+	{
 		// Bind l'image
 		$("#admin-bar #og-image").attr("src", $("meta[property='og:image']").attr("content"));
 
@@ -752,7 +798,9 @@ $(document).ready(function()
 	}
 
 	// Ajout de l'état de la page
-	$("#admin-bar #state").val(state);
+	//	$("#admin-bar #state").val(state);
+	if(state == "deactivate") $("#admin-bar #state").prop("checked", false);
+	else $("#admin-bar #state").prop("checked", true);
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on('click',	function() {
@@ -1006,13 +1054,13 @@ $(document).ready(function()
 				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
-				$("body").off(".editable-img");// Désactive les events image
+				$("body").off(".editable-media");// Désactive les events image
 				$("#img_tool").remove();// Supprime la barre d'outil image
 			},
 			"dragend.editable": function() {// drop dragend
 				// Active les events block image
-				editable_img_event();
-				body_editable_img_event();
+				editable_file_event();
+				body_editable_file_event();
 
 				memo_img = null;
 				img_leave();// Raz Propriétés image
@@ -1147,73 +1195,81 @@ $(document).ready(function()
 
 
 
-	/************** IMAGES SEUL **************/
+	/************** IMAGE/FICHIER SEUL **************/
 	
 	// On highlight les zones où l'on peut droper des fichiers
-	body_editable_img_event = function() {
+	body_editable_file_event = function() {
 		$("body")
 			.on({
-				"dragover.editable-img": function(event) {// Highlight les zone on hover dragover/dragenter
+				// Highlight les zone on hover dragover/dragenter
+				"dragover.editable-media": function(event) {
 					event.stopPropagation();
-					$(".editable").off();//$("body").off(".editable");// Désactive les events sur les contenu éditables
-					$(".editable-img").addClass("drag-zone");
-					$(".editable-img img").addClass("drag-img");
+					$(".editable").off();// Désactive les events sur les contenu éditables
+					$(".editable-media").addClass("drag-zone");
+					$(".editable-media img, .editable-media i").addClass("drag-elem");
 			},
-				"dragleave.editable-img": function(event) {// Clean les highlight on out
+				// Clean les highlight on out
+				"dragleave.editable-media": function(event) {
 					event.stopPropagation();
 					editable_event();// Active les events sur les contenus éditables
-					$(".editable-img").removeClass("drag-zone");
-					$(".editable-img img").removeClass("drag-img");
+					$(".editable-media").removeClass("drag-zone");
+					$(".editable-media img, .editable-media i").removeClass("drag-elem");
 				}
 			});
 	}
 
-	// Exécute l'event sur le body pour les images
-	body_editable_img_event();
+	// Exécute l'event sur le body pour les images/fichiers
+	body_editable_file_event();
 
 
 	// Rends éditables les images
-	$(".editable-img").append("<div class='open-dialog-media'><i class='fa fa-upload'></i> "+__("Upload file")+"</div>");
-	editable_img_event = function() {
-		$(".editable-img")
+	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>");
+	editable_file_event = function() {
+		$(".editable-media")
 			.on({
-				"dragover.editable-img": function(event) {// Highlight la zone on hover
+				// Highlight la zone on hover
+				"dragover.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).addClass("drag-over");
-					$("img", this).addClass("drag-img");
+					$("img, i", this).addClass("drag-elem");
 				},
-				"dragleave.editable-img": function(event) {// Clean le highlight on out
+				// Clean le highlight on out
+				"dragleave.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 				},
-				"drop.editable-img": function(event) {// On lache un fichier sur la zone
+				// On lache un fichier sur la zone
+				"drop.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					
 					// Upload du fichier dropé
 					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], true);
 				},
-				"mouseenter.editable-img": function(event) {// Hover zone upload		
+				// Hover zone upload	
+				"mouseenter.editable-media": function(event) {	
 					$(this).addClass("drag-over");
-					$("img", this).addClass("drag-img");
+					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
 				},
-				"mouseleave.editable-img": function(event) {// Out
+				// Out
+				"mouseleave.editable-media": function(event) {
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
 				},
-				"click.editable-img": function(event) {// Ouverture de la fenêtre des médias
-					// Masque le hover de l'image sélectionnée
+				// Ouverture de la fenêtre des médias
+				"click.editable-media": function(event) {
+					// Masque le hover de l'image/fichier sélectionnée
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
-					
+
 					// Ouvre la dialog de media
 					media(this, 'isolate');
 					return false;
@@ -1221,8 +1277,8 @@ $(document).ready(function()
 			});
 	}
 
-	// Exécute l'event sur les images
-	editable_img_event();
+	// Exécute l'event sur les images/fichier
+	editable_file_event();
 
 
 
@@ -1252,6 +1308,7 @@ $(document).ready(function()
 	$("body").on("click", ".editable-bg > .open-dialog-media", function() {
 		media($(this).parent()[0], 'bg');
 	});
+
 
 
 	/************** CHAMPS HIDDEN **************/

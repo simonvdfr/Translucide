@@ -343,7 +343,9 @@ switch($_GET['mode'])
 		$sql .= "WHERE 1 ";
 		
 		// L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
-		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
+		//if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
+		// @todo verifier que ça marche !!
+		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND auth NOT LIKE '%edit-admin%' ";
 
 		if($search)
 		{
@@ -541,7 +543,8 @@ switch($_GET['mode'])
 					<option value="edit-header">&#xf0a6; <?_e("Edit header")?></option>
 					<option value="edit-footer">&#xf0a7; <?_e("Edit footer")?></option>
 
-					<option value="upload-file">&#xf093; <?_e("Send Files")?></option>
+					<option value="add-file">&#xf093; <?_e("Send Files")?></option>
+					<option value="edit-file">&#xf07b; <?_e("Edit Files")?></option>
 
 					<option value="add-page">&#xf0f6; <?_e("Add page")?></option>
 					<option value="add-article">&#xf09e; <?_e("Add article")?></option>
@@ -551,8 +554,8 @@ switch($_GET['mode'])
 					<option value="edit-article">&#xf09e; <?_e("Edit article")?></option>
 					<option value="edit-product">&#xf07a; <?_e("Edit product")?></option>
 
+					<option value="add-file-public">&#xf114; <?_e("Public file")?></option>
 					<option value="edit-public">&#xf0a1; <?_e("Public content")?></option>
-					<option value="upload-public">&#xf114; <?_e("Public file")?></option>
 				</select>
 				<script>
 				$.each("<?=$res['auth']?>".split(','), function(cle, val){ 

@@ -32,20 +32,23 @@ $add_translation = array(
 	"Sign up" => array("fr" => "Inscrivez-vous"),
 
 
-	"Add a content" => array("fr" => "Ajouter un contenu"),
+	"Add content" => array("fr" => "Ajouter un contenu"),
 
-	"Add a page" => array("fr" => "Ajouter une page"),
-	"Page title" => array("fr" => "Titre de la page"),
-	"Select page template" => array("fr" => "Sélectionnez modèle de page"),
+	"Add page" => array("fr" => "Ajouter une page"),
+	"Page Title" => array("fr" => "Titre de la page"),
+	
+	"Add article" => array("fr" => "Ajouter un article"),
+	"Article Title" => array("fr" => "Titre de l'article"),
+
+	"Add file" => array("fr" => "Ajouter un fichier"),
+	"File Title" => array("fr" => "Titre du fichier"),
+	
+	"Select template" => array("fr" => "Sélectionner un modèle"),
+	"Permanent link" => array("fr" => "Lien Permanent"),
+	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
+
 	"Permanent link: 'home' if homepage" => array("fr" => "Lien permanent: 'home' si c'est la page d'accueil"),
 	"Home page" => array("fr" => "Page d'accueil"),
-
-	"Add an article" => array("fr" => "Ajouter un article"),
-	"Title of article" => array("fr" => "Titre de l'article"),
-	"Select article template" => array("fr" => "Sélectionner un modèle d'article"),
-	"Permanent link" => array("fr" => "Lien Permanent"),
-
-	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
 
 
 	"Media Library" => array("fr" => "Bibliothèque des médias"),
@@ -108,6 +111,7 @@ $add_translation = array(
 	"Edit footer" => array("fr" => "Modifier le pied de page"),
 
 	"Send Files" => array("fr" => "Envoyer des fichiers"),
+	"Edit Files" => array("fr" => "Modifier les fichiers"),
 
 	"Add page" => array("fr" => "Ajouter une page"),
 	"Add article" => array("fr" => "Ajouter un article"),
