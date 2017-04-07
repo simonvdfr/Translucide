@@ -3,7 +3,7 @@
 // Traduction
 add_translation({
 	"Save" : {"fr" : "Enregistrer"},
-	"Save & View" : {"fr" : "Enregistrer et voir"},
+	"Delete" : {"fr" : "Supprimer"},
 	"Close the edit mode" : {"fr" : "Fermer le mode d'\u00e9dition"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
 	"Empty element" : {"fr" : "El\u00e9ment vide"},		
@@ -116,7 +116,7 @@ save = function(callback)
 	data["title"] = $("#admin-bar #title").val();// Titre de la page
 	data["description"] = $("#admin-bar #description").val();// Description pour les serp
 
-	data["state"] = ($("#admin-bar #state").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
+	data["state"] = ($("#admin-bar #state_content").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
 
 	data["type"] = type;// Type de contenu
 	
@@ -753,9 +753,9 @@ $(document).ready(function()
 
 		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
 
-		//adminbar+= "<button id='preview' class='fr mat small' title=\""+ __("Save & View") +"\"><span class='no-small-screen'>"+ __("Save & View") +"</span> <i class='fa fa-fw fa-eye big'></i></button>";
+		//adminbar+= "<button id='del' class='fr mat small' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
 
-		adminbar+= "<div class='fr mat mrs switch'><input type='checkbox' id='state' class='none'><label for='state' title=\""+ __("Activation status") +"\"><i></i></label></div>";
+		adminbar+= "<div class='fr mat mrs switch'><input type='checkbox' id='state_content' class='none'><label for='state_content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
 	adminbar+= "</div>";
 
@@ -798,9 +798,8 @@ $(document).ready(function()
 	}
 
 	// Ajout de l'état de la page
-	//	$("#admin-bar #state").val(state);
-	if(state == "deactivate") $("#admin-bar #state").prop("checked", false);
-	else $("#admin-bar #state").prop("checked", true);
+	if(state == "deactivate") $("#admin-bar #state_content").prop("checked", false);
+	else $("#admin-bar #state_content").prop("checked", true);
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on('click',	function() {
@@ -1440,13 +1439,6 @@ $(document).ready(function()
 	$("#close").click(function() {	
 		reload();
 	});
-
-	// On rétablit la page en mode visiteur
-	/*$("#preview").click(function() {
-		save(function() {
-			reload();
-		});				
-	});*/
 
 	// Si on sauvegarde
 	$("#save").click(function() {	

@@ -57,6 +57,7 @@ $GLOBALS['email_contact'] = "";
 $GLOBALS['facebook_api_id'] = "";
 $GLOBALS['facebook_api_secret'] = "";
 $GLOBALS['facebook_page'] = "";// https://www.facebook.com/***
+$GLOBALS['facebook_jssdk'] = false;
 
 // https://console.developers.google.com/apis/credentials/oauthclient => Application Web
 $GLOBALS['google_api_id'] = "";

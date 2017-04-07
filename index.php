@@ -148,8 +148,6 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<?if($GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
 
-	<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
-
 	<?if($GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
 
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
@@ -160,7 +158,6 @@ header('Content-type: text/html; charset=UTF-8');
 	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
 
 	<script src="<?=$GLOBALS['jquery']?>"></script>
-	<script src="<?=$GLOBALS['jquery_ui']?>"></script>
 
 	<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js"></script>
 
@@ -176,7 +173,7 @@ header('Content-type: text/html; charset=UTF-8');
 		<? } ?>
 
 
-		<? if($GLOBALS['facebook_api_id']) { ?>
+		<? if($GLOBALS['facebook_sdk'] and $GLOBALS['facebook_api_id']) { ?>
 		// Facebook
 		(function(d, s, id){
 			var js, fjs = d.getElementsByTagName(s)[0];

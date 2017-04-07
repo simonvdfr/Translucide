@@ -39,17 +39,30 @@ switch($_GET['mode'])
 			?>
 			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
 			
+			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
+
 			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
-			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
-			
+
 			<script>				
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 			
-				// Lib qui rend le contenu éditable
-				var script = document.createElement('SCRIPT');
-				script.src = path+"api/lucide.edit.js?0.1";
-				document.body.appendChild(script);
+				// Chargement de Jquery UI
+				$.ajax({
+			        url: "<?=$GLOBALS['jquery_ui']?>",
+			        dataType: 'script',
+					success: function()
+					{ 		
+						// Chargement de la css d'edition		
+						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css'>");
+
+						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
+						var script = document.createElement('script');
+						script.src = path+"api/lucide.edit.js?0.1";
+						document.body.appendChild(script);						
+					},
+			        async: true
+			    });				
 			</script>
 			<?
 		}
@@ -65,8 +78,12 @@ switch($_GET['mode'])
 
 		// Dialog : titre, template, langue
 		?>
+		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
+
 		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
+
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
+
 
 		<div class="dialog-add" title="<?_e("Add content")?>">
 			
@@ -205,9 +222,62 @@ switch($_GET['mode'])
 						refresh_permalink("#" + id);
 					}, '500');
 				});
+
+				// Chargement de Jquery UI
+				$.ajax({
+			        url: "<?=$GLOBALS['jquery_ui']?>",
+			        dataType: 'script',
+					success: function()// Si Jquery UI bien charger on ouvre la dialog
+					{				
+						// Fermeture de la dialog de connexion
+						$("#dialog-connect").dialog("close");
+
+						// Création de la dialog d'ajout
+						$(".dialog-add").dialog({
+							modal: true,
+							width: "60%",
+							buttons: {
+								"OK": function() {
+									// Dans quel onglet on se situe
+									type = $(".ui-tabs-nav .ui-state-active").data("filter");
+
+									if(!$(".dialog-add #add-"+type+" #tpl").val()) error(__("Thank you to select a template"));
+									else {
+										$.ajax({
+											type: "POST",
+											url: path + "api/ajax.admin.php?mode=insert",
+											data: {
+												"title": $(".dialog-add #add-"+type+" #title").val(),
+												"tpl": $(".dialog-add #add-"+type+" #tpl").val(),
+												"permalink": $(".dialog-add #add-"+type+" #permalink").val(),
+												"type": type,
+												"nonce": $("#nonce").val()// Pour la signature du formulaire
+											}
+										})
+										.done(function(html) {		
+											$(".dialog-add").dialog("close");
+											$("body").append(html);
+										});
+									}
+								}
+							},
+							create: function() 
+							{
+								// Création des onglets
+								$(".dialog-add").tabs();
+
+								// Place les onglets à la place du titre de la dialog
+								$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+								
+							},
+							close: function() {
+								$(".dialog-add").remove();					
+							}
+						});
+					},
+			        async: true
+			    });	
 				
-				// Fermeture de la dialog de connexion
-				$("#dialog-connect").dialog("close");
 			});
 			</script>
 
@@ -1488,7 +1558,9 @@ switch($_GET['mode'])
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
+
+			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
+
 			<link rel="stylesheet" href="api/global.css?">
 
 			<style>
@@ -1510,6 +1582,7 @@ switch($_GET['mode'])
 			</style>
 
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
+
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
 
 			<script src="api/lucide.init.js"></script>

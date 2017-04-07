@@ -587,6 +587,12 @@ function login($level = 'low', $auth = null, $quiet = null)
 	if(!isset($_SESSION['token']) and !$quiet)
 	{
 		?>
+		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
+
+		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
+
+		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css">
+
 		<script>
 			// Ouverture de la dialog de connexion
 			$(document).ready(function()
@@ -595,32 +601,42 @@ function login($level = 'low', $auth = null, $quiet = null)
 
 				if(typeof tosave == 'function') tosave();// Mode : A sauvegarder
 				
-				// On ferme la dialog de connexion s'il y en a une d'ouvert
-				$("#dialog-connect").dialog("close");
-				
-				// On ouvre la dialog de choix du système de login et affiche une erreur
-				$.ajax(
-					{
-						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
-						data: {
-							callback: "<?=encode($_REQUEST['callback'], "_")?>",
-							msg: "<?=htmlspecialchars($msg);?>"
-						}
-					})
-					.done(function(html){
-						$("body").append(html);	
+				// Chargement de Jquery UI
+				$.ajax({
+			        url: "<?=$GLOBALS['jquery_ui']?>",
+			        dataType: 'script',
+					success: function()// Si Jquery UI bien charger on charge la dialog de choix de login
+					{ 						
+						// On ferme la dialog de connexion s'il y en a une d'ouvert
+						if($("#dialog-connect").length) $("#dialog-connect").dialog("close");
 						
-						// Effet sur la dialog
-						$("#dialog-connect").dialog({
-							modal: true,
-							minHeight: 0,
-							show: {effect: "fadeIn"},
-							//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
-							close: function() {
-								$("#dialog-connect").remove();
+						// On ouvre la dialog de choix du système de login et affiche une erreur
+						$.ajax({
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
+							data: {
+								callback: "<?=encode($_REQUEST['callback'], "_")?>",
+								msg: "<?=htmlspecialchars($msg);?>"
 							}
+						})
+						.done(function(html){
+							$("body").append(html);	
+							
+							// Effet sur la dialog
+							$("#dialog-connect").dialog({
+								modal: true,
+								minHeight: 0,
+								show: {effect: "fadeIn"},
+								//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
+								close: function() {
+									$("#dialog-connect").remove();
+								}
+							});
 						});
-					});
+					},
+			        async: true
+			    });		
+
+				
 			});
 		</script>
 		<?

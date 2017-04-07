@@ -1023,7 +1023,7 @@ switch($_GET['mode'])
 
 		$get_code['facebook'] = "https://graph.facebook.com/oauth/authorize?client_id=".$GLOBALS['facebook_api_id']."&state=".$_SESSION['state']."&display=popup&redirect_uri=".urlencode($redirect_uri)."facebook";
 
-		$token_return_type['facebook'] = "url";
+		$token_return_type['facebook'] = "json";// url
 
 		$get_token['facebook'] = "https://graph.facebook.com/oauth/access_token?client_id=".$GLOBALS['facebook_api_id']."&client_secret=".$GLOBALS['facebook_api_secret']."&code=".$_REQUEST['code']."&redirect_uri=".urlencode($redirect_uri)."facebook";
 
@@ -1168,12 +1168,9 @@ switch($_GET['mode'])
 								// Quand l'utilisateur ferme la fenêtre ou le js
 								window.onunload = function() 
 								{
-									// Pour être sur que la dialog de connexion se ferme
-									window.opener.close_dialog_connect();
-
-									// S'il y a une fonction de callback à lancer
+									// S'il y a une fonction de callback à lancer : typiquement l'edition
 									if(window.opener.callback) {										
-										eval("opener." + window.opener.callback + "()");														
+										eval("opener." + window.opener.callback + "()");
 									}
 								}	
 								window.close();								

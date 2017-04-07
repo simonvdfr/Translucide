@@ -50,13 +50,13 @@ body { transition: margin-top .2s linear; }
 			}
 
 
+	#admin-bar input { padding: initial; }
 	#admin-bar input, .ui-dialog input {			
 		background-color: transparent;
 		color: #516062;
 		border: none;
 		border-bottom: 1px dotted #9cabad;
 		font-family: Arial;
-		padding: initial;
 		box-shadow: none;
 		border-radius: 0;
 	}
@@ -429,7 +429,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		font-size: inherit;
 		text-shadow: 1px 1px 1px #2c5f66;
 		text-decoration: none;
-		
+
 		position: absolute;
 
 		top: 0;
@@ -655,6 +655,26 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 /* Fenêtre de gestion des icônes */
 .dialog-icon li i { cursor: pointer; }
 	.dialog-icon li i:hover { color: #6b6f7a; }
+
+
+/* Hack Jquery UI style */
+.ui-widget-header {
+	background: #f5f5f5;
+	border: none;
+	font-weight: normal;	
+}
+.ui-widget-content {
+	background: rgba(241, 244, 247, 0.8) none repeat scroll 0 0;
+    border: 1px solid rgba(220, 220, 220, 0.8);
+	transition: background .2s;
+}
+	.ui-widget-content:hover {
+		background: rgba(241, 244, 247, 0.9) none repeat scroll 0 0;
+	}
+.ui-effects-transfer {
+    border: 4px dashed #7AD2D9;
+	background: rgba(122, 210, 217, 0.2);
+}
 
 
 /* Style lors du dragover */

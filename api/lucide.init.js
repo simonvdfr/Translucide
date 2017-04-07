@@ -139,58 +139,12 @@ reload = function() {
 // Liste des fonctions d'édition des plugin
 edit = [];
 
-// @todo placer dans le ajax la création de la dialog pour eviter de charger jquery ui !
 // Formulaire d'ajout d'un contenu
 add_content = function()
 {	
-	//@todo envoyer les bonnes informations si on crée une page ou si c'est un article ou autre
 	$.ajax({url: path+"api/ajax.admin.php?mode=add-content&callback=add_content"})
-		.done(function(html) {	
-			// Contenu de la dialog d'ajout
-			$("body").append(html);		
-			
-			// Création de la dialog
-			$(".dialog-add").dialog({
-				modal: true,
-				width: "60%",
-				buttons: {
-					"OK": function() {
-						// Dans quel onglet on se situe
-						type = $(".ui-tabs-nav .ui-state-active").data("filter");
-
-						if(!$(".dialog-add #add-"+type+" #tpl").val()) error(__("Thank you to select a template"));
-						else {
-							$.ajax({
-								type: "POST",
-								url: path + "api/ajax.admin.php?mode=insert",
-								data: {
-									"title": $(".dialog-add #add-"+type+" #title").val(),
-									"tpl": $(".dialog-add #add-"+type+" #tpl").val(),
-									"permalink": $(".dialog-add #add-"+type+" #permalink").val(),
-									"type": type,
-									"nonce": $("#nonce").val()// Pour la signature du formulaire
-								}
-							})
-							.done(function(html) {		
-								$(".dialog-add").dialog("close");
-								$("body").append(html);
-							});
-						}
-					}
-				},
-				create: function() 
-				{
-					// Création des onglets
-					$(".dialog-add").tabs();
-
-					// Place les onglets à la place du titre de la dialog
-					$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
-					
-				},
-				close: function() {
-					$(".dialog-add").remove();					
-				}
-			});
+		.done(function(html) {			
+			$("body").append(html);// Dialog d'ajout
 		});
 }
 
@@ -236,13 +190,6 @@ $.fn.make_password = function() {
 	});
 }
 
-
-// Fermeture de la dialog de connexion
-close_dialog_connect = function() 
-{	
-	if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");
-}
-
 // Recharge la page et lance le mode édition
 reload_edit = function() {	
 	edit_launcher("reload_edit");
@@ -251,7 +198,7 @@ reload_edit = function() {
 // Lance le mode édition
 edit_launcher = function(callback) 
 {	
-	close_dialog_connect();
+	if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");
 
 	// Si le mode édition n'est pas déjà lancé
 	if(!$("#admin-bar").length) 
