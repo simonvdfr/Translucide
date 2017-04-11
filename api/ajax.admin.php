@@ -491,6 +491,50 @@ switch($_GET['mode'])
 	break;
 
 
+	case "delete":// Supprime le contenu
+
+		include_once("db.php");// Connexion à la db
+
+		//highlight_string(print_r($_POST, true));
+
+		$type = ($_POST['type']?encode($_POST['type']):"page");// Type de contenu
+
+		login('high', 'edit-'.$type);// Vérifie que l'on a le droit d'ajouter une page
+
+		// Supprime la page
+		$sql = "DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
+
+		$connect->query($sql);
+
+		// Supprime les url avec le domaine pour la suppression locale
+		$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
+
+		// On a demandé la suppression des fichiers liée au contenu
+		while(list($cle, $file) = each($_POST['medias'])) {
+			// strtok : Supprime les arguments après l'extension (timer...)
+			unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($file, "?")));
+		}
+
+		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
+		else // Suppression réussit
+		{
+			?>
+			<script>
+			$(document).ready(function()
+			{		
+				// Message page supprimé
+				light("<?_e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
+
+				// Redirection vers la page d'accueil
+				setTimeout(function(){ document.location.href = "<?=$GLOBALS['home'];?>"; }, 2000);
+			});
+			</script>
+			<?
+		}
+
+	break;
+
+
 	case "make-permalink":// Construit un permalink
 
 		login('medium', 'edit-'.($_POST['type']?encode($_POST['type']):"page"));// Vérifie que l'on a le droit d'éditer une page

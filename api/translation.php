@@ -124,6 +124,8 @@ $add_translation = array(
 	"Public content" => array("fr" => "Contenu public"),
 	"Public file" => array("fr" => "Dossier public"),
 
+	"Page deleted, redirecting" => array("fr" => "Page supprimée, redirection en cours"),
+
 
 	"Log out" => array("fr" => "Se déconnecter")
 );

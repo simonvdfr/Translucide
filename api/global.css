@@ -296,6 +296,7 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
   vertical-align: top;
 }
 
+.inline { display: inline !important; }
 .block { display: block !important; }
 .none { display: none; }
 .hidden { visibility: hidden; }
@@ -510,6 +511,8 @@ input[type="reset"].unstyled:focus {
 		right: initial;
 		opacity: 0.5;
 		display: block;		
+		padding-left: 0.5rem;
+		border-radius: 8px;
 	}
 	.bt.fixed:hover { 		
 		opacity: 1;	

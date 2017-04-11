@@ -4,8 +4,12 @@
 add_translation({
 	"Save" : {"fr" : "Enregistrer"},
 	"Delete" : {"fr" : "Supprimer"},
+	"Delete content" : {"fr" : "Supprimer le contenu"},
+	"Also remove media from content" : {"fr" : "Supprimer \u00e9galement les m\u00e9dias pr\u00e9sents dans le contenu"},
 	"Close the edit mode" : {"fr" : "Fermer le mode d'\u00e9dition"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
+	"Cancel" : {"fr" : "Annuler"},	
+
 	"Empty element" : {"fr" : "El\u00e9ment vide"},		
 	"Add to menu" : {"fr" : "Ajouter au menu"},		
 	"To remove slide here" : {"fr" : "Pour supprimer glisser ici"},		
@@ -56,6 +60,7 @@ $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
 // Rapatrie le contenu
 get_content = function(content)
 {
+	// Supprime les index devant les class et id
 	var content_array = content.replace(/\.|#/, '');
 
 	data[content_array] = {};
@@ -73,8 +78,8 @@ get_content = function(content)
 	});
 
 	// Contenu des fichiers éditables
-	$(document).find(content+" .editable-media > .fa").each(function() {
-		if($(this).attr("title")) data[content_array][$(this).parent().attr("id")] = $(this).attr("title");
+	$(document).find(content+" .editable-media .fa").each(function() {
+		if($(this).attr("title")) data[content_array][$(this).closest("span").attr("id")] = $(this).attr("title");
 	});
 	
 	// Contenu des background images éditables
@@ -417,8 +422,8 @@ media = function(source, target) {
 
 			// Relance les autres events
 			editable_event();
-			editable_file_event();
-			body_editable_file_event();
+			editable_media_event();
+			body_editable_media_event();
 		}
 	);
 }
@@ -584,6 +589,9 @@ get_file = function(id)
 	{	
 		// Supprime les images
 		$("#"+$("#dialog-media-source").val()+" img").remove();
+
+		// Supprime les fichiers
+		$("#"+$("#dialog-media-source").val()+" .fa").remove();
 
 		// Ajoute le fichier
 		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-file") +'"></i>');	
@@ -753,9 +761,9 @@ $(document).ready(function()
 
 		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
 
-		//adminbar+= "<button id='del' class='fr mat small' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
+		adminbar+= "<button id='del' class='fr mat small minor' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
 
-		adminbar+= "<div class='fr mat mrs switch'><input type='checkbox' id='state_content' class='none'><label for='state_content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
+		adminbar+= "<div class='fr mat mrs switch minor'><input type='checkbox' id='state_content' class='none'><label for='state_content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
 	adminbar+= "</div>";
 
@@ -1058,8 +1066,8 @@ $(document).ready(function()
 			},
 			"dragend.editable": function() {// drop dragend
 				// Active les events block image
-				editable_file_event();
-				body_editable_file_event();
+				editable_media_event();
+				body_editable_media_event();
 
 				memo_img = null;
 				img_leave();// Raz Propriétés image
@@ -1197,7 +1205,7 @@ $(document).ready(function()
 	/************** IMAGE/FICHIER SEUL **************/
 	
 	// On highlight les zones où l'on peut droper des fichiers
-	body_editable_file_event = function() {
+	body_editable_media_event = function() {
 		$("body")
 			.on({
 				// Highlight les zone on hover dragover/dragenter
@@ -1218,12 +1226,12 @@ $(document).ready(function()
 	}
 
 	// Exécute l'event sur le body pour les images/fichiers
-	body_editable_file_event();
+	body_editable_media_event();
 
 
-	// Rends éditables les images
+	// Rends éditables les images/fichiers
 	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>");
-	editable_file_event = function() {
+	editable_media_event = function() {
 		$(".editable-media")
 			.on({
 				// Highlight la zone on hover
@@ -1277,7 +1285,7 @@ $(document).ready(function()
 	}
 
 	// Exécute l'event sur les images/fichier
-	editable_file_event();
+	editable_media_event();
 
 
 
@@ -1344,7 +1352,7 @@ $(document).ready(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox, [for]").on("click", function(event) {//@todo voir si le [for] ne crée pas de bug collatérale
+	$(".editable-checkbox").on("click", function(event) {
 		if($(this).attr("for")) id = $(this).attr("for");
 		else id = this.id;
 
@@ -1440,10 +1448,107 @@ $(document).ready(function()
 		reload();
 	});
 
+
+	// Suppression du contenu
+	$("#del").click(function() 
+	{	
+		$("body").append("<div class='dialog-del' title='"+ __("Delete content") +"'><input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul></div>");
+
+
+		medias = {};
+
+		// Contenu des images éditables, bg et dans les contenus textuels
+		$(document).find(".content .editable-media img, .content .editable img, .content [data-bg]").each(function() {
+			if($(this).hasClass("editable-bg")) var media = $(this).attr("data-bg");
+			else var media = $(this).attr("src");
+
+			if(media) medias[media] = "img";
+		});
+
+		// Contenu des fichiers éditables et dans les contenus textuels
+		$(document).find(".content .editable-media .fa, .content .editable a[href^='media/']").each(function() {
+			if($(this).closest("span").hasClass("editable-media")) var media = $(this).attr("title");
+			else var media = $(this).attr("href");
+
+			if(media) medias[media] = "fichier";
+		});
+
+
+		// Clean les url pour supprimer l'host et les données après le "?"
+		medias_clean = {};
+		host = location.protocol +'//'+ location.host + path;
+		$.each(medias, function(media, type) {
+			media = media.replace(host, "").split("?")[0];
+			medias_clean[media] = type;			
+		});
+
+
+		// Affiche la liste des medias
+		$.each(medias_clean, function(media, type) {
+			if(type == "img") $(".dialog-del ul").append("<li><label for=\""+ media +"\"><img src=\""+ media +"\" title=\""+ media +"\"></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+			else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-file-o biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+		});
+
+
+		// Au click sur la checkbox générale on coche tous les médias ont supprimé
+		$("#del-medias").click(function() {	
+			if($(this).prop("checked") == true) $(".del-media").prop("checked", true);
+			else $(".del-media").prop("checked", false);
+		});
+
+		// Au click sur une checkbox de média on vérifie si tous est coché et on coche la checkbox générale
+		$(".del-media").click(function() {	
+			if($(".del-media:checked").length == $(".del-media").length) $("#del-medias").prop("checked", true);
+			else $("#del-medias").prop("checked", false);
+		});
+
+
+		// Dialog de suppression
+		$(".dialog-del").dialog({
+			modal: true,
+			buttons: 
+			[{
+            	text: __("Cancel"),
+           		click: function() { $(".dialog-del").remove(); }
+			},{
+				text: "Ok",
+				click: function() {
+					medias_post = [];
+
+					// Récupère tous les médias sélectionnés
+					$(".dialog-del ul input:checked").each(function() {
+					    medias_post.push($(this).attr("id"));
+					});
+
+					// Requete de suppression
+					$.ajax({
+						type: "POST",
+						url: path + "api/ajax.admin.php?mode=delete",
+						data: {
+							"url": clean_url(),
+							"type": type,
+							"medias": medias_post,
+							"nonce": $("#nonce").val()// Pour la signature du formulaire
+						}
+					})
+					.done(function(html) {		
+						$(".dialog-del").dialog("close");
+						$("body").append(html);
+					});					
+				}
+			}],
+			close: function() {
+				$(".dialog-del").remove();					
+			}
+		});
+	});
+
+
 	// Si on sauvegarde
 	$("#save").click(function() {	
 		save();
 	});
+
 
 	// Capture des actions au clavier
 	$(document).keydown(function(event) 
