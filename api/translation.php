@@ -40,8 +40,8 @@ $add_translation = array(
 	"Add article" => array("fr" => "Ajouter un article"),
 	"Article Title" => array("fr" => "Titre de l'article"),
 
-	"Add file" => array("fr" => "Ajouter un fichier"),
-	"File Title" => array("fr" => "Titre du fichier"),
+	"Add media" => array("fr" => "Ajouter un média"),
+	"Media title" => array("fr" => "Titre du média"),
 	
 	"Select template" => array("fr" => "Sélectionner un modèle"),
 	"Permanent link" => array("fr" => "Lien Permanent"),

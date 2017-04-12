@@ -87,13 +87,13 @@ $GLOBALS['public_account'] = false;
 $GLOBALS['default_state'] = "active";// moderate / mail / active / deactivate
 
 // Niveaux d'authentification par défaut des comptes utilisateur
-$GLOBALS['default_auth'] = "add-file-public,edit-public";
+$GLOBALS['default_auth'] = "add-media-public,edit-public";
 
 // Info supplémentaire sur l'utilisateur
 $GLOBALS['meta_user'] = null;
 
 // Niveaux d'authentification possible
-$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "add-file", "add-page", "add-article", "add-product", "edit-file", "edit-page", "edit-article", "edit-product", "add-file-public", "edit-public");
+$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "add-media", "add-page", "add-article", "add-product", "edit-media", "edit-page", "edit-article", "edit-product", "add-media-public", "edit-public");
 
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = "medium";
@@ -108,7 +108,7 @@ $GLOBALS['session_expiration'] = 60*60*24*30;
 // Type mime supporté pour l'upload
 $GLOBALS['mime_supported'] = array(
 	"image/jpg", "image/jpeg", "image/pjpeg", "image/png", "image/x-png", "image/gif", "image/x-icon",
-	"application/pdf", "application/zip", "text/plain"
+	"application/pdf", "application/zip", "application/x-zip-compressed", "text/plain"
 );
 
 

@@ -569,14 +569,14 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		right: 2px;
 	}
 
-	.dialog-media li.add-file {
+	.dialog-media li.add-media {
 		background: #f5f5f5;
 		border: 2px dashed #7AD2D9;
 		border-radius: 5px;
 		line-height: inherit;
 		height: 110px;
 	}
-		.dialog-media li.add-file.dragover { 
+		.dialog-media li.add-media.dragover { 
 			background: rgba(117, 223, 131, 0.4);
 			border: 2px dashed #75df83;
 		}

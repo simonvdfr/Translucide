@@ -99,8 +99,8 @@ switch($_GET['mode'])
 				<li data-filter="article"><a href="#add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
 				<?}?>
 				
-				<?if($_SESSION['auth']['add-file']){?>
-				<li data-filter="file"><a href="#add-file" title="<?_e("Add file")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add file")?></span></a></li>
+				<?if($_SESSION['auth']['add-media']){?>
+				<li data-filter="media"><a href="#add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
 				<?}?>
 
 				<!-- <li data-filter="product"><a href="#add-product"></" title="<?_e("Product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Product")?></span></a></li> -->
@@ -163,11 +163,11 @@ switch($_GET['mode'])
 			<?}?>
 
 			
-			<?if($_SESSION['auth']['add-file']){?>
-			<div id="add-file">
+			<?if($_SESSION['auth']['add-media']){?>
+			<div id="add-media">
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("File Title")?>" maxlength="60" class="w60 bold">
+					<input type="text" id="title" placeholder="<?_e("Media title")?>" maxlength="60" class="w60 bold">
 
 					<select id="tpl" required class="w30">
 						<option value=""><?_e("Select template")?></option>
@@ -176,7 +176,7 @@ switch($_GET['mode'])
 						while(list($cle, $filename) = each($scandir))				
 						{			
 							$filename = pathinfo($filename, PATHINFO_FILENAME);
-							echo"<option value=\"".$filename."\"".($filename == "fichier"?" selected":"").">".$filename."</option>";
+							echo"<option value=\"".$filename."\"".(($filename == "fichier" or $filename == "media")?" selected":"").">".$filename."</option>";
 						}
 						?>					
 					</select>
@@ -510,9 +510,9 @@ switch($_GET['mode'])
 		$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
 		// On a demandé la suppression des fichiers liée au contenu
-		while(list($cle, $file) = each($_POST['medias'])) {
+		while(list($cle, $media) = each($_POST['medias'])) {
 			// strtok : Supprime les arguments après l'extension (timer...)
-			unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($file, "?")));
+			unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
 		}
 
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
@@ -575,7 +575,7 @@ switch($_GET['mode'])
 
 	case "dialog-media":// Affichage des médias
 		
-		login('medium', 'add-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		
@@ -631,7 +631,7 @@ switch($_GET['mode'])
 					var resize = "";
 
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
-				$("#media .add-file").after("<li class='pat mat tc uploading' id='"+ id +"' data-file=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" + resize : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
+				$("#media .add-media").after("<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" + resize : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
 
 				// Converti la date unix en date lisible
 				var date = new Date();
@@ -726,9 +726,9 @@ switch($_GET['mode'])
 						var id = $(this).parent().attr("id");
 						
 						$.ajax({
-							url: "api/ajax.admin.php?mode=del-file",
+							url: "api/ajax.admin.php?mode=del-media",
 							data: {
-								"file": $("#"+id).attr("data-file"),
+								"file": $("#"+id).attr("data-media"),
 								"nonce": $("#nonce").val()
 							},
 							success: function(html){
@@ -743,7 +743,7 @@ switch($_GET['mode'])
 
 
 				// On sélectionne un fichier
-				$(".dialog-media").on("click", "li:not(.add-file)", function(event)
+				$(".dialog-media").on("click", "li:not(.add-media)", function(event)
 				{
 					var id = $(this).attr("id");
 
@@ -758,7 +758,7 @@ switch($_GET['mode'])
 				if(typeof uploading === "undefined") uploading = false;
 
 				// Si on choisit des images pour l'upload avec le bouton
-				$("#add-file").change(function()
+				$("#add-media").change(function()
 				{
 					// Inverse le tableau pour l'afficher comme dans le dossier
 					$.merge(uploads = [], this.files);
@@ -798,18 +798,18 @@ switch($_GET['mode'])
 						event.preventDefault();
 						event.stopPropagation();					
 						$(".ui-widget-overlay").addClass("body-dragover");
-						$(".add-file").addClass("dragover");
+						$(".add-media").addClass("dragover");
 					},
 					"dragleave.dialog-media": function(event) {// Clean les highlight on out
 						event.stopPropagation();
 						$(".ui-widget-overlay").removeClass("body-dragover");
-						$(".add-file").removeClass("dragover");
+						$(".add-media").removeClass("dragover");
 					},
 					"drop.dialog-media": function(event) {// On lache un fichier sur la zone
 						event.preventDefault();  
 						event.stopPropagation();
 						$(".ui-widget-overlay").removeClass("body-dragover");
-						$(".add-file").removeClass("dragover");
+						$(".add-media").removeClass("dragover");
 						
 						// Upload du fichier dropé
 						if(event.originalEvent.dataTransfer)
@@ -853,7 +853,7 @@ switch($_GET['mode'])
 		// @todo: mettre player html5 si vidéo ou audio pour avoir la preview et possibilité de jouer les médias en mode zoom
 		// @todo: ajouter un bouton de nettoyage qui scanne les contenus et regarde si les fichiers sont utilisés
 		
-		login('medium', 'add-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".($_GET['filter'] == "resize" ? "resize/":"");
 		
@@ -912,10 +912,10 @@ switch($_GET['mode'])
 		?>
 		<ul class="unstyled pan man smaller">	
 	
-			<li class="add-file pas mat tc big" onclick="document.getElementById('add-file').click();">
+			<li class="add-media pas mat tc big" onclick="document.getElementById('add-media').click();">
 				<i class="fa fa-upload biggest pbs"></i><br>
 				<?_e("Drag and drop a file here or click me");?>
-				<input type="file" id="add-file" style="display: none" multiple>
+				<input type="file" id="add-media" style="display: none" multiple>
 			</li>
 			<?
 
@@ -966,7 +966,7 @@ switch($_GET['mode'])
 					else $info = pathinfo($val['filename'], PATHINFO_EXTENSION);
 					
 					// Affichage du fichier
-					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode($_GET['filter'])."-".$i."\" data-file=\"media/".($_GET['filter'] == "resize"?"resize/":"").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
+					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode($_GET['filter'])."-".$i."\" data-media=\"media/".($_GET['filter'] == "resize"?"resize/":"").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
 
 						if($type == "image") {
 							echo"<img src=\"media/".($_GET['filter'] == "resize"?"resize/":"").$val['filename']."\">";
@@ -996,9 +996,9 @@ switch($_GET['mode'])
 	break;
 
 	
-	case "del-file":// Supprime un fichier
+	case "del-media":// Supprime un fichier
 
-		login('medium', 'add-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		
@@ -1007,7 +1007,7 @@ switch($_GET['mode'])
 
 	case "get-img":// Renvoi une image et la resize si nécessaire
 
-		login('medium', 'add-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
@@ -1018,9 +1018,9 @@ switch($_GET['mode'])
 	break;
 
 
-	case "add-file":// Envoi d'une image sur le serveur et la resize si nécessaire
+	case "add-media":// Envoi d'une image sur le serveur et la resize si nécessaire
 			
-		login('medium', 'add-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		//echo "_FILES:<br>"; highlight_string(print_r($_FILES, true));

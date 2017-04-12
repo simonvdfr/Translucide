@@ -437,7 +437,7 @@ upload = function(source, file, resize)
 	// Type de fichier supporté pour l'upload
 	var mime_supported = [
 		"image/jpg","image/jpeg","image/pjpeg","image/png","image/x-png","image/gif","image/x-icon",
-		"application/pdf","application/zip","text/plain"		
+		"application/pdf","application/zip","application/x-zip-compressed","text/plain"		
 	];
 
 	var width = $(source).data("width") || "";
@@ -456,14 +456,14 @@ upload = function(source, file, resize)
 			// Type mime du fichier
 			var mime = file.type.split("/");
 
+			// Supprime les fichiers autres que image
+			$(".fa", source).remove();
+
 			// Affiche la preview si image
 			if(mime[0] == "image") 
 			{
 				// Si pas de tag img on le crée
 				if($("img", source).html() == undefined) $(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+">");
-
-				// Supprime les fichiers autres que image
-				$("> .fa", source).remove();
 
 				// On fade à moitié (50%)
 				$("img", source).addClass("to50");
@@ -498,7 +498,7 @@ upload = function(source, file, resize)
 
 			$.ajax({
 				type: "POST",
-				url: path+"api/ajax.admin.php?mode=add-file",
+				url: path+"api/ajax.admin.php?mode=add-media",
 				xhr: function() {
 					var xhr = $.ajaxSettings.xhr();
 					if(xhr.upload) {									
@@ -530,7 +530,7 @@ upload = function(source, file, resize)
 							$("img", source).removeClass("to50");// On remet l'image à l'opacité normale
 							$("img", source).attr("src", path);// Affiche l'image finale 
 						}
-						else if(!source.attr("data-file"))// Si c'est un fichier autre et isolé
+						else if(!source.attr("data-media"))// Si c'est un fichier autre et isolé
 						{
 							// Supprime les images
 							$("img", source).remove();
@@ -540,8 +540,8 @@ upload = function(source, file, resize)
 						}
 						
 						// Nom du fichier final si dialog médias
-						if(source.attr("data-file")) {
-							source.attr("data-file", path);// Pour la manipulation							
+						if(source.attr("data-media")) {
+							source.attr("data-media", path);// Pour la manipulation							
 							$(".file div", source).html(path.split('/').pop());// Pour l'affichage 
 						}
 						
@@ -594,10 +594,10 @@ get_file = function(id)
 		$("#"+$("#dialog-media-source").val()+" .fa").remove();
 
 		// Ajoute le fichier
-		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-file") +'"></i>');	
+		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
 	}
 	else// Insertion du lien vers le fichier dans bloc texte
-		exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\">"+ $("#"+id).attr("data-file").split('/').pop() +"</a>");
+		exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
 
 	// Fermeture de la dialog
 	$(".dialog-media").dialog("close");
@@ -624,7 +624,7 @@ get_img = function(id, link)
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=get-img",
 		data: {
-			"img": $("#"+id).attr("data-file"),
+			"img": $("#"+id).attr("data-media"),
 			"width": width,
 			"height": height,
 			"nonce": $("#nonce").val()
@@ -647,7 +647,7 @@ get_img = function(id, link)
 			}
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
-				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
+				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
 				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
@@ -1543,6 +1543,11 @@ $(document).ready(function()
 		});
 	});
 
+
+	// Si on change le statut d'activation
+	$("#state_content").click(function() {	
+		tosave();
+	});
 
 	// Si on sauvegarde
 	$("#save").click(function() {	
