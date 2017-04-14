@@ -131,7 +131,8 @@ save = function(callback)
 
 	get_content("footer");// Contenu du footer
 
-	data["content"]["og-image"] = $("#admin-bar #og-image").attr("src");// Image pour les réseaux sociaux
+	if($("#admin-bar #og-image img").attr("src"))
+	data["content"]["og-image"] = $("#admin-bar #og-image img").attr("src");// Image pour les réseaux sociaux
 
 	// Contenu du menu de navigation
 	data["nav"] = {};
@@ -751,7 +752,7 @@ $(document).ready(function()
 					adminbar+= "</div>";
 					
 					adminbar+= "<div class='small mts'>"+ __("Image on social networks") +" :</div>";
-					adminbar+= "<div class=''><span class='editable-media'><img src='' id='og-image'></span></div>";
+					adminbar+= "<div class=''><span class='editable-media' id='og-image'><img src=''></span></div>";
 					
 				adminbar+= "</div>";
 			adminbar+= "</div>";
@@ -799,10 +800,10 @@ $(document).ready(function()
 	if($("meta[property='og:image']").attr("content") != undefined) 
 	{
 		// Bind l'image
-		$("#admin-bar #og-image").attr("src", $("meta[property='og:image']").attr("content"));
+		$("#admin-bar #og-image img").attr("src", $("meta[property='og:image']").attr("content"));
 
 		// Option de suppression de l'image
-		$("#admin-bar #og-image").parent().after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
+		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
 	}
 
 	// Ajout de l'état de la page

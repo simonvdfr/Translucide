@@ -243,6 +243,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .vab { vertical-align: bottom !important; }
 .vatt { vertical-align: text-top !important; }
 .nowrap { white-space: nowrap; }
+.dot { text-overflow: ellipsis; }
 
 
 /*  Layout and modules */
@@ -382,9 +383,6 @@ input[type="reset"].unstyled:focus {
 .tdn { text-decoration: none !important; }
 .tdn:hover { text-decoration: none !important; }
 
-
-/* Légère transition sur les FontAwesome */
-.fa { transition: all 0.3s; }
 
 /* Pour ajouter des pictos dans les menus select */
 .fa-select { font-family: FontAwesome, Helvetica, Arial, sans-serif; }

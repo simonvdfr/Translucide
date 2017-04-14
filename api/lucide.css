@@ -2,6 +2,10 @@
 body { transition: margin-top .2s linear; }
 .body-margin-top { margin-top: 35px; }
 
+/* Légère transition sur les FontAwesome */
+.fa { transition: all 0.3s; }
+
+
 #admin-bar {		
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	background-color: rgba(240, 240, 240, 0.8);	
@@ -813,9 +817,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 
 
-#unlink {
-	color: #9E1E1E;
-}
+#unlink { color: #9E1E1E; }
 
 
 /* Couleur de sélection de textes */

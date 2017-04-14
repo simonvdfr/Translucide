@@ -829,7 +829,7 @@ function img_process($root_file, $dest = "media/", $des_resize = "media/resize/"
 	
 	// On vérifie la bonne orientation de l'image jpeg
 	if($type == 2) {// Exif ne fonctionne qu'avec les jpeg
-		$exif = exif_read_data($root_file);
+		$exif = @exif_read_data($root_file);
 		if($exif['Orientation'] != 1) {
 			$max_width = ($source_width > $max_width ? $max_width : $source_width);
 			$max_height = ($source_height > $max_height ? $max_height : $source_height);
