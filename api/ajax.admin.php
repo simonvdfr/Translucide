@@ -1046,7 +1046,7 @@ switch($_GET['mode'])
 		$file_infos['mime'] = finfo_file($finfo, $_FILES['file']['tmp_name']);
 		finfo_close($finfo);
 
-		// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types)
+		// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
 		if(in_array($file_infos['mime'], $GLOBALS['mime_supported']))
 		{
 			// Le fichier tmp ne contient pas de php ou de javascript
@@ -1071,6 +1071,7 @@ switch($_GET['mode'])
 				}
 			}
 		}
+		//else echo $file_infos['mime'];
 
 	break;
 

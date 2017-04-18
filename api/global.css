@@ -747,6 +747,8 @@ div.editable {
 
 /* Animation onscroll */
 .animation { transition: all 1s ease-out; }
+	
+	.t5 { transition: all .5s !important; }
 
 	.fade-in { 
 		opacity: 0;

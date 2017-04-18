@@ -443,10 +443,10 @@ upload = function(source, file, resize)
 
 	var width = $(source).data("width") || "";
 	var height = $(source).data("height") || "";
-
+console.log(file.type);
 	if(file) 
 	{
-		if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supporté
+		//if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supporté
 		{				
 			// @todo: ajouter un cog loading en sur l'image (a coter du % ?)
 
@@ -455,7 +455,7 @@ upload = function(source, file, resize)
 			source.append("<div id='"+progressid+"' class='progress bg-color small' style='height: "+source.outerHeight()+"px;'></div>");			
 			
 			// Type mime du fichier
-			var mime = file.type.split("/");
+			var mime = (file.type ? file.type.split("/") : "");
 
 			// Supprime les fichiers autres que image
 			$(".fa", source).remove();
@@ -570,10 +570,10 @@ upload = function(source, file, resize)
 			});
 
 		}
-		else {
+		/*else {
 			source.hide("slide", 300);
 			error(__("This file format is not supported") + " : "+ file.type);
-		}
+		}*/
 
 		//console.log(data.files[0].type);
 	}   	
@@ -762,9 +762,9 @@ $(document).ready(function()
 
 		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
 
-		adminbar+= "<button id='del' class='fr mat small minor' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
+		adminbar+= "<button id='del' class='fr mat small o50 ho1 t5' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
 
-		adminbar+= "<div class='fr mat mrs switch minor'><input type='checkbox' id='state_content' class='none'><label for='state_content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
+		adminbar+= "<div class='fr mat mrs switch o50 ho1 t5'><input type='checkbox' id='state_content' class='none'><label for='state_content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
 	adminbar+= "</div>";
 
@@ -1453,9 +1453,6 @@ $(document).ready(function()
 	// Suppression du contenu
 	$("#del").click(function() 
 	{	
-		$("body").append("<div class='dialog-del' title='"+ __("Delete content") +"'><input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul></div>");
-
-
 		medias = {};
 
 		// Contenu des images éditables, bg et dans les contenus textuels
@@ -1484,24 +1481,33 @@ $(document).ready(function()
 		});
 
 
-		// Affiche la liste des medias
-		$.each(medias_clean, function(media, type) {
-			if(type == "img") $(".dialog-del ul").append("<li><label for=\""+ media +"\"><img src=\""+ media +"\" title=\""+ media +"\"></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
-			else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-file-o biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
-		});
+		// Dialog de confirmation de suppression	
+		$("body").append("<div class='dialog-del' title='"+ __("Delete content") +"'></div>");
 
+		// S'il y a des médias à supprimer
+		if(Object.keys(medias_clean).length > 0)
+		{
+			// Option de suppression des média liée au contenu			
+			$(".dialog-del").append("<input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul>");
 
-		// Au click sur la checkbox générale on coche tous les médias ont supprimé
-		$("#del-medias").click(function() {	
-			if($(this).prop("checked") == true) $(".del-media").prop("checked", true);
-			else $(".del-media").prop("checked", false);
-		});
+			// Affiche la liste des medias
+			$.each(medias_clean, function(media, type) {
+				if(type == "img") $(".dialog-del ul").append("<li><label for=\""+ media +"\"><img src=\""+ media +"\" title=\""+ media +"\"></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+				else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-file-o biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+			});
 
-		// Au click sur une checkbox de média on vérifie si tous est coché et on coche la checkbox générale
-		$(".del-media").click(function() {	
-			if($(".del-media:checked").length == $(".del-media").length) $("#del-medias").prop("checked", true);
-			else $("#del-medias").prop("checked", false);
-		});
+			// Au click sur la checkbox générale on coche tous les médias ont supprimé
+			$("#del-medias").click(function() {	
+				if($(this).prop("checked") == true) $(".del-media").prop("checked", true);
+				else $(".del-media").prop("checked", false);
+			});
+
+			// Au click sur une checkbox de média on vérifie si tous est coché et on coche la checkbox générale
+			$(".del-media").click(function() {	
+				if($(".del-media:checked").length == $(".del-media").length) $("#del-medias").prop("checked", true);
+				else $("#del-medias").prop("checked", false);
+			});
+		}
 
 
 		// Dialog de suppression

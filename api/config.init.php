@@ -12,7 +12,7 @@ ini_set('default_charset', 'UTF-8');
 
 if(!isset($_SESSION))
 {
-	// Pour aider safari qui ne gère pas les cookies en iframe/cross domain
+	// Pour aider safari qui ne gÃ¨re pas les cookies en iframe/cross domain
 	ini_set('session.use_cookies', 1);       // Use cookies to store session.
 	ini_set('session.use_only_cookies', 1);  // Force cookies for session (phpsessionID forbidden in URL)
 	ini_set('session.use_trans_sid', false); // Prevent php to use session ID in URL if cookies are disabled.
@@ -20,11 +20,11 @@ if(!isset($_SESSION))
 	if(!isset($cron)) session_start();
 }
 
-// Définition de la zone horaire
+// DÃ©finition de la zone horaire
 date_default_timezone_set('Europe/Paris');
 
 
-// Variables de la base de données
+// Variables de la base de donnÃ©es
 $GLOBALS['db_server'] = "";
 $GLOBALS['db_user'] = "";
 $GLOBALS['db'] = "";
@@ -75,27 +75,27 @@ $GLOBALS['microsoft_api_id'] = "";
 $GLOBALS['microsoft_api_secret'] = "";
 
 
-// Clé hash pour les cryptages
+// ClÃ© hash pour les cryptages
 $GLOBALS['pub_hash'] = "";
 $GLOBALS['priv_hash'] = "";
 
 
-// Compte public autorisé
+// Compte public autorisÃ©
 $GLOBALS['public_account'] = false;
 
-// Statue d'activation par défaut des comptes utilisateur
+// Statue d'activation par dÃ©faut des comptes utilisateur
 $GLOBALS['default_state'] = "active";// moderate / mail / active / deactivate
 
-// Niveaux d'authentification par défaut des comptes utilisateur
+// Niveaux d'authentification par dÃ©faut des comptes utilisateur
 $GLOBALS['default_auth'] = "add-media-public,edit-public";
 
-// Info supplémentaire sur l'utilisateur
+// Info supplÃ©mentaire sur l'utilisateur
 $GLOBALS['meta_user'] = null;
 
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "add-media", "add-page", "add-article", "add-product", "edit-media", "edit-page", "edit-article", "edit-product", "add-media-public", "edit-public");
 
-// Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
+// Niveau de sÃ©curitÃ© du systÃ¨me de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = "medium";
 
 // Nom de boucle de hashage du mdp
@@ -105,7 +105,7 @@ $GLOBALS['pwd_hash_loop'] = "";
 $GLOBALS['session_expiration'] = 60*60*24*30;
 
 
-// Type mime supporté pour l'upload
+// Type mime supportÃ© pour l'upload
 $GLOBALS['mime_supported'] = array(
 	"image/jpg", "image/jpeg", "image/pjpeg", "image/png", "image/x-png", "image/gif", "image/x-icon",
 	"application/pdf", "application/zip", "application/x-zip-compressed", "text/plain"
@@ -128,7 +128,7 @@ $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/the
 // Utilisation de librairie minifier
 $GLOBALS['min'] = "";// .min
 
-// Sécurité / défaut
+// SÃ©curitÃ© / dÃ©faut
 $title = null;
 $description = null;
 $image = null;
