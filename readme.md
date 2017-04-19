@@ -4,6 +4,17 @@ J'ai créé le CMS Translucide pour répondre à certains besoins personnels que
 
 En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel, le tout avec le moins de dépendance possible (uniquement jQuery, jQuery UI, Font Awesome). Le moteur du site tient en très peu de fichiers, et pourtant il fait déjà pas mal de choses.
 
+## Dépendance limitée
+### Global
+Pour être le plus léger possible, sécurisé et performant le CMS charge uniquement le minimum de librairies et si possible les versions les plus récentes.
+- jQuery 3.2.1
+- Framework CSS inspiré largement du très light et fun knacss.com
+- PHP 7 Ready !
+- Mysql 5.6
+### Lors du passage en mode édition live
+- jQuery UI 1.12.1
+- Font Awesome 4.7.0
+
 ## Installation
 Décompresser les fichiers du site sur votre FTP et avec votre navigateur aller à l'adresse où se trouve `index.php`
 Entrer les infos de connexion à la base de données, sélectionner votre template de site (graphisme) et enfin entrer le mail et le mot de passe qui servira à administrer le site au lancement.

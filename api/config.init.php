@@ -119,11 +119,11 @@ $GLOBALS['png_quality'] = 9;
 
 
 // Librairie externe
-$GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css";
+$GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 $GLOBALS['icons'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."plugin/icons/icons.min.css";
-$GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js";
-$GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js";
-$GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
+$GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
+$GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js";
+$GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
 
 // Utilisation de librairie minifier
 $GLOBALS['min'] = "";// .min
