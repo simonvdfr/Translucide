@@ -246,6 +246,9 @@
 .fa-quote-right:before {
   content: "\f10e";
 }
+.fa-calendar-o:before {
+  content: "\f133";
+}
 .fa-unlock-alt:before {
   content: "\f13e";
 }
