@@ -121,7 +121,7 @@ save = function(callback)
 	data["title"] = $("#admin-bar #title").val();// Titre de la page
 	data["description"] = $("#admin-bar #description").val();// Description pour les serp
 
-	data["state"] = ($("#admin-bar #state_content").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
+	data["state"] = ($("#admin-bar #state-content").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
 
 	data["type"] = type;// Type de contenu
 	
@@ -443,7 +443,7 @@ upload = function(source, file, resize)
 
 	var width = $(source).data("width") || "";
 	var height = $(source).data("height") || "";
-console.log(file.type);
+
 	if(file) 
 	{
 		//if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supporté
@@ -714,9 +714,9 @@ img_leave = function()
 
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
-$(window).on("beforeunload", function(){
-	//if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
-});
+/*$(window).on("beforeunload", function(){
+	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
+});*/
 
 
 
@@ -764,7 +764,7 @@ $(document).ready(function()
 
 		adminbar+= "<button id='del' class='fr mat small o50 ho1 t5' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
 
-		adminbar+= "<div class='fr mat mrs switch o50 ho1 t5'><input type='checkbox' id='state_content' class='none'><label for='state_content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
+		adminbar+= "<div class='fr mat mrs switch o50 ho1 t5'><input type='checkbox' id='state-content' class='none'><label for='state-content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
 	adminbar+= "</div>";
 
@@ -807,8 +807,8 @@ $(document).ready(function()
 	}
 
 	// Ajout de l'état de la page
-	if(state == "deactivate") $("#admin-bar #state_content").prop("checked", false);
-	else $("#admin-bar #state_content").prop("checked", true);
+	if(state == "deactivate") $("#admin-bar #state-content").prop("checked", false);
+	else $("#admin-bar #state-content").prop("checked", true);
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on('click',	function() {
@@ -1552,7 +1552,7 @@ $(document).ready(function()
 
 
 	// Si on change le statut d'activation
-	$("#state_content").click(function() {	
+	$("#state-content").click(function() {	
 		tosave();
 	});
 
@@ -1591,6 +1591,14 @@ $(document).ready(function()
 			}			
 		}
 	});
+
+	//@todo ajouter un filtre qui permet de supp uniquement si span avec font-size après action supp/backspace
+	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
+	if($.browser.webkit) {
+		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
+			if(event.target.tagName == "SPAN") event.target.outerHTML = event.target.innerHTML;			
+		});
+	}
 
 	// On change une info dans un menu select
 	$("#admin-bar select").change(function() {

@@ -17,8 +17,9 @@ body {
 	color: #000;
 	font-family: Helvetica, Arial, sans-serif;
 	line-height: 1.5;
-	font-size: 1.4em;
+	font-size: 1.4rem;
 }
+
 
 body > script { display: none !important; }
 
@@ -862,20 +863,13 @@ div.editable {
 		font-family: serif;
 		font-size: 12pt;
 	}
-	p,
-	.p-like,
-	h1,
-	.h1-like,
-	h2,
-	.h2-like,
-	h3,
-	.h3-like,
-	h4,
-	.h4-like,
-	h5,
-	.h5-like,
-	h6,
-	.h6-like,
+	p, .p-like,
+	h1, .h1-like,
+	h2, .h2-like,
+	h3, .h3-like,
+	h4, .h4-like,
+	h5, .h5-like,
+	h6, .h6-like,
 	blockquote,
 	ul,
 	ol {
@@ -902,12 +896,9 @@ div.editable {
 		page-break-inside: avoid;
 	}
 	/* no breaks after these elements */
-	h1,
-	.h1-like,
-	h2,
-	.h2-like,
-	h3,
-	.h3-like,
+	h1, .h1-like,
+	h2, .h2-like,
+	h3, .h3-like,
 	caption {
 		page-break-after: avoid;
 	}
