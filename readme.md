@@ -1,5 +1,6 @@
 # [CMS Translucide](http://www.translucide.net) - Léger et puissant
 
+[![jQuery](https://img.shields.io/badge/Licence-MIT-green.svg)]()
 [![jQuery](https://img.shields.io/badge/PHP-7-lightgrey.svg?colorB=8892bf)](http://php.net/)
 [![jQuery](https://img.shields.io/badge/MySQL-5.6-lightgrey.svg?colorB=f29111)](https://www.mysql.fr/)
 [![Knacss](https://img.shields.io/badge/Knacss-Fork-red.svg?colorB=cf381c)](https://github.com/simonvdfr/KNACSS)
