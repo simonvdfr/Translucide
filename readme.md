@@ -3,7 +3,7 @@
 [![jQuery](https://img.shields.io/badge/PHP-7-lightgrey.svg?colorB=8892bf)](http://php.net/)
 [![jQuery](https://img.shields.io/badge/MySQL-5.6-lightgrey.svg?colorB=f29111)](https://www.mysql.fr/)
 [![jQuery](https://img.shields.io/badge/jQuery-3.2.1-blue.svg?colorB=78cff5)](https://jquery.com/)
-[![jQuery](https://img.shields.io/badge/jQuery UI-1.12.1-yellow.svg?colorB=faa523)](http://jqueryui.com/)
+[![jQuery](https://img.shields.io/badge/jQuery_UI-1.12.1-yellow.svg?colorB=faa523)](http://jqueryui.com/)
 [![Knacss](https://img.shields.io/badge/Knacss-Fork-red.svg?colorB=cf381c)](https://github.com/alsacreations/KNACSS)
 [![jQuery](https://img.shields.io/badge/FortAwesome-4.7.0-lightgrey.svg?colorB=1e9f75)](https://github.com/FortAwesome/Font-Awesome)
 
