@@ -1,7 +1,7 @@
 <?
-include_once("../config.php");// Les variables
-include_once("function.php");// Fonction
-include_once("db.php");// Connexion à la db
+include_once("../config.php");// Variables
+include_once("../api/function.php");// Fonctions
+include_once("../api/db.php");// Connexion à la db
 
 header('Content-Type:text/xml;');
 
@@ -16,6 +16,7 @@ while($res = $sel->fetch_assoc())
 
 	echo"<loc>".make_url($res['url'], array("domaine" => true))."</loc><lastmod>".$date_update[0]."</lastmod>\n";
 
+	// @todo ajouter l'image si og:image
 	//if($res[photo]) echo"<image:image><image:loc>".make_url()."</image:loc></image:image>\n";
 
 	echo"</url>\n";
