@@ -1609,21 +1609,26 @@ switch($_GET['mode'])
 			<link rel="stylesheet" href="api/global.css?">
 
 			<style>
-			label { 
-				text-align: right;
-				padding-right: 1rem;
-			}
-
-			@media screen and (max-width: 640px) 
-			{
-				.w80 { width: 95%; }
-				.w10, .w20, .w30, .w50, .w60 { width: 90%; }
+				body { background-color: #75898c; }
+				.layer { box-shadow: 0 0 60px rgba(53, 116, 127, 0.3) inset, 0 0 5px rgba(0, 0, 0, 0.3);	}
+				.layer:after { display: none; }
 
 				label { 
-					display: block;
-					text-align: left;
+					text-align: right;
+					padding-right: 1rem;
+					cursor: default;
 				}
-			}
+
+				@media screen and (max-width: 640px) 
+				{
+					.w80 { width: 95%; }
+					.w10, .w20, .w30, .w50, .w60 { width: 90%; }
+
+					label { 
+						display: block;
+						text-align: left;
+					}
+				}
 			</style>
 
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
@@ -1680,7 +1685,7 @@ switch($_GET['mode'])
 
 			<div class="w80 center">
 
-				<h2><?_e("Site Installation");?></h2>
+				<h2 class="tc"><?_e("Site Installation");?></h2>
 
 				<div class="layer mod pam mbm">
 
