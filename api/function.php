@@ -154,9 +154,9 @@ function __($singulier, $pluriel = "", $num = 0)
 
 	// Si une traduction existe
 	if($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]) 
-		$txt = $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
+		$txt = utf8_encode($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
 
-	return utf8_encode($txt);
+	return $txt;
 }
 
 // Affichage d'une traduction
@@ -177,16 +177,66 @@ function txt($key = null, $filtre = array())
 	$GLOBALS['editkey']++;
 }
 
-// Contenu image
-function img($key = null, $filtre = array())
+// Contenu image/fichier
+function media($key = null, $filtre = array())
 {
-	$key = ($key ? $key : "img-".$GLOBALS['editkey']);
+	$key = ($key ? $key : "file-".$GLOBALS['editkey']);
 
+	// S'il y a une valeur pour le filtre mais que ce n'est pas un tableau
 	if(!is_array($filtre)) $filtre = array("size" => $filtre);
 
+	// Une taille est définie
 	if($filtre['size']) $size = explode("x", $filtre['size']);
 
-	echo"<span class='".($filtre['editable']?$filtre['editable']:"editable-img")."'><img src=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"".(isset($size[0])?" width='".$size[0]."'":"")."".(isset($size[1])?" height='".$size[1]."'":"")." atl=\"\" class='".((isset($size[0]) and isset($size[1]))?"crop":"")."".($filtre['zoom']?" zoom":"")."' id='".encode($key)."'></span>";
+	// Nom du fichier
+	$filename = isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "";
+
+	if($filename) 
+	{
+		// Extention du fichier
+		$ext = pathinfo(explode("?", $filename)[0], PATHINFO_EXTENSION);
+
+		// Recherche du type de fichier
+		switch($ext)
+		{	
+			case"jpg": 
+			case"jpeg":  
+			case"png": 
+			case"gif": 
+				$img = true; 
+			break;
+
+			default: $fa = "file-o"; break;
+
+			case"zip": $fa = "file-archive-o"; break;
+			case"msword": $fa = "file-word-o"; break;
+			case"vnd.ms-excel": $fa = "file-excel-o"; break;
+			case"vnd.ms-powerpoint": $fa = "file-powerpoint-o"; break;
+			case"pdf": $fa = "file-pdf-o"; break;
+		}
+	}
+
+	echo"<span class='".($filtre['editable']?$filtre['editable']:"editable-media")."' id='".encode($key)."'";
+		if(isset($size[0])) echo" data-width='".$size[0]."'";
+		if(isset($size[1])) echo" data-height='".$size[1]."'";
+	echo">";
+
+		if($img)// C'est une image
+		{
+			echo"<img src=\"".$filename."\"";
+
+			if(isset($size[0])) echo" width='".$size[0]."'";
+			if(isset($size[1])) echo" height='".$size[1]."'";
+
+			echo" atl=\"\" class='";
+				if(isset($size[0]) and isset($size[1])) echo"crop";
+				if($filtre['zoom']) echo" zoom";
+			echo"'>";
+		}
+		elseif($filename) // C'est un fichier
+			echo"<a href=\"".$GLOBALS['content'][$key]."\" target='_blank'><i class='fa fa-fw fa-".$fa." mega' title=\"".$GLOBALS['content'][$key]."\"></i></a>";
+
+	echo"</span>";
 
 	$GLOBALS['editkey']++;
 }
@@ -259,6 +309,7 @@ function href($key = null)
 
 	$GLOBALS['editkey']++;
 }
+
 
 
 /********** SÉCURISATION **********/
@@ -536,6 +587,12 @@ function login($level = 'low', $auth = null, $quiet = null)
 	if(!isset($_SESSION['token']) and !$quiet)
 	{
 		?>
+		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
+
+		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
+
+		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css">
+
 		<script>
 			// Ouverture de la dialog de connexion
 			$(document).ready(function()
@@ -544,32 +601,42 @@ function login($level = 'low', $auth = null, $quiet = null)
 
 				if(typeof tosave == 'function') tosave();// Mode : A sauvegarder
 				
-				// On ferme la dialog de connexion s'il y en a une d'ouvert
-				$("#dialog-connect").dialog("close");
-				
-				// On ouvre la dialog de choix du système de login et affiche une erreur
-				$.ajax(
-					{
-						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
-						data: {
-							callback: "<?=encode($_REQUEST['callback'], "_")?>",
-							msg: "<?=htmlspecialchars($msg);?>"
-						}
-					})
-					.done(function(html){
-						$("body").append(html);	
+				// Chargement de Jquery UI
+				$.ajax({
+			        url: "<?=$GLOBALS['jquery_ui']?>",
+			        dataType: 'script',
+					success: function()// Si Jquery UI bien charger on charge la dialog de choix de login
+					{ 						
+						// On ferme la dialog de connexion s'il y en a une d'ouvert
+						if($("#dialog-connect").length) $("#dialog-connect").dialog("close");
 						
-						// Effet sur la dialog
-						$("#dialog-connect").dialog({
-							modal: true,
-							minHeight: 0,
-							show: {effect: "fadeIn"},
-							//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
-							close: function() {
-								$("#dialog-connect").remove();
+						// On ouvre la dialog de choix du système de login et affiche une erreur
+						$.ajax({
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
+							data: {
+								callback: "<?=encode($_REQUEST['callback'], "_")?>",
+								msg: "<?=htmlspecialchars($msg);?>"
 							}
+						})
+						.done(function(html){
+							$("body").append(html);	
+							
+							// Effet sur la dialog
+							$("#dialog-connect").dialog({
+								modal: true,
+								minHeight: 0,
+								show: {effect: "fadeIn"},
+								//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
+								close: function() {
+									$("#dialog-connect").remove();
+								}
+							});
 						});
-					});
+					},
+			        async: true
+			    });		
+
+				
 			});
 		</script>
 		<?
@@ -762,7 +829,7 @@ function img_process($root_file, $dest = "media/", $des_resize = "media/resize/"
 	
 	// On vérifie la bonne orientation de l'image jpeg
 	if($type == 2) {// Exif ne fonctionne qu'avec les jpeg
-		$exif = exif_read_data($root_file);
+		$exif = @exif_read_data($root_file);
 		if($exif['Orientation'] != 1) {
 			$max_width = ($source_width > $max_width ? $max_width : $source_width);
 			$max_height = ($source_height > $max_height ? $max_height : $source_height);

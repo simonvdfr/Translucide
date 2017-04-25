@@ -6,7 +6,7 @@
 
 		<section class="w33 fl">
 			
-			<div class="mbm"><?img('footer-logo', '150')?></div>
+			<div class="mbm"><?media('footer-logo', '150')?></div>
 
 			<h3 class="mbs medium"><?txt('footer-sstitre')?></h3>
 			

@@ -2,6 +2,10 @@
 body { transition: margin-top .2s linear; }
 .body-margin-top { margin-top: 35px; }
 
+/* Légère transition sur les FontAwesome */
+.fa { transition: all 0.3s; }
+
+
 #admin-bar {		
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	background-color: rgba(240, 240, 240, 0.8);	
@@ -29,6 +33,7 @@ body { transition: margin-top .2s linear; }
 	#admin-bar h3 { font-family: arial; }
 
 	#admin-bar #user i { color: #75898c; cursor: pointer; }
+		#admin-bar #user i:hover { color: #6b6f7a; }
 		#admin-bar #user .absolute { position: absolute; }
 		#admin-bar #user .absolute .load { min-width: 298px; }
 		#admin-bar #user .absolute i { color: #75898c; transition: color .3s; }
@@ -38,27 +43,24 @@ body { transition: margin-top .2s linear; }
 			cursor: pointer;
 			transition: background-color .2s linear;
 		}
-			#admin-bar #user .absolute li:nth-child(odd) { 
-				background-color: #eaecec;
-			}
+			#admin-bar #user .absolute li:nth-child(odd) { background-color: #eaecec; }
 			#admin-bar #user .absolute li.next {
 				background-color: #dbdfe0;
 				box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 				border-radius: 0 0 3px 3px;
 				text-align: center;
 			}
-			#admin-bar #user .absolute li:hover { 
-				background-color: #d8caa9;
+			#admin-bar #user .absolute li:hover { background-color: #d8caa9;
 			}
 
 
+	#admin-bar input { padding: initial; }
 	#admin-bar input, .ui-dialog input {			
 		background-color: transparent;
 		color: #516062;
 		border: none;
 		border-bottom: 1px dotted #9cabad;
 		font-family: Arial;
-		padding: initial;
 		box-shadow: none;
 		border-radius: 0;
 	}
@@ -90,10 +92,10 @@ body { transition: margin-top .2s linear; }
 
 
 	#admin-bar button, .admin-bt {	
-		box-shadow: inset 0px 1px 3px 0px #91b3b8;
+		/* box-shadow: inset 0px 1px 3px 0px #91b3b8; */
 		background-color: #75898c;
 		border-radius: 5px;
-		border: 1px solid #6b6f7a;		
+		border: 0px solid #6b6f7a;		
 		display: inline-block;		
 		padding: 2px 8px;
 		cursor: pointer;
@@ -101,24 +103,111 @@ body { transition: margin-top .2s linear; }
 		font-family: Arial;
 		font-weight: bold;
 		text-decoration: none;
-		text-shadow: 0px -1px 0px #2c5f66;
+		/* text-shadow: 0px -1px 0px #2c5f66; */
 		transition: background-color .3s;
 	}
-		#admin-bar button:hover, .admin-bt:hover {
-			background-color: #6b6f7a;
-		}
+		#admin-bar button:hover, .admin-bt:hover { background-color: #6b6f7a; }
 		#admin-bar button:active, .admin-bt:active {
 			position: relative;
 			top: 1px;
 		}
 
-		#admin-bar button.to-save {
-			background-color: #9E1E1E;
+		#admin-bar button.to-save { background-color: #9E1E1E; }
+
+		#admin-bar button.saved { background-color: #8dad33; }/*#1BA238*/
+
+
+	/* Bouton d'activation en slide/switch */
+	/* Fond */
+	#admin-bar .switch label {
+		background: #9E1E1E;
+		box-shadow: inset 0 2px 5px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 0 rgba(0, 0, 0, .1);
+		
+		position: relative;
+		display: inline-block;
+
+		width: 38px;
+		height: 16px;
+		margin: 0;
+		border-radius: 5px;
+		line-height: 15px;
+
+		vertical-align: text-bottom;
+
+		font-style: normal;
+		color: #fff;
+		text-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+
+		cursor: pointer;
+
+		transition: all .3s ease-in;		
+	}	
+		/* Croix du désactivé */
+		#admin-bar .switch label:before {
+			font-family: FontAwesome;
+			content: "\f070";/* Off f00d */
+			margin-left: 18px;
+			transition: all .2s ease;
 		}
 
-		#admin-bar button.saved {
-			background-color: #1BA238;
+		/* Couleur de fond si activé */
+		#admin-bar .switch input[type=checkbox]:checked ~ label{
+			background: #8dad33;
 		}
+			/* Activé */
+			#admin-bar .switch input[type=checkbox]:checked ~ label:before {
+				font-family: FontAwesome;
+				content: "\f06e";/* On f00c */
+				margin-left: 6px;
+			}
+			/* Calage du bouton si activé */
+			#admin-bar .switch input[type=checkbox]:checked ~ label i {
+				right: -4px;
+			}
+
+		/* Bouton */
+		#admin-bar .switch label i {
+			background: #ffffff;
+			box-shadow: inset 0 -3px 3px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.4), 0 2px 0 0 rgba(0, 0, 0, 0.2);
+
+			position: absolute;
+			display: block;
+
+			top: -2px;
+			right: 25px;
+			width: 18px;
+			height: 18px;
+			border-radius: 18px;
+
+			transition: all .2s ease;
+		}
+			/* Interieur du bouton */
+			#admin-bar .switch label i:before {
+				background: #efefef;
+				box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.1);
+
+				content: "";
+				display: block;
+				position: absolute;
+
+				top: 50%;
+				left: 50%;
+
+				width: 10px;
+				height: 10px;
+				margin: -5px 0 0 -5px;
+
+				border-radius: 18px;
+			}
+
+			/* Hover du bouton */
+			#admin-bar .switch label:hover i {
+				box-shadow: inset 0 -3px 3px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.4), 0 2px 0 0 rgba(0, 0, 0, 0.3);
+			}
+			/* On click sur le bouton */
+			#admin-bar .switch label:active i:before {
+				box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.3);
+			}
 
 
 /* Layer tooltip */
@@ -285,44 +374,42 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 /* On se met en mode pour voir le code source */
 .view-source {
 	text-align: left;
+	white-space: pre-wrap;
 }
 
 
-/* image éditable */
-.editable-img {
+/* image & fichier éditable */
+.editable-media {
 	display: inline-block;
     position: relative;
 	overflow: hidden;
 	vertical-align: middle;
 
-	min-width: 50px;
-	min-height: 50px;
+	min-width: 70px;
+	min-height: 60px;
 	border: 1px dotted rgba(61, 128, 179, 0.2);
-	
 }
-	.editable-img img {
-		margin: -1px;
-	}
+	.editable-media img { margin: -1px; }
 	
-	.drag-zone {
-		border: 2px dashed #75df83;/*vert*/
-	}
-	.drag-over {
-		border: 2px dashed #7AD2D9;/*bleu*/
-		cursor: pointer;
-	}
-		img.drag-img {
-			margin: -2px;
-		}
+	.drag-zone { border: 2px dashed #75df83; }
+	.drag-over { border: 2px dashed #7AD2D9; cursor: pointer; }
+	img.drag-elem { margin: -2px !important; }
+	/* @todo: problème décalage sur les grandes images au hover */
 
 	.open-dialog-media {
-		color: #7AD2D9;			
 		position: absolute;
 		top: 0;
-		padding: 10px;
-		text-shadow: 1px 1px 1px #2c5f66;
+		padding-top: 5px;
+		width: 100%;
+
+		color: #7AD2D9;		
+		font-size: 0.8em;
+		text-align: center;
+		text-shadow: 1px 1px 0px #ffffff;
+
 		display: none;
 	}
+
 
 
 /* Image éditable en bg & Bouton Work */
@@ -340,18 +427,20 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		border: 1px solid #909090;	
 
 		color: #7AD2D9;	
-		
+		font-size: inherit;
+		text-shadow: 1px 1px 1px #2c5f66;
+		text-decoration: none;
+
 		position: absolute;
 
 		top: 0;
 		right: 0;
+		width: inherit;
 		padding: 6px 8px;
 		margin: 10px 10px 10px 0px;
 
 		z-index: 10;
-
-		text-shadow: 1px 1px 1px #2c5f66;
-		text-decoration: none;
+		
 		transition: background .2s;
 	}
 	.editable-bg > .open-dialog-media:hover, .work-bt a:hover {
@@ -481,14 +570,14 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		right: 2px;
 	}
 
-	.dialog-media li.add-file {
+	.dialog-media li.add-media {
 		background: #f5f5f5;
 		border: 2px dashed #7AD2D9;
 		border-radius: 5px;
 		line-height: inherit;
 		height: 110px;
 	}
-		.dialog-media li.add-file.dragover { 
+		.dialog-media li.add-media.dragover { 
 			background: rgba(117, 223, 131, 0.4);
 			border: 2px dashed #75df83;
 		}
@@ -555,7 +644,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		display: block;
 		position: absolute;
-		width: 120px;
+		width: 100%;/*120px*/
+		height: 100%;
 	}
 		@keyframes fade-in-out {
 			0%,100% { opacity: 0; }
@@ -566,6 +656,37 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 /* Fenêtre de gestion des icônes */
 .dialog-icon li i { cursor: pointer; }
 	.dialog-icon li i:hover { color: #6b6f7a; }
+
+/* Fenêtre de suppression */
+.dialog-del li { 
+	display: inline-block;
+	margin: 1.5rem 1rem 0 1rem;
+}
+	.dialog-del li label { margin: 0; }
+	.dialog-del li img { 
+		max-width: 32px;
+		max-height: 32px;
+	}
+
+
+/* Hack Jquery UI style */
+.ui-widget-header {
+	background: #f5f5f5;
+	border: none;
+	font-weight: normal;	
+}
+.ui-widget-content {
+	background: rgba(241, 244, 247, 0.8) none repeat scroll 0 0;
+    border: 1px solid rgba(220, 220, 220, 0.8);
+	transition: background .2s;
+}
+	.ui-widget-content:hover {
+		background: rgba(241, 244, 247, 0.9) none repeat scroll 0 0;
+	}
+.ui-effects-transfer {
+    border: 4px dashed #7AD2D9;
+	background: rgba(122, 210, 217, 0.2);
+}
 
 
 /* Style lors du dragover */
@@ -693,9 +814,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 
 
-#unlink {
-	color: #9E1E1E;
-}
+#unlink { color: #9E1E1E; }
 
 
 /* Couleur de sélection de textes */

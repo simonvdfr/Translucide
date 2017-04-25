@@ -3,9 +3,13 @@
 // Traduction
 add_translation({
 	"Save" : {"fr" : "Enregistrer"},
-	"Save & View" : {"fr" : "Enregistrer et voir"},
+	"Delete" : {"fr" : "Supprimer"},
+	"Delete content" : {"fr" : "Supprimer le contenu"},
+	"Also remove media from content" : {"fr" : "Supprimer \u00e9galement les m\u00e9dias pr\u00e9sents dans le contenu"},
 	"Close the edit mode" : {"fr" : "Fermer le mode d'\u00e9dition"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
+	"Cancel" : {"fr" : "Annuler"},	
+
 	"Empty element" : {"fr" : "El\u00e9ment vide"},		
 	"Add to menu" : {"fr" : "Ajouter au menu"},		
 	"To remove slide here" : {"fr" : "Pour supprimer glisser ici"},		
@@ -47,7 +51,7 @@ add_translation({
 
 // Type de navigateur
 $.browser = {};
-$.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit    /.test(navigator.userAgent.toLowerCase());
+$.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
 $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
@@ -56,6 +60,7 @@ $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
 // Rapatrie le contenu
 get_content = function(content)
 {
+	// Supprime les index devant les class et id
 	var content_array = content.replace(/\.|#/, '');
 
 	data[content_array] = {};
@@ -68,18 +73,23 @@ get_content = function(content)
 	});
 	
 	// Contenu des images éditables
-	$(document).find(content+" .editable-img img").each(function() {
-		if($(this).attr("src")) data[content_array][this.id] = $(this).attr("src");
+	$(document).find(content+" .editable-media img").each(function() {
+		if($(this).attr("src")) data[content_array][$(this).parent().attr("id")] = $(this).attr("src");
+	});
+
+	// Contenu des fichiers éditables
+	$(document).find(content+" .editable-media .fa").each(function() {
+		if($(this).attr("title")) data[content_array][$(this).closest("span").attr("id")] = $(this).attr("title");
 	});
 	
-	// Contenu des bg images éditables
+	// Contenu des background images éditables
 	$(document).find(content+" [data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 		
 	// Checkbox fa
 	$(document).find(content+" .editable-checkbox").each(function() {
-		if($(this).hasClass("fa-check")) data[content_array][this.id] = true;							
+		if($(this).hasClass("fa-check")) data[content_array][this.id] = true;					
 	});
 
 	// Contenu des select, input hidden, href éditables // content+" input, "+
@@ -111,7 +121,7 @@ save = function(callback)
 	data["title"] = $("#admin-bar #title").val();// Titre de la page
 	data["description"] = $("#admin-bar #description").val();// Description pour les serp
 
-	data["state"] = $("#admin-bar #state").val();// Etat d'activation de la page
+	data["state"] = ($("#admin-bar #state-content").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
 
 	data["type"] = type;// Type de contenu
 	
@@ -121,7 +131,8 @@ save = function(callback)
 
 	get_content("footer");// Contenu du footer
 
-	data["content"]["og-image"] = $("#admin-bar #og-image").attr("src");// Image pour les réseaux sociaux
+	if($("#admin-bar #og-image img").attr("src"))
+	data["content"]["og-image"] = $("#admin-bar #og-image img").attr("src");// Image pour les réseaux sociaux
 
 	// Contenu du menu de navigation
 	data["nav"] = {};
@@ -159,7 +170,7 @@ save = function(callback)
 // Changement d'état des boutons de sauvegarde
 tosave = function() {	
 	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
-	$("#save, #preview").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
+	$("#save").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
 
 
@@ -301,13 +312,34 @@ html_tool = function(html){
 // Voir le code source
 view_source = function(memo){
 	// Si on est déjà en mode view source on remet en html
-	if($(memo).hasClass("view-source")) {
+	if($(memo).hasClass("view-source")) 
+	{
 		$("#view-source").removeClass("checked");
 		$(memo).removeClass("view-source").html($(memo).text());
 	}
-	else {
+	else 
+	{
+		// Nettoie les retours la ligne
+		$(memo).html($(memo).html().replace(/\n/g, ""));
+
+		// Ajout des retours à la ligne qui vont biens
+		$("div:first", memo).before("\n"); // Premier div
+		$(memo).html(// Les autres div fermant et les double div qui démarre une imbrication
+			$(memo).html()
+				.replace(/<br>/ig, "<br>\n")
+				.replace(/<\/div>/ig, "<\/div>\n")
+				.replace(/<div><div>/ig, "<div>\n<div>")
+		);
+
+		// @todo ne fait qu'un niveau d'imbrication
+		// Tabulation sur les imbrications
+		$("div", memo).each(function(event) {
+			if($(this).children().length > 1) $(this).children().before("\t")//\t
+		});
+
+		// Passe en mode source
 		$("#view-source").addClass("checked");
-		$(memo).addClass("view-source").text($(memo).html()).html();
+		$(memo).addClass("view-source").text($(memo).html())//.html();
 	}
 }
 
@@ -322,9 +354,9 @@ dialog_transfert = function(mode, source, target, callback) {
 			url: path+"api/ajax.admin.php?mode=dialog-"+mode, 
 			data: {
 				"target": target,
-				"source": (target == "bg" ? $(source).attr("data-id") : (source.id || $("img", source).attr("id"))),
-				"width": $(source).hasClass("editable-img") ? $("img", source).attr("width") : "",
-				"height": $(source).hasClass("editable-img") ? $("img", source).attr("height") : "",
+				"source": (target == "bg" ? $(source).attr("data-id") : source.id),
+				"width": $(source).data("width") || "",
+				"height": $(source).data("height") || "",
 				"nonce": $("#nonce").val()
 			}
 		})
@@ -401,7 +433,7 @@ dialog_transfert = function(mode, source, target, callback) {
 }
 
 
-// Ouvre la fenêtre pour ajouter une image dans la galerie des medias (intext, isolate, bg)
+// Ouvre la fenêtre pour ajouter une image/fichier dans la galerie des medias (intext, isolate, bg)
 media = function(source, target) {
 	//$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
 	
@@ -412,14 +444,14 @@ media = function(source, target) {
 
 			// Relance les autres events
 			editable_event();
-			editable_img_event();
-			body_editable_img_event();
+			editable_media_event();
+			body_editable_media_event();
 		}
 	);
 }
 
 
-// Upload d'un média (image)
+// Upload d'un média
 upload = function(source, file, resize)
 {
 	uploading = true;
@@ -427,15 +459,15 @@ upload = function(source, file, resize)
 	// Type de fichier supporté pour l'upload
 	var mime_supported = [
 		"image/jpg","image/jpeg","image/pjpeg","image/png","image/x-png","image/gif","image/x-icon",
-		"application/pdf","application/zip","text/plain"		
+		"application/pdf","application/zip","application/x-zip-compressed","text/plain"		
 	];
 
-	var width = $("img", source).attr("width") || "";
-	var height = $("img", source).attr("height") || "";
+	var width = $(source).data("width") || "";
+	var height = $(source).data("height") || "";
 
 	if(file) 
 	{
-		if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supporté
+		//if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supporté
 		{				
 			// @todo: ajouter un cog loading en sur l'image (a coter du % ?)
 
@@ -444,12 +476,19 @@ upload = function(source, file, resize)
 			source.append("<div id='"+progressid+"' class='progress bg-color small' style='height: "+source.outerHeight()+"px;'></div>");			
 			
 			// Type mime du fichier
-			var mime = file.type.split("/");
+			var mime = (file.type ? file.type.split("/") : "");
+
+			// Supprime les fichiers autres que image
+			$(".fa", source).remove();
 
 			// Affiche la preview si image
 			if(mime[0] == "image") 
 			{
-				$("img", source).addClass("to50");// On fade à moitié (50%)
+				// Si pas de tag img on le crée
+				if($("img", source).html() == undefined) $(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+">");
+
+				// On fade à moitié (50%)
+				$("img", source).addClass("to50");
 
 				var reader = new FileReader();
 				reader.onload = function(theFile) {
@@ -481,7 +520,7 @@ upload = function(source, file, resize)
 
 			$.ajax({
 				type: "POST",
-				url: path+"api/ajax.admin.php?mode=upload-file",
+				url: path+"api/ajax.admin.php?mode=add-media",
 				xhr: function() {
 					var xhr = $.ajaxSettings.xhr();
 					if(xhr.upload) {									
@@ -513,10 +552,18 @@ upload = function(source, file, resize)
 							$("img", source).removeClass("to50");// On remet l'image à l'opacité normale
 							$("img", source).attr("src", path);// Affiche l'image finale 
 						}
+						else if(!source.attr("data-media"))// Si c'est un fichier autre et isolé
+						{
+							// Supprime les images
+							$("img", source).remove();
+
+							// On crée un bloc fichier
+							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ path +'"></i>');	
+						}
 						
 						// Nom du fichier final si dialog médias
-						if(source.attr("data-file")) {
-							source.attr("data-file", path);// Pour la manipulation							
+						if(source.attr("data-media")) {
+							source.attr("data-media", path);// Pour la manipulation							
 							$(".file div", source).html(path.split('/').pop());// Pour l'affichage 
 						}
 						
@@ -544,10 +591,10 @@ upload = function(source, file, resize)
 			});
 
 		}
-		else {
+		/*else {
 			source.hide("slide", 300);
 			error(__("This file format is not supported") + " : "+ file.type);
-		}
+		}*/
 
 		//console.log(data.files[0].type);
 	}   	
@@ -559,9 +606,20 @@ get_file = function(id)
 {	
 	$(".dialog-media li").css("opacity","0.4");
 	$("#"+id).css("opacity","1");
-	
-	// Insertion du lien vers le fichier
-	exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\">"+ $("#"+id).attr("data-file").split('/').pop() +"</a>");
+
+	if($("#dialog-media-target").val() == "isolate")// Insert dans un bloc isolé
+	{	
+		// Supprime les images
+		$("#"+$("#dialog-media-source").val()+" img").remove();
+
+		// Supprime les fichiers
+		$("#"+$("#dialog-media-source").val()+" .fa").remove();
+
+		// Ajoute le fichier
+		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
+	}
+	else// Insertion du lien vers le fichier dans bloc texte
+		exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
 
 	// Fermeture de la dialog
 	$(".dialog-media").dialog("close");
@@ -580,26 +638,42 @@ get_img = function(id, link)
 	$(".dialog-media li").css("opacity","0.4");
 	$("#"+id).css("opacity","1");
 	
+	var width = $("#dialog-media-width").val();
+	var height = $("#dialog-media-height").val();
+	
 	// Resize de l'image et insertion dans la source
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=get-img",
 		data: {
-			"img": $("#"+id).attr("data-file"),
-			"width": $("#dialog-media-width").val(),
-			"height": $("#dialog-media-height").val(),
+			"img": $("#"+id).attr("data-media"),
+			"width": width,
+			"height": height,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
 		{ 
-			if($("#dialog-media-target").val() == "isolate") {// Insert dans un bloc isolé
-				$("#"+$("#dialog-media-source").val()).attr("src", final_file);
+			if($("#dialog-media-target").val() == "isolate")// Insert dans un bloc isolé
+			{
+				// Si pas encore de tag img
+				if($("#"+$("#dialog-media-source").val()+" img").html() == undefined)
+				{
+					// Supprime les fichiers
+					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
+
+					// Ajoute l'image
+					$("#"+$("#dialog-media-source").val()).append('<img src="'+final_file+'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"")+'>');
+				}
+				else
+					$("#"+$("#dialog-media-source").val()+" img").attr("src", final_file);
 			}
-			else if($("#dialog-media-target").val() == "intext") {// Ajout dans un contenu texte
-				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
+			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
+			{
+				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
 				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
-			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond
+			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
+			{
 				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", final_file);
 				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+final_file+")");
 			}
@@ -661,9 +735,9 @@ img_leave = function()
 
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
-$(window).on("beforeunload", function(){
-	//if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
-});
+/*$(window).on("beforeunload", function(){
+	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
+});*/
 
 
 
@@ -677,7 +751,7 @@ $(document).ready(function()
 	// Barre du haut avec bouton sauvegarder			
 	adminbar = "<div id='admin-bar'>";
 
-		adminbar+= "<div id='user' class='fl pat'><i class='fa fa-fw fa-user bigger' title=\""+ __("Show user info") +"\"></i></div>";
+		adminbar+= "<div id='user' class='fl pat'><i class='fa fa-fw fa-user-circle bigger' title=\""+ __("Show user info") +"\"></i></div>";
 
 
 		adminbar+= "<div id='meta-responsive' class='fl mat none small-screen'><i class='fa fa-fw fa-pencil bigger' title=\""+ __("Page title") +"\"></i></div>";
@@ -699,22 +773,22 @@ $(document).ready(function()
 					adminbar+= "</div>";
 					
 					adminbar+= "<div class='small mts'>"+ __("Image on social networks") +" :</div>";
-					adminbar+= "<div class=''><span class='editable-img'><img src='' id='og-image'></span></div>";
+					adminbar+= "<div class=''><span class='editable-media' id='og-image'><img src=''></span></div>";
 					
 				adminbar+= "</div>";
 			adminbar+= "</div>";
 		adminbar+= "</div>";		
 
+		adminbar+= "<div id='close' class='fr mrt bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-window-close-o'></i></div>";
 
 		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
 
-		adminbar+= "<button id='preview' class='fr mat small' title=\""+ __("Save & View") +"\"><span class='no-small-screen'>"+ __("Save & View") +"</span> <i class='fa fa-fw fa-eye big'></i></button>";
+		adminbar+= "<button id='del' class='fr mat small o50 ho1 t5' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
 
-		adminbar+= "<select id='state' class='fr mat fa-select'><option value='active'>&#xf00c; "+ __("Active") +"</option><option value='deactivate'>&#xf00d; "+ __("Deactivate") +"</option></select>";
-
-		adminbar+= "<div id='close' class='fr bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-times-circle-o'></i></div>";
+		adminbar+= "<div class='fr mat mrs switch o50 ho1 t5'><input type='checkbox' id='state-content' class='none'><label for='state-content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
 	adminbar+= "</div>";
+
 
 	$("body").append(adminbar).addClass("body-margin-top");
 	
@@ -723,36 +797,39 @@ $(document).ready(function()
 	$("#admin-bar #description").val(($("meta[name=description]").attr("content") != undefined ? $('meta[name=description]').attr("content") : ""));
 
 	// Etat de la checkbox homepage onready
-	if($("#admin-bar #permalink").val() == "home") {
-		$("#admin-bar #homepage").prop("checked", true);
-	}
+	if($("#admin-bar #permalink").val() == "home") $("#admin-bar #homepage").prop("checked", true);
+	
 	// Si on change le permalink on verif que c'est 'home'
 	$("#admin-bar #permalink").keyup(function() {
 		if($(this).val() == "home") $("#admin-bar #homepage").prop("checked", true);
 		else $("#admin-bar #homepage").prop("checked", false);
 	});
+
 	// Changement au click de la checkbox homepage
 	$("#admin-bar #homepage").change(function() {
 		if(this.checked) $("#admin-bar #permalink").val("home");
 		else refresh_permalink("#admin-bar");
 		tosave();// A sauvegarder
 	});
+
 	// Click refresh permalink
 	$("#admin-bar #refresh-permalink").click(function() {
 		refresh_permalink("#admin-bar");
 	});
 
 	// On récupère og:image des meta
-	if($("meta[property='og:image']").attr("content") != undefined) {
+	if($("meta[property='og:image']").attr("content") != undefined) 
+	{
 		// Bind l'image
-		$("#admin-bar #og-image").attr("src", $("meta[property='og:image']").attr("content"));
+		$("#admin-bar #og-image img").attr("src", $("meta[property='og:image']").attr("content"));
 
 		// Option de suppression de l'image
-		$("#admin-bar #og-image").parent().after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
+		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
 	}
 
 	// Ajout de l'état de la page
-	$("#admin-bar #state").val(state);
+	if(state == "deactivate") $("#admin-bar #state-content").prop("checked", false);
+	else $("#admin-bar #state-content").prop("checked", true);
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on('click',	function() {
@@ -1006,13 +1083,13 @@ $(document).ready(function()
 				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
-				$("body").off(".editable-img");// Désactive les events image
+				$("body").off(".editable-media");// Désactive les events image
 				$("#img_tool").remove();// Supprime la barre d'outil image
 			},
 			"dragend.editable": function() {// drop dragend
 				// Active les events block image
-				editable_img_event();
-				body_editable_img_event();
+				editable_media_event();
+				body_editable_media_event();
 
 				memo_img = null;
 				img_leave();// Raz Propriétés image
@@ -1078,13 +1155,43 @@ $(document).ready(function()
 	// Exécute l'event sur les champs éditables
 	editable_event();
 
-	
+
+	// Fonction qui supprime les contenus HTML indésirables sauf ceux autorisés
+	function strip_tags(input, allowed) {
+		if (input == undefined) return "";
+
+		// Tags en miniature
+	    allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
+
+	    return input
+	    .replace(/\n/gi, "")// Clean les retours à la ligne
+	    .replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
+	    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
+	    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+	    .replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, function ($0, $1) {// Garde uniquement les tags autorisés
+	    	return allowed.indexOf("<" + $1.toLowerCase() + ">") > -1 ? $0 : "";
+	    })
+	    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
+	}
+
 	// Supprime la mise en forme des contenus copier/coller [contenteditable]
-	$(".editable").on({"paste": function(event) {
+	$(".editable").on("paste", function(event) {
 		event.preventDefault();
-		var text = (event.originalEvent || event).clipboardData.getData("text/plain") || prompt(__("Paste something..."));// text/html
-		exec_tool("insertText", text);// insertHTML insertText
-	}});
+
+		// Ancienne méthode
+		//var text = (event.originalEvent || event).clipboardData.getData("text/plain") || prompt(__("Paste something..."));// text/html
+
+		// Récupère les contenus du presse-papier
+		var paste = (event.originalEvent || event).clipboardData.getData("text/html") || prompt(__("Paste something..."));// text/html
+
+		console.log(paste);
+
+		// Clean les tags
+		paste = strip_tags(paste, "<a></a><b><b/><i></i>");
+
+		// Insertion dans le contenu
+		exec_tool("insertHTML", paste);// insertHTML insertText
+	});
 
 
 	// Action sur le input de lien si keyup Enter
@@ -1147,73 +1254,81 @@ $(document).ready(function()
 
 
 
-	/************** IMAGES SEUL **************/
+	/************** IMAGE/FICHIER SEUL **************/
 	
 	// On highlight les zones où l'on peut droper des fichiers
-	body_editable_img_event = function() {
+	body_editable_media_event = function() {
 		$("body")
 			.on({
-				"dragover.editable-img": function(event) {// Highlight les zone on hover dragover/dragenter
+				// Highlight les zone on hover dragover/dragenter
+				"dragover.editable-media": function(event) {
 					event.stopPropagation();
-					$(".editable").off();//$("body").off(".editable");// Désactive les events sur les contenu éditables
-					$(".editable-img").addClass("drag-zone");
-					$(".editable-img img").addClass("drag-img");
+					$(".editable").off();// Désactive les events sur les contenu éditables
+					$(".editable-media").addClass("drag-zone");
+					$(".editable-media img, .editable-media i").addClass("drag-elem");
 			},
-				"dragleave.editable-img": function(event) {// Clean les highlight on out
+				// Clean les highlight on out
+				"dragleave.editable-media": function(event) {
 					event.stopPropagation();
 					editable_event();// Active les events sur les contenus éditables
-					$(".editable-img").removeClass("drag-zone");
-					$(".editable-img img").removeClass("drag-img");
+					$(".editable-media").removeClass("drag-zone");
+					$(".editable-media img, .editable-media i").removeClass("drag-elem");
 				}
 			});
 	}
 
-	// Exécute l'event sur le body pour les images
-	body_editable_img_event();
+	// Exécute l'event sur le body pour les images/fichiers
+	body_editable_media_event();
 
 
-	// Rends éditables les images
-	$(".editable-img").append("<div class='open-dialog-media'><i class='fa fa-upload'></i> "+__("Upload file")+"</div>");
-	editable_img_event = function() {
-		$(".editable-img")
+	// Rends éditables les images/fichiers
+	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>");
+	editable_media_event = function() {
+		$(".editable-media")
 			.on({
-				"dragover.editable-img": function(event) {// Highlight la zone on hover
+				// Highlight la zone on hover
+				"dragover.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).addClass("drag-over");
-					$("img", this).addClass("drag-img");
+					$("img, i", this).addClass("drag-elem");
 				},
-				"dragleave.editable-img": function(event) {// Clean le highlight on out
+				// Clean le highlight on out
+				"dragleave.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 				},
-				"drop.editable-img": function(event) {// On lache un fichier sur la zone
+				// On lache un fichier sur la zone
+				"drop.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					
 					// Upload du fichier dropé
 					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], true);
 				},
-				"mouseenter.editable-img": function(event) {// Hover zone upload		
+				// Hover zone upload	
+				"mouseenter.editable-media": function(event) {	
 					$(this).addClass("drag-over");
-					$("img", this).addClass("drag-img");
+					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
 				},
-				"mouseleave.editable-img": function(event) {// Out
+				// Out
+				"mouseleave.editable-media": function(event) {
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
 				},
-				"click.editable-img": function(event) {// Ouverture de la fenêtre des médias
-					// Masque le hover de l'image sélectionnée
+				// Ouverture de la fenêtre des médias
+				"click.editable-media": function(event) {
+					// Masque le hover de l'image/fichier sélectionnée
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
-					
+
 					// Ouvre la dialog de media
 					media(this, 'isolate');
 					return false;
@@ -1221,8 +1336,8 @@ $(document).ready(function()
 			});
 	}
 
-	// Exécute l'event sur les images
-	editable_img_event();
+	// Exécute l'event sur les images/fichier
+	editable_media_event();
 
 
 
@@ -1252,6 +1367,7 @@ $(document).ready(function()
 	$("body").on("click", ".editable-bg > .open-dialog-media", function() {
 		media($(this).parent()[0], 'bg');
 	});
+
 
 
 	/************** CHAMPS HIDDEN **************/
@@ -1288,7 +1404,7 @@ $(document).ready(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox, [for]").on("click", function(event) {//@todo voir si le [for] ne crée pas de bug collatérale
+	$(".editable-checkbox").on("click", function(event) {
 		if($(this).attr("for")) id = $(this).attr("for");
 		else id = this.id;
 
@@ -1384,17 +1500,118 @@ $(document).ready(function()
 		reload();
 	});
 
-	// On rétablit la page en mode visiteur
-	$("#preview").click(function() {
-		save(function() {
-			reload();
-		});				
+
+	// Suppression du contenu
+	$("#del").click(function() 
+	{	
+		medias = {};
+
+		// Contenu des images éditables, bg et dans les contenus textuels
+		$(document).find(".content .editable-media img, .content .editable img, .content [data-bg]").each(function() {
+			if($(this).hasClass("editable-bg")) var media = $(this).attr("data-bg");
+			else var media = $(this).attr("src");
+
+			if(media) medias[media] = "img";
+		});
+
+		// Contenu des fichiers éditables et dans les contenus textuels
+		$(document).find(".content .editable-media .fa, .content .editable a[href^='media/']").each(function() {
+			if($(this).closest("span").hasClass("editable-media")) var media = $(this).attr("title");
+			else var media = $(this).attr("href");
+
+			if(media) medias[media] = "fichier";
+		});
+
+
+		// Clean les url pour supprimer l'host et les données après le "?"
+		medias_clean = {};
+		host = location.protocol +'//'+ location.host + path;
+		$.each(medias, function(media, type) {
+			media = media.replace(host, "").split("?")[0];
+			medias_clean[media] = type;			
+		});
+
+
+		// Dialog de confirmation de suppression	
+		$("body").append("<div class='dialog-del' title='"+ __("Delete content") +"'></div>");
+
+		// S'il y a des médias à supprimer
+		if(Object.keys(medias_clean).length > 0)
+		{
+			// Option de suppression des média liée au contenu			
+			$(".dialog-del").append("<input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul>");
+
+			// Affiche la liste des medias
+			$.each(medias_clean, function(media, type) {
+				if(type == "img") $(".dialog-del ul").append("<li><label for=\""+ media +"\"><img src=\""+ media +"\" title=\""+ media +"\"></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+				else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-file-o biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+			});
+
+			// Au click sur la checkbox générale on coche tous les médias ont supprimé
+			$("#del-medias").click(function() {	
+				if($(this).prop("checked") == true) $(".del-media").prop("checked", true);
+				else $(".del-media").prop("checked", false);
+			});
+
+			// Au click sur une checkbox de média on vérifie si tous est coché et on coche la checkbox générale
+			$(".del-media").click(function() {	
+				if($(".del-media:checked").length == $(".del-media").length) $("#del-medias").prop("checked", true);
+				else $("#del-medias").prop("checked", false);
+			});
+		}
+
+
+		// Dialog de suppression
+		$(".dialog-del").dialog({
+			modal: true,
+			buttons: 
+			[{
+            	text: __("Cancel"),
+           		click: function() { $(".dialog-del").remove(); }
+			},{
+				text: "Ok",
+				click: function() {
+					medias_post = [];
+
+					// Récupère tous les médias sélectionnés
+					$(".dialog-del ul input:checked").each(function() {
+					    medias_post.push($(this).attr("id"));
+					});
+
+					// Requete de suppression
+					$.ajax({
+						type: "POST",
+						url: path + "api/ajax.admin.php?mode=delete",
+						data: {
+							"url": clean_url(),
+							"type": type,
+							"medias": medias_post,
+							"nonce": $("#nonce").val()// Pour la signature du formulaire
+						}
+					})
+					.done(function(html) {		
+						$(".dialog-del").dialog("close");
+						$("body").append(html);
+					});					
+				}
+			}],
+			close: function() {
+				$(".dialog-del").remove();					
+			}
+		});
+	});
+
+
+	// Si on change le statut d'activation
+	$("#state-content").click(function() {	
+		tosave();
 	});
 
 	// Si on sauvegarde
 	$("#save").click(function() {	
 		save();
 	});
+
 
 	// Capture des actions au clavier
 	$(document).keydown(function(event) 
@@ -1425,6 +1642,14 @@ $(document).ready(function()
 			}			
 		}
 	});
+
+	//@todo ajouter un filtre qui permet de supp uniquement si span avec font-size après action supp/backspace
+	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
+	if($.browser.webkit) {
+		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
+			if(event.target.tagName == "SPAN") event.target.outerHTML = event.target.innerHTML;			
+		});
+	}
 
 	// On change une info dans un menu select
 	$("#admin-bar select").change(function() {

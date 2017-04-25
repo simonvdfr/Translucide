@@ -2,12 +2,12 @@
 translation = {
 	"" : {"fr" : ""},
 	"Edit the content of the page" : {"fr" : "Modifier le contenu de la page"},
-	"Add a content" : {"fr" : "Ajouter un contenu"},
+	"Add content" : {"fr" : "Ajouter un contenu"},
 	"Thank you to select a template" : {"fr" : "Merci de s\u00e9lectionner un model de page"},
 	"Back to Top" : {"fr" : "Retour en haut"},
 	"Error" : {"fr" : "Erreur"},
 	"Validate the connection in the popup" : {"fr" : "Valider la connexion dans la fen\u00eatre"},
-	"State" : {"fr" : "Etat"},
+	"Activation status" : {"fr" : "Etat d'activation"},
 	"Active" : {"fr" : "Actif"},
 	"Deactivate" : {"fr" : "D\u00e9sactiv\u00e9"},
 	"Visitors do not see this content" : {"fr" : "Les visiteurs ne voient pas ce contenu"},
@@ -139,58 +139,12 @@ reload = function() {
 // Liste des fonctions d'édition des plugin
 edit = [];
 
-
-// Formulaire d'ajout d'une page
+// Formulaire d'ajout d'un contenu
 add_content = function()
 {	
-	//@todo envoyer les bonnes informations si on crée une page ou si c'est un article ou autre
 	$.ajax({url: path+"api/ajax.admin.php?mode=add-content&callback=add_content"})
-		.done(function(html) {	
-			// Contenu de la dialog d'ajout
-			$("body").append(html);		
-			
-			// Création de la dialog
-			$(".dialog-add").dialog({
-				modal: true,
-				width: "60%",
-				buttons: {
-					"OK": function() {
-						// Dans quel onglet on se situe
-						type = $(".ui-tabs-nav .ui-state-active").data("filter");
-
-						if(!$(".dialog-add #add-"+type+" #tpl").val()) error(__("Thank you to select a template"));
-						else {
-							$.ajax({
-								type: "POST",
-								url: path + "api/ajax.admin.php?mode=insert",
-								data: {
-									"title": $(".dialog-add #add-"+type+" #title").val(),
-									"tpl": $(".dialog-add #add-"+type+" #tpl").val(),
-									"permalink": $(".dialog-add #add-"+type+" #permalink").val(),
-									"type": type,
-									"nonce": $("#nonce").val()// Pour la signature du formulaire
-								}
-							})
-							.done(function(html) {		
-								$(".dialog-add").dialog("close");
-								$("body").append(html);
-							});
-						}
-					}
-				},
-				create: function() 
-				{
-					// Création des onglets
-					$(".dialog-add").tabs();
-
-					// Place les onglets à la place du titre de la dialog
-					$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
-					
-				},
-				close: function() {
-					$(".dialog-add").remove();					
-				}
-			});
+		.done(function(html) {			
+			$("body").append(html);// Dialog d'ajout
 		});
 }
 
@@ -236,13 +190,6 @@ $.fn.make_password = function() {
 	});
 }
 
-
-// Fermeture de la dialog de connexion
-close_dialog_connect = function() 
-{	
-	if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");
-}
-
 // Recharge la page et lance le mode édition
 reload_edit = function() {	
 	edit_launcher("reload_edit");
@@ -251,7 +198,7 @@ reload_edit = function() {
 // Lance le mode édition
 edit_launcher = function(callback) 
 {	
-	close_dialog_connect();
+	if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");
 
 	// Si le mode édition n'est pas déjà lancé
 	if(!$("#admin-bar").length) 
@@ -273,14 +220,14 @@ $(document).ready(function()
 	});
 
 	// Bouton ajout de page/article
-	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add a content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
+	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
 	
 	// Bouton d'édition si la page existe dans la base
 	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></a>");
 
 	// Page désactivé => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
-		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("State") +" : "+ __(state) +"</a>");
+		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("Activation status") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 	

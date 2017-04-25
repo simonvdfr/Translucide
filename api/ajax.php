@@ -119,7 +119,7 @@ switch($_GET['mode'])
 
 			<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
 
-			<button class="bt internal fr mrn mtm pat">
+			<button class="bt internal fr mrn mtm pat white">
 				<?_e("Log in")?>
 				<i class="fa fa-key"></i>
 			</button>
@@ -184,11 +184,11 @@ switch($_GET['mode'])
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
 			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
-			<link rel="stylesheet" href="global.css?">
+			<link rel="stylesheet" href="global<?=$GLOBALS['min']?>.css?">
 			<link rel="stylesheet" href="lucide.css?">
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
-			<script src="lucide.init.js"></script>
+			<script src="lucide.init<?=$GLOBALS['min']?>.js"></script>
 			
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
 			<?if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."admin.init.js")){?><script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>admin.init.js"></script><?}?>
@@ -343,7 +343,9 @@ switch($_GET['mode'])
 		$sql .= "WHERE 1 ";
 		
 		// L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
-		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
+		//if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
+		// @todo verifier que ça marche !!
+		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND auth NOT LIKE '%edit-admin%' ";
 
 		if($search)
 		{
@@ -541,7 +543,8 @@ switch($_GET['mode'])
 					<option value="edit-header">&#xf0a6; <?_e("Edit header")?></option>
 					<option value="edit-footer">&#xf0a7; <?_e("Edit footer")?></option>
 
-					<option value="upload-file">&#xf093; <?_e("Send Files")?></option>
+					<option value="add-media">&#xf093; <?_e("Send Files")?></option>
+					<option value="edit-media">&#xf07b; <?_e("Edit Files")?></option>
 
 					<option value="add-page">&#xf0f6; <?_e("Add page")?></option>
 					<option value="add-article">&#xf09e; <?_e("Add article")?></option>
@@ -551,8 +554,8 @@ switch($_GET['mode'])
 					<option value="edit-article">&#xf09e; <?_e("Edit article")?></option>
 					<option value="edit-product">&#xf07a; <?_e("Edit product")?></option>
 
+					<option value="add-media-public">&#xf114; <?_e("Public file")?></option>
 					<option value="edit-public">&#xf0a1; <?_e("Public content")?></option>
-					<option value="upload-public">&#xf114; <?_e("Public file")?></option>
 				</select>
 				<script>
 				$.each("<?=$res['auth']?>".split(','), function(cle, val){ 
@@ -1020,7 +1023,7 @@ switch($_GET['mode'])
 
 		$get_code['facebook'] = "https://graph.facebook.com/oauth/authorize?client_id=".$GLOBALS['facebook_api_id']."&state=".$_SESSION['state']."&display=popup&redirect_uri=".urlencode($redirect_uri)."facebook";
 
-		$token_return_type['facebook'] = "url";
+		$token_return_type['facebook'] = "json";// url
 
 		$get_token['facebook'] = "https://graph.facebook.com/oauth/access_token?client_id=".$GLOBALS['facebook_api_id']."&client_secret=".$GLOBALS['facebook_api_secret']."&code=".$_REQUEST['code']."&redirect_uri=".urlencode($redirect_uri)."facebook";
 
@@ -1165,12 +1168,9 @@ switch($_GET['mode'])
 								// Quand l'utilisateur ferme la fenêtre ou le js
 								window.onunload = function() 
 								{
-									// Pour être sur que la dialog de connexion se ferme
-									window.opener.close_dialog_connect();
-
-									// S'il y a une fonction de callback à lancer
+									// S'il y a une fonction de callback à lancer : typiquement l'edition
 									if(window.opener.callback) {										
-										eval("opener." + window.opener.callback + "()");														
+										eval("opener." + window.opener.callback + "()");
 									}
 								}	
 								window.close();								
