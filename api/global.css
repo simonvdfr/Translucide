@@ -722,7 +722,8 @@ div.editable {
 
 /* LAYER & Tooltip */
 .layer, body .ui-tooltip  {
-	background-color: #fbfbfb;border-width: 1px;
+	background-color: #fbfbfb;
+	border-width: 1px;
 	border: 0;
 	
 	border-top: 1px solid #ccc;

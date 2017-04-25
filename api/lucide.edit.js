@@ -312,13 +312,34 @@ html_tool = function(html){
 // Voir le code source
 view_source = function(memo){
 	// Si on est déjà en mode view source on remet en html
-	if($(memo).hasClass("view-source")) {
+	if($(memo).hasClass("view-source")) 
+	{
 		$("#view-source").removeClass("checked");
 		$(memo).removeClass("view-source").html($(memo).text());
 	}
-	else {
+	else 
+	{
+		// Nettoie les retours la ligne
+		$(memo).html($(memo).html().replace(/\n/g, ""));
+
+		// Ajout des retours à la ligne qui vont biens
+		$("div:first", memo).before("\n"); // Premier div
+		$(memo).html(// Les autres div fermant et les double div qui démarre une imbrication
+			$(memo).html()
+				.replace(/<br>/ig, "<br>\n")
+				.replace(/<\/div>/ig, "<\/div>\n")
+				.replace(/<div><div>/ig, "<div>\n<div>")
+		);
+
+		// @todo ne fait qu'un niveau d'imbrication
+		// Tabulation sur les imbrications
+		$("div", memo).each(function(event) {
+			if($(this).children().length > 1) $(this).children().before("\t")//\t
+		});
+
+		// Passe en mode source
 		$("#view-source").addClass("checked");
-		$(memo).addClass("view-source").text($(memo).html()).html();
+		$(memo).addClass("view-source").text($(memo).html())//.html();
 	}
 }
 
@@ -1134,13 +1155,43 @@ $(document).ready(function()
 	// Exécute l'event sur les champs éditables
 	editable_event();
 
-	
+
+	// Fonction qui supprime les contenus HTML indésirables sauf ceux autorisés
+	function strip_tags(input, allowed) {
+		if (input == undefined) return "";
+
+		// Tags en miniature
+	    allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
+
+	    return input
+	    .replace(/\n/gi, "")// Clean les retours à la ligne
+	    .replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
+	    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
+	    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+	    .replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, function ($0, $1) {// Garde uniquement les tags autorisés
+	    	return allowed.indexOf("<" + $1.toLowerCase() + ">") > -1 ? $0 : "";
+	    })
+	    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
+	}
+
 	// Supprime la mise en forme des contenus copier/coller [contenteditable]
-	$(".editable").on({"paste": function(event) {
+	$(".editable").on("paste", function(event) {
 		event.preventDefault();
-		var text = (event.originalEvent || event).clipboardData.getData("text/plain") || prompt(__("Paste something..."));// text/html
-		exec_tool("insertText", text);// insertHTML insertText
-	}});
+
+		// Ancienne méthode
+		//var text = (event.originalEvent || event).clipboardData.getData("text/plain") || prompt(__("Paste something..."));// text/html
+
+		// Récupère les contenus du presse-papier
+		var paste = (event.originalEvent || event).clipboardData.getData("text/html") || prompt(__("Paste something..."));// text/html
+
+		console.log(paste);
+
+		// Clean les tags
+		paste = strip_tags(paste, "<a></a><b><b/><i></i>");
+
+		// Insertion dans le contenu
+		exec_tool("insertHTML", paste);// insertHTML insertText
+	});
 
 
 	// Action sur le input de lien si keyup Enter
