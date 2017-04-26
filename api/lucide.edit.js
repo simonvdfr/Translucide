@@ -906,8 +906,10 @@ $(document).ready(function()
 			event.preventDefault();  
 			//event.stopPropagation();
 
-			if($(this).parent().hasClass("add-empty")) $("header nav ul:first").append($(this).parent().clone());// Copie
-			else $($(this).parent()).appendTo("header nav ul:first");// Déplace
+			if($(event.target).parent().hasClass("add-empty"))
+				$("header nav ul:first").append($(event.target).parent().clone());// Copie
+			else
+				$($(event.target).parent()).appendTo("header nav ul:first");// Déplace
 			
 			// Rends editable les éléments du menu
 			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
@@ -1417,7 +1419,7 @@ $(document).ready(function()
 	
 	// Ajoute un input pour ajouter l'url du href
 	$("[data-href]").append(function() {
-		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"'>";
+		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"' value='"+ $(this).attr("href") +"'>";
 	});
 
 	// Rends éditables les images en background
