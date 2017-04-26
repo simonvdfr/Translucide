@@ -32,7 +32,8 @@
 		z-index: 10;
 
 		transition-duration: 0.3s;
-		transform: translateX(-100%); 
+		transform: translateX(-100%);
+		-webkit-transform: translateX(-100%);
 	}
 		header nav li { 
 			float: none;
@@ -49,7 +50,10 @@
 	/* Raz du header */
 	.responsiv-nav header { position: inherit; }
 	/* Ouvertur du menu */
-	.responsiv-nav header nav ul { transform: translateX(0); }
+	.responsiv-nav header nav ul { 
+		transform: translateX(0);
+		-webkit-transform: translateX(0);
+	}
 	/* Overlay menu */
 	.responsiv-nav .responsiv-overlay {
 		position: fixed;
