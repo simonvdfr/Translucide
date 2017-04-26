@@ -1,0 +1,114 @@
+/* 768px => tablette 1280x800 */
+
+@media screen and (max-width: 960px) 
+{
+
+}
+
+@media (max-width: 850px) 
+{
+	header nav .burger { 
+		display: block;
+	    z-index: 12;
+	}
+
+	header nav > ul {
+		background-color: #c0c0c0;
+
+		position: fixed !important;
+
+		left: 0;
+		top: 0;
+		bottom: 0;
+
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		
+		width: 300px;
+
+		margin: 0;
+		padding-top: 0.5rem;
+
+		z-index: 10;
+
+		transition-duration: 0.3s;
+		transform: translateX(-100%); 
+	}
+		header nav li { 
+			float: none;
+			padding: 0;
+			border-radius: 5px;
+			transition: background 0.3s;
+		}
+			header nav li:hover { background-color: #dfdfdf; }
+			header nav li a {
+				display: block;
+				padding: 0.5rem;
+			}
+	
+	/* Raz du header */
+	.responsiv-nav header { position: inherit; }
+	/* Ouvertur du menu */
+	.responsiv-nav header nav ul { transform: translateX(0); }
+	/* Overlay menu */
+	.responsiv-nav .responsiv-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.6); 
+	}
+	/* Fixe le burger*/
+	.responsiv-nav .burger { position: fixed; }
+
+	/* mode edition : menu d'ajout invisible */
+	.dragger { display: none !important; }
+	#add-nav { display: none !important; }
+
+
+	/* Animation zoom*/
+	.zoom h1 {	
+		top: 150px;
+	    left: auto;
+
+	    font-size: 2.5em;
+	    text-align: center;
+	}
+	.zoom h2 {	
+		top: 205px;
+	    left: auto;
+
+	    font-size: 1.5em;
+	    text-align: center;
+	}
+
+}
+
+@media (max-width: 480px) 
+{
+	.w20, .w30, .w33, .w40, .w50, .w70 { 
+		width: auto;
+		float: none;
+	}
+
+	.plm { padding-left: 0; }
+	.prl { padding-right: 0; }
+
+	article { 
+		/*display: inline-block; Crée un bug collateral avec l'editeur de menu ... utile ?*/
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+	}
+
+	.editable img.fl, .editable img.fr {
+		float: none;
+		display: block;
+		margin: 0 auto 0.5rem;
+	}
+}
+
+@media (max-width: 360px) 
+{
+	
+}
