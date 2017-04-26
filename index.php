@@ -148,21 +148,18 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<?if($GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
 
-	<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
+	<?if($GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
 
-	<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
 
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global.css?">	
-
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style.css?">	
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>responsive.css?">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style<?=$GLOBALS['min']?>.css?">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>responsive<?=$GLOBALS['min']?>.css?">	
 
 	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
 
 	<script src="<?=$GLOBALS['jquery']?>"></script>
-	<script src="<?=$GLOBALS['jquery_ui']?>"></script>
 
-	<script src="<?=$GLOBALS['path']?>api/lucide.init.js"></script>
+	<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js"></script>
 
 	<script>
 		<? if($GLOBALS['google_analytics']) { ?>
@@ -176,7 +173,7 @@ header('Content-type: text/html; charset=UTF-8');
 		<? } ?>
 
 
-		<? if($GLOBALS['facebook_api_id']) { ?>
+		<? if($GLOBALS['facebook_sdk'] and $GLOBALS['facebook_api_id']) { ?>
 		// Facebook
 		(function(d, s, id){
 			var js, fjs = d.getElementsByTagName(s)[0];

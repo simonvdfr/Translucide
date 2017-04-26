@@ -11,6 +11,11 @@ switch($_GET['mode'])
 	default:	
 	break;
 
+	case "adminbar":// @todo mettre ici la barre d'administration pour y afficher les infos venant de la base (langue, template dispo, état...)
+		// SUPP ???
+
+	break;
+
 
 	case "edit":// Lancement du mode édition du contenu de la page
 				
@@ -33,26 +38,34 @@ switch($_GET['mode'])
 			// JS pour mettre en mode édit les contenus et ajout d'un nonce pour signer les formulaires
 			?>
 			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
+			
+			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
+			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
 
 			<script>				
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 			
-				// Lib qui rend le contenu éditable
-				var script = document.createElement('SCRIPT');
-				script.src = path+"api/lucide.edit.js?0.1";
-				document.body.appendChild(script);
+				// Chargement de Jquery UI
+				$.ajax({
+			        url: "<?=$GLOBALS['jquery_ui']?>",
+			        dataType: 'script',
+					success: function()
+					{ 		
+						// Chargement de la css d'edition		
+						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css'>");
+
+						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
+						var script = document.createElement('script');
+						script.src = path+"api/lucide.edit.js?0.1";
+						document.body.appendChild(script);						
+					},
+			        async: true
+			    });				
 			</script>
 			<?
 		}
-
-	break;
-
-
-	case "adminbar":// @todo mettre ici la barre d'administration pour y afficher les infos venant de la base (langue, template dispo, état...)
-		// SUPP ???
 
 	break;
 
@@ -65,25 +78,42 @@ switch($_GET['mode'])
 
 		// Dialog : titre, template, langue
 		?>
+		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
+
+		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
+
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
 
-		<div class="dialog-add" title="<?_e("Add a content")?>">
+
+		<div class="dialog-add" title="<?_e("Add content")?>">
 			
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
 			<ul class="small">
-				<li data-filter="page"><a href="#add-page" title="<?_e("Add a page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add a page")?></span></a></li>
-				<li data-filter="article"><a href="#add-article" title="<?_e("Add an article")?>"><i class="fa fa-feed"></i> <span><?_e("Add an article")?></span></a></li>		
+
+				<?if($_SESSION['auth']['add-page']){?>
+				<li data-filter="page"><a href="#add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
+				<?}?>
+				
+				<?if($_SESSION['auth']['add-article']){?>
+				<li data-filter="article"><a href="#add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
+				<?}?>
+				
+				<?if($_SESSION['auth']['add-media']){?>
+				<li data-filter="media"><a href="#add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
+				<?}?>
+
 				<!-- <li data-filter="product"><a href="#add-product"></" title="<?_e("Product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Product")?></span></a></li> -->
 			</ul>			
-
+			
+			<?if($_SESSION['auth']['add-page']){?>
 			<div id="add-page">
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Page title")?>" maxlength="60" class="w60 bold">
+					<input type="text" id="title" placeholder="<?_e("Page Title")?>" maxlength="60" class="w60 bold">
 
 					<select id="tpl" required class="w30">
-						<option value=""><?_e("Select page template")?></option>
+						<option value=""><?_e("Select template")?></option>
 						<?
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
 						while(list($cle, $filename) = each($scandir))				
@@ -102,15 +132,17 @@ switch($_GET['mode'])
 				</div>
 
 			</div>
+			<?}?>
 
 
+			<?if($_SESSION['auth']['add-article']){?>
 			<div id="add-article">
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Title of article")?>" maxlength="60" class="w60 bold">
+					<input type="text" id="title" placeholder="<?_e("Article Title")?>" maxlength="60" class="w60 bold">
 
 					<select id="tpl" required class="w30">
-						<option value=""><?_e("Select article template")?></option>
+						<option value=""><?_e("Select template")?></option>
 						<?
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
 						while(list($cle, $filename) = each($scandir))				
@@ -128,6 +160,36 @@ switch($_GET['mode'])
 				</div>
 
 			</div>
+			<?}?>
+
+			
+			<?if($_SESSION['auth']['add-media']){?>
+			<div id="add-media">
+
+				<div class="mas">
+					<input type="text" id="title" placeholder="<?_e("Media title")?>" maxlength="60" class="w60 bold">
+
+					<select id="tpl" required class="w30">
+						<option value=""><?_e("Select template")?></option>
+						<?
+						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
+						while(list($cle, $filename) = each($scandir))				
+						{			
+							$filename = pathinfo($filename, PATHINFO_FILENAME);
+							echo"<option value=\"".$filename."\"".(($filename == "fichier" or $filename == "media")?" selected":"").">".$filename."</option>";
+						}
+						?>					
+					</select>
+				</div>
+
+				<div class="mas">
+					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
+					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
+				</div>
+
+			</div>
+			<?}?>
+
 
 			<script>
 			$(document).ready(function()
@@ -160,9 +222,62 @@ switch($_GET['mode'])
 						refresh_permalink("#" + id);
 					}, '500');
 				});
+
+				// Chargement de Jquery UI
+				$.ajax({
+			        url: "<?=$GLOBALS['jquery_ui']?>",
+			        dataType: 'script',
+					success: function()// Si Jquery UI bien charger on ouvre la dialog
+					{				
+						// Fermeture de la dialog de connexion
+						$("#dialog-connect").dialog("close");
+
+						// Création de la dialog d'ajout
+						$(".dialog-add").dialog({
+							modal: true,
+							width: "60%",
+							buttons: {
+								"OK": function() {
+									// Dans quel onglet on se situe
+									type = $(".ui-tabs-nav .ui-state-active").data("filter");
+
+									if(!$(".dialog-add #add-"+type+" #tpl").val()) error(__("Thank you to select a template"));
+									else {
+										$.ajax({
+											type: "POST",
+											url: path + "api/ajax.admin.php?mode=insert",
+											data: {
+												"title": $(".dialog-add #add-"+type+" #title").val(),
+												"tpl": $(".dialog-add #add-"+type+" #tpl").val(),
+												"permalink": $(".dialog-add #add-"+type+" #permalink").val(),
+												"type": type,
+												"nonce": $("#nonce").val()// Pour la signature du formulaire
+											}
+										})
+										.done(function(html) {		
+											$(".dialog-add").dialog("close");
+											$("body").append(html);
+										});
+									}
+								}
+							},
+							create: function() 
+							{
+								// Création des onglets
+								$(".dialog-add").tabs();
+
+								// Place les onglets à la place du titre de la dialog
+								$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+								
+							},
+							close: function() {
+								$(".dialog-add").remove();					
+							}
+						});
+					},
+			        async: true
+			    });	
 				
-				// Fermeture de la dialog de connexion
-				$("#dialog-connect").dialog("close");
 			});
 			</script>
 
@@ -195,10 +310,14 @@ switch($_GET['mode'])
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
 		else // Sauvegarde réussit
 		{
+			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
+			setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
+			
 			?>
 			<script>
 			$(document).ready(function()
-			{
+			{		
+				// Redirection vers la page crée
 				document.location.href = "<?=make_url($url);?>";
 			});
 			</script>
@@ -363,7 +482,51 @@ switch($_GET['mode'])
 				<?}?>
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
-				$("#save, #preview").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+			});
+			</script>
+			<?
+		}
+
+	break;
+
+
+	case "delete":// Supprime le contenu
+
+		include_once("db.php");// Connexion à la db
+
+		//highlight_string(print_r($_POST, true));
+
+		$type = ($_POST['type']?encode($_POST['type']):"page");// Type de contenu
+
+		login('high', 'edit-'.$type);// Vérifie que l'on a le droit d'ajouter une page
+
+		// Supprime la page
+		$sql = "DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
+
+		$connect->query($sql);
+
+		// Supprime les url avec le domaine pour la suppression locale
+		$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
+
+		// On a demandé la suppression des fichiers liée au contenu
+		while(list($cle, $media) = each($_POST['medias'])) {
+			// strtok : Supprime les arguments après l'extension (timer...)
+			unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
+		}
+
+		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
+		else // Suppression réussit
+		{
+			?>
+			<script>
+			$(document).ready(function()
+			{		
+				// Message page supprimé
+				light("<?_e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
+
+				// Redirection vers la page d'accueil
+				setTimeout(function(){ document.location.href = "<?=$GLOBALS['home'];?>"; }, 2000);
 			});
 			</script>
 			<?
@@ -412,7 +575,7 @@ switch($_GET['mode'])
 
 	case "dialog-media":// Affichage des médias
 		
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		
@@ -468,7 +631,7 @@ switch($_GET['mode'])
 					var resize = "";
 
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
-				$("#media .add-file").after("<li class='pat mat tc uploading' id='"+ id +"' data-file=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" + resize : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
+				$("#media .add-media").after("<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" + resize : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
 
 				// Converti la date unix en date lisible
 				var date = new Date();
@@ -563,9 +726,9 @@ switch($_GET['mode'])
 						var id = $(this).parent().attr("id");
 						
 						$.ajax({
-							url: "api/ajax.admin.php?mode=del-file",
+							url: "api/ajax.admin.php?mode=del-media",
 							data: {
-								"file": $("#"+id).attr("data-file"),
+								"file": $("#"+id).attr("data-media"),
 								"nonce": $("#nonce").val()
 							},
 							success: function(html){
@@ -580,7 +743,7 @@ switch($_GET['mode'])
 
 
 				// On sélectionne un fichier
-				$(".dialog-media").on("click", "li:not(.add-file)", function(event)
+				$(".dialog-media").on("click", "li:not(.add-media)", function(event)
 				{
 					var id = $(this).attr("id");
 
@@ -595,7 +758,7 @@ switch($_GET['mode'])
 				if(typeof uploading === "undefined") uploading = false;
 
 				// Si on choisit des images pour l'upload avec le bouton
-				$("#upload-file").change(function()
+				$("#add-media").change(function()
 				{
 					// Inverse le tableau pour l'afficher comme dans le dossier
 					$.merge(uploads = [], this.files);
@@ -624,8 +787,8 @@ switch($_GET['mode'])
 
 
 				// Pour éviter les highlight des zones draggables du fond
-				$("body").off(".editable").off(".editable-img");
-				$(".editable-img").off(".editable-img");
+				$("body").off(".editable").off(".editable-media");
+				$(".editable-media").off(".editable-media");
 
 
 				// On drag&drop des médias dans la fenêtre
@@ -635,18 +798,18 @@ switch($_GET['mode'])
 						event.preventDefault();
 						event.stopPropagation();					
 						$(".ui-widget-overlay").addClass("body-dragover");
-						$(".add-file").addClass("dragover");
+						$(".add-media").addClass("dragover");
 					},
 					"dragleave.dialog-media": function(event) {// Clean les highlight on out
 						event.stopPropagation();
 						$(".ui-widget-overlay").removeClass("body-dragover");
-						$(".add-file").removeClass("dragover");
+						$(".add-media").removeClass("dragover");
 					},
 					"drop.dialog-media": function(event) {// On lache un fichier sur la zone
 						event.preventDefault();  
 						event.stopPropagation();
 						$(".ui-widget-overlay").removeClass("body-dragover");
-						$(".add-file").removeClass("dragover");
+						$(".add-media").removeClass("dragover");
 						
 						// Upload du fichier dropé
 						if(event.originalEvent.dataTransfer)
@@ -690,7 +853,7 @@ switch($_GET['mode'])
 		// @todo: mettre player html5 si vidéo ou audio pour avoir la preview et possibilité de jouer les médias en mode zoom
 		// @todo: ajouter un bouton de nettoyage qui scanne les contenus et regarde si les fichiers sont utilisés
 		
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".($_GET['filter'] == "resize" ? "resize/":"");
 		
@@ -749,10 +912,10 @@ switch($_GET['mode'])
 		?>
 		<ul class="unstyled pan man smaller">	
 	
-			<li class="add-file pas mat tc big" onclick="document.getElementById('upload-file').click();">
+			<li class="add-media pas mat tc big" onclick="document.getElementById('add-media').click();">
 				<i class="fa fa-upload biggest pbs"></i><br>
 				<?_e("Drag and drop a file here or click me");?>
-				<input type="file" id="upload-file" style="display: none" multiple>
+				<input type="file" id="add-media" style="display: none" multiple>
 			</li>
 			<?
 
@@ -803,7 +966,7 @@ switch($_GET['mode'])
 					else $info = pathinfo($val['filename'], PATHINFO_EXTENSION);
 					
 					// Affichage du fichier
-					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode($_GET['filter'])."-".$i."\" data-file=\"media/".($_GET['filter'] == "resize"?"resize/":"").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
+					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode($_GET['filter'])."-".$i."\" data-media=\"media/".($_GET['filter'] == "resize"?"resize/":"").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
 
 						if($type == "image") {
 							echo"<img src=\"media/".($_GET['filter'] == "resize"?"resize/":"").$val['filename']."\">";
@@ -833,9 +996,9 @@ switch($_GET['mode'])
 	break;
 
 	
-	case "del-file":// Supprime un fichier
+	case "del-media":// Supprime un fichier
 
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		
@@ -844,7 +1007,7 @@ switch($_GET['mode'])
 
 	case "get-img":// Renvoi une image et la resize si nécessaire
 
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
@@ -855,9 +1018,9 @@ switch($_GET['mode'])
 	break;
 
 
-	case "upload-file":// Envoi d'une image sur le serveur et la resize si nécessaire
+	case "add-media":// Envoi d'une image sur le serveur et la resize si nécessaire
 			
-		login('medium', 'upload-file');// Vérifie que l'on est admin
+		login('medium', 'add-media');// Vérifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		//echo "_FILES:<br>"; highlight_string(print_r($_FILES, true));
@@ -883,7 +1046,7 @@ switch($_GET['mode'])
 		$file_infos['mime'] = finfo_file($finfo, $_FILES['file']['tmp_name']);
 		finfo_close($finfo);
 
-		// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types)
+		// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
 		if(in_array($file_infos['mime'], $GLOBALS['mime_supported']))
 		{
 			// Le fichier tmp ne contient pas de php ou de javascript
@@ -908,6 +1071,7 @@ switch($_GET['mode'])
 				}
 			}
 		}
+		//else echo $file_infos['mime'];
 
 	break;
 
@@ -932,27 +1096,27 @@ switch($_GET['mode'])
 			//$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
 			//$pattern = '/\\.(fa-\\w+):before{content:"(\\\\\w+)"}/';	
 			$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';	
-			
+
 			// On récupère la css qui contient les icônes
-			$subject = file_get_contents($GLOBALS['font_awesome']);
+			$subject = file_get_contents($GLOBALS['icons']);
 			
 			// On extrait seulement les icônes
 			preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
 			//highlight_string(print_r($matches, true));
 			
 			// On crée un tableau propre
-			foreach($matches as $match){ $icons[$match[1]] = $match[2];	}			
+			foreach($matches as $match){ $list[$match[1]] = $match[2];	}			
 
 			?>
 			<ul id="icon" class="unstyled pan man smaller">	
 			<?
 				// S'il y a des fichiers dans la biblio
-				if($icons)
+				if($list)
 				{
-					//uksort($icons, 'strnatcmp');// Tri Ascendant
-					//if($sort == 'DESC') $icons = array_reverse($icons, true);// Tri Descendant
+					//uksort($list, 'strnatcmp');// Tri Ascendant
+					//if($sort == 'DESC') $list = array_reverse($list, true);// Tri Descendant
 					
-					while(list($cle, $val) = each($icons)) 
+					while(list($cle, $val) = each($list)) 
 					{						
 						echo"<li class='pat fl' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
 					}
@@ -1154,7 +1318,7 @@ switch($_GET['mode'])
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_user']."` (
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'active',
-								`auth` set('".implode("','", $GLOBALS['auth_level'])."') NOT NULL,
+								`auth` varchar(255) NOT NULL,
 								`name` varchar(60) NOT NULL,
 								`email` varchar(100) NOT NULL,
 								`password` char(64) DEFAULT NULL,
@@ -1291,6 +1455,9 @@ switch($_GET['mode'])
 						$_POST['scheme'] = $parse_url['scheme']."://";
 						$_POST['domain'] = $parse_url['host'];
 						$_POST['path'] = $parse_url['path'];
+
+						// Formate le nom du site
+						$_POST['sitename'] = stripslashes($_POST['sitename']);
 
 						// On parcourt le fichier config
 						foreach($config_file as $line_num => $line) 
@@ -1436,28 +1603,36 @@ switch($_GET['mode'])
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
+
+			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
+
 			<link rel="stylesheet" href="api/global.css?">
 
 			<style>
-			label { 
-				text-align: right;
-				padding-right: 1rem;
-			}
-
-			@media screen and (max-width: 640px) 
-			{
-				.w80 { width: 95%; }
-				.w10, .w20, .w30, .w50, .w60 { width: 90%; }
+				body { background-color: #75898c; }
+				.layer { box-shadow: 0 0 60px rgba(53, 116, 127, 0.3) inset, 0 0 5px rgba(0, 0, 0, 0.3);	}
+				.layer:after { display: none; }
 
 				label { 
-					display: block;
-					text-align: left;
+					text-align: right;
+					padding-right: 1rem;
+					cursor: default;
 				}
-			}
+
+				@media screen and (max-width: 640px) 
+				{
+					.w80 { width: 95%; }
+					.w10, .w20, .w30, .w50, .w60 { width: 90%; }
+
+					label { 
+						display: block;
+						text-align: left;
+					}
+				}
 			</style>
 
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
+
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
 
 			<script src="api/lucide.init.js"></script>
@@ -1510,7 +1685,7 @@ switch($_GET['mode'])
 
 			<div class="w80 center">
 
-				<h2><?_e("Site Installation");?></h2>
+				<h2 class="tc"><?_e("Site Installation");?></h2>
 
 				<div class="layer mod pam mbm">
 

@@ -13,7 +13,7 @@
 <section id="scrolldown" class="mw960p mod center mtm">
 
 	<div class="w50 fl txtcenter no-small-screen animation fade-in">
-		<?img('img-1')?>
+		<?media('img-1')?>
 	</div>
 
 	<article class="w50 fl animation slide-right">

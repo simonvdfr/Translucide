@@ -38,9 +38,9 @@ reset($array_work[$work]);
 
 				<h2 class='h4-like w100 mod mtn'><span class='editable' id='".$work."-titre-".(int)$key."'>".$array_work[$work][$key]['titre']."</span></h2>
 
-				<div class='w150p' data-id='".$work."-bg-".(int)$key."' data-editable='bg' data-bg='".$array_work[$work][$key]['bg']."' style='background-image: url(".$array_work[$work][$key]['bg'].");'></div>
+				<div class='w150p' data-id='".$work."-bg-".(int)$key."' data-bg='".$array_work[$work][$key]['bg']."' style='background-image: url(".$array_work[$work][$key]['bg'].");'></div>
 
-				<div class='w150p none'><span class='editable-img'><img src=\"".$array_work[$work][$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
+				<div class='w150p none'><span class='editable-media'><img src=\"".$array_work[$work][$key]['img']."\" width='150' id='".$work."-img-".(int)$key."'></span></div>
 				
 				<div class='absolute'>
 					<input type='hidden' id='".$work."-tooltip-".(int)$key."' value=\"".$array_work[$work][$key]['tooltip']."\" class='editable-hidden tooltip w50'><input type='hidden' id='".$work."-link-".(int)$key."' value=\"".$array_work[$work][$key]['link']."\" class='editable-hidden link w50'>
@@ -86,7 +86,7 @@ reset($array_work[$work]);
 
 		// Unbind les events d'edition
 		$(".editable").off();
-		$(".editable-img").off(".editable-img");
+		$(".editable-media").off(".editable-media");
 		//$(".editable-bg").off();
 
 		// Crée un block
@@ -95,7 +95,7 @@ reset($array_work[$work]);
 			// Modifie les cles txt et img
 			$("[class*='editable']", this).each(function() {			
 				
-				if($(this).hasClass("editable-img")) // Image
+				if($(this).hasClass("editable-media")) // Image
 				{
 					old_key = $("[id*='" + work + "-']", this).attr("id");
 
@@ -122,7 +122,7 @@ reset($array_work[$work]);
 
 			// Relance les events d'edition
 			editable_event();
-			editable_img_event();
+			editable_file_event();
 			editable_bg_event();
 		});
 	}
@@ -135,7 +135,7 @@ reset($array_work[$work]);
 		$(".work-bt .fa-arrows").css("transform","scale(.5)");
 
 		// Désactive l'edition
-		$(".editable-img").off(".editable-img");
+		$(".editable-media").off(".editable-media");
 		$(".editable").off();
 
 		// Change l'action sur le lien 'move'
@@ -156,7 +156,7 @@ reset($array_work[$work]);
 
 		// Active l'edition
 		editable_event();
-		editable_img_event();
+		editable_file_event();
 		editable_bg_event();
 
 		// Désactive le déplacement

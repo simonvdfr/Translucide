@@ -3,9 +3,13 @@
 // Traduction
 add_translation({
 	"Save" : {"fr" : "Enregistrer"},
-	"Save & View" : {"fr" : "Enregistrer et voir"},
+	"Delete" : {"fr" : "Supprimer"},
+	"Delete content" : {"fr" : "Supprimer le contenu"},
+	"Also remove media from content" : {"fr" : "Supprimer \u00e9galement les m\u00e9dias pr\u00e9sents dans le contenu"},
 	"Close the edit mode" : {"fr" : "Fermer le mode d'\u00e9dition"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
+	"Cancel" : {"fr" : "Annuler"},	
+
 	"Empty element" : {"fr" : "El\u00e9ment vide"},		
 	"Add to menu" : {"fr" : "Ajouter au menu"},		
 	"To remove slide here" : {"fr" : "Pour supprimer glisser ici"},		
@@ -33,6 +37,8 @@ add_translation({
 	"Add Link" : {"fr" : "Ajouter le lien"},		
 	"Change Link" : {"fr" : "Modifier le lien"},		
 	"Open link in new window" : {"fr" : "Ouvre le lien dans une nouvelle fen\u00eatre"},		
+	"Destination URL" : {"fr" : "URL de destination"},	
+
 	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la s\u00e9lection"},
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
@@ -45,7 +51,7 @@ add_translation({
 
 // Type de navigateur
 $.browser = {};
-$.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit    /.test(navigator.userAgent.toLowerCase());
+$.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
 $.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
 $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
@@ -54,39 +60,40 @@ $.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
 // Rapatrie le contenu
 get_content = function(content)
 {
+	// Supprime les index devant les class et id
 	var content_array = content.replace(/\.|#/, '');
 
 	data[content_array] = {};
 
-	// Contenu des champs Èditables
+	// Contenu des champs √©ditables
 	$(document).find(content+" .editable").not("header nav .editable").each(function() {
 		// Si on est en mode pour voir le code source
 		if($(this).hasClass("view-source")) var content_editable = $(this).text(); else var content_editable = $(this).html();
 		if($(this).html()) data[content_array][this.id] = content_editable;
 	});
 	
-	// Contenu des images Èditables
-	$(document).find(content+" .editable-img img").each(function() {
-		if($(this).attr("src")) data[content_array][this.id] = $(this).attr("src");
+	// Contenu des images √©ditables
+	$(document).find(content+" .editable-media img").each(function() {
+		if($(this).attr("src")) data[content_array][$(this).parent().attr("id")] = $(this).attr("src");
+	});
+
+	// Contenu des fichiers √©ditables
+	$(document).find(content+" .editable-media .fa").each(function() {
+		if($(this).attr("title")) data[content_array][$(this).closest("span").attr("id")] = $(this).attr("title");
 	});
 	
-	// Contenu des bg images Èditables
-	$(document).find(content+" [data-editable='bg']").each(function() {
+	// Contenu des background images √©ditables
+	$(document).find(content+" [data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
-	
+		
 	// Checkbox fa
 	$(document).find(content+" .editable-checkbox").each(function() {
-		if($(this).hasClass("fa-check")) data[content_array][$(this).attr("id")] = true;							
+		if($(this).hasClass("fa-check")) data[content_array][this.id] = true;					
 	});
 
-	// Contenu des select // content+" input, "+
-	$(document).find(content+" .editable-select").each(function() {
-		data[content_array][$(this).attr("id")] = $(this).val();
-	});
-
-	// Contenu des input hidden Èditables
-	$(document).find(content+" .editable-hidden").each(function() {
+	// Contenu des select, input hidden, href √©ditables // content+" input, "+
+	$(document).find(content+" .editable-select, "+content+" .editable-hidden, "+content+" .editable-href").each(function() {
 		if($(this).val()) data[content_array][this.id] = $(this).val();
 	});
 }
@@ -97,7 +104,7 @@ save = function(callback)
 {
 	// @todo: disable/unbind sur save pour dire que l'on est en train de sauvegarder
 	
-	// Si image sÈlectionnÈe : raz propriÈtÈs image (sÈcuritÈ pour ne pas enregistrer de ui-wrapper)
+	// Si image s√©lectionn√©e : raz propri√©t√©s image (s√©curit√© pour ne pas enregistrer de ui-wrapper)
 	if(memo_img) img_leave();
 
 	// Animation sauvegarde en cours (loading)
@@ -107,14 +114,14 @@ save = function(callback)
 	
 	data["nonce"] = $("#nonce").val();// Pour la signature du formulaire
 
-	data["url"] = clean_url();// Url de la page en cours d'Èdition
+	data["url"] = clean_url();// Url de la page en cours d'√©dition
 
 	data["permalink"] = $("#admin-bar #permalink").val();// Permalink
 
 	data["title"] = $("#admin-bar #title").val();// Titre de la page
 	data["description"] = $("#admin-bar #description").val();// Description pour les serp
 
-	data["state"] = $("#admin-bar #state").val();// Etat d'activation de la page
+	data["state"] = ($("#admin-bar #state-content").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
 
 	data["type"] = type;// Type de contenu
 	
@@ -124,7 +131,8 @@ save = function(callback)
 
 	get_content("footer");// Contenu du footer
 
-	data["content"]["og-image"] = $("#admin-bar #og-image").attr("src");// Image pour les rÈseaux sociaux
+	if($("#admin-bar #og-image img").attr("src"))
+	data["content"]["og-image"] = $("#admin-bar #og-image img").attr("src");// Image pour les r√©seaux sociaux
 
 	// Contenu du menu de navigation
 	data["nav"] = {};
@@ -140,14 +148,14 @@ save = function(callback)
 
 	//console.log(data)
 	
-	// On sauvegarde en ajax les contenus Èditables
+	// On sauvegarde en ajax les contenus √©ditables
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=update",
 		data: data
 	})
 	.done(function(html) {
-		// Affichage/exÈcution du retour
+		// Affichage/ex√©cution du retour
 		$("body").append(html);
 
 		// S'il y a une fonction de retour
@@ -159,10 +167,10 @@ save = function(callback)
 }
 
 
-// Changement d'Ètat des boutons de sauvegarde
+// Changement d'√©tat des boutons de sauvegarde
 tosave = function() {	
-	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'icÙne disant qu'il faut sauvegarder sur le bt save	
-	$("#save, #preview").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
+	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'ic√¥ne disant qu'il faut sauvegarder sur le bt save	
+	$("#save").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
 
 
@@ -172,18 +180,18 @@ $.fn.required = function(txt){
 }
 
 
-// Fonctions pour catcher la sÈlection
+// Fonctions pour catcher la s√©lection
 range_selects_single_node = function(range) {
 	var start_node = range.startContainer;
 	return start_node === range.endContainer && start_node.hasChildNodes() && range.endOffset === range.startOffset + 1;
 }
 
 selected_element = function(range) {
-	if (range_selects_single_node(range))// La sÈlection comprend un seul ÈlÈment
+	if (range_selects_single_node(range))// La s√©lection comprend un seul √©l√©ment
 		return range.startContainer.childNodes[range.startOffset];
-	else if (range.startContainer.nodeType === 3)// La sÈlection commence ‡ l'intÈrieur d'un noeud de texte, donc obtenir son parent
+	else if (range.startContainer.nodeType === 3)// La s√©lection commence √† l'int√©rieur d'un noeud de texte, donc obtenir son parent
 		return range.startContainer.parentNode;
-	else// La sÈlection commence ‡ l'intÈrieur d'un ÈlÈment
+	else// La s√©lection commence √† l'int√©rieur d'un √©l√©ment
 		return range.startContainer;
 }
 
@@ -193,7 +201,7 @@ exec_tool = function(command, value, ui) {
 	ui = ui || false;
 	value = value || null;	
 				
-	// SÈlectionne le contenu car on a perdu le focus en entrant dans les options
+	// S√©lectionne le contenu car on a perdu le focus en entrant dans les options
 	if((command == "CreateLink" || command == "insertImage" || command == "insertIcon" || command == "insertHTML" || command == "insertText") && memo_selection && memo_range) {
 		memo_selection.removeAllRanges();
 		memo_selection.addRange(memo_range);		
@@ -201,7 +209,7 @@ exec_tool = function(command, value, ui) {
 	
 	if(command)
 	{
-		// Si icÙne
+		// Si ic√¥ne
 		if(command == "insertIcon") {
 			command = "insertHTML";
 			value = "<span class='fa'>&#x"+ value +";</span>";
@@ -213,17 +221,17 @@ exec_tool = function(command, value, ui) {
 		}
 		
 
-		// ExÈcution de la commande
+		// Ex√©cution de la commande
 		document.execCommand(command, ui, value);
 		
 
 		// A sauvegarder	
 		tosave();
 
-		// Si on justify on supprime l'Èventuel span intÈrieur
+		// Si on justify on supprime l'√©ventuel span int√©rieur
 		if(/justify/.test(command))
 		{
-			// DÈsÈlectionne les alignements
+			// D√©s√©lectionne les alignements
 			$("[class*='fa-align']").parent().removeClass("checked");			
 
 			// check le bt d'alignement
@@ -248,9 +256,9 @@ exec_tool = function(command, value, ui) {
 		$("#unlink").remove();// Supprime les boutons de unlink
 	}
 
-	$(memo_focus).focus();// On focus le contenu ÈditÈ pour faire fonctionner onblur = close toolbox
+	$(memo_focus).focus();// On focus le contenu √©dit√© pour faire fonctionner onblur = close toolbox
 
-	// RecrÈe une sÈlection en fonction des changements de la dom
+	// Recr√©e une s√©lection en fonction des changements de la dom
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);
 	memo_node = selected_element(memo_range);
@@ -260,10 +268,10 @@ exec_tool = function(command, value, ui) {
 // Menu avec les options d'ajout/modif de lien
 link_option = function()
 {		
-	$("#txt-tool #option").hide();// RÈinitialise le menu d'option
-	$("#target-blank").removeClass("checked");// RÈinitialise la colorisation du target _blank
+	$("#txt-tool #option").hide();// R√©initialise le menu d'option
+	$("#target-blank").removeClass("checked");// R√©initialise la colorisation du target _blank
 
-	var href = $(memo_node).closest('a').attr('href');// On rÈcupËre le href de la sÈlection en cours
+	var href = $(memo_node).closest('a').attr('href');// On r√©cup√®re le href de la s√©lection en cours
 
 	if(href) {
 		// Si target = blank
@@ -290,7 +298,7 @@ target_blank = function(mode) {
 
 // Ajout/Suppression d'un element html
 html_tool = function(html){
-	// Si on est dÈj‡ dans un ÈlÈment entourÈ du 'HTML' demandÈ : on le supp
+	// Si on est d√©j√† dans un √©l√©ment entour√© du 'HTML' demand√© : on le supp
 	if($(memo_node).closest(html).length){
 		$("#"+html).removeClass("checked");
 		$(memo_node).replaceWith($(memo_node).html());
@@ -303,14 +311,35 @@ html_tool = function(html){
 
 // Voir le code source
 view_source = function(memo){
-	// Si on est dÈj‡ en mode view source on remet en html
-	if($(memo).hasClass("view-source")) {
+	// Si on est d√©j√† en mode view source on remet en html
+	if($(memo).hasClass("view-source")) 
+	{
 		$("#view-source").removeClass("checked");
 		$(memo).removeClass("view-source").html($(memo).text());
 	}
-	else {
+	else 
+	{
+		// Nettoie les retours la ligne
+		$(memo).html($(memo).html().replace(/\n/g, ""));
+
+		// Ajout des retours √† la ligne qui vont biens
+		$("div:first", memo).before("\n"); // Premier div
+		$(memo).html(// Les autres div fermant et les double div qui d√©marre une imbrication
+			$(memo).html()
+				.replace(/<br>/ig, "<br>\n")
+				.replace(/<\/div>/ig, "<\/div>\n")
+				.replace(/<div><div>/ig, "<div>\n<div>")
+		);
+
+		// @todo ne fait qu'un niveau d'imbrication
+		// Tabulation sur les imbrications
+		$("div", memo).each(function(event) {
+			if($(this).children().length > 1) $(this).children().before("\t")//\t
+		});
+
+		// Passe en mode source
 		$("#view-source").addClass("checked");
-		$(memo).addClass("view-source").text($(memo).html()).html();
+		$(memo).addClass("view-source").text($(memo).html())//.html();
 	}
 }
 
@@ -319,15 +348,15 @@ view_source = function(memo){
 // Dialog box avec effet de transfert
 dialog_transfert = function(mode, source, target, callback) {
 
-	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle apparaÓt/disparaÓt. Pas juste visibility:hidden/visible...
+	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle appara√Æt/dispara√Æt. Pas juste visibility:hidden/visible...
 
 	$.ajax({
 			url: path+"api/ajax.admin.php?mode=dialog-"+mode, 
 			data: {
 				"target": target,
-				"source": (target == "bg" ? $(source).attr("data-id") : (source.id || $("img", source).attr("id"))),
-				"width": $(source).hasClass("editable-img") ? $("img", source).attr("width") : "",
-				"height": $(source).hasClass("editable-img") ? $("img", source).attr("height") : "",
+				"source": (target == "bg" ? $(source).attr("data-id") : source.id),
+				"width": $(source).data("width") || "",
+				"height": $(source).data("height") || "",
 				"nonce": $("#nonce").val()
 			}
 		})
@@ -336,10 +365,10 @@ dialog_transfert = function(mode, source, target, callback) {
 			// Pour ne pas instancier plusieurs fois la dialog
 			$(".dialog-"+mode).remove();
 			
-			// CrÈation de la dialog invisible
+			// Cr√©ation de la dialog invisible
 			$("body").append(html);
 
-			// Si l'ajax renvoie bien la dialog demandÈe
+			// Si l'ajax renvoie bien la dialog demand√©e
 			if($(".dialog-"+mode).length) 
 			{			
 				// Instanciation de la dialog en mode invisible
@@ -360,21 +389,21 @@ dialog_transfert = function(mode, source, target, callback) {
 					{
 						$(".dialog-"+mode).remove();
 						
-						// S'il y a une fonction de callback on l'exÈcute
+						// S'il y a une fonction de callback on l'ex√©cute
 						if(typeof callback === "function") callback();
 					},
 					create: function() 
 					{
 						if(mode == "media") 
 						{
-							// CrÈation des onglets
+							// Cr√©ation des onglets
 							$(".dialog-media").tabs({
 								beforeLoad: function(event, ui) {
 									ui.ajaxSettings.url += ( /\?/.test(ui.ajaxSettings.url) ? "&" : "?" ) + 'nonce=' + $("#nonce").val();											
 								}
 							});
 
-							// Place les onglets ‡ la place du titre de la dialog
+							// Place les onglets √† la place du titre de la dialog
 							$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 						}
 					},
@@ -392,7 +421,7 @@ dialog_transfert = function(mode, source, target, callback) {
 					},
 					resize: function(event, ui) 
 					{
-						// Masque le texte dans les tab si on rÈduit trop la fenÍtre
+						// Masque le texte dans les tab si on r√©duit trop la fen√™tre
 						if(ui.size.width < 635) $(".ui-tabs-nav span").hide();
 						else $(".ui-tabs-nav span").show();
 					}						
@@ -404,41 +433,41 @@ dialog_transfert = function(mode, source, target, callback) {
 }
 
 
-// Ouvre la fenÍtre pour ajouter une image dans la galerie des medias (intext, isolate, bg)
+// Ouvre la fen√™tre pour ajouter une image/fichier dans la galerie des medias (intext, isolate, bg)
 media = function(source, target) {
-	//$(memo_focus).focus();// On focus le contenu ÈditÈ pour faire fonctionner onblur = close toolbox
+	//$(memo_focus).focus();// On focus le contenu √©dit√© pour faire fonctionner onblur = close toolbox
 	
 	// Dialog de gestion des medias
 	dialog_transfert("media", source, target, function() {					
-			// Unbind le drag&drop pour l'ajout de mÈdia
+			// Unbind le drag&drop pour l'ajout de m√©dia
 			$("body").off(".dialog-media");
 
 			// Relance les autres events
 			editable_event();
-			editable_img_event();
-			body_editable_img_event();
+			editable_media_event();
+			body_editable_media_event();
 		}
 	);
 }
 
 
-// Upload d'un mÈdia (image)
+// Upload d'un m√©dia
 upload = function(source, file, resize)
 {
 	uploading = true;
 
-	// Type de fichier supportÈ pour l'upload
+	// Type de fichier support√© pour l'upload
 	var mime_supported = [
 		"image/jpg","image/jpeg","image/pjpeg","image/png","image/x-png","image/gif","image/x-icon",
-		"application/pdf","application/zip","text/plain"		
+		"application/pdf","application/zip","application/x-zip-compressed","text/plain"		
 	];
 
-	var width = $("img", source).attr("width") || "";
-	var height = $("img", source).attr("height") || "";
+	var width = $(source).data("width") || "";
+	var height = $(source).data("height") || "";
 
 	if(file) 
 	{
-		if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supportÈ
+		//if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier support√©
 		{				
 			// @todo: ajouter un cog loading en sur l'image (a coter du % ?)
 
@@ -447,22 +476,29 @@ upload = function(source, file, resize)
 			source.append("<div id='"+progressid+"' class='progress bg-color small' style='height: "+source.outerHeight()+"px;'></div>");			
 			
 			// Type mime du fichier
-			var mime = file.type.split("/");
+			var mime = (file.type ? file.type.split("/") : "");
+
+			// Supprime les fichiers autres que image
+			$(".fa", source).remove();
 
 			// Affiche la preview si image
 			if(mime[0] == "image") 
 			{
-				$("img", source).addClass("to50");// On fade ‡ moitiÈ (50%)
+				// Si pas de tag img on le cr√©e
+				if($("img", source).html() == undefined) $(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+">");
+
+				// On fade √† moiti√© (50%)
+				$("img", source).addClass("to50");
 
 				var reader = new FileReader();
 				reader.onload = function(theFile) {
-					// On crÈe un objet image pour s'assurer que l'image est bien chargÈe dans le browser avant de prendre sa taille pour le layer de progression d'upload
+					// On cr√©e un objet image pour s'assurer que l'image est bien charg√©e dans le browser avant de prendre sa taille pour le layer de progression d'upload
 					var image = new Image();
 					image.src = theFile.target.result;
 
-					image.onload = function() {// Image bien chargÈe dans le navigateur
+					image.onload = function() {// Image bien charg√©e dans le navigateur
 						if($("#"+progressid).length) {			
-							// Si l'upload n'est pas dÈj‡ fini on calle la source et la hauteur de la progress bar
+							// Si l'upload n'est pas d√©j√† fini on calle la source et la hauteur de la progress bar
 							if(!$("img", source).attr("src")) {
 								$("img", source).attr("src", this.src);// On colle le bin de l'image dans le src
 								$("#"+progressid).css("height", source.outerHeight()+"px");// On force la taille de progression d'upload
@@ -484,7 +520,7 @@ upload = function(source, file, resize)
 
 			$.ajax({
 				type: "POST",
-				url: path+"api/ajax.admin.php?mode=upload-file",
+				url: path+"api/ajax.admin.php?mode=add-media",
 				xhr: function() {
 					var xhr = $.ajaxSettings.xhr();
 					if(xhr.upload) {									
@@ -508,22 +544,30 @@ upload = function(source, file, resize)
 					{
 						source.removeClass("uploading");// Supprime le spin d'upload
 
-						$("#"+progressid).css("width", "100%").css("height", source.outerHeight()+"px").html("100%");// Pour Ítre sur d'afficher 100%
+						$("#"+progressid).css("width", "100%").css("height", source.outerHeight()+"px").html("100%");// Pour √™tre sur d'afficher 100%
 						
 						// Si c'est une image
 						if(mime[0] == "image") 
 						{
-							$("img", source).removeClass("to50");// On remet l'image ‡ l'opacitÈ normale
+							$("img", source).removeClass("to50");// On remet l'image √† l'opacit√© normale
 							$("img", source).attr("src", path);// Affiche l'image finale 
 						}
+						else if(!source.attr("data-media"))// Si c'est un fichier autre et isol√©
+						{
+							// Supprime les images
+							$("img", source).remove();
+
+							// On cr√©e un bloc fichier
+							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ path +'"></i>');	
+						}
 						
-						// Nom du fichier final si dialog mÈdias
-						if(source.attr("data-file")) {
-							source.attr("data-file", path);// Pour la manipulation							
+						// Nom du fichier final si dialog m√©dias
+						if(source.attr("data-media")) {
+							source.attr("data-media", path);// Pour la manipulation							
 							$(".file div", source).html(path.split('/').pop());// Pour l'affichage 
 						}
 						
-						// DÈtruis le layer de progressbar
+						// D√©truis le layer de progressbar
 						$("#"+progressid).fadeOut("medium", function() { 
 							this.remove();
 							source.addClass("uploaded");// Icone uploaded avec fadeinout
@@ -547,10 +591,10 @@ upload = function(source, file, resize)
 			});
 
 		}
-		else {
+		/*else {
 			source.hide("slide", 300);
 			error(__("This file format is not supported") + " : "+ file.type);
-		}
+		}*/
 
 		//console.log(data.files[0].type);
 	}   	
@@ -562,9 +606,20 @@ get_file = function(id)
 {	
 	$(".dialog-media li").css("opacity","0.4");
 	$("#"+id).css("opacity","1");
-	
-	// Insertion du lien vers le fichier
-	exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\">"+ $("#"+id).attr("data-file").split('/').pop() +"</a>");
+
+	if($("#dialog-media-target").val() == "isolate")// Insert dans un bloc isol√©
+	{	
+		// Supprime les images
+		$("#"+$("#dialog-media-source").val()+" img").remove();
+
+		// Supprime les fichiers
+		$("#"+$("#dialog-media-source").val()+" .fa").remove();
+
+		// Ajoute le fichier
+		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
+	}
+	else// Insertion du lien vers le fichier dans bloc texte
+		exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
 
 	// Fermeture de la dialog
 	$(".dialog-media").dialog("close");
@@ -577,32 +632,48 @@ get_file = function(id)
 get_img = function(id, link)
 {	
 	//@todo ajouter un loading pour informer que l'on resize l'image avant fermeture de la dialog
-	//@todo voir pour faire un fade opacity en js, car en css Áa fait un bug lors de l'ouverture de la dialog
+	//@todo voir pour faire un fade opacity en js, car en css √ßa fait un bug lors de l'ouverture de la dialog
 	
 	// Focus sur l'image choisie
 	$(".dialog-media li").css("opacity","0.4");
 	$("#"+id).css("opacity","1");
+	
+	var width = $("#dialog-media-width").val();
+	var height = $("#dialog-media-height").val();
 	
 	// Resize de l'image et insertion dans la source
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=get-img",
 		data: {
-			"img": $("#"+id).attr("data-file"),
-			"width": $("#dialog-media-width").val(),
-			"height": $("#dialog-media-height").val(),
+			"img": $("#"+id).attr("data-media"),
+			"width": width,
+			"height": height,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
 		{ 
-			if($("#dialog-media-target").val() == "isolate") {// Insert dans un bloc isolÈ
-				$("#"+$("#dialog-media-source").val()).attr("src", final_file);
+			if($("#dialog-media-target").val() == "isolate")// Insert dans un bloc isol√©
+			{
+				// Si pas encore de tag img
+				if($("#"+$("#dialog-media-source").val()+" img").html() == undefined)
+				{
+					// Supprime les fichiers
+					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
+
+					// Ajoute l'image
+					$("#"+$("#dialog-media-source").val()).append('<img src="'+final_file+'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"")+'>');
+				}
+				else
+					$("#"+$("#dialog-media-source").val()+" img").attr("src", final_file);
 			}
-			else if($("#dialog-media-target").val() == "intext") {// Ajout dans un contenu texte
-				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-file") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
+			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
+			{
+				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
 				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
 			}
-			else if($("#dialog-media-target").val() == "bg") {// Modification d'un fond
+			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
+			{
 				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", final_file);
 				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+final_file+")");
 			}
@@ -620,7 +691,7 @@ img_position = function(align) {
 	$(memo_img).removeClass("center fl fr").addClass(align);
 }
 
-// Supprime l'image sÈlectionnÈe du contenu
+// Supprime l'image s√©lectionn√©e du contenu
 img_remove = function() {
 	$(memo_img).remove();
 	$("#img_tool").remove();
@@ -639,7 +710,7 @@ img_transfert_style = function(event) {
 	$(event).removeClass("ui-resizable");
 }
 
-// Si on focus-out/drag-leave d'une image dans bloc Èditable
+// Si on focus-out/drag-leave d'une image dans bloc √©ditable
 img_leave = function() 
 {
 	// Supprime la barre d'outil image
@@ -649,7 +720,7 @@ img_leave = function()
 	if($('.editable .ui-wrapper img').length) $('.editable .ui-wrapper img').resizable('destroy');
 	else if($('.editable .ui-wrapper').length) $('.editable .ui-wrapper').remove();
 		
-	// Supprime le style sur l'image sÈlectionnÈe et le transfert sur la dom de l'image
+	// Supprime le style sur l'image s√©lectionn√©e et le transfert sur la dom de l'image
 	if(memo_img) {
 		img_transfert_style(memo_img);
 		memo_img = null;
@@ -663,10 +734,10 @@ img_leave = function()
 
 
 
-// VÈrifie que le contenu est sauvegardÈ en cas d'action de fermeture ou autres
-$(window).on("beforeunload", function(){
-	//if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
-});
+// V√©rifie que le contenu est sauvegard√© en cas d'action de fermeture ou autres
+/*$(window).on("beforeunload", function(){
+	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
+});*/
 
 
 
@@ -680,7 +751,7 @@ $(document).ready(function()
 	// Barre du haut avec bouton sauvegarder			
 	adminbar = "<div id='admin-bar'>";
 
-		adminbar+= "<div id='user' class='fl pat'><i class='fa fa-fw fa-user bigger' title=\""+ __("Show user info") +"\"></i></div>";
+		adminbar+= "<div id='user' class='fl pat'><i class='fa fa-fw fa-user-circle bigger' title=\""+ __("Show user info") +"\"></i></div>";
 
 
 		adminbar+= "<div id='meta-responsive' class='fl mat none small-screen'><i class='fa fa-fw fa-pencil bigger' title=\""+ __("Page title") +"\"></i></div>";
@@ -702,62 +773,65 @@ $(document).ready(function()
 					adminbar+= "</div>";
 					
 					adminbar+= "<div class='small mts'>"+ __("Image on social networks") +" :</div>";
-					adminbar+= "<div class=''><span class='editable-img'><img src='' id='og-image'></span></div>";
+					adminbar+= "<div class=''><span class='editable-media' id='og-image'><img src=''></span></div>";
 					
 				adminbar+= "</div>";
 			adminbar+= "</div>";
 		adminbar+= "</div>";		
 
+		adminbar+= "<div id='close' class='fr mrt bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-window-close-o'></i></div>";
 
 		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
 
-		adminbar+= "<button id='preview' class='fr mat small' title=\""+ __("Save & View") +"\"><span class='no-small-screen'>"+ __("Save & View") +"</span> <i class='fa fa-fw fa-eye big'></i></button>";
+		adminbar+= "<button id='del' class='fr mat small o50 ho1 t5' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
 
-		adminbar+= "<select id='state' class='fr mat fa-select'><option value='active'>&#xf00c; "+ __("Active") +"</option><option value='deactivate'>&#xf00d; "+ __("Deactivate") +"</option></select>";
-
-		adminbar+= "<div id='close' class='fr bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-times-circle-o'></i></div>";
+		adminbar+= "<div class='fr mat mrs switch o50 ho1 t5'><input type='checkbox' id='state-content' class='none'><label for='state-content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
 
 	adminbar+= "</div>";
 
+
 	$("body").append(adminbar).addClass("body-margin-top");
 	
-	// Ajout des variables dans les inputs (pour le problËme de double cote ")
+	// Ajout des variables dans les inputs (pour le probl√®me de double cote ")
 	$("#admin-bar #title").val(document.title);
 	$("#admin-bar #description").val(($("meta[name=description]").attr("content") != undefined ? $('meta[name=description]').attr("content") : ""));
 
 	// Etat de la checkbox homepage onready
-	if($("#admin-bar #permalink").val() == "home") {
-		$("#admin-bar #homepage").prop("checked", true);
-	}
+	if($("#admin-bar #permalink").val() == "home") $("#admin-bar #homepage").prop("checked", true);
+	
 	// Si on change le permalink on verif que c'est 'home'
 	$("#admin-bar #permalink").keyup(function() {
 		if($(this).val() == "home") $("#admin-bar #homepage").prop("checked", true);
 		else $("#admin-bar #homepage").prop("checked", false);
 	});
+
 	// Changement au click de la checkbox homepage
 	$("#admin-bar #homepage").change(function() {
 		if(this.checked) $("#admin-bar #permalink").val("home");
 		else refresh_permalink("#admin-bar");
 		tosave();// A sauvegarder
 	});
+
 	// Click refresh permalink
 	$("#admin-bar #refresh-permalink").click(function() {
 		refresh_permalink("#admin-bar");
 	});
 
-	// On rÈcupËre og:image des meta
-	if($("meta[property='og:image']").attr("content") != undefined) {
+	// On r√©cup√®re og:image des meta
+	if($("meta[property='og:image']").attr("content") != undefined) 
+	{
 		// Bind l'image
-		$("#admin-bar #og-image").attr("src", $("meta[property='og:image']").attr("content"));
+		$("#admin-bar #og-image img").attr("src", $("meta[property='og:image']").attr("content"));
 
 		// Option de suppression de l'image
-		$("#admin-bar #og-image").parent().after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
+		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
 	}
 
-	// Ajout de l'Ètat de la page
-	$("#admin-bar #state").val(state);
+	// Ajout de l'√©tat de la page
+	if(state == "deactivate") $("#admin-bar #state-content").prop("checked", false);
+	else $("#admin-bar #state-content").prop("checked", true);
 
-	// Ouverture de l'Èdition du title si en mode responsive
+	// Ouverture de l'√©dition du title si en mode responsive
 	$("#meta-responsive i").on('click',	function() {
 		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle();			
 	});
@@ -784,7 +858,7 @@ $(document).ready(function()
 		});
 	});
 
-	// Rends les textes Èditables
+	// Rends les textes √©ditables
 	$(".editable").attr("contenteditable","true");
 
 
@@ -796,26 +870,26 @@ $(document).ready(function()
 		if(
 			(!/^(46|44)$/.test(event.keyCode) && !(event.keyCode >= 48 && event.keyCode <= 57))// Si pas point/virgule et pas chiffre
 			||
-			(/^(46|44)$/.test(event.keyCode) && /[.,]/.test(this.innerHTML))// Si point/virgule si dÈj‡ prÈsent
+			(/^(46|44)$/.test(event.keyCode) && /[.,]/.test(this.innerHTML))// Si point/virgule si d√©j√† pr√©sent
 		) 
 		event.preventDefault(); 
 	});
 
 
-	// Place les contenus au-dessus pour les rendre Èditables ‡ coup sur
+	// Place les contenus au-dessus pour les rendre √©ditables √† coup sur
 	$(".editable").parent().css("z-index", "10");
 
 
 	/************** MENU NAV **************/
 
-	// Rends le menu de navigation Èditable
+	// Rends le menu de navigation √©ditable
 	$("header nav li").attr("contenteditable","true").addClass("editable");
 
-	// Ajout d'une zone de drag pour chaque ÈlÈment
+	// Ajout d'une zone de drag pour chaque √©l√©ment
 	$("header nav li").prepend("<div class='dragger'></div>");
 	
 	// Bloc d'option pour le menu de navigation
-	addnav = "<div id='add-nav'>";
+	addnav = "<div id='add-nav' class='black'>";
 		addnav+= "<div class='open zone' title='"+ __("Add to menu") +"'><i class='fa fa-fw fa-plus bigger vam'></i></div>";
 		addnav+= "<div class='tooltip pat'>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
@@ -825,25 +899,31 @@ $(document).ready(function()
 	addnav+= "</div>";	
 	$("header nav ul").after(addnav);
 	
-	// DÈplace un ÈlÈment du menu add vers le menu courant au click sur le +
-	$("#add-nav").on("click", ".dragger", function(event) {
-		event.preventDefault();  
-		//event.stopPropagation();
+	// D√©place un √©l√©ment du menu add vers le menu courant au click sur le +
+	hover_add_nav = false;	
+	$("#add-nav").on({
+		"click.dragger": function(event) {
+			event.preventDefault();  
+			//event.stopPropagation();
 
-		if($(this).parent().hasClass("add-empty")) $("header nav ul:first").append($(this).parent().clone());// Copie
-		else $($(this).parent()).appendTo("header nav ul:first");// DÈplace
-		
-		// Rends editable les ÈlÈments du menu
-		$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
-		editable_event();
-
-		tosave();// A sauvegarder
+			if($(this).parent().hasClass("add-empty")) $("header nav ul:first").append($(this).parent().clone());// Copie
+			else $($(this).parent()).appendTo("header nav ul:first");// D√©place
 			
-		// DÈsactive les liens dans le menu d'ajout
-		$("#add-nav ul a").click(function() { return false; });
+			// Rends editable les √©l√©ments du menu
+			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+			editable_event();
+
+			tosave();// A sauvegarder
+				
+			// D√©sactive les liens dans le menu d'ajout
+			$("#add-nav ul a").click(function() { return false; });
+		},
+		// On check si on est sur le menu d'ajout de page au menu
+		"mouseenter": function(event) { hover_add_nav = true; },
+		"mouseleave": function(event) {	hover_add_nav = false; }
 	});
 	
-	// Drag & Drop des ÈlÈments du menu principal
+	// Drag & Drop des √©l√©ments du menu principal
 	$("header nav ul:first").sortable({
 		connectWith: "header nav ul",
 		handle: ".dragger",
@@ -857,13 +937,13 @@ $(document).ready(function()
 		stop: function() {
 			$("#add-nav .open").removeClass("del").children().removeClass("fa-trash").addClass("fa-plus");
 			
-			// Rends editable les ÈlÈments du menu
+			// Rends editable les √©l√©ments du menu
 			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
 			editable_event();
 
 			tosave();// A sauvegarder
 			
-			// dÈsactive les liens dans le menu d'ajout
+			// d√©sactive les liens dans le menu d'ajout
 			$("#add-nav ul a").click(function() { return false; });
 		}
 	});
@@ -881,7 +961,7 @@ $(document).ready(function()
 		"mouseenter": function(event) {
 			if(!add_page)
 			{
-				// Liste les pages dÈj‡ dans le menu
+				// Liste les pages d√©j√† dans le menu
 				var menu = {};
 				$(document).find("header nav ul a").each(function(index) { menu[index] = $(this).attr('href'); });
 
@@ -895,7 +975,7 @@ $(document).ready(function()
 					success: function(html){ 
 						$("#add-nav ul").append(html);		
 						
-						// Pour Èviter de relancer l'ajax
+						// Pour √©viter de relancer l'ajax
 						add_page = true;
 
 						// Rends draggable les pages manquantes du menu
@@ -912,7 +992,7 @@ $(document).ready(function()
 							}
 						});
 							
-						// dÈsactive les liens
+						// d√©sactive les liens
 						$("#add-nav ul a").click(function() { return false; });
 						
 						// Affichage du menu d'ajout
@@ -922,8 +1002,11 @@ $(document).ready(function()
 			}
 			else $("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
 		},
+		// Si on sort du header, on check si on est sur le menu d'ajout de page avant de le fermer
 		"mouseleave": function(event) {
-			$("#add-nav").fadeOut("fast");
+			setTimeout(function() { 
+				if(!hover_add_nav) $("#add-nav").fadeOut("fast");
+			}, 1000);			
 		}
 	});
 
@@ -957,7 +1040,7 @@ $(document).ready(function()
 	$("body").append(toolbox);
 	
 
-	// Action sur les champs Èditables
+	// Action sur les champs √©ditables
 	editable_event = function() {		
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
@@ -974,7 +1057,7 @@ $(document).ready(function()
 				else
 					$("#view-source").removeClass("checked");
 
-				// Affichage de la boÓte ‡ outils texte
+				// Affichage de la bo√Æte √† outils texte
 				if($("#txt-tool").css("display") == "none")// Si pas visible				
 				$("#txt-tool")
 					.show()
@@ -995,30 +1078,30 @@ $(document).ready(function()
 			"blur.editable": function() {
 				if($("#txt-tool:not(:hover)").val()=="") {
 					$("#txt-tool").hide();// ferme la toolbox
-					$window.off(".scroll-toolbox");// DÈsactive le scroll de la toolbox
+					$window.off(".scroll-toolbox");// D√©sactive le scroll de la toolbox
 				}
 				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
-			"dragstart.editable": function() {// Pour Èviter les interfÈrences avec les drag&drop d'image dans les champs images
-				$("body").off(".editable-img");// DÈsactive les events image
+			"dragstart.editable": function() {// Pour √©viter les interf√©rences avec les drag&drop d'image dans les champs images
+				$("body").off(".editable-media");// D√©sactive les events image
 				$("#img_tool").remove();// Supprime la barre d'outil image
 			},
 			"dragend.editable": function() {// drop dragend
 				// Active les events block image
-				editable_img_event();
-				body_editable_img_event();
+				editable_media_event();
+				body_editable_media_event();
 
 				memo_img = null;
-				img_leave();// Raz PropriÈtÈs image
+				img_leave();// Raz Propri√©t√©s image
 			},
-			"mouseup.editable": function(event)// Si on click dans un contenu Èditable
+			"mouseup.editable": function(event)// Si on click dans un contenu √©ditable
 			{			
 				$("#unlink").remove();// Supprime les boutons de unlink
 				$("#txt-tool #option").hide();// Cache le menu d'option		
 
-				// @todo voir si le fait de ne pas raz les memo_ ne crÈe pas de problËme colatÈraux...
+				// @todo voir si le fait de ne pas raz les memo_ ne cr√©e pas de probl√®me colat√©raux...
 				
-				// MÈmorise la sÈlection pour la retrouver au focus aprËs ajout de lien
+				// M√©morise la s√©lection pour la retrouver au focus apr√®s ajout de lien
 				memo_selection = window.getSelection();				
 				if(memo_selection.anchorNode) {
 					memo_range = memo_selection.getRangeAt(0);
@@ -1031,22 +1114,22 @@ $(document).ready(function()
 				else $("#txt-tool #h2").removeClass("checked");
 					
 
-				// DÈsÈlectionne les alignements
+				// D√©s√©lectionne les alignements
 				$("[class*='fa-align']").parent().removeClass("checked");
 				
 				var align = null;
 
-				// On cherche le type d'alignement si on est dans un bloc alignÈ avec les style
+				// On cherche le type d'alignement si on est dans un bloc align√© avec les style
 				if($(memo_node).closest("div [style*='text-align']")[0]) var align = $(memo_node).closest("div [style*='text-align']").css("text-align");
 				
-				// On cherche le type d'alignement si on est dans un bloc alignÈ avec align=
+				// On cherche le type d'alignement si on est dans un bloc align√© avec align=
 				if($(memo_node).closest("div [align]")[0]) var align = $(memo_node).closest("div [align]").attr("align");
 								
 				// On check le bon alignement
 				if(align) $("#align-"+align).addClass("checked");
 
 
-				// Si on sÈlectionne un contenu
+				// Si on s√©lectionne un contenu
 				if(memo_selection.toString().length > 0)
 				{
 					// Si on est sur un lien
@@ -1063,22 +1146,52 @@ $(document).ready(function()
 						$("body").append("<a href=\"javascript:exec_tool('unlink');void(0);\" id='unlink'><i class='fa fa-close' style='position: absolute; left:"+ left +"px; top:"+ top +"px;' title='"+ __("Remove the link from the selection") +"'></i></a>");
 					}
 				}
-				//else memo_selection = memo_range = memo_node = null;// RAZ SÈlection		
+				//else memo_selection = memo_range = memo_node = null;// RAZ S√©lection		
 			}
 			
 		});
 	}
 
-	// ExÈcute l'event sur les champs Èditables
+	// Ex√©cute l'event sur les champs √©ditables
 	editable_event();
 
-	
+
+	// Fonction qui supprime les contenus HTML ind√©sirables sauf ceux autoris√©s
+	function strip_tags(input, allowed) {
+		if (input == undefined) return "";
+
+		// Tags en miniature
+	    allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
+
+	    return input
+	    .replace(/\n/gi, "")// Clean les retours √† la ligne
+	    .replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
+	    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
+	    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours √† la ligne
+	    .replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, function ($0, $1) {// Garde uniquement les tags autoris√©s
+	    	return allowed.indexOf("<" + $1.toLowerCase() + ">") > -1 ? $0 : "";
+	    })
+	    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
+	}
+
 	// Supprime la mise en forme des contenus copier/coller [contenteditable]
-	$(".editable").on({"paste": function(event) {
+	$(".editable").on("paste", function(event) {
 		event.preventDefault();
-		var text = (event.originalEvent || event).clipboardData.getData("text/plain") || prompt(__("Paste something..."));// text/html
-		exec_tool("insertText", text);// insertHTML insertText
-	}});
+
+		// Ancienne m√©thode
+		//var text = (event.originalEvent || event).clipboardData.getData("text/plain") || prompt(__("Paste something..."));// text/html
+
+		// R√©cup√®re les contenus du presse-papier
+		var paste = (event.originalEvent || event).clipboardData.getData("text/html") || prompt(__("Paste something..."));// text/html
+
+		console.log(paste);
+
+		// Clean les tags
+		paste = strip_tags(paste, "<a></a><b><b/><i></i>");
+
+		// Insertion dans le contenu
+		exec_tool("insertHTML", paste);// insertHTML insertText
+	});
 
 
 	// Action sur le input de lien si keyup Enter
@@ -1092,10 +1205,10 @@ $(document).ready(function()
 	/************** IMAGES DANS LES BLOCS TEXTE **************/
 	memo_img = null;
 
-	// @todo: voir si on ne peux pas le dÈplacer sur le blur des event .editable
+	// @todo: voir si on ne peux pas le d√©placer sur le blur des event .editable
 	$("body").click(function(event) {
-		// Si on n'est pas sur une image dans un contenu Èditable on supp la toolbox image
-		if(!$(event.target).is('.editable img')) img_leave();// Raz PropriÈtÈs image
+		// Si on n'est pas sur une image dans un contenu √©ditable on supp la toolbox image
+		if(!$(event.target).is('.editable img')) img_leave();// Raz Propri√©t√©s image
 		
 		// Supprime le layer de redimensionnement d'image
 		if($("#resize-tool").html() != undefined && !$(event.target).closest("#resize-tool").is('#resize-tool')) $("#resize-tool").remove();
@@ -1107,7 +1220,7 @@ $(document).ready(function()
 		
 		event.stopPropagation();
 		
-		// MÈmorise l'image sÈlectionnÈe
+		// M√©morise l'image s√©lectionn√©e
 		memo_img = this;		
 		
 		// Si Chrome on ajoute le resizer jquery
@@ -1116,12 +1229,12 @@ $(document).ready(function()
 			// Rend l'image resizeable
 			$(this).resizable({aspectRatio: true});
 			
-			// Pour styler le block image sÈlectionnÈ (MÍme alignement et display entre le div et l'img)
+			// Pour styler le block image s√©lectionn√© (M√™me alignement et display entre le div et l'img)
 			$(this).parent(".ui-wrapper").addClass($(this).attr('class'));
 			$(this).parent(".ui-wrapper").css('display', $(this).css('display'));
 		}
 		
-		// BoÓte ‡ outils image
+		// Bo√Æte √† outils image
 		option = "<ul id='img_tool' class='toolbox'>";
 			option+= "<li><button onclick=\"img_position('fl')\"><i class='fa fa-fw fa-align-left'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('center')\"><i class='fa fa-fw fa-align-center'></i></button></li>";
@@ -1141,73 +1254,81 @@ $(document).ready(function()
 
 
 
-	/************** IMAGES SEUL **************/
+	/************** IMAGE/FICHIER SEUL **************/
 	
-	// On highlight les zones o˘ l'on peut droper des fichiers
-	body_editable_img_event = function() {
+	// On highlight les zones o√π l'on peut droper des fichiers
+	body_editable_media_event = function() {
 		$("body")
 			.on({
-				"dragover.editable-img": function(event) {// Highlight les zone on hover dragover/dragenter
+				// Highlight les zone on hover dragover/dragenter
+				"dragover.editable-media": function(event) {
 					event.stopPropagation();
-					$(".editable").off();//$("body").off(".editable");// DÈsactive les events sur les contenu Èditables
-					$(".editable-img").addClass("drag-zone");
-					$(".editable-img img").addClass("drag-img");
+					$(".editable").off();// D√©sactive les events sur les contenu √©ditables
+					$(".editable-media").addClass("drag-zone");
+					$(".editable-media img, .editable-media i").addClass("drag-elem");
 			},
-				"dragleave.editable-img": function(event) {// Clean les highlight on out
+				// Clean les highlight on out
+				"dragleave.editable-media": function(event) {
 					event.stopPropagation();
-					editable_event();// Active les events sur les contenus Èditables
-					$(".editable-img").removeClass("drag-zone");
-					$(".editable-img img").removeClass("drag-img");
+					editable_event();// Active les events sur les contenus √©ditables
+					$(".editable-media").removeClass("drag-zone");
+					$(".editable-media img, .editable-media i").removeClass("drag-elem");
 				}
 			});
 	}
 
-	// ExÈcute l'event sur le body pour les images
-	body_editable_img_event();
+	// Ex√©cute l'event sur le body pour les images/fichiers
+	body_editable_media_event();
 
 
-	// Rends Èditables les images
-	$(".editable-img").append("<div class='open-dialog-media'><i class='fa fa-upload'></i> "+__("Upload file")+"</div>");
-	editable_img_event = function() {
-		$(".editable-img")
+	// Rends √©ditables les images/fichiers
+	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>");
+	editable_media_event = function() {
+		$(".editable-media")
 			.on({
-				"dragover.editable-img": function(event) {// Highlight la zone on hover
+				// Highlight la zone on hover
+				"dragover.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).addClass("drag-over");
-					$("img", this).addClass("drag-img");
+					$("img, i", this).addClass("drag-elem");
 				},
-				"dragleave.editable-img": function(event) {// Clean le highlight on out
+				// Clean le highlight on out
+				"dragleave.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 				},
-				"drop.editable-img": function(event) {// On lache un fichier sur la zone
+				// On lache un fichier sur la zone
+				"drop.editable-media": function(event) {
 					event.preventDefault();  
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					
-					// Upload du fichier dropÈ
+					// Upload du fichier drop√©
 					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], true);
 				},
-				"mouseenter.editable-img": function(event) {// Hover zone upload		
+				// Hover zone upload	
+				"mouseenter.editable-media": function(event) {	
 					$(this).addClass("drag-over");
-					$("img", this).addClass("drag-img");
+					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
 				},
-				"mouseleave.editable-img": function(event) {// Out
+				// Out
+				"mouseleave.editable-media": function(event) {
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
 				},
-				"click.editable-img": function(event) {// Ouverture de la fenÍtre des mÈdias
-					// Masque le hover de l'image sÈlectionnÈe
+				// Ouverture de la fen√™tre des m√©dias
+				"click.editable-media": function(event) {
+					// Masque le hover de l'image/fichier s√©lectionn√©e
 					$(this).removeClass("drag-over");
-					$("img", this).removeClass("drag-img");
+					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
-					
+
 					// Ouvre la dialog de media
 					media(this, 'isolate');
 					return false;
@@ -1215,20 +1336,20 @@ $(document).ready(function()
 			});
 	}
 
-	// ExÈcute l'event sur les images
-	editable_img_event();
+	// Ex√©cute l'event sur les images/fichier
+	editable_media_event();
 
 
 
 	/************** IMAGES BACKGROUND **************/
 	
-	// Ajout un fond hachurÈ au cas ou il n'y ai pas de bg 
-	$("[data-editable='bg']").addClass("editable-bg");
-	$("[data-editable='bg']").append("<a href=\"javascript:void(0)\" class='open-dialog-media'><i class='fa fa-picture-o'></i> "+__("Change the background image")+"</a>");
+	// Ajout un fond hachur√© au cas ou il n'y ai pas de bg 
+	$("[data-bg]").addClass("editable-bg");
+	$("[data-bg]").append("<a href=\"javascript:void(0)\" class='open-dialog-media'><i class='fa fa-picture-o'></i> "+__("Change the background image")+"</a>");
 
-	// Rends Èditables les images en background
+	// Rends √©ditables les images en background
 	editable_bg_event = function() {
-		$("[data-editable='bg']")
+		$("[data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
 					$("> .open-dialog-media", this).fadeIn("fast");
@@ -1239,13 +1360,14 @@ $(document).ready(function()
 			});		
 	}
 
-	// ExÈcute l'event sur les images
+	// Ex√©cute l'event sur les images
 	editable_bg_event();
 
-	// Ouverture de la fenÍtre des mÈdias pour changer le bg
+	// Ouverture de la fen√™tre des m√©dias pour changer le bg
 	$("body").on("click", ".editable-bg > .open-dialog-media", function() {
 		media($(this).parent()[0], 'bg');
 	});
+
 
 
 	/************** CHAMPS HIDDEN **************/
@@ -1262,13 +1384,13 @@ $(document).ready(function()
 	/************** CHAMPS SELECT **************/
 	$(".editable-select").attr("data-option", function(i, data) {
 		
-		// Option sÈlectionnÈe
+		// Option s√©lectionn√©e
 		var selected = $(".editable-select").attr("data-selected");
 
 		// Extraction du json
 		var json = jQuery.parseJSON(data);							
 		
-		// CrÈation des options avec le json
+		// Cr√©ation des options avec le json
 		var html = '';
 		$.each(json, function(cle, val){ html += '<option value="'+ cle +'"'+(cle == selected?" selected":"")+'>'+ val +'</option>'; });
 		
@@ -1282,7 +1404,7 @@ $(document).ready(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox, [for]").on("click", function(event) {//@todo voir si le [for] ne crÈe pas de bug collatÈrale
+	$(".editable-checkbox").on("click", function(event) {
 		if($(this).attr("for")) id = $(this).attr("for");
 		else id = this.id;
 
@@ -1291,14 +1413,33 @@ $(document).ready(function()
 	})
 
 
-	/************** SLIDESHOW **************/
+	/************** HREF EDITABLE **************/
+	
+	// Ajoute un input pour ajouter l'url du href
+	$("[data-href]").append(function() {
+		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"'>";
+	});
 
-	// Rends les slideshow Èditable
-	//$(".editable-slide")
+	// Rends √©ditables les images en background
+	// Note: on utilise animate car l'e 'input est inline-block par d√©faut avec le fadeIn
+	editable_href_event = function(event) {
+		$("[data-href]")
+			.on({
+				"click.editable-href": function(event) {// Supprime l'action de click sur le lien
+					event.stopPropagation();
+					event.preventDefault();
+				},
+				"mouseenter.editable-href": function(event) {// Hover zone href		
+					$(".editable-href", this).animate({'opacity':'1'}, 'fast');
+				},
+				"mouseleave.editable-href": function(event) {// Out
+					$(".editable-href", this).animate({'opacity':'0'}, 'fast');
+				}
+			});		
+	}
 
-
-	// Rends les icÙnes Èditable
-	//$(".editable-icon")
+	// Ex√©cute l'event sur les images
+	editable_href_event();
 
 
 
@@ -1324,7 +1465,7 @@ $(document).ready(function()
 						$(document).on("click",	
 							function(event) {
 								if(!$(event.target).parents().is("#user .absolute") && $("#user .absolute").is(":visible") && close == false)//event.type == 'click'
-									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegardÈ on shake
+									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegard√© on shake
 										$("#user .absolute > div").effect("highlight");
 									else
 										$("#user .absolute").fadeOut("fast", function(){ close = true; });
@@ -1333,7 +1474,7 @@ $(document).ready(function()
 					}
 				});
 			}
-			else if($("#user .absolute").length && !$("#user .absolute").is(":visible")&& close == true)// Si on click et que l'ajax a dÈj‡ ÈtÈ fait
+			else if($("#user .absolute").length && !$("#user .absolute").is(":visible")&& close == true)// Si on click et que l'ajax a d√©j√† √©t√© fait
 			{
 				close = true;
 				$("#user .absolute").fadeIn("fast", function(){ close = false; });
@@ -1359,17 +1500,118 @@ $(document).ready(function()
 		reload();
 	});
 
-	// On rÈtablit la page en mode visiteur
-	$("#preview").click(function() {
-		save(function() {
-			reload();
-		});				
+
+	// Suppression du contenu
+	$("#del").click(function() 
+	{	
+		medias = {};
+
+		// Contenu des images √©ditables, bg et dans les contenus textuels
+		$(document).find(".content .editable-media img, .content .editable img, .content [data-bg]").each(function() {
+			if($(this).hasClass("editable-bg")) var media = $(this).attr("data-bg");
+			else var media = $(this).attr("src");
+
+			if(media) medias[media] = "img";
+		});
+
+		// Contenu des fichiers √©ditables et dans les contenus textuels
+		$(document).find(".content .editable-media .fa, .content .editable a[href^='media/']").each(function() {
+			if($(this).closest("span").hasClass("editable-media")) var media = $(this).attr("title");
+			else var media = $(this).attr("href");
+
+			if(media) medias[media] = "fichier";
+		});
+
+
+		// Clean les url pour supprimer l'host et les donn√©es apr√®s le "?"
+		medias_clean = {};
+		host = location.protocol +'//'+ location.host + path;
+		$.each(medias, function(media, type) {
+			media = media.replace(host, "").split("?")[0];
+			medias_clean[media] = type;			
+		});
+
+
+		// Dialog de confirmation de suppression	
+		$("body").append("<div class='dialog-del' title='"+ __("Delete content") +"'></div>");
+
+		// S'il y a des m√©dias √† supprimer
+		if(Object.keys(medias_clean).length > 0)
+		{
+			// Option de suppression des m√©dia li√©e au contenu			
+			$(".dialog-del").append("<input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul>");
+
+			// Affiche la liste des medias
+			$.each(medias_clean, function(media, type) {
+				if(type == "img") $(".dialog-del ul").append("<li><label for=\""+ media +"\"><img src=\""+ media +"\" title=\""+ media +"\"></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+				else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-file-o biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+			});
+
+			// Au click sur la checkbox g√©n√©rale on coche tous les m√©dias ont supprim√©
+			$("#del-medias").click(function() {	
+				if($(this).prop("checked") == true) $(".del-media").prop("checked", true);
+				else $(".del-media").prop("checked", false);
+			});
+
+			// Au click sur une checkbox de m√©dia on v√©rifie si tous est coch√© et on coche la checkbox g√©n√©rale
+			$(".del-media").click(function() {	
+				if($(".del-media:checked").length == $(".del-media").length) $("#del-medias").prop("checked", true);
+				else $("#del-medias").prop("checked", false);
+			});
+		}
+
+
+		// Dialog de suppression
+		$(".dialog-del").dialog({
+			modal: true,
+			buttons: 
+			[{
+            	text: __("Cancel"),
+           		click: function() { $(".dialog-del").remove(); }
+			},{
+				text: "Ok",
+				click: function() {
+					medias_post = [];
+
+					// R√©cup√®re tous les m√©dias s√©lectionn√©s
+					$(".dialog-del ul input:checked").each(function() {
+					    medias_post.push($(this).attr("id"));
+					});
+
+					// Requete de suppression
+					$.ajax({
+						type: "POST",
+						url: path + "api/ajax.admin.php?mode=delete",
+						data: {
+							"url": clean_url(),
+							"type": type,
+							"medias": medias_post,
+							"nonce": $("#nonce").val()// Pour la signature du formulaire
+						}
+					})
+					.done(function(html) {		
+						$(".dialog-del").dialog("close");
+						$("body").append(html);
+					});					
+				}
+			}],
+			close: function() {
+				$(".dialog-del").remove();					
+			}
+		});
+	});
+
+
+	// Si on change le statut d'activation
+	$("#state-content").click(function() {	
+		tosave();
 	});
 
 	// Si on sauvegarde
 	$("#save").click(function() {	
 		save();
 	});
+
 
 	// Capture des actions au clavier
 	$(document).keydown(function(event) 
@@ -1381,10 +1623,10 @@ $(document).ready(function()
 				save();		
 			}
 		}
-		// Si on utilise tape du texte dans un contenu Èditable on change le statut du bouton sauvegardÈ
+		// Si on utilise tape du texte dans un contenu √©ditable on change le statut du bouton sauvegard√©
 		else if(event.target.className == 'editable' || event.target.id == 'title' || event.target.id == 'description' || event.target.id == 'permalink') 
 		{
-			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 13)// CaractËres texte ou entrÈe
+			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 13)// Caract√®res texte ou entr√©e
 			{
 				tosave();// A sauvegarder
 			}
@@ -1401,12 +1643,20 @@ $(document).ready(function()
 		}
 	});
 
+	//@todo ajouter un filtre qui permet de supp uniquement si span avec font-size apr√®s action supp/backspace
+	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour √† la ligne (ajoute une font-size)
+	if($.browser.webkit) {
+		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
+			if(event.target.tagName == "SPAN") event.target.outerHTML = event.target.innerHTML;			
+		});
+	}
+
 	// On change une info dans un menu select
 	$("#admin-bar select").change(function() {
 		tosave();// A sauvegarder
 	});
 
-	// DÈsactive le click pour ne pas relancer l'admin
+	// D√©sactive le click pour ne pas relancer l'admin
 	$(".bt.edit").off("click");
 
 });	

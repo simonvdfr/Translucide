@@ -17,8 +17,9 @@ body {
 	color: #000;
 	font-family: Helvetica, Arial, sans-serif;
 	line-height: 1.5;
-	font-size: 1.4em;
+	font-size: 1.4rem;
 }
+
 
 body > script { display: none !important; }
 
@@ -203,13 +204,13 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 
 /* alternate font-sizing */
-.smaller { font-size: 0.6em; }
-.small { font-size: 0.8em; }
-.medium { font-size: 1em; }
-.big { font-size: 1.2em; }
-.bigger { font-size: 1.5em; }
-.biggest { font-size: 2em; }
-.mega { font-size: 4em; }
+.smaller { font-size: 0.6em !important; }
+.small { font-size: 0.8em !important; }
+.medium { font-size: 1em !important; }
+.big { font-size: 1.2em !important; }
+.bigger { font-size: 1.5em !important;  }
+.biggest { font-size: 2em !important; }
+.mega { font-size: 4em !important; }
 
 
 /* Text effect */
@@ -234,10 +235,6 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 /* Transparence */
 .o50 { opacity: 0.5; }
-.to50 {
-	opacity: 0.5;
-	animation: fade-50 .5s 1;
-}
 .o80 { opacity: 0.8; }
 .ho1:hover { opacity: 1; }
 
@@ -247,6 +244,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .vab { vertical-align: bottom !important; }
 .vatt { vertical-align: text-top !important; }
 .nowrap { white-space: nowrap; }
+.dot { text-overflow: ellipsis; }
 
 
 /*  Layout and modules */
@@ -300,6 +298,7 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
   vertical-align: top;
 }
 
+.inline { display: inline !important; }
 .block { display: block !important; }
 .none { display: none; }
 .hidden { visibility: hidden; }
@@ -386,9 +385,6 @@ input[type="reset"].unstyled:focus {
 .tdn:hover { text-decoration: none !important; }
 
 
-/* Légère transition sur les FontAwesome */
-.fa {transition: all 0.5s;}
-
 /* Pour ajouter des pictos dans les menus select */
 .fa-select { font-family: FontAwesome, Helvetica, Arial, sans-serif; }
 
@@ -396,20 +392,24 @@ input[type="reset"].unstyled:focus {
 /* Bouton */
 .bt {
 	background-color: #f5f5f5;		
-	color: #507075;		
+	color: #507075;
 	text-align: center;
 	text-decoration: none;
+
 	display: inline-block;
-	/*margin: 20px 5px 5px; PAS UTILE ?? */
-	padding: 0 6px 1px;		
-	border-radius: 5px;
+
+	/* padding: 0 6px 1px; */	
+
+	border-radius: 3px;
 	border: 1px solid rgba(117, 137, 140, 0.5);
-	box-shadow: 0px 20px 15px -10px rgba(255, 255, 255, 0.8) inset;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+
+	overflow: hidden;
+    text-overflow: ellipsis;
+
 	transition: all .3s;
 }
-	.bt:focus,
-	input[type="button"]:focus,
-	button:focus {
+	.bt:focus, input[type="button"]:focus, button:focus {
 	  -webkit-tap-highlight-color: transparent;
 	  -webkit-user-select: none;
 	  -moz-user-select: none;
@@ -418,9 +418,14 @@ input[type="reset"].unstyled:focus {
 	}
 	.bt:hover {
 		color: #ffffff;
-		box-shadow: none;
-		background-color: #75898c;
 		text-decoration: none;
+		box-shadow: none;
+		background-color: #75898c;		
+
+		box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset;
+	}
+	.bt:active { 
+		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(0, 0, 0, 0.1) inset;
 	}
 
 /* Bouton de connexion */
@@ -435,16 +440,8 @@ input[type="reset"].unstyled:focus {
 
 	padding: 8px;
 	margin: 0 0 5px 0;
-	width: 100%;   
-
-	overflow: hidden;
-    text-overflow: ellipsis;
-	
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	width: 100%;	
 }
-	.bt.connect:hover { box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset; }
-	.bt.connect:active { box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(0, 0, 0, 0.1) inset; }
 	.bt.connect:before {
 		font-family: FontAwesome;
 		font-size: 15px;
@@ -482,12 +479,16 @@ input[type="reset"].unstyled:focus {
 	display: none;	
 	position: fixed;
 	z-index: 999;
+
 	width: auto;
 	right: 20px;
 	bottom: 20px;
+
 	margin: 0;
 	padding: 0.2rem 1rem;
-	border-radius: 30px;
+
+	border-radius: 100%;
+
 	opacity: 0.6;
 	text-shadow: none;
 }
@@ -509,27 +510,13 @@ input[type="reset"].unstyled:focus {
 		right: initial;
 		opacity: 0.5;
 		display: block;		
+		padding-left: 0.5rem;
+		border-radius: 8px;
 	}
 	.bt.fixed:hover { 		
 		opacity: 1;	
 	}
 
-
-/* Font Awesome pour bt connexion */
-.loading:before {
-	content: "\f013" !important;
-	animation: rotate 2s infinite linear;
-
-	border-right: none !important;
-	padding-right: 0 !important;
-}
-.down:before {
-	content: "\f0a7" !important;
-	animation: bounce-light .35s ease 6 alternate;
-
-	border-right: none !important;
-	padding-right: 0 !important;
-}
 
 /* Image dans le fond d'un input */
 .wrapper {
@@ -732,39 +719,20 @@ div.editable {
 }
 
 
-/* Hack Jquery UI style */
-.ui-widget-header {
-	background: #f5f5f5;
-	border: none;
-	font-weight: normal;	
-}
-.ui-widget-content {
-	background: rgba(241, 244, 247, 0.8) none repeat scroll 0 0;
-    border: 1px solid rgba(220, 220, 220, 0.8);
-	transition: background .2s;
-}
-	.ui-widget-content:hover {
-		background: rgba(241, 244, 247, 0.9) none repeat scroll 0 0;
-	}
-.ui-effects-transfer {
-    border: 4px dashed #7AD2D9;
-	background: rgba(122, 210, 217, 0.2);
-}
-
-
 
 /* LAYER & Tooltip */
 .layer, body .ui-tooltip  {
-	background-color: #fbfbfb;border-width: 1px;
+	background-color: #fbfbfb;
+	border-width: 1px;
 	border: 0;
 	
 	border-top: 1px solid #ccc;
 	border-radius: 4px;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 2px 5px rgba(0, 0, 0, 0.3);/**/
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 	/* Fleche au dessu du layer */
-	.layer:before, .layer:after, .ui-tooltip:before, .ui-tooltip:after {					
-		content: ' ';
+	.layer:before, .layer:after, .ui-tooltip:before, .ui-tooltip:after {
+		content: "";
 		position: absolute;
 		top: -20px;
 		left: 2rem;
@@ -779,59 +747,14 @@ div.editable {
 		}
 
 
-
-/* Animation keyframes */
-@keyframes fade-in {
-	0% { opacity: 0; }
-	100% { opacity: 1; }
-}
-@keyframes fade-in-out {
-	0%,100% { opacity: 0; }
-	50% { opacity: 1; }
-}
-@keyframes fade-50 {
-	0% { opacity: 0; }
-	100% { opacity: 0.5; }
-}
-@keyframes fade-in-up {
-	0% { opacity: 0; transform: translateY(20px); }
-	100% { opacity: 1; transform: translateY(0px); }
-}
-@keyframes rotate-left {
-	0% { transform: translateY(-100px) translateX(100px) rotateZ(5deg); opacity: 0; }
-	100% { transform: translateY(0) translateX(0) rotateZ(0); opacity: 1; }
-}
-@keyframes rotate-right {
-	0% { transform: translateY(-100px) translateX(-100px) rotateZ(-5deg); opacity: 0; }
-	100% { transform: translateY(0) translateX(0) rotateZ(0); opacity: 1; }
-}
-@keyframes rotate {
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(359deg); }
-}
-@keyframes bounce-light {
-     from { transform: translateY(0);}
-     to { transform: translateY(-5px);}
-}
-@keyframes slide-down {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(0); }
-}
-@keyframes slide-right {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(0); }
-}
-@keyframes slide-left {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(0); }
-}
-
 /* Animation onscroll */
 .animation { transition: all 1s ease-out; }
+	
+	.t5 { transition: all .5s !important; }
 
 	.fade-in { 
 		opacity: 0;
-		transition-delay: .5s;
+		transition-delay: .3s;
 	}
 
 	.slide-up {
@@ -847,6 +770,11 @@ div.editable {
 
 		animation: slide-left .3s 1 ease-out;
 	}
+		@keyframes slide-left {
+		    0% { transform: translate3d(-100%, 0, 0); }
+		    100% { transform: translate3d(0, 0, 0); }
+		}
+
 	.slide-right {
 		opacity: 0;
 		transform: translate3d(100px, 0, 0);
@@ -854,6 +782,10 @@ div.editable {
 		
 		animation: slide-right .3s 1 ease-out;
 	}
+		@keyframes slide-right {
+		    0% { transform: translate3d(100%, 0, 0); }
+		    100% { transform: translate3d(0, 0, 0); }
+		}
 
 		.fire {
 			opacity: 1 !important;
@@ -932,20 +864,13 @@ div.editable {
 		font-family: serif;
 		font-size: 12pt;
 	}
-	p,
-	.p-like,
-	h1,
-	.h1-like,
-	h2,
-	.h2-like,
-	h3,
-	.h3-like,
-	h4,
-	.h4-like,
-	h5,
-	.h5-like,
-	h6,
-	.h6-like,
+	p, .p-like,
+	h1, .h1-like,
+	h2, .h2-like,
+	h3, .h3-like,
+	h4, .h4-like,
+	h5, .h5-like,
+	h6, .h6-like,
 	blockquote,
 	ul,
 	ol {
@@ -972,12 +897,9 @@ div.editable {
 		page-break-inside: avoid;
 	}
 	/* no breaks after these elements */
-	h1,
-	.h1-like,
-	h2,
-	.h2-like,
-	h3,
-	.h3-like,
+	h1, .h1-like,
+	h2, .h2-like,
+	h3, .h3-like,
 	caption {
 		page-break-after: avoid;
 	}
