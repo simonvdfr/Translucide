@@ -199,7 +199,7 @@ selected_element = function(range) {
 // Barre d'outil de mise en forme et de contenu
 exec_tool = function(command, value, ui) {
 	ui = ui || false;
-	value = value || null;	
+	value = value || "";	
 				
 	// Sélectionne le contenu car on a perdu le focus en entrant dans les options
 	if((command == "CreateLink" || command == "insertImage" || command == "insertIcon" || command == "insertHTML" || command == "insertText") && memo_selection && memo_range) {
@@ -745,6 +745,9 @@ $(document).ready(function()
 {						
 	//@todo: ajouter le choix de la template de la page en cours, la langue
 	
+	// Ajout de la class pour dire que l'on est en mode admin
+	$(".content").addClass("lucide");
+
 
 	/************** ADMINBAR **************/
 
