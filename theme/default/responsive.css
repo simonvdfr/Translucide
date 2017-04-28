@@ -71,15 +71,15 @@
 	#add-nav { display: none !important; }
 
 
-	/* Animation zoom*/
-	.zoom h1 {	
+	/* Animation intro */
+	.intro h1 {	
 		top: 150px;
 	    left: auto;
 
 	    font-size: 2.5em;
 	    text-align: center;
 	}
-	.zoom h2 {	
+	.intro h2 {	
 		top: 205px;
 	    left: auto;
 
