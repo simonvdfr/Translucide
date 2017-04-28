@@ -1,12 +1,8 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
-<section class="fullpage zoom">	
-	<div style="background-image: url(media/zfond.jpg);" class="zfond"></div>
+<section class="fullpage intro" <?bg('intro')?>>	
 	<h1><?txt("h1")?></h1>
 	<h2><?txt("h2")?></h2>
-	<div style="background-image: url(media/zverre.png);" class="zverre"></div>
-	<div style="background-image: url(media/zburger.png);" class="zburger"></div>
-	<div style="background-image: url(media/zdust.jpg);" class="zdust"></div>
 	<a href="#scrolldown"><span></span></a>
 </section>
 
