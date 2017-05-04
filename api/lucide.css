@@ -677,7 +677,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 }
 .ui-widget-content {
 	background: rgba(241, 244, 247, 0.8) none repeat scroll 0 0;
-    border: 1px solid rgba(220, 220, 220, 0.8);
+    border: none !important; /* 1px solid rgba(220, 220, 220, 0.8) */
 	transition: background .2s;
 }
 	.ui-widget-content:hover {
