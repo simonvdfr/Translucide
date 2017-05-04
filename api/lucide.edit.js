@@ -1168,32 +1168,30 @@ $(document).ready(function()
 		// Tags en miniature
 	    allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
 
-	    return input
-	    .replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, function ($0, $1) {// Garde uniquement les tags autorisés
+	    // Garde uniquement les tags autorisés
+	    return input.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, function ($0, $1) {
 	    	return allowed.indexOf("<" + $1.toLowerCase() + ">") > -1 ? $0 : "";
-	    })
-	    .replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
-	    .replace(/\n|\r/gi, "")// Clean les retours à la ligne
-	    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
-	    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours à la ligne
-	    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
+	    });
 	}
 
 	// Supprime la mise en forme des contenus copier/coller [contenteditable]
 	$(".editable").on("paste", function(event) {
 		event.preventDefault();
 
-		// Ancienne méthode
-		//var text = (event.originalEvent || event).clipboardData.getData("text/plain") || prompt(__("Paste something..."));// text/html
-
 		// Récupère les contenus du presse-papier
-		var paste = (event.originalEvent || event).clipboardData.getData("text/html") || prompt(__("Paste something..."));// text/html
+		var paste = (event.originalEvent || event).clipboardData.getData("text/html") || prompt(__("Paste something..."));// text/html text/plain
 
 		// Clean les tags
-		paste = strip_tags(paste, "<a></a><b><b/><i></i>");
+		if(!$(this).hasClass("view-source")) paste = strip_tags(paste, "<a></a><b><b/><i></i>");
+
+		paste = paste.replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
+		    .replace(/\n|\r/gi, "")// Clean les retours à la ligne
+		    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
+		    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+		    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
 
 		// Insertion dans le contenu
-		exec_tool("insertHTML", paste);// insertHTML insertText
+		exec_tool("insertText", paste);// insertHTML insertText
 	});
 
 
