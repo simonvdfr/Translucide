@@ -95,6 +95,14 @@ $GLOBALS['meta_user'] = null;
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "add-media", "add-page", "add-article", "add-product", "edit-media", "edit-page", "edit-article", "edit-product", "add-media-public", "edit-public");
 
+
+// Type de contenu ajoutable
+$GLOBALS['add-content']['page'] = true;
+$GLOBALS['add-content']['article'] = true;
+$GLOBALS['add-content']['media'] = true;
+$GLOBALS['add-content']['product'] = false;
+
+
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = "medium";
 
@@ -125,8 +133,13 @@ $GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 $GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js";
 $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
 
+
 // Utilisation de librairie minifier
 $GLOBALS['min'] = "";// .min
+
+// Inclusion des css
+$GLOBALS['include']['css'] = false;
+
 
 // Sécurité / défaut
 $title = null;

@@ -33,21 +33,16 @@ $add_translation = array(
 
 
 	"Add content" => array("fr" => "Ajouter un contenu"),
-
 	"Add page" => array("fr" => "Ajouter une page"),
-	"Page Title" => array("fr" => "Titre de la page"),
-	
 	"Add article" => array("fr" => "Ajouter un article"),
-	"Article Title" => array("fr" => "Titre de l'article"),
-
 	"Add media" => array("fr" => "Ajouter un média"),
-	"Media title" => array("fr" => "Titre du média"),
 	
+	"Title" => array("fr" => "Titre"),
 	"Select template" => array("fr" => "Sélectionner un modèle"),
 	"Permanent link" => array("fr" => "Lien Permanent"),
 	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
 
-	"Permanent link: 'home' if homepage" => array("fr" => "Lien permanent: 'home' si c'est la page d'accueil"),
+
 	"Home page" => array("fr" => "Page d'accueil"),
 
 

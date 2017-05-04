@@ -90,28 +90,36 @@ switch($_GET['mode'])
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
 			<ul class="small">
-
-				<?if($_SESSION['auth']['add-page']){?>
+				<?if($_SESSION['auth']['add-page'] and $GLOBALS['add-page']){?>
 				<li data-filter="page"><a href="#add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
 				<?}?>
 				
-				<?if($_SESSION['auth']['add-article']){?>
+				<?if($_SESSION['auth']['add-article'] and $GLOBALS['add-article']){?>
 				<li data-filter="article"><a href="#add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
 				<?}?>
 				
-				<?if($_SESSION['auth']['add-media']){?>
+				<?if($_SESSION['auth']['add-media'] and $GLOBALS['add-media']){?>
 				<li data-filter="media"><a href="#add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
 				<?}?>
-
+				
+				<?if($_SESSION['auth']['add-product'] and $GLOBALS['add-product']){?>
 				<!-- <li data-filter="product"><a href="#add-product"></" title="<?_e("Product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Product")?></span></a></li> -->
-			</ul>			
+				<?}?>
+			</ul>					
+
+			<div class="none">
+				<div id="add-page"></div>	
+				<div id="add-article"></div>	
+				<div id="add-media"></div>	
+				<div id="add-product"></div>	
+			</div>
 			
-			<?if($_SESSION['auth']['add-page']){?>
-			<div id="add-page">
+
+			<div>
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Page Title")?>" maxlength="60" class="w60 bold">
-
+					<input type="text" id="title" placeholder="<?_e("Title")?>" maxlength="60" class="w60 bold">
+					
 					<select id="tpl" required class="w30">
 						<option value=""><?_e("Select template")?></option>
 						<?
@@ -126,69 +134,12 @@ switch($_GET['mode'])
 				</div>
 
 				<div class="mas">
-					<input type="text" id="permalink" placeholder="<?_e("Permanent link: 'home' if homepage")?>" maxlength="60" class="w50 mrm">
+					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
 					<label for="homepage" class="mrs mtn"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
 					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
 				</div>
 
 			</div>
-			<?}?>
-
-
-			<?if($_SESSION['auth']['add-article']){?>
-			<div id="add-article">
-
-				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Article Title")?>" maxlength="60" class="w60 bold">
-
-					<select id="tpl" required class="w30">
-						<option value=""><?_e("Select template")?></option>
-						<?
-						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
-						while(list($cle, $filename) = each($scandir))				
-						{			
-							$filename = pathinfo($filename, PATHINFO_FILENAME);
-							echo"<option value=\"".$filename."\"".($filename == "article"?" selected":"").">".$filename."</option>";
-						}
-						?>					
-					</select>
-				</div>
-
-				<div class="mas">
-					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
-					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
-				</div>
-
-			</div>
-			<?}?>
-
-			
-			<?if($_SESSION['auth']['add-media']){?>
-			<div id="add-media">
-
-				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Media title")?>" maxlength="60" class="w60 bold">
-
-					<select id="tpl" required class="w30">
-						<option value=""><?_e("Select template")?></option>
-						<?
-						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
-						while(list($cle, $filename) = each($scandir))				
-						{			
-							$filename = pathinfo($filename, PATHINFO_FILENAME);
-							echo"<option value=\"".$filename."\"".(($filename == "fichier" or $filename == "media")?" selected":"").">".$filename."</option>";
-						}
-						?>					
-					</select>
-				</div>
-
-				<div class="mas">
-					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
-					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
-				</div>
-
-			</div>
-			<?}?>
 
 
 			<script>
@@ -197,29 +148,41 @@ switch($_GET['mode'])
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 
+				// Au click sur un onglet
+				$(".dialog-add ul li").click(function(event) {
+					var filter = $(this).data("filter");
+
+					// Affiche ou masque le bt permalink home
+					if(filter == "page") $("label[for='homepage']").show();
+					else $("label[for='homepage']").hide();
+
+					// Force la template du type
+					$("#tpl").val(filter);
+
+					// Reconstruit le permalink
+					refresh_permalink(".dialog-add");
+				});
+
 				// Changement au click de la checkbox homepage
 				$(".dialog-add #homepage").change(function() {
-					if(this.checked) $(".dialog-add #add-page #permalink").val("home");
-					else refresh_permalink(".dialog-add #add-page");
+					if(this.checked) $(".dialog-add #permalink").val("home");
+					else refresh_permalink(".dialog-add");
 				});
 
 				// Click refresh permalink
 				$(".dialog-add #refresh-permalink").click(function() {
-					refresh_permalink("#" + $(this).parent().parent().attr("id"));
+					refresh_permalink(".dialog-add");
 				});
 
 				// Création du permalink lors de la saisie du title
 				var timer = null;
 				$(".dialog-add #title").keyup(function() 
 				{
-					// Id du parent qui contient le title edité en cours
-					var id = $(this).parent().parent().attr("id");
-
 					if(timer != null) clearTimeout(timer);
 
 					timer = setTimeout(function() {
 						timer = null;
-						refresh_permalink("#" + id);
+						refresh_permalink(".dialog-add");
 					}, '500');
 				});
 
@@ -237,19 +200,20 @@ switch($_GET['mode'])
 							modal: true,
 							width: "60%",
 							buttons: {
-								"OK": function() {
+								"OK": function() 
+								{
 									// Dans quel onglet on se situe
 									type = $(".ui-tabs-nav .ui-state-active").data("filter");
 
-									if(!$(".dialog-add #add-"+type+" #tpl").val()) error(__("Thank you to select a template"));
+									if(!$(".dialog-add #tpl").val()) error(__("Thank you to select a template"));
 									else {
 										$.ajax({
 											type: "POST",
 											url: path + "api/ajax.admin.php?mode=insert",
 											data: {
-												"title": $(".dialog-add #add-"+type+" #title").val(),
-												"tpl": $(".dialog-add #add-"+type+" #tpl").val(),
-												"permalink": $(".dialog-add #add-"+type+" #permalink").val(),
+												"title": $(".dialog-add #title").val(),
+												"tpl": $(".dialog-add #tpl").val(),
+												"permalink": $(".dialog-add #permalink").val(),
 												"type": type,
 												"nonce": $("#nonce").val()// Pour la signature du formulaire
 											}
