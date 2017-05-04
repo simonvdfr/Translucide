@@ -110,6 +110,10 @@
 		display: block;
 		margin: 0 auto 0.5rem;
 	}
+	.editable img {
+		max-width: 100%;
+		height: auto;
+	}
 }
 
 @media (max-width: 360px) 
