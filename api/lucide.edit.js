@@ -68,7 +68,9 @@ get_content = function(content)
 	// Contenu des champs éditables
 	$(document).find(content+" .editable").not("header nav .editable").each(function() {
 		// Si on est en mode pour voir le code source
-		if($(this).hasClass("view-source")) var content_editable = $(this).text(); else var content_editable = $(this).html();
+		if($(this).hasClass("view-source")) var content_editable = $(this).text();
+		else var content_editable = $(this).html();
+
 		if($(this).html()) data[content_array][this.id] = content_editable;
 	});
 	
@@ -310,7 +312,8 @@ html_tool = function(html){
 }
 
 // Voir le code source
-view_source = function(memo){
+view_source = function(memo, force){
+
 	// Si on est déjà en mode view source on remet en html
 	if($(memo).hasClass("view-source")) 
 	{
@@ -1181,17 +1184,29 @@ $(document).ready(function()
 		// Récupère les contenus du presse-papier
 		var paste = (event.originalEvent || event).clipboardData.getData("text/html") || prompt(__("Paste something..."));// text/html text/plain
 
-		// Clean les tags
-		if(!$(this).hasClass("view-source")) paste = strip_tags(paste, "<a></a><b><b/><i></i>");
+		// Si pas en mode visionnage du code source
+		if(!$(this).hasClass("view-source")) 
+		{
+			//@todo voir pour les doubles saut de ligne lors des copier&coller
+			paste = paste.replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
+			    .replace(/\n|\r/gi, "")// Clean les retours à la ligne
+			    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
+			    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+			    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
 
-		paste = paste.replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
-		    .replace(/\n|\r/gi, "")// Clean les retours à la ligne
-		    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
-		    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours à la ligne
-		    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
+			// Clean les tags
+			paste = strip_tags(paste, "<a></a><b><b/><i></i><br>");
+		}
 
-		// Insertion dans le contenu
-		exec_tool("insertText", paste);// insertHTML insertText
+		// Insertion dans le contenu insertHTML insertText
+		if($(this).hasClass("view-source")) exec_tool("insertText", paste);// Mode source on colle en texte
+		else exec_tool("insertHTML", paste);// Mode normal on colle en html
+
+		// Double switch pour formater en mode source
+		if($(this).hasClass("view-source")) {
+			view_source(memo_focus);// Mode normal
+			view_source(memo_focus);// Mode source formaté
+		}
 	});
 
 
@@ -1644,13 +1659,19 @@ $(document).ready(function()
 		}
 	});
 
+	//@todo SUPP visiblement le bug n'est plus présent depuis l'avenement d'un bon copier&coller...
 	//@todo ajouter un filtre qui permet de supp uniquement si span avec font-size après action supp/backspace
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
-	if($.browser.webkit) {
+	/*if($.browser.webkit) {
 		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
-			if(event.target.tagName == "SPAN") event.target.outerHTML = event.target.innerHTML;			
+			console.log($(event.target).hasClass("editable"));
+			console.log(event);
+			if(event.target.tagName == "SPAN" && !$(event.target).hasClass("editable")) {
+				console.log("SPAN");
+				//event.target.outerHTML = event.target.innerHTML;			
+			}
 		});
-	}
+	}*/
 
 	// On change une info dans un menu select
 	$("#admin-bar select").change(function() {
