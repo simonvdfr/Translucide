@@ -97,10 +97,10 @@ $GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-n
 
 
 // Type de contenu ajoutable
-$GLOBALS['add-content']['page'] = true;
-$GLOBALS['add-content']['article'] = true;
-$GLOBALS['add-content']['media'] = true;
-$GLOBALS['add-content']['product'] = false;
+$GLOBALS['add-page'] = true;
+$GLOBALS['add-article'] = true;
+$GLOBALS['add-media'] = false;
+$GLOBALS['add-product'] = false;
 
 
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
