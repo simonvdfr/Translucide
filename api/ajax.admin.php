@@ -521,8 +521,12 @@ switch($_GET['mode'])
 			// Si c'est un lien vers la home
 			if($val == $GLOBALS['home'] or $val == $GLOBALS['path'])
 				$menu[] = "home";
-			else 
+			else {
+				// Supprime l'url root du site
+				$val = str_replace($GLOBALS['home'], "", $val);
+
 				$menu[] = $connect->real_escape_string($val);
+			}
 		}
 
 		// Liste les pages abs du menu
