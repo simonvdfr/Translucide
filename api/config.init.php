@@ -137,9 +137,6 @@ $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/the
 // Utilisation de librairie minifier
 $GLOBALS['min'] = "";// .min
 
-// Inclusion des css
-$GLOBALS['include']['css'] = false;
-
 
 // Sécurité / défaut
 $title = null;
