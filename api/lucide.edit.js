@@ -912,19 +912,23 @@ $(document).ready(function()
 			event.preventDefault();  
 			//event.stopPropagation();
 
-			if($(event.target).parent().hasClass("add-empty"))
-				$("header nav ul:first").append($(event.target).parent().clone());// Copie
-			else
-				$($(event.target).parent()).appendTo("header nav ul:first");// Déplace
-			
-			// Rends editable les éléments du menu
-			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
-			editable_event();
-
-			tosave();// A sauvegarder
+			// Si on est bien sur un élément ajoutable
+			if(event.target.className == "dragger")
+			{
+				if($(event.target).parent().hasClass("add-empty"))
+					$("header nav ul:first").append($(event.target).parent().clone());// Copie
+				else
+					$($(event.target).parent()).appendTo("header nav ul:first");// Déplace
 				
-			// Désactive les liens dans le menu d'ajout
-			$("#add-nav ul a").click(function() { return false; });
+				// Rends editable les éléments du menu
+				$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+				editable_event();
+
+				tosave();// A sauvegarder
+					
+				// Désactive les liens dans le menu d'ajout
+				$("#add-nav ul a").click(function() { return false; });
+			}
 		},
 		// On check si on est sur le menu d'ajout de page au menu
 		"mouseenter": function(event) { hover_add_nav = true; },
@@ -965,8 +969,12 @@ $(document).ready(function()
 
 	// Page disponible absente du menu
 	add_page = false;
+	on_header = false;
 	$("header").on({
 		"mouseenter": function(event) {
+
+			on_header = true;// On est sur le header avec la souris
+
 			if(!add_page)
 			{
 				// Liste les pages déjà dans le menu
@@ -1008,12 +1016,14 @@ $(document).ready(function()
 					}
 				});
 			}
-			else $("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
+			else if($("#add-nav").css("display") != "block")// Si pas affiché on l'affiche
+				$("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
 		},
 		// Si on sort du header, on check si on est sur le menu d'ajout de page avant de le fermer
 		"mouseleave": function(event) {
+			on_header = false;
 			setTimeout(function() { 
-				if(!hover_add_nav) $("#add-nav").fadeOut("fast");
+				if(!hover_add_nav && !on_header) $("#add-nav").fadeOut("fast");
 			}, 1000);			
 		}
 	});
