@@ -1669,19 +1669,13 @@ $(document).ready(function()
 		}
 	});
 
-	//@todo SUPP visiblement le bug n'est plus présent depuis l'avenement d'un bon copier&coller...
-	//@todo ajouter un filtre qui permet de supp uniquement si span avec font-size après action supp/backspace
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
-	/*if($.browser.webkit) {
+	if($.browser.webkit) {
 		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
-			console.log($(event.target).hasClass("editable"));
-			console.log(event);
-			if(event.target.tagName == "SPAN" && !$(event.target).hasClass("editable")) {
-				console.log("SPAN");
-				//event.target.outerHTML = event.target.innerHTML;			
-			}
+			if(event.target.tagName == "SPAN" && !$(event.target).hasClass("editable"))
+				event.target.outerHTML = event.target.innerHTML;			
 		});
-	}*/
+	}
 
 	// On change une info dans un menu select
 	$("#admin-bar select").change(function() {
