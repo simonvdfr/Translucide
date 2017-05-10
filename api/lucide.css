@@ -283,6 +283,7 @@ header:hover .dragger { display: block; }
 	#add-nav ul {
 		padding-top: 55px;
 		margin-top: -60px;
+		border:  none;
 	}
 	#add-nav li {
 		background-color: #fff;
