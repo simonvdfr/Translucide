@@ -838,7 +838,7 @@ $(document).ready(function()
 	else $("#admin-bar #state-content").prop("checked", true);
 
 	// Ouverture de l'édition du title si en mode responsive
-	$("#meta-responsive i").on('click',	function() {
+	$("#meta-responsive i").on("click",	function() {
 		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle();			
 	});
 
@@ -884,6 +884,15 @@ $(document).ready(function()
 
 	// Place les contenus au-dessus pour les rendre éditables à coup sur
 	$(".editable").parent().css("z-index", "10");
+
+
+	// Rends communiquant les champs titles dans l'édition et l'admin-bar
+	$("#admin-bar #title").on("keyup", function(event){
+		$(".editable#title").html($(this).val());
+	});
+	$(".editable#title").on("keyup", function(event){
+		$("#admin-bar #title").val($(this).text());
+	});
 
 
 	/************** MENU NAV **************/
@@ -1628,10 +1637,17 @@ $(document).ready(function()
 	});
 
 
+	// On change une info dans un menu select
+	$("#admin-bar select").change(function() {
+		tosave();// A sauvegarder
+	});
+
+
 	// Si on change le statut d'activation
 	$("#state-content").click(function() {	
 		tosave();
 	});
+
 
 	// Si on sauvegarde
 	$("#save").click(function() {	
@@ -1669,6 +1685,7 @@ $(document).ready(function()
 		}
 	});
 
+
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
 	if($.browser.webkit) {
 		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
@@ -1677,10 +1694,6 @@ $(document).ready(function()
 		});
 	}
 
-	// On change une info dans un menu select
-	$("#admin-bar select").change(function() {
-		tosave();// A sauvegarder
-	});
 
 	// Désactive le click pour ne pas relancer l'admin
 	$(".bt.edit").off("click");
