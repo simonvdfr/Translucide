@@ -32,8 +32,8 @@ img_zoom = function(event)
 	original_top = $("img", this).offset().top;
 	original_left = $("img", this).offset().left;
 	
-	// Copie l'image en une version flottante zoomable
-	$("img", this).clone().appendTo(this).attr("id", "clone"+id).addClass("clone").css({
+	// Copie l'image en une version flottante zoomable // appendTo(this)
+	$("img", this).clone().appendTo("body").attr("id", "clone"+id).addClass("clone").css({
 		position: "absolute",
 		width: original_width,
 		height: original_height,
