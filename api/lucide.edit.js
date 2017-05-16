@@ -482,13 +482,14 @@ upload = function(source, file, resize)
 			var mime = (file.type ? file.type.split("/") : "");
 
 			// Supprime les fichiers autres que image
-			$(".fa", source).remove();
+			$("> .fa", source).remove();
 
 			// Affiche la preview si image
 			if(mime[0] == "image") 
 			{
 				// Si pas de tag img on le crée
-				if($("img", source).html() == undefined) $(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+">");
+				if($("img", source).html() == undefined) 
+					$(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+">");
 
 				// On fade à moitié (50%)
 				$("img", source).addClass("to50");

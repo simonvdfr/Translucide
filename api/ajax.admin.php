@@ -604,8 +604,23 @@ switch($_GET['mode'])
 				else 
 					var resize = "";
 
+
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
-				$("#media .add-media").after("<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>"+ (mime[0] == "image"? "<img src=''>" + resize : "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>") +"<div class='infos'></div><a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a></li>");
+				var container = "<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>";
+
+					if(mime[0] == "image") 
+						container += "<img src=''>" + resize;
+					else 
+						container += "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>"
+
+					container += "<div class='infos'></div>";
+
+					container += "<a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a>";
+
+				container += "</li>";
+
+				$("#media .add-media").after(container);
+
 
 				// Converti la date unix en date lisible
 				var date = new Date();

@@ -515,6 +515,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		vertical-align: middle;
 		overflow: auto;
 		display: inline-block;
+		overflow: hidden;
 		line-height: 2;
 		max-height: 100px;		    
 		max-width: 120px;
