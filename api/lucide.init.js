@@ -82,7 +82,7 @@ error = function(txt){
 	.fadeIn();
 
 	// Box avec le message d'erreur
-	$("body").append("<div id='error' class='ui-state-error ui-corner-all pointer pam absolute no tc'><i class='fa fa-exclamation-triangle mrs'></i>" + txt + "<i class='fa fa-times absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
+	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-exclamation-triangle mrs'></i>" + txt + "<i class='fa fa-times absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
 	var height = $("#error").outerHeight();
 	
 	// Affichage de la box
@@ -107,7 +107,7 @@ light = function(txt){
 	$("#highlight").remove();
 	
 	// Box avec le message d'information
-	$("body").append("<div id='highlight' class='ui-state-highlight ui-corner-all pointer pam absolute tc'><i class='fa fa-info-circle color mrs'></i>" + txt + "</div>");
+	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circle color mrs'></i>" + txt + "</div>");
 	var height = $("#highlight").outerHeight();
 	
 	// Affichage

@@ -531,6 +531,22 @@ input[type="reset"].unstyled:focus {
 }
 
 
+/* MESSAGE */
+#error {
+	border-radius: 5px;
+    border: 1px solid #cd0a0a;
+    background: #fef1ec;
+    color: #cd0a0a;
+}
+#highlight {
+	border-radius: 5px;
+	border: 1px solid #fcefa1;
+    background: #fbf9ee;
+    color: #363636;
+}
+
+
+
 /* GRIDS */
 @media (min-width: 544px) {
 	.grid {

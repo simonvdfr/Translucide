@@ -56,7 +56,6 @@
 
 
 /* Les icones */
-
 .fa-plus:before {
   content: "\f067";
 }
@@ -68,6 +67,24 @@
 }
 .fa-envelope-o:before {
   content: "\f003";
+}
+.fa-check:before {
+  content: "\f00c";
+}
+.fa-close:before {
+  content: "\f00d";
+}
+.fa-remove:before {
+  content: "\f00d";
+}
+.fa-times:before {
+  content: "\f00d";
+}
+.fa-cog:before {
+  content: "\f013";
+}
+.fa-gear:before {
+  content: "\f013";
 }
 .fa-home:before {
   content: "\f015";
@@ -84,8 +101,17 @@
 .fa-tint:before {
   content: "\f043";
 }
+.fa-info-circle:before {
+  content: "\f05a";
+}
 .fa-leaf:before {
   content: "\f06c";
+}
+.fa-exclamation-triangle:before {
+  content: "\f071";
+}
+.fa-warning:before {
+  content: "\f071";
 }
 .fa-plane:before {
   content: "\f072";
@@ -186,9 +212,6 @@
 .fa-save:before {
   content: "\f0c7";
 }
-.fa-pinterest:before {
-  content: "\f0d2";
-}
 .fa-pinterest-square:before {
   content: "\f0d3";
 }
@@ -212,9 +235,6 @@
 }
 .fa-comment-o:before {
   content: "\f0e5";
-}
-.fa-comments-o:before {
-  content: "\f0e6";
 }
 .fa-bolt:before {
   content: "\f0e7";
@@ -257,15 +277,6 @@
 }
 .fa-euro:before {
   content: "\f153";
-}
-.fa-thumbs-up:before {
-  content: "\f164";
-}
-.fa-thumbs-down:before {
-  content: "\f165";
-}
-.fa-youtube-square:before {
-  content: "\f166";
 }
 .fa-youtube:before {
   content: "\f167";
@@ -390,4 +401,3 @@
 .fa-snowflake-o:before {
   content: "\f2dc";
 }
-
