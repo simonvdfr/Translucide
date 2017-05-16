@@ -1425,7 +1425,7 @@ switch($_GET['mode'])
 						$_POST['path'] = $parse_url['path'];
 
 						// Formate le nom du site
-						$_POST['sitename'] = stripslashes($_POST['sitename']);
+						$_POST['sitename'] = htmlspecialchars(stripslashes($_POST['sitename']));
 
 						// On parcourt le fichier config
 						foreach($config_file as $line_num => $line) 
@@ -1436,7 +1436,8 @@ switch($_GET['mode'])
 							$key = $match[1];
 							
 							// Changement de la ligne et ajout de la nouvelle variable
-							if(isset($_POST[$key])) $config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".addcslashes(utf8_decode($_POST[$key]), "\\'")."\";\r\n";							
+							if(isset($_POST[$key])) 
+								$config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".utf8_decode($_POST[$key])."\";\r\n";							
 						}
 
 						unset($line);
@@ -1461,7 +1462,7 @@ switch($_GET['mode'])
 						<script>
 							light("<?_e("Successful installation ! create your homepage !")?>");
 							setTimeout(function(){
-								 $(".ui-state-highlight").slideUp("slow").fadeOut(function() {
+								 $("#error, #highlight").slideUp("slow").fadeOut(function() {
 									 window.location.reload();// window.location = window.location.href;
 								 });
 							}, 3000);
