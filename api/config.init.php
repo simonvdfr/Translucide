@@ -79,6 +79,15 @@ $GLOBALS['microsoft_api_secret'] = "";
 $GLOBALS['pub_hash'] = "";
 $GLOBALS['priv_hash'] = "";
 
+// Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
+$GLOBALS['security'] = "medium";
+
+// Nom de boucle de hashage du mdp
+$GLOBALS['pwd_hash_loop'] = "";
+
+// Temps d'expiration des sessions de connexion
+$GLOBALS['session_expiration'] = 60*60*24*30;
+
 
 // Compte public autorisé
 $GLOBALS['public_account'] = false;
@@ -93,7 +102,24 @@ $GLOBALS['default_auth'] = "add-media-public,edit-public";
 $GLOBALS['meta_user'] = null;
 
 // Niveaux d'authentification possible
-$GLOBALS['auth_level'] = array("edit-admin", "edit-user", "edit-config", "edit-nav", "edit-header", "edit-footer", "add-media", "add-page", "add-article", "add-product", "edit-media", "edit-page", "edit-article", "edit-product", "add-media-public", "edit-public");
+$GLOBALS['auth_level'] = array(
+	"edit-admin",
+	"edit-user",
+	"edit-config",
+	"edit-nav",
+	"edit-header",
+	"edit-footer",
+	"add-media",
+	"add-page",
+	"add-article",
+	"add-product",
+	"edit-media",
+	"edit-page",
+	"edit-article",
+	"edit-product",
+	"add-media-public",
+	"edit-public"
+);
 
 
 // Type de contenu ajoutable
@@ -103,20 +129,37 @@ $GLOBALS['add-media'] = false;
 $GLOBALS['add-product'] = false;
 
 
-// Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
-$GLOBALS['security'] = "medium";
-
-// Nom de boucle de hashage du mdp
-$GLOBALS['pwd_hash_loop'] = "";
-
-// Temps d'expiration des sessions de connexion
-$GLOBALS['session_expiration'] = 60*60*24*30;
+// Toolbox
+$GLOBALS['toolbox'] = array(
+	"h2",
+	"bold",
+	"italic",
+	"underline",
+	"justifyLeft",
+	"justifyCenter",
+	"justifyRight",
+	"justifyFull",
+	"InsertHorizontalRule",
+	"viewsource",
+	"icon",
+	"media",
+	"link"
+);
 
 
 // Type mime supporté pour l'upload
 $GLOBALS['mime_supported'] = array(
-	"image/jpg", "image/jpeg", "image/pjpeg", "image/png", "image/x-png", "image/gif", "image/x-icon",
-	"application/pdf", "application/zip", "application/x-zip-compressed", "text/plain"
+	"image/jpg",
+	"image/jpeg",
+	"image/pjpeg",
+	"image/png",
+	"image/x-png",
+	"image/gif",
+	"image/x-icon",
+	"application/pdf",
+	"application/zip",
+	"application/x-zip-compressed",
+	"text/plain"
 );
 
 
@@ -128,9 +171,13 @@ $GLOBALS['png_quality'] = 9;
 
 // Librairie externe
 $GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+
 $GLOBALS['icons'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."plugin/icons/icons.min.css";
+
 $GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
+
 $GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js";
+
 $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
 
 

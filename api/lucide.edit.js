@@ -1042,25 +1042,56 @@ $(document).ready(function()
 
 	// Barre d'outils de mise en forme : toolbox
 	toolbox = "<ul id='txt-tool' class='toolbox'>";
-		toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title H2")+"\"><i class='fa fa-fw fa-header'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('justifyLeft')\" id='align-left'><i class='fa fa-fw fa-align-left'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('justifyCenter')\" id='align-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('justifyRight')\" id='align-right'><i class='fa fa-fw fa-align-right'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
-		toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Separator")+"\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
-		toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
-		toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
-		toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture-o'></i></button></li>";
+
+		if(typeof toolbox_h2 != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title H2")+"\"><i class='fa fa-fw fa-header'></i></button></li>";
+
+		if(typeof toolbox_bold != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
+
+		if(typeof toolbox_italic != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
+
+		if(typeof toolbox_underline != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
+
+		if(typeof toolbox_justifyLeft != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('justifyLeft')\" id='align-left'><i class='fa fa-fw fa-align-left'></i></button></li>";
+
+		if(typeof toolbox_justifyCenter != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('justifyCenter')\" id='align-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
+
+		if(typeof toolbox_justifyRight != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('justifyRight')\" id='align-right'><i class='fa fa-fw fa-align-right'></i></button></li>";
+
+		if(typeof toolbox_justifyFull != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
+
+		if(typeof toolbox_InsertHorizontalRule != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Separator")+"\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
+
+		if(typeof toolbox_viewsource != 'undefined') 
+			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
+
+		if(typeof toolbox_icon != 'undefined') 
+			toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
+
+		if(typeof toolbox_media != 'undefined') 
+			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture-o'></i></button></li>";
+
 		//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
-		toolbox+= "<li><button onclick=\"link_option(); $('#txt-tool #option #link').select();\" title=\""+__("Add Link")+"\"><i class='fa fa-fw fa-link'></i></button></li>";
-		toolbox+= "<li id='option'>";
-			toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
-			toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
-			toolbox+= "<button onclick=\"exec_tool('CreateLink', $('#txt-tool #option #link').val())\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
-		toolbox+= "</li>";
+
+		if(typeof toolbox_link != 'undefined') 
+		{
+			toolbox+= "<li><button onclick=\"link_option(); $('#txt-tool #option #link').select();\" title=\""+__("Add Link")+"\"><i class='fa fa-fw fa-link'></i></button></li>";
+
+			toolbox+= "<li id='option'>";
+				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
+				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
+				toolbox+= "<button onclick=\"exec_tool('CreateLink', $('#txt-tool #option #link').val())\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+			toolbox+= "</li>";
+		}
+
 	toolbox+= "</ul>";
 	
 	// Init la toolbox

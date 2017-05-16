@@ -46,6 +46,12 @@ switch($_GET['mode'])
 			<script>				
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
+
+				<?
+				// Outil dispo dans la toolbox pour les contenus
+				if($GLOBALS['toolbox'])
+				while(list($cle, $val) = each($GLOBALS['toolbox'])) { echo"toolbox_".$val." = true;\n"; }
+				?>
 			
 				// Chargement de Jquery UI
 				$.ajax({
