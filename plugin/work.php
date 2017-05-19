@@ -57,11 +57,6 @@ reset($array_work[$work]);
 
 <?if(!$jswork) {?>
 <script>
-	// Affichage des bulles d'informations
-	$(".work li a").tooltip({
-		position: {my: "left top"}
-	});
-
 	add_translation({
 		"Add a block" : {"fr" : "Ajouter un bloc"},
 		"Move" : {"fr" : "D\u00e9placer"},
