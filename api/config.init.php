@@ -131,15 +131,15 @@ $GLOBALS['add-product'] = false;
 
 // Toolbox
 $GLOBALS['toolbox'] = array(
-	"h2",
+	//"h2",
 	"bold",
 	"italic",
 	"underline",
 	"justifyLeft",
 	"justifyCenter",
 	"justifyRight",
-	"justifyFull",
-	"InsertHorizontalRule",
+	//"justifyFull",
+	//"InsertHorizontalRule",
 	"viewsource",
 	"icon",
 	"media",
