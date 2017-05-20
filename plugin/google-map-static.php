@@ -10,9 +10,15 @@
 	}
 </style>
 
-<div id="google-map" class="animation fade-in"></div>
+<div id="google-map" class="animation fade-in">
+	<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=440x370&maptype=roadmap&markers=color:green%7C<?=$GLOBALS['content']['lat']?>,<?=$GLOBALS['content']['lng']?>&key=<?=$GLOBALS['google_map']?>&style=feature:water|element:geometry|saturation:-77" alt="<?=$GLOBALS['sitename']?>">
+</div>
+
 
 <script>
+// https://developers.google.com/maps/documentation/static-maps/intro
+// center
+
 add_translation({
 	"Address not found" : {"fr" : "Adresse introuvable"}
 });
@@ -154,4 +160,4 @@ $(document).ready(function()
 });
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=$GLOBALS['google_map']?>&callback=init_map"></script>
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=$GLOBALS['google_map']?>&callback=init_map"></script> -->
