@@ -18,8 +18,7 @@
 
 
 <script>
-$(document).ready(function()
-{		
+$(function() {
 	google_map_key = "<?=$GLOBALS['google_map']?>";
 
 	// Si on édit on charge d'edition google map

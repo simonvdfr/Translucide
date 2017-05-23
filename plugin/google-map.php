@@ -154,4 +154,4 @@ $(document).ready(function()
 });
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=$GLOBALS['google_map']?>&callback=init_map"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?=$GLOBALS['google_map']?>&callback=init_map" async defer></script>
