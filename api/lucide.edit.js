@@ -1232,17 +1232,23 @@ $(document).ready(function()
 	$(".editable").on("paste", function(event) {
 		event.preventDefault();
 
+		// Mode de prélèvement et d'injection
+		if($(this).hasClass("view-source")) var getData = "text/plain", insertMode = "insertText";
+		else var getData = "text/html", insertMode = "insertHTML";
+
 		// Récupère les contenus du presse-papier
-		var paste = (event.originalEvent || event).clipboardData.getData("text/html") || prompt(__("Paste something..."));// text/html text/plain
+		var paste = (event.originalEvent || event).clipboardData.getData(getData) || prompt(__("Paste something..."));// text/html text/plain
+
+		// Supprimes les commentaires HTML
+		paste = paste.replace(/<!--[\s\S]*?-->/gi, "");
 
 		// Si pas en mode visionnage du code source
 		if(!$(this).hasClass("view-source")) 
 		{
 			//@todo voir pour les doubles saut de ligne lors des copier&coller
-			paste = paste.replace(/<!--[\s\S]*?-->/gi, "")// Supprimes les commentaires HTML
-			    .replace(/\n|\r/gi, "")// Clean les retours à la ligne
-			    .replace(/<p[^>]*><br><\/p>/gi, "\n")// Supprime les br dans des <p>
-			    .replace(/<br>|<\/div>|<\/p>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+			paste = paste.replace(/\n|\r/gi, "")// Clean les retours à la ligne
+			    .replace(/<p[^>]*><br><\/p><\/div>/gi, "\n")// Supprime les br dans des <p>
+			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
 			    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
 
 			// Clean les tags
@@ -1250,8 +1256,7 @@ $(document).ready(function()
 		}
 
 		// Insertion dans le contenu insertHTML insertText
-		if($(this).hasClass("view-source")) exec_tool("insertText", paste);// Mode source on colle en texte
-		else exec_tool("insertHTML", paste);// Mode normal on colle en html
+		exec_tool(insertMode, paste);
 
 		// Double switch pour formater en mode source
 		if($(this).hasClass("view-source")) {
