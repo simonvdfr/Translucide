@@ -157,7 +157,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style<?=$GLOBALS['min']?>.css">	
 
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>responsive<?=$GLOBALS['min']?>.css" media="only screen and (max-width: 850px)">
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>responsive<?=$GLOBALS['min']?>.css">
 
 
 	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
