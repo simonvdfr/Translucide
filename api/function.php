@@ -246,7 +246,9 @@ function bg($key = null)
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
 
-	echo" data-id='".encode($key)."' data-bg=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "")."\"";
+	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "");
+
+	echo" data-id='".encode($key)."' data-bg=\"".$url."\" style=\"background-image: url('".$url."')\"";
 
 	$GLOBALS['editkey']++;
 }
