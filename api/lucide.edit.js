@@ -138,7 +138,8 @@ save = function(callback)
 
 	// Contenu du menu de navigation
 	data["nav"] = {};
-	$(document).find("header nav ul a").not("#add-nav ul a").each(function(index) {
+	$(document).find("header nav ul a").not("#add-nav ul a, .exclude a").each(function(index) {
+		console.log($(this));
 		data["nav"][index] = {
 			href : $.trim($(this).attr('href')),
 			text : $(this).text(),
@@ -949,7 +950,7 @@ $(document).ready(function()
 	$("header nav ul:first").sortable({
 		connectWith: "header nav ul",
 		handle: ".dragger",
-		axis: "x", 
+		axis: "x",
 		start: function(event) {
 			$("#add-nav .open").addClass("del").children().removeClass("fa-plus").addClass("fa-trash");
 
@@ -968,6 +969,11 @@ $(document).ready(function()
 			// désactive les liens dans le menu d'ajout
 			$("#add-nav ul a").click(function() { return false; });
 		}
+	});
+
+	// Si on est en mode burger on active le tri verticalement
+	$(".burger").click(function() {
+		$("header nav ul:first").sortable("option", "axis", "y");
 	});
 	
 	// Rend clonable uniquement le bloc vide
@@ -1106,7 +1112,7 @@ $(document).ready(function()
 
 				memo_focus = this;// Pour memo le focus en cours
 
-				adminbar_height = $("#admin-bar").outerHeight();
+				//adminbar_height = $("#admin-bar").outerHeight();
 				toolbox_height = $("#txt-tool").outerHeight();
 				this_offset_top = $(memo_focus).offset().top;
 
@@ -1128,8 +1134,8 @@ $(document).ready(function()
 				// Scroll la toolbox si on descend
 				$window.on("scroll click.scroll-toolbox", function(event) {
 					// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
-					if(($window.scrollTop() + adminbar_height + toolbox_height + 12) > this_offset_top) 
-						$("#txt-tool").css({top: adminbar_height + 5 + "px", position: "fixed"});	
+					if(($window.scrollTop() + toolbox_height + 12) > this_offset_top) 
+						$("#txt-tool").css({top: 5 + "px", position: "fixed"});	
 					else
 						$("#txt-tool").css({top: this_offset_top - toolbox_height - 8 + "px", position: "absolute"});
 				});
@@ -1498,7 +1504,7 @@ $(document).ready(function()
 		$("[data-href]")
 			.on({
 				"click.editable-href": function(event) {// Supprime l'action de click sur le lien
-					event.stopPropagation();
+					//event.stopPropagation();// @todo supp car empèche l'édition des bg
 					event.preventDefault();
 				},
 				"mouseenter.editable-href": function(event) {// Hover zone href		
