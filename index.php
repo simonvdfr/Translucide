@@ -148,18 +148,25 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<?if($GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
 
+
 	<?if($GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
+
 
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
 
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style<?=$GLOBALS['min']?>.css?">	
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>responsive<?=$GLOBALS['min']?>.css?">	
+
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style<?=$GLOBALS['min']?>.css">	
+
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>responsive<?=$GLOBALS['min']?>.css" media="only screen and (max-width: 850px)">
+
 
 	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
+
 
 	<script src="<?=$GLOBALS['jquery']?>"></script>
 
 	<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js"></script>
+
 
 	<script>
 		<? if($GLOBALS['google_analytics']) { ?>
@@ -186,8 +193,7 @@ header('Content-type: text/html; charset=UTF-8');
 		
 						
 		<?if($_COOKIE['autoload_edit'] and $_SESSION['auth']['edit-page']){?>// Si demande l'autoload du mode édition et si admin
-			$(document).ready(function()
-			{
+			$(function(){
 				edit_launcher();
 				$("a.bt.fixed.edit").fadeOut();				
 			});
@@ -214,19 +220,18 @@ header('Content-type: text/html; charset=UTF-8');
 include_once("theme/".$GLOBALS['theme']."header.php");
 
 
-//highlight_string(print_r($GLOBALS, true));
-
-
 echo"<div class='content".($res['tpl']?" tpl-".encode($res['tpl']):"")."'>";
 
-if($res['tpl']) // On a une page
-{
-	include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
-}
-else // Pas de contenu a chargé
-{
-	echo"<div class='pal tc'>".$msg."</div>";
-}
+
+	if($res['tpl']) // On a une page
+	{
+		include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
+	}
+	else // Pas de contenu a chargé
+	{
+		echo"<div class='pal tc'>".$msg."</div>";
+	}
+
 
 echo"</div>";
 
