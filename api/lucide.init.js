@@ -25,6 +25,12 @@ add_translation = function(new_translation) {
 // Ajoute la traduction courante
 add_translation(translation);
 
+// Traduit un texte
+__ = function(txt) {
+	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
+	else return txt;
+}
+
 
 // Obtenir le contenu d'un cookie
 get_cookie = function(key) {
@@ -56,13 +62,6 @@ logout = function() {
 			reload();// Recharge la page	
 		}
 	});
-}
-
-
-// Traduit un texte
-__ = function(txt) {
-	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
-	else return txt;
 }
 
 
@@ -212,34 +211,29 @@ edit_launcher = function(callback)
 
 
 
-$(document).ready(function()
+$(function()
 {
-	// On met en background les images data-bg
+
+	// On met en background les images data-bg //@todo verif l'utilité car déjà instancier dans fonction.php
 	$("[data-bg]").css("background-image", function() {
 		return "url(" + $(this).attr("data-bg") + ")";
 	});
 
+
+
 	// Bouton ajout de page/article
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
 	
+	// Bind le bouton d'ajout
+	$("a.bt.add").click(function() 
+	{
+		add_content();
+	});	
+
+
+
 	// Bouton d'édition si la page existe dans la base
 	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></a>");
-
-	// Page désactivé => message admin
-	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
-		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("Activation status") +" : "+ __(state) +"</a>");
-		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
-	}
-	
-	// Bouton pour remonter en haut au scroll
-	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-chevron-up bigger vam'></i></a>");	
-
-
-	// Smoothscroll to top
-	$("a.bt.fixed.top").click(function() {
-		$("html, body").animate({scrollTop: 0}, 300);
-		return false;
-	});
 
 	// Bind le bouton d'édition
 	$("a.bt.edit").click(function() 
@@ -251,11 +245,6 @@ $(document).ready(function()
 		$("a.bt.fixed.add").fadeOut();
 	});	
 
-	// Bind le bouton d'ajout
-	$("a.bt.add").click(function() 
-	{
-		add_content();
-	});	
 
 
 	hover_add = false;
@@ -280,6 +269,26 @@ $(document).ready(function()
 			hover_add = false;
 			setTimeout(function() { if(!hover_add) $("a.bt.fixed.add").fadeOut("fast");	}, 1000);
 	});
+
+
+
+	// Page désactivé => message admin
+	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
+		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("Activation status") +" : "+ __(state) +"</a>");
+		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
+	}
+
+	
+
+	// Bouton pour remonter en haut au scroll
+	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-chevron-up bigger vam'></i></a>");	
+
+	// Smoothscroll to top
+	$("a.bt.fixed.top").click(function() {
+		$("html, body").animate({scrollTop: 0}, 300);
+		return false;
+	});
+
 
 
 	$window = $(window);
@@ -323,6 +332,7 @@ $(document).ready(function()
 			else $("a.bt.fixed.add").delay("2500").fadeIn("slow");	
 	}
 
+
 	
 	// Verifi les droits, si l'admin n'est pas lancé
 	if(get_cookie("auth").indexOf("edit-page") && !$("#admin-bar").length && !$("#dialog-connect").length)
@@ -333,4 +343,4 @@ $(document).ready(function()
 		});
 	}
 	
-});	
+});
