@@ -213,11 +213,11 @@ edit_launcher = function(callback)
 
 $(function()
 {
-
-	// On met en background les images data-bg //@todo verif l'utilité car déjà instancier dans fonction.php
-	$("[data-bg]").css("background-image", function() {
+	//@todo verif l'utilité car déjà instancier dans fonction.php
+	// On met en background les images data-bg 
+	/*$("[data-bg]").css("background-image", function() {
 		return "url(" + $(this).attr("data-bg") + ")";
-	});
+	});*/
 
 
 
