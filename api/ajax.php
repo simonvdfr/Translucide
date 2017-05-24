@@ -98,7 +98,7 @@ switch($_GET['mode'])
 				<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
 			<?}?>
 
-			<a href="javascript:login('internal');void(0);" class="bt connect internal"><?_e("Connection with");?> <?=utf8_encode($GLOBALS['sitename']);?></a>
+			<a href="javascript:login('internal');void(0);" class="bt connect internal"><?_e("Connection with");?> <?=($GLOBALS['sitename']);?></a>
 
 			<?if($GLOBALS['facebook_api_secret']){?><a href="javascript:login('facebook');void(0);" class="bt connect facebook"><?_e("Connection with");?> Facebook</a><?}?>
 
