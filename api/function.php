@@ -242,13 +242,19 @@ function media($key = null, $filtre = array())
 }
 
 // Image de fond de bloc
-function bg($key = null)
+function bg($key = null, $lazy = false)
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
 
 	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "");
 
-	echo" data-id='".encode($key)."' data-bg=\"".$url."\" style=\"background-image: url('".$url."')\"";
+	echo" data-id='".encode($key)."' data-bg=\"".$url."\"";
+
+	// Si lazy load des images de fond
+	if($lazy)
+		echo" data-lazy=\"bg\"";
+	else 
+		echo" style=\"background-image: url('".$url."')\"";
 
 	$GLOBALS['editkey']++;
 }
