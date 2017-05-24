@@ -25,12 +25,6 @@ add_translation = function(new_translation) {
 // Ajoute la traduction courante
 add_translation(translation);
 
-// Traduit un texte
-__ = function(txt) {
-	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
-	else return txt;
-}
-
 
 // Obtenir le contenu d'un cookie
 get_cookie = function(key) {
@@ -50,6 +44,13 @@ set_cookie = function(key, val, days) {
 // Detect si on est sur mobile
 ismobile = function(){
 	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return true; else return false;
+}
+
+
+// Traduit un texte
+__ = function(txt) {
+	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
+	else return txt;
 }
 
 
