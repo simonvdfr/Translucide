@@ -746,7 +746,7 @@ img_leave = function()
 
 
 
-$(document).ready(function()
+$(function()
 {						
 	//@todo: ajouter le choix de la template de la page en cours, la langue
 	
