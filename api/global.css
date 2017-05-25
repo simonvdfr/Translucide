@@ -306,6 +306,7 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 
 .inline { display: inline !important; }
 .block { display: block !important; }
+.flex { display: flex; }
 .none { display: none; }
 
 .hidden { visibility: hidden; }
@@ -597,6 +598,27 @@ input[type="reset"].unstyled:focus {
     [class*="grid-2"] > * { width: calc(100% / 2 - 0.01px); }
 	[class*="grid-3"] > * { width: calc(100% / 3 - 0.01px); }
 	[class*="grid-4"] > * { width: calc(100% / 4 - 0.01px); }
+
+	.one-third {
+		-webkit-box-flex: 0;
+		    -ms-flex: 0 0 auto;
+		        flex: 0 0 auto;
+		width: calc(100% / 3 - 0.01px);
+	}
+
+	.one-quarter {
+		-webkit-box-flex: 0;
+		    -ms-flex: 0 0 auto;
+		        flex: 0 0 auto;
+		width: calc(100% / 4 - 0.01px); 
+	}
+
+	.one-fifth {
+		-webkit-box-flex: 0;
+		    -ms-flex: 0 0 auto;
+		        flex: 0 0 auto;
+		width: calc(100% / 5 - 0.01px);
+	}
 }
 
 
