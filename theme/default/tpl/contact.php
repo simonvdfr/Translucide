@@ -29,8 +29,10 @@ if($_POST["email"] and $_POST["message"] and isset($_POST["question"]) and !$_PO
 				{
 					?>
 					<script>
-					light(__("Message sent"));
-					$("#contact").fadeOut();
+						light(__("Message sent"));
+
+						// Icône envoyer
+						$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-check");
 					</script>
 					<?
 				}
@@ -39,8 +41,14 @@ if($_POST["email"] and $_POST["message"] and isset($_POST["question"]) and !$_PO
 			{
 				?>
 				<script>	
-				error(__("Wrong answer to the question!"));
-				$("#question").effect("highlight").effect("highlight");
+					error(__("Wrong answer to the question!"));
+					//$("#question").effect("highlight").effect("highlight");
+
+					// On rétablie le formulaire
+					$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-envelope");
+					$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
+					$("#contact button").attr("disabled", false);
+					$("#contact").submit(function(event){ send_contact(event) });
 				</script>
 				<?
 			}
@@ -49,8 +57,15 @@ if($_POST["email"] and $_POST["message"] and isset($_POST["question"]) and !$_PO
 		{
 			?>
 			<script>	
-			error(__("Invalid email!"));
-			$("#email").effect("highlight").effect("highlight");
+				error(__("Invalid email!"));
+
+				//$("#email").effect("highlight").effect("highlight");
+				
+				// On rétablie le formulaire
+				$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-envelope");
+				$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
+				$("#contact button").attr("disabled", false);
+				$("#contact").submit(function(event){ send_contact(event) });
 			</script>
 			<?
 		}
@@ -78,37 +93,38 @@ else// Affichage du formulaire
 	</script>
 
 
-	<section class="under-header parallax mod tc white" <?bg('bg-header')?>>		
+	<section class="under-header parallax mod tc ptl" <?bg('bg-header')?>>		
 		<h1><?txt('titre')?></h1>
 	</section>
 
 
 	<section class="mw960p mod center mtl">
-		<article class="fl w70 prl pbm mbm tofadein">			
 
-			<h2 class="mtn"><?txt('titre-2')?></h2>
+		<article class="w70 center prl pbl mbl">			
 
-			<p><?txt('texte')?></p>
+			<h2 class="mtn"><?txt('sstitre')?></h2>
+
+			<div><?txt('texte')?></div>
 
 			<form id="contact" class="mat">
 				
 				<div>
-					<label class="bold" for="email"><?_e("Email")?> :</label> <input type="text" name="email" id="email" placeholder="exemple@mymail.com" class="w40 vatt">
+					<input type="email" name="email" id="email" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
 				</div>
 				
 				<div>
-					<label class="bold" for="message"><?_e("Message")?> :</label> <textarea name="message" id="message" class="w100 mbt" style="height: 200px;"></textarea>
+					<textarea name="message" id="message" required placeholder="<?_e("Message")?>" class="w100 mbt" style="height: 200px;"></textarea>
 				</div>
 				
-				<div class="">
-					<label class="bold" for="question"><?_e("Question")?> : <?=($nb1." ".$operator." ".$nb2);?> = </label> <input type="text" name="question" id="question" class="w50p vatt">
-				</div>
-								
-				<button class="bt fr">
+				<button class="bt fr pat">
 					<?_e("Send")?>
 					<i class="fa fa-envelope"></i>
 				</button>
 
+				<div class="">
+					<label class="bold" for="question"><?=($nb1." ".$operator." ".$nb2);?> = </label> <input type="text" name="question" id="question" required placeholder="?" class="w50p vatt">
+				</div>
+								
 				<input type="hidden" name="question_hash" value="<?=$question_hash;?>">
 
 				<input type="hidden" name="champ_vide" value="">
@@ -118,39 +134,49 @@ else// Affichage du formulaire
 				<input type="hidden" name="referer" value="<?=htmlspecialchars($_SERVER['HTTP_REFERER']);?>">
 				
 			</form>
+
 		</article>	
 
-		<aside class="fl w30 pat tofadein">
-			<div class="pam">
-				<h2 class="tc medium mtn"><?txt('titre-colonne')?></h2>
-				<?txt('texte-colonne')?>
-			</div>
-		</aside>
 	</section>
 
-	<script>
-	$("#contact").submit(function(event)
-	{
-		event.preventDefault();
 
-		if($("#question").val()=="" || $("#message")=="" || $("#email")=="") error(__("Thank you to fill out all fields!"));
-		else
+	<script>
+		function send_contact(event)
 		{
-			$.ajax(
+			event.preventDefault();
+
+			if($("#question").val()=="" || $("#message").val()=="" || $("#email").val()=="")
+				error(__("Thank you to fill out all fields!"));
+			else
 			{
-				type: "POST",
-				url: "<?=$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/contact.php"?>",				
-				data: $(this).serializeArray(),
-				success: function(html){ $("body").append(html); }
-			});
-		}		
-	});
+				// Icone envoi en cours
+				$("#contact button i").removeClass("fa-envelope").addClass("fa-spin fa-cog");
+
+				// Désactive le formulaire
+				$("#contact input, #contact textarea, #contact button").attr("readonly", true).addClass("disabled");
+				$("#contact button").attr("disabled", true);
+				$("#contact").off("submit");
+
+				$.ajax(
+				{
+					type: "POST",
+					url: "<?=$GLOBALS['path']."theme/".$GLOBALS['theme']."/tpl/contact.php"?>",				
+					data: $("#contact").serializeArray(),
+					success: function(html){ $("body").append(html); }
+				});
+			}
+		}
+
+		$("#contact").submit(function(event)
+		{
+			send_contact(event)
+		});
 	</script>
 
 
 	<section class="mod">
 
-		<?include("plugin/google-map.php")?>
+		<?include("plugin/google-map.php");?>
 
 	</section>
 	<?
