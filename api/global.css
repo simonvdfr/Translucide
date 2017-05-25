@@ -238,6 +238,12 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .o80 { opacity: 0.8; }
 .ho1:hover { opacity: 1; }
 
+
+/* Background */
+.nor { background-repeat: no-repeat !important; }
+.cover { background-size:  cover !important; }
+
+
 /* Alignement */
 .vat { vertical-align: top !important; }
 .vam { vertical-align: middle !important; }
@@ -301,8 +307,10 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 .inline { display: inline !important; }
 .block { display: block !important; }
 .none { display: none; }
+
 .hidden { visibility: hidden; }
 .visible { visibility: visible !important; }
+
 .absolute { position: absolute; }
 .fixed { position: fixed; }
 .relative { position: relative; }
