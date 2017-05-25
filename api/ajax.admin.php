@@ -1084,7 +1084,8 @@ switch($_GET['mode'])
 			//$pattern = '/\.([\w-]+):before\s*{\s*content:\s*(["\']\\\w+["\']);?\s*}/';
 			//$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
 			//$pattern = '/\\.(fa-\\w+):before{content:"(\\\\\w+)"}/';	
-			$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';	
+			//$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';	
+			$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';	
 
 			// On récupère la css qui contient les icônes
 			$subject = file_get_contents($GLOBALS['icons']);
