@@ -267,6 +267,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 .left { margin-right: auto; }
 .right { margin-left: auto; }
+.auto { margin: auto; }
 .center { 
 	margin-left: auto !important;
 	margin-right: auto !important;
