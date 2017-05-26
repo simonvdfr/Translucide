@@ -100,7 +100,7 @@ function make_url($url, $filtre = array())
 function get_lang($lang = '')
 {		
 	// Si la langue est déjà dans la session
-	if($_SESSION['lang']) {
+	if(isset($_SESSION['lang'])) {
 		$lang = $_SESSION['lang'];		
 	}
 	elseif(!$lang) // Si pas de langue on prend la 1er langue du navigateur
