@@ -230,7 +230,7 @@ function media($key = null, $filtre = array())
 
 			echo" atl=\"\" class='";
 				if(isset($size[0]) and isset($size[1])) echo"crop";
-				if($filtre['zoom']) echo" zoom";
+				if(isset($filtre['zoom'])) echo" zoom";
 			echo"'>";
 		}
 		elseif($filename) // C'est un fichier
