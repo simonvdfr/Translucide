@@ -1512,7 +1512,7 @@ switch($_GET['mode'])
 		//@todo: Vérif le cas ou fichier conf exist
 
 		// Pour éviter les problèmes de cache qui appèlerais un fichier inexistant
-		if($_SERVER['REDIRECT_URL']) {
+		if(isset($_SERVER['REDIRECT_URL'])) {
 			header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
 			exit("<h1>404 error : page not found</h1>");
 		}
@@ -1567,7 +1567,7 @@ switch($_GET['mode'])
 		if($GLOBALS['scheme'] and $GLOBALS['domain'] and $GLOBALS['path'])
 			$scheme_domain_path = $GLOBALS['home'];
 		else {
-			if($_SERVER['[REQUEST_SCHEME']) $scheme_domain_path .= $_SERVER['REQUEST_SCHEME']."://";
+			if(isset($_SERVER['[REQUEST_SCHEME'])) $scheme_domain_path .= $_SERVER['REQUEST_SCHEME']."://";
 			else $scheme_domain_path .= "http://";
 			
 			$scheme_domain_path .= $_SERVER['SERVER_NAME'];
@@ -1576,7 +1576,7 @@ switch($_GET['mode'])
 
 		// Nom du site
 		$domains = explode('.', $_SERVER['SERVER_NAME']);
-		$sitename = ($GLOBALS['sitename'] ? utf8_encode($GLOBALS['sitename']) : ucfirst($domains[count($domains)-2]));
+		$sitename = (isset($GLOBALS['sitename']) ? utf8_encode($GLOBALS['sitename']) : ucfirst($domains[count($domains)-2]));
 
 
 		header('Content-type: text/html; charset=UTF-8');

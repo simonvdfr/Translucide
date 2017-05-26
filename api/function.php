@@ -134,7 +134,7 @@ function load_translation($id)
 	@include($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].$translation_file);
 
 	// Ajoute la traduction au tableau des traductions
-	if($add_translation) add_translation($add_translation);
+	if(isset($add_translation)) add_translation($add_translation);
 }
 
 // Ajoute la traduction
@@ -153,7 +153,7 @@ function __($singulier, $pluriel = "", $num = 0)
 	if($num > 1) $txt = $pluriel; else $txt = $singulier;
 
 	// Si une traduction existe
-	if($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]) 
+	if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']])) 
 		$txt = utf8_encode($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
 
 	return $txt;

@@ -1,6 +1,6 @@
 <?
 // Connexion a la base de données
-if($GLOBALS['db_server'] and $GLOBALS['db_user'] and $GLOBALS['db'])
+if(isset($GLOBALS['db_server']) and $GLOBALS['db_user'] and $GLOBALS['db'])
 {
 	// Connexion
 	$GLOBALS['connect'] = new mysqli($GLOBALS['db_server'], $GLOBALS['db_user'], $GLOBALS['db_pwd'], $GLOBALS['db']);
