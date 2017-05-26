@@ -24,7 +24,7 @@ switch($_GET['mode'])
 		login('high', 'edit-'.($_GET['type']?encode($_GET['type']):"page"));// Vérifie que l'on a le droit d'éditer les contenus
 		
 		// Si on doit recharger la page avant de lancer le mode édition
-		if($_REQUEST['callback'] == "reload_edit")
+		if(isset($_REQUEST['callback']) and $_REQUEST['callback'] == "reload_edit")
 		{
 			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
 			setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
@@ -364,7 +364,7 @@ switch($_GET['mode'])
 
 
 		// HEADER
-		if($_POST['header'])
+		if(isset($_POST['header']))
 		{
 			// On regarde s'il y a déjà des données
 			$sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
@@ -391,7 +391,7 @@ switch($_GET['mode'])
 
 				
 		// FOOTER
-		if($_POST['footer']) 
+		if(isset($_POST['footer']))
 		{
 			// On regarde s'il y a déjà des données
 			$sel_footer = $connect->query("SELECT * FROM ".$table_meta." WHERE type='footer' AND cle='".$lang."' LIMIT 1");
@@ -419,14 +419,14 @@ switch($_GET['mode'])
 		
 		// CONTENU
 		// Supprime les url avec le domaine pour faciliter le transport du site
-		$_POST['content'] = str_replace($GLOBALS['home'], "", $_POST['content']);
+		$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], "", $_POST['content']) : "");
 
 		// Encode le contenu
 		$json_content = json_encode($_POST['content'], JSON_UNESCAPED_UNICODE);
 
 		// Sauvegarde les contenus
 		$sql = "UPDATE ".$table_content." SET ";
-		if($change_url) $sql .= "url = '".$change_url."', ";
+		if(isset($change_url)) $sql .= "url = '".$change_url."', ";
 		$sql .= "title = '".addslashes($_POST['title'])."', ";
 		$sql .= "description = '".addslashes($_POST['description'])."', ";
 		$sql .= "content = '".addslashes($json_content)."', ";
@@ -447,7 +447,7 @@ switch($_GET['mode'])
 			{
 				document.title = "<?=addslashes($_POST['title']);?>";
 
-				<?if($change_url){?>					
+				<?if(isset($change_url)){?>					
 					window.history.replaceState(history.state, document.title, "<?=make_url($change_url);?>");					
 				<?}?>
 
@@ -521,7 +521,7 @@ switch($_GET['mode'])
 		$menu = array();
 
 		// Nettoyage et conversion du menu existant
-		if($_REQUEST['menu'])
+		if(isset($_REQUEST['menu']))
 		while(list($cle, $val) = each($_REQUEST['menu']))
 		{
 			// Si c'est un lien vers la home
@@ -1455,10 +1455,10 @@ switch($_GET['mode'])
 							// On récupère la clé de la variable en cours
 							preg_match("/GLOBALS\[\'([a-z_]+)\'\]/", $line, $match);
 							
-							$key = $match[1];
+							if(isset($match[1])) $key = $match[1];
 							
 							// Changement de la ligne et ajout de la nouvelle variable
-							if(isset($_POST[$key])) 
+							if(isset($key) and isset($_POST[$key])) 
 								$config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".utf8_decode($_POST[$key])."\";\r\n";							
 						}
 
@@ -1485,7 +1485,7 @@ switch($_GET['mode'])
 							light("<?_e("Successful installation ! create your homepage !")?>");
 							setTimeout(function(){
 								 $("#error, #highlight").slideUp("slow").fadeOut(function() {
-									 window.location.reload();// window.location = window.location.href;
+									window.location.reload();// window.location = window.location.href;
 								 });
 							}, 3000);
 						</script>

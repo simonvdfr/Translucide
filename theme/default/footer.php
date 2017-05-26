@@ -36,7 +36,7 @@
 
 	</section>
 
-	<?if($res['url'] == "home"){?><section class="mod w100 tc ptm"><?txt('webmaster')?></section><?}?>
+	<?if(isset($res['url']) == "home"){?><section class="mod w100 tc ptm"><?txt('webmaster')?></section><?}?>
 
 </footer>
 

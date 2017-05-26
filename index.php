@@ -78,14 +78,14 @@ else// Une page existe
 
 // Information pour les metas
 $title = strip_tags($res['title']);
-$description = htmlspecialchars(strip_tags($res['description']), ENT_COMPAT);
+$description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['description']), ENT_COMPAT) : "");
 
 // Les contenus
-if($res['content'] and $res['content'] != '""') $GLOBALS['content'] = json_decode($res['content'], true);
+if(isset($res['content']) and $res['content'] != '""') $GLOBALS['content'] = json_decode($res['content'], true);
 else $GLOBALS['content'] = array();
 
 // Image pour les réseaux sociaux
-if($GLOBALS['content']['og-image']) $image = $GLOBALS['content']['og-image'];
+if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
 
 
 // MENU DE NAVIGATION
@@ -178,7 +178,7 @@ header('Content-type: text/html; charset=UTF-8');
 		<? } ?>
 
 
-		<? if($GLOBALS['facebook_sdk'] and $GLOBALS['facebook_api_id']) { ?>
+		<? if(isset($GLOBALS['facebook_sdk']) and $GLOBALS['facebook_api_id']) { ?>
 		// Facebook
 		(function(d, s, id){
 			var js, fjs = d.getElementsByTagName(s)[0];
@@ -190,7 +190,7 @@ header('Content-type: text/html; charset=UTF-8');
 		<? } ?>
 		
 						
-		<?if($_COOKIE['autoload_edit'] and $_SESSION['auth']['edit-page']){?>// Si demande l'autoload du mode édition et si admin
+		<?if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>// Si demande l'autoload du mode édition et si admin
 			$(function(){
 				edit_launcher();
 				$("a.bt.fixed.edit").fadeOut();				
@@ -200,9 +200,9 @@ header('Content-type: text/html; charset=UTF-8');
 			@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
 		}?>			
 
-		state = "<?=$res['state']?>";
-		permalink = "<?=$res['url']?>";
-		type = "<?=$res['type']?>";
+		state = "<?=(isset($res['state'])?$res['state']:"")?>";
+		permalink = "<?=(isset($res['url'])?$res['url']:"")?>";
+		type = "<?=(isset($res['type'])?$res['type']:"")?>";
 		path = "<?=$GLOBALS['path']?>";
 	</script>
 
@@ -218,10 +218,10 @@ header('Content-type: text/html; charset=UTF-8');
 include_once("theme/".$GLOBALS['theme']."header.php");
 
 
-echo"<div class='content".($res['tpl']?" tpl-".encode($res['tpl']):"")."'>";
+echo"<div class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : "")."'>";
 
 
-	if($res['tpl']) // On a une page
+	if(isset($res['tpl'])) // On a une page
 	{
 		include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
 	}

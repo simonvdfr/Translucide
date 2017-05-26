@@ -340,7 +340,7 @@ switch($_GET['mode'])
 
 		$start = ($page * $num_pp) - $num_pp;
 
-		$search = $connect->real_escape_string($_POST['search']);
+		$search = (isset($_POST['search']) ? $connect->real_escape_string($_POST['search']) : "");
 
 		$sql = "SELECT SQL_CALC_FOUND_ROWS ".$table_user.".id, ".$table_user.".* FROM ".$table_user." ";
 
@@ -487,10 +487,10 @@ switch($_GET['mode'])
 		if($_GET['mode'] != "add-user") 
 		{
 			// Si l'utilisateur a affiché est diff de l'utilisateur en cours on vérifie que l'on est admin
-			if($_REQUEST['uid'] and $_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit-user');
+			if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit-user');
 			else login('medium');
 
-			$uid = ($_REQUEST['uid'] ? $_REQUEST['uid'] : $_SESSION['uid']);
+			$uid = (isset($_REQUEST['uid']) ? $_REQUEST['uid'] : $_SESSION['uid']);
 			
 			// Récupérationd des données de base de l'utilisateur
 			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
@@ -614,7 +614,7 @@ switch($_GET['mode'])
 			<?if($res['date_update']){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
 			<?if($res['date_insert']){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
 
-			<?if($_REQUEST['uid'] and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
+			<?if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
 
 			<button id="save-user" class="fr mat small">
 				<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
@@ -794,7 +794,7 @@ switch($_GET['mode'])
 			}
 			
 			// Token d'api externe
-			if($_POST['oauth'])
+			if(isset($_POST['oauth']))
 				$sql .= "oauth = '".addslashes(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE))."', ";
 
 			$sql .= "date_update = NOW() ";
@@ -825,7 +825,7 @@ switch($_GET['mode'])
 					$res_meta = $sel_meta->fetch_assoc();
 
 					// AJOUT DES DONNÉE EN MÉTA
-					if($uid and is_array($_POST['meta'])) {
+					if($uid and isset($_POST['meta']) and is_array($_POST['meta'])) {
 						if($res_meta['id']) 
 							$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
 						else 

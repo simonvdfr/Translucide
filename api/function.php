@@ -67,7 +67,7 @@ function make_url($url, $filtre = array())
 	if(is_array($filtre))
 	{
 		// Force le domaine
-		if($filtre['domaine']) $domaine = $filtre['domaine'];
+		if(isset($filtre['domaine'])) $domaine = $filtre['domaine'];
 		unset($filtre['domaine']);
 
 		// Création des dossier dans l'url en fonction des filtres
@@ -81,14 +81,14 @@ function make_url($url, $filtre = array())
 	{
 		$url = $GLOBALS['path'];
 
-		if($domaine) $url = $GLOBALS['home'];
+		if(isset($domaine)) $url = $GLOBALS['home'];
 	}
 	else {
 		$url = encode($url, "-", array("#"));
 
-		if($domaine) $url = $GLOBALS['home'] . $url;
+		if(isset($domaine)) $url = $GLOBALS['home'] . $url;
 
-		if($dir) $url = trim($url, "/") . $dir;
+		if(isset($dir)) $url = trim($url, "/") . $dir;
 	}	
 
 	return $url;
@@ -172,7 +172,7 @@ function txt($key = null, $filtre = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<".($filtre['tag']?$filtre['tag']:"div")." class='".($filtre['editable']?$filtre['editable']:"editable").($filtre['class']?" ".$filtre['class']:"")."' id='".encode($key)."'".($filtre['placeholder']?" placeholder=\"".utf8_encode($filtre['placeholder'])."\"":"").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".($filtre['tag']?$filtre['tag']:"div").">";
+	echo"<".(isset($filtre['tag']) ? $filtre['tag'] : "div")." class='".(isset($filtre['editable']) ? $filtre['editable'] : "editable").(isset($filtre['class']) ? " ".$filtre['class'] : "")."' id='".encode($key)."'".(isset($filtre['placeholder']) ? " placeholder=\"".utf8_encode($filtre['placeholder'])."\"" : "").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".(isset($filtre['tag']) ? $filtre['tag'] : "div").">";
 
 	$GLOBALS['editkey']++;
 }
@@ -186,7 +186,7 @@ function media($key = null, $filtre = array())
 	if(!is_array($filtre)) $filtre = array("size" => $filtre);
 
 	// Une taille est définie
-	if($filtre['size']) $size = explode("x", $filtre['size']);
+	if(isset($filtre['size'])) $size = explode("x", $filtre['size']);
 
 	// Nom du fichier
 	$filename = isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "";
@@ -216,12 +216,12 @@ function media($key = null, $filtre = array())
 		}
 	}
 
-	echo"<span class='".($filtre['editable']?$filtre['editable']:"editable-media")."' id='".encode($key)."'";
+	echo"<span class='".(isset($filtre['editable']) ? $filtre['editable'] : "editable-media")."' id='".encode($key)."'";
 		if(isset($size[0])) echo" data-width='".$size[0]."'";
 		if(isset($size[1])) echo" data-height='".$size[1]."'";
 	echo">";
 
-		if($img)// C'est une image
+		if(isset($img))// C'est une image
 		{
 			echo"<img src=\"".$filename."\"";
 
@@ -411,13 +411,13 @@ function ip()// Retourne l'adresse IP du client (utilisé pour empêcher le détour
 function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de mettre le mail et pas le name ou rien
 {
 	// Si la fonction de memorisation de connexion de l'utilisateur et coché
-	if($_POST['rememberme']) {
+	if(isset($_POST['rememberme'])) {
 		setcookie("rememberme", encode($_POST['rememberme']), 0, $GLOBALS['path'], $GLOBALS['domain']);
 		$_COOKIE['rememberme'] = encode($_POST['rememberme']);
 	}
 
 	// Date d'expiration (si on ne mémorise pas l'utilisateur on crée une session de 30min
-	$time = time() + ($_COOKIE['rememberme'] == "false" ? (30*60) : $GLOBALS['session_expiration']);
+	$time = time() + ((isset($_COOKIE['rememberme']) and $_COOKIE['rememberme'] == "false") ? (30*60) : $GLOBALS['session_expiration']);
 
 	// Id de l'utilisateur
 	$_SESSION['uid'] = (int)$uid;
@@ -541,7 +541,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 				}
 				else if(isset($auth))// Vérifie les autorisations utilisateur dans la bdd si c'est demandée
 				{
-					if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
+					if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
 
 					// Extraction des données de l'utilisateur
 					$sel = $GLOBALS['connect']->query("SELECT auth FROM ".$GLOBALS['table_user']." WHERE id='".(int)$_SESSION['uid']."' AND state='active' LIMIT 1");
@@ -558,7 +558,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 			}
 			else if(($GLOBALS['security'] == 'high' or $level == 'high') and token_check($_SESSION['token']))// Comparaison avec le token dans la bdd
 			{
-				if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
+				if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
 
 				session_regenerate_id(true);// Supprime l'ancienne session
 
