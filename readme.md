@@ -18,7 +18,7 @@ Entrer les infos de connexion à la base de données, sélectionner votre templa
 
 Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, générer à la suite de l'installation. Il contient les informations uniques et cruciales au bon fonctionnement du CMS.
 
-Note : dans la configuration de PHP short_open_tag doit être en On = `short_open_tag = On`
+Note : dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`
 
 ## Premier pas
 - Descendez tout en bas du site, sur la droite doit apparaître un bouton `+` pour ajouter une page
