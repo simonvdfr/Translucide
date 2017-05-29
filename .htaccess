@@ -1,3 +1,7 @@
+# <??> simple
+php_value short_open_tag 1
+
+#Rewrite On
 RewriteEngine On
 
 #No Directory Listing #FollowSymLinks 
