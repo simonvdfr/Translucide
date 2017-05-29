@@ -1518,7 +1518,7 @@ switch($_GET['mode'])
 		}
 
 		// Charge la config maison si elle existe
-		@include("config.php");
+		@include_once("config.php");
 
 		// Traduction de la page d'installation
 		$add_translation = array(
