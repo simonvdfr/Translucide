@@ -844,7 +844,7 @@ switch($_GET['mode'])
 		
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
-		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".($_GET['filter'] == "resize" ? "resize/":"");
+		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".((isset($_GET['filter']) and  $_GET['filter'] == "resize") ? "resize/":"");
 		
 		// Le dossier existe
 		if(is_dir($dir))
@@ -871,15 +871,15 @@ switch($_GET['mode'])
 					list($type, $ext) = explode("/", $file_infos['mime']);
 					
 					// Pour le tri
-					if(!$_GET['order'] or $_GET['order'] == 'time') $order = $stat['mtime'];// Tri par défaut
+					if(!isset($_GET['order']) or $_GET['order'] == 'time') $order = $stat['mtime'];// Tri par défaut
 					elseif($_GET['order'] == 'size') $order = $stat['size'];
 					elseif($_GET['order'] == 'name') $order = $filename;
 
 					// Filtre le tableau en fonction du type mime choisi
 					if(
+						(!isset($_GET['filter']) or $_GET['filter'] == "resize") or
 						$_GET['filter'] == $type or
-						($_GET['filter'] == "file" and $type != "image" and $type != "video" and $type != "audio") or 
-						(!$_GET['filter'] or $_GET['filter'] == "resize")
+						($_GET['filter'] == "file" and $type != "image" and $type != "video" and $type != "audio")						
 					) 
 					{					
 						// $i pour être sûr d'incrémenter le tableau
@@ -892,8 +892,8 @@ switch($_GET['mode'])
 		}
 
 		// Tri du tableau
-		if(!$sort) {								
-			if(!$_GET['order'] or $_GET['order'] == 'time') $sort = 'DESC';// Tri par défaut
+		if(!isset($sort)) {								
+			if(!isset($_GET['order']) or $_GET['order'] == 'time') $sort = 'DESC';// Tri par défaut
 			elseif($_GET['order'] == 'size') $sort = 'DESC';
 			elseif($_GET['order'] == 'name') $sort = 'ASC';
 		}
@@ -955,10 +955,10 @@ switch($_GET['mode'])
 					else $info = pathinfo($val['filename'], PATHINFO_EXTENSION);
 					
 					// Affichage du fichier
-					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode($_GET['filter'])."-".$i."\" data-media=\"media/".($_GET['filter'] == "resize"?"resize/":"").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
+					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode((isset($_GET['filter'])?$_GET['filter']:""))."-".$i."\" data-media=\"media/".((isset($_GET['filter']) and $_GET['filter'] == "resize") ? "resize/" : "").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
 
 						if($type == "image") {
-							echo"<img src=\"media/".($_GET['filter'] == "resize"?"resize/":"").$val['filename']."\">";
+							echo"<img src=\"media/".((isset($_GET['filter']) and $_GET['filter'] == "resize") ? "resize/" : "").$val['filename']."\">";
 							echo"<a class='resize' title=\"".__("Get resized image")."\"><i class='fa fa-fw fa-compress bigger'></i></a>";
 						}
 						else echo"<div class='file'><i class='fa fa-fw fa-".$fa." mega'></i><div>".utf8_encode($val['filename'])."</div></div>";
