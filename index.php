@@ -137,7 +137,7 @@ header('Content-type: text/html; charset=UTF-8');
 	<meta property="og:site_name" content="<?=utf8_encode($GLOBALS['sitename']);?>">
 	<meta property="og:title" content="<?=$title;?>">
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>">
+	<?if(isset($res['url'])){?><meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>"><?}?>
 	
 	<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 	<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
