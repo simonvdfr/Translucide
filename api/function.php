@@ -429,7 +429,7 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de m
 	if($auth) {
 		$array_auth = explode(",", $auth);
 		while(list($cle, $val) = each($array_auth)) { $_SESSION['auth'][$val] = true; }
-		setcookie("auth", encode($auth, ",", array("_")), $time, $GLOBALS['path'], $GLOBALS['domain']);
+		setcookie("auth", encode($auth, ",", array("-")), $time, $GLOBALS['path'], $GLOBALS['domain']);
 	}
 	
 	// Date d'expiration du login
@@ -623,7 +623,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
 							data: {
 								callback: "<?=encode($_REQUEST['callback'], "_")?>",
-								msg: "<?=htmlspecialchars($msg);?>"
+								msg: "<?=htmlspecialchars((isset($msg) ? $msg : ""));?>"
 							}
 						})
 						.done(function(html){
