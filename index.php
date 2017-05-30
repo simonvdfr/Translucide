@@ -106,7 +106,7 @@ $sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header'
 $res_header = $sel_header->fetch_assoc();
 
 // Ajout des données du footer
-if($res_header['val']) $GLOBALS['content'] = array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
+if($res_header['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
 
 
 // FOOTER
@@ -116,7 +116,7 @@ $sel_footer = $connect->query("SELECT * FROM ".$table_meta." WHERE type='footer'
 $res_footer = $sel_footer->fetch_assoc();
 
 // Ajout des données du footer
-if($res_footer['val']) $GLOBALS['content'] = array_merge($GLOBALS['content'], json_decode($res_footer['val'], true));
+if($res_footer['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_footer['val'], true));
 
 
 

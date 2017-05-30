@@ -29,6 +29,7 @@ Note : dans la configuration de PHP short_open_tag doit être en On `short_open_
 
 ### Raccourcis en mode édition
 - <kbd>ctrl + s</kbd> sauvegarde les changements
+- <kbd>ctrl + q</kbd> change le niveau d'activation de la page
 - <kbd>ctrl + z</kbd> annule la dernière action dans les blocs textes
 
 ## Utilisation de l'éditeur du menu de navigation
