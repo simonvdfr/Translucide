@@ -36,7 +36,7 @@ function get_url($url_source = null)
 
 	// Parse l'url pour ne garder que la partie rewrite sans le chemin de base du site
 	$parse_url = parse_url($url_source);
-	$path = ltrim($parse_url['path'], $GLOBALS['path']);
+	$path = str_replace($GLOBALS['path'] , "", $parse_url['path']);
 
 	// Si l'url est vide : url = home
 	if(!encode($path)) $url = "home"; 
