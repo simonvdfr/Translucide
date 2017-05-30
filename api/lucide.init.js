@@ -246,7 +246,7 @@ $(function()
 		$("a.bt.fixed.edit").fadeOut();
 
 		// Force l'affichage du bouton  +
-		$("a.bt.fixed.add").css({"bottom":"0", "opacity":".2"});
+		$("a.bt.fixed.add").css({"bottom":"10px", "opacity":".2"});
 		edit_on = true;
 	});	
 
@@ -310,25 +310,23 @@ $(function()
 			else
 			{
 				$("a.bt.fixed.top").fadeOut("fast", function(){
-					$("a.bt.fixed.edit").css("right","20px");
+					$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
 				});
 			}
 
 			// Si la barre d'administration n'est pas ouverte et la dialog de connexion inexistante
 			if(!$("#admin-bar").length && !$("#dialog-connect").length)
 			{
-				// Affichage du bouton d'édition  avec 50px de marge OU si on est admin
-				if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-page")) 
-				{	
-					// Décale l'icone si il y a le bt to top
-					if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit").css("right","70px");
-					
-					// Affichage du bouton d'édition
+				// Affichage du bouton d'édition  
+				if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-page"))
 					$("a.bt.fixed.edit").fadeIn("slow");				
-				}
 				else if($("a.bt.fixed.edit").css("display") == "block")
 					$("a.bt.fixed.edit").fadeOut();
 			}
+
+			// Décale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
+			if($("a.bt.fixed.top").css("display") != "none")
+				$("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
 		});
     }
 	else if(!$("#admin-bar").length && !$("#dialog-connect").length)// On affiche au bout de x seconde le bouton d'édition
