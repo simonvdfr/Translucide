@@ -233,8 +233,9 @@ $(function()
 
 
 
-	// Bouton d'édition si la page existe dans la base
-	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></a>");
+	// Bouton d'édition ou de connexion si la page existe dans la base
+	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "pencil"; else var icon_edit = "key"; 
+	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam'></i></a>");
 
 	// Bind le bouton d'édition
 	$("a.bt.edit").click(function() 
