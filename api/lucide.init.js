@@ -244,12 +244,16 @@ $(function()
 		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit-page")) ? "reload_edit":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
-		$("a.bt.fixed.add").fadeOut();
+
+		// Force l'affichage du bouton  +
+		$("a.bt.fixed.add").css({"bottom":"0", "opacity":".2"});
+		edit_on = true;
 	});	
 
 
 
 	hover_add = false;
+	edit_on = false;
 
 	// Affichage du bouton add
 	$("a.bt.fixed.edit").hover(
@@ -261,7 +265,7 @@ $(function()
 		},
 		function() {
 			hover_add = false;
-			setTimeout(function() { if(!hover_add) $("a.bt.fixed.add").fadeOut("fast");	}, 1000);
+			setTimeout(function() { if(!hover_add && !edit_on) $("a.bt.fixed.add").fadeOut("fast");	}, 1000);
 	});
 	
 	// Onhover bouton add on le conserve visible
@@ -269,7 +273,7 @@ $(function()
 		function() { hover_add = true; },
 		function() {
 			hover_add = false;
-			setTimeout(function() { if(!hover_add) $("a.bt.fixed.add").fadeOut("fast");	}, 1000);
+			setTimeout(function() { if(!hover_add && !edit_on) $("a.bt.fixed.add").fadeOut("fast");	}, 1000);
 	});
 
 
