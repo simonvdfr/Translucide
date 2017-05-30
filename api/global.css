@@ -513,7 +513,7 @@ input[type="reset"].unstyled:focus {
 	}
 	.bt.fixed.add { 
 		margin-bottom: 10px;
-		transition: bottom .3s;		
+		transition: bottom .3s, opacity .3s;		
 		z-index: 998;
 	}
 	.bt.fixed.construction { 		
@@ -525,7 +525,7 @@ input[type="reset"].unstyled:focus {
 		border-radius: 8px;
 	}
 	.bt.fixed:hover { 		
-		opacity: 1;	
+		opacity: 1 !important;	
 	}
 
 
