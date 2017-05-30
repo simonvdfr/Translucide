@@ -1688,6 +1688,11 @@ $(function()
 
 	// Si on change le statut d'activation
 	$("#state-content").click(function() {	
+
+		// Masque la bulle admin qui indique si la page est désactivée
+		if($("#admin-bar #state-content").prop("checked")  == true)
+			$(".bt.fixed.construction").fadeOut();
+
 		tosave();
 	});
 
@@ -1703,9 +1708,27 @@ $(function()
 	{
 		// Si on appuie sur ctrl + s = sauvegarde
 		if((event.ctrlKey || event.metaKey)) {
-			if(String.fromCharCode(event.which).toLowerCase() == 's'){
+			
+
+			// Sauvegarde
+			if(String.fromCharCode(event.which).toLowerCase() == 's') {
 				event.preventDefault();
 				save();		
+			}
+		
+			// Active la page
+			if(String.fromCharCode(event.which).toLowerCase() == 'q') {
+				event.preventDefault();
+				if($("#admin-bar #state-content").prop("checked") == false) 
+				{
+					$("#admin-bar #state-content").prop("checked", true);
+
+					$(".bt.fixed.construction").fadeOut();// Masque la bulle info activation
+				}
+				else 
+					$("#admin-bar #state-content").prop("checked", false);
+
+				tosave();
 			}
 		}
 		// Si on utilise tape du texte dans un contenu éditable on change le statut du bouton sauvegardé
