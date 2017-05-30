@@ -793,7 +793,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
           case 6: $deg = 270; break;
           case 8: $deg = 90; break;
 		}
-		if($deg) $final_img = imagerotate($final_img, $deg, 0);
+		if(isset($deg)) $final_img = imagerotate($final_img, $deg, 0);
 		
 		// Ajoute la taille de la nouvelle image en supprimant l'ancienne si besoin
 		preg_match("/(-[0-9]+x[0-9]+)$/", $file_name, $matches);
@@ -838,7 +838,7 @@ function img_process($root_file, $dest = "media/", $des_resize = "media/resize/"
 	// On vérifie la bonne orientation de l'image jpeg
 	if($type == 2) {// Exif ne fonctionne qu'avec les jpeg
 		$exif = @exif_read_data($root_file);
-		if($exif['Orientation'] != 1) {
+		if(isset($exif['Orientation']) and $exif['Orientation'] != 1) {
 			$max_width = ($source_width > $max_width ? $max_width : $source_width);
 			$max_height = ($source_height > $max_height ? $max_height : $source_height);
 			$option = $exif['Orientation'];
