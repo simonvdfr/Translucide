@@ -586,7 +586,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 			border: 2px dashed #75df83;
 		}
 
-	.dialog-media li:hover { background: #fff; }
+	.dialog-media li:hover, .dialog-media li.select { background: #fff; }
+	
 	.dialog-media li:hover > .infos, .dialog-media li:hover > .supp, .dialog-media li:hover > .resize { display: block; }
 
 	/* Image à moitié transparante */

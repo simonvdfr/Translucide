@@ -680,6 +680,9 @@ switch($_GET['mode'])
 					var top = $(this).parent().offset().top;
 					var left = $(this).offset().left;
 
+					// Highlight l'image choisie
+					$(this).parent().addClass("select");
+
 					// Boîte à outils resize
 					resize_tool = "<div id='resize-tool' class='toolbox'>";
 						resize_tool+= __("Width") +": <input type='text' id='resize-width' class='w50p'> ";
@@ -909,7 +912,7 @@ switch($_GET['mode'])
 			<?
 
 			// S'il y a des fichiers dans la biblio
-			if($tab_file)
+			if(isset($tab_file))
 			{
 				uksort($tab_file, 'strnatcmp');// Tri ascendant
 				if($sort == 'DESC') $tab_file = array_reverse($tab_file, true);// Tri Descendant
@@ -1053,7 +1056,7 @@ switch($_GET['mode'])
 					if($type == "image")
 					{
 						// Resize l'image si besoin
-						echo img_process($root_file, $dest = "media/", $des_resize = "media/resize/", (int)$_POST['width'], (int)$_POST['height'], $_POST['resize']);
+						echo img_process($root_file, $dest = "media/", $des_resize = "media/resize/", (int)$_POST['width'], (int)$_POST['height'], (isset($_POST['resize'])?$_POST['resize']:""));
 					}		
 					else 
 						echo $src_file;// Retourne l'url du fichier original		

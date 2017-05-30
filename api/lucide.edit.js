@@ -1289,8 +1289,10 @@ $(function()
 		if(!$(event.target).is('.editable img')) img_leave();// Raz Propriétés image
 		
 		// Supprime le layer de redimensionnement d'image
-		if($("#resize-tool").html() != undefined && !$(event.target).closest("#resize-tool").is('#resize-tool')) $("#resize-tool").remove();
-		
+		if($("#resize-tool").html() != undefined && !$(event.target).closest("#resize-tool").is('#resize-tool')) {
+			$("#resize-tool").remove();
+			$(".dialog-media li.select").removeClass("select");// Deselectionne l'image
+		} 
 	});
 
 	// Affiche les options de gestion d'alignement sur les images ajouter
