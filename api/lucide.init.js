@@ -136,8 +136,10 @@ reload = function() {
 }
 
 
-// Liste des fonctions d'édition des plugin
+// Liste des fonctions d'édition et de sauvegarde des plugin
 edit = [];
+before_save = [];
+
 
 // Formulaire d'ajout d'un contenu
 add_content = function()
@@ -240,7 +242,7 @@ $(function()
 	// Bind le bouton d'édition
 	$("a.bt.edit").click(function() 
 	{
-		// Si la page n'est pas activée  et que l'on n'est pas admin on callback un reload
+		// Si la page n'est pas activée et que l'on n'est pas admin on callback un reload
 		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit-page")) ? "reload_edit":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
@@ -249,6 +251,20 @@ $(function()
 		$("a.bt.fixed.add").css({"bottom":"10px", "opacity":".2"});
 		edit_on = true;
 	});	
+
+
+	// Mode édition au ctrl+q
+	$(document).keydown(function(event) 
+	{
+		if(!$("#admin-bar").length)// Admin pas lancé
+		{
+			if(event.ctrlKey || event.metaKey)
+			if(String.fromCharCode(event.which).toLowerCase() == 'q') {
+				event.preventDefault();
+				$("a.bt.edit").click();
+			}
+		}
+	});
 
 
 
@@ -300,7 +316,7 @@ $(function()
 	$window = $(window);
 	
 	// Si on a une scrollbar
-	if ($("body").height() > $window.height()) 
+	if($("body").height() > $window.height()) 
 	{        
 		// Au scroll on affiche ou pas les boutons flottants
 		$window.on("scroll", function() 

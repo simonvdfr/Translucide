@@ -139,7 +139,6 @@ save = function(callback)
 	// Contenu du menu de navigation
 	data["nav"] = {};
 	$(document).find("header nav ul a").not("#add-nav ul a, .exclude a").each(function(index) {
-		console.log($(this));
 		data["nav"][index] = {
 			href : $.trim($(this).attr('href')),
 			text : $(this).text(),
@@ -149,7 +148,12 @@ save = function(callback)
 		};
 	});
 
-	//console.log(data)
+
+	// EXECUTION DES FONCTIONS DE SAUVEGARDE DES PLUGINS
+	$(before_save).each(function(key, funct){
+		funct();
+	});
+
 	
 	// On sauvegarde en ajax les contenus éditables
 	$.ajax({
@@ -1709,9 +1713,8 @@ $(function()
 	$(document).keydown(function(event) 
 	{
 		// Si on appuie sur ctrl + s = sauvegarde
-		if((event.ctrlKey || event.metaKey)) {
-			
-
+		if((event.ctrlKey || event.metaKey)) 
+		{
 			// Sauvegarde
 			if(String.fromCharCode(event.which).toLowerCase() == 's') {
 				event.preventDefault();

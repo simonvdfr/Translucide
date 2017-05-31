@@ -26,11 +26,12 @@ Note : dans la configuration de PHP short_open_tag doit être en On `short_open_
 
 ## Raccourcis clavier
 - <kbd>⇧</kbd> force l'affichage du bouton édition en bas à droite
+- <kbd>ctrl + q</kbd> Lance le mode édition
 
 ### Raccourcis en mode édition
-- <kbd>ctrl + s</kbd> sauvegarde les changements
-- <kbd>ctrl + q</kbd> change le niveau d'activation de la page
-- <kbd>ctrl + z</kbd> annule la dernière action dans les blocs textes
+- <kbd>ctrl + s</kbd> Sauvegarde les changements
+- <kbd>ctrl + q</kbd> Change le niveau d'activation de la page
+- <kbd>ctrl + z</kbd> Annule la dernière action dans les blocs textes
 
 ## Utilisation de l'éditeur du menu de navigation
 - Lorsque vous modifiez du contenu qui se trouve dans <header> ou <footer>, ça le modifie pour toutes les pages du site.
