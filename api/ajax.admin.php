@@ -1,29 +1,29 @@
 <?
-if($_GET['mode'] == "setup-update") include_once("config.init.php");// Les variables par défaut
-@include_once(($_GET['mode'] == "setup" ? "" : "../")."config.php");// Les variables mais avec if au cas où  on lance depuis l'install
+if($_GET['mode'] == "setup-update") include_once("config.init.php");// Les variables par dÃ©faut
+@include_once(($_GET['mode'] == "setup" ? "" : "../")."config.php");// Les variables mais avec if au cas oÃ¹  on lance depuis l'install
 include_once("function.php");// Fonction
 
-$lang = get_lang();// Sélectionne  la langue
-load_translation('api');// Chargement des traductions du système
+$lang = get_lang();// SÃ©lectionne  la langue
+load_translation('api');// Chargement des traductions du systÃ¨me
 
 switch($_GET['mode'])
 {
 	default:	
 	break;
 
-	case "adminbar":// @todo mettre ici la barre d'administration pour y afficher les infos venant de la base (langue, template dispo, état...)
+	case "adminbar":// @todo mettre ici la barre d'administration pour y afficher les infos venant de la base (langue, template dispo, Ã©tat...)
 		// SUPP ???
 
 	break;
 
 
-	case "edit":// Lancement du mode édition du contenu de la page
+	case "edit":// Lancement du mode Ã©dition du contenu de la page
 				
-		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
+		unset($_SESSION['nonce']);// Pour Ã©viter les interfÃ©rences avec un autre nonce de session
 		
-		login('high', 'edit-'.($_GET['type']?encode($_GET['type']):"page"));// Vérifie que l'on a le droit d'éditer les contenus
+		login('high', 'edit-'.($_GET['type']?encode($_GET['type']):"page"));// VÃ©rifie que l'on a le droit d'Ã©diter les contenus
 		
-		// Si on doit recharger la page avant de lancer le mode édition
+		// Si on doit recharger la page avant de lancer le mode Ã©dition
 		if(isset($_REQUEST['callback']) and $_REQUEST['callback'] == "reload_edit")
 		{
 			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
@@ -35,7 +35,7 @@ switch($_GET['mode'])
 		<?}
 		else 
 		{				
-			// JS pour mettre en mode édit les contenus et ajout d'un nonce pour signer les formulaires
+			// JS pour mettre en mode Ã©dit les contenus et ajout d'un nonce pour signer les formulaires
 			?>
 			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
 			
@@ -44,7 +44,7 @@ switch($_GET['mode'])
 			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
 
 			<script>				
-				// Update les nonces dans la page courante pour éviter de perdre le nonce
+				// Update les nonces dans la page courante pour Ã©viter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 
 				<?
@@ -62,7 +62,7 @@ switch($_GET['mode'])
 						// Chargement de la css d'edition		
 						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css'>");
 
-						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
+						// Si Jquery UI bien charger on charge la lib qui rend le contenu Ã©ditable		
 						var script = document.createElement('script');
 						script.src = path+"api/lucide.edit.js?0.1";
 						document.body.appendChild(script);						
@@ -78,7 +78,7 @@ switch($_GET['mode'])
 
 	case "add-content":// Dialog pour ajouter une page
 
-		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
+		unset($_SESSION['nonce']);// Pour Ã©viter les interfÃ©rences avec un autre nonce de session
 
 		login('medium');
 
@@ -151,7 +151,7 @@ switch($_GET['mode'])
 			<script>
 			$(document).ready(function()
 			{
-				// Update les nonces dans la page courante pour éviter de perdre le nonce
+				// Update les nonces dans la page courante pour Ã©viter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 
 				// Au click sur un onglet
@@ -180,7 +180,7 @@ switch($_GET['mode'])
 					refresh_permalink(".dialog-add");
 				});
 
-				// Création du permalink lors de la saisie du title
+				// CrÃ©ation du permalink lors de la saisie du title
 				var timer = null;
 				$(".dialog-add #title").keyup(function() 
 				{
@@ -201,7 +201,7 @@ switch($_GET['mode'])
 						// Fermeture de la dialog de connexion
 						$("#dialog-connect").dialog("close");
 
-						// Création de la dialog d'ajout
+						// CrÃ©ation de la dialog d'ajout
 						$(".dialog-add").dialog({
 							modal: true,
 							width: "60%",
@@ -233,10 +233,10 @@ switch($_GET['mode'])
 							},
 							create: function() 
 							{
-								// Création des onglets
+								// CrÃ©ation des onglets
 								$(".dialog-add").tabs();
 
-								// Place les onglets à la place du titre de la dialog
+								// Place les onglets Ã  la place du titre de la dialog
 								$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 								
 							},
@@ -256,13 +256,13 @@ switch($_GET['mode'])
 	break;
 
 
-	case "insert":// Crée une nouvelle page
+	case "insert":// CrÃ©e une nouvelle page
 
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 
 		$type = encode($_POST['type']);
 
-		login('high', 'add-'.$type);// Vérifie que l'on a le droit d'ajouter une page
+		login('high', 'add-'.$type);// VÃ©rifie que l'on a le droit d'ajouter une page
 
 		$url = (encode($_POST['permalink']) ? encode($_POST['permalink']) : encode($_POST['title']));
 
@@ -278,7 +278,7 @@ switch($_GET['mode'])
 		$connect->query($sql);
 		
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
-		else // Sauvegarde réussit
+		else // Sauvegarde rÃ©ussit
 		{
 			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
 			setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
@@ -287,7 +287,7 @@ switch($_GET['mode'])
 			<script>
 			$(document).ready(function()
 			{		
-				// Redirection vers la page crée
+				// Redirection vers la page crÃ©e
 				document.location.href = "<?=make_url($url);?>";
 			});
 			</script>
@@ -297,38 +297,41 @@ switch($_GET['mode'])
 	break;
 
 
-	case "update":// Sauvegarde du contenu éditable de la page
+	case "update":// Sauvegarde du contenu Ã©ditable de la page
 
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 		
 		//highlight_string(print_r($_POST, true)); exit;
 
 		$type = ($_POST['type']?encode($_POST['type']):"page");// Type de contenu
 
-		login('high', 'edit-'.$type);// Vérifie que l'on peut éditer une page
+		login('high', 'edit-'.$type);// VÃ©rifie que l'on peut Ã©diter une page
 		
 		// PREPARATION POUR LE CONTENU ET NAVIGATION
-		// On récupère les données de la page pour comparaison
+		// On rÃ©cupÃ¨re les donnÃ©es de la page pour comparaison
 		$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='".get_url($_POST['url'])."' AND lang='".$lang."' LIMIT 1");
 		$res = $sel->fetch_assoc();		
 		
-		// Si le titre à changer et que l'on n'est pas sur le home on change l'URL de la page
+		// Si le titre Ã  changer et que l'on n'est pas sur le home on change l'URL de la page
 		if($res['url'] != encode($_POST['permalink']) or (encode($_POST['title']) and !encode($_POST['permalink']))) 
 		{
-			if(!encode($_POST['permalink']) and encode($_POST['title'])) $change_url = encode($_POST['title']);
-			elseif(!encode($_POST['permalink']) and !encode($_POST['title'])) $change_url = $type."-".$res['id'];
-			else $change_url = encode($_POST['permalink']);
+			if(!encode($_POST['permalink']) and encode($_POST['title'])) 
+				$change_url = encode($_POST['title']);
+			elseif(!encode($_POST['permalink']) and !encode($_POST['title'])) 
+				$change_url = $type."-".$res['id'];
+			else 
+				$change_url = encode($_POST['permalink']);
 		}
 
 
 		// MENU DE NAVIGATION
 		if(isset($_POST['nav']))
 		{
-			// On regarde s'il y a déjà des données
+			// On regarde s'il y a dÃ©jÃ  des donnÃ©es
 			$sel_nav = $connect->query("SELECT * FROM ".$table_meta." WHERE type='nav' AND cle='".$lang."' LIMIT 1");
 			$res_nav = $sel_nav->fetch_assoc();	
 			
-			// On remplace le chemin absolut du site par la clé : home (utilise pour éviter les bug lors des mises en lignes)
+			// On remplace le chemin absolut du site par la clÃ© : home (utilise pour Ã©viter les bug lors des mises en lignes)
 			array_walk($_POST['nav'], 
 				function(&$key) { 					
 					$key['href'] = str_replace($GLOBALS['home'], "", $key['href']);// Supprime les url avec le domaine pour faciliter le transport du site
@@ -346,7 +349,7 @@ switch($_GET['mode'])
 				);
 			}
 
-			// On  encode les données
+			// On  encode les donnÃ©es
 			$json_nav = json_encode($_POST['nav'], JSON_UNESCAPED_UNICODE);
 			
 			// Insert ou update ?
@@ -366,14 +369,14 @@ switch($_GET['mode'])
 		// HEADER
 		if(isset($_POST['header']))
 		{
-			// On regarde s'il y a déjà des données
+			// On regarde s'il y a dÃ©jÃ  des donnÃ©es
 			$sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
 			$res_header = $sel_header->fetch_assoc();	
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
 			$_POST['header'] = str_replace($GLOBALS['home'], "", $_POST['header']);
 			
-			// On  encode les données
+			// On  encode les donnÃ©es
 			$json_header = json_encode($_POST['header'], JSON_UNESCAPED_UNICODE);
 			
 			// Insert ou update ?
@@ -393,14 +396,14 @@ switch($_GET['mode'])
 		// FOOTER
 		if(isset($_POST['footer']))
 		{
-			// On regarde s'il y a déjà des données
+			// On regarde s'il y a dÃ©jÃ  des donnÃ©es
 			$sel_footer = $connect->query("SELECT * FROM ".$table_meta." WHERE type='footer' AND cle='".$lang."' LIMIT 1");
 			$res_footer = $sel_footer->fetch_assoc();		
 
 			// Supprime les url avec le domaine pour faciliter le transport du site
 			$_POST['footer'] = str_replace($GLOBALS['home'], "", $_POST['footer']);
 			
-			// On  encode les données
+			// On  encode les donnÃ©es
 			$json_footer = json_encode($_POST['footer'], JSON_UNESCAPED_UNICODE);
 			
 			// Insert ou update ?
@@ -439,7 +442,7 @@ switch($_GET['mode'])
 		//echo $sql;
 		
 		if($connect->error) echo $connect->error."\nSQL:\n".htmlspecialchars($sql);// S'il y a une erreur
-		else // Sauvegarde réussit
+		else // Sauvegarde rÃ©ussit
 		{
 			?>
 			<script>
@@ -451,8 +454,8 @@ switch($_GET['mode'])
 					window.history.replaceState(history.state, document.title, "<?=make_url($change_url);?>");					
 				<?}?>
 
-				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
-				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde rÃ©ussit on change l'icÃ´ne du bt
+				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde rÃ©ussit on met la couleur verte
 			});
 			</script>
 			<?
@@ -463,13 +466,13 @@ switch($_GET['mode'])
 
 	case "delete":// Supprime le contenu
 
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 
 		//highlight_string(print_r($_POST, true));
 
 		$type = ($_POST['type']?encode($_POST['type']):"page");// Type de contenu
 
-		login('high', 'edit-'.$type);// Vérifie que l'on a le droit d'ajouter une page
+		login('high', 'edit-'.$type);// VÃ©rifie que l'on a le droit d'ajouter une page
 
 		// Supprime la page
 		$sql = "DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
@@ -479,20 +482,20 @@ switch($_GET['mode'])
 		// Supprime les url avec le domaine pour la suppression locale
 		$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
-		// On a demandé la suppression des fichiers liée au contenu
+		// On a demandÃ© la suppression des fichiers liÃ©e au contenu
 		while(list($cle, $media) = each($_POST['medias'])) {
-			// strtok : Supprime les arguments après l'extension (timer...)
+			// strtok : Supprime les arguments aprÃ¨s l'extension (timer...)
 			unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
 		}
 
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
-		else // Suppression réussit
+		else // Suppression rÃ©ussit
 		{
 			?>
 			<script>
 			$(document).ready(function()
 			{		
-				// Message page supprimé
+				// Message page supprimÃ©
 				light("<?_e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
 
 				// Redirection vers la page d'accueil
@@ -507,7 +510,7 @@ switch($_GET['mode'])
 
 	case "make-permalink":// Construit un permalink
 
-		login('medium', 'edit-'.($_POST['type']?encode($_POST['type']):"page"));// Vérifie que l'on a le droit d'éditer une page
+		login('medium', 'edit-'.($_POST['type']?encode($_POST['type']):"page"));// VÃ©rifie que l'on a le droit d'Ã©diter une page
 
 		echo encode($_POST['title']);
 
@@ -516,7 +519,7 @@ switch($_GET['mode'])
 
 	case "add-nav":// Liste les pages absente du menu
 		
-		login('medium', 'edit-nav');// Vérifie que l'on est admin
+		login('medium', 'edit-nav');// VÃ©rifie que l'on est admin
 
 		$menu = array();
 
@@ -547,17 +550,17 @@ switch($_GET['mode'])
 	break;
 
 
-	case "dialog-media":// Affichage des médias
+	case "dialog-media":// Affichage des mÃ©dias
 		
-		login('medium', 'add-media');// Vérifie que l'on est admin
+		login('medium', 'add-media');// VÃ©rifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		
-		// Titre spécifique si la destination est une image cropé, forcé sur la largeur ...
+		// Titre spÃ©cifique si la destination est une image cropÃ©, forcÃ© sur la largeur ...
 		// Onglet : Locale / FB / Insta / Flicker
 		// Option de tri : Par date (defaut) / par nom / par taille
 
-		//@todo: si pas de source on utilise une autre fonction d'insertion ou on renvoie un élément complet d'image <img>
+		//@todo: si pas de source on utilise une autre fonction d'insertion ou on renvoie un Ã©lÃ©ment complet d'image <img>
 
 		//["image/jpg","image/jpeg","image/png","image/gif"];
 		//highlight_string(print_r($tab_img, true));
@@ -588,24 +591,24 @@ switch($_GET['mode'])
 
 			<script>
 			add_container = function(file) {
-				// Crée un id unique
+				// CrÃ©e un id unique
 				now += 1;
 				var id = "dialog-media-"+ now;
 				
 				// Type de fichier
 				var mime = file.type.split("/");
 				
-				// Switch sur le 1er onglet avec tous les médias
+				// Switch sur le 1er onglet avec tous les mÃ©dias
 				$(".dialog-media").tabs("option", "active", 0);
 
-				// Option de resize à afficher ?
+				// Option de resize Ã  afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
 					var resize = "<a class='resize' title=\"<?_e("Get resized image");?>\"><i class='fa fa-fw fa-compress bigger'></i></a>";
 				else 
 					var resize = "";
 
 
-				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
+				// CrÃ©e un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
 				var container = "<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>";
 
 					if(mime[0] == "image") 
@@ -628,7 +631,7 @@ switch($_GET['mode'])
 				// Nom et Date de l'image dans le title
 				$("#"+id).attr("title", file.name+" | "+date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds());
 
-				// Poids de l'image uploadée
+				// Poids de l'image uploadÃ©e
 				if(file.size >= 1048576) var filesize = Math.round(file.size / 1048576) + "Mo";
 				else if(file.size >= 1024) var filesize = Math.round(file.size / 1024) + "Ko";
 				else if(file.size < 1024) var filesize = file.size + "oct";
@@ -636,9 +639,9 @@ switch($_GET['mode'])
 				// Si c'est une image
 				if(mime[0] == "image")
 				{
-					// On crée un objet image pour s'assurer que l'image est bien chargée dans le browser pour avoir la largeur/hauteur		
+					// On crÃ©e un objet image pour s'assurer que l'image est bien chargÃ©e dans le browser pour avoir la largeur/hauteur		
 					var image = new Image();
-					image.onload = function() {// Image bien chargée dans le navigateur
+					image.onload = function() {// Image bien chargÃ©e dans le navigateur
 						$("#"+id+" .infos").html(image.naturalWidth +"x"+ image.naturalHeight +"px - "+ filesize);// Largeur+Hauteur de l'image a uploader
 						window.URL.revokeObjectURL(image.src);
 					}					
@@ -671,7 +674,7 @@ switch($_GET['mode'])
 				now = new Date().getTime();
 
 
-				// On demande une version redimensionnée de l'image
+				// On demande une version redimensionnÃ©e de l'image
 				$(".dialog-media").on("click", ".resize", function(event)
 				{
 					event.stopPropagation();
@@ -683,7 +686,7 @@ switch($_GET['mode'])
 					// Highlight l'image choisie
 					$(this).parent().addClass("select");
 
-					// Boîte à outils resize
+					// BoÃ®te Ã  outils resize
 					resize_tool = "<div id='resize-tool' class='toolbox'>";
 						resize_tool+= __("Width") +": <input type='text' id='resize-width' class='w50p'> ";
 						resize_tool+= __("Height") +": <input type='text' id='resize-height' class='w50p'>";
@@ -734,7 +737,7 @@ switch($_GET['mode'])
 				});
 
 
-				// On sélectionne un fichier
+				// On sÃ©lectionne un fichier
 				$(".dialog-media").on("click", "li:not(.add-media)", function(event)
 				{
 					var id = $(this).attr("id");
@@ -755,7 +758,7 @@ switch($_GET['mode'])
 					// Inverse le tableau pour l'afficher comme dans le dossier
 					$.merge(uploads = [], this.files);
 
-					// Rétablie le tableau dans le bon ordre si upload en cours
+					// RÃ©tablie le tableau dans le bon ordre si upload en cours
 					if(source_queue.length > 0) source_queue.reverse();
 					if(file_queue.length > 0) file_queue.reverse();
 
@@ -778,12 +781,12 @@ switch($_GET['mode'])
 				});
 
 
-				// Pour éviter les highlight des zones draggables du fond
+				// Pour Ã©viter les highlight des zones draggables du fond
 				$("body").off(".editable").off(".editable-media");
 				$(".editable-media").off(".editable-media");
 
 
-				// On drag&drop des médias dans la fenêtre
+				// On drag&drop des mÃ©dias dans la fenÃªtre
 				$("body")
 					.on({
 					"dragover.dialog-media": function(event) {// Highlight les zones on hover
@@ -803,19 +806,19 @@ switch($_GET['mode'])
 						$(".ui-widget-overlay").removeClass("body-dragover");
 						$(".add-media").removeClass("dragover");
 						
-						// Upload du fichier dropé
+						// Upload du fichier dropÃ©
 						if(event.originalEvent.dataTransfer)
 						{
 							// Inverse le tableau pour l'afficher comme dans le dossier
 							$.merge(uploads = [], event.originalEvent.dataTransfer.files);
 							
-							// Rétablie le tableau dans le bon ordre si upload en cours
+							// RÃ©tablie le tableau dans le bon ordre si upload en cours
 							if(source_queue.length > 0) source_queue.reverse();
 							if(file_queue.length > 0) file_queue.reverse();
 
 							$.each(uploads.reverse(), function(cle, file)
 							{
-								// Ajoute un contener pour le média uploadé
+								// Ajoute un contener pour le mÃ©dia uploadÃ©
 								var id = add_container(file);										
 								
 								// Variables d'upload //, $(".ui-state-active").attr("data-filter")
@@ -842,10 +845,10 @@ switch($_GET['mode'])
 	case "media":// Liste les images
 
 		// @todo: Ajouter une recherche js comme dans la partie font awesome
-		// @todo: mettre player html5 si vidéo ou audio pour avoir la preview et possibilité de jouer les médias en mode zoom
-		// @todo: ajouter un bouton de nettoyage qui scanne les contenus et regarde si les fichiers sont utilisés
+		// @todo: mettre player html5 si vidÃ©o ou audio pour avoir la preview et possibilitÃ© de jouer les mÃ©dias en mode zoom
+		// @todo: ajouter un bouton de nettoyage qui scanne les contenus et regarde si les fichiers sont utilisÃ©s
 		
-		login('medium', 'add-media');// Vérifie que l'on est admin
+		login('medium', 'add-media');// VÃ©rifie que l'on est admin
 
 		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".((isset($_GET['filter']) and  $_GET['filter'] == "resize") ? "resize/":"");
 		
@@ -855,7 +858,7 @@ switch($_GET['mode'])
 			$scandir = array_diff(scandir($dir), array('..', '.'));// Nettoyage
 
 			$i = 1;
-			// Crée un tableau avec les fichiers du dossier et infos complètes
+			// CrÃ©e un tableau avec les fichiers du dossier et infos complÃ¨tes
 			while(list($cle, $filename) = each($scandir))				
 			{				
 				if($filename != "Thumbs.db" and $filename != ".htaccess" and !is_dir($dir.$filename))
@@ -874,7 +877,7 @@ switch($_GET['mode'])
 					list($type, $ext) = explode("/", $file_infos['mime']);
 					
 					// Pour le tri
-					if(!isset($_GET['order']) or $_GET['order'] == 'time') $order = $stat['mtime'];// Tri par défaut
+					if(!isset($_GET['order']) or $_GET['order'] == 'time') $order = $stat['mtime'];// Tri par dÃ©faut
 					elseif($_GET['order'] == 'size') $order = $stat['size'];
 					elseif($_GET['order'] == 'name') $order = $filename;
 
@@ -885,7 +888,7 @@ switch($_GET['mode'])
 						($_GET['filter'] == "file" and $type != "image" and $type != "video" and $type != "audio")						
 					) 
 					{					
-						// $i pour être sûr d'incrémenter le tableau
+						// $i pour Ãªtre sÃ»r d'incrÃ©menter le tableau
 						$tab_file[$order.$i] = array("filename" => $filename, "size" => $stat['size'], "time" => $stat['mtime'], "width" => $file_infos['0'], "height" => $file_infos['1'], "mime" => $file_infos['mime']);
 					}
 
@@ -896,7 +899,7 @@ switch($_GET['mode'])
 
 		// Tri du tableau
 		if(!isset($sort)) {								
-			if(!isset($_GET['order']) or $_GET['order'] == 'time') $sort = 'DESC';// Tri par défaut
+			if(!isset($_GET['order']) or $_GET['order'] == 'time') $sort = 'DESC';// Tri par dÃ©faut
 			elseif($_GET['order'] == 'size') $sort = 'DESC';
 			elseif($_GET['order'] == 'name') $sort = 'ASC';
 		}
@@ -990,18 +993,18 @@ switch($_GET['mode'])
 	
 	case "del-media":// Supprime un fichier
 
-		login('medium', 'add-media');// Vérifie que l'on est admin
+		login('medium', 'add-media');// VÃ©rifie que l'on est admin
 
 		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		
 	break;
 
 
-	case "get-img":// Renvoi une image et la resize si nécessaire
+	case "get-img":// Renvoi une image et la resize si nÃ©cessaire
 
-		login('medium', 'add-media');// Vérifie que l'on est admin
+		login('medium', 'add-media');// VÃ©rifie que l'on est admin
 		
-		// On supprime les ? qui pourrait gêner à la récupération de l'image
+		// On supprime les ? qui pourrait gÃªner Ã  la rÃ©cupÃ©ration de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
 		
 		// Resize l'image ou simple copie
@@ -1010,35 +1013,35 @@ switch($_GET['mode'])
 	break;
 
 
-	case "add-media":// Envoi d'une image sur le serveur et la resize si nécessaire
+	case "add-media":// Envoi d'une image sur le serveur et la resize si nÃ©cessaire
 			
-		login('medium', 'add-media');// Vérifie que l'on est admin
+		login('medium', 'add-media');// VÃ©rifie que l'on est admin
 
 		//echo "_POST:<br>"; highlight_string(print_r($_POST, true));
 		//echo "_FILES:<br>"; highlight_string(print_r($_FILES, true));
-		// @todo: Vérifier qu'il n'y a pas déjà un fichier qui a le même nom sur le serveur, si oui => alert pour overwrite
-		// @todo: Proposer l'option crop (si w&h spécifié) / resize (si aucune des w&h ne sont pas spécifiés)
+		// @todo: VÃ©rifier qu'il n'y a pas dÃ©jÃ  un fichier qui a le mÃªme nom sur le serveur, si oui => alert pour overwrite
+		// @todo: Proposer l'option crop (si w&h spÃ©cifiÃ©) / resize (si aucune des w&h ne sont pas spÃ©cifiÃ©s)
 		
-		// Récupération de l'extension
+		// RÃ©cupÃ©ration de l'extension
 		$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 	
-		// Hack protection : contre les doubles extensions = Encode le nom de fichier + supprime l'extension qui ne passe pas l'encode et l'ajoute après
+		// Hack protection : contre les doubles extensions = Encode le nom de fichier + supprime l'extension qui ne passe pas l'encode et l'ajoute aprÃ¨s
 		$filename = encode(basename($_FILES['file']['name'], ".".$ext)).".".strtolower($ext);
 
 		// @todo trouver la bonne regex qui permet de n'avoir qu'un seul point
-		// 2ème passe avec une whitelist pour supp tous les autres caractères indésirables et n'avoir qu'un seul point (pour l'ext)
+		// 2Ã¨me passe avec une whitelist pour supp tous les autres caractÃ¨res indÃ©sirables et n'avoir qu'un seul point (pour l'ext)
 		//$filename = preg_replace("([^a-z0-9\.\-_]|[\.]{2,})", "", $_FILES['file']['name']);
 		// /^[a-z0-9]+\.[a-z]{3,4}$/  /[^a-z0-9\._-]+/  ([^a-z0-9\.\-_]|[\.]{2,})  [a-zA-Z0-9]{1,200}\.[a-zA-Z0-9]{1,10}
 
 		$src_file = "media/".$filename;
 		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].$src_file;
 		
-		// Check le type mime côté serveur
+		// Check le type mime cÃ´tÃ© serveur
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$file_infos['mime'] = finfo_file($finfo, $_FILES['file']['tmp_name']);
 		finfo_close($finfo);
 
-		// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
+		// VÃ©rifie que le type mime est supportÃ© (Hack protection : contre les mauvais mimes types) 
 		if(in_array($file_infos['mime'], $GLOBALS['mime_supported']))
 		{
 			// Le fichier tmp ne contient pas de php ou de javascript
@@ -1069,9 +1072,9 @@ switch($_GET['mode'])
 
 
 
-	case "dialog-icon":// Affichage des médias
+	case "dialog-icon":// Affichage des mÃ©dias
 		
-		login('medium', 'edit-page');// Vérifie que l'on est admin
+		login('medium', 'edit-page');// VÃ©rifie que l'on est admin
 
 		// @todo: ajouter une recherche en js (qui masque)
 		?>
@@ -1090,14 +1093,14 @@ switch($_GET['mode'])
 			//$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';	
 			$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';	
 
-			// On récupère la css qui contient les icônes
+			// On rÃ©cupÃ¨re la css qui contient les icÃ´nes
 			$subject = file_get_contents($GLOBALS['icons']);
 			
-			// On extrait seulement les icônes
+			// On extrait seulement les icÃ´nes
 			preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
 			//highlight_string(print_r($matches, true));
 			
-			// On crée un tableau propre
+			// On crÃ©e un tableau propre
 			foreach($matches as $match){ $list[$match[1]] = $match[2];	}			
 
 			?>
@@ -1139,7 +1142,7 @@ switch($_GET['mode'])
 					$(".dialog-icon i").css("opacity","0.4");
 					$("#"+id).css("opacity","1");
 
-					// On ajoute l'icône
+					// On ajoute l'icÃ´ne
 					exec_tool("insertIcon", id);
 
 					// Fermeture de la dialog
@@ -1156,7 +1159,7 @@ switch($_GET['mode'])
 				
 		//@todo: check si access token facebook disponible
 
-		login('medium', 'edit-page');// Vérifie que l'on est admin
+		login('medium', 'edit-page');// VÃ©rifie que l'on est admin
 
 		// https://graph.facebook.com/me/albums
 		// https://graph.facebook.com/id-album/photos?fields=source,name,id,link&access_token=
@@ -1172,7 +1175,7 @@ switch($_GET['mode'])
 
 		echo "response<br>"; highlight_string(print_r($response, true));
 
-		//@todo: prévoir une navigation par page pour les albums et les photos
+		//@todo: prÃ©voir une navigation par page pour les albums et les photos
 		//@todo: si album vide = on ne l'affiche pas
 
 	break;
@@ -1181,7 +1184,7 @@ switch($_GET['mode'])
 	
 	// SETUP / INSTALL / CONFIG
 
-	case "setup-update":// Mise à jour des données de configuration
+	case "setup-update":// Mise Ã  jour des donnÃ©es de configuration
 		
 		// Chemin des fichiers de config
 		$config_sample_file = "config.init.php";
@@ -1192,10 +1195,10 @@ switch($_GET['mode'])
 		{			
 			// Traduction de la page d'installation
 			$add_translation = array(
-				"Table already exists" => array("fr" => "La table existe déjà"),
-				"User already exists : update password" => array("fr" => "L'utilisateur existe déjà : mise à jour du mot de passe"),
+				"Table already exists" => array("fr" => "La table existe dÃ©jÃ "),
+				"User already exists : update password" => array("fr" => "L'utilisateur existe dÃ©jÃ  : mise Ã  jour du mot de passe"),
 				"Wrong email" => array("fr" => "Mauvais email"),
-				"Successful installation ! create your homepage !" => array("fr" => "Installation réussie ! créer votre page d'accueil !")
+				"Successful installation ! create your homepage !" => array("fr" => "Installation rÃ©ussie ! crÃ©er votre page d'accueil !")
 			);
 
 			add_translation($add_translation);
@@ -1205,7 +1208,7 @@ switch($_GET['mode'])
 			{
 				
 				// BASE DE DONNEE
-				// Connexion à la bdd
+				// Connexion Ã  la bdd
 				$GLOBALS['connect'] = @new mysqli(addslashes($_POST['db_server']), addslashes($_POST['db_user']), addslashes($_POST['db_pwd']), addslashes($_POST['db']));
 				
 				if ($GLOBALS['connect']->connect_errno) {// Erreur
@@ -1217,22 +1220,22 @@ switch($_GET['mode'])
 					<?
 					exit;
 				}
-				else {// Réussite
+				else {// RÃ©ussite
 					
 					// Nom des tables
 					$GLOBALS['table_content'] = addslashes($_POST['db_prefix']."content");
 					$GLOBALS['table_meta'] = addslashes($_POST['db_prefix']."meta");
 					$GLOBALS['table_user'] = addslashes($_POST['db_prefix']."user");
 										
-					// Vérification de l'existence des base de données
-					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content'])){// Table déjà existante
+					// VÃ©rification de l'existence des base de donnÃ©es
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content'])){// Table dÃ©jÃ  existante
 						?>
 						<script>
 							light("<?_e("Table already exists")?> : content");
 						</script>
 						<?
 					}
-					else {// Création de la base de données
+					else {// CrÃ©ation de la base de donnÃ©es
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_content']."` (
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -1267,15 +1270,15 @@ switch($_GET['mode'])
 						}
 					}
 
-					// Vérification de l'existence des base de données
-					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta'])){// Table déjà existante
+					// VÃ©rification de l'existence des base de donnÃ©es
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta'])){// Table dÃ©jÃ  existante
 						?>
 						<script>
 							light("<?_e("Table already exists")?> : meta");
 						</script>
 						<?
 					}
-					else {// Création de la base de données
+					else {// CrÃ©ation de la base de donnÃ©es
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_meta']."` (
 								`id` bigint(20) UNSIGNED NOT NULL,
@@ -1298,15 +1301,15 @@ switch($_GET['mode'])
 						}
 					}
 
-					// Vérification de l'existence des base de données
-					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user'])){// Table déjà existante
+					// VÃ©rification de l'existence des base de donnÃ©es
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user'])){// Table dÃ©jÃ  existante
 						?>
 						<script>
 							light("<?_e("Table already exists")?> : user");
 						</script>
 						<?
 					}
-					else {// Création de la base de données
+					else {// CrÃ©ation de la base de donnÃ©es
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_user']."` (
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -1340,7 +1343,7 @@ switch($_GET['mode'])
 					
 					// UTILISATEUR
 
-					// Vérification de l'email
+					// VÃ©rification de l'email
 					$email = filter_input(INPUT_POST, 'email_contact', FILTER_SANITIZE_EMAIL);
 					if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 						?>
@@ -1353,10 +1356,10 @@ switch($_GET['mode'])
 					}
 					else {
 
-						// Clean l'email pour éviter les injections
+						// Clean l'email pour Ã©viter les injections
 						$email = $GLOBALS['connect']->real_escape_string($email);
 
-						// Crée un hash si pas déjà un chargé par le config maison
+						// CrÃ©e un hash si pas dÃ©jÃ  un chargÃ© par le config maison
 						if(!$GLOBALS['pub_hash']) $GLOBALS['pub_hash'] = $_POST['pub_hash'] = make_pwd(mt_rand(32, 64), true, true);
 						if(!$GLOBALS['priv_hash']) $GLOBALS['priv_hash'] = $_POST['priv_hash'] = make_pwd(mt_rand(32, 64), true, true);
 						if(!$GLOBALS['pwd_hash_loop']) $GLOBALS['pwd_hash_loop'] = $_POST['pwd_hash_loop'] = mt_rand(60536, 65536);
@@ -1364,11 +1367,11 @@ switch($_GET['mode'])
 						// Email pour le login automatique
 						$_POST['email'] = $email;
 						
-						// Vérifie que l'utilisateur n'existe pas déjà
+						// VÃ©rifie que l'utilisateur n'existe pas dÃ©jÃ 
 						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."user WHERE email='".$email."' AND state='active' LIMIT 1");
-						if($res = $sel->fetch_assoc())// User déjà existant : on update ses données
+						if($res = $sel->fetch_assoc())// User dÃ©jÃ  existant : on update ses donnÃ©es
 						{						
-							// Création de la requête
+							// CrÃ©ation de la requÃªte
 							$sql = "UPDATE ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
 							$sql .= "auth = '".addslashes(implode(",", $GLOBALS['auth_level']))."', ";// Donne tous les droits
@@ -1385,7 +1388,7 @@ switch($_GET['mode'])
 
 							$sql .= "WHERE id = '".$res['id']."'";
 
-							// Exécution de la requête
+							// ExÃ©cution de la requÃªte
 							$GLOBALS['connect']->query($sql);
 
 							if($GLOBALS['connect']->error) {
@@ -1404,9 +1407,9 @@ switch($_GET['mode'])
 							</script>
 							<?
 						}
-						else {// Création de l'utilisateur admin avec tous les droits
+						else {// CrÃ©ation de l'utilisateur admin avec tous les droits
 
-							// Création de la requête
+							// CrÃ©ation de la requÃªte
 							$sql = "INSERT INTO ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
 							$sql .= "auth = '".addslashes(implode(",", $GLOBALS['auth_level']))."', ";// Donne tous les droits
@@ -1423,7 +1426,7 @@ switch($_GET['mode'])
 
 							$sql .= "date_insert = NOW() ";
 
-							// Exécution de la requête
+							// ExÃ©cution de la requÃªte
 							$GLOBALS['connect']->query($sql);
 
 							if($GLOBALS['connect']->error) {
@@ -1443,7 +1446,7 @@ switch($_GET['mode'])
 						if(file_exists($config_final_file)) $config_file = file($config_final_file);
 						else $config_file = file($config_sample_file);
 
-						// Séparation des données du chemin du site
+						// SÃ©paration des donnÃ©es du chemin du site
 						$parse_url = parse_url($_POST['scheme_domain_path']);
 						$_POST['scheme'] = $parse_url['scheme']."://";
 						$_POST['domain'] = $parse_url['host'];
@@ -1455,7 +1458,7 @@ switch($_GET['mode'])
 						// On parcourt le fichier config
 						foreach($config_file as $line_num => $line) 
 						{
-							// On récupère la clé de la variable en cours
+							// On rÃ©cupÃ¨re la clÃ© de la variable en cours
 							preg_match("/GLOBALS\[\'([a-z_]+)\'\]/", $line, $match);
 
 							if(isset($match[1])) $key = $match[1]; else $key = "";
@@ -1467,7 +1470,7 @@ switch($_GET['mode'])
 
 						unset($line);
 
-						// écriture dans le fichier config
+						// Ã©criture dans le fichier config
 						$fopen = fopen($config_final_file, 'w');
 						foreach($config_file as $line) {
 							fwrite($fopen, $line);
@@ -1482,7 +1485,7 @@ switch($_GET['mode'])
 						login();
 
 
-						// MESSAGE DE BIENVENUE et d'information qu'il faut créé la page d'accueil du site
+						// MESSAGE DE BIENVENUE et d'information qu'il faut crÃ©Ã© la page d'accueil du site
 						?>
 						<script>
 							light("<?_e("Successful installation ! create your homepage !")?>");
@@ -1506,15 +1509,15 @@ switch($_GET['mode'])
 
 	case "setup":// Formulaire de configuration
 
-		//@todo: ajouter la possibilité de récup notre propre id fb, google, yah, ms (mode silencieux de login tiers)
-		//@todo: voir pour utiliser ce fichier également en ajax pour édit la config par la suite
+		//@todo: ajouter la possibilitÃ© de rÃ©cup notre propre id fb, google, yah, ms (mode silencieux de login tiers)
+		//@todo: voir pour utiliser ce fichier Ã©galement en ajax pour Ã©dit la config par la suite
 		//@todo: Ajouter un lien pour test les connexions tierses
-		//@todo: donner les URL à rentrer dans les applications tierses
-		//@todo: ajouter un droit d'édition light de la config (nom du site, code analytics, mail contact...) ou visible par tous les éditeurs de contenu ?
-		//@todo: Vérif le cas ou pas de fichier conf existe
-		//@todo: Vérif le cas ou fichier conf exist
+		//@todo: donner les URL Ã  rentrer dans les applications tierses
+		//@todo: ajouter un droit d'Ã©dition light de la config (nom du site, code analytics, mail contact...) ou visible par tous les Ã©diteurs de contenu ?
+		//@todo: VÃ©rif le cas ou pas de fichier conf existe
+		//@todo: VÃ©rif le cas ou fichier conf exist
 
-		// Pour éviter les problèmes de cache qui appèlerais un fichier inexistant
+		// Pour Ã©viter les problÃ¨mes de cache qui appÃ¨lerais un fichier inexistant
 		if(isset($_SERVER['REDIRECT_URL'])) {
 			header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
 			exit("<h1>404 error : page not found</h1>");
@@ -1527,14 +1530,14 @@ switch($_GET['mode'])
 		$add_translation = array(
 			"Site Installation" => array("fr" => "Installation du site"),
 
-			"Address database" => array("fr" => "Adresse de la base de données"),
-			"Name of the data base" => array("fr" => "Nom de la base de données"),
+			"Address database" => array("fr" => "Adresse de la base de donnÃ©es"),
+			"Name of the data base" => array("fr" => "Nom de la base de donnÃ©es"),
 			"MySQL Username" => array("fr" => "Nom d'utilisateur MySQL"),
 			"MySQL User Password" => array("fr" => "Mot de passe de l'utilisateur MySQL"),
-			"Table Prefix" => array("fr" => "Préfixe de table"),
+			"Table Prefix" => array("fr" => "PrÃ©fixe de table"),
 
 			"Name of the site" => array("fr" => "Nom du site"),
-			"Site theme" => array("fr" => "Thème du site"),
+			"Site theme" => array("fr" => "ThÃ¨me du site"),
 
 			"Site Location" => array("fr" => "Emplacement du site"),
 
@@ -1545,19 +1548,19 @@ switch($_GET['mode'])
 
 			"Google analytics code" => array("fr" => "Code google analytics"),
 
-			"System login third" => array("fr" => "Système de login tièrce"),
+			"System login third" => array("fr" => "SystÃ¨me de login tiÃ¨rce"),
 
 			"Id of the app facebook" => array("fr" => "Id de l'app facebook"),
-			"Secret key of the app facebook" => array("fr" => "Clé secrete de l'app facebook"),
+			"Secret key of the app facebook" => array("fr" => "ClÃ© secrete de l'app facebook"),
 
 			"Id of the app google" => array("fr" => "Id de l'app google"),
-			"Secret Key to google app" => array("fr" => "Clé secrete de l'app google"),
+			"Secret Key to google app" => array("fr" => "ClÃ© secrete de l'app google"),
 
 			"Id of the app yahoo" => array("fr" => "Id de l'app yahoo"),
-			"Secret key to the app yahoo" => array("fr" => "Clé secrete de l'app yahoo"),
+			"Secret key to the app yahoo" => array("fr" => "ClÃ© secrete de l'app yahoo"),
 
 			"Id of the app microsoft" => array("fr" => "Id de l'app microsoft"),
-			"Secret key of microsoft app" => array("fr" => "Clé secrete de l'app microsoft"),
+			"Secret key of microsoft app" => array("fr" => "ClÃ© secrete de l'app microsoft"),
 
 			"Start installation" => array("fr" => "Lancer l'installation")
 		);
@@ -1633,7 +1636,7 @@ switch($_GET['mode'])
 
 			<script>
 				submittable = function() {
-					// Icône de chargement
+					// IcÃ´ne de chargement
 					$("#setup button i").removeClass("fa-spin fa-cog").addClass("fa-cogs");
 					
 					// Active le submit
@@ -1647,10 +1650,10 @@ switch($_GET['mode'])
 					{
 						event.preventDefault();
 
-						// Icône de chargement
+						// IcÃ´ne de chargement
 						$("#setup button i").removeClass("fa-cogs").addClass("fa-spin fa-cog");
 						
-						// Désactive le submit
+						// DÃ©sactive le submit
 						//$("#setup button").attr("disabled", true);
 
 						// Variable
@@ -1709,10 +1712,10 @@ switch($_GET['mode'])
 
 								<select id="theme" class="vatt">
 								<?
-								// Un thème dans la racine
+								// Un thÃ¨me dans la racine
 								if(file_exists("theme/header.php")) echo"<option value=\"\"".($GLOBALS['theme'] == "" ? " selected":"").">/</option>";
 								
-								// Des dossiers de thème
+								// Des dossiers de thÃ¨me
 								$scandir = array_diff(scandir("theme/"), array('..', '.', 'tpl'));
 								while(list($cle, $file) = each($scandir)) { 
 									if(is_dir("theme/".$file)) echo"<option value=\"".$file."/\"".($GLOBALS['theme'] == $file."/" ? " selected":"").">".$file."</option>";
