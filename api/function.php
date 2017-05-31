@@ -560,7 +560,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 			{
 				if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
 
-				session_regenerate_id(true);// Supprime l'ancienne session
+				@session_regenerate_id(true);// Supprime l'ancienne session
 
 				$sel = $GLOBALS['connect']->query("SELECT auth, token FROM ".$GLOBALS['table_user']." WHERE id='".(int)$_SESSION['uid']."' AND state='active' LIMIT 1");
 				$res = $sel->fetch_assoc();
