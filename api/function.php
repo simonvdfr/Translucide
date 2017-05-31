@@ -489,7 +489,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 		// On se log avec le formulaire donc on check password & mail
 		if(isset($_POST['email']) and isset($_POST['password']))
 		{
-			if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
+			if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
 
 			// Supprime l'ancienne session
 			session_regenerate_id(true);
