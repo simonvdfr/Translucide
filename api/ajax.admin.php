@@ -337,7 +337,7 @@ switch($_GET['mode'])
 			);
 
 			// Si on change d'url (permalink) on change dans le menu le lien correspondant
-			if($change_url) {
+			if(isset($change_url)) {
 				array_walk($_POST['nav'], 
 					function(&$key) { 
 						global $res, $change_url;
@@ -1457,8 +1457,8 @@ switch($_GET['mode'])
 						{
 							// On récupère la clé de la variable en cours
 							preg_match("/GLOBALS\[\'([a-z_]+)\'\]/", $line, $match);
-							
-							if(isset($match[1])) $key = $match[1];
+
+							if(isset($match[1])) $key = $match[1]; else $key = "";
 							
 							// Changement de la ligne et ajout de la nouvelle variable
 							if(isset($key) and isset($_POST[$key])) 
@@ -1574,7 +1574,7 @@ switch($_GET['mode'])
 			else $scheme_domain_path .= "http://";
 			
 			$scheme_domain_path .= $_SERVER['SERVER_NAME'];
-			$scheme_domain_path .= $_SERVER['REQUEST_URI'];
+			$scheme_domain_path .= str_replace(basename($_SERVER['REQUEST_URI']) , "", $_SERVER['REQUEST_URI']);
 		}
 
 		// Nom du site
@@ -1651,7 +1651,7 @@ switch($_GET['mode'])
 						$("#setup button i").removeClass("fa-cogs").addClass("fa-spin fa-cog");
 						
 						// Désactive le submit
-						$("#setup button").attr("disabled", true);
+						//$("#setup button").attr("disabled", true);
 
 						// Variable
 						var data = {};
