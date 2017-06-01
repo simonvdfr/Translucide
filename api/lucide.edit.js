@@ -769,7 +769,9 @@ $(function()
 		adminbar+= "<div id='meta-responsive' class='fl mat none small-screen'><i class='fa fa-fw fa-pencil bigger' title=\""+ __("Page title") +"\"></i></div>";
 
 		adminbar+= "<div id='meta' class='fl mat w30 no-small-screen'>";
+
 			adminbar+= "<input type='text' id='title' value=\""+ document.title +"\" title=\""+ __("Page title") +"\" maxlength='60' class='w100 bold'>";
+
 			adminbar+= "<div class='w50'>";
 				adminbar+= "<div class='tooltip slide-left fire pas mas mlt'>";
 
@@ -789,6 +791,7 @@ $(function()
 					
 				adminbar+= "</div>";
 			adminbar+= "</div>";
+
 		adminbar+= "</div>";		
 
 		adminbar+= "<div id='close' class='fr mrt bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-window-close-o'></i></div>";
@@ -1530,11 +1533,14 @@ $(function()
 	/************** USERS **************/
 
 	// Ouverture de l'admin des users
-	$("#user i").on("click mouseenter",	// touchstart click
+	$("#user i").on("click mouseenter",	// touchstart
 		function(event) {
 
 			event.stopPropagation();
-			event.preventDefault();			
+			event.preventDefault();		
+
+			// Pour ne pas ouvrir les meta du title si l'admin user ouverte	
+			$("#meta").addClass("nofire");
 
 			if(!$("#user .absolute").length && event.type == "mouseenter")
 			{
@@ -1551,8 +1557,10 @@ $(function()
 								if(!$(event.target).parents().is("#user .absolute") && $("#user .absolute").is(":visible") && close == false)//event.type == 'click'
 									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegardé on shake
 										$("#user .absolute > div").effect("highlight");
-									else
+									else {
 										$("#user .absolute").fadeOut("fast", function(){ close = true; });
+										$("#meta").removeClass("nofire");// Remets le champ meta en hover disponible
+									}
 							}
 						);
 					}
@@ -1566,6 +1574,7 @@ $(function()
 			else if(event.type == 'click' && $("#user .absolute").is(":visible") && close == false )// Si on click sur le bt user de l'admin-bar
 			{
 				$("#user .absolute").fadeOut("fast", function(){ close = true; });
+				$("#meta").removeClass("nofire");// Remets le champ meta en hover disponible
 			}
 		}
 	);

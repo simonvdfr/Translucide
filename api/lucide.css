@@ -5,6 +5,7 @@ body { transition: margin-top .2s linear; }
 /* Légère transition sur les FontAwesome */
 .fa { transition: all 0.3s; }
 
+.acolor { color: #75898c; }
 
 #admin-bar {		
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -74,7 +75,7 @@ body { transition: margin-top .2s linear; }
 		display: none; 
 		position: absolute;
 	}
-	#admin-bar #meta:hover > div { display: block; }
+	#admin-bar #meta:not(.nofire):hover > div { display: block; }
 
 
 	#admin-bar #close {
