@@ -68,6 +68,9 @@
 .fa-envelope-o:before {
   content: "\f003";
 }
+.fa-user:before {
+  content: "\f007";
+}
 .fa-check:before {
   content: "\f00c";
 }
@@ -91,6 +94,9 @@
 }
 .fa-lock:before {
   content: "\f023";
+}
+.fa-tag:before {
+  content: "\f02b";
 }
 .fa-pencil:before {
   content: "\f040";
