@@ -2,6 +2,10 @@
 @include_once("config.php");// Variables
 include_once("api/function.php");// Fonctions
 
+// Fonctions du theme
+if($GLOBALS['function']) 
+	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].$GLOBALS['function']);
+
 include_once("api/db.php");// Connexion à la db
 
 

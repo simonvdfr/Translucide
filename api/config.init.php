@@ -41,6 +41,7 @@ $GLOBALS['table_user'] = $GLOBALS['db_prefix']."user";
 $GLOBALS['language'] = array("fr");
 
 $GLOBALS['theme'] = "";
+$GLOBALS['function'] = "";// Include fonction du theme
 
 $GLOBALS['sitename'] = "";
 
@@ -51,6 +52,10 @@ $GLOBALS['path'] = "";
 $GLOBALS['robots'] = "index, follow";
 
 $GLOBALS['email_contact'] = "";
+
+
+// Utilisation de librairie minifier
+$GLOBALS['min'] = "";// .min
 
 
 // https://developers.facebook.com/apps/
@@ -179,10 +184,6 @@ $GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 $GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js";
 
 $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
-
-
-// Utilisation de librairie minifier
-$GLOBALS['min'] = "";// .min
 
 
 // Sécurité / défaut
