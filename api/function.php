@@ -53,7 +53,7 @@ function get_url($url_source = null)
 
 			while(list($cle, $dir) = each($explode_path)) {
 				$explode_dir = explode("_", $dir);	
-				$GLOBALS["filtre"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_"));
+				$GLOBALS["filter"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_"));
 			}
 		}
 		else $url = encode($path);
@@ -63,21 +63,21 @@ function get_url($url_source = null)
 }
 
 // Retourne l'url rewriter
-function make_url($url, $filtre = array())
+function make_url($url, $filter = array())
 {
-	if(is_array($filtre))
+	if(is_array($filter))
 	{
 		$dir = "";
 
 		// Force le domaine
-		if(isset($filtre['domaine'])) $domaine = $filtre['domaine'];
-		unset($filtre['domaine']);
+		if(isset($filter['domaine'])) $domaine = $filter['domaine'];
+		unset($filter['domaine']);
 
 		// Création des dossier dans l'url en fonction des filtres
-		while(list($cle, $val) = each($filtre))
+		while(list($cle, $val) = each($filter))
 		{
 			if($cle == "page" and $val == 1)
-				unset($filtre['page']);// Si Page == 1 on ne l'affiche pas dans l'url
+				unset($filter['page']);// Si Page == 1 on ne l'affiche pas dans l'url
 			elseif($val)
 				$dir .= "/" . (($cle and $cle !=$val) ? encode($cle)."_" : "") . encode($val, "-", array(".","_"));
 		}
@@ -174,25 +174,25 @@ function _e($singulier, $pluriel = "", $num = 0)
 
 /********** CONTENT **********/
 // Contenu texte
-function txt($key = null, $filtre = array())
+function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<".(isset($filtre['tag']) ? $filtre['tag'] : "div")." class='".(isset($filtre['editable']) ? $filtre['editable'] : "editable").(isset($filtre['class']) ? " ".$filtre['class'] : "")."' id='".encode($key)."'".(isset($filtre['placeholder']) ? " placeholder=\"".utf8_encode($filtre['placeholder'])."\"" : "").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".(isset($filtre['tag']) ? $filtre['tag'] : "div").">";
+	echo"<".(isset($filter['tag']) ? $filter['tag'] : "div")." class='".(isset($filter['editable']) ? $filter['editable'] : "editable").(isset($filter['class']) ? " ".$filter['class'] : "")."' id='".encode($key)."'".(isset($filter['placeholder']) ? " placeholder=\"".utf8_encode($filter['placeholder'])."\"" : "").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
 
 	$GLOBALS['editkey']++;
 }
 
 // Contenu image/fichier
-function media($key = null, $filtre = array())
+function media($key = null, $filter = array())
 {
 	$key = ($key ? $key : "file-".$GLOBALS['editkey']);
 
-	// S'il y a une valeur pour le filtre mais que ce n'est pas un tableau
-	if(!is_array($filtre)) $filtre = array("size" => $filtre);
+	// S'il y a une valeur pour le filter mais que ce n'est pas un tableau
+	if(!is_array($filter)) $filter = array("size" => $filter);
 
 	// Une taille est définie
-	if(isset($filtre['size'])) $size = explode("x", $filtre['size']);
+	if(isset($filter['size'])) $size = explode("x", $filter['size']);
 
 	// Nom du fichier
 	$filename = isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "";
@@ -222,7 +222,7 @@ function media($key = null, $filtre = array())
 		}
 	}
 
-	echo"<span class='".(isset($filtre['editable']) ? $filtre['editable'] : "editable-media")."' id='".encode($key)."'";
+	echo"<span class='".(isset($filter['editable']) ? $filter['editable'] : "editable-media")."' id='".encode($key)."'";
 		if(isset($size[0])) echo" data-width='".$size[0]."'";
 		if(isset($size[1])) echo" data-height='".$size[1]."'";
 	echo">";
@@ -236,7 +236,7 @@ function media($key = null, $filtre = array())
 
 			echo" atl=\"\" class='";
 				if(isset($size[0]) and isset($size[1])) echo"crop";
-				if(isset($filtre['zoom'])) echo" zoom";
+				if(isset($filter['zoom'])) echo" zoom";
 			echo"'>";
 		}
 		elseif($filename) // C'est un fichier
@@ -266,23 +266,23 @@ function bg($key = null, $lazy = false)
 }
 
 // Contenu champ checkbox
-function checkbox($key = null, $filtre = array())
+function checkbox($key = null, $filter = array())
 {
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
-	echo"<i class='".($filtre['editable']?$filtre['editable']:"editable-checkbox")." fa fa-fw ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."' id='".encode($key)."'></i>";
+	echo"<i class='".($filter['editable']?$filter['editable']:"editable-checkbox")." fa fa-fw ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."' id='".encode($key)."'></i>";
 	
 	$GLOBALS['editkey']++;
 }
 
 // Contenu champ select
-function select($key = null, $filtre = array())
+function select($key = null, $filter = array())
 {
 	$key = ($key ? $key : "select-".$GLOBALS['editkey']);
 
-	if(!is_array($filtre)) $filtre = array("option" => $filtre);
+	if(!is_array($filter)) $filter = array("option" => $filter);
 
-	$option_decode = json_decode($filtre['option'], true);
+	$option_decode = json_decode($filter['option'], true);
 
 	if($option_decode[$GLOBALS['content'][$key]]) {
 		$selected_key = $GLOBALS['content'][$key];
@@ -293,7 +293,7 @@ function select($key = null, $filtre = array())
 		$selected_option = $option_decode[$selected_key];
 	}
 
-	echo"<span id='".encode($key)."' class='".($filtre['editable']?$filtre['editable']:"editable-select")."' data-option='".$filtre['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
+	echo"<span id='".encode($key)."' class='".($filter['editable']?$filter['editable']:"editable-select")."' data-option='".$filter['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
 	
 	$GLOBALS['editkey']++;
 }
