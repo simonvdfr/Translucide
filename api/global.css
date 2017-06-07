@@ -181,7 +181,7 @@ table {
 td, th { padding: 0; }
 
 ul, ol { padding-left: 2em; }
-ul.unstyled { list-style: none; }
+ul.unstyled, ol.unstyled { list-style: none; }
 
 
 p, .p-like, ul, ol, dl, blockquote, pre, td, th, label, textarea, caption, details, figure {
@@ -815,7 +815,7 @@ div.editable {
 
 /* hiding content */
 @media (max-width: 640px) {
-	.no-small-screen { display: none; }
+	.no-small-screen { display: none !important; }
 	.small-screen { display: block; }
 }
 @media (min-width: 1280px) {
