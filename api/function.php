@@ -32,11 +32,12 @@ function encode($value, $separator = "-", $pass = null)
 function get_url($url_source = null)
 {
 	// Si pas d'url forcé on donne l'url en cours complète
-	if(!$url_source) $url_source = ($_SERVER['REQUEST_SCHEME']?$_SERVER['REQUEST_SCHEME']:"http")."://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+	if(!$url_source) 
+		$url_source = ($_SERVER['REQUEST_SCHEME'] ? $_SERVER['REQUEST_SCHEME'] : "http")."://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
 	// Parse l'url pour ne garder que la partie rewrite sans le chemin de base du site
 	$parse_url = parse_url($url_source);
-	$path = str_replace($GLOBALS['path'] , "", $parse_url['path']);
+	$path = preg_replace("/^".addcslashes($GLOBALS['path'], "/")."*/", "", $parse_url['path']);
 
 	// Si l'url est vide : url = home
 	if(!encode($path)) $url = "home"; 
@@ -66,14 +67,19 @@ function make_url($url, $filtre = array())
 {
 	if(is_array($filtre))
 	{
+		$dir = "";
+
 		// Force le domaine
 		if(isset($filtre['domaine'])) $domaine = $filtre['domaine'];
 		unset($filtre['domaine']);
 
 		// Création des dossier dans l'url en fonction des filtres
-		while(list($cle, $val) = each($filtre)) {
-			if($cle == "page" and $val == 1) unset($filtre['page']);// Si Page == 1 on ne l'affiche pas dans l'url
-			elseif($val) $dir .= "/" . (($cle and $cle !=$val) ? encode($cle)."_" : "") . encode($val, "-", array(".","_"));
+		while(list($cle, $val) = each($filtre))
+		{
+			if($cle == "page" and $val == 1)
+				unset($filtre['page']);// Si Page == 1 on ne l'affiche pas dans l'url
+			elseif($val)
+				$dir .= "/" . (($cle and $cle !=$val) ? encode($cle)."_" : "") . encode($val, "-", array(".","_"));
 		}
 	}
 
