@@ -1081,7 +1081,7 @@ switch($_GET['mode'])
 
 		<div class="dialog-icon" title="<?_e("Icon Library")?>">
 
-			<input type="hidden" id="dialog-icon-target" value="<?=htmlspecialchars($_GET['target'])?>"><!-- SUPP ?? -->
+			<input type="hidden" id="dialog-icon-target" value="<?=(isset($_GET['target']) ? htmlspecialchars($_GET['target']) : "");?>"><!-- SUPP ?? -->
 			<input type="hidden" id="dialog-icon-source" value="<?=htmlspecialchars($_GET['source'])?>">
 			
 			<input type="text" class="search w20 mbs" placeholder="<?_e("Search")?>" value="">
