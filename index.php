@@ -203,6 +203,7 @@ header('Content-type: text/html; charset=UTF-8');
 			@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
 		}?>			
 
+		id = "<?=(isset($res['id'])?$res['id']:"")?>";
 		state = "<?=(isset($res['state'])?$res['state']:"")?>";
 		permalink = "<?=(isset($res['url'])?$res['url']:"")?>";
 		type = "<?=(isset($res['type'])?$res['type']:"")?>";
