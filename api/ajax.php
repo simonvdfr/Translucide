@@ -451,7 +451,7 @@ switch($_GET['mode'])
 
 			$(document).ready(function()
 			{
-				<?if($msg) {?>
+				<?if(isset($msg)) {?>
 					// S'il y a un message
 					light("<?=$msg?>");
 				<?}?>
@@ -487,8 +487,10 @@ switch($_GET['mode'])
 		if($_GET['mode'] != "add-user") 
 		{
 			// Si l'utilisateur a affiché est diff de l'utilisateur en cours on vérifie que l'on est admin
-			if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) login('medium', 'edit-user');
-			else login('medium');
+			if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) 
+				login('medium', 'edit-user');
+			else
+				login('medium');
 
 			$uid = (isset($_REQUEST['uid']) ? $_REQUEST['uid'] : $_SESSION['uid']);
 			
@@ -517,7 +519,7 @@ switch($_GET['mode'])
 
 			<h3 class="medium man mbs"><?=$h3?></h3>
 
-			<input type="hidden" id="uid" value="<?=$res['id']?>">
+			<input type="hidden" id="uid" value="<?=(isset($res['id'])?$res['id']:"")?>">
 
 			<div class="mbt">
 				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
@@ -572,9 +574,9 @@ switch($_GET['mode'])
 			<input type="text" id="email-fake" class="none">
 			<input type="password" id="password-fake" class="none">
 
-			<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=$res['name']?>" maxlength="60" class="w60 bold"></div>
+			<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=(isset($res['name'])?$res['name']:"")?>" maxlength="60" class="w60 bold"></div>
 
-			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=$res['email']?>" maxlength="100" class="w60"></div>
+			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=(isset($res['email'])?$res['email']:"")?>" maxlength="100" class="w60"></div>
 
 			<div class="mbs nowrap">
 				<label class="w100p tr mrt" for="password"><?_e("Password")?></label>
@@ -611,8 +613,8 @@ switch($_GET['mode'])
 			}
 			?>
 
-			<?if($res['date_update']){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
-			<?if($res['date_insert']){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
+			<?if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
+			<?if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
 
 			<?if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
 
