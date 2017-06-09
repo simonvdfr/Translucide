@@ -160,7 +160,9 @@ function __($singulier, $pluriel = "", $num = 0)
 
 	// Si une traduction existe
 	if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']])) 
-		$txt = utf8_encode($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
+		$txt = ($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
+	else
+		$txt = utf8_encode($txt);
 
 	return $txt;
 }
