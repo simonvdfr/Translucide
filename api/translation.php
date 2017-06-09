@@ -5,7 +5,7 @@ $add_translation = array(
 
 	"Search" => array("fr" => "Recherche"),
 	"Next" => array("fr" => "Suivant"),
-	"Previous" => array("fr" => "Précédent"),
+	"Previous" => array("fr" => "PrÃ©cÃ©dent"),
 
 	"Text" => array("fr" => "Texte"),
 
@@ -14,19 +14,19 @@ $add_translation = array(
 	"Connection with" => array("fr" => "Connexion avec"),
 	"Connection error" => array("fr" => "Erreur de connexion"),
 	"Unknown user" => array("fr" => "Utilisateur inconnu"),
-	"Unable to find the user number" => array("fr" => "Impossible de trouver le numéro d'utilisateur"),
-	"Unable to find the access token" => array("fr" => "Impossible de trouver le jeton d'accès"),
-	"Bad credential" => array("fr" => "Vous n'avez pas le niveau d'accès requis"),
+	"Unable to find the user number" => array("fr" => "Impossible de trouver le numÃ©ro d'utilisateur"),
+	"Unable to find the access token" => array("fr" => "Impossible de trouver le jeton d'accÃ¨s"),
+	"Bad credential" => array("fr" => "Vous n'avez pas le niveau d'accÃ¨s requis"),
 	"Connection required" => array("fr" => "Connexion requise"),
-	"You are already connected" => array("fr" => "Vous êtes déjà connecté"),
+	"You are already connected" => array("fr" => "Vous Ãªtes dÃ©jÃ  connectÃ©"),
 
-	"Validate the connection in the popup" => array("fr" => "Validez la connexion dans la fenêtre qui vient de s'ouvrir"),
+	"Validate the connection in the popup" => array("fr" => "Validez la connexion dans la fenÃªtre qui vient de s'ouvrir"),
 
 	"My email" => array("fr" => "Mon e-mail"),
 	"My password" => array("fr" => "Mon mot de passe"),
 	"Remember me" => array("fr" => "Se souvenir de moi"),
-	"Forgot your password" => array("fr" => "Mot de passe oublié"),
-	"Suggest a password" => array("fr" => "Suggérer un mot de passe"),
+	"Forgot your password" => array("fr" => "Mot de passe oubliÃ©"),
+	"Suggest a password" => array("fr" => "SuggÃ©rer un mot de passe"),
 	"See password" => array("fr" => "Voir le mot de passe"),
 	"Not a member yet ?" => array("fr" => "Pas encore membre ?"),
 	"Sign up" => array("fr" => "Inscrivez-vous"),
@@ -35,32 +35,32 @@ $add_translation = array(
 	"Add content" => array("fr" => "Ajouter un contenu"),
 	"Add page" => array("fr" => "Ajouter une page"),
 	"Add article" => array("fr" => "Ajouter un article"),
-	"Add media" => array("fr" => "Ajouter un média"),
+	"Add media" => array("fr" => "Ajouter un mÃ©dia"),
 	
 	"Title" => array("fr" => "Titre"),
-	"Select template" => array("fr" => "Sélectionner un modèle"),
+	"Select template" => array("fr" => "SÃ©lectionner un modÃ¨le"),
 	"Permanent link" => array("fr" => "Lien Permanent"),
-	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
+	"Regenerate address" => array("fr" => "RegÃ©nÃ©rer l'adresse"),
 
 
 	"Home page" => array("fr" => "Page d'accueil"),
 
 
-	"Media Library" => array("fr" => "Bibliothèque des médias"),
-	"Drag and drop a file here or click me" => array("fr" => "Glisser-déplacer un fichier ici ou cliquez-moi"),
+	"Media Library" => array("fr" => "BibliothÃ¨que des mÃ©dias"),
+	"Drag and drop a file here or click me" => array("fr" => "Glisser-dÃ©placer un fichier ici ou cliquez-moi"),
 	"Delete file" => array("fr" => "Supprimer le fichier"),
-	"Media" => array("fr" => "Médias"),
+	"Media" => array("fr" => "MÃ©dias"),
 	"Images" => array("fr" => "Images"),
-	"Resized" => array("fr" => "Redimensionnées"),
+	"Resized" => array("fr" => "RedimensionnÃ©es"),
 	"Files" => array("fr" => "Fichiers"),
-	"Videos" => array("fr" => "Vidéos"),
+	"Videos" => array("fr" => "VidÃ©os"),
 	"Audios" => array("fr" => "Audios"),
-	"Get resized image" => array("fr" => "Obtenir une image redimensionnée"),
+	"Get resized image" => array("fr" => "Obtenir une image redimensionnÃ©e"),
 
-	"Size of source file unspecified" => array("fr" => "Taille du fichier source non précisée"),
+	"Size of source file unspecified" => array("fr" => "Taille du fichier source non prÃ©cisÃ©e"),
 	"Unsupported file type" => array("fr" => "Type de fichier non pris en charge"),
 	
-	"Icon Library" => array("fr" => "Bibliothèque d'icône"),
+	"Icon Library" => array("fr" => "BibliothÃ¨que d'icÃ´ne"),
 
 
 	"Loading" => array("fr" => "Chargement"),
@@ -69,8 +69,8 @@ $add_translation = array(
 	"Save" => array("fr" => "Enregistrer"),
 	"Add" => array("fr" => "Ajouter"),
 	"Register" => array("fr" => "S'inscrire"),
-	"Account created" => array("fr" => "Compte créé"),
-	"User deleted" => array("fr" => "Utilisateur supprimé"),
+	"Account created" => array("fr" => "Compte crÃ©Ã©"),
+	"User deleted" => array("fr" => "Utilisateur supprimÃ©"),
 
 	"Add user" => array("fr" => "Ajouter un utilisateur"),
 	"List of user" => array("fr" => "Liste des utilisateur"),
@@ -83,16 +83,16 @@ $add_translation = array(
 	"Authorization" => array("fr" => "Autorisation"),
 	"Name" => array("fr" => "Pseudo"),
 	"Password" => array("fr" => "Mot de passe"),
-	"Updated the" => array("fr" => "Mise à jour le"),
-	"Add the" => array("fr" => "Ajouté le"),
+	"Updated the" => array("fr" => "Mise Ã  jour le"),
+	"Add the" => array("fr" => "AjoutÃ© le"),
 
 	"Active" => array("fr" => "Actif"),
-	"Moderate" => array("fr" => "Modérer"),
+	"Moderate" => array("fr" => "ModÃ©rer"),
 	"User email" => array("fr" => "Mail utilisateur"),
 	"Blacklist" => array("fr" => "Liste noire"),
-	"Deactivate" => array("fr" => "Désactivé"),
+	"Deactivate" => array("fr" => "DÃ©sactivÃ©"),
 
-	"New user to activate" => array("fr" => "Nouvel utilisateur a activé"),
+	"New user to activate" => array("fr" => "Nouvel utilisateur a activÃ©"),
 	"User profile" => array("fr" => "Profil de l'utilisateur"),
 
 
@@ -102,7 +102,7 @@ $add_translation = array(
 	"Edit Config" => array("fr" => "Modifier la config"),
 	
 	"Edit menu" => array("fr" => "Edition du menu"),
-	"Edit header" => array("fr" => "Modifier l'en-tête"),
+	"Edit header" => array("fr" => "Modifier l'en-tÃªte"),
 	"Edit footer" => array("fr" => "Modifier le pied de page"),
 
 	"Send Files" => array("fr" => "Envoyer des fichiers"),
@@ -119,9 +119,9 @@ $add_translation = array(
 	"Public content" => array("fr" => "Contenu public"),
 	"Public file" => array("fr" => "Dossier public"),
 
-	"Page deleted, redirecting" => array("fr" => "Page supprimée, redirection en cours"),
+	"Page deleted, redirecting" => array("fr" => "Page supprimÃ©e, redirection en cours"),
 
 
-	"Log out" => array("fr" => "Se déconnecter")
+	"Log out" => array("fr" => "Se dÃ©connecter")
 );
 ?>
