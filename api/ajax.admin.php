@@ -1654,7 +1654,7 @@ switch($_GET['mode'])
 						$("#setup button i").removeClass("fa-cogs").addClass("fa-spin fa-cog");
 						
 						// Désactive le submit
-						//$("#setup button").attr("disabled", true);
+						$("#setup button").attr("disabled", true);
 
 						// Variable
 						var data = {};
