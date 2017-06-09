@@ -25,10 +25,19 @@ date_default_timezone_set('Europe/Paris');
 
 
 // Variables de la base de données
-$GLOBALS['db_server'] = "";
-$GLOBALS['db_user'] = "";
-$GLOBALS['db'] = "";
-$GLOBALS['db_pwd'] = "";
+if(isset($_SERVER['WINDIR'])) {// Dev local
+	$GLOBALS['db_server'] = "";
+	$GLOBALS['db_user'] = "";
+	$GLOBALS['db'] = "";
+	$GLOBALS['db_pwd'] = "";
+}
+else {
+	$GLOBALS['db_server'] = "";
+	$GLOBALS['db_user'] = "";
+	$GLOBALS['db'] = "";
+	$GLOBALS['db_pwd'] = "";
+}
+
 $GLOBALS['db_prefix'] = "";
 $GLOBALS['db_charset'] = "utf8";
 
@@ -46,7 +55,12 @@ $GLOBALS['function'] = "";// Include fonction du theme
 $GLOBALS['sitename'] = "";
 
 $GLOBALS['scheme'] = "";
-$GLOBALS['domain'] = "";
+
+if(isset($_SERVER['WINDIR']))// Dev local
+	$GLOBALS['domain'] = "";
+else 
+	$GLOBALS['domain'] = "";
+
 $GLOBALS['path'] = "";
 
 $GLOBALS['robots'] = "index, follow";
