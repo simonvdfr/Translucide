@@ -780,7 +780,25 @@ div.editable {
 		opacity: 0;
 		transform: translate3d(0, 100px, 0);
 		backface-visibility: hidden;
+
+		animation: slide-up .3s 1 ease-out;
 	}
+		@keyframes slide-up {
+		    0% { transform: translate3d(0, 100%, 0); }
+		    100% { transform: translate3d(0, 0, 0); }
+		}
+
+	.slide-down {
+		opacity: 0;
+		transform: translate3d(0, -100px, 0);
+		backface-visibility: hidden;
+
+		animation: slide-down .3s 1 ease-out;
+	}
+		@keyframes slide-down {
+		    0% { transform: translate3d(0, -100%, 0); }
+		    100% { transform: translate3d(0, 0, 0); }
+		}
 
 	.slide-left {
 		opacity: 0;
@@ -806,10 +824,11 @@ div.editable {
 		    100% { transform: translate3d(0, 0, 0); }
 		}
 
-		.fire {
-			opacity: 1 !important;
-			transform: translate3d(0, 0, 0) !important;
-		}
+
+	.fire {
+		opacity: 1 !important;
+		transform: translate3d(0, 0, 0) !important;
+	}
 
 
 
