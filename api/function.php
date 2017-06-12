@@ -630,7 +630,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 						$.ajax({
 							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
 							data: {
-								callback: "<?=encode($_REQUEST['callback'], "_")?>",
+								callback: "<?=(isset($_REQUEST['callback']) ? encode($_REQUEST['callback'], "_") : "")?>",
 								msg: "<?=htmlspecialchars((isset($msg) ? $msg : ""));?>"
 							}
 						})
