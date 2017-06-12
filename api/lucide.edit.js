@@ -396,6 +396,8 @@ dialog_transfert = function(mode, source, target, callback) {
 					close: function()
 					{
 						$(".dialog-"+mode).remove();
+
+						$("body").off(".dialog-escape");// Unbind la fermeture avec touche echape
 						
 						// S'il y a une fonction de callback on l'exécute
 						if(typeof callback === "function") callback();
@@ -435,7 +437,13 @@ dialog_transfert = function(mode, source, target, callback) {
 					}						
 				});
 
-				$(".dialog-"+mode).dialog("open");				
+				$(".dialog-"+mode).dialog("open");
+
+				// Si touche échape on ferme la dialog
+				$("body").on("keydown.dialog-escape", function(evt) {
+					if(evt.keyCode === $.ui.keyCode.ESCAPE) $(".dialog-"+mode).dialog('close');
+					evt.stopPropagation();
+				});;	
 			}
 		});
 }
