@@ -446,7 +446,7 @@ switch($_GET['mode'])
 		{
 			?>
 			<script>
-			$(document).ready(function()
+			$(function()
 			{
 				document.title = "<?=addslashes($_POST['title']);?>";
 
@@ -1285,8 +1285,10 @@ switch($_GET['mode'])
 								`type` varchar(32) NOT NULL,
 								`cle` varchar(255) NOT NULL,
 								`val` text NOT NULL,
+								`ordre` smallint(6) NOT NULL,
 								PRIMARY KEY (`id`,`type`,`cle`),
-								KEY `type` (`type`,`cle`)
+								KEY `type` (`type`,`cle`),
+								KEY `ordre` (`ordre`)
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 						");
 
