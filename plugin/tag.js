@@ -58,13 +58,15 @@ $(function()
 
 
 	// AJOUT DU TAG LORS DE LA SAUVEGARDE
-	before_save.push(function() {
+	function callback() {
+		//@todo ajouter une alert si les tags n'on pas réussit a être sauvegardé
 		$.ajax({
+			type: "POST",
 			url: path+"plugin/tag.php?mode=tag",
 			data: {"id": id, "tags": $("#admin-bar #tags").val(), "nonce": $("#nonce").val()},
 			success: function(html){
 				$("body").append(html);
 			}
 		});	
-	});
+	};
 });	
