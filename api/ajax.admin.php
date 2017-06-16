@@ -425,7 +425,11 @@ switch($_GET['mode'])
 		$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], "", $_POST['content']) : "");
 
 		// Encode le contenu
-		$json_content = json_encode($_POST['content'], JSON_UNESCAPED_UNICODE);
+		if(isset($_POST['content']) and $_POST['content'] != "") 
+			$json_content = json_encode($_POST['content'], JSON_UNESCAPED_UNICODE);
+		else 
+			$json_content = "";
+
 
 		// Sauvegarde les contenus
 		$sql = "UPDATE ".$table_content." SET ";
@@ -1451,8 +1455,8 @@ switch($_GET['mode'])
 						// Séparation des données du chemin du site
 						$parse_url = parse_url($_POST['scheme_domain_path']);
 						$_POST['scheme'] = $parse_url['scheme']."://";
-						$_POST['domain'] = $parse_url['host'];
-						$_POST['path'] = $parse_url['path'];
+						$_POST['domain'] = $GLOBALS['domain'] = $parse_url['host'];
+						$_POST['path'] = $GLOBALS['path'] = $parse_url['path'];
 
 						// Formate le nom du site
 						$_POST['sitename'] = htmlspecialchars(stripslashes($_POST['sitename']));
