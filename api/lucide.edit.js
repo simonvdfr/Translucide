@@ -148,13 +148,6 @@ save = function(callback)
 		};
 	});
 
-
-	// EXECUTION DES FONCTIONS DE SAUVEGARDE DES PLUGINS
-	$(before_save).each(function(key, funct){
-		funct();
-	});
-
-	
 	// On sauvegarde en ajax les contenus éditables
 	$.ajax({
 		type: "POST",

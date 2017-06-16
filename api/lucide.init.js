@@ -136,9 +136,8 @@ reload = function() {
 }
 
 
-// Liste des fonctions d'édition et de sauvegarde des plugin
+// Liste des fonctions d'édition
 edit = [];
-before_save = [];
 
 
 // Formulaire d'ajout d'un contenu
