@@ -1,10 +1,10 @@
 <?
 @include_once("config.php");// Variables
 include_once("api/function.php");// Fonctions
-include_once("api/db.php");// Connexion à la db
+include_once("api/db.php");// Connexion Ã  la db
 
 
-// Pour éviter le duplicate avec index.php
+// Pour Ã©viter le duplicate avec index.php
 if(stristr($_SERVER['REQUEST_URI'], 'index.php')){
 	header("Status: 301 Moved Permanently");
 	header("Location: ".str_ireplace("index.php", "", $_SERVER['REQUEST_URI']));
@@ -12,28 +12,28 @@ if(stristr($_SERVER['REQUEST_URI'], 'index.php')){
 }
 
 
-// Sélectionne la langue
+// SÃ©lectionne la langue
 $lang = get_lang();
 
-load_translation('api');// Chargement des traductions du système
-load_translation('theme');// Chargement des traductions du thème
+load_translation('api');// Chargement des traductions du systÃ¨me
+load_translation('theme');// Chargement des traductions du thÃ¨me
 
 
 // CONTENU
 
-// On récupère les données de la page
+// On rÃ©cupÃ¨re les donnÃ©es de la page
 $sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='".get_url()."' AND lang='".$lang."' LIMIT 1");
 if($connect->error) {
 	header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
 	exit($connect->error);
 }
-else $res = $sel->fetch_assoc();// On récupère les données de la page
+else $res = $sel->fetch_assoc();// On rÃ©cupÃ¨re les donnÃ©es de la page
 
 
 // Pas de page existante
 if(!$res) 
 {
-	// On regarde si une template 404 est définie
+	// On regarde si une template 404 est dÃ©finie
 	$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='404' AND lang='".$lang."' AND state='active' LIMIT 1");
 	$res = $sel->fetch_assoc();
 	
@@ -55,12 +55,12 @@ else// Une page existe
 		exit;
 	}
 
-	if($res['state'] != "active")// Page non activé
+	if($res['state'] != "active")// Page non activÃ©
 	{
 		// Si pas admin on affiche page en construction
 		if(!$_SESSION['auth']['edit-'.$res['type']]) 
 		{
-			// On regarde si une template 503 est définie
+			// On regarde si une template 503 est dÃ©finie
 			$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
 			$res = $sel->fetch_assoc();
 
@@ -71,7 +71,7 @@ else// Une page existe
 
 		$robots = "noindex, follow";
 	}
-	else $robots = $GLOBALS['robots'];// Si la page est active elle est référençable (on utilise la config)
+	else $robots = $GLOBALS['robots'];// Si la page est active elle est rÃ©fÃ©renÃ§able (on utilise la config)
 }
 
 
@@ -80,16 +80,19 @@ $title = strip_tags($res['title']);
 $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['description']), ENT_COMPAT) : "");
 
 // Les contenus
-if(isset($res['content']) and $res['content'] != '""') $GLOBALS['content'] = json_decode($res['content'], true);
-else $GLOBALS['content'] = array();
+if(isset($res['content']) and $res['content'] != '') 
+	$GLOBALS['content'] = json_decode($res['content'], true);
+else
+	$GLOBALS['content'] = array();
 
-// Image pour les réseaux sociaux
+// Image pour les rÃ©seaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
+
 
 
 // MENU DE NAVIGATION
 
-// On récupère les données de la navigation
+// On rÃ©cupÃ¨re les donnÃ©es de la navigation
 $sel_nav = $connect->query("SELECT * FROM ".$table_meta." WHERE type='nav' AND cle='".$lang."' LIMIT 1");
 $res_nav = $sel_nav->fetch_assoc();
 
@@ -98,29 +101,33 @@ if($res_nav['val']) $GLOBALS['nav'] = json_decode($res_nav['val'], true);
 else $GLOBALS['nav'] = array();
 
 
+
 // HEADER
 
-// On récupère les données du header
+// On rÃ©cupÃ¨re les donnÃ©es du header
 $sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
 $res_header = $sel_header->fetch_assoc();
 
-// Ajout des données du footer
+// Ajout des donnÃ©es du footer
 if($res_header['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
+
 
 
 // FOOTER
 
-// On récupère les données du footer
+// On rÃ©cupÃ¨re les donnÃ©es du footer
 $sel_footer = $connect->query("SELECT * FROM ".$table_meta." WHERE type='footer' AND cle='".$lang."' LIMIT 1");
 $res_footer = $sel_footer->fetch_assoc();
 
-// Ajout des données du footer
+// Ajout des donnÃ©es du footer
 if($res_footer['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_footer['val'], true));
+
 
 
 // Fonctions du theme
 if($GLOBALS['function']) 
 	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].$GLOBALS['function']);
+
 
 
 header('Content-type: text/html; charset=UTF-8');
@@ -193,7 +200,7 @@ header('Content-type: text/html; charset=UTF-8');
 		<? } ?>
 		
 						
-		<?if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>// Si demande l'autoload du mode édition et si admin
+		<?if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>// Si demande l'autoload du mode Ã©dition et si admin
 			$(function(){
 				edit_launcher();
 				$("a.bt.fixed.edit").fadeOut();				
@@ -227,9 +234,9 @@ echo"<div class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : ""
 
 	if(isset($res['tpl'])) // On a une page
 	{
-		include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
+		include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");// On charge la template du thÃ¨me pour afficher le contenu
 	}
-	else // Pas de contenu a chargé
+	else // Pas de contenu a chargÃ©
 	{
 		echo"<div class='pal tc'>".$msg."</div>";
 	}
