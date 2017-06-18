@@ -125,7 +125,7 @@ if($res_footer['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], j
 
 
 // Fonctions du theme
-if($GLOBALS['function']) 
+if(isset($GLOBALS['function'])) 
 	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].$GLOBALS['function']);
 
 
@@ -152,14 +152,14 @@ header('Content-type: text/html; charset=UTF-8');
 	<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 	<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
 
-	<?if($GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
+	<?if(isset($GLOBALS['facebook_api_id'])){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<?if($GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
+	<?if(isset($GLOBALS['google_page'])){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
 
 
-	<?if($GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
+	<?if(isset($GLOBALS['icons'])){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
 
 
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
@@ -177,7 +177,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 
 	<script>
-		<? if($GLOBALS['google_analytics']) { ?>
+		<? if(isset($GLOBALS['google_analytics'])) { ?>
 		// Google Analytics
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
