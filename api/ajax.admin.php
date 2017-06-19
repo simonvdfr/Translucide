@@ -333,9 +333,11 @@ switch($_GET['mode'])
 			
 			// On remplace le chemin absolut du site par la clé : home (utilise pour éviter les bug lors des mises en lignes)
 			array_walk($_POST['nav'], 
-				function(&$key) { 					
+				function(&$key) { 	
 					$key['href'] = str_replace($GLOBALS['home'], "", $key['href']);// Supprime les url avec le domaine pour faciliter le transport du site
-					if($key['href'] == $GLOBALS['path']) $key['href'] = "home";
+
+					// Si vide ou raçine path on est sur la home
+					if($key['href'] == "" or $key['href'] == $GLOBALS['path']) $key['href'] = "home";
 				}
 			);
 
