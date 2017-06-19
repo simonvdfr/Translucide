@@ -3,8 +3,8 @@
 @include_once("function.php");// Fonction
 
 
-$lang = get_lang();// Sélectionne la langue
-load_translation('api');// Chargement des traductions du système
+$lang = get_lang();// SÃ©lectionne la langue
+load_translation('api');// Chargement des traductions du systÃ¨me
 
 switch($_GET['mode'])
 {		
@@ -17,7 +17,7 @@ switch($_GET['mode'])
 		<script>
 		$(document).ready(function()
 		{	
-			// S'il y a un callback à exécuter
+			// S'il y a un callback Ã  exÃ©cuter
 			if(callback) eval(callback + "()");
 		});
 		</script>
@@ -26,7 +26,7 @@ switch($_GET['mode'])
 	break;
 	
 	case "select-login-mode":
-		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
+		// @todo: si la page est appelÃ©e directement (ajax.php), charger un fond et charger la dialog
 		?>
 		<div id="dialog-connect" title="<?_e("Administrator Login");?>">
 
@@ -66,23 +66,23 @@ switch($_GET['mode'])
 				
 				if(login_api != 'internal')// On utilise une api tiers pour la connexion => popup
 				{
-					// Change l'icône en loading
+					// Change l'icÃ´ne en loading
 					$(bt).addClass("loading");
 					
 					// Affichage du message
 					$("#dialog-connect").append("<div class='tc small'>"+ __("Validate the connection in the popup") +"</div>");
 
-					// Création d'un popup qui charge le site de connexion tierce
+					// CrÃ©ation d'un popup qui charge le site de connexion tierce
 					width = 420;
 					height = 510;
 					window.open("<?=$GLOBALS['path']?>api/ajax.php?mode=external-login&login_api="+login_api, "popup_connect", "top="+((screen.height / 2) - (height / 2))+", left="+((screen.width / 2) - (width / 2))+", width="+width+", height="+height+", location=no, menubar=no, directories=no, status=no, scrollbars=auto");
 				}
-				else// On utilise le système de login interne
+				else// On utilise le systÃ¨me de login interne
 				{
 					// Unbind le click
 					$(bt).attr("href","javascript://").css("cursor","default");
 
-					// Change l'icône en flèche vers le bas
+					// Change l'icÃ´ne en flÃ¨che vers le bas
 					$(bt).addClass("down");
 
 					// Supprime les css :hover
@@ -133,7 +133,7 @@ switch($_GET['mode'])
 		<script>
 		$(document).ready(function()
 		{
-			// Update les nonces dans la page courante pour éviter de perdre le nonce
+			// Update les nonces dans la page courante pour Ã©viter de perdre le nonce
 			$("#nonce").val('<?=$_SESSION['nonce']?>');
 
 			// Affichage du formulaire de login interne
@@ -144,10 +144,10 @@ switch($_GET['mode'])
 			{
 				event.preventDefault();
 
-				// Icône de chargement
+				// IcÃ´ne de chargement
 				$(bt).removeClass("down").addClass("loading");
 				
-				// Désactive le submit
+				// DÃ©sactive le submit
 				$("#internal-login input[type='submit']").attr("disabled", true);
 				$("#internal-login").off("submit");
 
@@ -166,7 +166,7 @@ switch($_GET['mode'])
 					// On ferme la dialog
 					$("#dialog-connect").dialog("close");
 					
-					// On exécute le retour
+					// On exÃ©cute le retour
 					$("body").append(html);
 				});
 			});
@@ -194,7 +194,7 @@ switch($_GET['mode'])
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
 			<script src="lucide.init<?=$GLOBALS['min']?>.js"></script>
 			
-			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
+			<!-- Appel du js supplÃ©mentaire pour les options spÃ©cifiques au thÃ¨me -->
 			<?if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."admin.init.js")){?><script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>admin.init.js"></script><?}?>
 
 			<style>
@@ -246,9 +246,9 @@ switch($_GET['mode'])
 		
 		// @todo: ajouter les checks sur mail, password, et aussi mode non admin
 		// @todo encadrer le tout d'un formulaire pour avoir un onchange simple, et aussi metre en place le ajax qui affiche la progression de sauvegarde
-		// @todo si appel direct de la page on include dans le body générique
+		// @todo si appel direct de la page on include dans le body gÃ©nÃ©rique
 
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 
 		login('medium');
 
@@ -301,7 +301,7 @@ switch($_GET['mode'])
 
 	case "del-user":// SUPPRESSION D'UN COMPTE
 
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 
 		login('high', 'edit-user');
 
@@ -309,7 +309,7 @@ switch($_GET['mode'])
 		{
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
 			{
-				// Supprime les métas
+				// Supprime les mÃ©tas
 				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
 
 				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
@@ -321,7 +321,7 @@ switch($_GET['mode'])
 
 	case "list-user":// LISTE LES UTILISATEURS
 
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 
 		login('medium', 'edit-user');
 		
@@ -346,9 +346,9 @@ switch($_GET['mode'])
 
 		$sql .= "WHERE 1 ";
 		
-		// L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
+		// L'utilisateur n'a pas les droits admins donc il ne peut pas Ã©diter les fiches des administrateurs
 		//if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
-		// @todo verifier que ça marche !!
+		// @todo verifier que Ã§a marche !!
 		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND auth NOT LIKE '%edit-admin%' ";
 
 		if($search)
@@ -390,7 +390,7 @@ switch($_GET['mode'])
 			</li>";
 		}
 
-		// Si on n'a pas affiché tous les résultats on affiche la navigation par page
+		// Si on n'a pas affichÃ© tous les rÃ©sultats on affiche la navigation par page
 		if($num_total > ($page * $num_pp)) echo"<li class='next small' onclick=\"next_users('".($page + 1)."');\">".__("Next")."</li>";
 
 		if(!isset($_POST['search']) and !isset($_POST['page']))
@@ -399,7 +399,7 @@ switch($_GET['mode'])
 			</ul>
 
 			<script>
-			// Navigation par page (on charge les résultats suivants)
+			// Navigation par page (on charge les rÃ©sultats suivants)
 			next_users = function(page) 
 			{
 				$("#user .next").slideUp("normal", function(){ $(this).remove() });// Supprime le bouton next
@@ -410,7 +410,7 @@ switch($_GET['mode'])
 					data: { page: page, search: $("#user .search").val(), nonce: $("#nonce").val() }
 				})
 				.done(function(html) {
-					// Animation sur l'ouverture des nouveaux résultats
+					// Animation sur l'ouverture des nouveaux rÃ©sultats
 					var next_users = $(html).hide();
 					$("#user .load ul").append(next_users);
 					next_users.slideDown("normal");
@@ -472,21 +472,21 @@ switch($_GET['mode'])
 
 	case "add-user":// AJOUTER UN UTILISATEUR PAR L'ADMIN
 		
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 
 		login('high', 'edit-user');
 
 
 	case "profil":// AFFICHAGE DU FORMULAIRE UTILISATEUR
 
-		// @todo ajouter une icône a coté du picto de state pour re-envoyer le mail d'activation à l'utilisateur / bt pour passer l'utilisateur en 'active' si en mode 'moderate'
+		// @todo ajouter une icÃ´ne a cotÃ© du picto de state pour re-envoyer le mail d'activation Ã  l'utilisateur / bt pour passer l'utilisateur en 'active' si en mode 'moderate'
 		// @todo: autocomplet sur les champs de connexion d'api tiers (fb, g+...)
 
-		include_once("db.php");// Connexion à la db
+		include_once("db.php");// Connexion Ã  la db
 
 		if($_GET['mode'] != "add-user") 
 		{
-			// Si l'utilisateur a affiché est diff de l'utilisateur en cours on vérifie que l'on est admin
+			// Si l'utilisateur a affichÃ© est diff de l'utilisateur en cours on vÃ©rifie que l'on est admin
 			if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) 
 				login('medium', 'edit-user');
 			else
@@ -494,11 +494,11 @@ switch($_GET['mode'])
 
 			$uid = (isset($_REQUEST['uid']) ? $_REQUEST['uid'] : $_SESSION['uid']);
 			
-			// Récupérationd des données de base de l'utilisateur
+			// RÃ©cupÃ©rationd des donnÃ©es de base de l'utilisateur
 			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
 			$res = $sel->fetch_assoc();
 
-			// Récupération des infos sur l'utilisateur
+			// RÃ©cupÃ©ration des infos sur l'utilisateur
 			$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
 			$res_meta = $sel_meta->fetch_assoc();
 
@@ -506,7 +506,7 @@ switch($_GET['mode'])
 
 			$oauth = json_decode($res['oauth'], true);// Les api tiers
 			
-			// On vérifie que l'on a le droit d'éditer les utilisateurs admin si fiche admin
+			// On vÃ©rifie que l'on a le droit d'Ã©diter les utilisateurs admin si fiche admin
 			if(array_search("edit-admin", $array_auth) !== false) login('medium', 'edit-admin');
 		}
 		
@@ -570,7 +570,7 @@ switch($_GET['mode'])
 				</script>					
 			</div>
 			
-			<!-- Désactive l'autocomplet du navigateur -->
+			<!-- DÃ©sactive l'autocomplet du navigateur -->
 			<input type="text" id="email-fake" class="none">
 			<input type="password" id="password-fake" class="none">
 
@@ -596,7 +596,7 @@ switch($_GET['mode'])
 			<?if($GLOBALS['microsoft_api_secret']){?><div class="mbs"><label class="w100p tr mrt" for="microsoft"><?_e("Microsoft id")?></label> <input type="text" id="oauth[microsoft]" value="<?=$oauth['microsoft']?>" class="w60 small search_user_id"></div><?}?>
 
 			<?
-			// Si il y a des méta/infos complementaire pour cette utilisateur
+			// Si il y a des mÃ©ta/infos complementaire pour cette utilisateur
 			if(is_array($GLOBALS['meta_user'])) 
 			{		
 				?>
@@ -627,7 +627,7 @@ switch($_GET['mode'])
 
 		<script>
 		user_tosave = function() {
-			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-save"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
+			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-save"); // Affiche l'icÃ´ne disant qu'il faut sauvegarder sur le bt save
 			$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 		}
 
@@ -646,7 +646,7 @@ switch($_GET['mode'])
 					
 					$("#user #"+selector).after("<i class='fa fa-spin fa-cog' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
 					
-					// Chargement des résultats
+					// Chargement des rÃ©sultats
 					$.ajax({
 						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=get-external-uid",
 						dataType: "json",
@@ -706,7 +706,7 @@ switch($_GET['mode'])
 					data[$(this).attr("id")] = $(this).val();
 				});
 
-				// On sauvegarde en ajax les contenus éditables
+				// On sauvegarde en ajax les contenus Ã©ditables
 				$.ajax({
 					type: "POST",
 					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=save-user",
@@ -727,19 +727,19 @@ switch($_GET['mode'])
 
 	case "save-user":// CREATION D'UN COMPTE | SAUVEGARDER DES INFOS UTILISATEUR
 		
-		//@todo : ajouter un captcha pour éviter les spam d'ajout d'utilisateur. si admin pas de check
+		//@todo : ajouter un captcha pour Ã©viter les spam d'ajout d'utilisateur. si admin pas de check
 
 		if($_SESSION['nonce'] == $_REQUEST['nonce'])
 		{
-			include_once("db.php");// Connexion à la db		
+			include_once("db.php");// Connexion Ã  la db		
 
 			$uid = $insert_user = $insert_meta = null;
 			
-			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
+			// VÃ©rifie que l'on est admin si les utilisateurs publics ne peuvent pas crÃ©Ã© de compte
 			if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('high', 'edit-user');
 			elseif($_REQUEST['uid'])
 			{
-				// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
+				// Si on l'utilisateur est diffÃ©rent de nous on vÃ©rifie que l'on est admin
 				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
 				else login('high');
 
@@ -754,10 +754,10 @@ switch($_GET['mode'])
 			$password = null;
 			if($_POST['password']) list($password, $unique_salt) = hash_pwd($_POST['password']);
 
-			// Suppression des caractères indésirable pour la sécurité et des espaces de début et fin
+			// Suppression des caractÃ¨res indÃ©sirable pour la sÃ©curitÃ© et des espaces de dÃ©but et fin
 			$_POST = array_map("secure_value", $_POST);
 
-			// Sécurisation supplémentaire
+			// SÃ©curisation supplÃ©mentaire
 			$_POST = array_map(function($value) use($connect) {
 				if(is_array($value)) { while(list($cle, $val) = each($value)) $value[$cle] = $connect->real_escape_string($val); }
 				else $value = $connect->real_escape_string($value);
@@ -771,13 +771,13 @@ switch($_GET['mode'])
 			else 
 				$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
 			
-			// État d'activation
+			// Ã‰tat d'activation
 			if($_SESSION['auth']['edit-user'] and $_POST['state'])
 				$sql .= "state = '".$_POST['state']."', ";
 			elseif(!$_REQUEST['uid']) 
 				$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
 			
-			// Droit d'accès
+			// Droit d'accÃ¨s
 			if($_SESSION['auth']['edit-admin'] and $_POST['auth'])
 				$sql .= "auth = '".implode(",", $_POST['auth'])."', ";
 			elseif(!$_REQUEST['uid']) 
@@ -791,7 +791,7 @@ switch($_GET['mode'])
 				$sql .= "password = '".addslashes($password)."', ";
 				$sql .= "salt = '".addslashes($unique_salt)."', ";
 
-				// Création du token light
+				// CrÃ©ation du token light
 				if($GLOBALS['security'] != 'high' and (int)$_REQUEST['uid']) $sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
 			}
 			
@@ -806,7 +806,7 @@ switch($_GET['mode'])
 			else
 				$sql .= ", date_insert = NOW() ";
 			
-			// Exécution de la requête
+			// ExÃ©cution de la requÃªte
 			$connect->query($sql);
 				
 			//echo "_POST<br>"; highlight_string(print_r($_POST, true));
@@ -816,17 +816,17 @@ switch($_GET['mode'])
 			// Pas d'erreur sur les infos de connexion
 			if(!$connect->error)
 			{
-				// Id de l'utilisateur crée
+				// Id de l'utilisateur crÃ©e
 				if($connect->insert_id) $insert_user = $uid = $connect->insert_id;
 				elseif((int)$_REQUEST['uid']) $uid = (int)$_REQUEST['uid'];
 
 				if($uid) 
 				{
-					// On regarde si il n'y a pas déjà des donnée dans la base
+					// On regarde si il n'y a pas dÃ©jÃ  des donnÃ©e dans la base
 					$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
 					$res_meta = $sel_meta->fetch_assoc();
 
-					// AJOUT DES DONNÉE EN MÉTA
+					// AJOUT DES DONNÃ‰E EN MÃ‰TA
 					if($uid and isset($_POST['meta']) and is_array($_POST['meta'])) {
 						if($res_meta['id']) 
 							$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
@@ -850,7 +850,7 @@ switch($_GET['mode'])
 					}
 
  
-					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
+					// ENVOI DU MAIL Ã€ L'ADMIN : default_state = moderate
 					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state']) 
 					{
 						// Pour le garder secret
@@ -881,7 +881,7 @@ switch($_GET['mode'])
 					}
 
 
-					// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
+					// @todo: ajouter l'envoi de mail Ã  l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
 				}
 			
 				?>
@@ -890,20 +890,20 @@ switch($_GET['mode'])
 				{
 					<?
 					if(!$connect->error){
-						if($_REQUEST['uid']){?>// Update réussit
+						if($_REQUEST['uid']){?>// Update rÃ©ussit
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
-							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde rÃ©ussit on change l'icÃ´ne du bt
+							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde rÃ©ussit on met la couleur verte
 
 						<?}
 						elseif($insert_user){?>// Ajout d'un utilisateur
 
 							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
-							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde rÃ©ussit on change l'icÃ´ne du bt
+							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde rÃ©ussit on met la couleur verte
 							
-							<?if($_SESSION['auth']['edit-user']){?>// Peut éditer les users
+							<?if($_SESSION['auth']['edit-user']){?>// Peut Ã©diter les users
 
 								$("#save-user span").html("<?_e("Save")?>");
 
@@ -911,7 +911,7 @@ switch($_GET['mode'])
 
 								$("#save-user span").html("<?_e("Account created")?>");
 
-								// @todo: bouton de sauvegarde readonly (pour éviter re-submit) + message si validation par mail/admin requise 
+								// @todo: bouton de sauvegarde readonly (pour Ã©viter re-submit) + message si validation par mail/admin requise 
 
 							<?}?>
 
@@ -928,9 +928,9 @@ switch($_GET['mode'])
 	break;
 
 
-	case "check-email":// Check en ajax si le mail est conforme, mx existant, et pas déjà dans la base
+	case "check-email":// Check en ajax si le mail est conforme, mx existant, et pas dÃ©jÃ  dans la base
 
-		// @todo: check mx : nous n'avons pas réussi à vérifier si votre fournisseur de mail fonctionne correctement
+		// @todo: check mx : nous n'avons pas rÃ©ussi Ã  vÃ©rifier si votre fournisseur de mail fonctionne correctement
 
 		if($_SESSION['nonce'] == $_REQUEST['nonce'])
 		{
@@ -955,16 +955,16 @@ switch($_GET['mode'])
 
 	break;
 
-	case "check-password":// Check en ajax si le password est un minimum sécurisé
+	case "check-password":// Check en ajax si le password est un minimum sÃ©curisÃ©
 	break;
 
-	case "make-password":// Crée un password aléatoirement		
+	case "make-password":// CrÃ©e un password alÃ©atoirement		
 		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(8,12));
 	break;
 
 	case "get-external-uid":// Cherche l'id d'un utilisateur sur une api tiers
 
-		// @todo si pas le token tiers on ajoute un élément de retour dans le tableau pour ouvrir la boite de login (relog, sans pour autant changer le token maison)
+		// @todo si pas le token tiers on ajoute un Ã©lÃ©ment de retour dans le tableau pour ouvrir la boite de login (relog, sans pour autant changer le token maison)
 		// @todo: faire : yahoo et microsoft
 
 		if($_SESSION['access_token_external'][$_REQUEST['api']])
@@ -1010,20 +1010,21 @@ switch($_GET['mode'])
 	break;
 
 
-	case "external-login":// external_token : utilisation de systèmes de connexion tierce, se déroule dans une Popup
+	case "external-login":// external_token : utilisation de systÃ¨mes de connexion tierce, se dÃ©roule dans une Popup
 		
 		// @todo: ajouter un mode pour ajouter un login silencieux, juste pour avoir les tokens tiers
 		// @todo: Twitter, Instagram, Flicker
 
-		// Vérifie que l'on a sélectionné un système tiers
+		// VÃ©rifie que l'on a sÃ©lectionnÃ© un systÃ¨me tiers
 		if($_REQUEST['login_api']) $login_api = $_SESSION['login_api'] = encode($_REQUEST['login_api']);
 		else exit(false);
 
-		// Variable générique
+		// Variable gÃ©nÃ©rique
 		$redirect_uri = $GLOBALS['home']."api/ajax.php?mode=external-login&login_api=";
 
-		if(!$_REQUEST["code"]) nonce('state');// CSRF protection
+		if(!isset($_REQUEST["code"])) nonce('state');// CSRF protection
 
+		
 		
 		// FACEBOOK params &scope=user_photos
 
@@ -1031,13 +1032,14 @@ switch($_GET['mode'])
 
 		$token_return_type['facebook'] = "json";// url
 
-		$get_token['facebook'] = "https://graph.facebook.com/oauth/access_token?client_id=".$GLOBALS['facebook_api_id']."&client_secret=".$GLOBALS['facebook_api_secret']."&code=".$_REQUEST['code']."&redirect_uri=".urlencode($redirect_uri)."facebook";
+		$get_token['facebook'] = "https://graph.facebook.com/oauth/access_token?client_id=".$GLOBALS['facebook_api_id']."&client_secret=".$GLOBALS['facebook_api_secret']."&code=".(isset($_REQUEST['code'])?$_REQUEST['code']:"")."&redirect_uri=".urlencode($redirect_uri)."facebook";
 
 		$token_params['facebook'] = null;
 		
 		// https://graph.facebook.com/me/albums?fields=photos&access_token=
 		$get_info['facebook'] = "https://graph.facebook.com/me?fields=id,name,picture&access_token=";
 		$get_info_uid['facebook'] = "id";
+
 
 
 		// GOOGLE params
@@ -1050,7 +1052,7 @@ switch($_GET['mode'])
 		$get_token['google'] = "https://accounts.google.com/o/oauth2/token";// pour obtenir le token avec le code
 
 		$token_params['google'] = array(
-			"code" => $_REQUEST['code'],
+			"code" => (isset($_REQUEST['code'])?$_REQUEST['code']:""),
 			"client_id" => $GLOBALS['google_api_id'],
 			"client_secret" => $GLOBALS['google_api_secret'],
 			"redirect_uri" => $redirect_uri."google",
@@ -1059,6 +1061,7 @@ switch($_GET['mode'])
 
 		$get_info['google'] = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=";// pour obtenir id de l'utilisateur
 		$get_info_uid['google'] = "id";
+
 
 
 		// YAHOO params
@@ -1071,12 +1074,13 @@ switch($_GET['mode'])
 		$get_token_uid['yahoo'] = "xoauth_yahoo_guid";
 
 		$token_params['yahoo'] = array(
-			"code" => $_REQUEST['code'],
+			"code" => (isset($_REQUEST['code'])?$_REQUEST['code']:""),
 			"client_id" => $GLOBALS['yahoo_api_id'],
 			"client_secret" => $GLOBALS['yahoo_api_secret'],
 			"redirect_uri" => $redirect_uri."yahoo",
 			"grant_type" => "authorization_code"
 		);
+
 
 
 		// MICROSOFT params
@@ -1090,7 +1094,7 @@ switch($_GET['mode'])
 		$get_token_uid['microsoft'] = "user_id";
 
 		$token_params['microsoft'] = array(
-			"code" => $_REQUEST['code'],
+			"code" => (isset($_REQUEST['code'])?$_REQUEST['code']:""),
 			"client_id" => $GLOBALS['microsoft_api_id'],
 			"client_secret" => $GLOBALS['microsoft_api_secret'],
 			"redirect_uri" => $redirect_uri."microsoft",
@@ -1102,8 +1106,8 @@ switch($_GET['mode'])
 
 
 		
-		// On ouvre l'URL tierse pour récupérer le code
-		if($get_code[$login_api] and !$_REQUEST["code"]) {			
+		// On ouvre l'URL tierse pour rÃ©cupÃ©rer le code
+		if($get_code[$login_api] and !isset($_REQUEST["code"])) {			
 			header("Location: ".$get_code[$login_api]);
 			exit;
 		}
@@ -1116,10 +1120,10 @@ switch($_GET['mode'])
 			// Plus besoin du state, on le supprime
 			unset($_SESSION['state']);
 
-			// Récupération du token
+			// RÃ©cupÃ©ration du token
 			$token_response = curl($get_token[$login_api], $token_params[$login_api]);
 			
-			// Extraction du token de la réponse
+			// Extraction du token de la rÃ©ponse
 			if($token_return_type[$login_api] == "url") {			
 				$tab_token_response = null;
 				parse_str($token_response, $tab_token_response);
@@ -1133,48 +1137,48 @@ switch($_GET['mode'])
 			// On a un access_token
 			if($tab_token_response['access_token'])
 			{
-				// On récupère le token tiers
+				// On rÃ©cupÃ¨re le token tiers
 				$_SESSION['access_token_external'][$login_api] = $tab_token_response['access_token'];
 
-				// On récupère l'id tiers s'il se trouve dans le retour avec le access_token
+				// On rÃ©cupÃ¨re l'id tiers s'il se trouve dans le retour avec le access_token
 				if($get_token_uid[$login_api]) $uid = $tab_token_response[$get_token_uid[$login_api]];
 
-				// Rapatriement des données de l'user (id, nom...)
+				// Rapatriement des donnÃ©es de l'user (id, nom...)
 				if($get_info[$login_api]) {
 					$info_response = json_decode(curl($get_info[$login_api].$tab_token_response['access_token']), true);
 					//echo"<br><br><strong>User info</strong> : "; highlight_string(print_r($info_response, true));
 
-					// On récupère l'id tiers s'il se trouve dans les infos
+					// On rÃ©cupÃ¨re l'id tiers s'il se trouve dans les infos
 					if($get_info_uid[$login_api]) $uid = $info_response[$get_info_uid[$login_api]];
 				}
 
-				// Si on a un access_token tiers on crée un token maison checkable facilement et avec une durée de vie plus longue
+				// Si on a un access_token tiers on crÃ©e un token maison checkable facilement et avec une durÃ©e de vie plus longue
 				if($uid)
 				{
 					if(!$GLOBALS['connect']) include_once("db.php");
 					
-					// On vérifie l'utilisateur
+					// On vÃ©rifie l'utilisateur
 					$uid = $connect->real_escape_string($uid);
 					$sel = $connect->query("SELECT * FROM ".$table_user." WHERE oauth LIKE '%\"".$login_api."\":\"".$uid."\"%' AND state='active' LIMIT 1");
 					$res = $sel->fetch_assoc();
 					
-					// L'utilisateur existe et est activé
+					// L'utilisateur existe et est activÃ©
 					if($res['id'])
 					{
 						// Supprime l'ancienne session
 						session_regenerate_id(true);
 
-						if(token($res['id'], $res['email'], $res['auth']))// On crée le token maison
+						if(token($res['id'], $res['email'], $res['auth']))// On crÃ©e le token maison
 						{
-							// Crée le token light pour vérifier si on a le bon mot de passe
+							// CrÃ©e le token light pour vÃ©rifier si on a le bon mot de passe
 							token_light($res['id'], $res['salt']);
 
 							?>
 							<script>
-								// Quand l'utilisateur ferme la fenêtre ou le js
+								// Quand l'utilisateur ferme la fenÃªtre ou le js
 								window.onunload = function() 
 								{
-									// S'il y a une fonction de callback à lancer : typiquement l'edition
+									// S'il y a une fonction de callback Ã  lancer : typiquement l'edition
 									if(window.opener.callback) {										
 										eval("opener." + window.opener.callback + "()");
 									}
