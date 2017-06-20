@@ -138,6 +138,8 @@ reload = function() {
 
 // Liste des fonctions d'édition
 edit = [];
+after_save = [];
+before_save = [];
 
 
 // Formulaire d'ajout d'un contenu

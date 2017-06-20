@@ -102,7 +102,7 @@ get_content = function(content)
 
 
 // Sauvegarde les contenus
-save = function(callback) 
+save = function() //callback
 {
 	// @todo: disable/unbind sur save pour dire que l'on est en train de sauvegarder
 	
@@ -148,6 +148,9 @@ save = function(callback)
 		};
 	});
 
+	// Fonction à exécuter avant la sauvegarde
+	$(before_save).each(function(key, funct){ funct(); });
+
 	// On sauvegarde en ajax les contenus éditables
 	$.ajax({
 		type: "POST",
@@ -159,7 +162,10 @@ save = function(callback)
 		$("body").append(html);
 
 		// S'il y a une fonction de retour
-		if(typeof callback === "function") callback();
+		//if(typeof callback === "function") callback();//@todo voir si utilisé ?
+
+		// Fonction à exécuter après la sauvegarde
+		$(after_save).each(function(key, funct){ funct(); });
 	})
 	.fail(function() {
 		error(__("Error"));
@@ -672,10 +678,10 @@ get_img = function(id, link)
 					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
 
 					// Ajoute l'image
-					$("#"+$("#dialog-media-source").val()).append('<img src="'+final_file+'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"")+'>');
+					$("#"+$("#dialog-media-source").val()).append('<img src="'+ path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"")+'>');
 				}
 				else
-					$("#"+$("#dialog-media-source").val()+" img").attr("src", final_file);
+					$("#"+$("#dialog-media-source").val()+" img").attr("src", path + final_file );
 			}
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
