@@ -131,10 +131,12 @@ $GLOBALS['auth_level'] = array(
 	"add-media",
 	"add-page",
 	"add-article",
+	"add-event",
 	"add-product",
 	"edit-media",
 	"edit-page",
 	"edit-article",
+	"edit-event",
 	"edit-product",
 	"add-media-public",
 	"edit-public"
@@ -144,6 +146,7 @@ $GLOBALS['auth_level'] = array(
 // Type de contenu ajoutable
 $GLOBALS['add-page'] = true;
 $GLOBALS['add-article'] = true;
+$GLOBALS['add-event'] = false;
 $GLOBALS['add-media'] = false;
 $GLOBALS['add-product'] = false;
 

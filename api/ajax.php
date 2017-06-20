@@ -554,10 +554,12 @@ switch($_GET['mode'])
 
 					<option value="add-page">&#xf0f6; <?_e("Add page")?></option>
 					<option value="add-article">&#xf09e; <?_e("Add article")?></option>
+					<option value="add-event">&#xf133; <?_e("Add event")?></option>
 					<option value="add-product">&#xf07a; <?_e("Add product")?></option>
 
 					<option value="edit-page">&#xf0f6; <?_e("Edit page")?></option>
 					<option value="edit-article">&#xf09e; <?_e("Edit article")?></option>
+					<option value="edit-event">&#xf133; <?_e("Edit event")?></option>
 					<option value="edit-product">&#xf07a; <?_e("Edit product")?></option>
 
 					<option value="add-media-public">&#xf114; <?_e("Public file")?></option>

@@ -96,19 +96,23 @@ switch($_GET['mode'])
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
 			<ul class="small">
-				<?if($_SESSION['auth']['add-page'] and $GLOBALS['add-page']){?>
+				<?if(isset($_SESSION['auth']['add-page']) and $GLOBALS['add-page']){?>
 				<li data-filter="page"><a href="#add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
 				<?}?>
 				
-				<?if($_SESSION['auth']['add-article'] and $GLOBALS['add-article']){?>
+				<?if(isset($_SESSION['auth']['add-article']) and $GLOBALS['add-article']){?>
 				<li data-filter="article"><a href="#add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
 				<?}?>
 				
-				<?if($_SESSION['auth']['add-media'] and $GLOBALS['add-media']){?>
+				<?if(isset($_SESSION['auth']['add-event']) and $GLOBALS['add-event']){?>
+				<li data-filter="event"><a href="#add-event" title="<?_e("Add event")?>"><i class="fa fa-calendar-o"></i> <span><?_e("Add event")?></span></a></li>
+				<?}?>
+				
+				<?if(isset($_SESSION['auth']['add-media']) and $GLOBALS['add-media']){?>
 				<li data-filter="media"><a href="#add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
 				<?}?>
 				
-				<?if($_SESSION['auth']['add-product'] and $GLOBALS['add-product']){?>
+				<?if(isset($_SESSION['auth']['add-product']) and $GLOBALS['add-product']){?>
 				<!-- <li data-filter="product"><a href="#add-product"></" title="<?_e("Product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Product")?></span></a></li> -->
 				<?}?>
 			</ul>					
@@ -116,6 +120,7 @@ switch($_GET['mode'])
 			<div class="none">
 				<div id="add-page"></div>	
 				<div id="add-article"></div>	
+				<div id="add-event"></div>	
 				<div id="add-media"></div>	
 				<div id="add-product"></div>	
 			</div>
@@ -970,7 +975,7 @@ switch($_GET['mode'])
 					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode((isset($_GET['filter'])?$_GET['filter']:""))."-".$i."\" data-media=\"media/".((isset($_GET['filter']) and $_GET['filter'] == "resize") ? "resize/" : "").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
 
 						if($type == "image") {
-							echo"<img src=\"media/".((isset($_GET['filter']) and $_GET['filter'] == "resize") ? "resize/" : "").$val['filename']."\">";
+							echo"<img src=\"".$GLOBALS['path']."media/".((isset($_GET['filter']) and $_GET['filter'] == "resize") ? "resize/" : "").$val['filename']."\">";
 							echo"<a class='resize' title=\"".__("Get resized image")."\"><i class='fa fa-fw fa-compress bigger'></i></a>";
 						}
 						else echo"<div class='file'><i class='fa fa-fw fa-".$fa." mega'></i><div>".utf8_encode($val['filename'])."</div></div>";
