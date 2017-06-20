@@ -58,7 +58,8 @@ $(function()
 
 
 	// AJOUT DU TAG LORS DE LA SAUVEGARDE
-	function callback() {
+	after_save.push(function()
+	{
 		//@todo ajouter une alert si les tags n'on pas réussit a être sauvegardé
 		$.ajax({
 			type: "POST",
@@ -68,5 +69,5 @@ $(function()
 				$("body").append(html);
 			}
 		});	
-	};
+	});
 });	

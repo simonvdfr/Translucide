@@ -6,6 +6,8 @@ include_once("../api/db.php");// Connexion à la db
 $lang = get_lang();// Sélectionne la langue
 load_translation('api');// Chargement des traductions du système
 
+//@todo quand on modifie un tag on change le nom du tag dans toutes les metas
+
 // MET À JOUR LES TAGS DE L'ARTICLE
 if(isset($_GET['mode']) and $_GET['mode'] == "tag")
 {
@@ -24,6 +26,27 @@ if(isset($_GET['mode']) and $_GET['mode'] == "tag")
 				$i++;
 			}
 		}		
+	}
+	
+	if($connect->error) echo $connect->error;
+
+	exit;
+}
+// MET À JOUR LES INFORMATION DU TAG
+if(isset($_GET['mode']) and $_GET['mode'] == "tag-info")
+{	
+	login('high', 'edit-article');// Vérifie que l'on a le droit d'éditer les contenus
+
+	if(isset($_REQUEST['tag-info'])) 
+	{
+		$connect->query("DELETE FROM ".$table_meta." WHERE type='tag-info' AND cle='".encode($_REQUEST['tag'])."'");
+		
+		// Supprime les url avec le domaine pour faciliter le transport du site
+		$_REQUEST['tag-info'] = str_replace($GLOBALS['home'], "", $_REQUEST['tag-info']);
+
+		$tag_info = json_encode($_REQUEST['tag-info'], JSON_UNESCAPED_UNICODE);
+
+		$connect->query("INSERT INTO ".$table_meta." SET type='tag-info', cle='".encode($_REQUEST['tag'])."', val='".addslashes($tag_info)."'");
 	}
 	
 	if($connect->error) echo $connect->error;
