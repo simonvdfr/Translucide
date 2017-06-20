@@ -35,8 +35,11 @@ $add_translation = array(
 	"Add content" => array("fr" => "Ajouter un contenu"),
 	"Add page" => array("fr" => "Ajouter une page"),
 	"Add article" => array("fr" => "Ajouter un article"),
+	"Add event" => array("fr" => "Ajouter un événement"),
 	"Add media" => array("fr" => "Ajouter un média"),
-	
+	"Add product" => array("fr" => "Ajouter un produit"),
+
+
 	"Title" => array("fr" => "Titre"),
 	"Select template" => array("fr" => "Sélectionner un modèle"),
 	"Permanent link" => array("fr" => "Lien Permanent"),
@@ -107,10 +110,6 @@ $add_translation = array(
 
 	"Send Files" => array("fr" => "Envoyer des fichiers"),
 	"Edit Files" => array("fr" => "Modifier les fichiers"),
-
-	"Add page" => array("fr" => "Ajouter une page"),
-	"Add article" => array("fr" => "Ajouter un article"),
-	"Add product" => array("fr" => "Ajouter un produit"),
 
 	"Edit page" => array("fr" => "Edition des pages"),
 	"Edit article" => array("fr" => "Edition des articles"),
