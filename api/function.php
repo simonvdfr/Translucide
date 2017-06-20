@@ -185,6 +185,7 @@ function txt($key = null, $filter = array())
 	$GLOBALS['editkey']++;
 }
 
+
 // Contenu image/fichier
 function media($key = null, $filter = array())
 {
@@ -197,7 +198,7 @@ function media($key = null, $filter = array())
 	if(isset($filter['size'])) $size = explode("x", $filter['size']);
 
 	// Nom du fichier
-	$filename = isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "";
+	$filename = (isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key]!="") ? $GLOBALS['home'].$GLOBALS['content'][$key] : "";
 
 	if($filename) 
 	{
@@ -249,6 +250,7 @@ function media($key = null, $filter = array())
 	$GLOBALS['editkey']++;
 }
 
+
 // Image de fond de bloc
 function bg($key = null, $lazy = false)
 {
@@ -267,6 +269,7 @@ function bg($key = null, $lazy = false)
 	$GLOBALS['editkey']++;
 }
 
+
 // Contenu champ checkbox
 function checkbox($key = null, $filter = array())
 {
@@ -276,6 +279,7 @@ function checkbox($key = null, $filter = array())
 	
 	$GLOBALS['editkey']++;
 }
+
 
 // Contenu champ select
 function select($key = null, $filter = array())
@@ -300,6 +304,7 @@ function select($key = null, $filter = array())
 	$GLOBALS['editkey']++;
 }
 
+
 // Contenu champ hidden
 function hidden($key = null, $class = null)
 {
@@ -310,11 +315,13 @@ function hidden($key = null, $class = null)
 	$GLOBALS['editkey']++;
 }
 
+
 // Label visible qu'en mode édition
 function hidden_label($content = null, $class = null)
 {
 	echo"<label class='none ".$class."'>".$content."</label>";
 }
+
 
 // Lien éditable
 function href($key = null)
