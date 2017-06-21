@@ -5,9 +5,14 @@
 	}
 </style>
 
+<?
+$marker_title = (isset($GLOBALS['content']['marker-title'])?$GLOBALS['content']['marker-title']:"");
+$lat = (isset($GLOBALS['content']['lat'])?$GLOBALS['content']['lat']:"");
+$lng = (isset($GLOBALS['content']['lng'])?$GLOBALS['content']['lng']:"");
+?>
 
 <div id="google-map" class="animation fade-in">
-	<a href="http://maps.google.com/maps?q=<?=urlencode($GLOBALS['content']['marker-title'])?>&ll=<?=$GLOBALS['content']['lat']?>,<?=$GLOBALS['content']['lng']?>" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=440x370&maptype=roadmap&markers=color:green%7C<?=$GLOBALS['content']['lat']?>,<?=$GLOBALS['content']['lng']?>&key=<?=$GLOBALS['google_map']?>&style=feature:water|element:geometry|saturation:-60&style=feature:poi|visibility:off" alt="<?=$GLOBALS['sitename']?>"></a>
+	<a href="http://maps.google.com/maps?q=<?=urlencode($marker_title)?>&ll=<?=$lat?>,<?=$lng?>" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=440x370&maptype=roadmap&markers=color:green%7C<?=$lat?>,<?=$lng?>&key=<?=$GLOBALS['google_map']?>&style=feature:water|element:geometry|saturation:-60&style=feature:poi|visibility:off" alt="<?=$GLOBALS['sitename']?>"></a>
 </div>
 
 

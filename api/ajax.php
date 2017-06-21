@@ -1143,7 +1143,7 @@ switch($_GET['mode'])
 				$_SESSION['access_token_external'][$login_api] = $tab_token_response['access_token'];
 
 				// On récupère l'id tiers s'il se trouve dans le retour avec le access_token
-				if($get_token_uid[$login_api]) $uid = $tab_token_response[$get_token_uid[$login_api]];
+				if(isset($get_token_uid[$login_api])) $uid = $tab_token_response[$get_token_uid[$login_api]];
 
 				// Rapatriement des données de l'user (id, nom...)
 				if($get_info[$login_api]) {
@@ -1157,7 +1157,7 @@ switch($_GET['mode'])
 				// Si on a un access_token tiers on crée un token maison checkable facilement et avec une durée de vie plus longue
 				if($uid)
 				{
-					if(!$GLOBALS['connect']) include_once("db.php");
+					if(!isset($GLOBALS['connect'])) include_once("db.php");
 					
 					// On vérifie l'utilisateur
 					$uid = $connect->real_escape_string($uid);
