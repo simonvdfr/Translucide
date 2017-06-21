@@ -25,6 +25,10 @@ date_default_timezone_set('Europe/Paris');
 
 
 // Variables de la base de données
+$GLOBALS['table_content'] = $GLOBALS['db_prefix']."content";
+$GLOBALS['table_meta'] = $GLOBALS['db_prefix']."meta";
+$GLOBALS['table_user'] = $GLOBALS['db_prefix']."user";
+
 if(isset($_SERVER['WINDIR'])) {// Dev local
 	$GLOBALS['db_server'] = "";
 	$GLOBALS['db_user'] = "";
@@ -41,35 +45,28 @@ else {
 $GLOBALS['db_prefix'] = "";
 $GLOBALS['db_charset'] = "utf8";
 
-$GLOBALS['table_content'] = $GLOBALS['db_prefix']."content";
-$GLOBALS['table_meta'] = $GLOBALS['db_prefix']."meta";
-$GLOBALS['table_user'] = $GLOBALS['db_prefix']."user";
-
 
 // Variables sites
 $GLOBALS['language'] = array("fr");
 
-$GLOBALS['theme'] = "";
 $GLOBALS['function'] = "";// Include fonction du theme
-
+$GLOBALS['theme'] = "";
 $GLOBALS['sitename'] = "";
-
 $GLOBALS['scheme'] = "";
-
 if(isset($_SERVER['WINDIR']))// Dev local
 	$GLOBALS['domain'] = "";
 else 
 	$GLOBALS['domain'] = "";
-
 $GLOBALS['path'] = "";
-
 $GLOBALS['robots'] = "index, follow";
-
 $GLOBALS['email_contact'] = "";
 
 
 // Utilisation de librairie minifier
-$GLOBALS['min'] = "";// .min
+if(isset($_SERVER['WINDIR']))// Dev local
+	$GLOBALS['min'] = "";
+else 
+	$GLOBALS['min'] = ".min";
 
 
 // https://developers.facebook.com/apps/
