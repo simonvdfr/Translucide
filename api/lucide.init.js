@@ -32,7 +32,7 @@ get_cookie = function(key) {
 	return value ? value[2] : '';
 }
 
-// Crée un cookie
+// CrÃ©e un cookie
 set_cookie = function(key, val, days) {
 	var expire = new Date();
 	expire.setTime(expire.getTime() + (days*24*60*60*1000));
@@ -54,7 +54,7 @@ __ = function(txt) {
 }
 
 
-// Déconnexion
+// DÃ©connexion
 logout = function() {
 	$.ajax({
 		url: path+"api/ajax.php?mode=logout",
@@ -125,7 +125,7 @@ light = function(txt){
 }
 
 
-// Url en cours nettoyé
+// Url en cours nettoyÃ©
 clean_url = function() {
 	return location.protocol +'//'+ location.host + location.pathname + location.search;
 }
@@ -136,7 +136,7 @@ reload = function() {
 }
 
 
-// Liste des fonctions d'édition
+// Liste des fonctions d'Ã©dition
 edit = [];
 after_save = [];
 before_save = [];
@@ -152,12 +152,12 @@ add_content = function()
 }
 
 
-// Crée le permalink à partir du titre de la page
+// CrÃ©e le permalink Ã  partir du titre de la page
 refresh_permalink = function(target) {
 	// Animation de chargement
 	$(target+" #refresh-permalink i").addClass("fa-spin");
 
-	// Récupère l'url encodée
+	// RÃ©cupÃ¨re l'url encodÃ©e
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=make-permalink",
@@ -181,7 +181,7 @@ $.fn.make_password = function() {
 	// Animation de chargement
 	$(".fa-refresh").addClass("fa-spin");
 
-	// Récupère un password
+	// RÃ©cupÃ¨re un password
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.php?mode=make-password",
@@ -193,17 +193,17 @@ $.fn.make_password = function() {
 	});
 }
 
-// Recharge la page et lance le mode édition
+// Recharge la page et lance le mode Ã©dition
 reload_edit = function() {	
 	edit_launcher("reload_edit");
 }
 
-// Lance le mode édition
+// Lance le mode Ã©dition
 edit_launcher = function(callback) 
 {	
 	if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");
 
-	// Si le mode édition n'est pas déjà lancé
+	// Si le mode Ã©dition n'est pas dÃ©jÃ  lancÃ©
 	if(!$("#admin-bar").length) 
 	{
 		$.ajax({url: path+"api/ajax.admin.php?mode=edit&type="+type+(callback?"&callback="+callback:""), cache: false})
@@ -217,7 +217,7 @@ edit_launcher = function(callback)
 
 $(function()
 {
-	//@todo verif l'utilité car déjà instancier dans fonction.php
+	//@todo verif l'utilitÃ© car dÃ©jÃ  instancier dans fonction.php
 	// On met en background les images data-bg 
 	/*$("[data-bg]").css("background-image", function() {
 		return "url(" + $(this).attr("data-bg") + ")";
@@ -236,14 +236,14 @@ $(function()
 
 
 
-	// Bouton d'édition ou de connexion si la page existe dans la base
+	// Bouton d'Ã©dition ou de connexion si la page existe dans la base
 	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "pencil"; else var icon_edit = "key"; 
 	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam'></i></a>");
 
-	// Bind le bouton d'édition
+	// Bind le bouton d'Ã©dition
 	$("a.bt.edit").click(function() 
 	{
-		// Si la page n'est pas activée et que l'on n'est pas admin on callback un reload
+		// Si la page n'est pas activÃ©e et que l'on n'est pas admin on callback un reload
 		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit-page")) ? "reload_edit":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
@@ -254,10 +254,10 @@ $(function()
 	});	
 
 
-	// Mode édition au ctrl+q
+	// Mode Ã©dition au ctrl+q
 	$(document).keydown(function(event) 
 	{
-		if(!$("#admin-bar").length)// Admin pas lancé
+		if(!$("#admin-bar").length)// Admin pas lancÃ©
 		{
 			if(event.ctrlKey || event.metaKey)
 			if(String.fromCharCode(event.which).toLowerCase() == 'q') {
@@ -275,7 +275,7 @@ $(function()
 	// Affichage du bouton add
 	$("a.bt.fixed.edit").hover(
 		function() {
-			$("a.bt.fixed.add").css("right", parseInt($("a.bt.fixed.edit").css("right")) + "px");// même niveau right
+			$("a.bt.fixed.add").css("right", parseInt($("a.bt.fixed.edit").css("right")) + "px");// mÃªme niveau right
 			$("a.bt.fixed.add").fadeIn();//fadeIn
 			$("a.bt.fixed.add").css("bottom", parseInt($("a.bt.fixed.edit").css("bottom")) + $("a.bt.fixed.edit").outerHeight() + "px");// au dessus bt edit
 			hover_add = true;
@@ -295,9 +295,9 @@ $(function()
 
 
 
-	// Page désactivé => message admin
+	// Page dÃ©sactivÃ© => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
-		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-user-secret bigger vam no'></i>"+ __("Activation status") +" : "+ __(state) +"</a>");
+		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-warning vam no'></i> "+ __("Activation status") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 
@@ -334,19 +334,19 @@ $(function()
 			// Si la barre d'administration n'est pas ouverte et la dialog de connexion inexistante
 			if(!$("#admin-bar").length && !$("#dialog-connect").length)
 			{
-				// Affichage du bouton d'édition  
+				// Affichage du bouton d'Ã©dition  
 				if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-page"))
 					$("a.bt.fixed.edit").fadeIn("slow");				
 				else if($("a.bt.fixed.edit").css("display") == "block")
 					$("a.bt.fixed.edit").fadeOut();
 			}
 
-			// Décale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
+			// DÃ©cale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
 			if($("a.bt.fixed.top").css("display") != "none")
 				$("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
 		});
     }
-	else if(!$("#admin-bar").length && !$("#dialog-connect").length)// On affiche au bout de x seconde le bouton d'édition
+	else if(!$("#admin-bar").length && !$("#dialog-connect").length)// On affiche au bout de x seconde le bouton d'Ã©dition
 	{
 		if(typeof state !== 'undefined')
 			if(state) $("a.bt.fixed.edit").delay("2500").fadeIn("slow");
@@ -355,10 +355,10 @@ $(function()
 
 
 	
-	// Verifi les droits, si l'admin n'est pas lancé
+	// Verifi les droits, si l'admin n'est pas lancÃ©
 	if(get_cookie("auth").indexOf("edit-page") && !$("#admin-bar").length && !$("#dialog-connect").length)
 	{
-		// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
+		// Si on appuie sur la touche haut ou bas on ouvre le bouton d'Ã©dition
 		$(document).keyup(function(event) {			
 			if((event.which == 38 || event.which == 40) && !$("#admin-bar").length) $("a.bt.fixed.edit").fadeIn();			
 		});
