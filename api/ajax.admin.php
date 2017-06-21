@@ -521,6 +521,8 @@ switch($_GET['mode'])
 
 	case "make-permalink":// Construit un permalink
 
+		//@todo Vérifier qu'il n'y a pas déjà un contenu avec la même URL
+	
 		login('medium', 'edit-'.($_POST['type']?encode($_POST['type']):"page"));// Vérifie que l'on a le droit d'éditer une page
 
 		echo encode($_POST['title']);
