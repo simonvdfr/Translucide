@@ -125,7 +125,7 @@ if($res_footer['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], j
 
 
 // Fonctions du theme
-if(isset($GLOBALS['function'])) 
+if(isset($GLOBALS['function']) and $GLOBALS['function'] != "") 
 	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].$GLOBALS['function']);
 
 
