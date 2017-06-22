@@ -25,6 +25,9 @@ date_default_timezone_set('Europe/Paris');
 
 
 // Variables de la base de données
+$GLOBALS['db_prefix'] = "";
+$GLOBALS['db_charset'] = "utf8";
+
 $GLOBALS['table_content'] = $GLOBALS['db_prefix']."content";
 $GLOBALS['table_meta'] = $GLOBALS['db_prefix']."meta";
 $GLOBALS['table_user'] = $GLOBALS['db_prefix']."user";
@@ -41,9 +44,6 @@ else {
 	$GLOBALS['db'] = "";
 	$GLOBALS['db_pwd'] = "";
 }
-
-$GLOBALS['db_prefix'] = "";
-$GLOBALS['db_charset'] = "utf8";
 
 
 // Variables sites
