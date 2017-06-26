@@ -594,7 +594,11 @@ upload = function(source, file, resize)
 				processData: false,
 				success: function(path)
 				{					
-					if(path.match('dialog-connect')) $("body").append(path);// Si erreur de login
+					if(path.match('dialog-connect') || path.match('error'))
+					{
+						source.hide("slide", 300);
+						$("body").append(path);// Si erreur ou erreur de login
+					}
 					else if(path)
 					{
 						source.removeClass("uploading");// Supprime le spin d'upload

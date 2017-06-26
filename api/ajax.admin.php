@@ -113,7 +113,7 @@ switch($_GET['mode'])
 				<?}?>
 				
 				<?if(isset($_SESSION['auth']['add-product']) and $GLOBALS['add-product']){?>
-				<!-- <li data-filter="product"><a href="#add-product"></" title="<?_e("Product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Product")?></span></a></li> -->
+				<li data-filter="product"><a href="#add-product" title="<?_e("Add product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Add product")?></span></a></li>
 				<?}?>
 			</ul>					
 
@@ -1035,6 +1035,10 @@ switch($_GET['mode'])
 		// @todo: Vérifier qu'il n'y a pas déjà un fichier qui a le même nom sur le serveur, si oui => alert pour overwrite
 		// @todo: Proposer l'option crop (si w&h spécifié) / resize (si aucune des w&h ne sont pas spécifiés)
 		
+		// Si la taille du fichier est supérieure a la taille limitée par le serveur
+		if($_FILES['file']['error'] == 1)
+			exit('<script>error("'.__("The file exceeds the send size limit of ") . ini_get("upload_max_filesize").'");</script>');
+
 		// Récupération de l'extension
 		$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 	
