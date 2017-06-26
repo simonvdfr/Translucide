@@ -85,7 +85,7 @@ get_content = function(content)
 	});
 	
 	// Contenu des background images éditables
-	$(document).find(content+" [data-bg]").each(function() {
+	$(document).find(content+" [data-bg], "+content+"[data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 		
@@ -258,8 +258,6 @@ exec_tool = function(command, value, ui) {
 		}
 		else
 			$("#txt-tool #option").hide();// Cache le menu d'option rapidement
-
-		$("#unlink").remove();// Supprime les boutons de unlink
 	}
 
 	$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
@@ -274,20 +272,27 @@ exec_tool = function(command, value, ui) {
 // Menu avec les options d'ajout/modif de lien
 link_option = function()
 {		
+	$("#unlink").remove();// Supprime le bouton de supp de lien
 	$("#txt-tool #option").hide();// Réinitialise le menu d'option
 	$("#target-blank").removeClass("checked");// Réinitialise la colorisation du target _blank
 
 	var href = $(memo_node).closest('a').attr('href');// On récupère le href de la sélection en cours
 
-	if(href) {
+	// Si lien
+	if(href) 
+	{
 		// Si target = blank
 		if(memo_node.target == "_blank") $("#target-blank").addClass("checked");
+
+		// Bouton pour supp le lien //exec_tool('unlink');
+		$("#txt-tool #option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-close plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
 
 		$("#txt-tool #option #link").val(href);
 		$("#txt-tool #option button span").text(__("Change Link"));
 		$("#txt-tool #option button i").removeClass("fa-plus").addClass("fa-save");
 	}
-	else {
+	else 
+	{
 		$("#txt-tool #option #link").val('');
 		$("#txt-tool #option button span").text(__("Add Link"));
 		$("#txt-tool #option button i").removeClass("fa-save").addClass("fa-plus");
@@ -295,6 +300,40 @@ link_option = function()
 	
 	$("#txt-tool #option").show("slide", 300);
 }
+
+// Supprime le lien autour
+unlink = function() 
+{
+	$(memo_node).contents().unwrap();
+	$("#txt-tool #option").hide("slide", 300);
+
+	$(memo_focus).focus();
+}
+
+// Edite ou ajoute le lien
+link = function() 
+{
+	var link = $('#txt-tool #option #link').val();
+
+	// Si ajout de lien
+	if($("#txt-tool #option button i").hasClass("fa-plus")) 
+		exec_tool('CreateLink', link)
+	else
+	{
+		$(memo_node).attr("href", link);
+
+		// Si Target = blank
+		if($("#target-blank").hasClass("checked")) $(memo_node).attr("target","_blank");
+		else $(memo_node).removeAttr("target");
+		
+		$("#txt-tool #option").hide("slide", 300);// Cache le menu d'option avec animation
+
+		tosave();// A sauvegarder
+
+		//@todo voir pour retrouver l'emplacement du focus une fois l'edition fini
+	}
+}
+
 
 // Si target blank
 target_blank = function(mode) {
@@ -1109,7 +1148,7 @@ $(function()
 			toolbox+= "<li id='option'>";
 				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
 				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
-				toolbox+= "<button onclick=\"exec_tool('CreateLink', $('#txt-tool #option #link').val())\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+				toolbox+= "<button onclick=\"link()\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 
@@ -1159,7 +1198,6 @@ $(function()
 					$("#txt-tool").hide();// ferme la toolbox
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
 				}
-				if($("#unlink:not(:hover)").val()=="") $("#unlink").remove();// Supprime les bouton de unlink
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
 				$("body").off(".editable-media");// Désactive les events image
@@ -1174,8 +1212,7 @@ $(function()
 				img_leave();// Raz Propriétés image
 			},
 			"mouseup.editable": function(event)// Si on click dans un contenu éditable
-			{			
-				$("#unlink").remove();// Supprime les boutons de unlink
+			{		
 				$("#txt-tool #option").hide();// Cache le menu d'option		
 
 				// @todo voir si le fait de ne pas raz les memo_ ne crée pas de problème colatéraux...
@@ -1209,21 +1246,10 @@ $(function()
 
 
 				// Si on sélectionne un contenu
-				if(memo_selection.toString().length > 0)
+				//if(memo_selection.toString().length > 0)
 				{
-					// Si on est sur un lien
-					if($(memo_node).closest("a").length)
-					{
-						// Ouverture du menu lien en mode modif
-						link_option();
-						
-						// Positionnement de la croix unlink
-						var left = event.clientX + 5;
-						var top = $(memo_node).closest('a').offset().top - 5; // $(memo_node).closest('a').position().top - 5 // event.clientY
-
-						// Croix pour supprimer le lien : unlink
-						$("body").append("<a href=\"javascript:exec_tool('unlink');void(0);\" id='unlink'><i class='fa fa-close' style='position: absolute; left:"+ left +"px; top:"+ top +"px;' title='"+ __("Remove the link from the selection") +"'></i></a>");
-					}
+					// Si on est sur un lien on ouvre le menu lien en mode modif
+					if($(memo_node).closest("a").length) link_option();
 				}
 				//else memo_selection = memo_range = memo_node = null;// RAZ Sélection		
 			}
@@ -1287,10 +1313,7 @@ $(function()
 
 
 	// Action sur le input de lien si keyup Enter
-	$("#txt-tool #option #link").keyup(function(event) { if(event.keyCode == 13) exec_tool("CreateLink", $("#txt-tool #option #link").val()) });
-
-	// Si focus dans les options de lien on supp le bt unlink
-	$("#txt-tool #option").on("click", function() { $("#unlink").remove() });
+	$("#txt-tool #option #link").keyup(function(event) { if(event.keyCode == 13) link() });
 
 
 
