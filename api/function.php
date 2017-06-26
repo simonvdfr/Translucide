@@ -10,10 +10,10 @@ function benchmark() {
 // Nettoie et encode les mots
 function encode($value, $separator = "-", $pass = null) 
 {
-	$tofind = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>";
+	$tofind = "Ã€ÃÃ‚ÃƒÃ„Ã…Ã Ã¡Ã¢Ã£Ã¤Ã¥Ã’Ã“Ã”Ã•Ã–Ã˜Ã²Ã³Ã´ÃµÃ¶Ã¸ÃˆÃ‰ÃŠÃ‹Ã¨Ã©ÃªÃ«Ã‡Ã§ÃŒÃÃÃÃ¬Ã­Ã®Ã¯Ã™ÃšÃ›ÃœÃ¹ÃºÃ»Ã¼Ã¿Ã‘Ã±ÃŸ@\â€™\"'_-&()=/*+$!:;,.\Â²~#?Â§Âµ%Â£Â°{[|`^]}Â¤â‚¬<>";
     $replac = "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ";
 	
-	// Si on doit laisser certains caractères
+	// Si on doit laisser certains caractÃ¨res
 	if(count($pass)) {
 		foreach($pass as $char){
 			$strpos = strpos($tofind, $char);
@@ -22,16 +22,16 @@ function encode($value, $separator = "-", $pass = null)
 		}
 	}
 
-	$value = strtolower(strtr(utf8_decode($value), $tofind, $replac));// Supp les caractères indésirables
-	$value = preg_replace("/ /", $separator, preg_replace("/ {2,}/", $separator, trim($value)));// Supp les espaces et remplace par des tirés {1,}
+	$value = strtolower(strtr(utf8_decode($value), $tofind, $replac));// Supp les caractÃ¨res indÃ©sirables
+	$value = preg_replace("/ /", $separator, preg_replace("/ {2,}/", $separator, trim($value)));// Supp les espaces et remplace par des tirÃ©s {1,}
 
 	return $value;
 }
 
-// Récupère l'url rewriter
+// RÃ©cupÃ¨re l'url rewriter
 function get_url($url_source = null)
 {
-	// Si pas d'url forcé on donne l'url en cours complète
+	// Si pas d'url forcÃ© on donne l'url en cours complÃ¨te
 	if(!$url_source) 
 		$url_source = ($_SERVER['REQUEST_SCHEME'] ? $_SERVER['REQUEST_SCHEME'] : "http")."://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
@@ -48,7 +48,7 @@ function get_url($url_source = null)
 		{
 			$explode_path = explode("/", $path);
 
-			$url = $explode_path[0];// Url raçine
+			$url = $explode_path[0];// Url raÃ§ine
 			unset($explode_path[0]);// Supp la racine des filtres
 
 			while(list($cle, $dir) = each($explode_path)) {
@@ -73,7 +73,7 @@ function make_url($url, $filter = array())
 		if(isset($filter['domaine'])) $domaine = $filter['domaine'];
 		unset($filter['domaine']);
 
-		// Création des dossier dans l'url en fonction des filtres
+		// CrÃ©ation des dossier dans l'url en fonction des filtres
 		while(list($cle, $val) = each($filter))
 		{
 			if($cle == "page" and $val == 1)
@@ -102,10 +102,10 @@ function make_url($url, $filter = array())
 
 
 /********** LANGUAGE **********/
-// Sélectionne la langue
+// SÃ©lectionne la langue
 function get_lang($lang = '')
 {		
-	// Si la langue est déjà dans la session
+	// Si la langue est dÃ©jÃ  dans la session
 	if(isset($_SESSION['lang'])) {
 		$lang = $_SESSION['lang'];		
 	}
@@ -116,10 +116,10 @@ function get_lang($lang = '')
 		$lang = $explode[0];
 	}
 	
-	// Si la langue de l'utilisateur n'existe pas pour les contenus de ce site on charge la langue par défaut
+	// Si la langue de l'utilisateur n'existe pas pour les contenus de ce site on charge la langue par dÃ©faut
 	if(!in_array($lang, $GLOBALS['language'])) $lang = $GLOBALS['language'][0];
 
-	// Création du cookie avec la langue. Utile pour le js
+	// CrÃ©ation du cookie avec la langue. Utile pour le js
 	setcookie("lang", $lang, time() + $GLOBALS['session_expiration'], $GLOBALS['path'], $GLOBALS['domain']);
 
 	$GLOBALS['lang'] = $_SESSION['lang'] = $_COOKIE['lang'] = $lang;	
@@ -136,7 +136,7 @@ function load_translation($id)
 		default: $translation_file = "plugin/".$id."/translation.php"; break;
 	}
 
-	// On récupère le fichier de traduction
+	// On rÃ©cupÃ¨re le fichier de traduction
 	@include($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].$translation_file);
 
 	// Ajoute la traduction au tableau des traductions
@@ -146,7 +146,7 @@ function load_translation($id)
 // Ajoute la traduction
 function add_translation($add_translation)
 {	
-	// On met toutes les clés en minuscule pour une recherche insensible à la case
+	// On met toutes les clÃ©s en minuscule pour une recherche insensible Ã  la case
 	$add_translation = array_change_key_case($add_translation, CASE_LOWER);
 	
 	// On ajoute la nouvelle traduction au tableau de toutes les traductions
@@ -162,7 +162,7 @@ function __($singulier, $pluriel = "", $num = 0)
 	if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']])) 
 		$txt = ($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
 	else
-		$txt = utf8_encode($txt);
+		$txt = ($txt);//utf8_encode
 
 	return $txt;
 }
@@ -194,7 +194,7 @@ function media($key = null, $filter = array())
 	// S'il y a une valeur pour le filter mais que ce n'est pas un tableau
 	if(!is_array($filter)) $filter = array("size" => $filter);
 
-	// Une taille est définie
+	// Une taille est dÃ©finie
 	if(isset($filter['size'])) $size = explode("x", $filter['size']);
 
 	// Nom du fichier
@@ -240,6 +240,7 @@ function media($key = null, $filter = array())
 			echo" atl=\"\" class='";
 				if(isset($size[0]) and isset($size[1])) echo"crop";
 				if(isset($filter['zoom'])) echo" zoom";
+				if(isset($filter['class'])) echo" ".$filter['class'];
 			echo"'>";
 		}
 		elseif($filename) // C'est un fichier
@@ -316,14 +317,14 @@ function hidden($key = null, $class = null)
 }
 
 
-// Label visible qu'en mode édition
+// Label visible qu'en mode Ã©dition
 function hidden_label($content = null, $class = null)
 {
 	echo"<label class='none ".$class."'>".$content."</label>";
 }
 
 
-// Lien éditable
+// Lien Ã©ditable
 function href($key = null)
 {
 	$key = ($key ? $key : "href-".$GLOBALS['editkey']);
@@ -335,7 +336,7 @@ function href($key = null)
 
 
 
-/********** SÉCURISATION **********/
+/********** SÃ‰CURISATION **********/
 function secure_value($value) {
 
 	// htmlentities htmlspecialchars
@@ -370,7 +371,7 @@ function curl($url, $params = null)
 // Crypte le mot de passe
 function hash_pwd($pwd, $salt = null) 
 {				
-	// Création du salt unique a cet utilisateur char(16)
+	// CrÃ©ation du salt unique a cet utilisateur char(16)
 	if(!$salt) $unique_salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));// @todo: peut-etre remplacer cette fonction par make_pwd
 	else $unique_salt = $salt;
 		
@@ -385,12 +386,12 @@ function hash_pwd($pwd, $salt = null)
 		return array($pwd, $unique_salt);// Retour pour stockage
 }
 
-// Crée un password
+// CrÃ©e un password
 function make_pwd($length = 12, $special_chars = false, $extra_special_chars = false)
 {
 	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-	if($special_chars) $chars .= "!@#%^&*()";//$ <= Créé parfois un bug : crée une variable php
+	if($special_chars) $chars .= "!@#%^&*()";//$ <= CrÃ©Ã© parfois un bug : crÃ©e une variable php
 
 	if($extra_special_chars) $chars .= "-_ []{}<>~`+=,.;:/?|";
 
@@ -411,27 +412,27 @@ function nonce($session = null)
 	return $nonce;
 }
 
-function ip()// Retourne l'adresse IP du client (utilisé pour empêcher le détournement de cookie de session)
+function ip()// Retourne l'adresse IP du client (utilisÃ© pour empÃªcher le dÃ©tournement de cookie de session)
 {
     $ip = $_SERVER['REMOTE_ADDR'];
 
-    // Ensuite, nous utilisons plusieurs en-têtes HTTP pour empêcher le détournement de session des utilisateurs derrière le même proxy
+    // Ensuite, nous utilisons plusieurs en-tÃªtes HTTP pour empÃªcher le dÃ©tournement de session des utilisateurs derriÃ¨re le mÃªme proxy
     if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $ip = $ip.'_'.$_SERVER['HTTP_X_FORWARDED_FOR'];
     if(isset($_SERVER['HTTP_CLIENT_IP'])) $ip = $ip.'_'.$_SERVER['HTTP_CLIENT_IP'];
 
     return $ip;
 }
 
-// Création d'un token
-function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de mettre le mail et pas le name ou rien
+// CrÃ©ation d'un token
+function token($uid, $email = null, $auth = null) // @todo: VÃ©rif l'intÃ©rÃªt de mettre le mail et pas le name ou rien
 {
-	// Si la fonction de memorisation de connexion de l'utilisateur et coché
+	// Si la fonction de memorisation de connexion de l'utilisateur et cochÃ©
 	if(isset($_POST['rememberme'])) {
 		setcookie("rememberme", encode($_POST['rememberme']), 0, $GLOBALS['path'], $GLOBALS['domain']);
 		$_COOKIE['rememberme'] = encode($_POST['rememberme']);
 	}
 
-	// Date d'expiration (si on ne mémorise pas l'utilisateur on crée une session de 30min
+	// Date d'expiration (si on ne mÃ©morise pas l'utilisateur on crÃ©e une session de 30min
 	$time = time() + ((isset($_COOKIE['rememberme']) and $_COOKIE['rememberme'] == "false") ? (30*60) : $GLOBALS['session_expiration']);
 
 	// Id de l'utilisateur
@@ -453,10 +454,10 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de m
 	// Faire en sorte que le token soit plus complet et autonome sans trop de variable dans la session
 	$_SESSION['token'] = $token = hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']);
 	
-	// Niveau de sécurité élever, on enregistre le token dans la bdd
+	// Niveau de sÃ©curitÃ© Ã©lever, on enregistre le token dans la bdd
 	if($GLOBALS['security'] == 'high') 
 	{
-		if(!$GLOBALS['connect']) include_once("db.php");// Connexion à la db
+		if(!$GLOBALS['connect']) include_once("db.php");// Connexion Ã  la db
 
 		$GLOBALS['connect']->query("UPDATE ".$GLOBALS['table_user']." SET token='".$token."' WHERE id='".(int)$uid."'");
 	}
@@ -464,7 +465,7 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de m
 	return $token;
 }
 
-// Création d'un token light (utile lors des changements de mot de passe et donne la possibiliter le log sur plusieurs machines)
+// CrÃ©ation d'un token light (utile lors des changements de mot de passe et donne la possibiliter le log sur plusieurs machines)
 function token_light($uid, $salt)
 {	
 	$_SESSION['token_light'] = $token_light = hash("sha256", $salt . $uid . $GLOBALS['pub_hash']);
@@ -472,7 +473,7 @@ function token_light($uid, $salt)
 	return $token_light;
 }
 
-// Vérifie si le token est bon
+// VÃ©rifie si le token est bon
 function token_check($token)
 {	
 	if($token == hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']) and time() < $_SESSION['expires'])
@@ -486,57 +487,57 @@ function token_check($token)
 		return false;
 }
 
-// Connexion au site avec le système interne de login+password
+// Connexion au site avec le systÃ¨me interne de login+password
 function login($level = 'low', $auth = null, $quiet = null)
 {	
-	//////// Le level détermine le niveau de vérification pour des taches plus ou moins sensible
-	// low : Vérif juste s'il y a un token dans la session
+	//////// Le level dÃ©termine le niveau de vÃ©rification pour des taches plus ou moins sensible
+	// low : VÃ©rif juste s'il y a un token dans la session
 	// medium : Check le contenu du token
 	// high : Check le token, et s'il est identique dans bdd (config : security=high ou token_light)
 
-	// Vérifie que la personne qui a posté le formulaire a bien la variable de session de protection contre les CSRF
+	// VÃ©rifie que la personne qui a postÃ© le formulaire a bien la variable de session de protection contre les CSRF
 	$csrf = false;
 	if(isset($_SESSION['nonce']) and $_SESSION['nonce'] != $_REQUEST['nonce']) $csrf = true;
 	
-	// Pas de hack on vérifie l'utilisateur
+	// Pas de hack on vÃ©rifie l'utilisateur
 	if(!$csrf) 
 	{
 		// On se log avec le formulaire donc on check password & mail
 		if(isset($_POST['email']) and isset($_POST['password']))
 		{
-			if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
+			if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion Ã  la db
 
 			// Supprime l'ancienne session
 			session_regenerate_id(true);
 
-			// Nettoyage du mail envoyé
+			// Nettoyage du mail envoyÃ©
 			$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 			$email = $GLOBALS['connect']->real_escape_string($email);
 
-			// Extraction des données de l'utilisateur
+			// Extraction des donnÃ©es de l'utilisateur
 			$sel = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_user']." WHERE email='".$email."' ".($level == 'low' ? "" : "AND state='active'")." LIMIT 1");
 			$res = $sel->fetch_assoc();
 
 			if($res['email']) 
 			{						
-				// Création d'un token maison
+				// CrÃ©ation d'un token maison
 				if($res['password'] == hash_pwd($_POST['password'], $res['salt']))
 				{
 
-					if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// Vérifie les auth d'utilisateur si c'est demandée 
+					if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// VÃ©rifie les auth d'utilisateur si c'est demandÃ©e 
 					{
 						$msg = __("Bad credential");
 						logout();
 					}
-					else if($token = token($res['id'], $res['email'], $res['auth']))// Tout est ok on crée le token
+					else if($token = token($res['id'], $res['email'], $res['auth']))// Tout est ok on crÃ©e le token
 					{
-						// Création d'un token light : permet une vérif au changement de mdp et permet log sur plusieurs machines
+						// CrÃ©ation d'un token light : permet une vÃ©rif au changement de mdp et permet log sur plusieurs machines
 						if($GLOBALS['security'] != 'high') {							
 							$token_light = token_light($res['id'], $res['salt']);
 							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET token='".$token_light."' WHERE id='".$res['id']."'");
 						}
 						
-						// On est logé !
+						// On est logÃ© !
 						return true;
 					}
 				}
@@ -544,21 +545,21 @@ function login($level = 'low', $auth = null, $quiet = null)
 			}
 			else $msg = __("Unknown user");
 		}
-		// Sinon on vérifie la validité du token et s'il n'a pas expiré
+		// Sinon on vÃ©rifie la validitÃ© du token et s'il n'a pas expirÃ©
 		elseif(isset($_SESSION['token']))
 		{			
-			if($level == 'medium' and $GLOBALS['security'] != 'high')// Vérification mode moyen
+			if($level == 'medium' and $GLOBALS['security'] != 'high')// VÃ©rification mode moyen
 			{
-				if(!token_check($_SESSION['token']))// Vérification du contenu du token
+				if(!token_check($_SESSION['token']))// VÃ©rification du contenu du token
 				{
 					$msg = __("Connection error")." 3";
 					logout();
 				}
-				else if(isset($auth))// Vérifie les autorisations utilisateur dans la bdd si c'est demandée
+				else if(isset($auth))// VÃ©rifie les autorisations utilisateur dans la bdd si c'est demandÃ©e
 				{
-					if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
+					if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion Ã  la db
 
-					// Extraction des données de l'utilisateur
+					// Extraction des donnÃ©es de l'utilisateur
 					$sel = $GLOBALS['connect']->query("SELECT auth FROM ".$GLOBALS['table_user']." WHERE id='".(int)$_SESSION['uid']."' AND state='active' LIMIT 1");
 					$res = $sel->fetch_assoc();
 
@@ -573,19 +574,19 @@ function login($level = 'low', $auth = null, $quiet = null)
 			}
 			else if(($GLOBALS['security'] == 'high' or $level == 'high') and token_check($_SESSION['token']))// Comparaison avec le token dans la bdd
 			{
-				if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
+				if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion Ã  la db
 
 				@session_regenerate_id(true);// Supprime l'ancienne session
 
 				$sel = $GLOBALS['connect']->query("SELECT auth, token FROM ".$GLOBALS['table_user']." WHERE id='".(int)$_SESSION['uid']."' AND state='active' LIMIT 1");
 				$res = $sel->fetch_assoc();
 				
-				if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// Vérifie les autorisations
+				if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// VÃ©rifie les autorisations
 				{
 					$msg = __("Bad credential");
 					logout();
 				}
-				elseif($GLOBALS['security'] == 'high' and $res['token'] == $_SESSION['token']) return true;// Sécurité haute forcée dans la config
+				elseif($GLOBALS['security'] == 'high' and $res['token'] == $_SESSION['token']) return true;// SÃ©curitÃ© haute forcÃ©e dans la config
 				elseif($level == 'high' and $res['token'] == $_SESSION['token_light']) return true;// Verification du token light (changement de pwd...)
 				else 
 				{
@@ -606,7 +607,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 	}
 
 
-	// Si pas de token ou si le login échoue on lance la dialog de connexion et exit l'action courante
+	// Si pas de token ou si le login Ã©choue on lance la dialog de connexion et exit l'action courante
 	if(!isset($_SESSION['token']) and !$quiet)
 	{
 		?>
@@ -633,7 +634,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 						// On ferme la dialog de connexion s'il y en a une d'ouvert
 						if($("#dialog-connect").length) $("#dialog-connect").dialog("close");
 						
-						// On ouvre la dialog de choix du système de login et affiche une erreur
+						// On ouvre la dialog de choix du systÃ¨me de login et affiche une erreur
 						$.ajax({
 							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
 							data: {
@@ -649,7 +650,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 								modal: true,
 								minHeight: 0,
 								show: {effect: "fadeIn"},
-								//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
+								//hide: {effect: "fadeOut"},// Bug collateral : empÃ¨che la re-ouverture rapide de la dialog de connexion
 								close: function() {
 									$("#dialog-connect").remove();
 								}
@@ -696,31 +697,31 @@ function logout($redirect = null)
 
 function resize($source_file, $new_width = null, $new_height = null, $dest_dir = null, $option = null)
 {	
-	// Supprime les arguments après l'extension (timer...)
+	// Supprime les arguments aprÃ¨s l'extension (timer...)
 	$source_file = explode("?", $source_file)[0];
 
-	// Récupération des informations de l'image source
+	// RÃ©cupÃ©ration des informations de l'image source
 	list($source_width, $source_height, $type, $attr) = getimagesize($source_file);
 
 	if(!$source_width and !$source_height) exit(__("Size of source file unspecified"));
 
-	// Récupération de l'extension
+	// RÃ©cupÃ©ration de l'extension
 	$source_ext = pathinfo($source_file, PATHINFO_EXTENSION);
 
-	// file_name : on récup le nom du fichier, on lui supp l'extension (qui ne passe pas l'encode), on l'encode
+	// file_name : on rÃ©cup le nom du fichier, on lui supp l'extension (qui ne passe pas l'encode), on l'encode
 	$root_dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'];	
 	$file_name = encode(basename(basename($source_file), ".".$source_ext));
 	
-	// Si image à réduire ou à forcer
+	// Si image Ã  rÃ©duire ou Ã  forcer
 	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
 	{		
-		// Dossier final d'image redimensionnée
+		// Dossier final d'image redimensionnÃ©e
 		$dir = ($dest_dir ? $dest_dir : "media/");
 
-		// Crée les dossiers
+		// CrÃ©e les dossiers
 		@mkdir($root_dir.$dir, 0705, true);
 
-		// On crée une image avec l'image source en fonction de son type
+		// On crÃ©e une image avec l'image source en fonction de son type
 		switch($type) {
 			case 1: $source_img = imagecreatefromgif($source_file); break;
 			case 2: $source_img = imagecreatefromjpeg($source_file); break;
@@ -736,7 +737,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			$ratio_width = $source_width / $new_width;
 			$ratio_height = $source_height / $new_height;
 
-			if($ratio_width > 1 or $ratio_height > 1)// Taille maximale dépassée dans un sens ?
+			if($ratio_width > 1 or $ratio_height > 1)// Taille maximale dÃ©passÃ©e dans un sens ?
 			{
 				if($option == "crop")
 				{
@@ -749,9 +750,9 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 						$dest_height = $new_height;				
 					}
 					
-					// Positionnement de l'image cropé
+					// Positionnement de l'image cropÃ©
 					$x = ($new_width - $dest_width) / 2;
-					$y = ($new_height - $dest_height) / 5;// Paramètre pour callé en hauteur le crop (2 à l'origine)
+					$y = ($new_height - $dest_height) / 5;// ParamÃ¨tre pour callÃ© en hauteur le crop (2 Ã  l'origine)
 				}
 				else// Si pas crop on resize la taille la plus grande
 				{
@@ -765,7 +766,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 					}
 				}
 			}
-			else// Image carrée
+			else// Image carrÃ©e
 			{
 				$dest_width = $new_width;
 				$dest_height = $new_height;
@@ -783,7 +784,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			$new_height = $dest_height = $new_height;
 		}
 		
-		// Création de l'image vide de base pour y coller l'image finale
+		// CrÃ©ation de l'image vide de base pour y coller l'image finale
 		$final_img = imagecreatetruecolor($new_width, $new_height);
 		
 		// S'il y a une transparence on la conserve
@@ -799,10 +800,10 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		// On copie et resize l'image dans l'image de base finale
 		imagecopyresampled($final_img, $source_img, $x, $y, 0, 0, $dest_width, $dest_height, $source_width, $source_height);
 		
-		// Libère la mémoire
+		// LibÃ¨re la mÃ©moire
 		imagedestroy($source_img);
 
-		// Si l'image n'a pas la bonne orientation (consomme pas mal de mémoire)
+		// Si l'image n'a pas la bonne orientation (consomme pas mal de mÃ©moire)
 		switch ($option) {
 		  case 3: $deg = 180; break;
           case 6: $deg = 270; break;
@@ -812,24 +813,24 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		
 		// Ajoute la taille de la nouvelle image en supprimant l'ancienne si besoin
 		preg_match("/(-[0-9]+x[0-9]+)$/", $file_name, $matches);
-		$file_name = str_replace($matches[0], "", $file_name);
+		if(isset($matches[0])) $file_name = str_replace($matches[0], "", $file_name);
 		$file_name_ext = $file_name."-".round($new_width)."x".round($new_height).".".$source_ext;
 
-		// Création de l'image finale dans le bon type		
+		// CrÃ©ation de l'image finale dans le bon type		
 		switch($type) {
 			case 1: imagegif($final_img, $root_dir.$dir.$file_name_ext); break;
 			case 2: imagejpeg($final_img, $root_dir.$dir.$file_name_ext, $GLOBALS['jpg_quality']); break;
 			case 3: imagepng($final_img, $root_dir.$dir.$file_name_ext); break;// $GLOBALS['png_quality']
 		}		
 		
-		imagedestroy($final_img);// Libère la mémoire	
+		imagedestroy($final_img);// LibÃ¨re la mÃ©moire	
 	}
-	else// Copie l'image si elle est plus petite ou à la bonne taille
+	else// Copie l'image si elle est plus petite ou Ã  la bonne taille
 	{
 		$dir = "media/";
 		$file_name_ext = $file_name.".".$source_ext;
 		
-		@mkdir($root_dir.$dir, 0705, true);// Crée les dossiers
+		@mkdir($root_dir.$dir, 0705, true);// CrÃ©e les dossiers
 
 		copy($source_file, $root_dir.$dir.$file_name_ext);
 	}
@@ -840,17 +841,17 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 
 function img_process($root_file, $dest = "media/", $des_resize = "media/resize/", $new_width = null, $new_height = null, $resize = null)
 {
-	// Valeur par défaut
+	// Valeur par dÃ©faut
 	$option = null;
 	$src_file = $dest.basename($root_file)."?".time();
 
-	// Taille de l'image uploadée
+	// Taille de l'image uploadÃ©e
 	list($source_width, $source_height, $type) = getimagesize($root_file);
 	
 	// Limite max de taille d'image pour l'upload global
 	list($max_width, $max_height) = explode("x", $GLOBALS['max_image_size']);
 	
-	// On vérifie la bonne orientation de l'image jpeg
+	// On vÃ©rifie la bonne orientation de l'image jpeg
 	if($type == 2) {// Exif ne fonctionne qu'avec les jpeg
 		$exif = @exif_read_data($root_file);
 		if(isset($exif['Orientation']) and $exif['Orientation'] != 1) {
@@ -871,12 +872,12 @@ function img_process($root_file, $dest = "media/", $des_resize = "media/resize/"
 	}
 	
 
-	// L'interface a demandé un redimensionnement ?
+	// L'interface a demandÃ© un redimensionnement ?
 	if($resize and (($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height)))
 	{
 		return resize($root_file, $new_width, $new_height, $des_resize, $resize);// Redimensionne
 
-		//unlink($root_file);// Si on a redimensionné on supp l'image de base
+		//unlink($root_file);// Si on a redimensionnÃ© on supp l'image de base
 	}
 	else
 		return $src_file;// Retourne l'url du fichier original si pas de redimensionnement	
