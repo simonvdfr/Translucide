@@ -26,6 +26,12 @@
 .fa-spin {
   animation: fa-spin 2s infinite linear;
 }
+.fa-rotate-90 { 
+  transform: rotate(90deg)
+}
+.fa-rotate-270 { 
+  transform: rotate(270deg)
+}
 
 .fa-ul {
   padding-left: 0;
