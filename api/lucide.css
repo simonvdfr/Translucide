@@ -350,14 +350,16 @@ header:hover .dragger { display: block; }
 
 article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la largeur */
 
-.editable {
+.editable, [contenteditable=true] {
 	border-bottom: 1px dotted rgba(61, 128, 179, 0.2) !important;
 	outline: none;/* supp le bord bleu de sélection chrome */
 
 	/*display: initial;inline-block*//* SUPP ?? doublon avec la valeur dans global css */
 	/*width: inherit;*//* en lien avec w article 100% */
 }
-	.editable:hover { border-bottom: 1px dotted rgba(61, 128, 179, 1) !important; }
+	.editable:hover, [contenteditable=true]:hover {
+		border-bottom: 1px dotted rgba(61, 128, 179, 1) !important;
+	}
 
 	[contenteditable=true]:empty:before { 
 		content: attr(id);
