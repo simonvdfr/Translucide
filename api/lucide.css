@@ -389,7 +389,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	overflow: hidden;
 	vertical-align: middle;
 
-	min-width: 70px;
+	min-width: 50px;
 	min-height: 30px;
 	border: 1px dotted rgba(61, 128, 179, 0.2);
 }
