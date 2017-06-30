@@ -10,19 +10,19 @@ function benchmark() {
 // Nettoie et encode les mots
 function encode($value, $separator = "-", $pass = null) 
 {
-	$tofind = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>";
-    $replac = "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ";
+	$from = utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>");
+    $to = "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ";
 	
 	// Si on doit laisser certains caractères
 	if(count($pass)) {
 		foreach($pass as $char){
-			$strpos = strpos($tofind, $char);
-			$tofind[$strpos] = "";
-			$replac[$strpos] = "";
+			$strpos = strpos($from, $char);
+			$from[$strpos] = "";
+			$to[$strpos] = "";
 		}
 	}
 
-	$value = strtolower(strtr(utf8_decode($value), $tofind, $replac));// Supp les caractères indésirables
+	$value = strtolower(strtr(utf8_decode($value), $from, $to));// Supp les caractères indésirables
 	$value = preg_replace("/ /", $separator, preg_replace("/ {2,}/", $separator, trim($value)));// Supp les espaces et remplace par des tirés {1,}
 
 	return $value;
@@ -198,7 +198,10 @@ function media($key = null, $filter = array())
 	if(isset($filter['size'])) $size = explode("x", $filter['size']);
 
 	// Nom du fichier
-	$filename = (isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key]!="") ? $GLOBALS['home'].$GLOBALS['content'][$key] : "";
+	if(isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key]!="") 
+		$filename = $GLOBALS['home'].$GLOBALS['content'][$key];
+	else
+		$filename = "";
 
 	if($filename) 
 	{
@@ -228,20 +231,34 @@ function media($key = null, $filter = array())
 	echo"<span class='".(isset($filter['editable']) ? $filter['editable'] : "editable-media")."' id='".encode($key)."'";
 		if(isset($size[0])) echo" data-width='".$size[0]."'";
 		if(isset($size[1])) echo" data-height='".$size[1]."'";
+		if(isset($filter['class'])) echo" data-class='".$filter['class']."'";
 	echo">";
 
 		if(isset($img))// C'est une image
 		{
-			echo"<img src=\"".$filename."\"";
+			// Si on veux voir la version grande au clic
+			if(isset($filter['zoom'])) {
+				$parse_url = parse_url($filename);
+				parse_str($parse_url['query'], $get);
+				echo"<a href=\"".(isset($get['zoom']) ? $get['zoom'] : "")."\">";
+			}
 
-			if(isset($size[0])) echo" width='".$size[0]."'";
-			if(isset($size[1])) echo" height='".$size[1]."'";
+				echo"<img src=\"".$filename."\"";
 
-			echo" atl=\"\" class='";
-				if(isset($size[0]) and isset($size[1])) echo"crop";
-				if(isset($filter['zoom'])) echo" zoom";
-				if(isset($filter['class'])) echo" ".$filter['class'];
-			echo"'>";
+				if(isset($size[0])) echo" width='".$size[0]."'";
+				if(isset($size[1])) echo" height='".$size[1]."'";
+
+				// On met en data l'url de la version grande
+				if(isset($filter['data-zoom'])) echo" data-zoom='".(isset($filter['data-zoom']) ? $filter['data-zoom'] : "")."'";
+
+				echo" atl=\"\" class='";
+					if(isset($size[0]) and isset($size[1])) echo"crop";
+					if(isset($filter['zoom'])) echo" zoom";
+					if(isset($filter['class'])) echo" ".$filter['class'];
+				echo"'>";
+
+			// Fin lien zoom
+			if(isset($filter['zoom'])) echo"</a>";
 		}
 		elseif($filename) // C'est un fichier
 			echo"<a href=\"".$GLOBALS['content'][$key]."\" target='_blank'><i class='fa fa-fw fa-".$fa." mega' title=\"".$GLOBALS['content'][$key]."\"></i></a>";
@@ -715,6 +732,9 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	// Si image à réduire ou à forcer
 	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
 	{		
+		// Version original pour le zoom
+		$zoom = "media/".$file_name.".".$source_ext;
+
 		// Dossier final d'image redimensionnée
 		$dir = ($dest_dir ? $dest_dir : "media/");
 
@@ -827,6 +847,8 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	}
 	else// Copie l'image si elle est plus petite ou à la bonne taille
 	{
+		$zoom = "";// Pas de zoom
+
 		$dir = "media/";
 		$file_name_ext = $file_name.".".$source_ext;
 		
@@ -835,7 +857,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		copy($source_file, $root_dir.$dir.$file_name_ext);
 	}
 
-	return $dir.$file_name_ext."?".time();// Time pour forcer le refresh
+	return $dir.$file_name_ext."?zoom=".$zoom."&".time();// Time pour forcer le refresh
 }
 
 
