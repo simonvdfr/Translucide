@@ -79,7 +79,7 @@ function make_url($url, $filter = array())
 			if($cle == "page" and $val == 1)
 				unset($filter['page']);// Si Page == 1 on ne l'affiche pas dans l'url
 			elseif($val)
-				$dir .= "/" . (($cle and $cle !=$val) ? encode($cle)."_" : "") . encode($val, "-", array(".","_"));
+				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array(".","_"));
 		}
 	}
 
@@ -90,7 +90,7 @@ function make_url($url, $filter = array())
 		if(isset($domaine)) $url = $GLOBALS['home'];
 	}
 	else {
-		$url = encode($url, "-", array("#"));
+		$url = encode($url, "-", array("#","/"));
 
 		if(isset($domaine)) $url = $GLOBALS['home'] . $url;
 
