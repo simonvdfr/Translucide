@@ -40,7 +40,8 @@ img_zoom = function(event)
 		top: original_top,
 		left: original_left,
 		zIndex: 102,
-		transform: "none"
+		transform: "none",
+		cursor: "pointer"
 	})
 
 	// Ajout le bloc de progression
