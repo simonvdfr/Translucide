@@ -135,7 +135,8 @@ save = function() //callback
 
 	if($("#admin-bar #og-image img").attr("src"))
 	data["content"]["og-image"] = $("#admin-bar #og-image img").attr("src");// Image pour les réseaux sociaux
-
+	
+	//@todo voir pourquoi ça ne supp pas de la nav quand on glisse sur poubelle un element du menu
 	// Contenu du menu de navigation
 	data["nav"] = {};
 	$(document).find("header nav ul li").not("#add-nav ul a, .exclude a").each(function(i) {
