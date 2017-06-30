@@ -76,7 +76,7 @@ get_content = function(content)
 	
 	// Contenu des images éditables
 	$(document).find(content+" .editable-media img").each(function() {
-		if($(this).attr("src")) data[content_array][$(this).parent().attr("id")] = $(this).attr("src");
+		if($(this).attr("src")) data[content_array][$(this).closest(".editable-media").attr("id")] = $(this).attr("src");
 	});
 
 	// Contenu des fichiers éditables
@@ -138,14 +138,16 @@ save = function() //callback
 
 	// Contenu du menu de navigation
 	data["nav"] = {};
-	$(document).find("header nav ul a").not("#add-nav ul a, .exclude a").each(function(index) {
-		data["nav"][index] = {
-			href : $.trim($(this).attr('href')),
-			text : $(this).text(),
-			id : $(this).attr('id') || "",
-			class : $(this).attr('class') || "",
-			target : $(this).attr('target') || ""
-		};
+	$(document).find("header nav ul li").not("#add-nav ul a, .exclude a").each(function(i) {
+		$("a", this).each(function(j) {
+			data["nav"][i+'-'+j] = {
+				href : $.trim($(this).attr('href')),
+				text : $(this).text(),
+				id : $(this).attr('id') || "",
+				class : $(this).attr('class') || "",
+				target : $(this).attr('target') || ""
+			};
+		});
 	});
 
 	// Fonction à exécuter avant la sauvegarde
@@ -518,6 +520,7 @@ upload = function(source, file, resize)
 
 	var width = $(source).data("width") || "";
 	var height = $(source).data("height") || "";
+	var data_class = $(source).data("class") || "";
 
 	if(file) 
 	{
@@ -540,7 +543,7 @@ upload = function(source, file, resize)
 			{
 				// Si pas de tag img on le crée
 				if($("img", source).html() == undefined) 
-					$(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+">");
+					$(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+(data_class?" class='"+data_class+"'":"")+">");
 
 				// On fade à moitié (50%)
 				$("img", source).addClass("to50");
@@ -594,12 +597,12 @@ upload = function(source, file, resize)
 				processData: false,
 				success: function(path)
 				{					
-					if(path.match('dialog-connect') || path.match('error'))
+					if(path.match('dialog-connect') || path.match('error'))// Si erreur ou erreur de login
 					{
 						source.hide("slide", 300);
-						$("body").append(path);// Si erreur ou erreur de login
+						$("body").append(path);
 					}
-					else if(path)
+					else if(path)// ça renvoi un fichier
 					{
 						source.removeClass("uploading");// Supprime le spin d'upload
 
@@ -624,8 +627,8 @@ upload = function(source, file, resize)
 						if(source.attr("data-media")) {
 							source.attr("data-media", path);// Pour la manipulation							
 							$(".file div", source).html(path.split('/').pop());// Pour l'affichage 
-						}
-						
+						}				
+
 						// Détruis le layer de progressbar
 						$("#"+progressid).fadeOut("medium", function() { 
 							this.remove();
@@ -1029,9 +1032,12 @@ $(function()
 	});
 
 	// Si on est en mode burger on active le tri verticalement
-	$(".burger").click(function() {
+	$(".burger, .sortable-y").click(function() {
 		$("header nav ul:first").sortable("option", "axis", "y");
 	});
+
+	// Si on demande à ce que le menu soit triable verticalement
+	if($(".sortable-y").length) $("header nav ul:first").sortable("option", "axis", "y");
 	
 	// Rend clonable uniquement le bloc vide
 	$(".add-empty").draggable({
