@@ -223,8 +223,9 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .black { color: #000 !important; }
 .grey { color: #808080 !important; }
 
-.yes { color: #3e9c30 !important; }
-.no { color: #9f2d2d !important; }
+.yes, .green { color: #3e9c30 !important; }
+.orange { color: orange !important; }
+.no, .red { color: #9f2d2d !important; }
 
 .checked { color: #1ba238 !important; opacity: 1 !important; }
 
