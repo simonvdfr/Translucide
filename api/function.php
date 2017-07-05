@@ -6,7 +6,9 @@ function benchmark() {
 }
 
 
-/********** URL **********/
+
+/********** URL / NAVIGATION **********/
+
 // Nettoie et encode les mots
 function encode($value, $separator = "-", $pass = null) 
 {
@@ -43,16 +45,22 @@ function get_url($url_source = null)
 	if(!encode($path)) $url = "home"; 
 	else
 	{
-		// Si il y a des filtres dans l'url
-		if(strstr($parse_url['path'], "/")) 
+		// Si il y a des filtres/page dans l'url
+		if(strstr($parse_url['path'], "/") or strstr($parse_url['path'], "page_")) 
 		{
 			$explode_path = explode("/", $path);
 
-			$url = $explode_path[0];// Url raçine
-			unset($explode_path[0]);// Supp la racine des filtres
-
-			while(list($cle, $dir) = each($explode_path)) {
+			if(strstr($explode_path[0], "page_")) $url = "home";// Home si le premier element est la nav par page
+			else
+			{
+				$url = $explode_path[0];// Url raçine
+				unset($explode_path[0]);// Supp la racine des filtres si dossier
+			}
+			
+			while(list($cle, $dir) = each($explode_path)) 
+			{
 				$explode_dir = explode("_", $dir);	
+
 				$GLOBALS["filter"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_"));
 			}
 		}
@@ -65,10 +73,10 @@ function get_url($url_source = null)
 // Retourne l'url rewriter
 function make_url($url, $filter = array())
 {
+	$dir = "";
+
 	if(is_array($filter))
 	{
-		$dir = "";
-
 		// Force le domaine
 		if(isset($filter['domaine'])) $domaine = $filter['domaine'];
 		unset($filter['domaine']);
@@ -93,15 +101,57 @@ function make_url($url, $filter = array())
 		$url = encode($url, "-", array("#","/"));
 
 		if(isset($domaine)) $url = $GLOBALS['home'] . $url;
-
-		if(isset($dir)) $url = trim($url, "/") . $dir;
 	}	
+
+	// Si filtre ou page
+	if($dir) $url = trim($url, "/") . $dir;
 
 	return $url;
 }
 
+// Navigation par page
+function page($num_total, $page)
+{
+	global $num_pp, $res;
+
+	?>
+	<ul class="page unstyled inbl man pan">		
+	<?if($num_total > $num_pp)
+	{
+		$num_page = ceil($num_total/$num_pp);
+		
+		// Page 1
+		?><li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
+
+		if($page >= 10) {?><li class="fl mls mtt">...</li><?}
+		
+		if($num_page > 10 and $page >= 10)// + de 10 page
+		{
+			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
+				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+			<?}
+		}
+		else// - de 10 page
+		{
+			for($i = 2; $i <= 10 and $i < $num_page; $i++){?>
+				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+			<?}
+		}
+
+		if($num_page > 10 and $page < ($num_page - 2)) {?><li class="fl mls mtt">...</li><?}
+
+		// Page final
+		?><li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
+
+	}?>
+	</ul>
+	<?
+}
+
+
 
 /********** LANGUAGE **********/
+
 // Sélectionne la langue
 function get_lang($lang = '')
 {		
@@ -174,7 +224,9 @@ function _e($singulier, $pluriel = "", $num = 0)
 }
 
 
+
 /********** CONTENT **********/
+
 // Contenu texte
 function txt($key = null, $filter = array())
 {
@@ -184,7 +236,6 @@ function txt($key = null, $filter = array())
 
 	$GLOBALS['editkey']++;
 }
-
 
 // Contenu image/fichier
 function media($key = null, $filter = array())
@@ -268,7 +319,6 @@ function media($key = null, $filter = array())
 	$GLOBALS['editkey']++;
 }
 
-
 // Image de fond de bloc
 function bg($key = null, $lazy = false)
 {
@@ -287,7 +337,6 @@ function bg($key = null, $lazy = false)
 	$GLOBALS['editkey']++;
 }
 
-
 // Contenu champ checkbox
 function checkbox($key = null, $filter = array())
 {
@@ -297,7 +346,6 @@ function checkbox($key = null, $filter = array())
 	
 	$GLOBALS['editkey']++;
 }
-
 
 // Contenu champ select
 function select($key = null, $filter = array())
@@ -322,7 +370,6 @@ function select($key = null, $filter = array())
 	$GLOBALS['editkey']++;
 }
 
-
 // Contenu champ hidden
 function hidden($key = null, $class = null)
 {
@@ -333,27 +380,45 @@ function hidden($key = null, $class = null)
 	$GLOBALS['editkey']++;
 }
 
-
 // Label visible qu'en mode édition
 function hidden_label($content = null, $class = null)
 {
 	echo"<label class='none ".$class."'>".$content."</label>";
 }
 
-
 // Lien éditable
 function href($key = null)
 {
 	$key = ($key ? $key : "href-".$GLOBALS['editkey']);
 
-	echo"href=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" data-href='".encode($key)."'";
+	echo'href="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "").'" data-href="'.encode($key).'"';
 
 	$GLOBALS['editkey']++;
+}
+
+// Tags
+function tag($key = null, $filter = array())
+{
+	$key = encode($key ? $key : "tag");
+
+	echo'<div id="'.$key.'" class="editable-tag">';
+
+	$i = 1;
+	$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");
+	while($res_tag = $sel_tag->fetch_assoc()) 
+	{ 
+		if($i > 1) echo', ';
+		echo'<a href="'.make_url($key, array($res_tag['cle'], 'domaine' => true)).'" class="tdn">'.$res_tag['val'].'</a>';
+		$i++;
+	}
+
+	echo'</div>';
 }
 
 
 
 /********** SÉCURISATION **********/
+
 function secure_value($value) {
 
 	// htmlentities htmlspecialchars
@@ -366,7 +431,9 @@ function secure_value($value) {
 }
 
 
-/********** Connexion **********/
+
+/********** CONNEXION **********/
+
 function curl($url, $params = null) 
 {
 	$curl = curl_init();
@@ -429,7 +496,8 @@ function nonce($session = null)
 	return $nonce;
 }
 
-function ip()// Retourne l'adresse IP du client (utilisé pour empêcher le détournement de cookie de session)
+// Retourne l'adresse IP du client (utilisé pour empêcher le détournement de cookie de session)
+function ip()
 {
     $ip = $_SERVER['REMOTE_ADDR'];
 
@@ -681,7 +749,6 @@ function login($level = 'low', $auth = null, $quiet = null)
 			});
 		</script>
 		<?
-
 		exit;
 	}
 }
@@ -860,7 +927,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	return $dir.$file_name_ext."?zoom=".$zoom."&".time();// Time pour forcer le refresh
 }
 
-
+// Examine et traite une image
 function img_process($root_file, $dest = "media/", $des_resize = "media/resize/", $new_width = null, $new_height = null, $resize = null)
 {
 	// Valeur par défaut
@@ -903,5 +970,14 @@ function img_process($root_file, $dest = "media/", $des_resize = "media/resize/"
 	}
 	else
 		return $src_file;// Retourne l'url du fichier original si pas de redimensionnement	
+}
+
+
+
+/********** TEXTE **********/
+
+// Coupe une phrase proprement
+function word_cut($texte, $limit) {
+	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte), 0, $limit));
 }
 ?>
