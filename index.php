@@ -19,7 +19,8 @@ load_translation('api');// Chargement des traductions du système
 load_translation('theme');// Chargement des traductions du thème
 
 
-// CONTENU
+
+/********** CONTENU **********/
 
 // On récupère les données de la page
 $sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='".get_url()."' AND lang='".$lang."' LIMIT 1");
@@ -28,7 +29,6 @@ if($connect->error) {
 	exit($connect->error);
 }
 else $res = $sel->fetch_assoc();// On récupère les données de la page
-
 
 // Pas de page existante
 if(!$res) 
@@ -74,10 +74,8 @@ else// Une page existe
 	else $robots = $GLOBALS['robots'];// Si la page est active elle est référençable (on utilise la config)
 }
 
-
-// Information pour les metas
-$title = strip_tags($res['title']);
-$description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['description']), ENT_COMPAT) : "");
+// Id de la page
+if(isset($res['id'])) $GLOBALS['id'] = $res['id']; else $GLOBALS['id'] = null;
 
 // Les contenus
 if(isset($res['content']) and $res['content'] != '') 
@@ -85,12 +83,23 @@ if(isset($res['content']) and $res['content'] != '')
 else
 	$GLOBALS['content'] = array();
 
+// Si pas de titre/title H1 on met le title de la page/produit
+if(!isset($GLOBALS['content']['title'])) $GLOBALS['content']['title'] = $res['title'];
+
+
+
+/********** METAS **********/
+
+// Information pour les metas
+$title = strip_tags($res['title']);
+$description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['description']), ENT_COMPAT) : "");
+
 // Image pour les réseaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
 
 
 
-// MENU DE NAVIGATION
+/********** MENU DE NAVIGATION **********/
 
 // On récupère les données de la navigation
 $sel_nav = $connect->query("SELECT * FROM ".$table_meta." WHERE type='nav' AND cle='".$lang."' LIMIT 1");
@@ -102,7 +111,7 @@ else $GLOBALS['nav'] = array();
 
 
 
-// HEADER
+/********** HEADER **********/
 
 // On récupère les données du header
 $sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
@@ -113,7 +122,7 @@ if($res_header['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], j
 
 
 
-// FOOTER
+/********** FOOTER **********/
 
 // On récupère les données du footer
 $sel_footer = $connect->query("SELECT * FROM ".$table_meta." WHERE type='footer' AND cle='".$lang."' LIMIT 1");
@@ -124,6 +133,44 @@ if($res_footer['val']) $GLOBALS['content'] = @array_merge($GLOBALS['content'], j
 
 
 
+/********** TAGS **********/
+
+// Construction de l'ajout du tag/cat au title et get info
+if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0) 
+{
+	// Si tag et pas uniquement home+page
+	if(isset($GLOBALS['filter'][array_keys($GLOBALS['filter'])[0]]) and array_keys($GLOBALS['filter'])[0] != "page")
+	{
+		$tag = encode($GLOBALS['filter'][array_keys($GLOBALS['filter'])[0]]);
+
+		// On rapatrie les infos du tag
+		$sel_tag_info = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag-info' AND cle='".$tag."' LIMIT 1");
+		$res_tag_info = $sel_tag_info->fetch_assoc();
+
+		if($res_tag_info['val'])
+		{
+			// Récupère les informations des tags et écrase celle du contenu
+			$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_tag_info['val'], true));
+
+			// Ecrase les données meta
+			if(isset($GLOBALS['content']['title'])) $title = $GLOBALS['content']['title'];
+			if(isset($GLOBALS['content']['description'])) $description = $GLOBALS['content']['description'];
+		}
+		else
+		{
+			// On rapatrie simplement le nom du tag
+			$sel_tag = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag' AND cle='".$tag."' LIMIT 1");
+			$res_tag = $sel_tag->fetch_assoc();
+
+			// Ecrase les données meta
+			$title = $res_tag['val'];
+		}
+	}
+}
+
+
+
+/********** THEME **********/
 // Fonctions du theme
 if(isset($GLOBALS['function']) and $GLOBALS['function'] != "") 
 	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].$GLOBALS['function']);
@@ -144,6 +191,8 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<meta name="robots" content="<?=$robots;?>">
 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<meta property="og:site_name" content="<?=utf8_encode($GLOBALS['sitename']);?>">
 	<meta property="og:title" content="<?=$title;?>">
 	<meta property="og:type" content="website">
@@ -154,16 +203,12 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<?if(isset($GLOBALS['facebook_api_id'])){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 	
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
 	<?if(isset($GLOBALS['google_page'])){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
 
 
 	<?if(isset($GLOBALS['icons'])){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
 
-
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
-
 
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style<?=$GLOBALS['min']?>.css">	
 
@@ -200,7 +245,8 @@ header('Content-type: text/html; charset=UTF-8');
 		<? } ?>
 		
 						
-		<?if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>// Si demande l'autoload du mode édition et si admin
+		<?if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
+			// Si demande l'autoload du mode édition et si admin
 			$(function(){
 				edit_launcher();
 				$("a.bt.fixed.edit").fadeOut();				
@@ -210,12 +256,16 @@ header('Content-type: text/html; charset=UTF-8');
 			@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
 		}?>			
 
-		id = "<?=(isset($res['id'])?$res['id']:"")?>";
+
+		// Variables
+		id = "<?=$id?>";
 		state = "<?=(isset($res['state'])?$res['state']:"")?>";
 		permalink = "<?=(isset($res['url'])?$res['url']:"")?>";
 		type = "<?=(isset($res['type'])?$res['type']:"")?>";
+		tag = "<?=(isset($tag)?encode($tag):"")?>";
 		path = "<?=$GLOBALS['path']?>";
 	</script>
+
 
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -227,7 +277,6 @@ header('Content-type: text/html; charset=UTF-8');
 
 <?
 include_once("theme/".$GLOBALS['theme']."header.php");
-
 
 echo"<div class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : "")."'>";
 

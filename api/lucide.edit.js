@@ -116,6 +116,8 @@ save = function() //callback
 	
 	data["nonce"] = $("#nonce").val();// Pour la signature du formulaire
 
+	data["id"] = id;// id de la page courante
+
 	data["url"] = clean_url();// Url de la page en cours d'édition
 
 	data["permalink"] = $("#admin-bar #permalink").val();// Permalink
@@ -127,19 +129,43 @@ save = function() //callback
 
 	data["type"] = type;// Type de contenu
 	
+
 	get_content(".content");// Contenu de la page
 
 	get_content("header");// Contenu du header
 
 	get_content("footer");// Contenu du footer
 
+
+	data["tag"] = $(".editable-tag").text();// Tags de la fiche en cours //@todo ajouter une boucle pour save tout les champs tag possible
+
+
+	// Si sur page tag
+	if(tag) 
+	{
+		// Le tag courant
+		data["tag"] = tag;
+
+		// Ajoute les données prise dans le contenu
+		data['tag-info'] = {};
+		data['tag-info']['title'] = data['content']['title'];
+		data['tag-info']['description'] = data['content']['description'];
+		data['tag-info']['img'] = data['content']['img'];
+
+		// Clean les content par défaut qui vont s'enregistrer dans la base contenu
+		data['content']['title'] = data['title'] = "Tag";
+		data['content']['description'] = "";
+	}
+
+
 	if($("#admin-bar #og-image img").attr("src"))
 	data["content"]["og-image"] = $("#admin-bar #og-image img").attr("src");// Image pour les réseaux sociaux
 	
+
 	//@todo voir pourquoi ça ne supp pas de la nav quand on glisse sur poubelle un element du menu
 	// Contenu du menu de navigation
 	data["nav"] = {};
-	$(document).find("header nav ul li").not("#add-nav ul a, .exclude a").each(function(i) {
+	$(document).find("header nav ul li").not("#add-nav ul li, .exclude a").each(function(i) {
 		$("a", this).each(function(j) {
 			data["nav"][i+'-'+j] = {
 				href : $.trim($(this).attr('href')),
@@ -151,8 +177,10 @@ save = function() //callback
 		});
 	});
 
+
 	// Fonction à exécuter avant la sauvegarde
 	$(before_save).each(function(key, funct){ funct(); });
+
 
 	// On sauvegarde en ajax les contenus éditables
 	$.ajax({
@@ -164,11 +192,11 @@ save = function() //callback
 		// Affichage/exécution du retour
 		$("body").append(html);
 
-		// S'il y a une fonction de retour
-		//if(typeof callback === "function") callback();//@todo voir si utilisé ?
-
 		// Fonction à exécuter après la sauvegarde
 		$(after_save).each(function(key, funct){ funct(); });
+
+		// S'il y a une fonction de retour
+		//if(typeof callback === "function") callback();//@todo voir si utilisé ?
 	})
 	.fail(function() {
 		error(__("Error"));
@@ -1509,6 +1537,7 @@ $(function()
 	$(".editable-hidden").slideDown();
 
 
+
 	/************** CHAMPS SELECT **************/
 	$(".editable-select").attr("data-option", function(i, data) {
 		
@@ -1531,6 +1560,7 @@ $(function()
 	})
 
 
+
 	/************** CHAMPS CHECKBOX **************/
 	$(".editable-checkbox").on("click", function(event) {
 		if($(this).attr("for")) id = $(this).attr("for");
@@ -1539,6 +1569,7 @@ $(function()
 		if($("#"+id).hasClass("fa-check")) $("#"+id).removeClass("fa-check yes").addClass("fa-times no");
 		else $("#"+id).removeClass("fa-times no").addClass("fa-check yes");
 	})
+
 
 
 	/************** HREF EDITABLE **************/
@@ -1568,6 +1599,72 @@ $(function()
 
 	// Exécute l'event sur les images
 	editable_href_event();
+
+
+
+	/************** SYSTÈME DE TAG / CATÉGORIE **************/
+
+	// Si champs tag
+	if($(".editable-tag").length) 
+	{
+		// Lib js pour le tri des tag
+		var script = document.createElement('script');
+		script.src = path+"plugin/sortable-nested.min.js";
+		document.body.appendChild(script);	
+
+		// Ajoute un div autour du tag éditable pour le layer de tag-tree
+		$(".editable-tag").wrap("<div class='tag-container'></div>");
+
+		// Transforme le champs tag en editable
+		$(".editable-tag").attr("contenteditable", "true");
+
+		// A sauvegarder si changement dans les tags de la page
+		$(".editable-tag").on("keydown", function(event) {
+			tosave();	
+		});
+
+		// Action au passage au dessu du champs tag
+		$(".tag-container").on("click mouseenter",// touchstart
+			function(event) {
+				event.stopPropagation();
+				event.preventDefault();		
+
+				if(!$(".layer-tag").length && event.type == "mouseenter")
+				{
+					$.ajax({
+						url: path+"api/ajax.admin.php?mode=tag-tree",
+						data: {"id": id, "nonce": $("#nonce").val()},
+						success: function(html)
+						{ 							
+							$(".tag-container").append(html);
+
+							// Pour fermer le tag tree quand on click en dehors
+							close_tag = false;
+							$(document).on("click",	
+								function(event) {	
+									console.log( $(".layer-tag").is(":visible"));		
+									if(
+										!$(event.target).parents().is(".layer-tag") &&
+										$(".layer-tag").is(":visible") &&
+										close_tag == false
+									)
+										if($(".layer-tag button.to-save").length || $(".layer-tag button i.fa-spin").length)// Si l'arbre des tags pas sauvegardé on shake
+											$(".layer-tag > div").effect("highlight");
+										else 
+											$(".layer-tag").fadeOut("fast", function(){ close_tag = true; });
+								}
+							);
+						}
+					});
+				}
+				else if($(".layer-tag").length && !$(".layer-tag").is(":visible") && close_tag == true)// Si on click et que l'ajax a déjà été fait
+				{
+					close_tag = true;
+					$(".layer-tag").fadeIn("fast", function(){ close_tag = false; });
+				}
+			}
+		);
+	}
 
 
 

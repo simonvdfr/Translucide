@@ -56,7 +56,7 @@ body { transition: margin-top .2s linear; }
 
 
 	#admin-bar input { padding: initial; }
-	#admin-bar input, .ui-dialog input {			
+	#admin-bar input, .tooltip input, .ui-dialog input {			
 		background-color: transparent;
 		color: #516062;
 		border: none;
@@ -92,7 +92,7 @@ body { transition: margin-top .2s linear; }
 	}
 
 
-	#admin-bar button, .admin-bt {	
+	#admin-bar button, .tooltip button {	
 		/* box-shadow: inset 0px 1px 3px 0px #91b3b8; */
 		background-color: #75898c;
 		border-radius: 5px;
@@ -107,15 +107,15 @@ body { transition: margin-top .2s linear; }
 		/* text-shadow: 0px -1px 0px #2c5f66; */
 		transition: background-color .3s;
 	}
-		#admin-bar button:hover, .admin-bt:hover { background-color: #6b6f7a; }
-		#admin-bar button:active, .admin-bt:active {
+		#admin-bar button:hover, .tooltip button:hover { background-color: #6b6f7a; }
+		#admin-bar button:active, .tooltip button:active {
 			position: relative;
 			top: 1px;
 		}
 
-		#admin-bar button.to-save { background-color: #9E1E1E; }
+		button.to-save { background-color: #9E1E1E !important; }
 
-		#admin-bar button.saved { background-color: #8dad33; }/*#1BA238*/
+		button.saved { background-color: #8dad33 !important; }/*#1BA238*/
 
 
 	/* Bouton d'activation en slide/switch */
@@ -278,6 +278,8 @@ header:hover .dragger { display: block; }
 	opacity: 0.8;	
 
 	z-index: -1;
+
+	font-family: arial;
 }
 	#add-nav:hover { opacity: 1 !important; }
 
@@ -304,6 +306,10 @@ header:hover .dragger { display: block; }
 		color: #000 !important;
 		cursor: move;
 		padding: 0;
+		margin: 0;
+
+		font-size: initial;
+		font-weight: initial;
 	}
 	#add-nav .dragger {
 		background: none;

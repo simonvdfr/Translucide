@@ -201,6 +201,7 @@ $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/the
 
 
 // Sécurité / défaut
+$id = null;
 $title = null;
 $description = null;
 $image = null;
@@ -216,6 +217,7 @@ $GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
 
 // Navigation par page
 $num_pp = 10;
-if(isset($_REQUEST['page'])) $page = (int)$_REQUEST['page']; else $page = 1;
 
+if(isset($_REQUEST['page'])) $page = (int)$_REQUEST['page'];
+else $page = 1;
 ?>
