@@ -875,7 +875,9 @@ div.editable {
 	}
 	.w300p,
 	.w400p,
-	.w500p {
+	.w500p,
+	.w600p,
+	.w700p {
 		width: auto;
 		float: none;
 	}
