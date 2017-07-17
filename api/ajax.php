@@ -261,7 +261,7 @@ switch($_GET['mode'])
 				<?if($_SESSION['auth']['edit-user']) {?>
 				<div id="add-user" class="fr prs" title="<?_e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
 				<div id="list-user" class="fr prs" title="<?_e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
-				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-user"></i></div>
+				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-id-card big vam"></i></div>
 				<?}?>				
 
 				<div class="load">
