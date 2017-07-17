@@ -110,7 +110,7 @@ position_search = function()
 }		
 
 
-$(document).ready(function()
+$(function()
 {		
 	// Marqueur positionnable
 	edit.push(function() {
