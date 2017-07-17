@@ -168,7 +168,7 @@ img_zoom = function(event)
 }
 
 
-$(document).ready(function()
+$(function()
 {	
 	var cible = "a[href$='.jpg'], a[href$='.png'], a[href$='.gif']";
 
