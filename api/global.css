@@ -600,7 +600,11 @@ input[type="reset"].unstyled:focus {
 	}
 
     [class*="grid-2"] > * { width: calc(100% / 2 - 0.01px); }
+
 	[class*="grid-3"] > * { width: calc(100% / 3 - 0.01px); }
+	    [class*=grid-3].space-xl { margin-right: -2rem; margin-left: -2rem }
+	    [class*=grid-3].space-xl>* { width: calc(100% / 3 - 4rem - .01px); margin-right: 2rem; margin-left: 2rem }
+
 	[class*="grid-4"] > * { width: calc(100% / 4 - 0.01px); }
 
 	.one-third {
