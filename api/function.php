@@ -232,7 +232,7 @@ function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<".(isset($filter['tag']) ? $filter['tag'] : "div")." class='".(isset($filter['editable']) ? $filter['editable'] : "editable").(isset($filter['class']) ? " ".$filter['class'] : "")."' id='".encode($key)."'".(isset($filter['placeholder']) ? " placeholder=\"".utf8_encode($filter['placeholder'])."\"" : "").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
+	echo"<".(isset($filter['tag']) ? $filter['tag'] : "div")." class='".(isset($filter['editable']) ? $filter['editable'] : "editable").(isset($filter['class']) ? " ".$filter['class'] : "")."' id='".encode($key)."'".(isset($filter['placeholder']) ? " placeholder=\"".$filter['placeholder']."\"" : "").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
 
 	$GLOBALS['editkey']++;
 }
@@ -356,11 +356,11 @@ function select($key = null, $filter = array())
 
 	$option_decode = json_decode($filter['option'], true);
 
-	if($option_decode[$GLOBALS['content'][$key]]) {
+	if(isset($GLOBALS['content'][$key]) and isset($option_decode[$GLOBALS['content'][$key]])) {
 		$selected_key = $GLOBALS['content'][$key];
 		$selected_option = $option_decode[$GLOBALS['content'][$key]];
 	}
-	else  {
+	else {
 		$selected_key = key($option_decode);
 		$selected_option = $option_decode[$selected_key];
 	}
