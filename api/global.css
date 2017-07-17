@@ -500,7 +500,7 @@ input[type="reset"].unstyled:focus {
 	margin: 0;
 	padding: 0.2rem 1rem;
 
-	border-radius: 100%;
+	border-radius: 30px;
 
 	opacity: 0.6;
 	text-shadow: none;
