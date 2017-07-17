@@ -407,6 +407,8 @@ function tag($key = null, $filter = array())
 	$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");
 	while($res_tag = $sel_tag->fetch_assoc()) 
 	{ 
+		$GLOBALS['tags'][$res_tag['cle']] = $res_tag['val'];
+
 		if($i > 1) echo', ';
 		echo'<a href="'.make_url($key, array($res_tag['cle'], 'domaine' => true)).'" class="tdn">'.$res_tag['val'].'</a>';
 		$i++;
