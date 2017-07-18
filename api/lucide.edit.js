@@ -760,13 +760,13 @@ get_img = function(id, link)
 			}
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
-				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ final_file +"\" class='fl'></a>");
-				else exec_tool("insertHTML", "<img src=\""+ final_file +"\" class='fl'>");				
+				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ path + final_file +"\" class='fl'></a>");
+				else exec_tool("insertHTML", "<img src=\""+ path + final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
-				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", final_file);
-				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+final_file+")");
+				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", path + final_file);
+				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+ path + final_file +")");
 			}
 
 			// Fermeture de la dialog
