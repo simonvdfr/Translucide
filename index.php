@@ -154,7 +154,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 
 			// Ecrase les données meta
 			if(isset($GLOBALS['content']['title'])) $title = $GLOBALS['content']['title'];
-			if(isset($GLOBALS['content']['description'])) $description = $GLOBALS['content']['description'];
+			if(isset($GLOBALS['content']['description'])) $description = htmlspecialchars(strip_tags($GLOBALS['content']['description'], ENT_COMPAT));
 		}
 		else
 		{
