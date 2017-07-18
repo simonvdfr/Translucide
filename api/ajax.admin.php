@@ -1254,6 +1254,7 @@ switch($_GET['mode'])
 				margin: 0;
 			}
 				#tag-tree > li { padding: 0.2rem; }
+				#tag-tree ol { list-style: none; }
 					#tag-tree .fa-plus-circle { cursor: pointer; }
 					#tag-tree .fa-arrows { cursor: move; }
 		</style>
@@ -1397,10 +1398,10 @@ switch($_GET['mode'])
 				$("#tag-tree li .fa-plus-circle").on("click", function(event) {
 					event.preventDefault();
 
-					if($(".edtiable-tag").text()) var add_tag = $(".edtiable-tag").text() + ", " + $(this).prev().val();
+					if($(".editable-tag").text()) var add_tag = $(".editable-tag").text() + ", " + $(this).prev().val();
 					else var add_tag = $(this).prev().val();
 
-					$(".edtiable-tag").text(add_tag);
+					$(".editable-tag").text(add_tag);
 
 					tosave();
 				});
