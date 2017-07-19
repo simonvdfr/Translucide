@@ -162,6 +162,26 @@ img_zoom = function(event)
 				});
 
 			});
+		},
+		error: function()// Si l'image en grand n'existe pas
+		{			
+			light(__("Zoom Not Available"));
+
+			// Supprime le loading
+			$(".progress").remove();
+			$("#progress"+id).remove();
+
+			// Supprime le clic sur tout l'écran
+			$("body").unbind("click.dezoom");
+
+				// Supprime les clones
+			$(".clone").remove()
+
+			// Supprime le fond gris
+			$("#under-zoom").remove()
+
+			// Re-active le lien sur l'image
+			$(cible).on("click.zoom", img_zoom);
 		}
 	});
 
@@ -170,7 +190,10 @@ img_zoom = function(event)
 
 $(function()
 {	
-	var cible = "a[href$='.jpg'], a[href$='.png'], a[href$='.gif']";
+	// Ajoute la traduction courante
+	add_translation({"Zoom Not Available" : {"fr" : "Agrandissement indisponible"}});
+
+	cible = "a[href$='.jpg'], a[href$='.png'], a[href$='.gif']";
 
 	// Si on click sur un lien vers une images on zoom dessu
 	$(cible).on("click.zoom", img_zoom);
