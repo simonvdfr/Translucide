@@ -184,7 +184,6 @@ img_zoom = function(event)
 			$(cible).on("click.zoom", img_zoom);
 		}
 	});
-
 }
 
 
