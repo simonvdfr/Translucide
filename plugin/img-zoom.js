@@ -105,11 +105,13 @@ img_zoom = function(event)
 				var window_width = $(window).width();
 				var window_height = $(window).height();
 				if(window_width > img_clone_width) var left = (window_width - img_clone_width) / 2; else var left = 0;
-				if(window_height > img_clone_height) var top = (window_height - img_clone_height) / 2; else var top = 0;
+				if(window_height > img_clone_height) var top = (window_height - img_clone_height) / 2; else var top = $("body").scrollTop();
 
 				// Calcule la taille du fond gris
-				if($(document).width() > img_clone_width) var bg_width = $(document).width(); else var bg_width = img_clone_width;
-				if($(document).height() > img_clone_height) var bg_height = $(document).height(); else var bg_height = img_clone_height;
+				if($(document).width() > img_clone_width) var bg_width = $(document).width(); 
+				else var bg_width = img_clone_width;
+				if($(document).height() > img_clone_height) var bg_height = $(document).height();
+				else var bg_height = img_clone_height;
 
 				// Donne la bonne taille au fond gris
 				$("#under-zoom").css({
