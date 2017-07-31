@@ -922,6 +922,8 @@ switch($_GET['mode'])
 						$finfo = finfo_open(FILEINFO_MIME_TYPE);
 						$file_infos['mime'] = finfo_file($finfo, $dir.$filename);
 						finfo_close($finfo);
+
+						$file_infos['0'] = $file_infos['1'] = "";
 					}
 					
 					// Type mime
