@@ -113,7 +113,10 @@ body { transition: margin-top .2s linear; }
 			top: 1px;
 		}
 
-		button.to-save { background-color: #9E1E1E !important; }
+		button.to-save { 
+			background-color: #9E1E1E !important;
+			color: white;
+		}
 
 		button.saved { background-color: #8dad33 !important; }/*#1BA238*/
 

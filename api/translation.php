@@ -39,6 +39,8 @@ $add_translation = array(
 	"Add media" => array("fr" => "Ajouter un média"),
 	"Add product" => array("fr" => "Ajouter un produit"),
 
+	"Add Item" => array("fr" => "Ajouter un élément"),
+
 
 	"Title" => array("fr" => "Titre"),
 	"Select template" => array("fr" => "Sélectionner un modèle"),

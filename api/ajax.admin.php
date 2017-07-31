@@ -201,6 +201,7 @@ switch($_GET['mode'])
 				$.ajax({
 			        url: "<?=$GLOBALS['jquery_ui']?>",
 			        dataType: 'script',
+			        async: true,
 					success: function()// Si Jquery UI bien charger on ouvre la dialog
 					{				
 						// Fermeture de la dialog de connexion
@@ -249,8 +250,7 @@ switch($_GET['mode'])
 								$(".dialog-add").remove();					
 							}
 						});
-					},
-			        async: true
+					}
 			    });	
 				
 			});
@@ -1242,10 +1242,6 @@ switch($_GET['mode'])
 	case "tag-tree":// ARBRE DES TAGS
 
 		login('medium', 'edit-article');// Vérifie que l'on a le droit d'éditer les contenus
-
-		add_translation(array(
-			"Add Item" => array("fr" => "Ajouter un élément")
-		));
 
 		?>
 		<style>

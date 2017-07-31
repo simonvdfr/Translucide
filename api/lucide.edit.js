@@ -1641,8 +1641,7 @@ $(function()
 							// Pour fermer le tag tree quand on click en dehors
 							close_tag = false;
 							$(document).on("click",	
-								function(event) {	
-									console.log( $(".layer-tag").is(":visible"));		
+								function(event) {
 									if(
 										!$(event.target).parents().is(".layer-tag") &&
 										$(".layer-tag").is(":visible") &&
