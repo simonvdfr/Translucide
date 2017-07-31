@@ -264,6 +264,7 @@ header('Content-type: text/html; charset=UTF-8');
 		type = "<?=(isset($res['type'])?$res['type']:"")?>";
 		tag = "<?=(isset($tag)?encode($tag):"")?>";
 		path = "<?=$GLOBALS['path']?>";
+		theme = "<?=$GLOBALS['theme']?>";
 	</script>
 
 
