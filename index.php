@@ -262,6 +262,7 @@ header('Content-type: text/html; charset=UTF-8');
 		state = "<?=(isset($res['state'])?$res['state']:"")?>";
 		permalink = "<?=(isset($res['url'])?$res['url']:"")?>";
 		type = "<?=(isset($res['type'])?$res['type']:"")?>";
+		tpl = "<?=(isset($res['tpl'])?$res['tpl']:"")?>";
 		tag = "<?=(isset($tag)?encode($tag):"")?>";
 		path = "<?=$GLOBALS['path']?>";
 		theme = "<?=$GLOBALS['theme']?>";
