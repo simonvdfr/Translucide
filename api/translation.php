@@ -46,6 +46,19 @@ $add_translation = array(
 	"Select template" => array("fr" => "Sélectionner un modèle"),
 	"Permanent link" => array("fr" => "Lien Permanent"),
 	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
+	"Permanent link: 'home' if homepage" => array("fr" => "Lien permanent: 'home' si c'est la page d'accueil"),
+
+
+	"Page title" => array("fr" => "Titre de la page"),
+	"Description for search engines" => array("fr" => "Description pour les moteurs de recherche"),
+	"Formatted web address" => array("fr" => "Adresse web formaté"),
+	
+	"Template" => array("fr" => "Modèle de page"),
+	
+	"Image on social networks" => array("fr" => "Image sur les réseaux sociaux"),
+	
+	"Close the edit mode" => array("fr" => "Fermer le mode d'édition"),
+	"Activation status" => array("fr" => "Etat d'activation"),
 
 
 	"Home page" => array("fr" => "Page d'accueil"),
@@ -73,6 +86,11 @@ $add_translation = array(
 
 	"Save" => array("fr" => "Enregistrer"),
 	"Add" => array("fr" => "Ajouter"),
+	"Delete" => array("fr" => "Supprimer"),
+
+
+	"Show user info" => array("fr" => "Voir les infos utilisateur"),
+
 	"Register" => array("fr" => "S'inscrire"),
 	"Account created" => array("fr" => "Compte créé"),
 	"User deleted" => array("fr" => "Utilisateur supprimé"),

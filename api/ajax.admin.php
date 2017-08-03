@@ -11,12 +11,6 @@ switch($_GET['mode'])
 	default:	
 	break;
 
-	case "adminbar":// @todo mettre ici la barre d'administration pour y afficher les infos venant de la base (langue, template dispo, état...)
-		// SUPP ???
-
-	break;
-
-
 	case "edit":// Lancement du mode édition du contenu de la page
 				
 		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
@@ -43,9 +37,72 @@ switch($_GET['mode'])
 
 			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
 
+
+			<!-- Barre du haut avec bouton sauvegarder et option -->			
+			<div id="admin-bar">
+
+				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?_e("Show user info")?>"></i></div>
+
+				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?_e("Page title")?>"></i></div>
+
+				<div id="meta" class="fl mat w30 no-small-screen">
+
+					<input type="text" id="title" value="" title="<?_e("Page title")?>" maxlength="60" class="w100 bold">
+
+					<div class="w50">
+						<div class="tooltip slide-left fire pas mas mlt">
+
+							<div class="small"><?_e("Description for search engines")?></div>
+							<input type="text" id="description" value="" maxlength="160" class="w100">
+
+							<div class="small mtm"><?_e("Formatted web address")?></div>
+							<div class="grid">
+								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'home' if homepage")?>" maxlength="60" class="w50 mrm">
+								
+								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?_e("Home page")?></label></span>
+
+								<label id="refresh-permalink"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
+							</div>
+
+							<div class="small mtm"><?_e("Template")?></div>
+							<div class="">
+								<select id="tpl">
+									<?
+									$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
+									while(list($cle, $filename) = each($scandir))				
+									{			
+										$filename = pathinfo($filename, PATHINFO_FILENAME);
+										echo'<option value="'.$filename.'">'.$filename.'</option>';
+									}
+									?>	
+								</select>
+							</div>
+							
+							<div class="small mtm"><?_e("Image on social networks")?></div>
+							<div class=""><span class="editable-media" id="og-image"><img src=""></span></div>
+							
+						</div>
+					</div>
+
+				</div>		
+
+				<div id="close" class="fr mrt bigger" title="<?_e("Close the edit mode")?>"><i class="fa fa-fw fa-window-close-o"></i></div>
+
+				<button id="save" class="fr mat small" title="<?_e("Save")?>"><span class="no-small-screen"><?_e("Save")?></span> <i class="fa fa-fw fa-save big"></i></button>
+
+				<button id="del" class="fr mat small o50 ho1 t5" title="<?_e("Delete")?>"><span class="no-small-screen"><?_e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+
+				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?_e("Activation status")?>"><i></i></label></div>
+
+			</div>
+
+
 			<script>				
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
+
+				// Ajoute la marge haute
+				$("body").addClass("body-margin-top");				
 
 				<?
 				// Outil dispo dans la toolbox pour les contenus
@@ -65,7 +122,8 @@ switch($_GET['mode'])
 						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
 						var script = document.createElement('script');
 						script.src = path+"api/lucide.edit.js?0.1";
-						document.body.appendChild(script);						
+						document.body.appendChild(script);		
+
 					},
 			        async: true
 			    });				
@@ -483,6 +541,7 @@ switch($_GET['mode'])
 		$sql .= "description = '".addslashes($_POST['description'])."', ";
 		$sql .= "content = '".addslashes($json_content)."', ";
 		$sql .= "state = '".addslashes($_POST['state'])."', ";
+		$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
 		$sql .= "user_update = '".(int)$_SESSION['uid']."', ";
 		$sql .= "date_update = NOW() ";
 		$sql .= "WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";

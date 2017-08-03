@@ -6,7 +6,6 @@ add_translation({
 	"Delete" : {"fr" : "Supprimer"},
 	"Delete content" : {"fr" : "Supprimer le contenu"},
 	"Also remove media from content" : {"fr" : "Supprimer \u00e9galement les m\u00e9dias pr\u00e9sents dans le contenu"},
-	"Close the edit mode" : {"fr" : "Fermer le mode d'\u00e9dition"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
 	"Cancel" : {"fr" : "Annuler"},	
 
@@ -18,16 +17,8 @@ add_translation({
 	"Change the background image" : {"fr" : "Changer l'image de fond"},
 	"Drop your files to upload" : {"fr" : "D\u00e9posez vos fichiers pour les mettre en ligne"},
 	"This file format is not supported" : {"fr" : "Ce format de fichier n'est pas pris en charge"},	
-	"Show user info" : {"fr" : "Voir les infos utilisateur"},
 	"Delete user" : {"fr" : "Supprimer l'utilisateur"},
 	"User deleted" : {"fr" : "Utilisateur supprim\u00e9"},
-	"Page title" : {"fr" : "Titre de la page"},
-	"Description for search engines" : {"fr" : "Description pour les moteurs de recherche"},
-	"Formatted web address" : {"fr" : "Adresse web format\u00e9"},
-	"Permanent link: 'home' if homepage" : {"fr" : "Lien permanent: 'home' si c'est la page d'accueil"},
-	"Home page" : {"fr" : "Page d'accueil"},
-	"Regenerate address" : {"fr" : "R\u00e9g\u00e9n\u00e9rer l'adresse"},
-	"Image on social networks" : {"fr" : "Image sur les r\u00e9seaux sociaux"},
 	"Title H2" : {"fr" : "Titre H2"},	
 	"Separator" : {"fr" : "S\u00e9parateur"},	
 	"Media Library" : {"fr" : "Biblioth\u00e8que des m\u00e9dias"},		
@@ -128,6 +119,8 @@ save = function() //callback
 	data["state"] = ($("#admin-bar #state-content").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
 
 	data["type"] = type;// Type de contenu
+
+	data["tpl"] = $("#admin-bar #tpl").val();// Template
 	
 
 	get_content(".content");// Contenu de la page
@@ -831,7 +824,7 @@ img_leave = function()
 });*/
 
 
-
+/************** ONLOAD **************/
 $(function()
 {						
 	//@todo: ajouter le choix de la template de la page en cours, la langue
@@ -842,56 +835,22 @@ $(function()
 
 	/************** ADMINBAR **************/
 
-	// Barre du haut avec bouton sauvegarder			
-	adminbar = "<div id='admin-bar'>";
-
-		adminbar+= "<div id='user' class='fl pat'><i class='fa fa-fw fa-user-circle bigger' title=\""+ __("Show user info") +"\"></i></div>";
-
-
-		adminbar+= "<div id='meta-responsive' class='fl mat none small-screen'><i class='fa fa-fw fa-pencil bigger' title=\""+ __("Page title") +"\"></i></div>";
-
-		adminbar+= "<div id='meta' class='fl mat w30 no-small-screen'>";
-
-			adminbar+= "<input type='text' id='title' value=\""+ document.title +"\" title=\""+ __("Page title") +"\" maxlength='60' class='w100 bold'>";
-
-			adminbar+= "<div class='w50'>";
-				adminbar+= "<div class='tooltip slide-left fire pas mas mlt'>";
-
-					adminbar+= "<div class='small'>"+ __("Description for search engines") +" :</div>";
-					adminbar+= "<input type='text' id='description' value=\""+ ($('meta[name=description]').attr("content") != undefined ? $('meta[name=description]').attr("content") : "") +"\" maxlength='160' class='w100'>";
-
-					adminbar+= "<div class='small mts'>"+ __("Formatted web address") +" :</div>";
-					adminbar+= "<div class='grid'>";
-						adminbar+= "<input type='text' id='permalink' value=\""+ permalink +"\" placeholder=\""+ __("Permanent link: 'home' if homepage") +"\" maxlength='60' class='w50 mrm'>";
-						if(type == "page")
-						adminbar+= "<span><input type='checkbox' id='homepage'"+ (permalink == "home" ? " checked" : "") +"> <label for='homepage' class='mrs'>"+ __("Home page") + "</label></span>";
-						adminbar+= "<label id='refresh-permalink'><i class='fa fa-fw fa-refresh'></i>"+ __("Regenerate address") + "</label>";
-					adminbar+= "</div>";
-					
-					adminbar+= "<div class='small mts'>"+ __("Image on social networks") +" :</div>";
-					adminbar+= "<div class=''><span class='editable-media' id='og-image'><img src=''></span></div>";
-					
-				adminbar+= "</div>";
-			adminbar+= "</div>";
-
-		adminbar+= "</div>";		
-
-		adminbar+= "<div id='close' class='fr mrt bigger' title=\""+ __("Close the edit mode") +"\"><i class='fa fa-fw fa-window-close-o'></i></div>";
-
-		adminbar+= "<button id='save' class='fr mat small' title=\""+ __("Save") +"\"><span class='no-small-screen'>"+ __("Save") +"</span> <i class='fa fa-fw fa-save big'></i></button>";
-
-		adminbar+= "<button id='del' class='fr mat small o50 ho1 t5' title=\""+ __("Delete") +"\"><span class='no-small-screen'>"+ __("Delete") +"</span> <i class='fa fa-fw fa-trash big'></i></button>";
-
-		adminbar+= "<div class='fr mat mrs switch o50 ho1 t5'><input type='checkbox' id='state-content' class='none'><label for='state-content' title=\""+ __("Activation status") +"\"><i></i></label></div>";
-
-	adminbar+= "</div>";
-
-
-	$("body").append(adminbar).addClass("body-margin-top");
-	
 	// Ajout des variables dans les inputs (pour le problème de double cote ")
 	$("#admin-bar #title").val(document.title);
-	$("#admin-bar #description").val(($("meta[name=description]").attr("content") != undefined ? $('meta[name=description]').attr("content") : ""));
+
+	if($("meta[name=description]").attr("content") != undefined) 
+		description = $('meta[name=description]').attr("content");
+	else
+		description = "";
+
+	$("#admin-bar #description").val(description);
+
+	$("#admin-bar #permalink").val(permalink);
+	$("#admin-bar #tpl").val(tpl);
+
+
+	// Checkbox homepage si c'est une page
+	if(type == "page") $("#admin-bar #ispage").show();
 
 	// Etat de la checkbox homepage onready
 	if($("#admin-bar #permalink").val() == "home") $("#admin-bar #homepage").prop("checked", true);
