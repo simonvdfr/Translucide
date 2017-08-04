@@ -39,15 +39,17 @@ switch($_GET['mode'])
 
 
 			<!-- Barre du haut avec bouton sauvegarder et option -->			
-			<div id="admin-bar">
+			<div id="admin-bar" class="none">
 
 				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?_e("Show user info")?>"></i></div>
+
+				<div id="list-content" class="fl pat"><i class="fa fa-list vam" title="<?_e("List of contents")?>"></i></div>
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?_e("Page title")?>"></i></div>
 
 				<div id="meta" class="fl mat w30 no-small-screen">
 
-					<input type="text" id="title" value="" title="<?_e("Page title")?>" maxlength="60" class="w100 bold">
+					<input type="text" id="title" value="" placeholder="<?_e("Page title")?>" title="<?_e("Page title")?>" maxlength="60" class="w100 bold">
 
 					<div class="w50">
 						<div class="tooltip slide-left fire pas mas mlt">
@@ -101,9 +103,6 @@ switch($_GET['mode'])
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 
-				// Ajoute la marge haute
-				$("body").addClass("body-margin-top");				
-
 				<?
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
@@ -118,6 +117,12 @@ switch($_GET['mode'])
 					{ 		
 						// Chargement de la css d'edition		
 						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css'>");
+
+						// Ajoute la marge haute
+						$("body").addClass("body-margin-top");
+
+						// Affichage de la barre d'admin
+						$("#admin-bar").show();				
 
 						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
 						var script = document.createElement('script');
@@ -212,7 +217,7 @@ switch($_GET['mode'])
 
 
 			<script>
-			$(document).ready(function()
+			$(function()
 			{
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
@@ -615,6 +620,28 @@ switch($_GET['mode'])
 
 	break;
 
+
+	case "list-content":// Liste les contenus du site
+
+		include_once("db.php");// Connexion à la db
+
+		//login('medium');// Vérifie que l'on a le droit d'éditer une page
+
+		$type = null;
+
+		echo'<ul>';
+		$sel = $connect->query("SELECT title, state, type, url, date_update FROM ".$GLOBALS['table_content']." WHERE 1 ORDER BY FIELD(type, 'page', 'article', 'product'), title ASC");
+		while($res = $sel->fetch_assoc()) 
+		{
+			if($res['type'] != $type) echo'</ul></li><li><b>'.$res['type'].'</b><ul>';
+
+			echo'<li title="'.$res['date_update'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Title")).'</a></li>';
+
+			$type = $res['type'];
+		}
+		echo"</ul>";
+
+	break;
 
 	case "make-permalink":// Construit un permalink
 

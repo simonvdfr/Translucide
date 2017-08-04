@@ -33,6 +33,19 @@ body { transition: margin-top .2s linear; }
 
 	#admin-bar h3 { font-family: arial; }
 
+	#admin-bar #list-content i {
+		cursor: pointer;
+
+		color: #75898c;
+
+		/* background: #75898c;
+		color: #fff;
+		border-radius: 100%;
+		width: 22px;
+		height: 22px;
+		line-height: 22px; */
+	}
+
 	#admin-bar #user i { color: #75898c; cursor: pointer; }
 		#admin-bar #user i:hover { color: #6b6f7a; }
 		#admin-bar #user .absolute { position: absolute; }

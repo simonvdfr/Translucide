@@ -32,6 +32,9 @@ $add_translation = array(
 	"Sign up" => array("fr" => "Inscrivez-vous"),
 
 
+	"List of contents" => array("fr" => "Liste des contenus"),
+
+	
 	"Add content" => array("fr" => "Ajouter un contenu"),
 	"Add page" => array("fr" => "Ajouter une page"),
 	"Add article" => array("fr" => "Ajouter un article"),
