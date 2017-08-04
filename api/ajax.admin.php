@@ -117,12 +117,12 @@ switch($_GET['mode'])
 					{ 		
 						// Chargement de la css d'edition		
 						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css'>");
+						
+						// Affichage de la barre d'admin
+						$("#admin-bar").show();				
 
 						// Ajoute la marge haute
 						$("body").addClass("body-margin-top");
-
-						// Affichage de la barre d'admin
-						$("#admin-bar").show();				
 
 						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
 						var script = document.createElement('script');
@@ -625,21 +625,23 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 
-		//login('medium');// Vérifie que l'on a le droit d'éditer une page
+		login('medium');// Vérifie que l'on a le droit d'éditer une page
 
 		$type = null;
 
-		echo'<ul>';
-		$sel = $connect->query("SELECT title, state, type, url, date_update FROM ".$GLOBALS['table_content']." WHERE 1 ORDER BY FIELD(type, 'page', 'article', 'product'), title ASC");
+		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mtn mbs">';
+
+		$sel = $connect->query("SELECT title, state, type, url, date_update FROM ".$GLOBALS['table_content']." WHERE 1 ORDER BY FIELD(type, 'page', 'article', 'product'), date_update DESC");
 		while($res = $sel->fetch_assoc()) 
 		{
-			if($res['type'] != $type) echo'</ul></li><li><b>'.$res['type'].'</b><ul>';
+			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';
 
 			echo'<li title="'.$res['date_update'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Title")).'</a></li>';
 
 			$type = $res['type'];
 		}
-		echo"</ul>";
+
+		echo"</ul></div>";
 
 	break;
 
@@ -1225,7 +1227,7 @@ switch($_GET['mode'])
 		<div class="dialog-icon" title="<?_e("Icon Library")?>">
 
 			<input type="hidden" id="dialog-icon-target" value="<?=(isset($_GET['target']) ? htmlspecialchars($_GET['target']) : "");?>"><!-- SUPP ?? -->
-			<input type="hidden" id="dialog-icon-source" value="<?=htmlspecialchars($_GET['source'])?>">
+			<input type="hidden" id="dialog-icon-source" value="<?=htmlspecialchars(isset($_GET['target']) ? $_GET['source'] : "")?>">
 			
 			<input type="text" class="search w20 mbs" placeholder="<?_e("Search")?>" value="">
 
@@ -1234,14 +1236,15 @@ switch($_GET['mode'])
 			//$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
 			//$pattern = '/\\.(fa-\\w+):before{content:"(\\\\\w+)"}/';	
 			//$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';	
-			$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';	
+			//$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';	
+			$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";	
 
 			// On récupère la css qui contient les icônes
 			$subject = file_get_contents($GLOBALS['icons']);
 			
 			// On extrait seulement les icônes
 			preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
-			//highlight_string(print_r($matches, true));
+			//highlight_string(print_r($subject, true));
 			
 			// On crée un tableau propre
 			foreach($matches as $match){ $list[$match[1]] = $match[2];	}			
@@ -1250,7 +1253,7 @@ switch($_GET['mode'])
 			<ul id="icon" class="unstyled pan man smaller">	
 			<?
 				// S'il y a des fichiers dans la biblio
-				if($list)
+				if(isset($list))
 				{
 					//uksort($list, 'strnatcmp');// Tri Ascendant
 					//if($sort == 'DESC') $list = array_reverse($list, true);// Tri Descendant

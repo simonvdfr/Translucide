@@ -1625,6 +1625,32 @@ $(function()
 	}
 
 
+	/************** LISTE DES CONTENUS **************/
+
+	// Ouverture de la liste des contenus
+	$("#list-content i").on("click",
+		function(event) {
+			$.ajax({
+		        url: path+"api/ajax.admin.php?mode=list-content",
+				data: {"nonce": $("#nonce").val()},
+				success: function(html)
+				{				
+					$("body").append(html);
+
+					$(".dialog-list-content").dialog({
+						autoOpen: false,
+						modal: true,
+		        		position: { my: "left+10 top", at: "left bottom+10", of: $("#admin-bar") },
+						show: function() {$(this).fadeIn(300);},
+						close: function() { $(".dialog-list-content").remove(); }
+					});
+
+					$(".dialog-list-content").dialog("open");
+				}
+		    });
+		}
+	);
+
 
 	/************** USERS **************/
 
