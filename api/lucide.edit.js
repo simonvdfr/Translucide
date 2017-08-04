@@ -1640,6 +1640,7 @@ $(function()
 					$(".dialog-list-content").dialog({
 						autoOpen: false,
 						modal: true,
+						width: 'auto',
 		        		position: { my: "left+10 top", at: "left bottom+10", of: $("#admin-bar") },
 						show: function() {$(this).fadeIn(300);},
 						close: function() { $(".dialog-list-content").remove(); }
