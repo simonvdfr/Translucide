@@ -636,7 +636,7 @@ switch($_GET['mode'])
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Title")).'</a></li>';
+			echo'<li title="'.$res['date_update'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a></li>';
 
 			$type = $res['type'];
 		}
