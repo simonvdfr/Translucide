@@ -42,7 +42,8 @@ switch($_GET['mode'])
 			<div id="admin-bar" class="none">
 
 				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?_e("Show user info")?>"></i></div>
-
+				
+				<!-- list/bars -->
 				<div id="list-content" class="fl pat"><i class="fa fa-list vam" title="<?_e("List of contents")?>"></i></div>
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?_e("Page title")?>"></i></div>
@@ -331,6 +332,8 @@ switch($_GET['mode'])
 		$type = encode($_POST['type']);
 
 		login('high', 'add-'.$type);// Vérifie que l'on a le droit d'ajouter une page
+
+		// @todo verifier que le permalink est bien enregister si il est diff du titre
 
 		$url = (encode($_POST['permalink']) ? encode($_POST['permalink']) : encode($_POST['title']));
 

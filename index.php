@@ -232,7 +232,6 @@ header('Content-type: text/html; charset=UTF-8');
 		ga('send', 'pageview');
 		<? } ?>
 
-
 		<? if(isset($GLOBALS['facebook_sdk']) and $GLOBALS['facebook_api_id']) { ?>
 		// Facebook
 		(function(d, s, id){
@@ -243,7 +242,6 @@ header('Content-type: text/html; charset=UTF-8');
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 		<? } ?>
-		
 						
 		<?if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
 			// Si demande l'autoload du mode édition et si admin
@@ -255,7 +253,6 @@ header('Content-type: text/html; charset=UTF-8');
 			// Supprime le cookie qui demande de charger automatiquement l'admin
 			@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
 		}?>			
-
 
 		// Variables
 		id = "<?=$id?>";

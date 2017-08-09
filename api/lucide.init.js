@@ -81,8 +81,8 @@ error = function(txt){
 	})
 	.fadeIn();
 
-	// Box avec le message d'erreur
-	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-exclamation-triangle mrs'></i>" + txt + "<i class='fa fa-times absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
+	// Box avec le message d'erreur fa-times
+	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-exclamation-triangle mrs'></i>" + txt + "<i class='fa fa-cancel absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
 	var height = $("#error").outerHeight();
 	
 	// Affichage de la box

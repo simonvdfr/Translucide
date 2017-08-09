@@ -342,7 +342,7 @@ function checkbox($key = null, $filter = array())
 {
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
-	echo"<i class='".($filter['editable']?$filter['editable']:"editable-checkbox")." fa fa-fw ".($GLOBALS['content'][$key] == true ? "fa-check yes" : "fa-times no")."' id='".encode($key)."'></i>";
+	echo"<i class='".($filter['editable']?$filter['editable']:"editable-checkbox")." fa fa-fw ".($GLOBALS['content'][$key] == true ? "fa-ok yes" : "fa-cancel no")."' id='".encode($key)."'></i>";
 	
 	$GLOBALS['editkey']++;
 }
@@ -365,7 +365,7 @@ function select($key = null, $filter = array())
 		$selected_option = $option_decode[$selected_key];
 	}
 
-	echo"<span id='".encode($key)."' class='".($filter['editable']?$filter['editable']:"editable-select")."' data-option='".$filter['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
+	echo"<span id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select")."' data-option='".$filter['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
 	
 	$GLOBALS['editkey']++;
 }

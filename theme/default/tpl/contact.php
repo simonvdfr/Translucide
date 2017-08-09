@@ -32,7 +32,7 @@ if($_POST["email"] and $_POST["message"] and isset($_POST["question"]) and !$_PO
 						light(__("Message sent"));
 
 						// Icône envoyer
-						$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-check");
+						$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-ok");
 					</script>
 					<?
 				}

@@ -49,7 +49,7 @@ if($_POST["email"] and !$_POST["champ_vide"])// champ_vide pour éviter les bots 
 					//light(__("We will keep you informed of progress"));
 					//$("#alertmail").fadeOut();
 					$("#alertmail").fadeOut("400", function(){
-						$("#alertmail").html("<h2>"+ __("We will keep you informed of progress") +" <i class='fa fa-check checked'></i></h2>").fadeIn();
+						$("#alertmail").html("<h2>"+ __("We will keep you informed of progress") +" <i class='fa fa-ok checked'></i></h2>").fadeIn();
 					});
 				});
 				</script>
