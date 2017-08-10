@@ -40,4 +40,4 @@
 
 </footer>
 
-<script src="theme/<?=$GLOBALS['theme'];?>effect.js"></script>
+<script src="theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"");?>effect.js"></script>

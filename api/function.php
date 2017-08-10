@@ -182,7 +182,7 @@ function load_translation($id)
 {	
 	switch ($id) {
 		case "api": $translation_file = "api/translation.php"; break;
-		case "theme": $translation_file = "theme/".$GLOBALS['theme']."translation.php"; break;
+		case "theme": $translation_file = "theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."translation.php"; break;
 		default: $translation_file = "plugin/".$id."/translation.php"; break;
 	}
 

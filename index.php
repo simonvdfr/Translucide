@@ -173,7 +173,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 /********** THEME **********/
 // Fonctions du theme
 if(isset($GLOBALS['function']) and $GLOBALS['function'] != "") 
-	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].$GLOBALS['function']);
+	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"").$GLOBALS['function']);
 
 
 
@@ -210,7 +210,7 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
 
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>style<?=$GLOBALS['min']?>.css">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css">	
 
 
 	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
@@ -275,14 +275,14 @@ header('Content-type: text/html; charset=UTF-8');
 
 
 <?
-include_once("theme/".$GLOBALS['theme']."header.php");
+include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
 
 echo"<div class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : "")."'>";
 
 
 	if(isset($res['tpl'])) // On a une page
 	{
-		include("theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
+		include("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
 	}
 	else // Pas de contenu a chargé
 	{
@@ -293,7 +293,7 @@ echo"<div class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : ""
 echo"</div>";
 
 
-include_once("theme/".$GLOBALS['theme']."footer.php");
+include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
 ?>
 
 <script>console.log("<?=benchmark()?>")</script>

@@ -195,7 +195,9 @@ switch($_GET['mode'])
 			<script src="lucide.init<?=$GLOBALS['min']?>.js"></script>
 			
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
-			<?if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."admin.init.js")){?><script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>admin.init.js"></script><?}?>
+			<?if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
+					<script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>admin.init.js"></script>
+			<?}?>
 
 			<style>
 				#user .absolute { width: 100%; }

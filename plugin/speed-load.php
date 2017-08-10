@@ -114,7 +114,7 @@ else $GLOBALS['content'] = array();
 if($res['tpl']) // On a une page
 {
 	// On charge la template du thème pour afficher le contenu
-	include("../theme/".$GLOBALS['theme']."tpl/".$res['tpl'].".php");
+	include("../theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/".$res['tpl'].".php");
 }
 else // Pas de contenu a chargé
 {

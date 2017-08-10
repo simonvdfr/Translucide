@@ -44,7 +44,7 @@ switch($_GET['mode'])
 				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?_e("Show user info")?>"></i></div>
 				
 				<!-- list/bars -->
-				<div id="list-content" class="fl pat"><i class="fa fa-list vam" title="<?_e("List of contents")?>"></i></div>
+				<div id="list-content" class="fl pat"><i class="fa fa-bars vam" title="<?_e("List of contents")?>"></i></div>
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?_e("Page title")?>"></i></div>
 
@@ -71,7 +71,7 @@ switch($_GET['mode'])
 							<div class="">
 								<select id="tpl">
 									<?
-									$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
+									$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
 									while(list($cle, $filename) = each($scandir))				
 									{			
 										$filename = pathinfo($filename, PATHINFO_FILENAME);
@@ -198,7 +198,7 @@ switch($_GET['mode'])
 					<select id="tpl" required class="w30">
 						<option value=""><?_e("Select template")?></option>
 						<?
-						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme']."tpl/"), array('..', '.'));
+						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
 						while(list($cle, $filename) = each($scandir))				
 						{			
 							$filename = pathinfo($filename, PATHINFO_FILENAME);
@@ -639,7 +639,7 @@ switch($_GET['mode'])
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a></li>';
+			echo'<li title="'.$res['date_update'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-slash' title='".__("Deactivate")."'></i>").'</li>';
 
 			$type = $res['type'];
 		}
@@ -2133,7 +2133,7 @@ switch($_GET['mode'])
 								// Des dossiers de thème
 								$scandir = array_diff(scandir("theme/"), array('..', '.', 'tpl'));
 								while(list($cle, $file) = each($scandir)) { 
-									if(is_dir("theme/".$file)) echo"<option value=\"".$file."/\"".($GLOBALS['theme'] == $file."/" ? " selected":"").">".$file."</option>";
+									if(is_dir("theme/".$file)) echo"<option value=\"".$file."/\"".($GLOBALS['theme'] == $file ? " selected":"").">".$file."</option>";
 								}							
 								?>					
 								</select>

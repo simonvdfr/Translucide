@@ -160,7 +160,7 @@ else// Affichage du formulaire
 				$.ajax(
 				{
 					type: "POST",
-					url: "<?=$GLOBALS['path']."theme/".$GLOBALS['theme']."/tpl/contact.php"?>",				
+					url: path+"theme/"+theme+(theme?"/":"")+"tpl/contact.php",				
 					data: $("#contact").serializeArray(),
 					success: function(html){ $("body").append(html); }
 				});
