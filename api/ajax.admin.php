@@ -1754,6 +1754,7 @@ switch($_GET['mode'])
 							exit;
 						}
 					}
+
 				
 					
 					// UTILISATEUR
@@ -1785,7 +1786,9 @@ switch($_GET['mode'])
 						// Vérifie que l'utilisateur n'existe pas déjà
 						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."user WHERE email='".$email."' AND state='active' LIMIT 1");
 						if($res = $sel->fetch_assoc())// User déjà existant : on update ses données
-						{						
+						{			
+							$uid = $res['id'];
+
 							// Création de la requête
 							$sql = "UPDATE ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
@@ -1853,7 +1856,10 @@ switch($_GET['mode'])
 								<?
 								exit;
 							}
+							else $uid = $GLOBALS['connect']->insert_id;
 						}
+
+
 
 						// ECRITURE DE LA CONFIGRATION
 												
@@ -1896,8 +1902,43 @@ switch($_GET['mode'])
 						chmod($config_final_file, 0666);
 
 
+
+						// AJOUTE LA PAGE D'ACCUEIL
+						// Vérifie qu'il n'y a pas déjà une page home
+						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."content WHERE url='home' LIMIT 1");
+						$res = $sel->fetch_assoc();
+						if(!$res['id'])// Page non existante : on la crée
+						{	
+							// Ajout de la page d'accueil
+							$sql = "INSERT ".addslashes($_POST['db_prefix'])."content SET ";
+							$sql .= "title = '".addslashes(utf8_decode($_POST['sitename']))."', ";
+							$sql .= "tpl = 'home', ";
+							$sql .= "url = 'home', ";
+							$sql .= "lang = '".$GLOBALS['language'][0]."', ";
+							$sql .= "type = 'page', ";
+							$sql .= "user_insert = '".(int)$uid."', ";
+							$sql .= "date_insert = NOW() ";
+							$GLOBALS['connect']->query($sql);
+
+							if($GLOBALS['connect']->error) {
+								?>
+								<script>
+									submittable();
+									error("<?=utf8_encode($connect->error);?>");
+								</script>
+								<?
+								exit;
+							}
+							else
+							// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
+							setcookie("autoload_edit", "true", time() + 60*60, $_POST['path'], $_POST['domain']);
+						}
+
+
+
 						// LOGIN AUTOMATIQUE
 						login();
+
 
 
 						// MESSAGE DE BIENVENUE et d'information qu'il faut créé la page d'accueil du site
