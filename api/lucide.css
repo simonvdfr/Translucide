@@ -482,6 +482,15 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		}
 
 
+/* TAG */
+.tag-container {
+	display: inline-block;
+}
+	.layer-tag {
+		z-index: 100;
+	}
+
+
 /* Work */
 .work-bt {
 	position: absolute;

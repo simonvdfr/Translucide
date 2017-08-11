@@ -401,7 +401,7 @@ function tag($key = null, $filter = array())
 {
 	$key = encode($key ? $key : "tag");
 
-	echo'<div id="'.$key.'" class="editable-tag">';
+	echo'<'.(isset($filter['tag']) ? $filter['tag'] : "div").' id="'.$key.'" class="editable-tag">';
 
 	$i = 1;
 	$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");
@@ -410,11 +410,11 @@ function tag($key = null, $filter = array())
 		$GLOBALS['tags'][$res_tag['cle']] = $res_tag['val'];
 
 		if($i > 1) echo', ';
-		echo'<a href="'.make_url($key, array($res_tag['cle'], 'domaine' => true)).'" class="tdn">'.$res_tag['val'].'</a>';
+		echo'<a href="'.make_url($key, array($res_tag['cle'], 'domaine' => true)).'" class="tdn'.(isset($filter['class']) ? " ".$filter['class'] : "").'">'.$res_tag['val'].'</a>';
 		$i++;
 	}
 
-	echo'</div>';
+	echo'</'.(isset($filter['tag']) ? $filter['tag'] : "div").'>';
 }
 
 

@@ -1370,7 +1370,7 @@ switch($_GET['mode'])
 							<div>
 								<i class="fa fa-arrows mrt grey small"></i>
 								<input type="text" name="tag" placeholder="tag" value="'.htmlspecialchars($echo).'">
-								<i class="fa fa-plus-circle mlt"></i>
+								<i class="fa fa-plus-circle mlt grey"></i>
 							</div>';
 
 							// Si des enfants on imbrique et on boucle
@@ -1440,7 +1440,7 @@ switch($_GET['mode'])
 					},
 					open: function(event, ui) {// Masque l'arbre des tags si elle est save
 						if(!$(".layer-tag button.to-save").length && !$(".layer-tag button i.fa-spin").length)
-						$(".layer-tag").fadeOut("fast", function(){ close_tag = false; });
+						$(".layer-tag").fadeOut("fast", function(){ close_tag = false;});
 					},
 					close: function(event, ui) {// On peut ré-ouvrir l'arbre des tags
 						close_tag = true;
@@ -1553,7 +1553,7 @@ switch($_GET['mode'])
 
 					// Envoi de l'arbre de tag
 					$.ajax({
-						url: path+"api/tag.php?mode=save-tag-tree",
+						url: path+"api/ajax.admin.php?mode=save-tag-tree",
 						data: {"id": id, "tags": $("#tag-tree").nestedSortable("toHierarchy"), "nonce": $("#nonce").val()},
 						success: function(html){
 							// Affichage/exécution du retour
