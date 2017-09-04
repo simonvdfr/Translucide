@@ -188,6 +188,10 @@ $GLOBALS['jpg_quality'] = 90;
 $GLOBALS['png_quality'] = 9;
 
 
+// Icone pour mobile
+$GLOBALS['touch_icon'] = "";
+
+
 // Librairie externe
 $GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 

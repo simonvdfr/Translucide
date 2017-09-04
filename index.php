@@ -213,6 +213,8 @@ header('Content-type: text/html; charset=UTF-8');
 	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css">	
 
 
+	<?if(isset($GLOBALS['touch_icon'])){?><link rel="apple-touch-icon" href="<?=$GLOBALS['touch_icon'];?>"/><?}?>
+
 	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
 
 
