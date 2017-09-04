@@ -242,7 +242,7 @@ exec_tool = function(command, value, ui) {
 		// Si icône
 		if(command == "insertIcon") {
 			command = "insertHTML";
-			value = "<span class='fa'>&#x"+ value +";</span>";
+			value = "<i class='fa'>&#x"+ value +";</i>";
 		}
 		
 		// Si alignement
@@ -724,6 +724,7 @@ get_img = function(id, link)
 	
 	var width = $("#dialog-media-width").val();
 	var height = $("#dialog-media-height").val();
+	var data_class = $("#"+$("#dialog-media-source").val()).data("class") || "";
 	
 	// Resize de l'image et insertion dans la source
 	$.ajax({
@@ -746,7 +747,7 @@ get_img = function(id, link)
 					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
 
 					// Ajoute l'image
-					$("#"+$("#dialog-media-source").val()).append('<img src="'+ path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"")+'>');
+					$("#"+$("#dialog-media-source").val()).append('<img src="'+ path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
 				}
 				else
 					$("#"+$("#dialog-media-source").val()+" img").attr("src", path + final_file );
