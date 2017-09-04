@@ -8,7 +8,7 @@ if($_POST["email"] and $_POST["message"] and isset($_POST["question"]) and !$_PO
 	{
 		if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))// Email valide
 		{
-			if(hash('sha256', $_POST["question"].$GLOBALS['hash']) == $_POST["question_hash"])// Captcha valide
+			if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
 			{		
 				$subject = "[".$GLOBALS['sitename']."] ".htmlspecialchars($_POST["email"]);
 
@@ -80,7 +80,7 @@ else// Affichage du formulaire
 	$nb1 = rand(1, 10);
     $nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 10); // on évite les résultats négatifs en cas de soustraction
 	eval('$question = strval('.$nb1.$operator.$nb2.');');
-	$question_hash = hash('sha256', $question.$GLOBALS['hash']);
+	$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
 
 	?>
 	<script>
