@@ -1569,7 +1569,8 @@ $(function()
 	{
 		// Lib js pour le tri des tag
 		var script = document.createElement('script');
-		script.src = path+"plugin/sortable-nested.min.js";
+		//script.src = path+"plugin/sortable-nested.min.js";
+		script.src = "https://cdn.rawgit.com/ilikenwf/nestedSortable/master/jquery.mjs.nestedSortable.js";
 		document.body.appendChild(script);	
 
 		// Ajoute un div autour du tag éditable pour le layer de tag-tree
