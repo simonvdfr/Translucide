@@ -1496,7 +1496,7 @@ switch($_GET['mode'])
 					tosave();
 				});
 
-
+				// @todo Vérifier que nestedsortable est chargé, sinon on charge sortable de Jquery UI
 				// Rend les tags triable
 				$("#tag-tree").nestedSortable({
 					handle: 'div',
@@ -1551,6 +1551,7 @@ switch($_GET['mode'])
 					// Place les tags dans les data-tag pour la sauvegarde
 					$("#tag-tree li").attr("id", function(){ return "tag-" + $("input", this).val() });
 
+					// @todo si nestedSortable n'est pas chargé on envoi un serialize
 					// Envoi de l'arbre de tag
 					$.ajax({
 						url: path+"api/ajax.admin.php?mode=save-tag-tree",
