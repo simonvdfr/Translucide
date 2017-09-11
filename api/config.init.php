@@ -195,7 +195,7 @@ $GLOBALS['touch_icon'] = "";
 // Librairie externe
 $GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 
-$GLOBALS['icons'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."plugin/icons/icons.min.css";
+$GLOBALS['icons'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css";
 
 $GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
 
