@@ -1570,6 +1570,7 @@ $(function()
 		// Lib js pour le tri des tag
 		var script = document.createElement('script');
 		//script.src = path+"plugin/sortable-nested.min.js";
+		// https://github.com/ilikenwf/nestedSortable
 		script.src = "https://cdn.rawgit.com/ilikenwf/nestedSortable/master/jquery.mjs.nestedSortable.js";
 		document.body.appendChild(script);	
 
