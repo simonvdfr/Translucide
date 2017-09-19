@@ -1157,7 +1157,7 @@ switch($_GET['mode'])
 	break;
 
 
-	case "add-media":// Envoi d'une image sur le serveur et la resize si nécessaire
+	case "add-media":// Envoi d'une image sur le serveur et la resize si nécessaire (upload)
 			
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
@@ -1181,8 +1181,11 @@ switch($_GET['mode'])
 		//$filename = preg_replace("([^a-z0-9\.\-_]|[\.]{2,})", "", $_FILES['file']['name']);
 		// /^[a-z0-9]+\.[a-z]{3,4}$/  /[^a-z0-9\._-]+/  ([^a-z0-9\.\-_]|[\.]{2,})  [a-zA-Z0-9]{1,200}\.[a-zA-Z0-9]{1,10}
 
-		$src_file = "media/".$filename;
-		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].$src_file;
+		if(isset($_POST['dest'])) $dest = encode($_POST['dest'], "-", array("_","/"));
+		else $dest = null;
+
+		$src_file = "media/". $dest . $filename;
+		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'] . $src_file;
 		
 		// Check le type mime côté serveur
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -1195,7 +1198,7 @@ switch($_GET['mode'])
 			// Le fichier tmp ne contient pas de php ou de javascript
 			if(!preg_match("/<\?php|<scr/", file_get_contents($_FILES["file"]["tmp_name"])))
 			{	
-				@mkdir(dirname($root_file), 0705);
+				@mkdir(dirname($root_file), 0705, true);
 
 				// Upload du fichier
 				if(move_uploaded_file($_FILES['file']['tmp_name'], $root_file))
@@ -1207,7 +1210,13 @@ switch($_GET['mode'])
 					if($type == "image")
 					{
 						// Resize l'image si besoin
-						echo img_process($root_file, $dest = "media/", $des_resize = "media/resize/", (int)$_POST['width'], (int)$_POST['height'], (isset($_POST['resize'])?$_POST['resize']:""));
+						echo img_process($root_file,
+								"media/" . $dest,
+								"media/resize/" . $dest,
+								(int)$_POST['width'],
+								(int)$_POST['height'],
+								(isset($_POST['resize'])?$_POST['resize']:"")
+							);
 					}		
 					else 
 						echo $src_file;// Retourne l'url du fichier original		

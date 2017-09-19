@@ -206,15 +206,24 @@ function add_translation($add_translation)
 // Retourne une traduction
 function __($singulier, $pluriel = "", $num = 0)
 {
-	if($num > 1) $txt = $pluriel; else $txt = $singulier;
-
-	// Si une traduction existe
-	if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']])) 
-		$txt = ($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]);
+	// Traduction direct dans la fonction
+	if(is_array($singulier)) 
+	{
+		if(isset($singulier[key($singulier)][$GLOBALS['lang']]))// Une traduction dans la langue courante
+			return $singulier[key($singulier)][$GLOBALS['lang']];
+		else
+			return key($singulier);//utf8_encode
+	}
 	else
-		$txt = ($txt);//utf8_encode
-
-	return $txt;
+	{
+		if($num > 1) $txt = $pluriel; else $txt = $singulier;
+		
+		// Si une traduction existe
+		if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]))
+			return $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
+		else
+			return $txt;//utf8_encode
+	}
 }
 
 // Affichage d'une traduction
@@ -232,7 +241,24 @@ function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	echo"<".(isset($filter['tag']) ? $filter['tag'] : "div")." class='".(isset($filter['editable']) ? $filter['editable'] : "editable").(isset($filter['class']) ? " ".$filter['class'] : "")."' id='".encode($key)."'".(isset($filter['placeholder']) ? " placeholder=\"".$filter['placeholder']."\"" : "").">".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
+	echo"<".(isset($filter['tag'])? $filter['tag'] : "div");
+
+		echo" id='".encode($key)."'";
+
+		echo" class='";
+		if(isset($filter['editable'])) echo $filter['editable']; else echo"editable";
+		if(isset($filter['class'])) echo" ".$filter['class'];
+		echo"'";
+
+		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
+
+		if(isset($filter['dest'])) echo" data-dest='".$filter['dest']."'";// Desitation de stockage du fichier
+
+	echo">";
+
+	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key];
+
+	echo"</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
 
 	$GLOBALS['editkey']++;
 }
@@ -283,6 +309,7 @@ function media($key = null, $filter = array())
 		if(isset($size[0])) echo" data-width='".$size[0]."'";
 		if(isset($size[1])) echo" data-height='".$size[1]."'";
 		if(isset($filter['class'])) echo" data-class='".$filter['class']."'";
+		if(isset($filter['dest'])) echo" data-dest='".$filter['dest']."'";// Desitation de stockage du fichier
 	echo">";
 
 		if(isset($img))// C'est une image
@@ -365,17 +392,19 @@ function select($key = null, $filter = array())
 		$selected_option = $option_decode[$selected_key];
 	}
 
-	echo"<span id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select")."' data-option='".$filter['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
+	echo"<span id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select") . (isset($filter['class'])?" ".$filter['class']:"")."' data-option='".$filter['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
 	
 	$GLOBALS['editkey']++;
 }
 
 // Contenu champ hidden
-function hidden($key = null, $class = null)
+function hidden($key = null, $filter = null)
 {
 	$key = ($key ? $key : "hidden-".$GLOBALS['editkey']);
 
-	echo"<input type='hidden' id='".encode($key)."' value=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" class='editable-hidden ".$class."'>";
+	if(!is_array($filter)) $filter = array("class" => $filter);
+
+	echo"<input type='hidden' id='".encode($key)."' value=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" class='editable-hidden ".$filter['class']."'>";
 	
 	$GLOBALS['editkey']++;
 }
@@ -782,7 +811,7 @@ function logout($redirect = null)
 /********** IMAGE **********/
 
 function resize($source_file, $new_width = null, $new_height = null, $dest_dir = null, $option = null)
-{	
+{
 	// Supprime les arguments après l'extension (timer...)
 	$source_file = explode("?", $source_file)[0];
 
@@ -795,20 +824,20 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	$source_ext = pathinfo($source_file, PATHINFO_EXTENSION);
 
 	// file_name : on récup le nom du fichier, on lui supp l'extension (qui ne passe pas l'encode), on l'encode
-	$root_dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'];	
-	$file_name = encode(basename(basename($source_file), ".".$source_ext));
+	$root_dir = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'];
+	$file_name = encode(basename(basename($source_file), "." . $source_ext));
 	
 	// Si image à réduire ou à forcer
 	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
-	{		
+	{
 		// Version original pour le zoom
-		$zoom = "media/".$file_name.".".$source_ext;
+		$zoom = "media/" . str_replace("media/resize/", "", $dest_dir) . $file_name . ".". $source_ext;
 
 		// Dossier final d'image redimensionnée
 		$dir = ($dest_dir ? $dest_dir : "media/");
 
 		// Crée les dossiers
-		@mkdir($root_dir.$dir, 0705, true);
+		@mkdir($root_dir . $dir, 0705, true);
 
 		// On crée une image avec l'image source en fonction de son type
 		switch($type) {
@@ -907,9 +936,9 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 
 		// Création de l'image finale dans le bon type		
 		switch($type) {
-			case 1: imagegif($final_img, $root_dir.$dir.$file_name_ext); break;
-			case 2: imagejpeg($final_img, $root_dir.$dir.$file_name_ext, $GLOBALS['jpg_quality']); break;
-			case 3: imagepng($final_img, $root_dir.$dir.$file_name_ext); break;// $GLOBALS['png_quality']
+			case 1: imagegif($final_img, $root_dir . $dir . $file_name_ext); break;
+			case 2: imagejpeg($final_img, $root_dir . $dir . $file_name_ext, $GLOBALS['jpg_quality']); break;
+			case 3: imagepng($final_img, $root_dir . $dir . $file_name_ext); break;// $GLOBALS['png_quality']
 		}		
 		
 		imagedestroy($final_img);// Libère la mémoire	
@@ -921,12 +950,12 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		$dir = "media/";
 		$file_name_ext = $file_name.".".$source_ext;
 		
-		@mkdir($root_dir.$dir, 0705, true);// Crée les dossiers
+		@mkdir($root_dir . $dir, 0705, true);// Crée les dossiers
 
-		copy($source_file, $root_dir.$dir.$file_name_ext);
+		copy($source_file, $root_dir . $dir . $file_name_ext);
 	}
 
-	return $dir.$file_name_ext."?zoom=".$zoom."&".time();// Time pour forcer le refresh
+	return $dir . $file_name_ext . "?zoom=". $zoom ."&".time();// Time pour forcer le refresh
 }
 
 // Examine et traite une image

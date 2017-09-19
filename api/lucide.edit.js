@@ -543,6 +543,7 @@ upload = function(source, file, resize)
 	var width = $(source).data("width") || "";
 	var height = $(source).data("height") || "";
 	var data_class = $(source).data("class") || "";
+	var dest = $(source).data("dest") || "";
 
 	if(file) 
 	{
@@ -595,6 +596,7 @@ upload = function(source, file, resize)
 			data.append("index", file.name);
 			data.append("width", width);
 			data.append("height", height);
+			data.append("dest", dest);
 			if(resize) data.append("resize", resize);
 			data.append("nonce", $("#nonce").val());
 
@@ -911,6 +913,7 @@ $(function()
 			id: this.id,
 			html: this.innerHTML,
 			style: style,
+			"data-dest": $(this).data("dest"),
 			placeholder: $(this).attr("placeholder")
 		});
 	});
@@ -1494,6 +1497,7 @@ $(function()
 		$(this).attr("placeholder", $(this).attr("id")).attr("title", $(this).attr("id"));
 	});
 	$("label.none").slideDown();
+	$(".editable-select.none").slideDown();
 	$(".editable-hidden").slideDown();
 
 

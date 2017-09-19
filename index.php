@@ -16,8 +16,6 @@ if(stristr($_SERVER['REQUEST_URI'], 'index.php')){
 $lang = get_lang();
 
 load_translation('api');// Chargement des traductions du système
-load_translation('theme');// Chargement des traductions du thème
-
 
 
 /********** CONTENU **********/

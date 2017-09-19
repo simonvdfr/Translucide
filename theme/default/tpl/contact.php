@@ -117,7 +117,7 @@ else// Affichage du formulaire
 				</div>
 				
 				<button class="bt fr pat">
-					<?_e("Send")?>
+					<?_e(array("Send" => array("fr" => "Envoyer")))?>
 					<i class="fa fa-envelope"></i>
 				</button>
 
