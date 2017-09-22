@@ -67,7 +67,7 @@ function get_url($url_source = null)
 		else $url = encode($path);
 	}
 
-	return $url;
+	return addslashes($url);
 }
 
 // Retourne l'url rewriter
@@ -174,7 +174,7 @@ function get_lang($lang = '')
 
 	$GLOBALS['lang'] = $_SESSION['lang'] = $_COOKIE['lang'] = $lang;	
 
-	return $lang;
+	return addslashes($lang);
 }
 
 // Charge une traduction
@@ -252,7 +252,7 @@ function txt($key = null, $filter = array())
 
 		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
 
-		if(isset($filter['dest'])) echo" data-dest='".$filter['dest']."'";// Desitation de stockage du fichier
+		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
 
 	echo">";
 
@@ -309,7 +309,7 @@ function media($key = null, $filter = array())
 		if(isset($size[0])) echo" data-width='".$size[0]."'";
 		if(isset($size[1])) echo" data-height='".$size[1]."'";
 		if(isset($filter['class'])) echo" data-class='".$filter['class']."'";
-		if(isset($filter['dest'])) echo" data-dest='".$filter['dest']."'";// Desitation de stockage du fichier
+		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
 	echo">";
 
 		if(isset($img))// C'est une image
