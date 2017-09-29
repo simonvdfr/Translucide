@@ -427,6 +427,7 @@ dialog_transfert = function(mode, source, target, callback) {
 				"source": (target == "bg" ? $(source).attr("data-id") : source.id),
 				"width": $(source).data("width") || "",
 				"height": $(source).data("height") || "",
+				"dir": $(source).data("dir") || "",
 				"nonce": $("#nonce").val()
 			}
 		})
@@ -471,7 +472,7 @@ dialog_transfert = function(mode, source, target, callback) {
 							// Création des onglets
 							$(".dialog-media").tabs({
 								beforeLoad: function(event, ui) {
-									ui.ajaxSettings.url += ( /\?/.test(ui.ajaxSettings.url) ? "&" : "?" ) + 'nonce=' + $("#nonce").val();											
+									ui.ajaxSettings.url += ( /\?/.test(ui.ajaxSettings.url) ? "&" : "?" ) + 'nonce=' + $("#nonce").val();
 								}
 							});
 
@@ -543,7 +544,7 @@ upload = function(source, file, resize)
 	var width = $(source).data("width") || "";
 	var height = $(source).data("height") || "";
 	var data_class = $(source).data("class") || "";
-	var dest = $(source).data("dest") || "";
+	var dir = $(source).data("dir") || "";
 
 	if(file) 
 	{
@@ -596,7 +597,7 @@ upload = function(source, file, resize)
 			data.append("index", file.name);
 			data.append("width", width);
 			data.append("height", height);
-			data.append("dest", dest);
+			data.append("dir", dir);
 			if(resize) data.append("resize", resize);
 			data.append("nonce", $("#nonce").val());
 
@@ -727,7 +728,8 @@ get_img = function(id, link)
 	var width = $("#dialog-media-width").val();
 	var height = $("#dialog-media-height").val();
 	var data_class = $("#"+$("#dialog-media-source").val()).data("class") || "";
-	
+	var dir = $("#"+$("#dialog-media-source").val()).data("dir") || "";
+
 	// Resize de l'image et insertion dans la source
 	$.ajax({
 		type: "POST",
@@ -736,6 +738,7 @@ get_img = function(id, link)
 			"img": $("#"+id).attr("data-media"),
 			"width": width,
 			"height": height,
+			"dir": dir,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
@@ -913,7 +916,7 @@ $(function()
 			id: this.id,
 			html: this.innerHTML,
 			style: style,
-			"data-dest": $(this).data("dest"),
+			"data-dir": $(this).data("dir"),
 			placeholder: $(this).attr("placeholder")
 		});
 	});
@@ -1385,7 +1388,7 @@ $(function()
 					$(".editable").off();// Désactive les events sur les contenu éditables
 					$(".editable-media").addClass("drag-zone");
 					$(".editable-media img, .editable-media i").addClass("drag-elem");
-			},
+				},
 				// Clean les highlight on out
 				"dragleave.editable-media": function(event) {
 					event.stopPropagation();
@@ -1400,8 +1403,11 @@ $(function()
 	body_editable_media_event();
 
 
+
+	// Icone d'upload et de supp de l'image
+	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div><div class='clear-img' title=\""+ __("Delete image") +"\"><i class='fa fa-trash-o'></i> "+ __("Delete image") +"</a>");
+
 	// Rends éditables les images/fichiers
-	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>");
 	editable_media_event = function() {
 		$(".editable-media")
 			.on({
@@ -1430,27 +1436,38 @@ $(function()
 					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], true);
 				},
 				// Hover zone upload	
-				"mouseenter.editable-media": function(event) {	
+				"mouseenter.editable-media": function(event) {
 					$(this).addClass("drag-over");
 					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
+
+					// Affichage de l'option pour supprimer l'image si il y en a une
+					if($("img", this).attr("src")) $(".clear-img", this).fadeIn("fast");
 				},
 				// Out
 				"mouseleave.editable-media": function(event) {
 					$(this).removeClass("drag-over");
 					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
+					$(".clear-img", this).hide();
 				},
 				// Ouverture de la fenêtre des médias
 				"click.editable-media": function(event) {
-					// Masque le hover de l'image/fichier sélectionnée
-					$(this).removeClass("drag-over");
-					$("img, i", this).removeClass("drag-elem");
-					$(".open-dialog-media", this).hide();
+					if($(event.target).hasClass("clear-img")){
+						$("img", this).attr("src","");// Supp img src
+						$(".clear-img", this).hide();
+					}
+					else// Ouverture de la fenêtre de média
+					{
+						// Masque le hover de l'image/fichier sélectionnée
+						$(this).removeClass("drag-over");
+						$("img, i", this).removeClass("drag-elem");
+						$(".open-dialog-media", this).hide();
 
-					// Ouvre la dialog de media
-					media(this, 'isolate');
-					return false;
+						// Ouvre la dialog de media
+						media(this, 'isolate');
+						return false;
+					}
 				}
 			});
 	}
@@ -1832,11 +1849,13 @@ $(function()
 
 
 	// Si on change le statut d'activation
-	$("#state-content").click(function() {	
+	$("#state-content").click(function() {
 
 		// Masque la bulle admin qui indique si la page est désactivée
-		if($("#admin-bar #state-content").prop("checked")  == true)
+		if($("#admin-bar #state-content").prop("checked") == true)
 			$(".bt.fixed.construction").fadeOut();
+		else 
+			$(".bt.fixed.construction").fadeIn();
 
 		tosave();
 	});
@@ -1869,8 +1888,11 @@ $(function()
 
 					$(".bt.fixed.construction").fadeOut();// Masque la bulle info activation
 				}
-				else 
+				else {
 					$("#admin-bar #state-content").prop("checked", false);
+
+					$(".bt.fixed.construction").fadeIn();// Affiche la bulle info activation
+				}
 
 				tosave();
 			}

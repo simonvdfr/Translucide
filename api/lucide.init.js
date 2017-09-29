@@ -49,8 +49,10 @@ ismobile = function(){
 
 // Traduit un texte
 __ = function(txt) {
-	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) return translation[txt][get_cookie('lang')];	
-	else return txt;
+	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) 
+		return translation[txt][get_cookie('lang')];	
+	else 
+		return txt;
 }
 
 
@@ -297,7 +299,7 @@ $(function()
 
 	// Page désactivé => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
-		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-warning vam no'></i> "+ __("Activation status") +" : "+ __(state) +"</a>");
+		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-attention vam no'></i> "+ __("Activation status") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 

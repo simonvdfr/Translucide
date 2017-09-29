@@ -74,6 +74,7 @@ $add_translation = array(
 	"Images" => array("fr" => "Images"),
 	"Resized" => array("fr" => "Redimensionnées"),
 	"Files" => array("fr" => "Fichiers"),
+	"Specific" => array("fr" => "Spécifique"),
 	"Videos" => array("fr" => "Vidéos"),
 	"Audios" => array("fr" => "Audios"),
 	"Get resized image" => array("fr" => "Obtenir une image redimensionnée"),

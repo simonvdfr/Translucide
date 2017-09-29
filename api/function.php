@@ -174,7 +174,7 @@ function get_lang($lang = '')
 
 	$GLOBALS['lang'] = $_SESSION['lang'] = $_COOKIE['lang'] = $lang;	
 
-	return addslashes($lang);
+	return $lang;
 }
 
 // Charge une traduction

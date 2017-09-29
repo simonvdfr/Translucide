@@ -714,24 +714,39 @@ switch($_GET['mode'])
 			<input type="hidden" id="dialog-media-source" value="<?=htmlspecialchars($_GET['source'])?>">
 			<input type="hidden" id="dialog-media-width" value="<?=htmlspecialchars($_GET['width'])?>">
 			<input type="hidden" id="dialog-media-height" value="<?=htmlspecialchars($_GET['height'])?>">
+			<input type="hidden" id="dialog-media-dir" value="<?=htmlspecialchars($_GET['dir'])?>">
 
 			<ul class="small">
+
 				<li data-filter="all"><a href="#media" title="<?_e("Media")?>"><i class="fa fa-files-o"></i> <span><?_e("Media")?></span></a></li>
+
 				<li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?_e("Images")?>"><i class="fa fa-picture-o"></i> <span><?_e("Images")?></span></a></li>
+
 				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?_e("Resized")?>"><i class="fa fa-compress"></i> <span><?_e("Resized")?></span></a></li>
-				<li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?_e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Files")?></span></a></li>				
+
+				<li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?_e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Files")?></span></a></li>	
+
+				<?if(isset($_GET['dir']) and $_GET['dir']){?>
+				<li data-filter="dir"><a href="api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_GET['dir']);?>" title="<?_e("Specific")?>"><i class="fa fa-file"></i> <span><?_e("Specific")?></span></a></li>
+				<?}?>
+
 				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?_e("Videos")?>"><i class="fa fa-film"></i> <span><?_e("Videos")?></span></a></li>
+
 				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?_e("Audios")?>"><i class="fa fa-volume-up"></i> <span><?_e("Audios")?></span></a></li> -->
+
 			</ul>
 			
-			<div id="media" class="">
+			<div id="media">
 				<?
 				$_GET['mode'] = "media";
+
 				include("ajax.admin.php");
 				?>
 			</div>
 
 			<script>
+			index = $("[data-filter='dir']").index();
+
 			add_container = function(file) {
 				// Crée un id unique
 				now += 1;
@@ -741,7 +756,8 @@ switch($_GET['mode'])
 				var mime = file.type.split("/");
 				
 				// Switch sur le 1er onglet avec tous les médias
-				$(".dialog-media").tabs("option", "active", 0);
+				if($(".ui-tabs-nav .ui-state-active").data("filter") != "dir")
+					$(".dialog-media").tabs("option", "active", 0);
 
 				// Option de resize à afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
@@ -749,9 +765,10 @@ switch($_GET['mode'])
 				else 
 					var resize = "";
 
+				//@todo voir l'utilité de metre le data-media dans le li à ce niveau vu que c'est juste un bloc vide pour upload
 
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
-				var container = "<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + file.name +"\" data-type='"+ mime[0] +"'>";
+				var container = "<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + $("#dialog-media-dir").val() + file.name +"\" data-dir=\""+ $("#dialog-media-dir").val() +"\" data-type='"+ mime[0] +"'>";
 
 					if(mime[0] == "image") 
 						container += "<img src=''>" + resize;
@@ -764,7 +781,7 @@ switch($_GET['mode'])
 
 				container += "</li>";
 
-				$("#media .add-media").after(container);
+				$(".dialog-media [aria-hidden='false'] .add-media").after(container);
 
 
 				// Converti la date unix en date lisible
@@ -810,11 +827,14 @@ switch($_GET['mode'])
 			}
 
 
-			$(document).ready(function()
+			$(function()
 			{
 				// Pour la construction d'id unique
 				now = new Date().getTime();
 
+				// Switch sur l'onglet spécifique si il existe
+				if($("[data-filter='dir']").length)
+					$(".dialog-media").tabs("option", "active", $("[data-filter='dir']").index());
 
 				// On demande une version redimensionnée de l'image
 				$(".dialog-media").on("click", ".resize", function(event)
@@ -992,8 +1012,14 @@ switch($_GET['mode'])
 		
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
-		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/".((isset($_GET['filter']) and  $_GET['filter'] == "resize") ? "resize/":"");
-		
+		//print_r($_GET);
+
+		$subfolder = null;
+		if(isset($_GET['filter']) and  $_GET['filter'] == "resize") $subfolder .= "resize/";
+		if(isset($_GET['filter']) and  $_GET['filter'] == "dir" and isset($_GET['dir'])) $subfolder .= $_GET['dir'];
+
+		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/" . $subfolder;
+
 		// Le dossier existe
 		if(is_dir($dir))
 		{
@@ -1004,7 +1030,7 @@ switch($_GET['mode'])
 			while(list($cle, $filename) = each($scandir))				
 			{				
 				if($filename != "Thumbs.db" and $filename != ".htaccess" and !is_dir($dir.$filename))
-				{			
+				{						
 					$stat = stat($dir.$filename);// size : poids, mtime : date de modification (timestamp)
 					$file_infos = getimagesize($dir.$filename);// 0 : width, 1 : height
 
@@ -1027,9 +1053,9 @@ switch($_GET['mode'])
 
 					// Filtre le tableau en fonction du type mime choisi
 					if(
-						(!isset($_GET['filter']) or $_GET['filter'] == "resize") or
+						(!isset($_GET['filter']) or $_GET['filter'] == "resize" or $_GET['filter'] == "dir") or
 						$_GET['filter'] == $type or
-						($_GET['filter'] == "file" and $type != "image" and $type != "video" and $type != "audio")						
+						($_GET['filter'] == "file" and $type != "image" and $type != "video" and $type != "audio")		
 					) 
 					{					
 						// $i pour être sûr d'incrémenter le tableau
@@ -1063,11 +1089,11 @@ switch($_GET['mode'])
 			{
 				uksort($tab_file, 'strnatcmp');// Tri ascendant
 				if($sort == 'DESC') $tab_file = array_reverse($tab_file, true);// Tri Descendant
-								
+							
 				$i = 1;
 				// Affiche les fichiers en fonction du tri
 				while(list($cle, $val) = each($tab_file)) 
-				{				
+				{
 					// Convertie la taille en mode lisible
 					if($val['size'] >= 1048576) $val['size'] = round($val['size'] / 1048576) . "Mo";
 					elseif($val['size'] >= 1024) $val['size'] = round($val['size'] / 1024) . "Ko";
@@ -1105,10 +1131,10 @@ switch($_GET['mode'])
 					else $info = pathinfo($val['filename'], PATHINFO_EXTENSION);
 					
 					// Affichage du fichier
-					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode((isset($_GET['filter'])?$_GET['filter']:""))."-".$i."\" data-media=\"media/".((isset($_GET['filter']) and $_GET['filter'] == "resize") ? "resize/" : "").utf8_encode($val['filename'])."\" data-type=\"".$type."\">";
+					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode((isset($_GET['filter'])?$_GET['filter']:""))."-".$i."\" data-media=\"media/".$subfolder.utf8_encode($val['filename'])."\" data-dir=\"".$subfolder."\" data-type=\"".$type."\">";
 
 						if($type == "image") {
-							echo"<img src=\"".$GLOBALS['path']."media/".((isset($_GET['filter']) and $_GET['filter'] == "resize") ? "resize/" : "").$val['filename']."\">";
+							echo"<img src=\"".$GLOBALS['path']."media/".$subfolder.$val['filename']."\">";
 							echo"<a class='resize' title=\"".__("Get resized image")."\"><i class='fa fa-fw fa-compress bigger'></i></a>";
 						}
 						else echo"<div class='file'><i class='fa fa-fw fa-".$fa." mega'></i><div>".utf8_encode($val['filename'])."</div></div>";
@@ -1126,7 +1152,7 @@ switch($_GET['mode'])
 		</ul>
 
 		<script>
-			$(document).ready(function()
+			$(function()
 			{
 				if($("#dialog-media-width").val() || $("#dialog-media-height").val()) $(".dialog-media .resize").remove();
 			});
@@ -1147,12 +1173,15 @@ switch($_GET['mode'])
 	case "get-img":// Renvoi une image et la resize si nécessaire
 
 		login('medium', 'add-media');// Vérifie que l'on est admin
+
+		if(isset($_POST['dir'])) $dir = encode($_POST['dir'], "-", array("_","/"));
+		else $dir = null;
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
 		
 		// Resize l'image ou simple copie
-		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], "media/resize/");
+		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], "media/resize/" . $dir);
 
 	break;
 
@@ -1181,10 +1210,10 @@ switch($_GET['mode'])
 		//$filename = preg_replace("([^a-z0-9\.\-_]|[\.]{2,})", "", $_FILES['file']['name']);
 		// /^[a-z0-9]+\.[a-z]{3,4}$/  /[^a-z0-9\._-]+/  ([^a-z0-9\.\-_]|[\.]{2,})  [a-zA-Z0-9]{1,200}\.[a-zA-Z0-9]{1,10}
 
-		if(isset($_POST['dest'])) $dest = encode($_POST['dest'], "-", array("_","/"));
-		else $dest = null;
+		if(isset($_POST['dir'])) $dir = encode($_POST['dir'], "-", array("_","/"));
+		else $dir = null;
 
-		$src_file = "media/". $dest . $filename;
+		$src_file = "media/". $dir . $filename;
 		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'] . $src_file;
 		
 		// Check le type mime côté serveur
@@ -1211,8 +1240,8 @@ switch($_GET['mode'])
 					{
 						// Resize l'image si besoin
 						echo img_process($root_file,
-								"media/" . $dest,
-								"media/resize/" . $dest,
+								"media/" . $dir,
+								"media/resize/" . $dir,
 								(int)$_POST['width'],
 								(int)$_POST['height'],
 								(isset($_POST['resize'])?$_POST['resize']:"")
