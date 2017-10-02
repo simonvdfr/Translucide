@@ -1215,6 +1215,13 @@ $(function()
 
 				memo_img = null;
 				img_leave();// Raz Propriétés image
+			},			
+			"keyup.editable": function() {// Mémorise la position du curseur
+				memo_selection = window.getSelection();				
+				if(memo_selection.anchorNode) {
+					memo_range = memo_selection.getRangeAt(0);
+					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
+				}
 			},
 			"mouseup.editable": function(event)// Si on click dans un contenu éditable
 			{		
