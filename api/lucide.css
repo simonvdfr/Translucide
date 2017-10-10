@@ -417,8 +417,6 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	min-width: 45px;
 	min-height: 30px;
 	border: 1px dotted rgba(61, 128, 179, 0.2);
-
-	transition: all .2s;
 }
 	.editable-media img { margin: -1px; }
 	
@@ -437,6 +435,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		color: #7AD2D9;		
 		font-size: 0.8em;
+		font-family: sans-serif;
 		text-align: center;
 		text-shadow: 1px 1px 0px #ffffff;
 
@@ -461,6 +460,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		color: #7AD2D9;	
 		font-size: inherit;
+		font-family: sans-serif;
 		text-shadow: 1px 1px 1px #2c5f66;
 		text-decoration: none;
 
@@ -468,7 +468,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		top: 0;
 		right: 0;
-		width: inherit;
+		width: initial; /* inherit */
 		padding: 6px 8px;
 		margin: 10px 10px 10px 0px;
 
@@ -864,6 +864,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	font-size: 0.8em;
     text-decoration: none;
     white-space: nowrap;
+
+    border-radius: 0 5px 0 0;
 	
 	display: none;
 	opacity: .5;

@@ -62,6 +62,9 @@
 
 
 /* Les icones */
+.fa-resize-full:before { content: '\e800'; } /* '' */
+.fa-resize-small:before { content: '\e801'; } /* '' */
+.fa-th-large:before { content: '\e802'; } /* '' */
 .fa-search:before { content: '\e803'; } /* '' */
 .fa-mail:before { content: '\e805'; } /* '' */
 .fa-user:before { content: '\e806'; } /* '' */

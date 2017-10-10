@@ -408,6 +408,7 @@ input[type="reset"].unstyled:focus {
 	color: #507075;
 	text-align: center;
 	text-decoration: none;
+	font-family: sans-serif;
 
 	display: inline-block;
 

@@ -1,4 +1,4 @@
-$(document).ready(function()
+$(function()
 {
 	// MENU BURGER
 	$(".burger").click(function() {

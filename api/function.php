@@ -64,10 +64,10 @@ function get_url($url_source = null)
 				$GLOBALS["filter"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_"));
 			}
 		}
-		else $url = encode($path);
+		else $url = $path;
 	}
 
-	return addslashes($url);
+	return encode($url);
 }
 
 // Retourne l'url rewriter
@@ -174,7 +174,7 @@ function get_lang($lang = '')
 
 	$GLOBALS['lang'] = $_SESSION['lang'] = $_COOKIE['lang'] = $lang;	
 
-	return $lang;
+	return encode($lang);
 }
 
 // Charge une traduction

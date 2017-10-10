@@ -777,18 +777,23 @@ switch($_GET['mode'])
 			
 			// État d'activation
 			if($_SESSION['auth']['edit-user'] and $_POST['state'])
-				$sql .= "state = '".$_POST['state']."', ";
+				$sql .= "state = '".encode($_POST['state'])."', ";
 			elseif(!$_REQUEST['uid']) 
 				$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
 			
 			// Droit d'accès
-			if($_SESSION['auth']['edit-admin'] and $_POST['auth'])
-				$sql .= "auth = '".implode(",", $_POST['auth'])."', ";
+			if($_SESSION['auth']['edit-admin'] and $_POST['auth']) {
+				$auth = $connect->real_escape_string(implode(",", $_POST['auth']));
+				$sql .= "auth = '".$auth."', ";
+			}
 			elseif(!$_REQUEST['uid']) 
 				$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
 
-			$sql .= "name = '".$_POST['name']."', ";
-			$sql .= "email = '".$_POST['email']."', ";
+			$name = $connect->real_escape_string($_POST['name']);			
+			$sql .= "name = '".$name."', ";
+
+			$email = $connect->real_escape_string($_POST['email']);
+			$sql .= "email = '".$email."', ";
 			
 			// Mot de passe
 			if($password) {
@@ -800,8 +805,10 @@ switch($_GET['mode'])
 			}
 			
 			// Token d'api externe
-			if(isset($_POST['oauth']))
-				$sql .= "oauth = '".addslashes(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE))."', ";
+			if(isset($_POST['oauth'])) {
+				$oauth = $connect->real_escape_string(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE));			
+				$sql .= "oauth = '".$oauth."', ";
+			}
 
 			$sql .= "date_update = NOW() ";
 
@@ -837,7 +844,8 @@ switch($_GET['mode'])
 						else 
 							$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
 						
-						$sql .= "val = '".addslashes(json_encode($_POST['meta'], JSON_UNESCAPED_UNICODE))."' ";
+						$meta = $connect->real_escape_string(json_encode($_POST['meta'], JSON_UNESCAPED_UNICODE));
+						$sql .= "val = '".$meta."' ";
 
 						if($res_meta['id']) 
 							$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";

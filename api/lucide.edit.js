@@ -1297,6 +1297,7 @@ $(function()
 		// Récupère les contenus du presse-papier
 		var paste = (event.originalEvent || event).clipboardData.getData(getData) || prompt(__("Paste something..."));// text/html text/plain
 
+
 		// Supprimes les commentaires HTML
 		paste = paste.replace(/<!--[\s\S]*?-->/gi, "");
 
@@ -1304,8 +1305,15 @@ $(function()
 		if(!$(this).hasClass("view-source")) 
 		{
 			//@todo voir pour les doubles saut de ligne lors des copier&coller
-			paste = paste.replace(/\n|\r/gi, "")// Clean les retours à la ligne
-			    .replace(/<p[^>]*><br><\/p><\/div>/gi, "\n")// Supprime les br dans des <p>
+			paste = paste
+				.replace(/\n|\r/gi, "")// Clean les retours à la ligne
+
+			    .replace(/<p[^>]*><br><\/p><\/div>/gi, "\n")// <br> dans des </p></div>
+			    .replace(/<p[^>]*><span><\/span><br><\/p>/gi, "\n")// <br> dans des <p> => \n
+
+			    .replace(/<p[^>]*>/gi, "")// Supp les <p> 
+			    .replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
+
 			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
 			    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
 

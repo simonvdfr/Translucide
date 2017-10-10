@@ -567,7 +567,7 @@ switch($_GET['mode'])
 				document.title = "<?=addslashes($_POST['title']);?>";
 
 				<?if(isset($change_url)){?>					
-					window.history.replaceState(history.state, document.title, "<?=make_url($change_url);?>");					
+					window.history.replaceState(history.state, document.title, "<?=make_url($change_url);?>");	
 				<?}?>
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
@@ -1650,7 +1650,7 @@ switch($_GET['mode'])
 				"Table already exists" => array("fr" => "La table existe déjà"),
 				"User already exists : update password" => array("fr" => "L'utilisateur existe déjà : mise à jour du mot de passe"),
 				"Wrong email" => array("fr" => "Mauvais email"),
-				"Successful installation ! create your homepage !" => array("fr" => "Installation réussie ! créer votre page d'accueil !")
+				"Successful installation ! Redirection to homepage ..." => array("fr" => "Installation réussie ! Redirection vers la page d'accueil ...")
 			);
 
 			add_translation($add_translation);
@@ -1983,7 +1983,7 @@ switch($_GET['mode'])
 						// MESSAGE DE BIENVENUE et d'information qu'il faut créé la page d'accueil du site
 						?>
 						<script>
-							light("<?_e("Successful installation ! create your homepage !")?>");
+							light("<?_e("Successful installation ! Redirection to homepage ...")?>");
 							setTimeout(function(){
 								 $("#error, #highlight").slideUp("slow").fadeOut(function() {
 									window.location.reload();// window.location = window.location.href;
