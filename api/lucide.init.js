@@ -231,8 +231,7 @@ $(function()
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
 	
 	// Bind le bouton d'ajout
-	$("a.bt.add").click(function() 
-	{
+	$("a.bt.add").click(function(){
 		add_content();
 	});	
 
@@ -329,7 +328,7 @@ $(function()
 			else
 			{
 				$("a.bt.fixed.top").fadeOut("fast", function(){
-					$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
+					//$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
 				});
 			}
 
@@ -344,8 +343,7 @@ $(function()
 			}
 
 			// Décale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
-			if($("a.bt.fixed.top").css("display") != "none")
-				$("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
+			//if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
 		});
     }
 	else if(!$("#admin-bar").length && !$("#dialog-connect").length)// On affiche au bout de x seconde le bouton d'édition
