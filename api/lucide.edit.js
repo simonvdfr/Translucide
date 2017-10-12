@@ -730,6 +730,8 @@ get_img = function(id, link)
 	var data_class = $("#"+$("#dialog-media-source").val()).data("class") || "";
 	var dir = $("#"+$("#dialog-media-source").val()).data("dir") || "";
 
+	var domain = window.location.origin + path;
+
 	// Resize de l'image et insertion dans la source
 	$.ajax({
 		type: "POST",
@@ -752,20 +754,20 @@ get_img = function(id, link)
 					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
 
 					// Ajoute l'image
-					$("#"+$("#dialog-media-source").val()).append('<img src="'+ path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
+					$("#"+$("#dialog-media-source").val()).append('<img src="'+ domain + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
 				}
 				else
-					$("#"+$("#dialog-media-source").val()+" img").attr("src", path + final_file );
+					$("#"+$("#dialog-media-source").val()+" img").attr("src", domain + final_file );
 			}
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
-				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ path + final_file +"\" class='fl'></a>");
-				else exec_tool("insertHTML", "<img src=\""+ path + final_file +"\" class='fl'>");				
+				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain + final_file +"\" class='fl'></a>");
+				else exec_tool("insertHTML", "<img src=\""+ domain + final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
-				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", path + final_file);
-				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+ path + final_file +")");
+				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", domain + final_file);
+				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+ domain + final_file +")");
 			}
 
 			// Fermeture de la dialog
@@ -1936,7 +1938,11 @@ $(function()
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
 	if($.browser.webkit) {
 		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
-			if(event.target.tagName == "SPAN" && !$(event.target).hasClass("editable"))
+			if(
+				event.target.tagName == "SPAN"
+				&& !$(event.target).hasClass("editable")
+				&& !$(event.target).hasClass("editable-tag")
+			)
 				event.target.outerHTML = event.target.innerHTML;			
 		});
 	}
