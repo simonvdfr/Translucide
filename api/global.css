@@ -513,6 +513,8 @@ input[type="reset"].unstyled:focus {
 	.bt.fixed.edit { 	
 		transition: right .1s;	
 		opacity: 0.2;
+		left: 20px;
+		right: initial;
 	}
 	.bt.fixed.add { 
 		margin-bottom: 10px;
@@ -520,9 +522,9 @@ input[type="reset"].unstyled:focus {
 		z-index: 998;
 	}
 	.bt.fixed.construction { 		
-		left: 10px;
+		left: 70px;/*10px*/
 		right: initial;
-		opacity: 0.5;
+		opacity: 0.6;
 		display: block;		
 		padding-left: 0.5rem;
 		border-radius: 8px;
@@ -563,6 +565,9 @@ input[type="reset"].unstyled:focus {
 
 /* GRIDS */
 @media (min-width: 544px) {
+	
+	.medium-hidden { display: none !important; }
+
 	.grid {
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -863,7 +868,7 @@ div.editable {
 	.mw960p {
 		width: auto;
 		float: none;
-	}
+	}	
 }
 /* ---------------------------------- */
 /* ==Responsive tiny                  */
@@ -927,12 +932,8 @@ div.editable {
 		color: #000;
 		margin: auto;
 	}
-	.print {
-		display: block;
-	}
-	.no-print {
-		display: none;
-	}
+	.print { display: block; }
+	.no-print { display: none; }
 	/* no orphans, no widows */
 	p,
 	.p-like,
