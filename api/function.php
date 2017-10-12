@@ -405,6 +405,20 @@ function hidden($key = null, $filter = null)
 	if(!is_array($filter)) $filter = array("class" => $filter);
 
 	echo"<input type='hidden' id='".encode($key)."' value=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" class='editable-hidden ".$filter['class']."'>";
+
+	// Si autocomplete
+	if($filter['autocomplete']) {?>
+		<script>
+			edit.push(function() {	
+				$("#<?echo encode($key)?>").autocomplete({
+					source: <?echo'["'.implode('","', $filter['autocomplete']).'"]';?>,
+					minLength: 0,
+				}).focus(function () {
+					$(this).autocomplete("search");
+				});
+			});
+		</script>
+	<?}
 	
 	$GLOBALS['editkey']++;
 }
