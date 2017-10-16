@@ -412,7 +412,7 @@ input[type="reset"].unstyled:focus {
 
 	display: inline-block;
 
-	/* padding: 0 6px 1px; */	
+	padding: 0 6px 1px;
 
 	border-radius: 3px;
 	border: 1px solid rgba(117, 137, 140, 0.5);
