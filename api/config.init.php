@@ -23,6 +23,9 @@ if(!isset($_SESSION))
 // Définition de la zone horaire
 date_default_timezone_set('Europe/Paris');
 
+// Langue des dates
+setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
+
 
 // Variables de la base de données
 $GLOBALS['db_prefix'] = "";
