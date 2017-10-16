@@ -66,8 +66,11 @@
 .fa-resize-small:before { content: '\e801'; } /* '' */
 .fa-th-large:before { content: '\e802'; } /* '' */
 .fa-search:before { content: '\e803'; } /* '' */
+.fa-volume-off:before { content: '\e804'; } /* '' */
 .fa-mail:before { content: '\e805'; } /* '' */
 .fa-user:before { content: '\e806'; } /* '' */
+.fa-volume-up:before { content: '\e807'; } /* '' */
+.fa-music:before { content: '\e808'; } /* '' */
 .fa-camera:before { content: '\e809'; } /* '' */
 .fa-cancel:before { content: '\e80a'; } /* '' */
 .fa-plus:before { content: '\e80b'; } /* '' */
