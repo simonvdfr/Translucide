@@ -857,11 +857,12 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.toolbox .fa-link { color: #b64e4e; }
 
 
-.clear-img {
+.clear-file {
 	background: grey;
 
 	color: #fff !important;
 	font-size: 0.8em;
+	font-family: sans-serif;
     text-decoration: none;
     white-space: nowrap;
 
@@ -880,7 +881,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
     transition: all .3s;
 }
-	.clear-img:hover { opacity: 1; }
+	.clear-file:hover { opacity: 1; }
 
 
 #unlink { color: #9E1E1E; }

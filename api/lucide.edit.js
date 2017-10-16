@@ -700,7 +700,7 @@ get_file = function(id)
 		$("#"+$("#dialog-media-source").val()+" img").remove();
 
 		// Supprime les fichiers
-		$("#"+$("#dialog-media-source").val()+" .fa").remove();
+		$("#"+$("#dialog-media-source").val()+" > .fa").remove();
 
 		// Ajoute le fichier
 		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
@@ -1421,8 +1421,8 @@ $(function()
 
 
 
-	// Icone d'upload et de supp de l'image
-	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div><div class='clear-img' title=\""+ __("Delete image") +"\"><i class='fa fa-trash-o'></i> "+ __("Delete image") +"</a>");
+	// Icone d'upload et de supp du fichier
+	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div><div class='clear-file' title=\""+ __("Delete file") +"\"><i class='fa fa-trash-o'></i> "+ __("Delete file") +"</a>");
 
 	// Rends éditables les images/fichiers
 	editable_media_event = function() {
@@ -1458,21 +1458,27 @@ $(function()
 					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
 
-					// Affichage de l'option pour supprimer l'image si il y en a une
-					if($("img", this).attr("src")) $(".clear-img", this).fadeIn("fast");
+					// Affichage de l'option pour supprimer le fichier si il y en a un
+					if($("img", this).attr("src") || $("a i", this).length || $(".fa-file-o", this).length)
+						$(".clear-file", this).fadeIn("fast");
 				},
 				// Out
 				"mouseleave.editable-media": function(event) {
 					$(this).removeClass("drag-over");
 					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
-					$(".clear-img", this).hide();
+					$(".clear-file", this).hide();
 				},
 				// Ouverture de la fenêtre des médias
 				"click.editable-media": function(event) {
-					if($(event.target).hasClass("clear-img")){
-						$("img", this).attr("src","");// Supp img src
-						$(".clear-img", this).hide();
+					if($(event.target).hasClass("clear-file")){
+						if($("img", this).attr("src")) $("img", this).attr("src","");// Supp img src
+						else {
+							$(".fa-file-o", this).remove();// Supp le fichier qui vien d'etre ajouté <i>
+							$("a", this).remove();// Supp le fichier déjà présent avec lien <a><i>
+						} 
+
+						$(".clear-file", this).hide();
 					}
 					else// Ouverture de la fenêtre de média
 					{
