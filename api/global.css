@@ -495,7 +495,7 @@ input[type="reset"].unstyled:focus {
 	z-index: 999;
 
 	width: auto;
-	right: 20px;
+	left: 20px;/* right */
 	bottom: 20px;
 
 	margin: 0;

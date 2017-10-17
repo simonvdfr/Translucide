@@ -276,7 +276,7 @@ $(function()
 	// Affichage du bouton add
 	$("a.bt.fixed.edit").hover(
 		function() {
-			$("a.bt.fixed.add").css("right", parseInt($("a.bt.fixed.edit").css("right")) + "px");// même niveau right
+			//$("a.bt.fixed.add").css("right", parseInt($("a.bt.fixed.edit").css("right")) + "px");// même niveau right
 			$("a.bt.fixed.add").fadeIn();//fadeIn
 			$("a.bt.fixed.add").css("bottom", parseInt($("a.bt.fixed.edit").css("bottom")) + $("a.bt.fixed.edit").outerHeight() + "px");// au dessus bt edit
 			hover_add = true;
