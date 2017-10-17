@@ -34,7 +34,7 @@ Note : dans la configuration de PHP short_open_tag doit être en On `short_open_
 - <kbd>ctrl + z</kbd> Annule la dernière action dans les blocs textes
 
 ## Utilisation de l'éditeur du menu de navigation
-- Lorsque vous modifiez du contenu qui se trouve dans <header> ou <footer>, ça le modifie pour toutes les pages du site.
+- Lorsque vous modifiez du contenu qui se trouve dans `<header>` ou `<footer>`, ça le modifie pour toutes les pages du site.
 - Lorsque vous passez la souris dans le header une boîte s'ouvre vous proposant les pages pas encore présentes dans le menu.
 - Un clic sur le `+` vous permet d'ajouter l'élément au menu, ou sinon vous pouvez faire un drag&drop
 - Une fois dans le menu, au survol d'un élément une zone en pointillés apparaît au-dessus pour pouvoir le déplacer en drag&drop.
@@ -42,9 +42,10 @@ Note : dans la configuration de PHP short_open_tag doit être en On `short_open_
 
 ## Balises maison
 - `text()`
-- `media('nom-de-la-zone' [,'100x100'])` L'argument final et optionnel, il force une taille
-- `bg()` A placer dans un <div> ou autres pour rendre l'image de fond éditable
-....
+- `media("nom-de-la-zone" [,'100x100'])` L'argument final et optionnel, il force une taille
+	- On peut ajouter plus d'argument `media("nom-de-la-zone", array("dir" => "product/1/", "size" => "300", "class" => "fl mal"))`. Ici par exemple on spécifie un dossier destination pour le media (dir), une taille (size), ou encore une classe (class)
+- `bg()` A placer dans un `<div>` ou autres pour rendre l'image de fond éditable
+- `hidden("nom-de-la-zone" [, array("autocomplete" => ["variable 1", "variable 2"])])` crée un champ qui s'affiche uniquement en mode édition et qui permet de stocker des variables editable. Ici `autocomplete` permet d'avoir une suggestion de valeur lors de la saisie
 
 ## Gestion du multilingue
 Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/testé. Globalement les traductions de l'interface du CMS se trouvent dans le fichier `api/translation.php`
@@ -55,7 +56,6 @@ Bientôt ... :)
 ## Wordpress VS Translucide
 J'ai tenté de passer un site que j'avais fait sous Wordpress sous Translucide avec les mêmes fonctionnalités et aspect visuel et le résultat était plutôt édifiant.
 Pour le même site on est passé de plus de 1000 fichiers avec Wordpress à moins de 100 images comprises pour Translucide. Et de 50 mégaoctet à 5 mégaoctet pour la version CMS Translucide. Niveau temps d'exécution en général on diviste par 2 le temps de chargement d'une page est ceci sans utiliser de système de cache spécifique. Combattons l'obésiciel ensemble :)
-
 
 ## FAQ
 
