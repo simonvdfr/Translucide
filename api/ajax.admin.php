@@ -160,8 +160,9 @@ switch($_GET['mode'])
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
 			<ul class="small">
-				<?if(isset($_SESSION['auth']['add-page']) and $GLOBALS['add-page']){?>
-				<li data-filter="page"><a href="#add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
+				
+				<?if(isset($_SESSION['auth']['add-product']) and $GLOBALS['add-product']){?>
+				<li data-filter="product"><a href="#add-product" title="<?_e("Add product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Add product")?></span></a></li>
 				<?}?>
 				
 				<?if(isset($_SESSION['auth']['add-article']) and $GLOBALS['add-article']){?>
@@ -175,9 +176,9 @@ switch($_GET['mode'])
 				<?if(isset($_SESSION['auth']['add-media']) and $GLOBALS['add-media']){?>
 				<li data-filter="media"><a href="#add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
 				<?}?>
-				
-				<?if(isset($_SESSION['auth']['add-product']) and $GLOBALS['add-product']){?>
-				<li data-filter="product"><a href="#add-product" title="<?_e("Add product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Add product")?></span></a></li>
+
+				<?if(isset($_SESSION['auth']['add-page']) and $GLOBALS['add-page']){?>
+				<li data-filter="page"><a href="#add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
 				<?}?>
 			</ul>					
 
