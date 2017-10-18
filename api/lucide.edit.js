@@ -1296,17 +1296,20 @@ $(function()
 		if($(this).hasClass("view-source")) var getData = "text/plain", insertMode = "insertText";
 		else var getData = "text/html", insertMode = "insertHTML";
 
-		// Récupère les contenus du presse-papier
-		var paste = (event.originalEvent || event).clipboardData.getData(getData) || prompt(__("Paste something..."));// text/html text/plain
-
+		// Récupère les contenus du presse-papier // text/html text/plain
+		var paste = 
+			(event.originalEvent || event).clipboardData.getData(getData) ||
+			(event.originalEvent || event).clipboardData.getData("text/plain") ||
+			prompt(__("Paste something..."));
 
 		// Supprimes les commentaires HTML
 		paste = paste.replace(/<!--[\s\S]*?-->/gi, "");
 
-		// Si pas en mode visionnage du code source
+		// Si pas en mode visionnage du code source & 
 		if(!$(this).hasClass("view-source")) 
 		{
-			//@todo voir pour les doubles saut de ligne lors des copier&coller
+			// Html dans le paste
+			if(/<[a-z][\s\S]*>/i.test(paste))
 			paste = paste
 				.replace(/\n|\r/gi, "")// Clean les retours à la ligne
 
@@ -1317,7 +1320,9 @@ $(function()
 			    .replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
 
 			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
-			    .replace(/\n/gi, "<br>");// Ajoute les sauts de lignes
+
+			// Transforme les retours à la ligne en <br>
+			paste = paste.replace(/\n/gi, "<br>");
 
 			// Clean les tags
 			paste = strip_tags(paste, "<a></a><b><b/><i></i><br>");
