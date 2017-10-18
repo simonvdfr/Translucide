@@ -220,7 +220,7 @@ edit_launcher = function(callback)
 $(function()
 {
 	$window = $(window);
-    var $animation = $(".animation");
+    $animation = $(".animation");
 
 
 	//@todo verif l'utilité car déjà instancier dans fonction.php
