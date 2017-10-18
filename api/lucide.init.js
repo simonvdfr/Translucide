@@ -219,6 +219,10 @@ edit_launcher = function(callback)
 
 $(function()
 {
+	$window = $(window);
+    var $animation = $(".animation");
+
+
 	//@todo verif l'utilité car déjà instancier dans fonction.php
 	// On met en background les images data-bg 
 	/*$("[data-bg]").css("background-image", function() {
@@ -313,40 +317,10 @@ $(function()
 		return false;
 	});
 
+		
 
-
-	$window = $(window);
-	
-	// Si on a une scrollbar
-	if($("body").height() > $window.height()) 
-	{        
-		// Au scroll on affiche ou pas les boutons flottants
-		$window.on("scroll", function() 
-		{
-			// Affichage du bouton scroll to top
-			if($window.scrollTop() > 50) $("a.bt.fixed.top").show();
-			else
-			{
-				$("a.bt.fixed.top").fadeOut("fast", function(){
-					//$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
-				});
-			}
-
-			// Si la barre d'administration n'est pas ouverte et la dialog de connexion inexistante
-			if(!$("#admin-bar").length && !$("#dialog-connect").length)
-			{
-				// Affichage du bouton d'édition  
-				if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-page"))
-					$("a.bt.fixed.edit").fadeIn("slow");				
-				else if($("a.bt.fixed.edit").css("display") == "block")
-					$("a.bt.fixed.edit").fadeOut();
-			}
-
-			// Décale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
-			//if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
-		});
-    }
-	else if(!$("#admin-bar").length && !$("#dialog-connect").length)// On affiche au bout de x seconde le bouton d'édition
+	// On affiche au bout de x seconde le bouton d'édition si pas de scrollbar
+	if($("body").height() < $window.height() && !$("#admin-bar").length && !$("#dialog-connect").length)
 	{
 		if(typeof state !== 'undefined')
 			if(state) $("a.bt.fixed.edit").delay("2500").fadeIn("slow");
@@ -363,5 +337,88 @@ $(function()
 			if((event.which == 38 || event.which == 40) && !$("#admin-bar").length) $("a.bt.fixed.edit").fadeIn();			
 		});
 	}
+
+	
+
+	// ACTION SUR LES ONSCROLL
+	$window.on("scroll resize load", function ()
+	{
+
+		// AFFICHAGE DU BOUTON SCROLL TO TOP
+		if($window.scrollTop() > 50) $("a.bt.fixed.top").show();
+		else
+		{
+			$("a.bt.fixed.top").fadeOut("fast", function(){
+				//$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
+			});
+		}
+
+
+		// AFFICHAGE DU BOUTON D'ÉDITION  
+		// Si la barre d'administration n'est pas ouverte et la dialog de connexion inexistante
+		if(!$("#admin-bar").length && !$("#dialog-connect").length)
+		{
+			if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-page"))
+				$("a.bt.fixed.edit").fadeIn("slow");				
+			else if($("a.bt.fixed.edit").css("display") == "block")
+				$("a.bt.fixed.edit").fadeOut();
+		}
+
+		// Décale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
+		//if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
+
+
+		// ANIMATION SUR LES CONTENUS
+		var window_height = $window.outerHeight();//height
+    	var window_top = $window.scrollTop();
+    	var window_bottom = (window_top + window_height);
+
+    	$.each($animation, function() {
+    		var $element = $(this);
+    		var element_height = $element.outerHeight();
+    		var element_top = $element.offset().top;
+    		var element_bottom = (element_top + element_height);
+
+			// Vérifier si ce conteneur actuel est dans la fenêtre
+			if ((element_bottom >= window_top) &&
+				(element_top <= window_bottom)) {
+				$element.addClass("fire");
+			}
+			else $element.removeClass("fire");			
+		});
+	});
+
+	$window.trigger("scroll");
+
+
+
+	// SMOOTHSCOLL SUR LES ANCRES
+	$("a[href*='#']").on("click", function(event) {
+		event.preventDefault();
+		$("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top}, 1000, "linear");
+	});
+
+
+
+	// MENU BURGER
+	$(".burger").click(function() {
+		// Animation sur le buger
+		$(this).toggleClass("active");
+
+		// Fond gris derrière le menu
+		if(!$(".responsiv-overlay").length)
+		{
+			$("body").append("<div class='responsiv-overlay'></div>");
+
+			// Ferme le menu si on click sur l'overlay
+			$(".responsiv-overlay").click(function() {
+				$("body").removeClass("responsiv-nav");
+				$(".burger").removeClass("active");
+			})
+		}
+		
+		// Ouverture du menu
+		$("body").toggleClass("responsiv-nav");		
+	});
 	
 });
