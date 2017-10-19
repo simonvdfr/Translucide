@@ -145,6 +145,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 		$sel_tag_info = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag-info' AND cle='".$tag."' LIMIT 1");
 		$res_tag_info = $sel_tag_info->fetch_assoc();
 
+		// Il y a des infos sur le tag
 		if($res_tag_info['val'])
 		{
 			// Récupère les informations des tags et écrase celle du contenu
@@ -161,7 +162,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 			$res_tag = $sel_tag->fetch_assoc();
 
 			// Ecrase les données meta
-			$title = $res_tag['val'];
+			$title = $GLOBALS['content']['title'] = $res_tag['val'];
 		}
 	}
 }
