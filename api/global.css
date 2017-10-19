@@ -1069,6 +1069,7 @@ div.editable {
 .fa-up-open:before { content: '\e81a'; } /* '' */
 .fa-down-hand:before { content: '\e81b'; } /* '' */
 .fa-globe:before { content: '\e81c'; } /* '' */
+.fa-clock:before { content: '\e81d'; } /* '' */
 .fa-phone:before { content: '\e820'; } /* '' */
 .fa-key:before { content: '\e822'; } /* '' */
 .fa-cog:before { content: '\e823'; } /* '' */

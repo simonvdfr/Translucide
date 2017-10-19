@@ -93,7 +93,7 @@ else// Affichage du formulaire
 	</script>
 
 
-	<section class="under-header parallax mod tc ptl" <?bg('bg-header')?>>		
+	<section class="under-header parallax mod tc ptl white" <?bg('bg-header')?>>		
 		<h1><?txt('titre')?></h1>
 	</section>
 
@@ -118,7 +118,7 @@ else// Affichage du formulaire
 				
 				<button class="bt fr pat">
 					<?_e(array("Send" => array("fr" => "Envoyer")))?>
-					<i class="fa fa-envelope"></i>
+					<i class="fa fa-mail-alt"></i>
 				</button>
 
 				<div class="">
@@ -176,7 +176,7 @@ else// Affichage du formulaire
 
 	<section class="mod">
 
-		<?include("plugin/google-map.php");?>
+		<?//include("plugin/google-map.php");?>
 
 	</section>
 	<?

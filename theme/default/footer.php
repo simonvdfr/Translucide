@@ -16,7 +16,7 @@
 
 		<section class="w33 fl">
 			
-			<h2 class="mbm medium up"><i class='fa fa-clock-o'></i> <?txt('footer-titre-heure')?></h2>
+			<h2 class="mbm medium up"><i class='fa fa-clock'></i> <?txt('footer-titre-heure')?></h2>
 			
 			<div class="bold"><?txt('footer-heure')?></div>
 
@@ -24,7 +24,7 @@
 
 		<section class="w33 fl">
 
-			<h2 class="mbm medium up"><i class='fa fa-map-marker'></i> <?txt('footer-titre-adresse')?></h2>
+			<h2 class="mbm medium up"><i class='fa fa-location'></i> <?txt('footer-titre-adresse')?></h2>
 
 			<div class="bold mbt"><?txt('footer-adresse')?></div>
 			
