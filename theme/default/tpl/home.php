@@ -1,10 +1,9 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
-<section class="fullpage intro" <?bg('intro')?>>	
-	<h1><?txt("h1")?></h1>
-	<h2><?txt("h2")?></h2>
-	<a href="#scrolldown"><span></span></a>
+<section class="under-header parallax mod tc white" <?bg('bg-header')?>>		
+	<h1><?txt('titre')?></h1>
 </section>
+
 
 <section id="scrolldown" class="mw960p mod center mtm">
 
