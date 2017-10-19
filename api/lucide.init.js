@@ -384,8 +384,24 @@ $(function()
 				(element_top <= window_bottom)) {
 				$element.addClass("fire");
 			}
-			else $element.removeClass("fire");			
+			else $element.removeClass("fire");		
+
+
+			// LAZY LOAD DES IMAGES (avec marge pour préload avant entré dans la fenetre)
+			var marge = 300; 
+			if($element.data("lazy") == "bg")
+				if($(this).css("background-image") == "none")
+					if(
+						(element_bottom + marge) >= window_top
+						&& (element_top - marge) <= window_bottom
+					)
+					{
+						$(this).css("background-image", function() {
+							return "url(" + $(this).attr("data-bg") + ")";
+						});
+					}
 		});
+
 	});
 
 	$window.trigger("scroll");
