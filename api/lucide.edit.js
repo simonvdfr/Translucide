@@ -1542,7 +1542,7 @@ $(function()
 		$(this).attr("placeholder", $(this).attr("id")).attr("title", $(this).attr("id"));
 	});
 	$("label.none").slideDown();
-	$(".editable-select.none").slideDown();
+	$(".editable-select.none").show();
 	$(".editable-hidden").slideDown();
 
 
