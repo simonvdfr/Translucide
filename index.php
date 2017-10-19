@@ -206,19 +206,19 @@ header('Content-type: text/html; charset=UTF-8');
 
 	<?if(isset($GLOBALS['icons'])){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
 
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
-	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css">	
+	<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
 
 	<?if(isset($GLOBALS['touch_icon'])){?><link rel="apple-touch-icon" href="<?=$GLOBALS['touch_icon'];?>"/><?}?>
 
-	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico?<?=$GLOBALS['cache']?>">
 
 
 	<script src="<?=$GLOBALS['jquery']?>"></script>
 
-	<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js"></script>
+	<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js?<?=$GLOBALS['cache']?>"></script>
 
 
 	<script>

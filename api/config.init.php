@@ -195,6 +195,10 @@ $GLOBALS['png_quality'] = 9;
 $GLOBALS['touch_icon'] = "";
 
 
+// Cache sur les styles
+$GLOBALS['cache'] = "";
+
+
 // Librairie externe
 $GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 
