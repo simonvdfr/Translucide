@@ -506,6 +506,10 @@ input[type="reset"].unstyled:focus {
 	opacity: 0.6;
 	text-shadow: none;
 }
+	.bt.fixed.top { 	
+		right: 20px;
+		left: inherit;
+	}
 	.bt.edit, .bt.add, .bt.top { 
 		height: 38px;
 		padding: 0.5rem;
