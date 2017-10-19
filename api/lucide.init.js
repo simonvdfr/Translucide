@@ -368,6 +368,13 @@ $(function()
 		//if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
 
 
+		// SMOOTHSCOLL SUR LES ANCRES
+		$("a[href*='#']").on("click", function(event) {
+			event.preventDefault();
+			$("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top}, 1000, "linear");
+		});
+
+
 		// ANIMATION SUR LES CONTENUS
 		var window_height = $window.outerHeight();//height
     	var window_top = $window.scrollTop();
@@ -402,17 +409,31 @@ $(function()
 					}
 		});
 
+
+		// PARALLAX DES BG
+		$(".parallax").each(function() {
+			var parallax_top = $(this).offset().top;
+			var parallax_height = $(this).outerHeight();
+			var parallax_bottom = parallax_top + parallax_height;
+
+			// Si un bg parallax entre dans le champ de vision on le scroll
+			if((parallax_top <= window_bottom) && (parallax_bottom >= window_top))
+			{
+				// / 2|4 => on divise pour un défilement plus lent
+				// Si bg déjà visible quand on arrive sur la page on change le calcule
+				if(parallax_top < window_height)
+					p100 = parseInt(((window_top) * 100 / (parallax_bottom))) / 4;		
+				else 
+					p100 = parseInt(((window_bottom - parallax_top) * 100 / (window_height + parallax_height))) / 2;		
+		
+				$(this).css("background-position", "50% " + p100 + "%");
+			}
+		});
+
+
 	});
 
 	$window.trigger("scroll");
-
-
-
-	// SMOOTHSCOLL SUR LES ANCRES
-	$("a[href*='#']").on("click", function(event) {
-		event.preventDefault();
-		$("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top}, 1000, "linear");
-	});
 
 
 
