@@ -1282,7 +1282,7 @@ switch($_GET['mode'])
 			$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";	
 
 			// On récupère la css qui contient les icônes
-			$subject = file_get_contents($GLOBALS['icons']);
+			$subject = file_get_contents($GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/global.min.css");
 			
 			// On extrait seulement les icônes
 			preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
