@@ -211,7 +211,7 @@ switch($_GET['mode'])
 
 				<div class="mas">
 					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
-					<label for="homepage" class="mrs mtn"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
+					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
 					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
 				</div>
 
