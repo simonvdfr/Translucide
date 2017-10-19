@@ -40,4 +40,19 @@
 
 </footer>
 
-<script src="theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"");?>effect<?=$GLOBALS['min']?>.js"></script>
+
+<script>
+$(function()
+{
+	// BG IMAGE SOUS LE HEADER
+	if($(".under-header").length) {
+		$(".under-header").css("margin-top", -$("header").outerHeight());// Calage
+		$(".under-header").append("<div class='overlay'></div>");// Diminue l'opacité
+		//$("header a").css("color", "#fff");// Lien en blanc
+		/*$("header #header-logo, header .burger").css({// Couleur du logo inversé
+			"-webkit-filter": "invert(1)",
+			"filter": "invert(1)"
+		});*/	
+	}
+});	
+</script>
