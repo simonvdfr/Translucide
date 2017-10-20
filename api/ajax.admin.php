@@ -1384,7 +1384,7 @@ switch($_GET['mode'])
 			}
 				#tag-tree > li { padding: 0.2rem; }
 				#tag-tree ol { list-style: none; }
-					#tag-tree .fa-plus-circle { cursor: pointer; }
+					#tag-tree .fa-plus-circle, #tag-tree .fa-trash { cursor: pointer; }
 					#tag-tree .fa-arrows { cursor: move; }
 		</style>
 
@@ -1409,7 +1409,8 @@ switch($_GET['mode'])
 							<div>
 								<i class="fa fa-arrows mrt grey small"></i>
 								<input type="text" name="tag" placeholder="tag" value="'.htmlspecialchars($echo).'">
-								<i class="fa fa-plus-circle mlt grey"></i>
+								<i class="fa fa-trash mlt grey vam"></i>
+								<i class="fa fa-plus-circle mlt grey vam"></i>
 							</div>';
 
 							// Si des enfants on imbrique et on boucle
@@ -1434,13 +1435,14 @@ switch($_GET['mode'])
 						$tag_tree = json_decode($res_tag_tree['val'], true);
 						while(list($cle, $val) = each($tag_tree)) tag_line($val);								
 					}
-					
+				
+					// @todo: manque une logique, car ajoute les tags plus utilisé ? il faudrait supp les tag que l'on supp de la liste de suggestion ?
 					// Liste les tags non classé
 					$sel_tag = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag' ".($sql_filter_tag ? "AND cle NOT IN (".trim($sql_filter_tag, ",").")" : "")." GROUP BY cle");
 					if($connect->error) echo $connect->error;
 					while($res_tag = $sel_tag->fetch_assoc()) {
 						tag_line($res_tag['val']);
-					}
+					}				
 					?>
 				</ol>
 
@@ -1454,6 +1456,8 @@ switch($_GET['mode'])
 		<script>
 			$(function()
 			{
+				add_translation({"Delete tag" : {"fr" : "Supprimer le tag"}});
+
 				// AUTOCOMPLETE
 				// Donnée pour l'autocomplete lors de la saisie dans le champs tags
 				get_available_tags = function() {
@@ -1523,17 +1527,28 @@ switch($_GET['mode'])
 				}
 
 
+				// On supprime un tag de la liste
+				$("#tag-tree li .fa-trash").on("click", function(event) {
+					event.preventDefault();
+
+					if(confirm(__("Delete tag")+" ?")) $(this).closest("li").remove();
+
+					tagtosave();
+				});
+
+
 				// Onlick on ajoute à la liste le tag
 				$("#tag-tree li .fa-plus-circle").on("click", function(event) {
 					event.preventDefault();
 
-					if($(".editable-tag").text()) var add_tag = $(".editable-tag").text() + ", " + $(this).prev().val();
+					if($(".editable-tag").text()) var add_tag = $(".editable-tag").text() + ", " + $(this).prev().prev().val();
 					else var add_tag = $(this).prev().val();
 
 					$(".editable-tag").text(add_tag);
 
 					tosave();
 				});
+
 
 				// @todo Vérifier que nestedsortable est chargé, sinon on charge sortable de Jquery UI
 				// Rend les tags triable
@@ -1593,6 +1608,7 @@ switch($_GET['mode'])
 					// @todo si nestedSortable n'est pas chargé on envoi un serialize
 					// Envoi de l'arbre de tag
 					$.ajax({
+						type: "POST",
 						url: path+"api/ajax.admin.php?mode=save-tag-tree",
 						data: {"id": id, "tags": $("#tag-tree").nestedSortable("toHierarchy"), "nonce": $("#nonce").val()},
 						success: function(html){
