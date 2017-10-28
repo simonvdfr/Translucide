@@ -1541,8 +1541,10 @@ switch($_GET['mode'])
 				$("#tag-tree li .fa-plus-circle").on("click", function(event) {
 					event.preventDefault();
 
-					if($(".editable-tag").text()) var add_tag = $(".editable-tag").text() + ", " + $(this).prev().prev().val();
-					else var add_tag = $(this).prev().val();
+					if($(".editable-tag").text()) 
+						var add_tag = $(".editable-tag").text() + ", " + $(this).prev().prev().val();
+					else 
+						var add_tag = $(this).prev().prev().val();
 
 					$(".editable-tag").text(add_tag);
 
