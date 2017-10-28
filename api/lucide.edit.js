@@ -1543,6 +1543,7 @@ $(function()
 	});
 	$("label.none").slideDown();
 	$(".editable-select.none").show();
+	$(".editable-tag.none").slideDown();
 	$(".editable-hidden").slideDown();
 
 
