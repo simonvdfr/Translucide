@@ -31,9 +31,9 @@ setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
 $GLOBALS['db_prefix'] = "";
 $GLOBALS['db_charset'] = "utf8";
 
-$GLOBALS['table_content'] = $GLOBALS['db_prefix']."content";
-$GLOBALS['table_meta'] = $GLOBALS['db_prefix']."meta";
-$GLOBALS['table_user'] = $GLOBALS['db_prefix']."user";
+$GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix']."content";
+$GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix']."meta";
+$GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix']."user";
 
 if(isset($_SERVER['WINDIR'])) {// Dev local
 	$GLOBALS['db_server'] = "";
