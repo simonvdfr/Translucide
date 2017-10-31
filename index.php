@@ -231,9 +231,9 @@ header('Content-type: text/html; charset=UTF-8');
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		ga('create', '<?=$GLOBALS['google_analytics'];?>', 'auto');
 		ga('send', 'pageview');
-		<? } ?>
+		<? }
 
-		<? if(isset($GLOBALS['facebook_sdk']) and $GLOBALS['facebook_api_id']) { ?>
+		if(isset($GLOBALS['facebook_sdk']) and $GLOBALS['facebook_api_id']) { ?>
 		// Facebook
 		(function(d, s, id){
 			var js, fjs = d.getElementsByTagName(s)[0];
@@ -242,9 +242,9 @@ header('Content-type: text/html; charset=UTF-8');
 			js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.7&cookie=true&appId=<?=$GLOBALS['facebook_api_id'];?>";
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
-		<? } ?>
-						
-		<?if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
+		<? } 
+
+		if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
 			// Si demande l'autoload du mode édition et si admin
 			$(function(){
 				edit_launcher();
