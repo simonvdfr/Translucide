@@ -2091,7 +2091,10 @@ switch($_GET['mode'])
 			else $scheme_domain_path .= "http://";
 			
 			$scheme_domain_path .= $_SERVER['SERVER_NAME'];
-			$scheme_domain_path .= str_replace(basename($_SERVER['REQUEST_URI']) , "", $_SERVER['REQUEST_URI']);
+
+			//@todo vérif car crée un bug sur les install en sous domaine
+			//$scheme_domain_path .= str_replace(basename($_SERVER['REQUEST_URI']) , "", $_SERVER['REQUEST_URI']);
+			$scheme_domain_path .= $_SERVER['REQUEST_URI'];
 		}
 
 		// Nom du site
@@ -2149,6 +2152,8 @@ switch($_GET['mode'])
 			<script src="api/lucide.init.js"></script>
 
 			<script>
+				path = "";
+
 				submittable = function() {
 					// Icône de chargement
 					$("#setup button i").removeClass("fa-spin fa-cog").addClass("fa-cogs");
@@ -2157,7 +2162,7 @@ switch($_GET['mode'])
 					$("#setup button").attr("disabled", false);
 				}
 
-				$(document).ready(function()
+				$(function()
 				{
 					// Setup
 					$("#setup").submit(function(event) 
@@ -2214,7 +2219,7 @@ switch($_GET['mode'])
 							
 							<li>
 								<label class="w30"><?_e("MySQL User Password");?></label> <input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="w60 vatt">
-								<a href="javascript:if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
+								<a href="javascript:void(0);" onclick="if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
 							</li>
 							
 							<li><label class="w30"><?_e("Table Prefix");?></label> <input type="text" id="db_prefix" value="<?=$GLOBALS['db_prefix'];?>" placeholder="tl_" class="w10 vatt"></li>
@@ -2247,8 +2252,11 @@ switch($_GET['mode'])
 							<li>
 								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
 								<input type="password" id="password" required class="w60 vatt">
-								<a href="javascript:if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password'); void(0);"><i class="fa fa-fw fa-eye mts vam"></i></a>
-								<a href="javascript:$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a>
+
+								<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
+
+								<!-- <a href="javascript:void(0);" onclick="$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a> -->
+
 							</li>
 
 							<!-- 
