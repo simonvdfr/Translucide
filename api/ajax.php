@@ -2,7 +2,6 @@
 @include_once("../config.php");// Les variables
 @include_once("function.php");// Fonction
 
-
 $lang = get_lang();// Sélectionne la langue
 load_translation('api');// Chargement des traductions du système
 
