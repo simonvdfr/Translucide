@@ -69,7 +69,7 @@ $GLOBALS['email_contact'] = "";
 if(isset($_SERVER['WINDIR']))// Dev local
 	$GLOBALS['min'] = "";
 else 
-	$GLOBALS['min'] = ".min";
+	$GLOBALS['min'] = "";//.min
 
 
 // https://developers.facebook.com/apps/
