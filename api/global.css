@@ -639,6 +639,13 @@ input[type="reset"].unstyled:focus {
 		        flex: 0 0 auto;
 		width: calc(100% / 5 - 0.01px);
 	}
+
+	.one-sixth {
+		-webkit-box-flex: 0;
+		    -ms-flex: 0 0 auto;
+		        flex: 0 0 auto;
+		width: calc(100% / 6 - 0.01px);
+	}
 }
 
 
