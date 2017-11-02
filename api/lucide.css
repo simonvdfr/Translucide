@@ -294,7 +294,7 @@ header:hover .dragger { display: block; }
 		
 	opacity: 0.8;	
 
-	z-index: -1;
+	z-index: 0;/*-1*/
 
 	font-family: arial;
 }
@@ -307,7 +307,8 @@ header:hover .dragger { display: block; }
 	}
 	#add-nav li {
 		background-color: #fff;
-
+		
+		display: block;
 		position: relative;
 		float: none;
 		
@@ -409,6 +410,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 /* image & fichier éditable */
 .editable-media {
+	background-color: rgba(61, 128, 179, 0.05);
 	display: inline-block;
     position: relative;
 	overflow: hidden;
