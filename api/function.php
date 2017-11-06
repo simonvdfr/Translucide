@@ -407,7 +407,7 @@ function hidden($key = null, $filter = null)
 	echo"<input type='hidden' id='".encode($key)."' value=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" class='editable-hidden ".$filter['class']."'>";
 
 	// Si autocomplete
-	if($filter['autocomplete']) {?>
+	if(isset($filter['autocomplete'])) {?>
 		<script>
 			edit.push(function() {	
 				$("#<?echo encode($key)?>").autocomplete({
