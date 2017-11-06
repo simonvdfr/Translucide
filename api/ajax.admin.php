@@ -162,23 +162,23 @@ switch($_GET['mode'])
 			<ul class="small">
 				
 				<?if(isset($_SESSION['auth']['add-product']) and $GLOBALS['add-product']){?>
-				<li data-filter="product"><a href="#add-product" title="<?_e("Add product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Add product")?></span></a></li>
+				<li data-filter="product"><a href="add-product" title="<?_e("Add product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Add product")?></span></a></li>
 				<?}?>
 				
 				<?if(isset($_SESSION['auth']['add-article']) and $GLOBALS['add-article']){?>
-				<li data-filter="article"><a href="#add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
+				<li data-filter="article"><a href="add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
 				<?}?>
 				
 				<?if(isset($_SESSION['auth']['add-event']) and $GLOBALS['add-event']){?>
-				<li data-filter="event"><a href="#add-event" title="<?_e("Add event")?>"><i class="fa fa-calendar-o"></i> <span><?_e("Add event")?></span></a></li>
+				<li data-filter="event"><a href="add-event" title="<?_e("Add event")?>"><i class="fa fa-calendar-o"></i> <span><?_e("Add event")?></span></a></li>
 				<?}?>
 				
 				<?if(isset($_SESSION['auth']['add-media']) and $GLOBALS['add-media']){?>
-				<li data-filter="media"><a href="#add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
+				<li data-filter="media"><a href="add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
 				<?}?>
 
 				<?if(isset($_SESSION['auth']['add-page']) and $GLOBALS['add-page']){?>
-				<li data-filter="page"><a href="#add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
+				<li data-filter="page"><a href="add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
 				<?}?>
 			</ul>					
 
@@ -530,6 +530,22 @@ switch($_GET['mode'])
 			if($connect->error) echo $connect->error;
 		}
 		
+
+		// META ajout au meta d'information générique
+		if(isset($_POST['meta']) and $_POST['meta'] != "") 
+		{
+			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='meta'");
+
+			$i = 1;
+			while(list($cle, $val) = each($_POST['meta'])) {
+				if(isset($val) and $val != "") {
+					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='meta', cle='".encode($cle)."', val='".addslashes(trim($val))."', ordre='".$i."'");
+					$i++;
+				}
+			}		
+			
+			if($connect->error) echo $connect->error;
+		}	
 
 
 		// CONTENU
