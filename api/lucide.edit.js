@@ -130,7 +130,15 @@ save = function() //callback
 	get_content("footer");// Contenu du footer
 
 
-	data["tag"] = $(".editable-tag").text();// Tags de la fiche en cours //@todo ajouter une boucle pour save tout les champs tag possible
+	// Donnée Méta
+	data["meta"] = {};
+	$(document).find(".content .editable.meta, .content .editable-hidden.meta").each(function() {
+		if($(this).val()) data["meta"][this.id] = $(this).val();					
+	});
+
+
+	// Tags de la fiche en cours //@todo ajouter une boucle pour save tout les champs tag possible
+	data["tag"] = $(".editable-tag").text();
 
 
 	// Si sur page tag
@@ -140,14 +148,14 @@ save = function() //callback
 		data["tag"] = tag;
 
 		// Ajoute les données prise dans le contenu
-		data['tag-info'] = {};
-		data['tag-info']['title'] = data['content']['title'];
-		data['tag-info']['description'] = data['content']['description'];
-		data['tag-info']['img'] = data['content']['img'];
+		data["tag-info"] = {};
+		data["tag-info"]["title"] = data["content"]["title"];
+		data["tag-info"]["description"] = data["content"]["description"];
+		data["tag-info"]["img"] = data["content"]["img"];
 
 		// Clean les content par défaut qui vont s'enregistrer dans la base contenu
-		data['content']['title'] = data['title'] = "Tag";
-		data['content']['description'] = "";
+		data["content"]["title"] = data["title"] = "Tag";
+		data["content"]["description"] = "";
 	}
 
 
