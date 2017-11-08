@@ -531,7 +531,8 @@ switch($_GET['mode'])
 		}
 		
 
-		// META ajout au meta d'information générique
+		// META
+		// Ajout des données aux meta liée à un contenu
 		if(isset($_POST['meta']) and $_POST['meta'] != "") 
 		{
 			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='meta'");
@@ -544,6 +545,23 @@ switch($_GET['mode'])
 				}
 			}		
 			
+			if($connect->error) echo $connect->error;
+		}	
+
+
+		// CONTENU UNIVERSEL
+		// Ajout aux meta de contenu en commun à plusieur page
+		if(isset($_POST['universel']) and $_POST['universel'] != "") 
+		{
+			while(list($cle, $val) = each($_POST['universel']))
+			{
+				$connect->query("DELETE FROM ".$table_meta." WHERE type='universel' AND cle='".encode($cle)."'");
+
+				if(isset($val) and $val != "") {
+					$connect->query("INSERT INTO ".$table_meta." SET type='universel', cle='".encode($cle)."', val='".addslashes(trim($val))."'");
+				}
+			}
+
 			if($connect->error) echo $connect->error;
 		}	
 
