@@ -24,7 +24,7 @@ if(!isset($_SESSION))
 date_default_timezone_set('Europe/Paris');
 
 // Langue des dates
-setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
+setlocale(LC_ALL, 'fr_FR', 'fra');//.UTF8
 
 
 // Variables de la base de données
