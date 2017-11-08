@@ -57,7 +57,7 @@ get_content = function(content)
 	data[content_array] = {};
 
 	// Contenu des champs éditables
-	$(document).find(content+" .editable").not("header nav .editable").each(function() {
+	$(document).find(content+" .editable:not(.universel)").not("header nav .editable").each(function() {
 		// Si on est en mode pour voir le code source
 		if($(this).hasClass("view-source")) var content_editable = $(this).text();
 		else var content_editable = $(this).html();
@@ -132,8 +132,17 @@ save = function() //callback
 
 	// Donnée Méta
 	data["meta"] = {};
-	$(document).find(".content .editable.meta, .content .editable-hidden.meta").each(function() {
+	$(document).find(".content .editable-hidden.meta").each(function() {
 		if($(this).val()) data["meta"][this.id] = $(this).val();					
+	});
+	$(document).find(".content .editable.meta").each(function() {
+		if($(this).html()) data["meta"][this.id] = $(this).html();					
+	});
+
+	// Donnée universel commune à plusieur page
+	data["universel"] = {};
+	$(document).find(".content .editable.universel").each(function() {
+		if($(this).html()) data["universel"][this.id] = $(this).html();					
 	});
 
 
@@ -166,7 +175,7 @@ save = function() //callback
 	//@todo voir pourquoi ça ne supp pas de la nav quand on glisse sur poubelle un element du menu
 	// Contenu du menu de navigation
 	data["nav"] = {};
-	$(document).find("header nav ul li").not("#add-nav ul li, .exclude a").each(function(i) {
+	$(document).find("header nav ul li").not("#add-nav ul li, .exclude").each(function(i) {
 		$("a", this).each(function(j) {
 			data["nav"][i+'-'+j] = {
 				href : $.trim($(this).attr('href')),
@@ -922,7 +931,7 @@ $(function()
 
 		// Clean la dom
 		return $("<"+ $(this)[0].tagName.toLowerCase() +"/>", { 
-			class: "editable",
+			class: $(this).attr("class"),
 			id: this.id,
 			html: this.innerHTML,
 			style: style,
