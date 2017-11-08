@@ -399,9 +399,10 @@ function select($key = null, $filter = array())
 	}
 	else {
 		$selected_key = key($option_decode);
-		$selected_option = $option_decode[$selected_key];
+		if($selected_key) $selected_option = $option_decode[$selected_key];
 	}
 
+	if(isset($selected_option))
 	echo"<span id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select") . (isset($filter['class'])?" ".$filter['class']:"")."' data-option='".$filter['option']."' data-selected=\"".$selected_key."\">".$selected_option."</span>";
 	
 	$GLOBALS['editkey']++;
