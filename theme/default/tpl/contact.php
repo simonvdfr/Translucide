@@ -1,6 +1,6 @@
 <?
 // Si on a posté le formulaire
-if($_POST["email"] and $_POST["message"] and isset($_POST["question"]) and !$_POST["champ_vide"])// champ_vide pour éviter les bots qui remplisse tous les champs
+if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["champ_vide"])// champ_vide pour éviter les bots qui remplisse tous les champs
 {
 	include_once("../../../config.php");// Les variables
 
