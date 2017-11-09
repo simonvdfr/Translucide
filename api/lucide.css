@@ -328,6 +328,7 @@ header:hover .dragger { display: block; }
 
 		font-size: initial;
 		font-weight: initial;
+		text-transform: initial;
 	}
 	#add-nav .dragger {
 		background: none;
