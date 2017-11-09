@@ -1569,7 +1569,7 @@ $(function()
 	$(".editable-select").attr("data-option", function(i, data) {
 		
 		// Option sélectionnée
-		var selected = $(".editable-select").attr("data-selected");
+		var selected = $(this).attr("data-selected");
 
 		// Extraction du json
 		var json = jQuery.parseJSON(data);							
@@ -1583,7 +1583,7 @@ $(function()
 		$.each(this.attributes, function() { attr[this.name] = this.value; });
 		
 		// Remplace les select
-		$(".editable-select").replaceWith($("<select/>", attr).html(html));
+		$(this).replaceWith($("<select/>", attr).html(html));
 	})
 
 
