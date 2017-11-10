@@ -222,7 +222,7 @@ switch($_GET['mode'])
 			$(function()
 			{
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
-				$("#nonce").val('<?=$_SESSION['nonce']?>');
+				$("#nonce").val('<?=$_SESSION['nonce']?>');			
 
 				// Au click sur un onglet
 				$(".dialog-add ul li").click(function(event) {
@@ -278,7 +278,7 @@ switch($_GET['mode'])
 							width: "60%",
 							buttons: {
 								"OK": function() 
-								{
+								{								
 									// Dans quel onglet on se situe
 									type = $(".ui-tabs-nav .ui-state-active").data("filter");
 
@@ -309,7 +309,9 @@ switch($_GET['mode'])
 
 								// Place les onglets à la place du titre de la dialog
 								$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
-								
+
+								// Template sélectionnée par défaut
+								$("#tpl").val($(".ui-dialog ul li[aria-selected='true']").data("filter"));
 							},
 							close: function() {
 								$(".dialog-add").remove();					
