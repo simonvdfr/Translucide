@@ -131,7 +131,7 @@ else// Affichage du formulaire
 
 				<input type="hidden" name="nonce_contact" value="<?=nonce("nonce_contact");?>">
 				
-				<input type="hidden" name="referer" value="<?=htmlspecialchars($_SERVER['HTTP_REFERER']);?>">
+				<input type="hidden" name="referer" value="<?=htmlspecialchars((isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:""));?>">
 				
 			</form>
 
