@@ -40,6 +40,7 @@ $add_translation = array(
 	"Add article" => array("fr" => "Ajouter un article"),
 	"Add event" => array("fr" => "Ajouter un événement"),
 	"Add media" => array("fr" => "Ajouter un média"),
+	"Add video" => array("fr" => "Ajouter une vidéo"),
 	"Add product" => array("fr" => "Ajouter un produit"),
 
 	"Add Item" => array("fr" => "Ajouter un élément"),
@@ -138,6 +139,7 @@ $add_translation = array(
 	"Edit page" => array("fr" => "Edition des pages"),
 	"Edit article" => array("fr" => "Edition des articles"),
 	"Edit product" => array("fr" => "Edition des produits"),
+	"Edit video" => array("fr" => "Edition des vidéo"),
 
 	"Public content" => array("fr" => "Contenu public"),
 	"Public file" => array("fr" => "Dossier public"),
