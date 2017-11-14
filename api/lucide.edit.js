@@ -598,7 +598,7 @@ upload = function(source, file, resize)
 					image.onload = function() {// Image bien chargée dans le navigateur
 						if($("#"+progressid).length) {			
 							// Si l'upload n'est pas déjà fini on calle la source et la hauteur de la progress bar
-							if(!$("img", source).attr("src")) {
+							if(!$("img", source).attr("src")) {								
 								$("img", source).attr("src", this.src);// On colle le bin de l'image dans le src
 								$("#"+progressid).css("height", source.outerHeight()+"px");// On force la taille de progression d'upload
 							}
@@ -1562,6 +1562,7 @@ $(function()
 	$(".editable-select.none").show();
 	$(".editable-tag.none").slideDown();
 	$(".editable-hidden").slideDown();
+	$(".editable-media .none").show();
 
 
 
@@ -1634,64 +1635,88 @@ $(function()
 	// Si champs tag
 	if($(".editable-tag").length) 
 	{
-		// Lib js pour le tri des tag
-		var script = document.createElement('script');
-		//script.src = path+"plugin/sortable-nested.min.js";
-		// https://github.com/ilikenwf/nestedSortable
-		script.src = "https://cdn.rawgit.com/ilikenwf/nestedSortable/master/jquery.mjs.nestedSortable.js";
-		document.body.appendChild(script);	
-
-		// Ajoute un div autour du tag éditable pour le layer de tag-tree
-		$(".editable-tag").wrap("<div class='tag-container'></div>");
-
 		// Transforme le champs tag en editable
 		$(".editable-tag").attr("contenteditable", "true");
 
-		// A sauvegarder si changement dans les tags de la page
-		$(".editable-tag").on("keydown", function(event) {
-			tosave();	
-		});
+		// AUTOCOMPLETE
+		autocomplete_keydown = false;
+		function split(val) { return val.split(/,\s*/); }
+	    function extractLast(term) { return split(term).pop(); }
 
-		// Action au passage au dessu du champs tag
-		$(".tag-container").on("click mouseenter",// touchstart
-			function(event) {
-				event.stopPropagation();
-				event.preventDefault();		
+		$(".editable-tag").on("keydown", function(event) {				
+			// Ne quitte pas le champ lorsque l'on utilise TAB pour sélectionner un élément
+			if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active)
+				event.preventDefault();	
 
-				if(!$(".layer-tag").length && event.type == "mouseenter")
-				{
-					$.ajax({
-						url: path+"api/ajax.admin.php?mode=tag-tree",
-						data: {"id": id, "nonce": $("#nonce").val()},
-						success: function(html)
-						{ 							
-							$(".tag-container").append(html);
+			autocomplete_keydown = true;// On a fait une saisie au clavier
 
-							// Pour fermer le tag tree quand on click en dehors
-							close_tag = false;
-							$(document).on("click",	
-								function(event) {
-									if(
-										!$(event.target).parents().is(".layer-tag") &&
-										$(".layer-tag").is(":visible") &&
-										close_tag == false
-									)
-										if($(".layer-tag button.to-save").length || $(".layer-tag button i.fa-spin").length)// Si l'arbre des tags pas sauvegardé on shake
-											$(".layer-tag > div").effect("highlight");
-										else 
-											$(".layer-tag").fadeOut("fast", function(){ close_tag = true; });
-								}
-							);
-						}
-					});
-				}
-				else if($(".layer-tag").length && !$(".layer-tag").is(":visible") && close_tag == true)// Si on click et que l'ajax a déjà été fait
-				{
-					close_tag = true;
-					$(".layer-tag").fadeIn("fast", function(){ close_tag = false; });
-				}
+			tosave();// A sauvegarder si on écrit
+		})
+		.autocomplete({
+			minLength: 0,
+			source: function(request, response) {
+
+	            // Si les data on déjà était chargé donc on affiche direct le resultat
+	            if(typeof all_data !== 'undefined') {
+	            	response($.ui.autocomplete.filter(all_data, extractLast(request.term)));
+	            	return;
+	            }
+
+				$.ajax({
+					dataType: "json",
+					url: path+"api/ajax.admin.php?mode=tags",
+					data: {"nonce": $("#nonce").val()},
+					success: function(data) {
+						
+						// hide loading image
+						//$('input.suggest-user').removeClass('ui-autocomplete-loading');  
+                		//response(data);
+	                	//response($.map(data, function(item) { }));
+
+						all_data = data;// Pour la mise en cache de la liste complete
+
+						// Déléguer à la saisie semi-automatique et extrait le dernier terme
+	                	response($.ui.autocomplete.filter(data, extractLast(request.term)));
+		            }
+		        });
+			},
+			focus: function() {
+				//$(this).data("uiAutocomplete").search($(this).val());
+				return false;// prevent value inserted on focus
+			},
+			select: function(event, ui) {
+
+				var terms = split($(this).text());
+
+				// Supprimer l'entrée actuelle SI on a fait une recherche
+				if(autocomplete_keydown) terms.pop();
+
+				// Ajouter l'élément sélectionné
+				terms.push(ui.item.value);
+
+				// Ajoute le placeholder pour avoir la virgule+espace à la fin
+				//terms.push("");
+
+				// Ajoute le tag
+				$(this).text(terms.join(", "));
+
+				// Pour focus à la fin du champ tags
+				range = document.createRange();//Create a range (a range is a like the selection but invisible)
+		        range.selectNodeContents(this);//Select the entire contents of the element with the range
+		        range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+		        selection = window.getSelection();//get the selection object (allows you to change selection)
+		        selection.removeAllRanges();//remove any selections already made
+		        selection.addRange(range);
+
+		        // A sauvegarder
+		        tosave();
+
+				return false;
 			}
-		);
+		})
+		.focus(function(){// Chargement au focus de la liste des tags dispo
+			$(this).autocomplete("search", "");
+		});
 	}
 
 
