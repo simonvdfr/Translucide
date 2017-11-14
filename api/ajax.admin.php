@@ -146,6 +146,8 @@ switch($_GET['mode'])
 
 		login('medium');
 
+		// @todo metre en none, chaché les options avancé (permalien, regen, home)
+
 		// Dialog : titre, template, langue
 		?>
 		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
@@ -160,34 +162,24 @@ switch($_GET['mode'])
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
 			<ul class="small">
-				
-				<?if(isset($_SESSION['auth']['add-product']) and $GLOBALS['add-product']){?>
-				<li data-filter="product"><a href="add-product" title="<?_e("Add product")?>"><i class="fa fa-shopping-cart"></i> <span><?_e("Add product")?></span></a></li>
-				<?}?>
-				
-				<?if(isset($_SESSION['auth']['add-article']) and $GLOBALS['add-article']){?>
-				<li data-filter="article"><a href="add-article" title="<?_e("Add article")?>"><i class="fa fa-feed"></i> <span><?_e("Add article")?></span></a></li>
-				<?}?>
-				
-				<?if(isset($_SESSION['auth']['add-event']) and $GLOBALS['add-event']){?>
-				<li data-filter="event"><a href="add-event" title="<?_e("Add event")?>"><i class="fa fa-calendar-o"></i> <span><?_e("Add event")?></span></a></li>
-				<?}?>
-				
-				<?if(isset($_SESSION['auth']['add-media']) and $GLOBALS['add-media']){?>
-				<li data-filter="media"><a href="add-media" title="<?_e("Add media")?>"><i class="fa fa-file-pdf-o"></i> <span><?_e("Add media")?></span></a></li>
-				<?}?>
-
-				<?if(isset($_SESSION['auth']['add-page']) and $GLOBALS['add-page']){?>
-				<li data-filter="page"><a href="add-page" title="<?_e("Add page")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Add page")?></span></a></li>
-				<?}?>
+				<?
+				while(list($cle, $array) = each($GLOBALS['add-content']))
+				{
+					if(isset($_SESSION['auth']['add-'.$cle])){
+						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="add-'.$cle.'" title="'.__("Add ".$cle).'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
+					}
+				}
+				?>
 			</ul>					
 
 			<div class="none">
-				<div id="add-page"></div>	
-				<div id="add-article"></div>	
-				<div id="add-event"></div>	
-				<div id="add-media"></div>	
-				<div id="add-product"></div>	
+				<?
+				reset($GLOBALS['add-content']);
+				while(list($cle, $array) = each($GLOBALS['add-content']))
+				{
+					if(isset($_SESSION['auth']['add-'.$cle])) echo'<div id="add-'.$cle.'"></div>';
+				}
+				?>
 			</div>
 			
 
@@ -209,7 +201,7 @@ switch($_GET['mode'])
 					</select>
 				</div>
 
-				<div class="mas">
+				<div class="mas mtm">
 					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
 					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
 					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
@@ -233,7 +225,7 @@ switch($_GET['mode'])
 					else $("label[for='homepage']").hide();
 
 					// Force la template du type
-					$("#tpl").val(filter);
+					$("#tpl").val($(this).data("tpl"));
 
 					// Reconstruit le permalink
 					refresh_permalink(".dialog-add");
@@ -311,7 +303,7 @@ switch($_GET['mode'])
 								$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 
 								// Template sélectionnée par défaut
-								$("#tpl").val($(".ui-dialog ul li[aria-selected='true']").data("filter"));
+								$("#tpl").val($(".ui-dialog ul li[aria-selected='true']").data("tpl"));
 							},
 							close: function() {
 								$(".dialog-add").remove();					

@@ -144,11 +144,14 @@ $GLOBALS['auth_level'] = array(
 
 
 // Type de contenu ajoutable
-$GLOBALS['add-page'] = true;
-$GLOBALS['add-article'] = true;
-$GLOBALS['add-event'] = false;
-$GLOBALS['add-media'] = false;
-$GLOBALS['add-product'] = false;
+$GLOBALS['add-content'] = array(
+	//"product" => ["fa" => "fa-shopping-cart", "tpl" => "product"],
+	//"article" => ["fa" => "fa-feed", "tpl" => "article"],
+	//"event" => ["fa" => "fa-calendar-o", "tpl" => "agenda"],
+	//"video" => ["fa" => "fa-video-camera", "tpl" => "video"],
+	//"media" => ["fa" => "fa-file-pdf-o", "tpl" => "fichier"],
+	"page" => ["fa" => "fa-file-text-o", "tpl" => "page"]
+);
 
 
 // Toolbox
