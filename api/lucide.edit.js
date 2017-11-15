@@ -156,18 +156,11 @@ save = function() //callback
 	// Si sur page tag
 	if(tag) 
 	{
-		// Le tag courant
-		//data["tag"] = tag;// @todo: supp ???
-
 		// Ajoute les données prise dans le contenu
 		data["tag-info"] = {};
-		data["tag-info"]["title"] = data["content"]["title"];
+		data["tag-info"]["title"] = data["tag"] = data["content"]["title"];
 		data["tag-info"]["description"] = data["content"]["description"];
 		data["tag-info"]["img"] = data["content"]["img"];
-
-		// Clean les content par défaut qui vont s'enregistrer dans la base contenu
-		data["content"]["title"] = data["title"] = "Tag";
-		data["content"]["description"] = "";
 	}
 
 
@@ -1564,7 +1557,7 @@ $(function()
 	$(".editable-input").each(function() {
 		$(this).attr("placeholder", $(this).attr("id")).attr("title", $(this).attr("id"));
 	});
-	
+
 	// Transforme les inputs hidden en texte visible
 	$("input[type='hidden'].editable-input").attr("type","text");
 

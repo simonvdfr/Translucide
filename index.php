@@ -165,6 +165,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 
 			// Ecrase les données meta
 			$title = $GLOBALS['content']['title'] = $res_tag['val'];
+			$description = $GLOBALS['content']['description'] = "";
 		}
 	}
 }

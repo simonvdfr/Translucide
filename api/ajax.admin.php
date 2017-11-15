@@ -489,7 +489,7 @@ switch($_GET['mode'])
 
 		
 		// TAG ajout au meta
-		if(isset($_POST['tag']))
+		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
 			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
 
@@ -512,14 +512,16 @@ switch($_GET['mode'])
 		// TAG-INFO ajout au meta les informations d'une page tag
 		if(isset($_POST['tag-info']) and isset($_POST['tag'])) 
 		{
-			$connect->query("DELETE FROM ".$table_meta." WHERE type='tag-info' AND cle='".encode($_POST['tag'])."'");
+			$tag = html_entity_decode($_POST['tag']);
+			
+			$connect->query("DELETE FROM ".$table_meta." WHERE type='tag-info' AND cle='".encode($tag)."'");
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
 			$_POST['tag-info'] = str_replace($GLOBALS['home'], "", $_POST['tag-info']);
 
 			$tag_info = json_encode($_POST['tag-info'], JSON_UNESCAPED_UNICODE);
 
-			$connect->query("INSERT INTO ".$table_meta." SET type='tag-info', cle='".encode($_POST['tag'])."', val='".addslashes($tag_info)."'");
+			$connect->query("INSERT INTO ".$table_meta." SET type='tag-info', cle='".encode($tag)."', val='".addslashes($tag_info)."'");
 
 			if($connect->error) echo $connect->error;
 		}
@@ -561,30 +563,35 @@ switch($_GET['mode'])
 
 
 		// CONTENU
-		// Supprime les url avec le domaine pour faciliter le transport du site
-		$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], "", $_POST['content']) : "");
+		//@todo: verif si c'est la bonne technique pour evité l'ecrasement des donnée de la page si page tag
+		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
+		{
+			// Supprime les url avec le domaine pour faciliter le transport du site
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], "", $_POST['content']) : "");
 
-		// Encode le contenu
-		if(isset($_POST['content']) and $_POST['content'] != "") 
-			$json_content = json_encode($_POST['content'], JSON_UNESCAPED_UNICODE);
-		else 
-			$json_content = "";
+			// Encode le contenu
+			if(isset($_POST['content']) and $_POST['content'] != "") 
+				$json_content = json_encode($_POST['content'], JSON_UNESCAPED_UNICODE);
+			else 
+				$json_content = "";
 
 
-		// Sauvegarde les contenus
-		$sql = "UPDATE ".$table_content." SET ";
-		if(isset($change_url)) $sql .= "url = '".$change_url."', ";
-		$sql .= "title = '".addslashes($_POST['title'])."', ";
-		$sql .= "description = '".addslashes($_POST['description'])."', ";
-		$sql .= "content = '".addslashes($json_content)."', ";
-		$sql .= "state = '".addslashes($_POST['state'])."', ";
-		$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
-		$sql .= "user_update = '".(int)$_SESSION['uid']."', ";
-		$sql .= "date_update = NOW() ";
-		$sql .= "WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
-		$connect->query($sql);
+			// Sauvegarde les contenus
+			$sql = "UPDATE ".$table_content." SET ";
+			if(isset($change_url)) $sql .= "url = '".$change_url."', ";
+			$sql .= "title = '".addslashes($_POST['title'])."', ";
+			$sql .= "description = '".addslashes($_POST['description'])."', ";
+			$sql .= "content = '".addslashes($json_content)."', ";
+			$sql .= "state = '".addslashes($_POST['state'])."', ";
+			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
+			$sql .= "user_update = '".(int)$_SESSION['uid']."', ";
+			$sql .= "date_update = NOW() ";
+			$sql .= "WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
+			$connect->query($sql);
 
-		//echo $sql;
+			//echo $sql;
+		}
+
 		
 		if($connect->error) echo $connect->error."\nSQL:\n".htmlspecialchars($sql);// S'il y a une erreur
 		else // Sauvegarde réussit
