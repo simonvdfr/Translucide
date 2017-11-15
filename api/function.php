@@ -416,7 +416,7 @@ function input($key = null, $filter = null)
 	if(!is_array($filter)) $filter = array("class" => $filter);
 	if(!isset($filter['type'])) $filter['type'] = "text";
 
-	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : '').'" class="editable-input '.$filter['class'].'">';
+	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : '').'" class="editable-input '.(isset($filter['class'])?$filter['class']:'').'">';
 
 	// Si autocomplete
 	if(isset($filter['autocomplete'])) {?>
