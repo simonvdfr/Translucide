@@ -434,12 +434,6 @@ function hidden($key = null, $filter = null)
 	$GLOBALS['editkey']++;
 }
 
-// Label visible qu'en mode édition
-function hidden_label($content = null, $class = null)
-{
-	echo"<label class='none ".$class."'>".$content."</label>";
-}
-
 // Lien éditable
 function href($key = null)
 {
