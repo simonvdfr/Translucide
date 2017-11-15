@@ -166,7 +166,7 @@ switch($_GET['mode'])
 				while(list($cle, $array) = each($GLOBALS['add-content']))
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
-						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="add-'.$cle.'" title="'.__("Add ".$cle).'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
+						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
 					}
 				}
 				?>
@@ -295,7 +295,7 @@ switch($_GET['mode'])
 								}
 							},
 							create: function() 
-							{
+							{						
 								// Création des onglets
 								$(".dialog-add").tabs();
 

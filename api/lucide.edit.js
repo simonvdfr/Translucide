@@ -97,6 +97,9 @@ save = function() //callback
 {
 	// @todo: disable/unbind sur save pour dire que l'on est en train de sauvegarder
 	
+	// Fonction à exécuter avant la collect des datas
+	$(before_data).each(function(key, funct){ funct(); });
+
 	// Si image sélectionnée : raz propriétés image (sécurité pour ne pas enregistrer de ui-wrapper)
 	if(memo_img) img_leave();
 
@@ -154,7 +157,7 @@ save = function() //callback
 	if(tag) 
 	{
 		// Le tag courant
-		data["tag"] = tag;
+		//data["tag"] = tag;// @todo: supp ???
 
 		// Ajoute les données prise dans le contenu
 		data["tag-info"] = {};
@@ -1193,29 +1196,33 @@ $(function()
 				toolbox_height = $("#txt-tool").outerHeight();
 				this_offset_top = $(memo_focus).offset().top;
 
-				// Si on est en mode view source on colore le bt view-source
-				if($(memo_focus).hasClass("view-source"))
-					$("#view-source").addClass("checked");
-				else
-					$("#view-source").removeClass("checked");
-
-				// Affichage de la boîte à outils texte
-				if($("#txt-tool").css("display") == "none")// Si pas visible				
-				$("#txt-tool")
-					.show()
-					.offset({
-						top: ( this_offset_top - toolbox_height - 8 ),
-						left: ( $(this).offset().left )
-					});	
-
-				// Scroll la toolbox si on descend
-				$window.on("scroll click.scroll-toolbox", function(event) {
-					// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
-					if(($window.scrollTop() + toolbox_height + 12) > this_offset_top) 
-						$("#txt-tool").css({top: 5 + "px", position: "fixed"});	
+				// Si la toolbox est autorisé
+				if(!$(this).hasClass("notoolbox"))
+				{
+					// Si on est en mode view source on colore le bt view-source
+					if($(memo_focus).hasClass("view-source"))
+						$("#view-source").addClass("checked");
 					else
-						$("#txt-tool").css({top: this_offset_top - toolbox_height - 8 + "px", position: "absolute"});
-				});
+						$("#view-source").removeClass("checked");
+
+					// Affichage de la boîte à outils texte
+					if($("#txt-tool").css("display") == "none")// Si pas visible				
+					$("#txt-tool")
+						.show()
+						.offset({
+							top: ( this_offset_top - toolbox_height - 8 ),
+							left: ( $(this).offset().left )
+						});	
+
+					// Scroll la toolbox si on descend
+					$window.on("scroll click.scroll-toolbox", function(event) {
+						// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
+						if(($window.scrollTop() + toolbox_height + 12) > this_offset_top) 
+							$("#txt-tool").css({top: 5 + "px", position: "fixed"});	
+						else
+							$("#txt-tool").css({top: this_offset_top - toolbox_height - 8 + "px", position: "absolute"});
+					});
+				}
 			},
 			"blur.editable": function() {
 				if($("#txt-tool:not(:hover)").val()=="") {
@@ -1686,7 +1693,9 @@ $(function()
 			},
 			select: function(event, ui) {
 
-				var terms = split($(this).text());
+				// Crée un tableau avec les éléments déjà présents dans la liste
+				if($(this).text()) var terms = split($(this).text());
+				else var terms = [];
 
 				// Supprimer l'entrée actuelle SI on a fait une recherche
 				if(autocomplete_keydown) terms.pop();

@@ -414,6 +414,8 @@ input[type="reset"].unstyled:focus {
 
 	padding: 0 6px 1px;
 
+	height: auto !important;
+
 	border-radius: 3px;
 	border: 1px solid rgba(117, 137, 140, 0.5);
 	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
@@ -454,7 +456,7 @@ input[type="reset"].unstyled:focus {
 
 	padding: 8px;
 	margin: 0 0 5px 0;
-	width: 100%;	
+	width: 100%;
 }
 	.bt.connect:before {
 		font-family: FontAwesome;

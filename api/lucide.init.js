@@ -142,6 +142,7 @@ reload = function() {
 edit = [];
 after_save = [];
 before_save = [];
+before_data = [];
 
 
 // Formulaire d'ajout d'un contenu
