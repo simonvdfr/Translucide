@@ -409,13 +409,14 @@ function select($key = null, $filter = array())
 }
 
 // Contenu champ hidden
-function hidden($key = null, $filter = null)
+function input($key = null, $filter = null)
 {
-	$key = ($key ? $key : "hidden-".$GLOBALS['editkey']);
+	$key = ($key ? $key : "input-".$GLOBALS['editkey']);
 
 	if(!is_array($filter)) $filter = array("class" => $filter);
+	if(!isset($filter['type'])) $filter['type'] = "text";
 
-	echo"<input type='hidden' id='".encode($key)."' value=\"".(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "")."\" class='editable-hidden ".$filter['class']."'>";
+	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : '').'" class="editable-input '.$filter['class'].'">';
 
 	// Si autocomplete
 	if(isset($filter['autocomplete'])) {?>

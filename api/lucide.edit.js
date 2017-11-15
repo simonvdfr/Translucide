@@ -86,7 +86,7 @@ get_content = function(content)
 	});
 
 	// Contenu des select, input hidden, href éditables // content+" input, "+
-	$(document).find(content+" .editable-select, "+content+" .editable-hidden, "+content+" .editable-href").each(function() {
+	$(document).find(content+" .editable-select, "+content+" .editable-input, "+content+" .editable-href").each(function() {
 		if($(this).val()) data[content_array][this.id] = $(this).val();
 	});
 }
@@ -135,7 +135,7 @@ save = function() //callback
 
 	// Donnée Méta
 	data["meta"] = {};
-	$(document).find(".content .editable-hidden.meta").each(function() {
+	$(document).find(".content .editable-input.meta").each(function() {
 		if($(this).val()) data["meta"][this.id] = $(this).val();					
 	});
 	$(document).find(".content .editable.meta").each(function() {
@@ -1558,18 +1558,21 @@ $(function()
 
 
 
-	/************** CHAMPS HIDDEN **************/
+	/************** CHAMPS INPUT **************/
 	
-	// Transforme les inputs hidden en texte visible
-	$(".editable-hidden").hide().attr("type","text");
-	$(".editable-hidden").each(function() {
+	// Ajout un placeholder
+	$(".editable-input").each(function() {
 		$(this).attr("placeholder", $(this).attr("id")).attr("title", $(this).attr("id"));
 	});
-	$("label.none").slideDown();
+	
+	// Transforme les inputs hidden en texte visible
+	$("input[type='hidden'].editable-input").attr("type","text");
+
 	$(".editable-select.none").show();
+
 	$(".editable-tag.none").slideDown();
-	$(".editable-hidden").slideDown();
 	$(".editable-media .none").show();
+	$("label.none").slideDown();
 
 
 

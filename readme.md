@@ -45,7 +45,7 @@ Note : dans la configuration de PHP short_open_tag doit être en On `short_open_
 - `media("nom-de-la-zone" [,'100x100'])` L'argument final et optionnel, il force une taille
 	- On peut ajouter plus d'argument `media("nom-de-la-zone", array("dir" => "product/1/", "size" => "300", "class" => "fl mal"))`. Ici par exemple on spécifie un dossier destination pour le media (dir), une taille (size), ou encore une classe (class)
 - `bg()` A placer dans un `<div>` ou autres pour rendre l'image de fond éditable
-- `hidden("nom-de-la-zone" [, array("autocomplete" => ["variable 1", "variable 2"])])` crée un champ qui s'affiche uniquement en mode édition et qui permet de stocker des variables editable. Ici `autocomplete` permet d'avoir une suggestion de valeur lors de la saisie
+- `input("nom-de-la-zone" [, array("type" => "hidden", "autocomplete" => ["variable 1", "variable 2"])])` crée un champ qui s'affiche uniquement en mode édition et qui permet de stocker des variables editable. Ici `autocomplete` permet d'avoir une suggestion de valeur lors de la saisie
 
 ## Gestion du multilingue
 Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/testé. Globalement les traductions de l'interface du CMS se trouvent dans le fichier `api/translation.php`
