@@ -1590,6 +1590,11 @@ $(function()
 		$(this).replaceWith($("<select/>", attr).html(html));
 	})
 
+	// Change le data-selected dynamiquement
+	$(".editable-select").on("change", function(event) {
+		$(this).attr("data-selected", $(this).val());
+	});
+
 
 
 	/************** CHAMPS CHECKBOX **************/
