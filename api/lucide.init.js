@@ -310,7 +310,7 @@ $(function()
 	
 
 	// Bouton pour remonter en haut au scroll
-	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-up-open bigger vam'></i></a>");	
+	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-chevron-up bigger'></i></a>");	
 
 	// Smoothscroll to top
 	$("a.bt.fixed.top").click(function() {
