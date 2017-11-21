@@ -1598,12 +1598,12 @@ $(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox").on("click", function(event) {
+	$(".editable-checkbox, .lucide [for]").on("click", function(event) {
 		if($(this).attr("for")) id = $(this).attr("for");
 		else id = this.id;
 
-		if($("#"+id).hasClass("fa-check")) $("#"+id).removeClass("fa-check yes").addClass("fa-times no");
-		else $("#"+id).removeClass("fa-times no").addClass("fa-check yes");
+		if($("#"+id).hasClass("fa-check")) $("#"+id).removeClass("fa-check yes").addClass("fa-close no");
+		else $("#"+id).removeClass("fa-close no").addClass("fa-check yes");
 	})
 
 
