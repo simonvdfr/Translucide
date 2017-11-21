@@ -603,7 +603,7 @@ switch($_GET['mode'])
 				document.title = "<?=addslashes($_POST['title']);?>";
 
 				<?if(isset($change_url)){?>					
-					window.history.replaceState(history.state, document.title, "<?=make_url($change_url);?>");	
+					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
 				<?}?>
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
