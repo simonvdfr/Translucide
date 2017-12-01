@@ -321,7 +321,7 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 
 
 /* Forms */
-form, fieldset {
+form, fieldset, .bn {
   border: none;
 }
 input, button, select, label, .bt {
@@ -1079,6 +1079,7 @@ div.editable {
 .fa-down-hand:before { content: '\e81b'; } /* '' */
 .fa-globe:before { content: '\e81c'; } /* '' */
 .fa-clock:before { content: '\e81d'; } /* '' */
+.fa-arrows-cw:before { content: '\e81e'; } /* '' */
 .fa-phone:before { content: '\e820'; } /* '' */
 .fa-key:before { content: '\e822'; } /* '' */
 .fa-cog:before { content: '\e823'; } /* '' */

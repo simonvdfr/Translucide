@@ -1313,8 +1313,8 @@ switch($_GET['mode'])
 			//$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
 			//$pattern = '/\\.(fa-\\w+):before{content:"(\\\\\w+)"}/';	
 			//$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';	
-			$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';	
-			//$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";	
+			//$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';	
+			$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";	
 
 			// On récupère la css qui contient les icônes
 			$subject = file_get_contents($GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/global.min.css");
