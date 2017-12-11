@@ -351,7 +351,7 @@ switch($_GET['mode'])
 			
 			?>
 			<script>
-			$(document).ready(function()
+			$(function()
 			{		
 				// Redirection vers la page crée
 				document.location.href = "<?=make_url($url);?>";
