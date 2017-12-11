@@ -78,6 +78,7 @@ body { transition: margin-top .2s linear; }
 		font-family: Arial;
 		box-shadow: none;
 		border-radius: 0;
+		height: auto;
 	}
 
 
@@ -113,6 +114,7 @@ body { transition: margin-top .2s linear; }
 		border: 0px solid #6b6f7a;		
 		display: inline-block;		
 		padding: 2px 8px;
+		height: auto;
 		cursor: pointer;
 		color: #ffffff;
 		font-family: Arial;

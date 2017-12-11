@@ -1571,23 +1571,25 @@ $(function()
 
 	/************** CHAMPS SELECT **************/
 	$(".editable-select").attr("data-option", function(i, data) {
-		
-		// Option sélectionnée
-		var selected = $(this).attr("data-selected");
+		if(data != undefined)
+		{
+			// Option sélectionnée
+			var selected = $(this).attr("data-selected");
 
-		// Extraction du json
-		var json = jQuery.parseJSON(data);							
-		
-		// Création des options avec le json
-		var html = '';
-		$.each(json, function(cle, val){ html += '<option value="'+ cle +'"'+(cle == selected?" selected":"")+'>'+ val +'</option>'; });
-		
-		// Les attribue
-		var attr = {};
-		$.each(this.attributes, function() { attr[this.name] = this.value; });
-		
-		// Remplace les select
-		$(this).replaceWith($("<select/>", attr).html(html));
+			// Extraction du json
+			var json = jQuery.parseJSON(data);							
+			
+			// Création des options avec le json
+			var html = '';
+			$.each(json, function(cle, val){ html += '<option value="'+ cle +'"'+(cle == selected?" selected":"")+'>'+ val +'</option>'; });
+			
+			// Les attribue
+			var attr = {};
+			$.each(this.attributes, function() { attr[this.name] = this.value; });
+			
+			// Remplace les select
+			$(this).replaceWith($("<select/>", attr).html(html));
+		}
 	})
 
 	// Change le data-selected dynamiquement
