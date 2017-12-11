@@ -69,7 +69,7 @@ logout = function() {
 
 
 // Affichage d'un message d'erreur
-error = function(txt){		
+error = function(txt, fadeout){		
 	$("#error, #under-error").remove();
 
 	// Ajout du fond gris
@@ -84,7 +84,7 @@ error = function(txt){
 	.fadeIn();
 
 	// Box avec le message d'erreur fa-times
-	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-exclamation-triangle mrs'></i>" + txt + "<i class='fa fa-cancel absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
+	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-attention mrs'></i>" + txt + "<i class='fa fa-cancel absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
 	var height = $("#error").outerHeight();
 	
 	// Affichage de la box
@@ -102,14 +102,22 @@ error = function(txt){
 		.on("click", function(){ 
 			$("#error, #under-error").fadeOut("fast", function(){ $(this).remove() });
 		});
+
+	// Disparition au bout de x seconde
+	if(fadeout)
+	{
+		window.setTimeout(function(){ 
+			$("#error, #under-error").fadeOut("400", function(){ $(this).remove(); });
+		}, fadeout);
+	}
 }
 
 // Affichage d'un message positif
-light = function(txt){		
+light = function(txt, fadeout){		
 	$("#highlight").remove();
 	
 	// Box avec le message d'information
-	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circle color mrs'></i>" + txt + "</div>");
+	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circled color mrs'></i>" + txt + "</div>");
 	var height = $("#highlight").outerHeight();
 	
 	// Affichage
@@ -124,6 +132,14 @@ light = function(txt){
 			top: ($(window).scrollTop() + (($(window).height() - height) / 2))
 		}, 500)
 		.on("click", function(){ $(this).fadeOut("fast", function(){ $(this).remove() }); });
+
+	// Disparition au bout de x seconde
+	if(fadeout)
+	{
+		window.setTimeout(function(){ 
+			$("#highlight").fadeOut("400", function(){ $(this).remove(); });
+		}, fadeout);
+	}
 }
 
 
