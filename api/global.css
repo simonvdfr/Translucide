@@ -478,7 +478,7 @@ input[type="reset"].unstyled:focus {
 	.bt.connect.nohover:hover { box-shadow: none !important; }
 	.bt.connect.nohover:active { box-shadow: none !important; }
 
-	.bt.internal { background-color: #77d1d0; }
+	.bt.internal { background-color: #77d1d0 !important; }
 		.bt.connect.internal:before { content: "\f084"; }
 	.bt.facebook { background-color: #3A5795; }
 		.bt.connect.facebook:before { content: "\f09a"; }
