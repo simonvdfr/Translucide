@@ -136,7 +136,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 			$res_tag = $sel_tag->fetch_assoc();
 
 			// Ecrase les données meta
-			$title = $GLOBALS['content']['title'] = $res_tag['val'];
+			$title = $GLOBALS['content']['title'] = ($res_tag['val'] ? $res_tag['val'] : ucfirst($tag));
 			$description = $GLOBALS['content']['description'] = "";
 		}
 	}
