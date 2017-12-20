@@ -754,7 +754,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 
 		<script>
 			// Ouverture de la dialog de connexion
-			$(document).ready(function()
+			$(function()
 			{
 				//$(".ui-dialog-content").dialog("close");// On ferme les dialogs en cours
 
