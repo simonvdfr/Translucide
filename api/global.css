@@ -559,12 +559,14 @@ input[type="reset"].unstyled:focus {
     border: 1px solid #cd0a0a;
     background: #fef1ec;
     color: #cd0a0a;
+    z-index: 1000;
 }
 #highlight {
 	border-radius: 5px;
 	border: 1px solid #fcefa1;
     background: #fbf9ee;
     color: #363636;
+    z-index: 1000;
 }
 
 
@@ -1080,7 +1082,9 @@ div.editable {
 .fa-globe:before { content: '\e81c'; } /* '' */
 .fa-clock:before { content: '\e81d'; } /* '' */
 .fa-arrows-cw:before { content: '\e81e'; } /* '' */
+.fa-resize-vertical:before { content: '\e81f'; } /* '' */
 .fa-phone:before { content: '\e820'; } /* '' */
+.fa-eye:before { content: '\e821'; } /* '' */
 .fa-key:before { content: '\e822'; } /* '' */
 .fa-cog:before { content: '\e823'; } /* '' */
 .fa-floppy:before { content: '\e825'; } /* '' */
