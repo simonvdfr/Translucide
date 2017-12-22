@@ -310,7 +310,7 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 .inline { display: inline !important; }
 .block { display: block !important; }
 .flex { display: flex; }
-.none, .editable-none { display: none; }
+.none, .editable-hidden { display: none; }
 
 .hidden { visibility: hidden; }
 .visible { visibility: visible !important; }
