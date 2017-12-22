@@ -1565,6 +1565,7 @@ $(function()
 
 	$(".editable-tag.none").slideDown();
 	$(".editable-media .none").show();
+	$(".editable-none").slideDown();
 	$("label.none").slideDown();
 
 
