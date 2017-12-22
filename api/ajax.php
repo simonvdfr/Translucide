@@ -520,7 +520,7 @@ switch($_GET['mode'])
 
 			<h3 class="medium man mbs"><?=$h3?></h3>
 
-			<input type="hidden" id="uid" value="<?=(isset($res['id'])?$res['id']:"")?>">
+			<input type="hidden" id="uid" value="<?=@$res['id']?>">
 
 			<div class="mbt">
 				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
@@ -532,9 +532,9 @@ switch($_GET['mode'])
 						<option value="blacklist">&#xf023; <?_e("Blacklist")?></option>
 						<option value="deactivate">&#xf00d; <?_e("Deactivate")?></option>
 					</select>
-					<script>$('#user #state option[value="<?=$res['state']?>"]').prop('selected', true);</script>
+					<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
 				<?}else{?>
-					<?_e($res['state'])?>
+					<?_e(@$res['state'])?>
 				<?}?>
 			</div>
 
@@ -565,7 +565,7 @@ switch($_GET['mode'])
 					<option value="edit-public">&#xf0a1; <?_e("Public content")?></option>
 				</select>
 				<script>
-				$.each("<?=$res['auth']?>".split(','), function(cle, val){ 
+				$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
 					$('#user #auth option[value="'+ val +'"]').prop('selected', true);
 				});
 				</script>					
@@ -575,9 +575,9 @@ switch($_GET['mode'])
 			<input type="text" id="email-fake" class="none">
 			<input type="password" id="password-fake" class="none">
 
-			<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=(isset($res['name'])?$res['name']:"")?>" maxlength="60" class="w60 bold"></div>
+			<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
 
-			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=(isset($res['email'])?$res['email']:"")?>" maxlength="100" class="w60"></div>
+			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
 
 			<div class="mbs nowrap">
 				<label class="w100p tr mrt" for="password"><?_e("Password")?></label>
@@ -632,7 +632,7 @@ switch($_GET['mode'])
 			$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 		}
 
-		$(document).ready(function()
+		$(function()
 		{			
 			// On focus on select le contenu
 			$("#user .search_user_id").focus(function() {
@@ -735,14 +735,15 @@ switch($_GET['mode'])
 			include_once("db.php");// Connexion à la db		
 
 			$uid = $insert_user = $insert_meta = null;
-			
+
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
-			if(!$_REQUEST['uid'] and !$GLOBALS['public_account']) login('high', 'edit-user');
-			elseif($_REQUEST['uid'])
-			{
+			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) 
+				login('high', 'edit-user');			
+			elseif(@$_REQUEST['uid'])
+			{				
 				// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
 				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
-				else login('high');
+				else login('high');				
 
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
 				$res = $sel->fetch_assoc();
@@ -767,23 +768,23 @@ switch($_GET['mode'])
 
 
 			// UPDATE / INSERT INFOS DE CONNEXION
-			if($_REQUEST['uid']) 
+			if(@$_REQUEST['uid']) 
 				$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
 			else 
 				$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
 			
 			// État d'activation
-			if($_SESSION['auth']['edit-user'] and $_POST['state'])
+			if(isset($_SESSION['auth']['edit-user']) and isset($_POST['state']))
 				$sql .= "state = '".encode($_POST['state'])."', ";
-			elseif(!$_REQUEST['uid']) 
+			elseif(!@$_REQUEST['uid']) 
 				$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
 			
 			// Droit d'accès
-			if($_SESSION['auth']['edit-admin'] and $_POST['auth']) {
+			if(isset($_SESSION['auth']['edit-admin']) and isset($_POST['auth'])) {
 				$auth = $connect->real_escape_string(implode(",", $_POST['auth']));
 				$sql .= "auth = '".$auth."', ";
 			}
-			elseif(!$_REQUEST['uid']) 
+			elseif(!@$_REQUEST['uid']) 
 				$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
 
 			$name = $connect->real_escape_string($_POST['name']);			
@@ -798,7 +799,8 @@ switch($_GET['mode'])
 				$sql .= "salt = '".addslashes($unique_salt)."', ";
 
 				// Création du token light
-				if($GLOBALS['security'] != 'high' and (int)$_REQUEST['uid']) $sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
+				if($GLOBALS['security'] != 'high' and @$_REQUEST['uid'])
+					$sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
 			}
 			
 			// Token d'api externe
@@ -809,7 +811,7 @@ switch($_GET['mode'])
 
 			$sql .= "date_update = NOW() ";
 
-			if($_REQUEST['uid'])
+			if(@$_REQUEST['uid'])
 				$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
 			else
 				$sql .= ", date_insert = NOW() ";
@@ -826,7 +828,7 @@ switch($_GET['mode'])
 			{
 				// Id de l'utilisateur crée
 				if($connect->insert_id) $insert_user = $uid = $connect->insert_id;
-				elseif((int)$_REQUEST['uid']) $uid = (int)$_REQUEST['uid'];
+				elseif(@$_REQUEST['uid']) $uid = (int)$_REQUEST['uid'];
 
 				if($uid) 
 				{
@@ -835,7 +837,8 @@ switch($_GET['mode'])
 					$res_meta = $sel_meta->fetch_assoc();
 
 					// AJOUT DES DONNÉE EN MÉTA
-					if($uid and isset($_POST['meta']) and is_array($_POST['meta'])) {
+					if($uid and isset($_POST['meta']) and is_array($_POST['meta']))
+					{
 						if($res_meta['id']) 
 							$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
 						else 
@@ -854,8 +857,10 @@ switch($_GET['mode'])
 						//echo "_POST['meta']<br>"; highlight_string(print_r($_POST['meta'], true));
 						//echo $sql;
 
-						if(!$connect->error) 
-							if($connect->insert_id) $insert_meta = $connect->insert_id;
+						if(!$connect->error) {	
+							// Si INSERT réussit						
+							if(!$res_meta['id']) $insert_meta = true;
+						}
 					}
 
  
@@ -895,11 +900,11 @@ switch($_GET['mode'])
 			
 				?>
 				<script>
-				$(document).ready(function()
+				$(function()
 				{
 					<?
 					if(!$connect->error){
-						if($_REQUEST['uid']){?>// Update réussit
+						if(@$_REQUEST['uid']){?>// Update réussit
 
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
@@ -912,7 +917,7 @@ switch($_GET['mode'])
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 							
-							<?if($_SESSION['auth']['edit-user']){?>// Peut éditer les users
+							<?if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users
 
 								$("#save-user span").html("<?_e("Save")?>");
 
@@ -933,6 +938,11 @@ switch($_GET['mode'])
 				</script>
 				<?
 			}
+			elseif($connect->error){?>
+				<script>
+					error("<?=$connect->error;?>");
+				</script>
+			<?}
 		}
 	break;
 
