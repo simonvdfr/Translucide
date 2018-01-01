@@ -225,7 +225,7 @@ switch($_GET['mode'])
 					else $("label[for='homepage']").hide();
 
 					// Force la template du type
-					$("#tpl").val($(this).data("tpl"));
+					$(".dialog-add #tpl").val($(this).data("tpl"));
 
 					// Reconstruit le permalink
 					refresh_permalink(".dialog-add");
@@ -303,7 +303,7 @@ switch($_GET['mode'])
 								$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 
 								// Template sélectionnée par défaut
-								$("#tpl").val($(".ui-dialog ul li[aria-selected='true']").data("tpl"));
+								$(".dialog-add #tpl").val($(".ui-dialog ul li[aria-selected='true']").data("tpl"));
 							},
 							close: function() {
 								$(".dialog-add").remove();					
@@ -620,25 +620,34 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 
-		//highlight_string(print_r($_POST, true));
+		//highlight_string(print_r($_POST, true)); exit;
 
 		$type = ($_POST['type']?encode($_POST['type']):"page");// Type de contenu
 
-		login('high', 'edit-'.$type);// Vérifie que l'on a le droit d'ajouter une page
+		login('high', 'edit-'.$type);// Vérifie que l'on a le droit d'éditer le type de contenu
 
-		// Supprime la page
+
+		// SUPPRIME LA PAGE
 		$sql = "DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
-
 		$connect->query($sql);
 
-		// Supprime les url avec le domaine pour la suppression locale
-		$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
-		// On a demandé la suppression des fichiers liée au contenu
-		while(list($cle, $media) = each($_POST['medias'])) {
-			// strtok : Supprime les arguments après l'extension (timer...)
-			unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
+		// SUPPRIME LES TAGS LIÉES
+		$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
+
+
+		if(isset($_POST['medias']))
+		{
+			// Supprime les url avec le domaine pour la suppression locale
+			$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
+
+			// On a demandé la SUPPRESSION DES FICHIERS liées au contenu
+			while(list($cle, $media) = each($_POST['medias'])) {
+				// strtok : Supprime les arguments après l'extension (timer...)
+				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
+			}
 		}
+
 
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
 		else // Suppression réussit

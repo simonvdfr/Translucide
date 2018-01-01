@@ -1909,6 +1909,7 @@ $(function()
 						data: {
 							"url": clean_url(),
 							"type": type,
+							"id": id,
 							"medias": medias_post,
 							"nonce": $("#nonce").val()// Pour la signature du formulaire
 						}
