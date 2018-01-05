@@ -945,12 +945,15 @@ $(function()
 
 	// Si champ numerique on ne garde que les chiffre et les points
 	$(".editable.number").on("keypress", function(event){//input keyup keydown change
+		key = event.keyCode || event.charCode;
+
+		// <- -> backspace supp && ., && [0-9]
 		if(
-			(!/^(46|44)$/.test(event.keyCode) && !(event.keyCode >= 48 && event.keyCode <= 57))// Si pas point/virgule et pas chiffre
+			(!/^(37|39|8|46)$/.test(event.keyCode) && !/^(46|44)$/.test(event.charCode) && !(key >= 48 && key <= 57))// Si pas point/virgule et pas chiffre
 			||
-			(/^(46|44)$/.test(event.keyCode) && /[.,]/.test(this.innerHTML))// Si point/virgule si déjà présent
+			(/^(46|44)$/.test(event.charCode) && /[.,]/.test(this.innerHTML))// Si point/virgule si déjà présent
 		) 
-		event.preventDefault(); 
+		event.preventDefault();
 	});
 
 
