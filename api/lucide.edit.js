@@ -851,7 +851,7 @@ $(function()
 	//@todo: ajouter le choix de la template de la page en cours, la langue
 	
 	// Ajout de la class pour dire que l'on est en mode admin
-	$(".content").addClass("lucide");
+	$("body").addClass("lucide");
 
 
 	/************** ADMINBAR **************/
