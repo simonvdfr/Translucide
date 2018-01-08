@@ -658,7 +658,6 @@ function login($level = 'low', $auth = null, $quiet = null)
 				// Création d'un token maison
 				if($res['password'] == hash_pwd($_POST['password'], $res['salt']))
 				{
-
 					if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// Vérifie les auth d'utilisateur si c'est demandée 
 					{
 						$msg = __("Bad credential");
@@ -676,9 +675,15 @@ function login($level = 'low', $auth = null, $quiet = null)
 						return true;
 					}
 				}
-				else $msg = __("Connection error")." 2";
+				else {
+					$msg = __("Connection error")." 2";
+					logout();
+				} 
 			}
-			else $msg = __("Unknown user");
+			else {
+				$msg = __("Unknown user");
+				logout();
+			}
 		}
 		// Sinon on vérifie la validité du token et s'il n'a pas expiré
 		elseif(isset($_SESSION['token']))

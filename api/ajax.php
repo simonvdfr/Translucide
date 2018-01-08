@@ -14,7 +14,7 @@ switch($_GET['mode'])
 		
 		?>
 		<script>
-		$(document).ready(function()
+		$(function()
 		{	
 			// S'il y a un callback à exécuter
 			if(callback) eval(callback + "()");
@@ -27,7 +27,7 @@ switch($_GET['mode'])
 	case "select-login-mode":
 		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
 		?>
-		<div id="dialog-connect" title="<?_e("Administrator Login");?>">
+		<div id="dialog-connect" title="<?_e("Log in");?>">
 
 			<style>
 				/* Font Awesome pour bt connexion */
@@ -130,7 +130,7 @@ switch($_GET['mode'])
 		</form>		
 
 		<script>
-		$(document).ready(function()
+		$(function()
 		{
 			// Update les nonces dans la page courante pour éviter de perdre le nonce
 			$("#nonce").val('<?=$_SESSION['nonce']?>');
@@ -276,7 +276,7 @@ switch($_GET['mode'])
 		</div>
 
 		<script>
-		$(document).ready(function()
+		$(function()
 		{
 			$("#profil").click(function() {// Voir mon profil
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=profil", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
@@ -290,7 +290,7 @@ switch($_GET['mode'])
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=list-user", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
 			});
 
-			$("#logout").click(function() {	
+			$("#admin-bar #logout").click(function() {	
 				logout();
 			});
 		});
@@ -580,12 +580,12 @@ switch($_GET['mode'])
 			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
 
 			<div class="mbs nowrap">
-				<label class="w100p tr mrt" for="password"><?_e("Password")?></label>
-				<input type="password" id="password" class="w50" autocomplete="new-password">
+				<label class="w100p tr mrt" for="password_new"><?_e("Password")?></label>
+				<input type="password" id="password_new" class="w50" autocomplete="new-password">
 
-				<a href="javascript:if($('#user-profil #password').attr('type') == 'password') $('#user-profil #password').attr('type','text'); else $('#user-profil #password').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
+				<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
 
-				<a href="javascript:$('#user-profil #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh vam"></i></a>
+				<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh vam"></i></a>
 			</div>
 
 			<?if($GLOBALS['facebook_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="facebook"><?_e("Facebook id")?></label> <input type="text" id="oauth[facebook]" value="<?=$oauth['facebook']?>" class="w60 small search_user_id"></div><?}?>
@@ -753,8 +753,12 @@ switch($_GET['mode'])
 			$_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 			
 			// Hashage du pwd avec le salt unique
-			$password = null;
-			if($_POST['password']) list($password, $unique_salt) = hash_pwd($_POST['password']);
+			$password_new = null;
+			$hashed_password = null;
+			if(@$_POST['password_new']) {
+				list($hashed_password, $unique_salt) = hash_pwd($_POST['password_new']);
+				$password_new = $_POST['password_new'];
+			}
 
 			// Suppression des caractères indésirable pour la sécurité et des espaces de début et fin
 			$_POST = array_map("secure_value", $_POST);
@@ -794,8 +798,8 @@ switch($_GET['mode'])
 			$sql .= "email = '".$email."', ";
 			
 			// Mot de passe
-			if($password) {
-				$sql .= "password = '".addslashes($password)."', ";
+			if($hashed_password) {
+				$sql .= "password = '".addslashes($hashed_password)."', ";
 				$sql .= "salt = '".addslashes($unique_salt)."', ";
 
 				// Création du token light
@@ -863,13 +867,12 @@ switch($_GET['mode'])
 						}
 					}
 
- 
+
 					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
 					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state']) 
 					{
 						// Pour le garder secret
-						$password = $_POST['password'];
-						unset($_POST['password'], $_POST['password_confirm']);
+						unset($_POST['password_new'], $_POST['password_confirm']);
 						
 						// Sujet
 						$subject = "[".utf8_encode($GLOBALS['sitename'])."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
@@ -889,10 +892,11 @@ switch($_GET['mode'])
 						$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST['email'] ? htmlspecialchars($_POST['email']) : $GLOBALS['email_contact']);
 
 						mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header);
-						
-						// Pour l'auto-login
-						$_POST['password'] = $password;
 					}
+
+
+					// Pour l'auto-login
+					if($password_new) $_POST['password'] = $password_new;
 
 
 					// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
