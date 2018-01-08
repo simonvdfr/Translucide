@@ -49,7 +49,7 @@ if(!$res)
 	// Si pas de template
 	if(!$res) $res['title'] = $msg = __("404 error : page not found");
 
-	$robots = "noindex, nofollow";
+	$robots = "noindex, follow";
 }
 else// Une page existe
 {
