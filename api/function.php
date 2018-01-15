@@ -59,9 +59,10 @@ function get_url($url_source = null)
 			
 			while(list($cle, $dir) = each($explode_path)) 
 			{
-				$explode_dir = explode("_", $dir);	
+				$explode_dir = explode("_", $dir);
 
-				$GLOBALS["filter"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_"));
+				if($explode_dir[0]) 
+					$GLOBALS["filter"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_"));
 			}
 		}
 		else $url = $path;
@@ -632,7 +633,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 
 	// Vérifie que la personne qui a posté le formulaire a bien la variable de session de protection contre les CSRF
 	$csrf = false;
-	if(isset($_SESSION['nonce']) and $_SESSION['nonce'] != $_REQUEST['nonce']) $csrf = true;
+	if(isset($_SESSION['nonce']) and $_SESSION['nonce'] != @$_REQUEST['nonce']) $csrf = true;
 	
 	// Pas de hack on vérifie l'utilisateur
 	if(!$csrf) 
@@ -643,7 +644,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 			if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
 
 			// Supprime l'ancienne session
-			session_regenerate_id(true);
+			@session_regenerate_id(true);
 
 			// Nettoyage du mail envoyé
 			$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
