@@ -26,6 +26,7 @@ $lang = get_lang();
 load_translation('api');// Chargement des traductions du système
 
 
+
 /********** CONTENU **********/
 
 // On récupère les données de la page
@@ -36,22 +37,41 @@ if($connect->error) {
 }
 else $res = $sel->fetch_assoc();// On récupère les données de la page
 
-// Pas de page existante
-if(!$res) 
+
+
+/********** TAGS **********/
+
+// Construction de l'ajout du contenu tag/cat
+if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0) 
 {
-	// On regarde si une template 404 est définie
-	$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='404' AND lang='".$lang."' AND state='active' LIMIT 1");
-	$res = $sel->fetch_assoc();
-	
-	// On force un header 404
-	header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
+	$filter_one = array_keys($GLOBALS['filter'])[0];
 
-	// Si pas de template
-	if(!$res) $res['title'] = $msg = __("404 error : page not found");
+	// Si tag et pas uniquement home+page
+	if(isset($GLOBALS['filter'][$filter_one]) and $filter_one != "page" and $filter_one != "user")
+	{
+		$tag = encode($GLOBALS['filter'][array_keys($GLOBALS['filter'])[0]]);
 
-	$robots = "noindex, follow";
+		// On rapatrie les infos du tag
+		$sel_tag_info = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag-info' AND cle='".$tag."' LIMIT 1");
+		$res_tag_info = $sel_tag_info->fetch_assoc();
+
+		// Il y a des infos sur le tag
+		if(!$res_tag_info['val'])
+		{
+			// On rapatrie simplement le nom du tag
+			$sel_tag = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag' AND cle='".$tag."' LIMIT 1");
+			$res_tag = $sel_tag->fetch_assoc();
+
+			// Si tag n'existe pas => page 404
+			if(!$res_tag['val']) $res = null;
+		}
+	}
 }
-else// Une page existe
+
+
+
+/********** UNE PAGE EXISTE **********/
+if($res) 
 {
 	// On verifie l'url pour eviter les duplicates : si erreur = redirection
 	if(($_SERVER['REQUEST_SCHEME']?$_SERVER['REQUEST_SCHEME']."://":$GLOBALS['scheme']).$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
@@ -79,15 +99,33 @@ else// Une page existe
 	}
 	else $robots = $GLOBALS['robots'];// Si la page est active elle est référençable (on utilise la config)
 }
+else/********** PAS DE PAGE EXISTANTE **********/
+{
+	// On regarde si une template 404 est définie
+	$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='404' AND lang='".$lang."' AND state='active' LIMIT 1");
+	$res = $sel->fetch_assoc();
 
-// Id de la page
+	// Si pas de template
+	if(!$res) {
+		$res['title'] = $msg = __("404 error : page not found");
+		$res['description'] = "";
+	}
+
+	// On force un header 404
+	header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
+
+	$robots = "noindex, follow";
+}
+
+
+
+/********** ID DE LA PAGE **********/
 if(isset($res['id'])) $GLOBALS['id'] = $res['id']; else $GLOBALS['id'] = null;
 
-// Les contenus
-if(isset($res['content']) and $res['content'] != '') 
-	$GLOBALS['content'] = json_decode($res['content'], true);
-else
-	$GLOBALS['content'] = array();
+
+/********** LES CONTENUS **********/
+if(isset($res['content']) and $res['content'] != '')  $GLOBALS['content'] = json_decode($res['content'], true);
+else $GLOBALS['content'] = array();
 
 // Si pas de titre/title H1 on met le title de la page/produit
 if(!isset($GLOBALS['content']['title'])) $GLOBALS['content']['title'] = $res['title'];
@@ -96,6 +134,24 @@ if(!isset($GLOBALS['content']['title'])) $GLOBALS['content']['title'] = $res['ti
 
 /********** METAS HEAD **********/
 
+// SI TAG ajout au meta
+if(isset($res_tag_info['val']))// Il y a des infos sur le tag
+{
+	// Récupère les informations des tags et écrase celle du contenu
+	$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_tag_info['val'], true));
+
+	// Ecrase les données meta
+	if(isset($GLOBALS['content']['title'])) $res['title'] = $GLOBALS['content']['title'];
+	if(isset($GLOBALS['content']['description'])) $res['description'] = htmlspecialchars(strip_tags($GLOBALS['content']['description'], ENT_COMPAT));
+	if(isset($GLOBALS['content']['img'])) $GLOBALS['content']['og-image'] = $GLOBALS['content']['img'];
+}
+elseif(isset($res_tag['val']))// Si il y a juste le nom du tag
+{
+	$res['title'] = $GLOBALS['content']['title'] = $res_tag['val'];
+	$res['description'] = $GLOBALS['content']['description'] = "";
+}
+
+// SI CONTENU
 // Information pour les metas du head
 $title = strip_tags($res['title']);
 $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['description']), ENT_COMPAT) : "");
@@ -105,49 +161,11 @@ if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-imag
 
 
 
-/********** TAGS **********/
-
-// Construction de l'ajout du tag/cat au title et get info
-if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0) 
-{
-	// Si tag et pas uniquement home+page
-	if(isset($GLOBALS['filter'][array_keys($GLOBALS['filter'])[0]]) and array_keys($GLOBALS['filter'])[0] != "page")
-	{
-		$tag = encode($GLOBALS['filter'][array_keys($GLOBALS['filter'])[0]]);
-
-		// On rapatrie les infos du tag
-		$sel_tag_info = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag-info' AND cle='".$tag."' LIMIT 1");
-		$res_tag_info = $sel_tag_info->fetch_assoc();
-
-		// Il y a des infos sur le tag
-		if($res_tag_info['val'])
-		{
-			// Récupère les informations des tags et écrase celle du contenu
-			$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_tag_info['val'], true));
-
-			// Ecrase les données meta
-			if(isset($GLOBALS['content']['title'])) $title = $GLOBALS['content']['title'];
-			if(isset($GLOBALS['content']['description'])) $description = htmlspecialchars(strip_tags($GLOBALS['content']['description'], ENT_COMPAT));
-		}
-		else
-		{
-			// On rapatrie simplement le nom du tag
-			$sel_tag = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag' AND cle='".$tag."' LIMIT 1");
-			$res_tag = $sel_tag->fetch_assoc();
-
-			// Ecrase les données meta
-			$title = $GLOBALS['content']['title'] = ($res_tag['val'] ? $res_tag['val'] : ucfirst($tag));
-			$description = $GLOBALS['content']['description'] = "";
-		}
-	}
-}
-
-
-
 /********** THEME **********/
 // Fonctions du theme
 if(isset($GLOBALS['function']) and $GLOBALS['function'] != "") 
 	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"").$GLOBALS['function']);
+
 
 
 // Si pas ajax on charge toute la page
@@ -211,21 +229,22 @@ if(!$ajax)
 		<?if(isset($res['url'])){?><meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>"><?}?>
 		
 		<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
+
 		<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
 
-		<?if(isset($GLOBALS['facebook_api_id'])){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
+		<?if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 		
-		<?if(isset($GLOBALS['google_page'])){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
+		<?if(@$GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
 
 
-		<?if(isset($GLOBALS['icons'])){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
+		<?if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}?>
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
 
-		<?if(isset($GLOBALS['touch_icon'])){?><link rel="apple-touch-icon" href="<?=$GLOBALS['touch_icon'];?>"/><?}?>
+		<?if(@$GLOBALS['touch_icon']){?><link rel="apple-touch-icon" href="<?=$GLOBALS['touch_icon'];?>"/><?}?>
 
 		<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico?<?=$GLOBALS['cache']?>">
 
@@ -236,7 +255,7 @@ if(!$ajax)
 
 
 		<script>
-			<? if(isset($GLOBALS['google_analytics']) and $GLOBALS['google_analytics']) { ?>
+			<? if(@$GLOBALS['google_analytics']) { ?>
 			// Google Analytics
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -246,7 +265,7 @@ if(!$ajax)
 			ga('send', 'pageview');
 			<? }
 
-			if(isset($GLOBALS['facebook_sdk']) and $GLOBALS['facebook_api_id']) { ?>
+			if(@$GLOBALS['facebook_api_id']) { ?>
 			// Facebook
 			(function(d, s, id){
 				var js, fjs = d.getElementsByTagName(s)[0];
