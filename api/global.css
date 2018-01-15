@@ -250,8 +250,9 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .vat { vertical-align: top !important; }
 .vam { vertical-align: middle !important; }
 .vab { vertical-align: bottom !important; }
+.vabl { vertical-align: baseline !important; }
 .vatt { vertical-align: text-top !important; }
-.nowrap { white-space: nowrap; }
+.nowrap, .nw { white-space: nowrap; }
 .dot { text-overflow: ellipsis; }
 
 
