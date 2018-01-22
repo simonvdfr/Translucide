@@ -1283,8 +1283,8 @@ switch($_GET['mode'])
 					// Si c'est une image
 					if($type == "image")
 					{
-						// Resize l'image si besoin (et ajoute l'url complete home)
-						echo $GLOBALS['home'].img_process($root_file,
+						// Resize l'image si besoin (On ajoute le path du site pour gerer l'édition dans les sous catégories)
+						echo $GLOBALS['path'].img_process($root_file,
 								"media/" . $dir,
 								"media/resize/" . $dir,
 								(int)$_POST['width'],
