@@ -1036,4 +1036,11 @@ function img_process($root_file, $dest = "media/", $des_resize = "media/resize/"
 function word_cut($texte, $limit) {
 	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte), 0, $limit));
 }
+
+
+
+/********** FONCTION DU THEME **********/
+if(isset($GLOBALS['function']) and $GLOBALS['function'] != "") 
+	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"").$GLOBALS['function']);
+
 ?>

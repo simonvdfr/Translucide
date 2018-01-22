@@ -216,6 +216,10 @@ $GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-
 $GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
 
 
+// Filtre url autorisé
+$GLOBALS['filter_auth'] = array("page", "user");
+
+
 // Sécurité / défaut
 $id = null;
 $title = null;

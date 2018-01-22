@@ -46,8 +46,8 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 {
 	$filter_one = array_keys($GLOBALS['filter'])[0];
 
-	// Si tag et pas uniquement home+page
-	if(isset($GLOBALS['filter'][$filter_one]) and $filter_one != "page" and $filter_one != "user")
+	// Si tag et pas uniquement home + filtre autorisé
+	if(isset($GLOBALS['filter'][$filter_one]) and !in_array($filter_one, $GLOBALS['filter_auth']))
 	{
 		$tag = encode($GLOBALS['filter'][array_keys($GLOBALS['filter'])[0]]);
 
@@ -158,13 +158,6 @@ $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['d
 
 // Image pour les réseaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
-
-
-
-/********** THEME **********/
-// Fonctions du theme
-if(isset($GLOBALS['function']) and $GLOBALS['function'] != "") 
-	include_once($_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"").$GLOBALS['function']);
 
 
 
