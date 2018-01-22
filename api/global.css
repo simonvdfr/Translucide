@@ -812,48 +812,48 @@ div.editable {
 		transform: translate3d(0, 100px, 0);
 		backface-visibility: hidden;
 
-		animation: slide-up .3s 1 ease-out;
+		/* animation: slide-up .3s 1 ease-out; */
 	}
-		@keyframes slide-up {
+		/* @keyframes slide-up {SUPP ???
 		    0% { transform: translate3d(0, 100%, 0); }
 		    100% { transform: translate3d(0, 0, 0); }
-		}
+		} */
 
 	.slide-down {
 		opacity: 0;
 		transform: translate3d(0, -100px, 0);
 		backface-visibility: hidden;
 
-		animation: slide-down .3s 1 ease-out;
+		/* animation: slide-down .3s 1 ease-out; */
 	}
-		@keyframes slide-down {
+		/* @keyframes slide-down {SUPP ???
 		    0% { transform: translate3d(0, -100%, 0); }
 		    100% { transform: translate3d(0, 0, 0); }
-		}
+		} */
 
 	.slide-left {
 		opacity: 0;
 		transform: translate3d(-100px, 0, 0);
 		backface-visibility: hidden;
 
-		animation: slide-left .3s 1 ease-out;
+		/* animation: slide-left .3s 1 ease-out; */
 	}
-		@keyframes slide-left {
+		/* @keyframes slide-left {SUPP ???
 		    0% { transform: translate3d(-100%, 0, 0); }
 		    100% { transform: translate3d(0, 0, 0); }
 		}
-
+		 */
 	.slide-right {
 		opacity: 0;
 		transform: translate3d(100px, 0, 0);
 		backface-visibility: hidden;
 		
-		animation: slide-right .3s 1 ease-out;
+		/* animation: slide-right .3s 1 ease-out; */
 	}
-		@keyframes slide-right {
+		/* @keyframes slide-right {SUPP ???
 		    0% { transform: translate3d(100%, 0, 0); }
 		    100% { transform: translate3d(0, 0, 0); }
-		}
+		} */
 
 
 	.fire {
