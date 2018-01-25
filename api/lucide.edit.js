@@ -1959,11 +1959,6 @@ $(function()
 	// Capture des actions au clavier // keydown keypress
 	$(document).on("keydown", function(event) 
 	{
-		console.log(event.keyCode);
-		console.log(event.which);
-		console.log(String.fromCharCode(event.which));
-		console.log(String.fromCharCode(event.which).toLowerCase());
-
 		// Si on appuie sur ctrl + s = sauvegarde
 		if((event.ctrlKey || event.metaKey)) 
 		{
