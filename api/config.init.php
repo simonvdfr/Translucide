@@ -235,9 +235,10 @@ $GLOBALS['editkey'] = 1;
 $GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
 
 
-// Navigation par page
-$num_pp = 10;
-
+// Numéro de la page en cours
 if(isset($_REQUEST['page'])) $page = (int)$_REQUEST['page'];
 else $page = 1;
+
+// Nombre d'entré par page
+$num_pp = 20;
 ?>
