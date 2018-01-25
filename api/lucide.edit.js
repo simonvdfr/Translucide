@@ -1599,6 +1599,7 @@ $(function()
 	// Change le data-selected dynamiquement
 	$(".editable-select").on("change", function(event) {
 		$(this).attr("data-selected", $(this).val());
+		tosave();
 	});
 
 
@@ -1955,9 +1956,14 @@ $(function()
 	});
 
 
-	// Capture des actions au clavier
-	$(document).keydown(function(event) 
+	// Capture des actions au clavier // keydown keypress
+	$(document).on("keydown", function(event) 
 	{
+		console.log(event.keyCode);
+		console.log(event.which);
+		console.log(String.fromCharCode(event.which));
+		console.log(String.fromCharCode(event.which).toLowerCase());
+
 		// Si on appuie sur ctrl + s = sauvegarde
 		if((event.ctrlKey || event.metaKey)) 
 		{
@@ -1985,14 +1991,15 @@ $(function()
 				tosave();
 			}
 		}
-		// Si on utilise tape du texte dans un contenu éditable on change le statut du bouton sauvegardé
-		else if(event.target.className == 'editable' || event.target.id == 'title' || event.target.id == 'description' || event.target.id == 'permalink') 
-		{
-			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 13)// Caractères texte ou entrée
+		// Si on tape du texte dans un contenu éditable on change le statut du bouton sauvegardé
+		else if(event.target.className.match(/(editable)/) || event.target.id.match(/^(title|description|permalink)$/)) 
+		{	
+			// Caractères texte ou 0/96 ou entrée
+			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 96 || event.keyCode == 13)
 			{
 				tosave();// A sauvegarder
 			}
-			else if(event.keyCode == 46)// Suppr
+			else if(event.keyCode == 46 || event.keyCode == 8)// Suppr ou Backspace
 			{
 				tosave();// A sauvegarder
 				
