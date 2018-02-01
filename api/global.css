@@ -548,7 +548,7 @@ input[type="reset"].unstyled:focus {
 	display: inline-block;
 	vertical-align: text-bottom;
 	text-align: center;
-	top: 3px;
+	top: 2px;
 	width: 22px;
 	margin-left: -28px;
 }
