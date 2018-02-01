@@ -654,7 +654,7 @@ switch($_GET['mode'])
 		{
 			?>
 			<script>
-			$(document).ready(function()
+			$(function()
 			{		
 				// Message page supprimé
 				light("<?_e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
