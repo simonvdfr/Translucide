@@ -84,7 +84,7 @@ if($res)
 	if($res['state'] != "active")// Page non activé
 	{
 		// Si pas admin on affiche page en construction
-		if(!$_SESSION['auth']['edit-'.$res['type']]) 
+		if(!@$_SESSION['auth']['edit-'.$res['type']]) 
 		{
 			// On regarde si une template 503 est définie
 			$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
