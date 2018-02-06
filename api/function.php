@@ -308,11 +308,11 @@ function media($key = null, $filter = array())
 
 			default: $fa = "file-o"; break;
 
-			case"zip": $fa = "file-archive-o"; break;
-			case"msword": $fa = "file-word-o"; break;
-			case"vnd.ms-excel": $fa = "file-excel-o"; break;
-			case"vnd.ms-powerpoint": $fa = "file-powerpoint-o"; break;
-			case"pdf": $fa = "file-pdf-o"; break;
+			case"zip": $fa = "file-archive"; break;
+			case"msword": $fa = "file-word"; break;
+			case"vnd.ms-excel": $fa = "file-excel"; break;
+			case"vnd.ms-powerpoint": $fa = "file-powerpoint"; break;
+			case"pdf": $fa = "file-pdf"; break;
 		}
 	}
 
