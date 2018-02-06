@@ -1185,40 +1185,7 @@ $(function()
 	editable_event = function() {		
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
-
 				memo_focus = this;// Pour memo le focus en cours
-
-				//adminbar_height = $("#admin-bar").outerHeight();
-				toolbox_height = $("#txt-tool").outerHeight();
-				this_offset_top = $(memo_focus).offset().top;
-
-				// Si la toolbox est autorisé
-				if(!$(this).hasClass("notoolbox"))
-				{
-					// Si on est en mode view source on colore le bt view-source
-					if($(memo_focus).hasClass("view-source"))
-						$("#view-source").addClass("checked");
-					else
-						$("#view-source").removeClass("checked");
-
-					// Affichage de la boîte à outils texte
-					if($("#txt-tool").css("display") == "none")// Si pas visible				
-					$("#txt-tool")
-						.show()
-						.offset({
-							top: ( this_offset_top - toolbox_height - 8 ),
-							left: ( $(this).offset().left )
-						});	
-
-					// Scroll la toolbox si on descend
-					$window.on("scroll click.scroll-toolbox", function(event) {
-						// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
-						if(($window.scrollTop() + toolbox_height + 12) > this_offset_top) 
-							$("#txt-tool").css({top: 5 + "px", position: "fixed"});	
-						else
-							$("#txt-tool").css({top: this_offset_top - toolbox_height - 8 + "px", position: "absolute"});
-					});
-				}
 			},
 			"blur.editable": function() {
 				if($("#txt-tool:not(:hover)").val()=="") {
@@ -1257,7 +1224,56 @@ $(function()
 					memo_range = memo_selection.getRangeAt(0);
 					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
 				}
-				
+
+
+				// Si la toolbox est autorisé
+				if(!$(this).hasClass("notoolbox"))
+				{
+					//adminbar_height = $("#admin-bar").outerHeight();
+					//this_offset_top = $(memo_focus).offset().top;
+					//this_left = $(this).offset().left;
+					toolbox_height = $("#txt-tool").outerHeight();
+
+					this_top = memo_range.getClientRects()[0].top;
+
+					this_top_scroll = this_top - toolbox_height - 12 + $window.scrollTop();
+
+					this_left = memo_range.getClientRects()[0].left - 12;
+
+
+					// Si on est en mode view source on colore le bt view-source
+					if($(memo_focus).hasClass("view-source"))
+						$("#view-source").addClass("checked");
+					else
+						$("#view-source").removeClass("checked");
+
+					// Affichage de la boîte à outils texte
+					if($("#txt-tool").css("display") == "none")// Si pas visible // init			
+					$("#txt-tool")
+						.show()
+						.offset({
+							top: this_top_scroll,
+							left: this_left
+						});	
+
+					// Positionnement de la toolbox et gestion du Scroll si on descend
+					$window.on("scroll click.scroll-toolbox", function(event) {
+						// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
+						if(($window.scrollTop() + toolbox_height + 12) > this_top_scroll) 
+							$("#txt-tool").css({
+								top: 5 + "px",
+								left: this_left + "px",
+								position: "fixed"
+							});	
+						else
+							$("#txt-tool").css({
+								top: this_top_scroll + "px",
+								left: this_left + "px",
+								position: "absolute"
+							});
+					});
+				}
+
 
 				// Si on est sur un h2 on check l'outil dans la toolbox
 				if($(memo_node).closest("h2").length) $("#txt-tool #h2").addClass("checked");
