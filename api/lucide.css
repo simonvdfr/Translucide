@@ -425,8 +425,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 }
 	.lucide .editable-media img { margin: -1px; }
 	
-	.drag-zone { border: 2px dashed #75df83; }
-	.drag-over { border: 2px dashed #7AD2D9; cursor: pointer; }
+	.drag-zone { border: 2px dashed #75df83 !important; }
+	.drag-over { border: 2px dashed #7AD2D9 !important; cursor: pointer; }
 	img.drag-elem { margin: -2px !important; }
 	/* @todo: problème décalage sur les grandes images au hover */
 
