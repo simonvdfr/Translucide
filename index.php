@@ -74,7 +74,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 if($res) 
 {
 	// On verifie l'url pour eviter les duplicates : si erreur = redirection
-	if(($_SERVER['REQUEST_SCHEME']?$_SERVER['REQUEST_SCHEME']."://":$GLOBALS['scheme']).$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
+	if((@$_SERVER['HTTPS']?"https":"http")."://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
 	{
 		header($_SERVER['SERVER_PROTOCOL']." 301 Moved Permanently");		
 		header("location: ".make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))));
