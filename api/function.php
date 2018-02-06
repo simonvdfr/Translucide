@@ -35,7 +35,7 @@ function get_url($url_source = null)
 {
 	// Si pas d'url forcé on donne l'url en cours complète
 	if(!$url_source) 
-		$url_source = ($_SERVER['REQUEST_SCHEME'] ? $_SERVER['REQUEST_SCHEME'] : "http")."://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+		$url_source = (@$_SERVER['REQUEST_SCHEME'] ? $_SERVER['REQUEST_SCHEME'] : "http")."://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
 	// Parse l'url pour ne garder que la partie rewrite sans le chemin de base du site
 	$parse_url = parse_url($url_source);
@@ -124,10 +124,10 @@ function page($num_total, $page)
 		// Page 1
 		?><li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
 
-		if($page >= 10) {?><li class="fl mls mtt">...</li><?}
-		
 		if($num_page > 10 and $page >= 10)// + de 10 page
 		{
+			?><li class="fl mls mtt">...</li><?
+			
 			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
 				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
