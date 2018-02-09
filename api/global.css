@@ -1035,7 +1035,7 @@ div.editable {
   position: absolute;
   left: -2.14285714em;
   width: 2.14285714em;
-  top: 0.14285714em;
+  top: 0.3em;/*0.14285714em*/
   text-align: center;
 }
 
