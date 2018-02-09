@@ -157,6 +157,7 @@ $GLOBALS['add-content'] = array(
 // Toolbox
 $GLOBALS['toolbox'] = array(
 	//"h2",
+	//"h3",
 	"bold",
 	"italic",
 	"underline",

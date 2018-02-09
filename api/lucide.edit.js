@@ -19,7 +19,7 @@ add_translation({
 	"This file format is not supported" : {"fr" : "Ce format de fichier n'est pas pris en charge"},	
 	"Delete user" : {"fr" : "Supprimer l'utilisateur"},
 	"User deleted" : {"fr" : "Utilisateur supprim\u00e9"},
-	"Title H2" : {"fr" : "Titre H2"},	
+	"Title" : {"fr" : "Titre"},	
 	"Separator" : {"fr" : "S\u00e9parateur"},	
 	"Media Library" : {"fr" : "Biblioth\u00e8que des m\u00e9dias"},		
 	"Icon Library" : {"fr" : "Biblioth\u00e8que d'ic\u00f4ne"},		
@@ -1127,7 +1127,10 @@ $(function()
 	toolbox = "<ul id='txt-tool' class='toolbox'>";
 
 		if(typeof toolbox_h2 != 'undefined') 
-			toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title H2")+"\"><i class='fa fa-fw fa-header'></i></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title")+" H2"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>2</span></button></li>";
+
+		if(typeof toolbox_h3 != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('h3')\" id='h3' title=\""+__("Title")+" H3"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>3</span></button></li>";
 
 		if(typeof toolbox_bold != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
@@ -1279,9 +1282,12 @@ $(function()
 				}
 
 
-				// Si on est sur un h2 on check l'outil dans la toolbox
+				// Si on est sur un h2/3 on check l'outil dans la toolbox
 				if($(memo_node).closest("h2").length) $("#txt-tool #h2").addClass("checked");
 				else $("#txt-tool #h2").removeClass("checked");
+					
+				if($(memo_node).closest("h3").length) $("#txt-tool #h3").addClass("checked");
+				else $("#txt-tool #h3").removeClass("checked");
 					
 
 				// Désélectionne les alignements
@@ -1381,6 +1387,7 @@ $(function()
 
 	// Action sur le input de lien si keyup Enter
 	$("#txt-tool #option #link").keyup(function(event) { if(event.keyCode == 13) link() });
+
 
 
 	/************** IMAGES DANS LES BLOCS TEXTE **************/
@@ -1663,6 +1670,23 @@ $(function()
 	editable_href_event();
 
 
+
+	/************** AUTOCOMPLETE DE SUGGESTION DES PAGES EXISTANTES POUR L'AJOUT DE LIEN **************/
+	$("#txt-tool #option #link, .editable-href").autocomplete({
+		minLength: 0,
+		source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
+		select: function(event, ui) { 
+			$(this).val(ui.item.value);// Action au click sur la selection
+		}
+	})
+	.focus(function(){
+		$(this).data("uiAutocomplete").search($(this).val());// Ouvre les suggestions au focus
+	})
+	.autocomplete("instance")._renderItem = function(ul, item) {// Mise en page des résultats
+      	return $("<li>").append("<div title='"+item.value+"'>"+item.label+" <span class='grey italic'>"+item.type+"</span></div>").appendTo(ul);
+    };
+
+    
 
 	/************** SYSTÈME DE TAG / CATÉGORIE **************/
 

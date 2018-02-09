@@ -236,9 +236,9 @@ body { transition: margin-top .2s linear; }
 	background-color: rgba(245, 245, 245, 0.95) !important;
 	border-radius: 5px;
 }
-	.tooltip label { 
-		margin-top: 0;
-	}
+	.tooltip label { margin-top: 0;	}
+
+	.ui-autocomplete li { font-size: .9em; }
 
 
 /* HEADER */
@@ -811,6 +811,11 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		}
 		.toolbox li:last-child, .toolbox li:last-child button {
 			border-radius: 0 4px 4px 0;
+		}
+		.toolbox button .minus {
+			font-size: 0.6em;
+			margin-left: -2px;
+			vertical-align: top;
 		}
 
 

@@ -693,6 +693,7 @@ switch($_GET['mode'])
 
 	break;
 
+
 	case "make-permalink":// Construit un permalink
 
 		//@todo Vérifier qu'il n'y a pas déjà un contenu avec la même URL
@@ -700,6 +701,37 @@ switch($_GET['mode'])
 		login('medium', 'edit-'.($_POST['type']?encode($_POST['type']):"page"));// Vérifie que l'on a le droit d'éditer une page
 
 		echo encode($_POST['title']);
+
+	break;
+
+
+	case "links":// Suggère des pages existante
+
+		include_once("db.php");// Connexion à la db
+
+		login('medium');// Vérifie que l'on a le droit d'éditer une page
+
+		$term = $connect->real_escape_string($_GET["term"]);
+
+		$sql = "SELECT id, title, type, url FROM ".$GLOBALS['table_content']." WHERE title LIKE '%".$term."%' OR url LIKE '%".$term."%'";
+		if(!$term) $sql .= " ORDER BY date_update DESC"; else $sql .= " ORDER BY title ASC";
+		$sql .= " LIMIT 50";
+
+		$sel = $connect->query($sql);
+		while($res = $sel->fetch_assoc()) {
+			$data[] = array(
+				'id' => $res['id'],
+				'label' => $res['title'],
+				'type' => $res['type'],
+				'value' => make_url($res['url'])//, array("domaine" => true)
+			);
+		}
+
+		header("Content-Type: application/json; charset=utf-8");
+
+		echo json_encode($data);
+
+		$connect->close();
 
 	break;
 
@@ -1353,7 +1385,7 @@ switch($_GET['mode'])
 			</ul>
 
 			<script>
-			$(document).ready(function()
+			$(function()
 			{		
 				// Recherche
 				$(".dialog-icon .search").keyup(function() 
