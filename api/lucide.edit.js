@@ -1232,14 +1232,18 @@ $(function()
 					//adminbar_height = $("#admin-bar").outerHeight();
 					//this_offset_top = $(memo_focus).offset().top;
 					//this_left = $(this).offset().left;
+
 					toolbox_height = $("#txt-tool").outerHeight();
 
-					this_top = memo_range.getClientRects()[0].top;
+					// Si déjà un contenu
+					if(memo_range.getClientRects()[0] != undefined)
+						this_top = memo_range.getClientRects()[0].top + $window.scrollTop();// position du caractère + scroll
+					else 
+						this_top = $(memo_focus).offset().top;// position de la div/tag
 
-					this_top_scroll = this_top - toolbox_height - 12 + $window.scrollTop();
+					this_top_scroll = this_top - toolbox_height - 12;
 
-					this_left = memo_range.getClientRects()[0].left - 12;
-
+					this_left = (memo_range.getClientRects()[0] != undefined ? memo_range.getClientRects()[0].left : $(this).offset().left) - 12;
 
 					// Si on est en mode view source on colore le bt view-source
 					if($(memo_focus).hasClass("view-source"))
@@ -1377,7 +1381,6 @@ $(function()
 
 	// Action sur le input de lien si keyup Enter
 	$("#txt-tool #option #link").keyup(function(event) { if(event.keyCode == 13) link() });
-
 
 
 	/************** IMAGES DANS LES BLOCS TEXTE **************/
