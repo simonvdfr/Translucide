@@ -457,7 +457,13 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	position: relative;
 	transition: background .3s;
 }
-	.editable-bg > .open-dialog-media, .work-bt a {
+	.editable-bg > .bg-tool, .work-bt a {
+		position: absolute;
+		z-index: 10;
+		top: 0;
+		right: 0;
+	}
+	.editable-bg > .bg-tool .open-dialog-media, .work-bt a {
 		box-shadow: inset 0px 1px 3px 0px #91b3b8;
 		background-color: rgba(117, 137, 140, 0.6);
 		border-radius: 5px;
@@ -468,27 +474,34 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		font-family: sans-serif;
 		text-shadow: 1px 1px 1px #2c5f66;
 		text-decoration: none;
-
-		position: absolute;
-
-		top: 0;
-		right: 0;
+		
 		width: initial; /* inherit */
 		padding: 6px 8px;
 		margin: 10px 10px 10px 0px;
 
-		z-index: 10;
-		
 		transition: background .2s;
 	}
-	.editable-bg > .open-dialog-media:hover, .work-bt a:hover {
+	.editable-bg > .bg-tool .open-dialog-media { 
+		position: relative;
+		display: inline-block !important;
+	}
+	.editable-bg > .bg-tool .open-dialog-media:hover, .work-bt a:hover {
 		background-color: rgba(117, 137, 140, 1);
 		color: #7AD2D9;	
 	}
-		.under-header.editable-bg > .open-dialog-media, .fullpage.editable-bg > .open-dialog-media {/* cas ou on place le bt en bas de la zone bg */
+		.under-header.editable-bg > .bg-tool .open-dialog-media, .fullpage.editable-bg > .bg-tool .open-dialog-media {/* cas ou on place le bt en bas de la zone bg */
 			top: initial;
 			bottom: 10px;
 		}
+
+	.editable-bg > .bg-tool .clear-bg {
+		margin: 0 12px 0 0;
+		color: grey;	
+		font-size: 1.5em;
+		opacity: .6;
+		transition: all .3s; 
+	}
+		.editable-bg > .bg-tool .clear-bg:hover { opacity: 1; }
 
 
 /* TAG */

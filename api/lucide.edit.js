@@ -779,8 +779,13 @@ get_img = function(id, link)
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
-				$("[data-id='"+$("#dialog-media-source").val()+"']").attr("data-bg", domain + final_file);
-				$("[data-id='"+$("#dialog-media-source").val()+"']").css("background-image", "url("+ domain + final_file +")");
+				var dataidsource = "[data-id='"+$("#dialog-media-source").val()+"']";
+				$(dataidsource).attr("data-bg", domain + final_file);
+				$(dataidsource).css("background-image", "url("+ domain + final_file +")");
+
+				// Ajout du bt supp si pas existant
+				if(!$(dataidsource+" .clear-bg").length)
+				$(dataidsource+" .bg-tool").prepend(clearbg_bt);
 			}
 
 			// Fermeture de la dialog
@@ -1555,17 +1560,24 @@ $(function()
 	
 	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
 	$("[data-bg]").addClass("editable-bg");
-	$("[data-bg]").append("<a href=\"javascript:void(0)\" class='open-dialog-media'><i class='fa fa-picture-o'></i> "+__("Change the background image")+"</a>");
+	$("[data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'><i class='fa fa-picture-o'></i> "+__("Change the background image")+"</a></div>");
+
+	// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
+	clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
+	$("[data-bg]").each(function() {
+		if($(this).data("bg"))
+			$(".bg-tool", this).prepend(clearbg_bt);
+	});
 
 	// Rends éditables les images en background
 	editable_bg_event = function() {
 		$("[data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
-					$("> .open-dialog-media", this).fadeIn("fast");
+					$("> .bg-tool", this).fadeIn("fast");
 				},
 				"mouseleave.editable-bg": function(event) {// Out
-					$("> .open-dialog-media", this).fadeOut("fast");
+					$("> .bg-tool", this).fadeOut("fast");
 				}
 			});		
 	}
@@ -1574,8 +1586,14 @@ $(function()
 	editable_bg_event();
 
 	// Ouverture de la fenêtre des médias pour changer le bg
-	$("body").on("click", ".editable-bg > .open-dialog-media", function() {
-		media($(this).parent()[0], 'bg');
+	$("body").on("click", ".editable-bg > .bg-tool .open-dialog-media", function() {
+		media($(this).parent().parent()[0], 'bg');
+	});
+
+	// Supprime l'image de fond
+	$("body").on("click", ".editable-bg > .bg-tool .clear-bg", function() {
+		$(this).parent().parent().attr('data-bg','').css("background-image","none");
+		$(this).remove();
 	});
 
 
