@@ -980,7 +980,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		copy($source_file, $root_dir . $dir . $file_name_ext);
 	}
 
-	return $dir . $file_name_ext . "?zoom=". $zoom ."&".time();// Time pour forcer le refresh
+	return $dir.$file_name_ext."?".($zoom?"zoom=".$zoom."&":"").time();// Time pour forcer le refresh
 }
 
 // Examine et traite une image
