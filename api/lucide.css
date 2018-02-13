@@ -377,7 +377,7 @@ header:hover .dragger { display: block; }
 
 article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la largeur */
 
-.lucide .editable, [contenteditable=true] {
+.lucide .editable, [contenteditable=true], a[name] {
 	border-bottom: 1px dotted rgba(61, 128, 179, 0.2) !important;
 	outline: none;/* supp le bord bleu de sélection chrome */
 
@@ -453,10 +453,11 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 .editable-bg {
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
 	
-	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) inset;
 	position: relative;
-	transition: background .3s;
+	transition: background .3s, box-shadow .3s;
 }
+	.editable-bg:hover { box-shadow: 0 0 20px rgba(0, 0, 0, 0.05) inset; }
+
 	.editable-bg > .bg-tool, .work-bt a {
 		position: absolute;
 		z-index: 10;
@@ -464,29 +465,34 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		right: 0;
 	}
 	.editable-bg > .bg-tool .open-dialog-media, .work-bt a {
-		box-shadow: inset 0px 1px 3px 0px #91b3b8;
-		background-color: rgba(117, 137, 140, 0.6);
+		box-shadow: none;/*inset 0px 1px 3px 0px #91b3b8*/
+		background-color: #75898c;/*rgba(117, 137, 140, .6)*/
 		border-radius: 5px;
-		border: 1px solid #909090;	
+		/* border: 1px solid #909090; */	
 
-		color: #7AD2D9;	
+		color: #fff;/*#7AD2D9*/
 		font-size: inherit;
 		font-family: sans-serif;
-		text-shadow: 1px 1px 1px #2c5f66;
+		text-shadow: none;/*1px 1px 1px #2c5f66*/
 		text-decoration: none;
+
+		opacity: .6;
 		
 		width: initial; /* inherit */
-		padding: 6px 8px;
+		padding: 2px 6px;
 		margin: 10px 10px 10px 0px;
 
-		transition: background .2s;
+		transition: opacity .3s, background .2s;
 	}
 	.editable-bg > .bg-tool .open-dialog-media { 
 		position: relative;
 		display: inline-block !important;
 	}
-	.editable-bg > .bg-tool .open-dialog-media:hover, .work-bt a:hover {
-		background-color: rgba(117, 137, 140, 1);
+	.editable-bg > .bg-tool .open-dialog-media:hover,
+	.editable-bg > .bg-tool .clear-bg:hover,
+	.work-bt a:hover {
+		/* background-color: rgba(117, 137, 140, 1); */
+		opacity: 1;
 		color: #7AD2D9;	
 	}
 		.under-header.editable-bg > .bg-tool .open-dialog-media, .fullpage.editable-bg > .bg-tool .open-dialog-media {/* cas ou on place le bt en bas de la zone bg */
@@ -494,14 +500,16 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 			bottom: 10px;
 		}
 
-	.editable-bg > .bg-tool .clear-bg {
-		margin: 0 12px 0 0;
-		color: grey;	
+	.editable-bg > .bg-tool .clear-bg {		
+		color: #75898c;	
 		font-size: 1.5em;
+		vertical-align: sub;
+
+		margin: 0 12px 0 0;
+
 		opacity: .6;
 		transition: all .3s; 
 	}
-		.editable-bg > .bg-tool .clear-bg:hover { opacity: 1; }
 
 
 /* TAG */

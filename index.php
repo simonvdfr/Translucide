@@ -282,11 +282,11 @@ if(!$ajax)
 
 			// Variables
 			id = "<?=$id?>";
-			state = "<?=(isset($res['state'])?$res['state']:"")?>";
-			permalink = "<?=(isset($res['url'])?$res['url']:"")?>";
-			type = "<?=(isset($res['type'])?$res['type']:"")?>";
-			tpl = "<?=(isset($res['tpl'])?$res['tpl']:"")?>";
-			tag = "<?=(isset($tag)?encode($tag):"")?>";
+			state = "<?=@$res['state']?>";
+			permalink = "<?=@$res['url']?>";
+			type = "<?=@$res['type']?>";
+			tpl = "<?=@$res['tpl']?>";
+			tag = "<?=encode(@$tag)?>";
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
 		</script>

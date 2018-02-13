@@ -169,6 +169,7 @@ $GLOBALS['toolbox'] = array(
 	//"viewsource",
 	"icon",
 	"media",
+	//"anchor",
 	"link"
 );
 

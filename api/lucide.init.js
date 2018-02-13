@@ -236,6 +236,8 @@ edit_launcher = function(callback)
 
 $(function()
 {
+	$root = $("html, body");
+	$body = $("body");
 	$window = $(window);
     $animation = $(".animation");
 
@@ -330,7 +332,7 @@ $(function()
 
 	// Smoothscroll to top
 	$("a.bt.fixed.top").click(function() {
-		$("html, body").animate({scrollTop: 0}, 300);
+		$root.animate({scrollTop: 0}, 300);
 		return false;
 	});
 
@@ -355,7 +357,19 @@ $(function()
 		});
 	}
 
-	
+
+
+	// SMOOTHSCOLL SUR LES ANCRES
+	$(document).on("click", "a[href^='#']", function(event) {
+		event.preventDefault();
+
+		if(typeof lucide === 'undefined')// Si pas en mode edit on scroll
+		$root.animate({ 
+			scrollTop: $('[name="' + $(this).attr("href").substr(1) + '"]').offset().top
+		}, 800, "linear");
+	});
+
+
 
 	// ACTION SUR LES ONSCROLL
 	$window.on("scroll resize load", function ()
@@ -383,13 +397,6 @@ $(function()
 
 		// Décale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
 		//if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
-
-
-		// SMOOTHSCOLL SUR LES ANCRES
-		$("a[href*='#']").on("click", function(event) {
-			event.preventDefault();
-			$("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top}, 1000, "linear");
-		});
 
 
 		// ANIMATION SUR LES CONTENUS
