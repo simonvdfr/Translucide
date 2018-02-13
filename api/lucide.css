@@ -459,6 +459,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.editable-bg:hover { box-shadow: 0 0 20px rgba(0, 0, 0, 0.05) inset; }
 
 	.editable-bg > .bg-tool, .work-bt a {
+		display: none;
 		position: absolute;
 		z-index: 10;
 		top: 0;
