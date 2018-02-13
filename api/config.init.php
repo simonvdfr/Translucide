@@ -56,10 +56,12 @@ $GLOBALS['function'] = "";// Include fonction du theme
 $GLOBALS['theme'] = "";
 $GLOBALS['sitename'] = "";
 $GLOBALS['scheme'] = "";
+
 if(isset($_SERVER['WINDIR']))// Dev local
 	$GLOBALS['domain'] = "";
 else 
 	$GLOBALS['domain'] = "";
+
 $GLOBALS['path'] = "";
 $GLOBALS['robots'] = "index, follow";
 $GLOBALS['email_contact'] = "";
