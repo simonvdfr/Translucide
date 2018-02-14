@@ -988,19 +988,6 @@ div.editable {
 /* ---------------------------------- */
 /* ==Icons                            */
 /* ---------------------------------- */
-@font-face {
-  font-family: 'FontAwesome';
-  src:  url('icons/icons.eot?20170406');
-  src:  url('icons/icons.eot?20170406#iefix') format('embedded-opentype'),
-    url('icons/icons.woff2?20170406') format('woff2'),
-    url('icons/icons.woff?20170406') format('woff'),
-    url('icons/icons.ttf?20170406') format('truetype'),
-    url('icons/icons.svg?20170406#icons') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-
 .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
