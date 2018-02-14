@@ -514,7 +514,7 @@ input[type="reset"].unstyled:focus {
 		left: inherit;
 	}
 	.bt.edit, .bt.add, .bt.top { 
-		height: 38px;
+		height: 38px !important;
 		padding: 0.5rem;
 	}
 	.bt.fixed.edit { 	
@@ -1088,6 +1088,7 @@ div.editable {
 .fa-eye:before { content: '\e821'; } /* '' */
 .fa-key:before { content: '\e822'; } /* '' */
 .fa-cog:before { content: '\e823'; } /* '' */
+.fa-doc:before { content: '\e824'; } /* '' */
 .fa-floppy:before { content: '\e825'; } /* '' */
 .fa-bell:before { content: '\e827'; } /* '' */
 .fa-twitter:before { content: '\f099'; } /* '' */
