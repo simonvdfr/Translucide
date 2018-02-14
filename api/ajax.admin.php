@@ -1749,6 +1749,9 @@ switch($_GET['mode'])
 						// Formate le nom du site
 						$_POST['sitename'] = htmlspecialchars(stripslashes($_POST['sitename']));
 
+						// Cache du jour de l'install
+						$_POST['cache'] = $GLOBALS['cache'] = date("Ymd");
+
 						// On parcourt le fichier config
 						foreach($config_file as $line_num => $line) 
 						{
