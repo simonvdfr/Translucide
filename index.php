@@ -55,10 +55,10 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0)
 		$sel_tag_info = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag-info' AND cle='".$tag."' LIMIT 1");
 		$res_tag_info = $sel_tag_info->fetch_assoc();
 
-		// Il y a des infos sur le tag
+		// Il n'y a pas d'infos sur le tag
 		if(!$res_tag_info['val'])
 		{
-			// On rapatrie simplement le nom du tag
+			// On rapatrie simplement le nom du tag, pour le fil d'ariane par exemple
 			$sel_tag = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag' AND cle='".$tag."' LIMIT 1");
 			$res_tag = $sel_tag->fetch_assoc();
 
