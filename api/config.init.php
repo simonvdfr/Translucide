@@ -53,8 +53,11 @@ else {
 $GLOBALS['language'] = array("fr");
 
 $GLOBALS['function'] = "";// Include fonction du theme
+
 $GLOBALS['theme'] = "";
+
 $GLOBALS['sitename'] = "";
+
 $GLOBALS['scheme'] = "";
 
 if(isset($_SERVER['WINDIR']))// Dev local
@@ -63,7 +66,9 @@ else
 	$GLOBALS['domain'] = "";
 
 $GLOBALS['path'] = "";
+
 $GLOBALS['robots'] = "index, follow";
+
 $GLOBALS['email_contact'] = "";
 
 
