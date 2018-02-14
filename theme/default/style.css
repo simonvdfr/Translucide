@@ -1,7 +1,5 @@
 /* Typo */
-@import url('//fonts.googleapis.com/css?family=Montserrat');
-@import url('//fonts.googleapis.com/css?family=Raleway');
-@import url('//fonts.googleapis.com/css?family=Yellowtail');
+@import url('//fonts.googleapis.com/css?family=Montserrat|Raleway|Yellowtail');
 
 body {
 	font-family: Raleway;
