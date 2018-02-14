@@ -293,15 +293,13 @@ exec_tool = function(command, value, ui) {
 
 		if(command_source == "CreateAnchor")
 		{
-			console.log("command ancre");
 			// On supprime le href et le déplace dans name
 			$(memo_selection.anchorNode.parentElement).attr("name", $(memo_selection.anchorNode.parentElement).attr("href")).removeAttr("href");
 
 			$("#txt-tool #anchor-option").hide("slide", 300);// Cache le menu d'option avec animation
 		}
-		else if(command == "command CreateLink")
+		else if(command == "CreateLink")
 		{
-			console.log("lien");
 			// Si Target = blank // @todo verif marche sous firefox ??
 			if($("#target-blank").hasClass("checked")) memo_selection.anchorNode.parentElement.target = "_blank";
 			else $(memo_node).removeAttr("target");
