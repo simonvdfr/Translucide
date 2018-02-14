@@ -323,7 +323,6 @@ exec_tool = function(command, value, ui) {
 // Menu avec les options d'ajout/modif d'ancre
 anchor_option = function()
 {		
-	console.log("anchor_option");
 	$("#unanchor").remove();// Supprime le bouton de supp d'anchor
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 
@@ -352,7 +351,6 @@ anchor_option = function()
 // Supprime le lien autour
 unanchor = function() 
 {
-	console.log("unanchor");
 	$(memo_node).contents().unwrap();
 	$("#txt-tool #anchor-option").hide("slide", 300);
 
@@ -362,7 +360,6 @@ unanchor = function()
 // Edite ou ajoute l'ancre
 anchor = function() 
 {
-	console.log("anchor");
 	var anchor = $('#txt-tool .option #anchor').val();
 
 	// Si ajout de lien
