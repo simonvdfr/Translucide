@@ -124,7 +124,7 @@ save = function() //callback
 
 	data["state"] = ($("#admin-bar #state-content").prop("checked") == true ? "active" : "deactivate");// Etat d'activation de la page
 
-	data["type"] = type;// Type de contenu
+	data["type"] = $("#admin-bar #type").val();// Type de contenu
 
 	data["tpl"] = $("#admin-bar #tpl").val();// Template
 	
@@ -947,6 +947,7 @@ $(function()
 	$("#admin-bar #description").val(description);
 
 	$("#admin-bar #permalink").val(permalink);
+	$("#admin-bar #type").val(type);
 	$("#admin-bar #tpl").val(tpl);
 
 

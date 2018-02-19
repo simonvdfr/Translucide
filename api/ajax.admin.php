@@ -67,19 +67,41 @@ switch($_GET['mode'])
 								<label id="refresh-permalink"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
 							</div>
 
-							<div class="small mtm"><?_e("Template")?></div>
-							<div class="">
-								<select id="tpl">
-									<?
-									$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
-									while(list($cle, $filename) = each($scandir))				
-									{			
-										$filename = pathinfo($filename, PATHINFO_FILENAME);
-										echo'<option value="'.$filename.'">'.$filename.'</option>';
-									}
-									?>	
-								</select>
+							<div class="mod mtm">
+
+								<div class="fl mrl">
+									<div class="small"><?_e("Type of page")?></div>
+									<div>
+										<select id="type">
+											<?
+											while(list($cle, $array) = each($GLOBALS['add-content']))
+											{
+												if(isset($_SESSION['auth']['add-'.$cle]))
+													echo'<option value="'.$cle.'">'.__($cle).'</option>';
+											}
+											?>
+										</select>
+									</div>
+								</div>
+								
+								<div class="fl">
+									<div class="small"><?_e("Template")?></div>
+									<div>
+										<select id="tpl">
+											<?
+											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
+											while(list($cle, $filename) = each($scandir))				
+											{			
+												$filename = pathinfo($filename, PATHINFO_FILENAME);
+												echo'<option value="'.$filename.'">'.$filename.'</option>';
+											}
+											?>	
+										</select>
+									</div>
+								</div>
+
 							</div>
+
 							
 							<div class="small mtm"><?_e("Image on social networks")?></div>
 							<div class=""><span class="editable-media" id="og-image"><img src=""></span></div>
@@ -583,6 +605,7 @@ switch($_GET['mode'])
 			$sql .= "description = '".addslashes($_POST['description'])."', ";
 			$sql .= "content = '".addslashes($json_content)."', ";
 			$sql .= "state = '".addslashes($_POST['state'])."', ";
+			$sql .= "type = '".$type."', ";
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
 			$sql .= "user_update = '".(int)$_SESSION['uid']."', ";
 			$sql .= "date_update = NOW() ";

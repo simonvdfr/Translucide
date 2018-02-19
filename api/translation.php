@@ -58,6 +58,7 @@ $add_translation = array(
 	"Formatted web address" => array("fr" => "Adresse web formaté"),
 	
 	"Template" => array("fr" => "Modèle de page"),
+	"Type of page" => array("fr" => "Type de page"),
 	
 	"Image on social networks" => array("fr" => "Image sur les réseaux sociaux"),
 	
