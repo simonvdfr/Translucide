@@ -589,9 +589,9 @@ dialog_transfert = function(mode, source, target, callback) {
 				$(".dialog-"+mode).dialog("open");
 
 				// Si touche échape on ferme la dialog
-				$("body").on("keydown.dialog-escape", function(evt) {
-					if(evt.keyCode === $.ui.keyCode.ESCAPE) $(".dialog-"+mode).dialog('close');
-					evt.stopPropagation();
+				$("body").on("keydown.dialog-escape", function(event) {
+					if(event.keyCode === $.ui.keyCode.ESCAPE) $(".dialog-"+mode).dialog('close');
+					event.stopPropagation();
 				});;	
 			}
 		});
