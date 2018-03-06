@@ -959,18 +959,21 @@ switch($_GET['mode'])
 		{
 			$_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 
-			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))// Format valide
 			{
-				include_once("db.php");
+				// Si le mail est celui de la personne connecter OU admin, pas besoin de check l'existance
+				if(@$_SESSION['email'] == $_POST['email'] OR @$_SESSION['auth']['edit-user']) echo "true";
+				else
+				{
+					include_once("db.php");
+					$email = $GLOBALS['connect']->real_escape_string($_POST['email']);
+					$sel = $GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']." WHERE email='".$email."' LIMIT 1");
 
-				$email = $GLOBALS['connect']->real_escape_string($_POST['email']);
-
-				$sel = $GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']." WHERE email='".$email."' LIMIT 1");
-
-				if($res = $sel->fetch_assoc()) 
-					echo "existing account";
-				else 
-					echo "true";
+					if($res = $sel->fetch_assoc())// Déjà dans la base
+						echo "existing account";
+					else 
+						echo "true";
+				}
 			}
 			else echo "false mail";
 		}
