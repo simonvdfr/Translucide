@@ -149,7 +149,7 @@ switch($_GET['mode'])
 
 						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
 						var script = document.createElement('script');
-						script.src = path+"api/lucide.edit.js?0.1";
+						script.src = path+"api/lucide.edit.js?<?=$GLOBALS['cache']?>";
 						document.body.appendChild(script);		
 
 					},
@@ -354,33 +354,41 @@ switch($_GET['mode'])
 
 		$url = (encode($_POST['permalink']) ? encode($_POST['permalink']) : encode($_POST['title']));
 
-		// Ajoute la page
-		$sql = "INSERT ".$table_content." SET ";
-		$sql .= "title = '".addslashes($_POST['title'])."', ";
-		$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
-		$sql .= "url = '".$url."', ";
-		$sql .= "lang = '".$lang."', ";
-		$sql .= "type = '".$type."', ";
-		$sql .= "user_insert = '".(int)$_SESSION['uid']."', ";
-		$sql .= "date_insert = NOW() ";
-		$connect->query($sql);
-		
-		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
-		else // Sauvegarde réussit
+		if($url) 
 		{
-			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
-			setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
+			// Ajoute la page
+			$sql = "INSERT ".$table_content." SET ";
+			$sql .= "title = '".addslashes($_POST['title'])."', ";
+			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
+			$sql .= "url = '".$url."', ";
+			$sql .= "lang = '".$lang."', ";
+			$sql .= "type = '".$type."', ";
+			$sql .= "user_insert = '".(int)$_SESSION['uid']."', ";
+			$sql .= "date_insert = NOW() ";
 			
-			?>
-			<script>
-			$(function()
-			{		
-				// Redirection vers la page crée
-				document.location.href = "<?=make_url($url);?>";
-			});
-			</script>
-			<?
+			$connect->query($sql);
+			
+			if($connect->error)// Si il y a une erreur
+				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+
+			else // Sauvegarde réussit
+			{
+				// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
+				setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
+				
+				?>
+				<script>
+				$(function()
+				{		
+					// Redirection vers la page crée
+					document.location.href = "<?=make_url($url);?>";
+				});
+				</script>
+				<?
+			}
 		}
+		else 
+			echo"<script>error(\"".__("No permanent link for content")."\");</script>";	
 
 	break;
 
@@ -410,6 +418,12 @@ switch($_GET['mode'])
 			else 
 				$change_url = encode($_POST['permalink']);
 		}
+
+
+		// Check si la page a bien une url par sécuritée
+		if((isset($change_url) and $change_url == "") or get_url($_POST['url']) == "")
+			exit("<script>error(\"".__("No permanent link for content")."\");</script>");
+	
 
 
 		// MENU DE NAVIGATION
@@ -452,7 +466,9 @@ switch($_GET['mode'])
 			
 			$connect->query($sql);
 
-			if($connect->error) echo $connect->error."\nSQL:\n".htmlspecialchars($sql);// S'il y a une erreur
+			// Si il y a une erreur
+			if($connect->error)
+				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
 
 
@@ -479,7 +495,9 @@ switch($_GET['mode'])
 			
 			$connect->query($sql);
 
-			if($connect->error) echo $connect->error."\nSQL:\n".htmlspecialchars($sql);// Si il y a une erreur
+			// Si il y a une erreur
+			if($connect->error)
+				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
 
 				
@@ -506,7 +524,9 @@ switch($_GET['mode'])
 			
 			$connect->query($sql);
 
-			if($connect->error) echo $connect->error."\nSQL:\n".htmlspecialchars($sql);// Si il y a une erreur
+			// Si il y a une erreur
+			if($connect->error)
+				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
 
 		
@@ -528,7 +548,7 @@ switch($_GET['mode'])
 				}		
 			}
 			
-			if($connect->error) echo $connect->error;
+			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
 		
 		// TAG-INFO ajout au meta les informations d'une page tag
@@ -545,7 +565,7 @@ switch($_GET['mode'])
 
 			$connect->query("INSERT INTO ".$table_meta." SET type='tag-info', cle='".encode($tag)."', val='".addslashes($tag_info)."'");
 
-			if($connect->error) echo $connect->error;
+			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
 		
 
@@ -563,7 +583,7 @@ switch($_GET['mode'])
 				}
 			}		
 			
-			if($connect->error) echo $connect->error;
+			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}	
 
 
@@ -580,7 +600,7 @@ switch($_GET['mode'])
 				}
 			}
 
-			if($connect->error) echo $connect->error;
+			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}	
 
 
@@ -600,7 +620,10 @@ switch($_GET['mode'])
 
 			// Sauvegarde les contenus
 			$sql = "UPDATE ".$table_content." SET ";
+
+			//@todo ajouter un check si un content n'existe pas déjà avec ce nom. si existe on incremente (check en boucle)
 			if(isset($change_url)) $sql .= "url = '".$change_url."', ";
+
 			$sql .= "title = '".addslashes($_POST['title'])."', ";
 			$sql .= "description = '".addslashes($_POST['description'])."', ";
 			$sql .= "content = '".addslashes($json_content)."', ";
@@ -616,7 +639,9 @@ switch($_GET['mode'])
 		}
 
 		
-		if($connect->error) echo $connect->error."\nSQL:\n".htmlspecialchars($sql);// S'il y a une erreur
+		if($connect->error)// S'il y a une erreur		
+			echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+		
 		else // Sauvegarde réussit
 		{
 			?>
@@ -1561,9 +1586,9 @@ switch($_GET['mode'])
 								`user_insert` bigint(20) UNSIGNED NOT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
+								UNIQUE KEY `url` (`url`),
 								KEY `state` (`state`),
 								KEY `type` (`type`),
-								KEY `url` (`url`),
 								KEY `lang` (`lang`)
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 						");
