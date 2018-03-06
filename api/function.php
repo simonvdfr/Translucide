@@ -612,6 +612,7 @@ function token_light($uid, $salt)
 // Vérifie si le token est bon
 function token_check($token)
 {	
+	// @todo verif si ce n'est pas ça qui crée un bug collatéral de perte de session
 	if($token == hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']) and time() < $_SESSION['expires'])
 	{
 		// On update la date d'expiration de la session
