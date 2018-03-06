@@ -728,9 +728,9 @@ upload = function(source, file, resize)
 							$("img", source).attr("src", domain_path + media);// Affiche l'image finale 
 						}
 						else if(!source.attr("data-media"))// Si c'est un fichier autre et isolé
-						{
-							// Supprime les images
-							$("img", source).remove();
+						{						
+							$("img", source).remove();// Supprime les images
+							$("[class*='fa-file']", source).remove();// Supprime les fichier déjà présent
 
 							// On crée un bloc fichier
 							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ media +'"></i>');	
