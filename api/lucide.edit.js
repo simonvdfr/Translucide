@@ -733,7 +733,7 @@ upload = function(source, file, resize)
 							$("img", source).remove();
 
 							// On crée un bloc fichier
-							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ path + media +'"></i>');	
+							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ media +'"></i>');	
 						}
 						
 						// Nom du fichier final si dialog médias
