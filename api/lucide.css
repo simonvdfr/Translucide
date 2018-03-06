@@ -377,14 +377,14 @@ header:hover .dragger { display: block; }
 
 article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la largeur */
 
-.lucide .editable, [contenteditable=true], a[name] {
+.lucide .editable, .lucide [contenteditable=true], a[name] {
 	border-bottom: 1px dotted rgba(61, 128, 179, 0.2) !important;
 	outline: none;/* supp le bord bleu de sélection chrome */
 
 	/*display: initial;inline-block*//* SUPP ?? doublon avec la valeur dans global css */
 	/*width: inherit;*//* en lien avec w article 100% */
 }
-	.lucide .editable:hover, [contenteditable=true]:hover {
+	.lucide .editable:hover, .lucide [contenteditable=true]:hover {
 		border-bottom: 1px dotted rgba(61, 128, 179, 1) !important;
 	}
 
@@ -423,7 +423,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	min-height: 30px;
 	border: 1px dotted rgba(61, 128, 179, 0.2);
 }
-	.lucide .editable-media img { margin: -1px; }
+	.lucide .editable-media img { 
+		margin: -1px;
+		transition: none !important;/* Plus stable pour les drag&drop */
+	}
 	
 	.drag-zone { border: 2px dashed #75df83 !important; }
 	.drag-over { border: 2px dashed #7AD2D9 !important; cursor: pointer; }
