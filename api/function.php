@@ -376,7 +376,7 @@ function bg($key = null, $lazy = false)
 	// Si lazy load des images de fond
 	if($lazy)
 		echo" data-lazy=\"bg\"";
-	else 
+	else if($url)
 		echo" style=\"background-image: url('".$url."')\"";
 
 	$GLOBALS['editkey']++;
@@ -423,7 +423,7 @@ function input($key = null, $filter = null)
 	if(!is_array($filter)) $filter = array("class" => $filter);
 	if(!isset($filter['type'])) $filter['type'] = "text";
 
-	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : '').'" class="editable-input '.(isset($filter['class'])?$filter['class']:'').'">';
+	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : @$filter['default']).'" class="editable-input '.@$filter['class'].'">';
 
 	// Si autocomplete
 	if(isset($filter['autocomplete'])) {?>

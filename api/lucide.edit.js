@@ -632,6 +632,8 @@ upload = function(source, file, resize)
 	var data_class = $(source).data("class") || "";
 	var dir = $(source).data("dir") || "";
 
+	var domain_path = window.location.origin + path;
+
 	if(file) 
 	{
 		//if(mime_supported.indexOf(file.type) > 0)// C'est bien un fichier supporté
@@ -706,14 +708,14 @@ upload = function(source, file, resize)
 				cache: false,
 				contentType: false,
 				processData: false,
-				success: function(path)
+				success: function(media)
 				{					
-					if(path.match('dialog-connect') || path.match('error'))// Si erreur ou erreur de login
+					if(media.match('dialog-connect') || media.match('error'))// Si erreur ou problème de login
 					{
 						source.hide("slide", 300);
-						$("body").append(path);
+						$("body").append(media);
 					}
-					else if(path)// ça renvoi un fichier
+					else if(media)// ça renvoi un fichier
 					{
 						source.removeClass("uploading");// Supprime le spin d'upload
 
@@ -723,7 +725,7 @@ upload = function(source, file, resize)
 						if(mime[0] == "image") 
 						{
 							$("img", source).removeClass("to50");// On remet l'image à l'opacité normale
-							$("img", source).attr("src", path);// Affiche l'image finale 
+							$("img", source).attr("src", domain_path + media);// Affiche l'image finale 
 						}
 						else if(!source.attr("data-media"))// Si c'est un fichier autre et isolé
 						{
@@ -731,13 +733,13 @@ upload = function(source, file, resize)
 							$("img", source).remove();
 
 							// On crée un bloc fichier
-							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ path +'"></i>');	
+							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ path + media +'"></i>');	
 						}
 						
 						// Nom du fichier final si dialog médias
 						if(source.attr("data-media")) {
-							source.attr("data-media", path);// Pour la manipulation							
-							$(".file div", source).html(path.split('/').pop());// Pour l'affichage 
+							source.attr("data-media", path + media);// Pour la manipulation							
+							$(".file div", source).html(media.split('/').pop());// Pour l'affichage 
 						}				
 
 						// Détruis le layer de progressbar
@@ -816,7 +818,7 @@ get_img = function(id, link)
 	var data_class = $("#"+$("#dialog-media-source").val()).data("class") || "";
 	var dir = $("#"+$("#dialog-media-source").val()).data("dir") || "";
 
-	var domain = window.location.origin + path;
+	var domain_path = window.location.origin + path;
 
 	// Resize de l'image et insertion dans la source
 	$.ajax({
@@ -840,21 +842,21 @@ get_img = function(id, link)
 					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
 
 					// Ajoute l'image
-					$("#"+$("#dialog-media-source").val()).append('<img src="'+ domain + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
+					$("#"+$("#dialog-media-source").val()).append('<img src="'+ domain_path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
 				}
 				else
-					$("#"+$("#dialog-media-source").val()+" img").attr("src", domain + final_file );
+					$("#"+$("#dialog-media-source").val()+" img").attr("src", domain_path + final_file);
 			}
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
-				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain + final_file +"\" class='fl'></a>");
-				else exec_tool("insertHTML", "<img src=\""+ domain + final_file +"\" class='fl'>");				
+				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" class='fl'></a>");
+				else exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
 				var dataidsource = "[data-id='"+$("#dialog-media-source").val()+"']";
-				$(dataidsource).attr("data-bg", domain + final_file);
-				$(dataidsource).css("background-image", "url("+ domain + final_file +")");
+				$(dataidsource).attr("data-bg", domain_path + final_file);
+				$(dataidsource).css("background-image", "url("+ domain_path + final_file +")");
 
 				// Ajout du bt supp si pas existant
 				if(!$(dataidsource+" .clear-bg").length)
