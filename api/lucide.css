@@ -19,7 +19,7 @@ body { transition: margin-top .2s linear; }
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 10;
+	z-index: 12;
 
 	transition: background-color .3s linear;
 	animation: slide-down .3s 1 ease-out;
