@@ -62,7 +62,7 @@ function get_url($url_source = null)
 				$explode_dir = explode("_", $dir);
 
 				if($explode_dir[0]) 
-					$GLOBALS["filter"][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_","@"));
+					$GLOBALS['filter'][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_","@"));
 			}
 		}
 		else $url = $path;
@@ -80,7 +80,11 @@ function make_url($url, $filter = array())
 	{
 		// Force le domaine
 		if(isset($filter['domaine'])) $domaine = $filter['domaine'];
-		unset($filter['domaine']);
+		unset($filter['domaine']);	
+
+		// Force le chemin absolu
+		if(isset($filter['absolu'])) $absolu = $filter['absolu'];
+		unset($filter['absolu']);
 
 		// Création des dossier dans l'url en fonction des filtres
 		while(list($cle, $val) = each($filter))
@@ -106,6 +110,9 @@ function make_url($url, $filter = array())
 
 	// Si filtre ou page
 	if($dir) $url = trim($url, "/") . $dir;
+
+	// Si on demande le chemin absolu
+	if(isset($absolu)) $url = $GLOBALS['path'] . $url;
 
 	return $url;
 }
