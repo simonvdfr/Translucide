@@ -554,18 +554,60 @@ switch($_GET['mode'])
 		// TAG-INFO ajout au meta les informations d'une page tag
 		if(isset($_POST['tag-info']) and isset($_POST['tag'])) 
 		{
-			$tag = html_entity_decode($_POST['tag']);
-			
-			$connect->query("DELETE FROM ".$table_meta." WHERE type='tag-info' AND cle='".encode($tag)."'");
+			$tag = html_entity_decode($_POST['tag']);// Pour un titre/url sans html encodé
+
+			$tag_url = encode(key($GLOBALS['filter']));// Permalink du tag
+
+			// Supprime les infos du tag
+			$connect->query("DELETE FROM ".$tm." WHERE type='tag-info' AND (cle='".encode($tag)."' OR cle='".$tag_url."')");
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
 			$_POST['tag-info'] = str_replace($GLOBALS['home'], "", $_POST['tag-info']);
 
+			// Insertion des infos du tag
 			$tag_info = json_encode($_POST['tag-info'], JSON_UNESCAPED_UNICODE);
-
-			$connect->query("INSERT INTO ".$table_meta." SET type='tag-info', cle='".encode($tag)."', val='".addslashes($tag_info)."'");
-
+			$connect->query("INSERT INTO ".$tm." SET type='tag-info', cle='".encode($tag)."', val='".addslashes($tag_info)."'");
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+
+
+			// Update les tags des contenus
+			$connect->query("UPDATE ".$tm." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
+			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+
+
+			// Update le menu universel tags
+
+			// Contenu universel tags dans la page courante ?
+			if($_POST['universel']['tags']) $universel_tags = $_POST['universel']['tags'];
+			else
+			{
+				// Sinon on regarde s'il y a un menu universel tags
+				$sel_tags = $connect->query("SELECT * FROM ".$tm." WHERE type='universel' AND cle='tags' LIMIT 1");
+				$res_tags = $sel_tags->fetch_assoc();
+
+				$universel_tags = $res_tags['val'];
+			}
+
+			if(@$universel_tags and @$tag_url and encode(@$tag))
+			{
+				// Changement Url
+				$universel_tags = str_replace('/'.$tag_url.'"', '/'.encode($tag).'"', $universel_tags);
+
+				// Changement Texte du lien
+				$universel_tags = preg_replace('/(\/'.encode($tag).'".*?>).*?(<\/a>)/', '$1'.$_POST['tag'].'$2', $universel_tags);
+
+				if($_POST['universel']['tags']) $_POST['universel']['tags'] = $universel_tags;
+				elseif($res_tags['val'])
+				{
+					// Update
+					$connect->query("UPDATE ".$tm." SET val='".addslashes($universel_tags)."' WHERE type='universel' AND cle='tags'");
+					if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+				}
+			}	
+
+			// Si changement de l'url on la change dans le navigateur
+			if(encode($tag) != $tag_url)		
+				$change_url = make_url(get_url($_POST['url']), array($tag, 'absolu' => true));
 		}
 		
 
