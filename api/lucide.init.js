@@ -363,10 +363,12 @@ $(function()
 	$(document).on("click", "a[href^='#']", function(event) {
 		event.preventDefault();
 
-		if(typeof lucide === 'undefined')// Si pas en mode edit on scroll
-		$root.animate({ 
-			scrollTop: $('[name="' + $(this).attr("href").substr(1) + '"]').offset().top
-		}, 800, "linear");
+		var anchor_exist = $('[name="' + $(this).attr("href").substr(1) + '"]');
+
+		if(typeof lucide === 'undefined' && anchor_exist.length)// Si pas en mode edit et ancre existante on scroll
+			$root.animate({ 
+				scrollTop: anchor_exist.offset().top
+			}, 800, "linear");
 	});
 
 
