@@ -190,8 +190,8 @@ save = function() //callback
 	// Fonction à exécuter avant la sauvegarde
 	$(before_save).each(function(key, funct){ funct(); });
 
-
 	// On sauvegarde en ajax les contenus éditables
+	if(lucide == true)	
 	$.ajax({
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=update",
@@ -916,6 +916,20 @@ img_leave = function()
 }
 
 
+// Désactive l'edition
+unlucide = function()
+{
+	lucide = false;
+
+	$("body").removeClass("lucide");
+
+	$("#admin-bar").slideUp("400", function(){ $(this).remove(); });
+	
+	$("#txt-tool").remove();
+	$("#add-nav").remove();
+	$("[contenteditable='true']").attr("contenteditable","false");
+}
+
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
 /*$(window).on("beforeunload", function(){
@@ -926,12 +940,12 @@ img_leave = function()
 /************** ONLOAD **************/
 $(function()
 {						
-	//@todo: ajouter le choix de la template de la page en cours, la langue
+	//@todo: ajouter le choix de la langue de la page en cours
 	
+	lucide = true;
+
 	// Ajout de la class pour dire que l'on est en mode admin
 	$("body").addClass("lucide");
-
-	lucide = true;
 
 
 	/************** ADMINBAR **************/
@@ -939,8 +953,8 @@ $(function()
 	// Ajout des variables dans les inputs (pour le problème de double cote ")
 	$("#admin-bar #title").val(document.title);
 
-	if($("meta[name=description]").attr("content") != undefined) 
-		description = $('meta[name=description]').attr("content");
+	if($("meta[name=description]").last().attr("content") != undefined) 
+		description = $('meta[name=description]').last().attr("content");
 	else
 		description = "";
 
@@ -976,10 +990,10 @@ $(function()
 	});
 
 	// On récupère og:image des meta
-	if($("meta[property='og:image']").attr("content") != undefined) 
+	if($("meta[property='og:image']").last().attr("content") != undefined) 
 	{
 		// Bind l'image
-		$("#admin-bar #og-image img").attr("src", $("meta[property='og:image']").attr("content"));
+		$("#admin-bar #og-image img").attr("src", $("meta[property='og:image']").last().attr("content"));
 
 		// Option de suppression de l'image
 		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
@@ -1156,6 +1170,7 @@ $(function()
 
 				// Cherche dans la base les pages manquantes
 				$.ajax({
+					type: "POST",
 					url: path+"api/ajax.admin.php?mode=add-nav",
 					data: {
 						"menu" : menu,
@@ -1739,8 +1754,8 @@ $(function()
 
 	/************** CHAMPS CHECKBOX **************/
 	$(".editable-checkbox, .lucide [for]").on("click", function(event) {
-		if($(this).attr("for")) id = $(this).attr("for");
-		else id = this.id;
+		if($(this).attr("for")) var id = $(this).attr("for");
+		else var id = this.id;
 
 		if($("#"+id).hasClass("fa-check")) $("#"+id).removeClass("fa-check yes").addClass("fa-close no");
 		else $("#"+id).removeClass("fa-close no").addClass("fa-check yes");
