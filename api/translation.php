@@ -51,6 +51,7 @@ $add_translation = array(
 	"Permanent link" => array("fr" => "Lien Permanent"),
 	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
 	"Permanent link: 'home' if homepage" => array("fr" => "Lien permanent: 'home' si c'est la page d'accueil"),
+	"No permanent link for content" => array("fr" => "Pas de lien permanent pour le contenu"),
 
 
 	"Page title" => array("fr" => "Titre de la page"),
