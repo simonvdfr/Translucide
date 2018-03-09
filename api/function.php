@@ -275,6 +275,7 @@ function txt($key = null, $filter = array())
 	echo">";
 
 	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key];
+	elseif(isset($filter['default'])) echo $filter['default'];
 
 	echo"</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
 
@@ -336,11 +337,11 @@ function media($key = null, $filter = array())
 			if(isset($filter['zoom'])) {
 				$parse_url = parse_url($filename);
 				parse_str($parse_url['query'], $get);
-				echo"<a href=\"".(isset($get['zoom']) ? $get['zoom'] : "")."\">";
+				if(@$get['zoom']) echo'<a href="'.$get['zoom'].'">';
 			}
 
 				echo"<img src=\"".$filename."\"";
-
+//@todo verifier si on le re-active ? ou on met en style max-width ?
 				if(isset($size[0])) echo" width='".$size[0]."'";
 				if(isset($size[1])) echo" height='".$size[1]."'";
 
