@@ -813,7 +813,7 @@ switch($_GET['mode'])
 				'id' => $res['id'],
 				'label' => $res['title'],
 				'type' => $res['type'],
-				'value' => make_url($res['url'])//, array("domaine" => true)
+				'value' => make_url($res['url'], array("absolu" => true))//, array("domaine" => true)
 			);
 		}
 
