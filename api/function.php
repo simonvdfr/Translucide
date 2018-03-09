@@ -105,7 +105,7 @@ function make_url($url, $filter = array())
 	else {
 		$url = encode($url, "-", array("#","/"));
 
-		if(isset($domaine)) $url = $GLOBALS['home'] . $url;
+		if(isset($domaine)) $url = $GLOBALS['home'] . ltrim($url, "/");
 	}	
 
 	// Si filtre ou page
