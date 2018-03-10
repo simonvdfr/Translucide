@@ -341,9 +341,13 @@ function media($key = null, $filter = array())
 			}
 
 				echo"<img src=\"".$filename."\"";
-//@todo verifier si on le re-active ? ou on met en style max-width ?
-				if(isset($size[0])) echo" width='".$size[0]."'";
-				if(isset($size[1])) echo" height='".$size[1]."'";
+
+				if(isset($size[0]) or isset($size[1])) {
+					echo" style='";
+					if(isset($size[0])) echo"max-width: ".$size[0]."px;";
+					if(isset($size[1])) echo"max-height: ".$size[1]."px;";
+					echo"'";
+				}
 
 				// On met en data l'url de la version grande
 				if(isset($filter['data-zoom'])) echo" data-zoom='".(isset($filter['data-zoom']) ? $filter['data-zoom'] : "")."'";
