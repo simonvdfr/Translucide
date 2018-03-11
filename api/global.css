@@ -242,7 +242,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 /* Background */
 .nor { background-repeat: no-repeat !important; }
-.cover { background-size:  cover !important; }
+.cover { background-size: cover !important; }
 .bg-center { background-position: center !important; }
 
 
