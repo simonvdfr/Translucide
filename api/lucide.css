@@ -287,10 +287,8 @@ header:hover .dragger { display: block; }
 #add-nav {
 	position: fixed;
 
-	right: -3rem;/*@todo voir si ça ne crée pas de bug*/
-    	
-	min-width: 210px;
-    margin-left: -6rem;
+	right: 1rem;/* -3rem @todo voir si ça ne crée pas de bug*/
+    /* margin-left -6rem */
 
 	display: none;
 		
@@ -302,11 +300,9 @@ header:hover .dragger { display: block; }
 }
 	#add-nav:hover { opacity: 1 !important; }
 
-	#add-nav ul {
-		padding-top: 55px;
-		margin-top: -60px;
-		border:  none;
-	}
+	#add-nav .tooltip { min-width: 210px; }
+
+	#add-nav ul { border: none; }
 	#add-nav li {
 		background-color: #fff;
 		
@@ -353,22 +349,38 @@ header:hover .dragger { display: block; }
 	#add-nav .zone {	
 		background-color: rgba(245, 245, 245, 0.95);
 		border: 2px dashed;
-		border-radius: 30px 30px 0 0;
-		border-bottom: none;
+		border-radius: 100%;
+		
+		border-color: #7ad2d9;		
 
 		display: inline-block;
-		padding: 5px 10px 5px;
-		margin: 1.5rem 0 0;
+		
+		margin: 1rem 0 0;
+		padding: 2px;
+
+		cursor: pointer;
+
 		transition: all .3s;
 	}
-		#add-nav .open {	
-			border-color: #7ad2d9;			
-		}
-		#add-nav .del {	
-			box-shadow: 0 0 15px rgba(0, 0, 0, 0.3) inset;
-			border-color: #df7578;
-		}
 		
+	#add-nav.open {	
+		margin: 0;
+	}
+	#add-nav.open .zone {	
+		border-radius: 30px 30px 0 0;
+		border-bottom: none;
+		padding: 5px 10px 5px;
+	}
+
+	#add-nav.del .zone {	
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.3) inset;
+		border-color: #df7578;
+	}
+	#add-nav.del ul {
+		/* padding-top: 55px;
+		margin-top: -55px; */
+	}
+	
 
 
 /* CONTENT */
@@ -467,6 +479,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		z-index: 10;
 		top: 0;
 		right: 0;
+		font-size: initial;
 	}
 	.editable-bg > .bg-tool .open-dialog-media, .work-bt a {
 		box-shadow: none;/*inset 0px 1px 3px 0px #91b3b8*/
