@@ -578,7 +578,7 @@ switch($_GET['mode'])
 			// Update le menu universel tags
 
 			// Contenu universel tags dans la page courante ?
-			if($_POST['universel']['tags']) $universel_tags = $_POST['universel']['tags'];
+			if(@$_POST['universel']['tags']) $universel_tags = $_POST['universel']['tags'];
 			else
 			{
 				// Sinon on regarde s'il y a un menu universel tags
