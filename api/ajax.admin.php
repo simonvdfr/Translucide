@@ -381,7 +381,7 @@ switch($_GET['mode'])
 				$(function()
 				{		
 					// Redirection vers la page crée
-					document.location.href = "<?=make_url($url);?>";
+					document.location.href = "<?=make_url($url, array("domaine" => true));?>";
 				});
 				</script>
 				<?
@@ -877,11 +877,11 @@ switch($_GET['mode'])
 
 		<div class="dialog-media" title="<?_e("Media Library")?>">
 
-			<input type="hidden" id="dialog-media-target" value="<?=htmlspecialchars($_GET['target'])?>">
-			<input type="hidden" id="dialog-media-source" value="<?=htmlspecialchars($_GET['source'])?>">
-			<input type="hidden" id="dialog-media-width" value="<?=htmlspecialchars($_GET['width'])?>">
-			<input type="hidden" id="dialog-media-height" value="<?=htmlspecialchars($_GET['height'])?>">
-			<input type="hidden" id="dialog-media-dir" value="<?=htmlspecialchars($_GET['dir'])?>">
+			<input type="hidden" id="dialog-media-target" value="<?=htmlspecialchars($_REQUEST['target'])?>">
+			<input type="hidden" id="dialog-media-source" value="<?=htmlspecialchars($_REQUEST['source'])?>">
+			<input type="hidden" id="dialog-media-width" value="<?=htmlspecialchars($_REQUEST['width'])?>">
+			<input type="hidden" id="dialog-media-height" value="<?=htmlspecialchars($_REQUEST['height'])?>">
+			<input type="hidden" id="dialog-media-dir" value="<?=htmlspecialchars($_REQUEST['dir'])?>">
 
 			<ul class="small">
 
@@ -893,8 +893,8 @@ switch($_GET['mode'])
 
 				<li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?_e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Files")?></span></a></li>	
 
-				<?if(isset($_GET['dir']) and $_GET['dir']){?>
-				<li data-filter="dir"><a href="api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_GET['dir']);?>" title="<?_e("Specific")?>"><i class="fa fa-file"></i> <span><?_e("Specific")?></span></a></li>
+				<?if(isset($_REQUEST['dir']) and $_REQUEST['dir']){?>
+				<li data-filter="dir"><a href="api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?_e("Specific")?>"><i class="fa fa-file"></i> <span><?_e("Specific")?></span></a></li>
 				<?}?>
 
 				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?_e("Videos")?>"><i class="fa fa-film"></i> <span><?_e("Videos")?></span></a></li>

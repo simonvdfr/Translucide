@@ -507,6 +507,7 @@ dialog_transfert = function(mode, source, target, callback) {
 	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle apparaît/disparaît. Pas juste visibility:hidden/visible...
 
 	$.ajax({
+			type: "POST",
 			url: path+"api/ajax.admin.php?mode=dialog-"+mode, 
 			data: {
 				"target": target,
@@ -1879,6 +1880,7 @@ $(function()
 	            }
 
 				$.ajax({
+					type: "POST",
 					dataType: "json",
 					url: path+"api/ajax.admin.php?mode=tags",
 					data: {"nonce": $("#nonce").val()},
@@ -1944,6 +1946,7 @@ $(function()
 	$("#list-content i").on("click",
 		function(event) {
 			$.ajax({
+				type: "POST",
 		        url: path+"api/ajax.admin.php?mode=list-content",
 				data: {"nonce": $("#nonce").val()},
 				success: function(html)
@@ -1981,6 +1984,7 @@ $(function()
 			if(!$("#user .absolute").length && event.type == "mouseenter")
 			{
 				$.ajax({
+					type: "POST",
 					url: path+"api/ajax.php?mode=user",
 					data: {"nonce": $("#nonce").val()},
 					success: function(html){ 
