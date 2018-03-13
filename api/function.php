@@ -270,6 +270,8 @@ function txt($key = null, $filter = array())
 
 		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
 
+		if(isset($filter['itemprop'])) echo" itemprop=\"".$filter['itemprop']."\"";
+
 		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
 
 	echo">";
@@ -350,7 +352,9 @@ function media($key = null, $filter = array())
 				}
 
 				// On met en data l'url de la version grande
-				if(isset($filter['data-zoom'])) echo" data-zoom='".(isset($filter['data-zoom']) ? $filter['data-zoom'] : "")."'";
+				if(isset($filter['data-zoom'])) echo" data-zoom='".@$filter['data-zoom']."'";
+
+				if(isset($filter['itemprop'])) echo" itemprop='".@$filter['itemprop']."'";
 
 				echo" atl=\"\" class='";
 					if(isset($size[0]) and isset($size[1])) echo"crop";
@@ -462,7 +466,11 @@ function tag($key = null, $filter = array())
 {
 	$key = encode($key ? $key : "tag");
 
-	echo'<'.(isset($filter['tag']) ? $filter['tag'] : "div").' id="'.$key.'" class="editable-tag'.(isset($filter['class']) ? " ".$filter['class'] : "").'">';
+	echo'<'
+	.(isset($filter['tag'])?$filter['tag']:"div")
+	.' id="'.$key.'" class="editable-tag'.(isset($filter['class'])?" ".$filter['class'] : "").'"'
+	.(isset($filter['itemprop'])?' itemprop="'.$filter['itemprop'].'"' : '').'>';
+
 
 	$i = 1;
 	$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");
