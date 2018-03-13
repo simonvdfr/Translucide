@@ -241,6 +241,13 @@ body { transition: margin-top .2s linear; }
 	.ui-autocomplete li { font-size: .9em; }
 
 
+/* Taille max pour l'affichage de l'image de partage */
+#admin-bar #og-image img {
+	max-width: 320px;
+	max-height: 320px;
+}
+
+
 /* HEADER */
 header { 
 	z-index: 10;
