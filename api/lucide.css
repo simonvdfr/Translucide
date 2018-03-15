@@ -301,7 +301,7 @@ header:hover .dragger { display: block; }
 		
 	opacity: 0.8;	
 
-	z-index: 0;/*-1*/
+	z-index: 10;/*-1*/
 
 	font-family: arial;
 }
@@ -483,7 +483,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.editable-bg > .bg-tool, .work-bt a {
 		display: none;
 		position: absolute;
-		z-index: 10;
+		z-index: 8;
 		top: 0;
 		right: 0;
 		font-size: initial;
