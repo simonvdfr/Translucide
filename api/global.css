@@ -1084,6 +1084,7 @@ div.editable {
 .fa-floppy:before { content: '\e825'; } /* '' */
 .fa-users:before { content: '\e826'; } /* '' */
 .fa-bell:before { content: '\e827'; } /* '' */
+.fa-credit-card:before { content: '\e828'; } /* '' */
 .fa-twitter:before { content: '\f099'; } /* '' */
 .fa-facebook:before { content: '\f09a'; } /* '' */
 .fa-github-circled:before { content: '\f09b'; } /* '' */
@@ -1119,6 +1120,7 @@ div.editable {
 .fa-file-video:before { content: '\f1c8'; } /* '' */
 .fa-paper-plane-empty:before { content: '\f1d9'; } /* '' */
 .fa-share:before { content: '\f1e0'; } /* '' */
+.fa-paypal:before { content: '\f1ed'; } /* '' */
 .fa-trash:before { content: '\f1f8'; } /* '' */
 .fa-at:before { content: '\f1fa'; } /* '' */
 .fa-pinterest:before { content: '\f231'; } /* '' */
