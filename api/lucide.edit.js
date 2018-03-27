@@ -1766,11 +1766,13 @@ $(function()
 			var selected = $(this).attr("data-selected");
 
 			// Extraction du json
-			var json = jQuery.parseJSON(data);							
-			
+			var json = $.parseJSON(data);		
+
 			// Création des options avec le json
 			var html = '';
-			$.each(json, function(cle, val){ html += '<option value="'+ cle +'"'+(cle == selected?" selected":"")+'>'+ val +'</option>'; });
+			$.each(json, function(cle, val){ 				
+				html += '<option value="'+ cle +'"'+(cle == selected?" selected":"")+'>'+ val +'</option>';
+			});
 			
 			// Les attribue
 			var attr = {};
