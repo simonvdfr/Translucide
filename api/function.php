@@ -698,7 +698,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 					}
 				}
 				else {
-					$msg = __("Connection error")." 2";
+					$msg = __("Password error");
 					logout();
 				} 
 			}
@@ -714,7 +714,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 			{
 				if(!token_check($_SESSION['token']))// Vérification du contenu du token
 				{
-					$msg = __("Connection error")." 3";
+					$msg = __("Token error");
 					logout();
 				}
 				else if(isset($auth))// Vérifie les autorisations utilisateur dans la bdd si c'est demandée
@@ -752,7 +752,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 				elseif($level == 'high' and $res['token'] == $_SESSION['token_light']) return true;// Verification du token light (changement de pwd...)
 				else 
 				{
-					$msg = __("Connection error")." 4";
+					$msg = __("Connection error");
 					logout();
 				}
 			}

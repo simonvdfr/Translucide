@@ -13,6 +13,8 @@ $add_translation = array(
 	"Administrator Login" => array("fr" => "Connexion Administrateur"),
 	"Connection with" => array("fr" => "Connexion avec"),
 	"Connection error" => array("fr" => "Erreur de connexion"),
+	"Token error" => array("fr" => "Erreur de jeton"),
+	"Password error" => array("fr" => "Erreur de mot de passe"),
 	"Unknown user" => array("fr" => "Utilisateur inconnu"),
 	"Unable to find the user number" => array("fr" => "Impossible de trouver le numéro d'utilisateur"),
 	"Unable to find the access token" => array("fr" => "Impossible de trouver le jeton d'accès"),
