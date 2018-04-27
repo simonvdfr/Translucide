@@ -21,7 +21,7 @@ p { line-height: 1.8; }
 
 /* Bloc avec grande image en bg sous le menu */
 .under-header {
-	margin-top: -100px;/* !default par sécurité pour etre sur qu'il est bien sous le header meme si le js ne s'execute pas */
+	margin-top: -100px;/* !default par sÃ©curitÃ© pour etre sur qu'il est bien sous le header meme si le js ne s'execute pas */
     height: 320px;
     padding-top: 100px;	
 	position: relative;
@@ -314,7 +314,7 @@ footer {
 	.prl { padding-right: 0; }
 
 	article { 
-		/*display: inline-block; Crée un bug collateral avec l'editeur de menu ... utile ?*/
+		/*display: inline-block; CrÃ©e un bug collateral avec l'editeur de menu ... utile ?*/
 		padding-left: 0.5rem;
 		padding-right: 0.5rem;
 	}
