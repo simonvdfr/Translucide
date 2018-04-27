@@ -459,6 +459,7 @@ switch($_GET['mode'])
 			// Insert ou update ?
 			if($res_nav['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
 			$sql .= " ".$table_meta." SET ";
+			$sql .= "id = '0', ";
 			$sql .= "type = 'nav', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_nav)."' ";
@@ -488,6 +489,7 @@ switch($_GET['mode'])
 			// Insert ou update ?
 			if($res_header['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
 			$sql .= " ".$table_meta." SET ";
+			$sql .= "id = '0', ";
 			$sql .= "type = 'header', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_header)."' ";
@@ -517,6 +519,7 @@ switch($_GET['mode'])
 			// Insert ou update ?
 			if($res_footer['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
 			$sql .= " ".$table_meta." SET ";
+			$sql .= "id = '0', ";
 			$sql .= "type = 'footer', ";
 			$sql .= "cle = '".$lang."', ";
 			$sql .= "val = '".addslashes($json_footer)."' ";
@@ -559,48 +562,48 @@ switch($_GET['mode'])
 			$tag_url = encode(key($GLOBALS['filter']));// Permalink du tag
 
 			// Supprime les infos du tag
-			$connect->query("DELETE FROM ".$tm." WHERE type='tag-info' AND (cle='".encode($tag)."' OR cle='".$tag_url."')");
+			$connect->query("DELETE FROM ".$table_meta." WHERE type='tag-info' AND (cle='".encode($tag)."' OR cle='".$tag_url."')");
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
 			$_POST['tag-info'] = str_replace($GLOBALS['home'], "", $_POST['tag-info']);
 
 			// Insertion des infos du tag
 			$tag_info = json_encode($_POST['tag-info'], JSON_UNESCAPED_UNICODE);
-			$connect->query("INSERT INTO ".$tm." SET type='tag-info', cle='".encode($tag)."', val='".addslashes($tag_info)."'");
+			$connect->query("INSERT INTO ".$table_meta." SET type='tag-info', cle='".encode($tag)."', val='".addslashes($tag_info)."'");
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 
 
 			// Update les tags des contenus
-			$connect->query("UPDATE ".$tm." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
+			$connect->query("UPDATE ".$table_meta." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 
 
-			// Update le menu universel tags
+			// Update le menu global tags
 
-			// Contenu universel tags dans la page courante ?
-			if(@$_POST['universel']['tags']) $universel_tags = $_POST['universel']['tags'];
+			// Contenu global tags dans la page courante ?
+			if(@$_POST['global']['tags']) $global_tags = $_POST['global']['tags'];
 			else
 			{
-				// Sinon on regarde s'il y a un menu universel tags
-				$sel_tags = $connect->query("SELECT * FROM ".$tm." WHERE type='universel' AND cle='tags' LIMIT 1");
+				// Sinon on regarde s'il y a un menu global tags
+				$sel_tags = $connect->query("SELECT * FROM ".$table_meta." WHERE type='global' AND cle='tags' LIMIT 1");
 				$res_tags = $sel_tags->fetch_assoc();
 
-				$universel_tags = $res_tags['val'];
+				$global_tags = $res_tags['val'];
 			}
 
-			if(@$universel_tags and @$tag_url and encode(@$tag))
+			if(@$global_tags and @$tag_url and encode(@$tag))
 			{
 				// Changement Url
-				$universel_tags = str_replace('/'.$tag_url.'"', '/'.encode($tag).'"', $universel_tags);
+				$global_tags = str_replace('/'.$tag_url.'"', '/'.encode($tag).'"', $global_tags);
 
 				// Changement Texte du lien
-				$universel_tags = preg_replace('/(\/'.encode($tag).'".*?>).*?(<\/a>)/', '$1'.$_POST['tag'].'$2', $universel_tags);
+				$global_tags = preg_replace('/(\/'.encode($tag).'".*?>).*?(<\/a>)/', '$1'.$_POST['tag'].'$2', $global_tags);
 
-				if($_POST['universel']['tags']) $_POST['universel']['tags'] = $universel_tags;
+				if($_POST['global']['tags']) $_POST['global']['tags'] = $global_tags;
 				elseif($res_tags['val'])
 				{
 					// Update
-					$connect->query("UPDATE ".$tm." SET val='".addslashes($universel_tags)."' WHERE type='universel' AND cle='tags'");
+					$connect->query("UPDATE ".$table_meta." SET val='".addslashes($global_tags)."' WHERE type='global' AND cle='tags'");
 					if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 				}
 			}	
@@ -629,16 +632,16 @@ switch($_GET['mode'])
 		}	
 
 
-		// CONTENU UNIVERSEL
+		// CONTENU GLOBAL
 		// Ajout aux meta de contenu en commun à plusieur page
-		if(isset($_POST['universel']) and $_POST['universel'] != "") 
+		if(isset($_POST['global']) and $_POST['global'] != "") 
 		{
-			while(list($cle, $val) = each($_POST['universel']))
+			while(list($cle, $val) = each($_POST['global']))
 			{
-				$connect->query("DELETE FROM ".$table_meta." WHERE type='universel' AND cle='".encode($cle)."'");
+				$connect->query("DELETE FROM ".$table_meta." WHERE type='global' AND cle='".encode($cle)."'");
 
 				if(isset($val) and $val != "") {
-					$connect->query("INSERT INTO ".$table_meta." SET type='universel', cle='".encode($cle)."', val='".addslashes(trim($val))."'");
+					$connect->query("INSERT INTO ".$table_meta." SET type='global', cle='".encode($cle)."', val='".addslashes(trim($val))."'");
 				}
 			}
 
@@ -1622,10 +1625,10 @@ switch($_GET['mode'])
 								`tpl` varchar(80) NOT NULL,
 								`url` varchar(60) NOT NULL,
 								`title` varchar(60) NOT NULL,
-								`description` varchar(160) NOT NULL,
-								`content` longtext NOT NULL,
-								`user_update` bigint(20) UNSIGNED NOT NULL,
-								`date_update` datetime NOT NULL,
+								`description` varchar(160) DEFAULT NULL,
+								`content` longtext,
+								`user_update` bigint(20) UNSIGNED DEFAULT NULL,
+								`date_update` datetime DEFAULT NULL,
 								`user_insert` bigint(20) UNSIGNED NOT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
@@ -1662,7 +1665,7 @@ switch($_GET['mode'])
 								`type` varchar(32) NOT NULL,
 								`cle` varchar(255) NOT NULL,
 								`val` text NOT NULL,
-								`ordre` smallint(6) NOT NULL,
+								`ordre` smallint(6) DEFAULT '0',
 								PRIMARY KEY (`id`,`type`,`cle`),
 								KEY `type` (`type`,`cle`),
 								KEY `ordre` (`ordre`)
@@ -1694,13 +1697,13 @@ switch($_GET['mode'])
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'active',
 								`auth` varchar(255) NOT NULL,
-								`name` varchar(60) NOT NULL,
+								`name` varchar(60) DEFAULT NULL,
 								`email` varchar(100) NOT NULL,
 								`password` char(64) DEFAULT NULL,
 								`salt` char(16) DEFAULT NULL,
-								`oauth` text NOT NULL,
+								`oauth` text,
 								`token` varchar(255) DEFAULT NULL,
-								`date_update` datetime NOT NULL,
+								`date_update` datetime DEFAULT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
 								UNIQUE KEY `email` (`email`),
@@ -2027,9 +2030,9 @@ switch($_GET['mode'])
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
 
-			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
-
 			<link rel="stylesheet" href="api/global.css?">
+
+			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
 
 			<style>
 				body { background-color: #75898c; }

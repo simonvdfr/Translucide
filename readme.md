@@ -41,8 +41,8 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 - Si vous saisissez un élément et que vous le glissez dans la boîte d'ajout, ça se transforme en poubelle, pour supprimer l’élément du menu.
 
 ## Balises maison
-- `text("nom-de-la-zone" [, array("default" => "Texte par défaut", "universel" => true)])`
-	- universel : Cet argument permet d'avoir un contenu qui se retrouve à plusieurs endroits du site (il n'est pas rattaché exclusivement à la page en cours)
+- `text("nom-de-la-zone" [, array("default" => "Texte par défaut", "global" => true)])`
+	- global : Cet argument permet d'avoir un contenu qui se retrouve à plusieurs endroits du site (il n'est pas rattaché exclusivement à la page en cours)
 - `media("nom-de-la-zone" [,'100x100'])` L'argument final et optionnel, il force une taille
 	- On peut ajouter plus d'argument `media("nom-de-la-zone", array("dir" => "product/1/", "size" => "300", "class" => "fl mal"))`. Ici par exemple on spécifie un dossier destination pour le media (dir), une taille (size), ou encore une classe (class)
 - `bg()` A placer dans un `<div>` ou autres pour rendre l'image de fond éditable

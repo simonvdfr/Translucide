@@ -249,10 +249,10 @@ function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	// Si contenu universel on rapatri le contenu depuis la table méta
-	if(isset($filter['universel']))
+	// Si contenu global on rapatri le contenu depuis la table méta
+	if(isset($filter['global']))
 	{
-		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='universel' AND cle='".encode($key)."' LIMIT 1");
+		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
 		$res = $sel->fetch_assoc();
 
 		$GLOBALS['content'][$key] = $res['val'];
@@ -265,7 +265,7 @@ function txt($key = null, $filter = array())
 		echo" class='";
 		if(isset($filter['editable'])) echo $filter['editable']; else echo"editable";
 		if(isset($filter['class'])) echo" ".$filter['class'];
-		if(isset($filter['universel'])) echo" universel";
+		if(isset($filter['global'])) echo" global";
 		echo"'";
 
 		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";

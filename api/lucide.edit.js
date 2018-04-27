@@ -60,7 +60,7 @@ get_content = function(content)
 	data[content_array] = {};
 
 	// Contenu des champs éditables
-	$(document).find(content+" .editable:not(.universel)").not("header nav .editable").each(function() {
+	$(document).find(content+" .editable:not(.global)").not("header nav .editable").each(function() {
 		// Si on est en mode pour voir le code source
 		if($(this).hasClass("view-source")) var content_editable = $(this).text();
 		else var content_editable = $(this).html();
@@ -145,10 +145,10 @@ save = function() //callback
 		if($(this).html()) data["meta"][this.id] = $(this).html();					
 	});
 
-	// Donnée universel commune à plusieur page
-	data["universel"] = {};
-	$(document).find(".content .editable.universel").each(function() {
-		if($(this).html()) data["universel"][this.id] = $(this).html();					
+	// Donnée global commune à plusieur page
+	data["global"] = {};
+	$(document).find(".content .editable.global").each(function() {
+		if($(this).html()) data["global"][this.id] = $(this).html();					
 	});
 
 
