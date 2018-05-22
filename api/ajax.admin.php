@@ -641,6 +641,8 @@ switch($_GET['mode'])
 				$connect->query("DELETE FROM ".$table_meta." WHERE type='global' AND cle='".encode($cle)."'");
 
 				if(isset($val) and $val != "") {
+					$val = str_replace($GLOBALS['home'], "", $val);// Supprime le domaine des urls
+
 					$connect->query("INSERT INTO ".$table_meta." SET type='global', cle='".encode($cle)."', val='".addslashes(trim($val))."'");
 				}
 			}
@@ -1182,13 +1184,13 @@ switch($_GET['mode'])
 		
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
-		//print_r($_GET);
+		//echo"_POST";print_r($_POST);echo"_GET";print_r($_GET);
 
 		$subfolder = null;
 		if(isset($_GET['filter']) and  $_GET['filter'] == "resize") $subfolder .= "resize/";
-		if(isset($_GET['filter']) and  $_GET['filter'] == "dir" and isset($_GET['dir'])) $subfolder .= $_GET['dir'];
+		if(isset($_GET['filter']) and  $_GET['filter'] == "dir" and isset($_GET['dir'])) $subfolder .= $_GET['dir'].'/';
 
-		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/" . $subfolder;
+		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/". $subfolder;
 
 		// Le dossier existe
 		if(is_dir($dir))
@@ -1301,7 +1303,7 @@ switch($_GET['mode'])
 					else $info = pathinfo($val['filename'], PATHINFO_EXTENSION);
 					
 					// Affichage du fichier
-					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode((isset($_GET['filter'])?$_GET['filter']:""))."-".$i."\" data-media=\"media/".$subfolder.utf8_encode($val['filename'])."\" data-dir=\"".$subfolder."\" data-type=\"".$type."\">";
+					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode((isset($_GET['filter'])?$_GET['filter']:""))."-".$i."\" data-media=\"media/".$subfolder.utf8_encode($val['filename'])."\" data-dir=\"".trim($subfolder,'/')."\" data-type=\"".$type."\">";
 
 						if($type == "image") {
 							echo"<img src=\"".$GLOBALS['path']."media/".$subfolder.$val['filename']."\">";
@@ -1344,14 +1346,14 @@ switch($_GET['mode'])
 
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
-		if(isset($_POST['dir'])) $dir = encode($_POST['dir'], "-", array("_","/"));
+		if(@$_POST['dir']) $dir = encode('/'.$_POST['dir'], "-", array("_","/"));
 		else $dir = null;
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
 		
 		// Resize l'image ou simple copie
-		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], "media/resize/" . $dir);
+		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], "media/resize" . $dir);
 
 	break;
 
@@ -1380,10 +1382,10 @@ switch($_GET['mode'])
 		//$filename = preg_replace("([^a-z0-9\.\-_]|[\.]{2,})", "", $_FILES['file']['name']);
 		// /^[a-z0-9]+\.[a-z]{3,4}$/  /[^a-z0-9\._-]+/  ([^a-z0-9\.\-_]|[\.]{2,})  [a-zA-Z0-9]{1,200}\.[a-zA-Z0-9]{1,10}
 
-		if(isset($_POST['dir'])) $dir = encode($_POST['dir'], "-", array("_","/"));
+		if(@$_POST['dir']) $dir = encode('/'.$_POST['dir'], '-', array('_','/'));
 		else $dir = null;
 
-		$src_file = "media/". $dir . $filename;
+		$src_file = 'media'. ($dir?$dir:'') . '/' . $filename;
 		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'] . $src_file;
 		
 		// Check le type mime côté serveur
@@ -1411,11 +1413,11 @@ switch($_GET['mode'])
 						// Resize l'image si besoin 
 						// SUPP ?? (On ajoute le path du site pour gerer l'édition dans les sous catégories) $GLOBALS['path']. => maintenant ça se passe dans le edit.js
 						echo img_process($root_file,
-								"media/" . $dir,
-								"media/resize/" . $dir,
+								'media' . $dir,
+								'media/resize' . $dir,
 								(int)$_POST['width'],
 								(int)$_POST['height'],
-								(isset($_POST['resize'])?$_POST['resize']:"")
+								(isset($_POST['resize'])?$_POST['resize']:'')
 							);
 					}		
 					else 

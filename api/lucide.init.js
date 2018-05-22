@@ -250,6 +250,11 @@ $(function()
 
 
 
+	// Masque le module/bloc duplicable vide de défaut
+	$(".module li:last-child").hide();
+
+
+
 	// Bouton ajout de page/article
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
 	

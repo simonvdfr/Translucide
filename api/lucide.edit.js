@@ -39,7 +39,11 @@ add_translation({
 	"Zoom link" : {"fr" : "Lien zoom"},
 	"Add" : {"fr" : "Ajouter"},
 	"Width" : {"fr" : "Largeur"},
-	"Height" : {"fr" : "Hauteur"}
+	"Height" : {"fr" : "Hauteur"},
+
+	"Add a module" : {"fr" : "Ajouter un module"},
+	"Move" : {"fr" : "D\u00e9placer"},
+	"Remove" : {"fr" : "Supprimer"}
 });
 
 
@@ -69,7 +73,7 @@ get_content = function(content)
 	});
 	
 	// Contenu des images éditables
-	$(document).find(content+" .editable-media img").each(function() {
+	$(document).find(content+" .editable-media:not(.global) img").each(function() {
 		if($(this).attr("src")) data[content_array][$(this).closest(".editable-media").attr("id")] = $(this).attr("src");
 	});
 
@@ -147,8 +151,13 @@ save = function() //callback
 
 	// Donnée global commune à plusieur page
 	data["global"] = {};
+	// Texte
 	$(document).find(".content .editable.global").each(function() {
 		if($(this).html()) data["global"][this.id] = $(this).html();					
+	});
+	// Image
+	$(document).find(".content .editable-media.global img").each(function() {
+		if($(this).attr("src")) data["global"][$(this).closest(".editable-media").attr("id")] = $(this).attr("src");
 	});
 
 
@@ -1737,6 +1746,105 @@ $(function()
 		$(this).remove();
 	});
 
+
+	/************** MODULE DUPLICABLE **************/
+	add_module = function(event)
+	{
+		module = $(event).parent().prev("ul").attr("id");
+
+		// Crée un id unique
+		key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1;
+
+		// Unbind les events d'edition
+		$(".editable").off();
+		$(".editable-media").off(".editable-media");
+
+		// Crée un block
+		$("#" + module + " li:last-child").clone().prependTo("#" + module).show("400", function()
+		{
+			// Modifie les cles
+			$("[class*='editable']", this).each(function() {
+				old_key = $(this).attr("id");
+				if(old_key == undefined) old_key = $("[id*='" + module + "-']", this).attr("id");
+				
+				$("#" + old_key).attr({
+					id: old_key.replace("-0", "-"+ key),
+					src: ""
+				});
+			});
+
+			// Relance les events d'edition
+			editable_event();
+			editable_media_event();
+		});
+	}
+
+	// Rends déplaçables les blocs
+	move_module = function() {
+
+		// Change le style du bouton et l'action
+		$(".module-bt .fa-arrows").css("transform","scale(.5)");
+
+		// Désactive l'edition
+		$(".editable-media").off(".editable-media");
+		$(".editable").off();
+
+		// Change l'action sur le lien 'move'
+		$(".module-bt [href='javascript:move_module();']").attr("href","javascript:unmove_module();");
+
+		// Les rend déplaçable
+		$(".module").sortable();
+	}
+
+	// Désactive le déplacement des blocs
+	unmove_module = function() {
+
+		// Change le style du bouton et l'action
+		$(".module-bt .fa-arrows").css("transform","scale(1)");
+
+		// Change l'action sur le lien 'move'
+		$(".module-bt [href='javascript:unmove_module();']").attr("href","javascript:move_module();");
+
+		// Active l'edition
+		editable_event();
+		editable_media_event();
+
+		// Désactive le déplacement
+		$(".module").sortable("destroy");
+	}
+
+	// Désactive le lien sur le bloc
+	$(".module li a").attr("href", "javascript:void(0)").css("cursor","default");
+
+	// Désactive les bulles d'information
+	//$(".module li a").tooltip("disable");
+
+	// Désactive les animations pour rendre plus fluide les déplacements et l'edition
+	$(".module .fire").css({
+		"opacity": "1",
+		"transform": "translate3d(0, 0, 0)"
+	});
+	$(".module .animation").removeClass("animation fire");
+
+	// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
+	$(".module").after("<div class='module-bt'><a href='javascript:move_module();'><i class='fa fa-fw fa-arrows'></i> "+__("Move")+"</a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus-square-o'></i> "+__("Add a module")+"</a></div>");
+	
+	// Force le parent en relatif pour bien positionner les boutons d'ajout
+	$(".module-bt").parent().addClass("relative");
+
+	// Ajout de la SUPPRESION au survole d'un bloc
+	$(".module li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 1;' title='"+ __("Remove") +"'></i></a>");
+
+	// Affiche les boutons de suppression
+	//$(".module li .fa-cancel").fadeIn();
+
+	// Fonction pour supprimer un bloc
+	remove_module = function(that) {
+		//console.log($(that).closest("li"));
+		$(that).closest("li").fadeOut("slow", function() {
+			this.remove();
+		});
+	};
 
 
 	/************** CHAMPS INPUT **************/

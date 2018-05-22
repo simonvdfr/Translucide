@@ -315,7 +315,6 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 .inline { display: inline !important; }
 .block { display: block !important; }
 .inflex { display: inline-flex !important; }
-.flex { display: flex; }
 .none, .editable-hidden { display: none; }
 
 .hidden { visibility: hidden; }
@@ -406,6 +405,10 @@ input[type="reset"].unstyled:focus {
 
 /* Pour ajouter des pictos dans les menus select */
 .fa-select { font-family: FontAwesome, Helvetica, Arial, sans-serif; }
+
+
+/* Module */
+.module li:last-child { display: none; }
 
 
 /* Bouton */
@@ -578,9 +581,14 @@ input[type="reset"].unstyled:focus {
 
 
 /* GRIDS */
-@media (min-width: 544px) {
+@media (min-width: 480px) {/* 544px */
 	
 	.medium-hidden { display: none !important; }
+
+	.flex { 
+		display: flex;
+		flex-wrap: wrap;
+	}
 
 	.grid {
 		display: -webkit-box;
@@ -595,6 +603,7 @@ input[type="reset"].unstyled:focus {
 		min-width: 0;
 		min-height: 0; 
 	}
+
 	/* has-gutter */
     .grid.space > * + * { margin-left: calc(1rem - 0.01px); }
     .grid.space-l > * + * { margin-left: calc(2rem - 0.01px); }

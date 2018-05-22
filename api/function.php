@@ -289,6 +289,15 @@ function media($key = null, $filter = array())
 {
 	$key = ($key ? $key : "file-".$GLOBALS['editkey']);
 
+	// Si contenu global on rapatri le contenu depuis la table méta
+	if(isset($filter['global']))
+	{
+		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
+		$res = $sel->fetch_assoc();
+
+		$GLOBALS['content'][$key] = $res['val'];
+	}
+
 	// S'il y a une valeur pour le filter mais que ce n'est pas un tableau
 	if(!is_array($filter)) $filter = array("size" => $filter);
 
@@ -326,11 +335,25 @@ function media($key = null, $filter = array())
 		}
 	}
 
-	echo"<span class='".(isset($filter['editable']) ? $filter['editable'] : "editable-media")."' id='".encode($key)."'";
-		if(isset($size[0])) echo" data-width='".$size[0]."'";
-		if(isset($size[1])) echo" data-height='".$size[1]."'";
+	echo"<span";
+
+		echo" id='".encode($key)."'";
+
+		echo" class='";
+		if(isset($filter['editable'])) echo $filter['editable']; else echo"editable-media";
+		if(isset($filter['global'])) echo" global";
+		echo"'";
+
 		if(isset($filter['class'])) echo" data-class='".$filter['class']."'";
 		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
+		if(isset($size[0])) echo" data-width='".$size[0]."'";
+		if(isset($size[1])) echo" data-height='".$size[1]."'";
+		if(isset($size[0]) or isset($size[1])) 
+			echo" style='".
+			(isset($size[0])?'width:'.$size[0].'px;':'').
+			(isset($size[1])?'height:'.$size[1].'px':'').
+			"'";
+
 	echo">";
 
 		if(isset($img))// C'est une image
@@ -389,6 +412,41 @@ function bg($key = null, $lazy = false)
 		echo" style=\"background-image: url('".$url."')\"";
 
 	$GLOBALS['editkey']++;
+}
+
+// Bloc de contenu générique duplicable
+function module($module = "module")
+{
+	// Extrait les données work du tableau des contenu
+	$keys = array_keys($GLOBALS['content']);
+	foreach($keys as $key)
+	{
+		if(preg_match("/".$module."-/", $key) == 1)
+		{
+			// Supprime le préfix du nom du module en cours
+			$type_num_module = str_replace($module."-", "", $key);
+
+			// Sépare les elements du nom du module
+			$exp_key = explode("-", $type_num_module);
+			
+			// Numéro de l'occurence du module
+			$num_module = $exp_key[(count($exp_key)-1)];
+
+			// Nom distinctif du module (txt, img...)
+			$type_module = rtrim($type_num_module, "-".$num_module);
+
+			// Création du tableau avec les elements de modules
+			$array_module[$module][$num_module][$type_module] = $GLOBALS['content'][$key];
+		}
+	}
+
+	// Bloc vide pour l'ajout de nouveau élément (bloc duplicable)
+	$array_module[$module][0]['titre'] = "";
+
+	// Re-init le tableau
+	reset($array_module[$module]);
+
+	return $array_module[$module];
 }
 
 // Contenu champ checkbox
@@ -877,10 +935,10 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
 	{
 		// Version original pour le zoom
-		$zoom = "media/" . str_replace("media/resize/", "", $dest_dir) . $file_name . ".". $source_ext;
+		$zoom = 'media' . ($dest_dir?str_replace('media/resize', '', $dest_dir.'/'):'') . $file_name . '.' . $source_ext;
 
 		// Dossier final d'image redimensionnée
-		$dir = ($dest_dir ? $dest_dir : "media/");
+		$dir = ($dest_dir ? $dest_dir.'/' : 'media/');
 
 		// Crée les dossiers
 		@mkdir($root_dir . $dir, 0705, true);
@@ -1005,11 +1063,11 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 }
 
 // Examine et traite une image
-function img_process($root_file, $dest = "media/", $des_resize = "media/resize/", $new_width = null, $new_height = null, $resize = null)
+function img_process($root_file, $dest = "media", $des_resize = "media/resize", $new_width = null, $new_height = null, $resize = null)
 {
 	// Valeur par défaut
 	$option = null;
-	$src_file = $dest.basename($root_file)."?".time();
+	$src_file = $dest.'/'.basename($root_file)."?".time();
 
 	// Taille de l'image uploadée
 	list($source_width, $source_height, $type) = getimagesize($root_file);

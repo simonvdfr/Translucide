@@ -471,7 +471,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 
 
-/* Image éditable en bg & Bouton Work */
+/* Image éditable en bg & Bouton Module */
 .editable-bg {
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
 	
@@ -480,7 +480,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 }
 	.editable-bg:hover { box-shadow: 0 0 20px rgba(0, 0, 0, 0.05) inset; }
 
-	.editable-bg > .bg-tool, .work-bt a {
+	.editable-bg > .bg-tool, .module-bt a {
 		display: none;
 		position: absolute;
 		z-index: 8;
@@ -488,7 +488,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		right: 0;
 		font-size: initial;
 	}
-	.editable-bg > .bg-tool .open-dialog-media, .work-bt a {
+	.editable-bg > .bg-tool .open-dialog-media, .module-bt a {
 		box-shadow: none;/*inset 0px 1px 3px 0px #91b3b8*/
 		background-color: #75898c;/*rgba(117, 137, 140, .6)*/
 		border-radius: 5px;
@@ -514,7 +514,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	}
 	.editable-bg > .bg-tool .open-dialog-media:hover,
 	.editable-bg > .bg-tool .clear-bg:hover,
-	.work-bt a:hover {
+	.module-bt a:hover {
 		/* background-color: rgba(117, 137, 140, 1); */
 		opacity: 1;
 		color: #7AD2D9;	
@@ -545,14 +545,18 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	}
 
 
-/* Work */
-.work-bt {
-	position: absolute;
+/* Module */
+
+.module-bt {
+	position: absolute;	
 	top: 0;
     right: 0;
 }
-	.work-bt a { position: relative; }
-	.work .ui-sortable-handle { 
+	.module-bt a { 
+		position: relative;
+		display: inline-block;
+	}
+	.module .ui-sortable-handle { 
 		box-shadow: rgba(122, 210, 217, 0.5) 0px 0px 20px 2px !important;
 		cursor:  move;
 	}
