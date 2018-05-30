@@ -783,6 +783,11 @@ div.editable {
 }
 
 
+/* Transformation */
+.r90 { transform: rotate(90deg) }
+.r180 { transform: rotate(180deg) }
+.r270 { transform: rotate(270deg) }
+
 
 /* LAYER & Tooltip */
 .layer, body .ui-tooltip  {
@@ -1016,12 +1021,6 @@ div.editable {
 }
 .fa-spin {
   animation: fa-spin 2s infinite linear;
-}
-.fa-rotate-90 { 
-  transform: rotate(90deg)
-}
-.fa-rotate-270 { 
-  transform: rotate(270deg)
 }
 
 .fa-ul {
