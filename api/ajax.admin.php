@@ -1346,14 +1346,14 @@ switch($_GET['mode'])
 
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
-		if(@$_POST['dir']) $dir = encode('/'.$_POST['dir'], "-", array("_","/"));
+		if(@$_POST['dir']) $dir = encode($_POST['dir'], "-", array("_","/"));
 		else $dir = null;
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
 		
 		// Resize l'image ou simple copie
-		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], "media/resize" . $dir);
+		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], $dir);
 
 	break;
 
@@ -1382,10 +1382,10 @@ switch($_GET['mode'])
 		//$filename = preg_replace("([^a-z0-9\.\-_]|[\.]{2,})", "", $_FILES['file']['name']);
 		// /^[a-z0-9]+\.[a-z]{3,4}$/  /[^a-z0-9\._-]+/  ([^a-z0-9\.\-_]|[\.]{2,})  [a-zA-Z0-9]{1,200}\.[a-zA-Z0-9]{1,10}
 
-		if(@$_POST['dir']) $dir = encode('/'.$_POST['dir'], '-', array('_','/'));
+		if(@$_POST['dir']) $dir = encode($_POST['dir'], '-', array('_','/'));
 		else $dir = null;
 
-		$src_file = 'media'. ($dir?$dir:'') . '/' . $filename;
+		$src_file = 'media/'. ($dir?$dir.'/':'') . $filename;
 		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'] . $src_file;
 		
 		// Check le type mime côté serveur
@@ -1413,8 +1413,7 @@ switch($_GET['mode'])
 						// Resize l'image si besoin 
 						// SUPP ?? (On ajoute le path du site pour gerer l'édition dans les sous catégories) $GLOBALS['path']. => maintenant ça se passe dans le edit.js
 						echo img_process($root_file,
-								'media' . $dir,
-								'media/resize' . $dir,
+								$dir,
 								(int)$_POST['width'],
 								(int)$_POST['height'],
 								(isset($_POST['resize'])?$_POST['resize']:'')

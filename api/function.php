@@ -930,15 +930,21 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	// file_name : on récup le nom du fichier, on lui supp l'extension (qui ne passe pas l'encode), on l'encode
 	$root_dir = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'];
 	$file_name = encode(basename(basename($source_file), "." . $source_ext));
-	
+
+	// Dossier final d'image redimensionnée
+	$dir = ($dest_dir ? $dest_dir.'/' : '');
+
+	// dir clean si media forcé
+	$dir_clean = ltrim(str_replace('media', '', $dir), '/');
+
 	// Si image à réduire ou à forcer
 	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
 	{
 		// Version original pour le zoom
-		$zoom = 'media' . ($dest_dir?str_replace('media/resize', '', $dest_dir.'/'):'') . $file_name . '.' . $source_ext;
+		$zoom = 'media/' . $dir_clean . $file_name . '.' . $source_ext;
 
-		// Dossier final d'image redimensionnée
-		$dir = ($dest_dir ? $dest_dir.'/' : 'media/');
+		// Si media dans dir on force ne met pas dans /resize/
+		$dir = (strpos($dir, 'media') === 0 ? '' : 'media/resize/') . $dir;
 
 		// Crée les dossiers
 		@mkdir($root_dir . $dir, 0705, true);
@@ -1051,7 +1057,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	{
 		$zoom = "";// Pas de zoom
 
-		$dir = "media/";
+		$dir = "media/" . $dir_clean;// @todo ajouter le dir (sans resize)
 		$file_name_ext = $file_name.".".$source_ext;
 		
 		@mkdir($root_dir . $dir, 0705, true);// Crée les dossiers
@@ -1059,15 +1065,16 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		copy($source_file, $root_dir . $dir . $file_name_ext);
 	}
 
-	return $dir.$file_name_ext."?".($zoom?"zoom=".$zoom."&":"").time();// Time pour forcer le refresh
+	return $dir . $file_name_ext . "?" . ($zoom?"zoom=".$zoom."&":"") . time();// Time pour forcer le refresh
 }
 
 // Examine et traite une image
-function img_process($root_file, $dest = "media", $des_resize = "media/resize", $new_width = null, $new_height = null, $resize = null)
+function img_process($root_file, $dest_dir = null, $new_width = null, $new_height = null, $resize = null)
 {
 	// Valeur par défaut
 	$option = null;
-	$src_file = $dest.'/'.basename($root_file)."?".time();
+	$dir = ($dest_dir ? 'media/'.$dest_dir : 'media');
+	$src_file = $dir.'/'.basename($root_file)."?".time();
 
 	// Taille de l'image uploadée
 	list($source_width, $source_height, $type) = getimagesize($root_file);
@@ -1088,7 +1095,7 @@ function img_process($root_file, $dest = "media", $des_resize = "media/resize", 
 	// Image trop grande (> global) pour le web : on la redimensionne
 	if($source_width > $max_width or $source_height > $max_height or $option) 
 	{
-		$src_file = resize($root_file, $max_width, $max_height, $dest, $option);// Redimensionne sans crop
+		$src_file = resize($root_file, $max_width, $max_height, $dir, $option);// Redimensionne sans crop
 
 		unlink($root_file);// Supprime l'image originale puisque l'on ne garde que la maxsize
 
@@ -1099,7 +1106,7 @@ function img_process($root_file, $dest = "media", $des_resize = "media/resize", 
 	// L'interface a demandé un redimensionnement ?
 	if($resize and (($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height)))
 	{
-		return resize($root_file, $new_width, $new_height, $des_resize, $resize);// Redimensionne
+		return resize($root_file, $new_width, $new_height, $dest_dir, $resize);// Redimensionne
 
 		//unlink($root_file);// Si on a redimensionné on supp l'image de base
 	}
