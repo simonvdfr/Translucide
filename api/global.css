@@ -240,6 +240,12 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .ho1:hover { opacity: 1; }
 
 
+/* Rotation */
+.r90 { transform: rotate(90deg) }
+.r180 { transform: rotate(180deg) }
+.r270 { transform: rotate(270deg) }
+
+
 /* Background */
 .nor { background-repeat: no-repeat !important; }
 .cover { 
@@ -781,12 +787,6 @@ div.editable {
 	opacity: .8;
 	transition: all .3s;
 }
-
-
-/* Transformation */
-.r90 { transform: rotate(90deg) }
-.r180 { transform: rotate(180deg) }
-.r270 { transform: rotate(270deg) }
 
 
 /* LAYER & Tooltip */
