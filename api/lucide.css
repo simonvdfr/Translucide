@@ -924,6 +924,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	font-family: sans-serif;
     text-decoration: none;
     white-space: nowrap;
+    line-height: 1.6rem;
 
     border-radius: 0 5px 0 0;
 	

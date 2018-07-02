@@ -664,8 +664,14 @@ upload = function(source, file, resize)
 			if(mime[0] == "image") 
 			{
 				// Si pas de tag img on le crée
-				if($("img", source).html() == undefined) 
-					$(source).append("<img"+(width?" width='"+width+"'":"")+(height?" height='"+height+"'":"")+(data_class?" class='"+data_class+"'":"")+">");
+				if($("img", source).html() == undefined) {
+					if(width || height) 
+						var style = " style='"+(width?" max-width:"+width+"px;":"")+(height?"max-height:"+height+"px;":"")+"'";
+					else 
+						var style = null;	
+
+					$(source).append("<img"+(style)+(data_class?" class='"+data_class+"'":"")+">");
+				}
 
 				// On fade à moitié (50%)
 				$("img", source).addClass("to50");
