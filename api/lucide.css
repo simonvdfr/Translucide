@@ -235,6 +235,7 @@ body { transition: margin-top .2s linear; }
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	background-color: rgba(245, 245, 245, 0.95) !important;
 	border-radius: 5px;
+	overflow: hidden;
 }
 	.tooltip label { margin-top: 0;	}
 
@@ -309,7 +310,10 @@ header:hover .dragger { display: block; }
 
 	#add-nav .tooltip { min-width: 210px; }
 
-	#add-nav ul { border: none; }
+	#add-nav ul { 
+		border: none;
+		float: none;
+	}
 	#add-nav li {
 		background-color: #fff;
 		
@@ -335,6 +339,8 @@ header:hover .dragger { display: block; }
 		font-weight: initial;
 		text-transform: initial;
 	}
+		#add-nav li a:after { display: none; }
+		
 	#add-nav .dragger {
 		background: none;
 
