@@ -913,7 +913,7 @@ div.editable {
 	.mod,
 	.col,
 	fieldset {
-		display: block !important;
+		/* display: block !important; empèche les toggle js */
 		float: none !important;
 		clear: none !important;
 		width: auto !important;
