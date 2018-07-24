@@ -158,6 +158,7 @@ $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['d
 
 // Image pour les réseaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
+elseif(isset($GLOBALS['content']['alaune'])) $image = $GLOBALS['content']['alaune'];
 
 
 
