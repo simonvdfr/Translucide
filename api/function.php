@@ -379,6 +379,9 @@ function media($key = null, $filter = array())
 
 				if(isset($filter['itemprop'])) echo" itemprop='".@$filter['itemprop']."'";
 
+				// Image map
+				if(isset($filter['usemap'])) echo" usemap='".@$filter['usemap']."'";
+
 				echo" atl=\"\" class='";
 					if(isset($size[0]) and isset($size[1])) echo"crop";
 					if(isset($filter['zoom'])) echo" zoom";
