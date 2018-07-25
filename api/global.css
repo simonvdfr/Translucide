@@ -569,14 +569,14 @@ input[type="reset"].unstyled:focus {
 
 
 /* MESSAGE */
-#error {
+#error, .error {
 	border-radius: 5px;
     border: 1px solid #cd0a0a;
     background: #fef1ec;
     color: #cd0a0a;
     z-index: 1000;
 }
-#highlight {
+#highlight, .light {
 	border-radius: 5px;
 	border: 1px solid #fcefa1;
     background: #fbf9ee;
@@ -593,7 +593,7 @@ input[type="reset"].unstyled:focus {
 
 	.flex { 
 		display: flex;
-		flex-wrap: wrap;
+		/* flex-wrap: wrap; Crée un bug */
 	}
 
 	.grid {
@@ -1079,6 +1079,7 @@ div.editable {
 .fa-clock:before { content: '\e818'; } /* '' */
 .fa-resize-full:before { content: '\e819'; } /* '' */
 .fa-resize-small:before { content: '\e81a'; } /* '' */
+.fa-pencil:before { content: '\e81b'; } /* '' */
 .fa-up-open:before { content: '\e81c'; } /* '' */
 .fa-down-hand:before { content: '\e81d'; } /* '' */
 .fa-arrows-cw:before { content: '\e81e'; } /* '' */
