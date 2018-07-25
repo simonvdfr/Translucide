@@ -94,7 +94,8 @@ get_content = function(content)
 
 	// Contenu des select, input hidden, href éditables // content+" input, "+
 	$(document).find(content+" .editable-select, "+content+" .editable-input, "+content+" .editable-href").each(function() {
-		if($(this).val()) data[content_array][this.id] = $(this).val();
+		if($(this).attr("type") == "checkbox") data[content_array][this.id] = $(this).prop("checked");			
+		else if($(this).val()) data[content_array][this.id] = $(this).val(); 
 	});
 }
 
