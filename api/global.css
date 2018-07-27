@@ -1088,9 +1088,11 @@ div.editable {
 .fa-floppy:before { content: '\e821'; } /* '' */
 .fa-key:before { content: '\e822'; } /* '' */
 .fa-music:before { content: '\e823'; } /* '' */
+.fa-resize-vertical:before { content: '\e824'; } /* '' */
 .fa-twitter:before { content: '\f099'; } /* '' */
 .fa-facebook:before { content: '\f09a'; } /* '' */
 .fa-rss:before { content: '\f09e'; } /* '' */
+.fa-money:before { content: '\f0d6'; } /* '' */
 .fa-mail-alt:before { content: '\f0e0'; } /* '' */
 .fa-quote-left:before { content: '\f10d'; } /* '' */
 .fa-quote-right:before { content: '\f10e'; } /* '' */
