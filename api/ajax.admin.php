@@ -1667,7 +1667,7 @@ switch($_GET['mode'])
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_meta']."` (
 								`id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
 								`type` varchar(32) NOT NULL,
-								`cle` varchar(255) NOT NULL,
+								`cle` varchar(255) NOT NULL DEFAULT '',
 								`val` text NOT NULL,
 								`ordre` smallint(6) NOT NULL DEFAULT '0'
 								PRIMARY KEY (`id`,`type`,`cle`),
