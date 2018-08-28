@@ -215,6 +215,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 /* Text effect */
 .up { text-transform: uppercase; }
+.lighter { font-weight: lighter; }
 .normal { font-weight: normal; }
 .bold { font-weight: bold; }
 
