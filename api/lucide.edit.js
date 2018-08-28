@@ -4,7 +4,7 @@
 add_translation({
 	"Save" : {"fr" : "Enregistrer"},
 	"Delete" : {"fr" : "Supprimer"},
-	"Delete content" : {"fr" : "Supprimer le contenu"},
+	"Delete the page" : {"fr" : "Supprimer la page"},
 	"Also remove media from content" : {"fr" : "Supprimer \u00e9galement les m\u00e9dias pr\u00e9sents dans le contenu"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
 	"Cancel" : {"fr" : "Annuler"},	
@@ -1289,6 +1289,12 @@ $(function()
 
 		if(typeof toolbox_underline != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
+		
+		if(typeof toolbox_superscript != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('superscript')\"><i class='fa fa-fw fa-superscript'></i></button></li>";
+		
+		if(typeof toolbox_insertUnorderedList != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
 		if(typeof toolbox_justifyLeft != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('justifyLeft')\" id='align-left'><i class='fa fa-fw fa-align-left'></i></button></li>";
@@ -2182,8 +2188,8 @@ $(function()
 		});
 
 
-		// Dialog de confirmation de suppression	
-		$("body").append("<div class='dialog-del' title='"+ __("Delete content") +"'></div>");
+		// Dialog de confirmation de suppression 
+		$("body").append("<div class='dialog-del' title='"+ __("Delete the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'></div>");
 
 		// S'il y a des médias à supprimer
 		if(Object.keys(medias_clean).length > 0)
