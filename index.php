@@ -1,4 +1,7 @@
-<?
+<?php
+// Vérifie la configuration de short open tag
+if(!ini_get('short_open_tag')) exit('Please put "short_open_tag = On" in php.ini');
+
 @include_once("config.php");// Variables
 include_once("api/function.php");// Fonctions
 include_once("api/db.php");// Connexion à la db
@@ -210,7 +213,7 @@ if(!$ajax)
 		<meta charset="utf-8">
 
 		<title><?=$title;?></title>
-		<?if($description){?><meta name="description" content="<?=$description;?>"><?}?>
+		<?if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
 		<meta name="robots" content="<?=$robots;?>">
 
