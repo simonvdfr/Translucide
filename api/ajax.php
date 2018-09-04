@@ -554,7 +554,8 @@ switch($_GET['mode'])
 					<option value="edit-media">&#xf07b; <?_e("Edit Files")?></option>
 					
 					<?
-					while(list($cle, $array) = each($GLOBALS['add-content']))
+					//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
+					foreach($GLOBALS['add-content'] as $cle => $array) { 
 					{
 						echo'<option value="add-'.$cle.'">&#xf0f6; '.__("Add ".$cle).'</option>';
 						echo'<option value="edit-'.$cle.'">&#xf0f6; '.__("Edit ".$cle).'</option>';
@@ -605,7 +606,8 @@ switch($_GET['mode'])
 					
 					if($res_meta['val']) $metas = json_decode($res_meta['val'], true);
 
-					while(list($cle, $val) = each($GLOBALS['meta_user']))
+					//while(list($cle, $val) = each($GLOBALS['meta_user'])) PHP 7.2
+					foreach($GLOBALS['meta_user'] as $cle => $val)
 					{
 						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="meta[<?=$cle?>]" value="<?=$metas[$cle]?>" class="w60"></div><?
 					}			
@@ -765,7 +767,10 @@ switch($_GET['mode'])
 
 			// Sécurisation supplémentaire
 			$_POST = array_map(function($value) use($connect) {
-				if(is_array($value)) { while(list($cle, $val) = each($value)) $value[$cle] = $connect->real_escape_string($val); }
+				if(is_array($value)) { 
+					//while(list($cle, $val) = each($value)) PHP 7.2
+					foreach($value as $cle => $val) $value[$cle] = $connect->real_escape_string($val);
+				}
 				else $value = $connect->real_escape_string($value);
 				return $value; 
 			}, $_POST);
@@ -1004,7 +1009,8 @@ switch($_GET['mode'])
 
 					//highlight_string(print_r($response, true));
 
-					while(list($cle, $val) = each($response['data'])) {
+					//while(list($cle, $val) = each($response['data'])) PHP 7.2
+					foreach($response['data'] as $cle => $val) {
 						$json[] = array(
 							'value' => $val['id'],
 							'label' => $val['name'],
@@ -1019,7 +1025,8 @@ switch($_GET['mode'])
 
 					//highlight_string(print_r($response, true));
 
-					while(list($cle, $val) = each($response['items'])) {
+					//while(list($cle, $val) = each($response['items'])) PHP 7.2
+					foreach($response['items'] as $cle => $val) {
 						$json[] = array(
 							'value' => $val['id'],
 							'label' => $val['displayName'],

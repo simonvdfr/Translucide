@@ -74,7 +74,8 @@ switch($_GET['mode'])
 									<div>
 										<select id="type">
 											<?
-											while(list($cle, $array) = each($GLOBALS['add-content']))
+											//while(list($cle, $array) = each()) PHP 7.2
+											foreach($GLOBALS['add-content'] as $cle => $array)
 											{
 												if(isset($_SESSION['auth']['add-'.$cle]))
 													echo'<option value="'.$cle.'">'.__($cle).'</option>';
@@ -90,7 +91,8 @@ switch($_GET['mode'])
 										<select id="tpl">
 											<?
 											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
-											while(list($cle, $filename) = each($scandir))				
+											//while(list($cle, $filename) = each($scandir)) PHP 7.2
+											foreach($scandir as $cle => $filename)
 											{			
 												$filename = pathinfo($filename, PATHINFO_FILENAME);
 												echo'<option value="'.$filename.'">'.$filename.'</option>';
@@ -129,7 +131,8 @@ switch($_GET['mode'])
 				<?
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
-				while(list($cle, $val) = each($GLOBALS['toolbox'])) { echo"toolbox_".$val." = true;\n"; }
+				//while(list($cle, $val) = each($GLOBALS['toolbox'])) PHP 7.2
+				foreach($GLOBALS['toolbox'] as $cle => $val) { echo"toolbox_".$val." = true;\n"; }
 				?>
 			
 				// Chargement de Jquery UI
@@ -185,7 +188,8 @@ switch($_GET['mode'])
 
 			<ul class="small">
 				<?
-				while(list($cle, $array) = each($GLOBALS['add-content']))
+				//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
+				foreach($GLOBALS['add-content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
 						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
@@ -197,7 +201,8 @@ switch($_GET['mode'])
 			<div class="none">
 				<?
 				reset($GLOBALS['add-content']);
-				while(list($cle, $array) = each($GLOBALS['add-content']))
+				//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
+				foreach($GLOBALS['add-content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])) echo'<div id="add-'.$cle.'"></div>';
 				}
@@ -214,7 +219,8 @@ switch($_GET['mode'])
 						<option value=""><?_e("Select template")?></option>
 						<?
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
-						while(list($cle, $filename) = each($scandir))				
+						//while(list($cle, $filename) = each($scandir)) PHP 7.2
+						foreach($scandir as $cle => $filename)
 						{			
 							$filename = pathinfo($filename, PATHINFO_FILENAME);
 							echo"<option value=\"".$filename."\">".$filename."</option>";
@@ -543,7 +549,8 @@ switch($_GET['mode'])
 				$tags = explode(",", trim($_POST['tag']));
 
 				$i = 1;
-				while(list($cle, $val) = each($tags)) {
+				//while(list($cle, $val) = each($tags)) PHP 7.2
+				foreach($tags as $cle => $val) {
 					if(isset($val) and $val != "") {
 						$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
 						$i++;
@@ -621,7 +628,8 @@ switch($_GET['mode'])
 			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='meta'");
 
 			$i = 1;
-			while(list($cle, $val) = each($_POST['meta'])) {
+			//while(list($cle, $val) = each($_POST['meta'])) PHP 7.2
+			foreach($_POST['meta'] as $cle => $val) {
 				if(isset($val) and $val != "") {
 					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='meta', cle='".encode($cle)."', val='".addslashes(trim($val))."', ordre='".$i."'");
 					$i++;
@@ -636,7 +644,8 @@ switch($_GET['mode'])
 		// Ajout aux meta de contenu en commun à plusieur page
 		if(isset($_POST['global']) and $_POST['global'] != "") 
 		{
-			while(list($cle, $val) = each($_POST['global']))
+			//while(list($cle, $val) = each($_POST['global'])) PHP 7.2
+			foreach($_POST['global'] as $cle => $val)
 			{
 				$connect->query("DELETE FROM ".$table_meta." WHERE type='global' AND cle='".encode($cle)."'");
 
@@ -737,7 +746,8 @@ switch($_GET['mode'])
 			$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
 			// On a demandé la SUPPRESSION DES FICHIERS liées au contenu
-			while(list($cle, $media) = each($_POST['medias'])) {
+			//while(list($cle, $media) = each($_POST['medias'])) PHP 7.2
+			foreach($_POST['medias'] as $cle => $media) {
 				// strtok : Supprime les arguments après l'extension (timer...)
 				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
 			}
@@ -839,7 +849,8 @@ switch($_GET['mode'])
 
 		// Nettoyage et conversion du menu existant
 		if(isset($_REQUEST['menu']))
-		while(list($cle, $val) = each($_REQUEST['menu']))
+		//while(list($cle, $val) = each($_REQUEST['menu'])) PHP 7.2
+		foreach($_REQUEST['menu'] as $cle => $val)
 		{
 			// Si c'est un lien vers la home
 			if($val == $GLOBALS['home'] or $val == $GLOBALS['path'])
@@ -1199,7 +1210,8 @@ switch($_GET['mode'])
 
 			$i = 1;
 			// Crée un tableau avec les fichiers du dossier et infos complètes
-			while(list($cle, $filename) = each($scandir))				
+			//while(list($cle, $filename) = each($scandir)) PHP 7.2
+			foreach($scandir as $cle => $filename)
 			{				
 				if($filename != "Thumbs.db" and $filename != ".htaccess" and !is_dir($dir.$filename))
 				{						
@@ -1264,7 +1276,8 @@ switch($_GET['mode'])
 							
 				$i = 1;
 				// Affiche les fichiers en fonction du tri
-				while(list($cle, $val) = each($tab_file)) 
+				//while(list($cle, $val) = each($tab_file)) PHP 7.2
+				foreach($tab_file as $cle => $val)
 				{
 					// Convertie la taille en mode lisible
 					if($val['size'] >= 1048576) $val['size'] = round($val['size'] / 1048576) . "Mo";
@@ -1474,7 +1487,8 @@ switch($_GET['mode'])
 					//uksort($list, 'strnatcmp');// Tri Ascendant
 					//if($sort == 'DESC') $list = array_reverse($list, true);// Tri Descendant
 					
-					while(list($cle, $val) = each($list)) 
+					//while(list($cle, $val) = each($list)) PHP 7.2
+					foreach($list as $cle => $val)
 					{						
 						echo"<li class='pat fl' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
 					}
@@ -2152,7 +2166,8 @@ switch($_GET['mode'])
 								
 								// Des dossiers de thème
 								$scandir = array_diff(scandir("theme/"), array('..', '.', 'tpl'));
-								while(list($cle, $file) = each($scandir)) { 
+								//while(list($cle, $file) = each($scandir)) PHP 7.2
+								foreach($scandir as $cle => $file) { 
 									if(is_dir("theme/".$file)) echo"<option value=\"".$file."\"".($GLOBALS['theme'] == $file ? " selected":"").">".$file."</option>";
 								}							
 								?>					

@@ -12,19 +12,20 @@ function benchmark() {
 // Nettoie et encode les mots
 function encode($value, $separator = "-", $pass = null) 
 {
-	$from = utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>");
-    $to = "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ";
+	// Tableau des special chars PHP 7.2
+	$from = str_split(utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>"));
+    $to = str_split("aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ");
 	
 	// Si on doit laisser certains caractères
-	if(count($pass)) {
+	if(@count($pass)) {
 		foreach($pass as $char){
-			$strpos = strpos($from, $char);
+			$strpos = strpos(implode($from), $char);
 			$from[$strpos] = "";
 			$to[$strpos] = "";
 		}
 	}
 
-	$value = strtolower(strtr(utf8_decode($value), $from, $to));// Supp les caractères indésirables
+	$value = strtolower(strtr(utf8_decode($value), implode($from), implode($to)));// Supp les caractères indésirables
 	$value = preg_replace("/ /", $separator, preg_replace("/ {2,}/", $separator, trim($value)));// Supp les espaces et remplace par des tirés {1,}
 
 	return $value;
@@ -57,7 +58,8 @@ function get_url($url_source = null)
 				unset($explode_path[0]);// Supp la racine des filtres si dossier
 			}
 			
-			while(list($cle, $dir) = each($explode_path)) 
+			//while(list($cle, $dir) = each($explode_path)) PHP 7.2
+			foreach($explode_path as $cle => $dir)
 			{
 				$explode_dir = explode("_", $dir);
 
@@ -87,7 +89,8 @@ function make_url($url, $filter = array())
 		unset($filter['absolu']);
 
 		// Création des dossier dans l'url en fonction des filtres
-		while(list($cle, $val) = each($filter))
+		//while(list($cle, $val) = each($filter)) PHP 7.2
+		foreach($filter as $cle => $val)
 		{
 			if($cle == "page" and $val == 1)
 				unset($filter['page']);// Si Page == 1 on ne l'affiche pas dans l'url
@@ -555,7 +558,8 @@ function secure_value($value) {
 
 	// htmlentities htmlspecialchars
 	if(is_array($value)) {
-		while(list($cle, $val) = each($value)) $value[$cle] = trim(htmlspecialchars($val, ENT_QUOTES));
+		//while(list($cle, $val) = each($value)) PHP 7.2
+		foreach($value as $cle => $val) $value[$cle] = trim(htmlspecialchars($val, ENT_QUOTES));
 	}
 	else $value = trim(htmlspecialchars($value, ENT_QUOTES));
 
@@ -661,7 +665,8 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt d
 	// Cookie+Session pour connaitre les autorisations utilisateur
 	if($auth) {
 		$array_auth = explode(",", $auth);
-		while(list($cle, $val) = each($array_auth)) { $_SESSION['auth'][$val] = true; }
+		//while(list($cle, $val) = each($array_auth)) PHP 7.2
+		foreach($array_auth as $cle => $val) { $_SESSION['auth'][$val] = true; }
 		setcookie("auth", encode($auth, ",", array("-")), $time, $GLOBALS['path'], $GLOBALS['domain']);
 	}
 	
