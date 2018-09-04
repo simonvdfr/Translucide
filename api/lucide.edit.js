@@ -1765,8 +1765,13 @@ $(function()
 	{
 		module = $(event).parent().prev("ul").attr("id");
 
-		// Crée un id unique
-		key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1;
+		// Crée un id unique (dernier id le plus grand + 1)
+		//key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1; Ne tien pas compte de l'ordre des id
+		var key = $.map($("#" + module + " li .editable"), function(k) {
+			return parseInt(k.id.match(/\d+/));
+		}).sort(function(a, b) {
+			return(b-a); // reverse sort
+		})[0] + 1;
 
 		// Unbind les events d'edition
 		$(".editable").off();

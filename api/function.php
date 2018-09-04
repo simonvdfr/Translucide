@@ -431,7 +431,7 @@ function module($module = "module")
 
 			// Sépare les elements du nom du module
 			$exp_key = explode("-", $type_num_module);
-			
+
 			// Numéro de l'occurence du module
 			$num_module = $exp_key[(count($exp_key)-1)];
 
