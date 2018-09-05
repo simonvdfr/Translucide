@@ -1832,7 +1832,7 @@ $(function()
 	}
 
 	// Désactive le lien sur le bloc
-	$(".module li a").attr("href", "javascript:void(0)").css("cursor","default");
+	$(".module li > a").attr("href", "javascript:void(0)").css("cursor","default");
 
 	// Désactive les bulles d'information
 	//$(".module li a").tooltip("disable");
