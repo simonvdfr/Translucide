@@ -555,7 +555,7 @@ switch($_GET['mode'])
 					
 					<?
 					//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
-					foreach($GLOBALS['add-content'] as $cle => $array) { 
+					foreach($GLOBALS['add-content'] as $cle => $array)
 					{
 						echo'<option value="add-'.$cle.'">&#xf0f6; '.__("Add ".$cle).'</option>';
 						echo'<option value="edit-'.$cle.'">&#xf0f6; '.__("Edit ".$cle).'</option>';
