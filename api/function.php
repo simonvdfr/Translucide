@@ -413,9 +413,9 @@ function bg($key = null, $lazy = false)
 
 	// Si lazy load des images de fond
 	if($lazy)
-		echo" data-lazy=\"bg\"";
+		echo' data-lazy="bg"';
 	else if($url)
-		echo" style=\"background-image: url('".$url."')\"";
+		echo' style="background-image: url("'.$url.'"")"';
 
 	$GLOBALS['editkey']++;
 }

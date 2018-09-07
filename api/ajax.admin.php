@@ -1315,14 +1315,22 @@ switch($_GET['mode'])
 					if($val['width'] and $val['height']) $info = $val['width']."x".$val['height']."px";
 					else $info = pathinfo($val['filename'], PATHINFO_EXTENSION);
 					
-					// Affichage du fichier
-					echo"<li class='pat mat tc' title=\"".utf8_encode($val['filename'])." | ".date("d-m-Y H:i:s", $val['time'])." | ".$val['mime']."\" id=\"dialog-media-".encode((isset($_GET['filter'])?$_GET['filter']:""))."-".$i."\" data-media=\"media/".$subfolder.utf8_encode($val['filename'])."\" data-dir=\"".trim($subfolder,'/')."\" data-type=\"".$type."\">";
+					// Affichage du fichier '.($i>=20?'none':'').'
+					echo'<li 
+						class="pat mat tc"
+						title="'.utf8_encode($val['filename']).' | '.date("d-m-Y H:i:s", $val['time']).' | '.$val['mime'].'"
+						id="dialog-media-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$i.'"
+						data-media="media/'.$subfolder.utf8_encode($val['filename']).'"
+						data-dir="'.trim($subfolder,'/').'"
+						data-type="'.$type.'"
+					>';
 
 						if($type == "image") {
-							echo"<img src=\"".$GLOBALS['path']."media/".$subfolder.$val['filename']."\">";
-							echo"<a class='resize' title=\"".__("Get resized image")."\"><i class='fa fa-fw fa-compress bigger'></i></a>";
+							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
+							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-lazy="'.$src.'"':'').'>';
+							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-compress bigger"></i></a>';
 						}
-						else echo"<div class='file'><i class='fa fa-fw fa-".$fa." mega'></i><div>".utf8_encode($val['filename'])."</div></div>";
+						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
 						echo"						
 						<div class='infos'>".$info." - ".$val['size']."</div>
@@ -1340,6 +1348,22 @@ switch($_GET['mode'])
 			$(function()
 			{
 				if($("#dialog-media-width").val() || $("#dialog-media-height").val()) $(".dialog-media .resize").remove();
+
+				// LAZY LOAD IMAGE Dialog media : Charge les au scroll
+				$window.on("scroll resize", function ()
+				{
+			    	$.each($(".dialog-media img"), function() 
+			    	{
+			    		var $element = $(this);
+			    		var element_top = $element.offset().top;
+
+			    		// Si l'image est dans data=lazy mais n'est pas chargé
+						if($element.data("lazy") && !$element.attr("src")) 
+							if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
+					});
+				});
+
+				$window.trigger("scroll");// Force le lancement pour les lazyload des images déjà dans l'ecran
 			});
 		</script>
 		<?
