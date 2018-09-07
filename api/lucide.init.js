@@ -407,11 +407,12 @@ $(function()
 
 
 		// ANIMATION SUR LES CONTENUS
-		var window_height = $window.outerHeight();//height
-    	var window_top = $window.scrollTop();
-    	var window_bottom = (window_top + window_height);
+		window_height = $window.outerHeight();//height
+    	window_top = $window.scrollTop();
+    	window_bottom = (window_top + window_height);
 
-    	$.each($animation, function() {
+    	$.each($animation, function() 
+    	{
     		var $element = $(this);
     		var element_height = $element.outerHeight();
     		var element_top = $element.offset().top;
