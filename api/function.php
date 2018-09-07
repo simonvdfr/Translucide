@@ -415,7 +415,7 @@ function bg($key = null, $lazy = false)
 	if($lazy)
 		echo' data-lazy="bg"';
 	else if($url)
-		echo' style="background-image: url("'.$url.'"")"';
+		echo' style="background-image: url(\''.$url.'\')"';
 
 	$GLOBALS['editkey']++;
 }
