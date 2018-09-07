@@ -1768,9 +1768,9 @@ $(function()
 		// Crée un id unique (dernier id le plus grand + 1)
 		//key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1; Ne tien pas compte de l'ordre des id
 		var key = $.map($("#" + module + " li .editable"), function(k) {
-			return parseInt(k.id.match(/\d+/));
+			return parseInt(k.id.match(/(\d+)(?!.*\d)/));//Récupère le dernier digit de la chaine
 		}).sort(function(a, b) {
-			return(b-a); // reverse sort
+			return(b-a); // reverse sort : tri les id pour prendre le dernier (le plus grand)
 		})[0] + 1;
 
 		// Unbind les events d'edition
