@@ -61,10 +61,12 @@ function get_url($url_source = null)
 			//while(list($cle, $dir) = each($explode_path)) PHP 7.2
 			foreach($explode_path as $cle => $dir)
 			{
+				$dir = urldecode($dir);// Pour supprimer les %20 ..
+
 				$explode_dir = explode("_", $dir);
 
-				if($explode_dir[0]) 
-					$GLOBALS['filter'][encode($explode_dir[0])] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_","@"));
+				if($explode_dir[0])
+					$GLOBALS['filter'][encode($explode_dir[0], "-", array("'","."))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array("'",".","_","@"));
 			}
 		}
 		else $url = $path;
@@ -95,7 +97,7 @@ function make_url($url, $filter = array())
 			if($cle == "page" and $val == 1)
 				unset($filter['page']);// Si Page == 1 on ne l'affiche pas dans l'url
 			elseif($val)
-				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array(".","_","@"));
+				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array("'",".","_","@"));
 		}
 	}
 
