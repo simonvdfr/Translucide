@@ -33,7 +33,8 @@ load_translation('api');// Chargement des traductions du système
 /********** CONTENU **********/
 
 // On récupère les données de la page
-$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='".get_url()."' AND lang='".$lang."' LIMIT 1");
+$get_url = $connect->real_escape_string(get_url());
+$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='".$get_url."' AND lang='".$lang."' LIMIT 1");
 if($connect->error) {
 	header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
 	exit($connect->error);
@@ -44,8 +45,8 @@ else $res = $sel->fetch_assoc();// On récupère les données de la page
 
 /********** TAGS **********/
 
-// Construction de l'ajout du contenu tag/cat
-if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0) 
+// Construction de l'ajout du contenu tag/cat, si filter et la racine de l'url pas dans les filtres autorisés
+if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($get_url, $GLOBALS['filter_auth'])) 
 {
 	$filter_one = array_keys($GLOBALS['filter'])[0];
 
@@ -153,6 +154,11 @@ elseif(isset($res_tag['val']))// Si il y a juste le nom du tag
 	$res['title'] = $GLOBALS['content']['title'] = $res_tag['val'];
 	$res['description'] = $GLOBALS['content']['description'] = "";
 }
+elseif(in_array($get_url, $GLOBALS['filter_auth']) and isset($GLOBALS['filter'])) {// Si url dans filtre autorisé on ajoute le mot cle dans le title
+	$res['title'] = $res['title'] ." " . str_replace("-", " " , @array_keys($GLOBALS['filter'])[0]);
+}
+
+
 
 // SI CONTENU
 // Information pour les metas du head
