@@ -205,6 +205,10 @@ $GLOBALS['jpg_quality'] = 90;
 $GLOBALS['png_quality'] = 9;
 
 
+// Animation pour l'ouverture / fermeture de la dialogue des medias
+$GLOBALS['animation_dialog'] = true;
+
+
 // Icone pour mobile
 $GLOBALS['touch_icon'] = "";
 

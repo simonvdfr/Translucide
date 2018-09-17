@@ -591,6 +591,13 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 /* Fenêtre de gestion des médias */
 .ui-dialog { text-shadow: none !important; }
+
+.ui-dialog #recherche-media {/* Position du moteur de recherche de média */
+	position: absolute;
+    right: 0px;
+    z-index: 1;
+}
+
 .dialog-media li { 
 	background: #eee none repeat scroll 0 0;
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) inset, 0 0 0 1px rgba(0, 0, 0, 0.05) inset;

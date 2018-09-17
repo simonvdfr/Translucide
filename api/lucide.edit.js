@@ -545,9 +545,10 @@ dialog_transfert = function(mode, source, target, callback) {
 					autoOpen: false,
 					width: "80%",
 					//show: {effect: "fadeIn"},
-					hide: {effect: "fadeOut"},
+					hide: {effect: (animation_dialog?"fadeOut":"none")},
 					beforeClose: function ()
-					{							
+					{		
+						if(animation_dialog == true)			
 						$(this).dialog("widget").effect("transfer", {// Effet de transfert
 							to: $(source),
 							className: "ui-effects-transfer"
@@ -575,19 +576,25 @@ dialog_transfert = function(mode, source, target, callback) {
 
 							// Place les onglets à la place du titre de la dialog
 							$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+
+							// Place le moteur de recherche de media dans le titre de la dialog
+							$("#recherche-media").detach().prependTo(".ui-dialog");
 						}
 					},
 					open: function(event, ui) {
-						$(".dialog-"+mode).dialog("widget").css("visibility", "hidden");
+						// Animation sur l'ouverture de la dialog ?
+						if(animation_dialog == true) {
+							$(".dialog-"+mode).dialog("widget").css("visibility", "hidden");
 
-						// Effet d'ouverture : transfert
-						$(source).effect("transfer", {
-							to: $(".dialog-"+mode).dialog("widget"),
-							className: "ui-effects-transfer"
-							}, 300, function() {
-								$(".dialog-"+mode).dialog("widget").hide().css("visibility", "visible").fadeIn("fast");
-							}
-						);						
+							// Effet d'ouverture : transfert
+							$(source).effect("transfer", {
+								to: $(".dialog-"+mode).dialog("widget"),
+								className: "ui-effects-transfer"
+								}, 300, function() {
+									$(".dialog-"+mode).dialog("widget").hide().css("visibility", "visible").fadeIn("fast");
+								}
+							);
+						}
 					},
 					resize: function(event, ui) 
 					{

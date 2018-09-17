@@ -131,8 +131,10 @@ switch($_GET['mode'])
 				<?
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
-				//while(list($cle, $val) = each($GLOBALS['toolbox'])) PHP 7.2
-				foreach($GLOBALS['toolbox'] as $cle => $val) { echo"toolbox_".$val." = true;\n"; }
+				foreach($GLOBALS['toolbox'] as $cle => $val) { echo'toolbox_'.$val.' = true;'; }
+
+				// Animation sur la dialogue média ?
+				echo"animation_dialog = '".$GLOBALS['animation_dialog']."';";
 				?>
 			
 				// Chargement de Jquery UI
@@ -898,6 +900,9 @@ switch($_GET['mode'])
 			<input type="hidden" id="dialog-media-width" value="<?=htmlspecialchars($_REQUEST['width'])?>">
 			<input type="hidden" id="dialog-media-height" value="<?=htmlspecialchars($_REQUEST['height'])?>">
 			<input type="hidden" id="dialog-media-dir" value="<?=htmlspecialchars($_REQUEST['dir'])?>">
+			
+			<!-- Chargement du moteur de recherche des médias -->
+			<input type="text" id="recherche-media" placeholder="<?_e("Search")?>" class="mrl">
 
 			<ul class="small">
 
@@ -1180,6 +1185,21 @@ switch($_GET['mode'])
 						}
 					}
 				});
+
+				// Moteur de recherche dans les médias
+				$("#recherche-media").on("keyup", function(event) {
+					var recherche = $(this).val();
+
+					// Filtre les li
+					if(recherche)// Si on a une recherche
+					{
+						$("#media li").addClass("none");// Masque tous les Li
+						$("#media li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
+						$window.trigger("scroll")// Force le chargement des images
+					}
+					else $("#media li").removeClass("none");// Re-affiche tous les médias
+				});				
+
 			});
 			</script>
 		</div>
@@ -1357,8 +1377,8 @@ switch($_GET['mode'])
 			    		var $element = $(this);
 			    		var element_top = $element.offset().top;
 
-			    		// Si l'image est dans data=lazy mais n'est pas chargé
-						if($element.data("lazy") && !$element.attr("src")) 
+			    		// Si l'image est dans data=lazy mais n'est pas chargé et que le li est visible
+						if($element.data("lazy") && !$element.attr("src") && $element.parent().css("display") != "none") 
 							if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
 					});
 				});
