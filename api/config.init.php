@@ -224,7 +224,7 @@ $GLOBALS['icons'] = "";// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']
 // Librairie externe
 $GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 
-$GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
+$GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js";
 
 $GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js";
 
