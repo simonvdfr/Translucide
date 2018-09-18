@@ -66,7 +66,7 @@ function get_url($url_source = null)
 				$explode_dir = explode("_", $dir);
 
 				if($explode_dir[0])
-					$GLOBALS['filter'][encode($explode_dir[0], "-", array("'","."))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array("'",".","_","@"));
+					$GLOBALS['filter'][encode($explode_dir[0], "-", array("'","."))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array("'",".","@","_"));
 			}
 		}
 		else $url = $path;
@@ -97,7 +97,7 @@ function make_url($url, $filter = array())
 			if($cle == "page" and $val == 1)
 				unset($filter['page']);// Si Page == 1 on ne l'affiche pas dans l'url
 			elseif($val)
-				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array("'",".","_","@"));
+				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array("'",".","@","_"));
 		}
 	}
 
@@ -353,10 +353,10 @@ function media($key = null, $filter = array())
 		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
 		if(isset($size[0])) echo" data-width='".$size[0]."'";
 		if(isset($size[1])) echo" data-height='".$size[1]."'";
-		if(isset($size[0]) or isset($size[1])) 
+		if(isset($size[0]) or isset($size[1])) // @todo Vérifier si on met max-width ou width
 			echo" style='".
-			(isset($size[0])?'width:'.$size[0].'px;':'').
-			(isset($size[1])?'height:'.$size[1].'px':'').
+			(isset($size[0])?'max-width:'.$size[0].'px;':'').
+			(isset($size[1])?'max-height:'.$size[1].'px':'').
 			"'";
 
 	echo">";

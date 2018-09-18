@@ -1403,7 +1403,7 @@ switch($_GET['mode'])
 
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
-		if(@$_POST['dir']) $dir = encode($_POST['dir'], "-", array("_","/"));
+		if(@$_POST['dir']) $dir = encode($_POST['dir'], "-", array('/','_'));
 		else $dir = null;
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
@@ -1439,7 +1439,7 @@ switch($_GET['mode'])
 		//$filename = preg_replace("([^a-z0-9\.\-_]|[\.]{2,})", "", $_FILES['file']['name']);
 		// /^[a-z0-9]+\.[a-z]{3,4}$/  /[^a-z0-9\._-]+/  ([^a-z0-9\.\-_]|[\.]{2,})  [a-zA-Z0-9]{1,200}\.[a-zA-Z0-9]{1,10}
 
-		if(@$_POST['dir']) $dir = encode($_POST['dir'], '-', array('_','/'));
+		if(@$_POST['dir']) $dir = encode($_POST['dir'], '-', array('/','_'));
 		else $dir = null;
 
 		$src_file = 'media/'. ($dir?$dir.'/':'') . $filename;
