@@ -40,6 +40,7 @@ add_translation({
 	"Add" : {"fr" : "Ajouter"},
 	"Width" : {"fr" : "Largeur"},
 	"Height" : {"fr" : "Hauteur"},
+	"Optimize" : {"fr" : "Optimiser"},
 
 	"Add a module" : {"fr" : "Ajouter un module"},
 	"Move" : {"fr" : "D\u00e9placer"},
@@ -873,8 +874,10 @@ get_img = function(id, link)
 			}
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
-				if(typeof link !== 'undefined' && link) exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" class='fl'></a>");
-				else exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" class='fl'>");				
+				if(typeof link !== 'undefined' && link)// Avec lien zoom
+					exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" class='fl'></a>");
+				else// Juste l'image
+					exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
@@ -939,6 +942,40 @@ img_leave = function()
 			img_transfert_style(this);
 		});
 	}
+}
+
+// Redimentionne/Optimise l'image à la demande
+img_optim = function() {
+
+	memo_img_cible = memo_img;
+
+	var width = memo_img_cible.width;
+	var height = memo_img_cible.height;
+	var dir = "";// @todo voir pour les images dans un dossier...
+
+	var domain_path = window.location.origin + path;
+
+	var img = memo_img_cible.src.replace(domain_path, "");// Supprime le domaine du nom de l'image
+
+	// Resize de l'image et remplacement
+	$.ajax({
+		type: "POST",
+		url: path+"api/ajax.admin.php?mode=get-img",
+		data: {
+			"img": img,
+			"width": width,
+			"height": height,
+			"dir": dir,
+			"nonce": $("#nonce").val()
+		},
+		success: function(final_file)
+		{ 
+			memo_img_cible.src = domain_path + final_file;				
+		
+			tosave();// A sauvegarder
+		}
+	});
+
 }
 
 
@@ -1399,6 +1436,10 @@ $(function()
 					memo_range = memo_selection.getRangeAt(0);
 					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
 				}
+				else {
+					if(typeof memo_range === 'undefined') memo_range = null;
+					if(typeof memo_node === 'undefined') memo_node = null;
+				}
 
 
 				// Si la toolbox est autorisé
@@ -1411,14 +1452,14 @@ $(function()
 					toolbox_height = $("#txt-tool").outerHeight();
 
 					// Si déjà un contenu
-					if(memo_range.getClientRects()[0] != undefined)
+					if(memo_range && memo_range.getClientRects()[0] != undefined)
 						this_top = memo_range.getClientRects()[0].top + $window.scrollTop();// position du caractère + scroll
 					else 
 						this_top = $(memo_focus).offset().top;// position de la div/tag
 
 					this_top_scroll = this_top - toolbox_height - 12;
 
-					this_left = (memo_range.getClientRects()[0] != undefined ? memo_range.getClientRects()[0].left : $(this).offset().left) - 12;
+					this_left = (memo_range && memo_range.getClientRects()[0] != undefined ? memo_range.getClientRects()[0].left : $(this).offset().left) - 12;
 
 					// Si on est en mode view source on colore le bt view-source
 					if($(memo_focus).hasClass("view-source"))
@@ -1584,7 +1625,10 @@ $(function()
 	$(".editable").on("click", "img", function(event) {
 		
 		event.stopPropagation();
-		
+
+		// Supprimer le précédent bloc d'outils
+		$("#img_tool").remove();
+
 		// Mémorise l'image sélectionnée
 		memo_img = this;		
 		
@@ -1598,12 +1642,17 @@ $(function()
 			$(this).parent(".ui-wrapper").addClass($(this).attr('class'));
 			$(this).parent(".ui-wrapper").css('display', $(this).css('display'));
 		}
+
+		// Vérifie la taille de l'image pour proposer une optimisation
+		var widthRatio = (this.width / this.naturalWidth) * 100;
+		var heightRatio = (this.height / this.naturalHeight) * 100;
 		
 		// Boîte à outils image
 		option = "<ul id='img_tool' class='toolbox'>";
 			option+= "<li><button onclick=\"img_position('fl')\"><i class='fa fa-fw fa-align-left'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('center')\"><i class='fa fa-fw fa-align-center'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('fr')\"><i class='fa fa-fw fa-align-right'></i></button></li>";
+			if(widthRatio < 80 || heightRatio < 80) option+= "<li><button onclick=\"img_optim()\" class='orange'>"+ __("Optimize") +" <i class='fa fa-fw fa-resize-small'></i></button></li>";
 			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-close'></i></button></li>";
 		option+= "</ul>";
 
