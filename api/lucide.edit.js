@@ -945,15 +945,13 @@ img_leave = function()
 }
 
 // Retourne le poids d'un fichier
-/*filesize = function(file) {
-	var request = new XMLHttpRequest();
-	request.open('HEAD', file, true);
-	request.onreadystatechange = function(){
-		if(request.readyState == 4) 
-			if(request.status == 200) size = request.getResponseHeader('Content-Length');
-	};
-	request.send(null);
-}*/
+filesize = function(file) {
+    var request = new XMLHttpRequest();
+    request.open("HEAD", file, false);
+    request.send(null);
+    /Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
+    return Math.ceil(parseInt(RegExp.$1) / 1024);// Taille en Ko
+}
 
 // Redimentionne/Optimise l'image à la demande
 img_optim = function() {
@@ -963,7 +961,9 @@ img_optim = function() {
 	var width = memo_img_cible.width;
 	var height = memo_img_cible.height;
 
-	var domain_path = window.location.origin + path;
+	original_filesize = filesize(memo_img_cible.src);// Poids de l'image d'origine
+
+	var domain_path = window.location.origin + path;// Domaine complet
 
 	var img = memo_img_cible.src.replace(domain_path, "");// Supprime le domaine du nom de l'image
 	
@@ -990,6 +990,13 @@ img_optim = function() {
 		},
 		success: function(final_file)
 		{ 
+			// Détection du poids de la nouvelle image
+			new_filesize = filesize(domain_path + final_file);
+
+			// Infobulle sur le gain de poids
+			light(Math.round((original_filesize - new_filesize)*100/original_filesize) +"% d'économie<div class='grey small'>"+original_filesize+"Ko => "+new_filesize+"Ko</div>", 1500);
+
+			// Affectation de la nouvelle image
 			memo_img_cible.src = domain_path + final_file;		
 		
 			tosave();// A sauvegarder
