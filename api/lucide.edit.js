@@ -944,6 +944,17 @@ img_leave = function()
 	}
 }
 
+// Retourne le poids d'un fichier
+/*filesize = function(file) {
+	var request = new XMLHttpRequest();
+	request.open('HEAD', file, true);
+	request.onreadystatechange = function(){
+		if(request.readyState == 4) 
+			if(request.status == 200) size = request.getResponseHeader('Content-Length');
+	};
+	request.send(null);
+}*/
+
 // Redimentionne/Optimise l'image à la demande
 img_optim = function() {
 
@@ -951,11 +962,20 @@ img_optim = function() {
 
 	var width = memo_img_cible.width;
 	var height = memo_img_cible.height;
-	var dir = "";// @todo voir pour les images dans un dossier...
 
 	var domain_path = window.location.origin + path;
 
 	var img = memo_img_cible.src.replace(domain_path, "");// Supprime le domaine du nom de l'image
+	
+	var img_nomedia = img.replace(/media\//, "");// Chemin sans media
+
+	// Si le chemin contien un dossier
+	if(img_nomedia.indexOf("/") !== -1) 
+	{
+		var img_name = img.split('/').pop();// nom-image.ext?time
+		var dir = img_nomedia.replace("/"+img_name, "");
+	}
+	else var dir = "";
 
 	// Resize de l'image et remplacement
 	$.ajax({
@@ -970,7 +990,7 @@ img_optim = function() {
 		},
 		success: function(final_file)
 		{ 
-			memo_img_cible.src = domain_path + final_file;				
+			memo_img_cible.src = domain_path + final_file;		
 		
 			tosave();// A sauvegarder
 		}
