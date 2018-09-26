@@ -58,7 +58,10 @@ $GLOBALS['theme'] = "";
 
 $GLOBALS['sitename'] = "";
 
-$GLOBALS['scheme'] = "";
+if(isset($_SERVER['WINDIR']))// Dev local
+	$GLOBALS['scheme'] = "";
+else 
+	$GLOBALS['scheme'] = "";
 
 if(isset($_SERVER['WINDIR']))// Dev local
 	$GLOBALS['domain'] = "";
@@ -67,7 +70,7 @@ else
 
 $GLOBALS['path'] = "";
 
-$GLOBALS['robots'] = "index, follow";
+$GLOBALS['robots'] = "noindex, nofollow";
 
 $GLOBALS['email_contact'] = "";
 
