@@ -20,7 +20,7 @@ switch(@$_GET['mode'])
 
 		// Pour éviter les problèmes de cache qui appèlerais un fichier inexistant
 		// cas du favicon.ico qui crée une 404 qui charge donc l'install et crée un nouveau nonce
-		// @todo: supp car crée un bug sur certaine config apache => http2 ?
+		// @todo: SUPP car crée un bug sur certaine config apache => http2 ?
 		/*if(isset($_SERVER['REDIRECT_URL'])) {
 			header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
 			exit("<h1>404 error : page not found</h1>");
