@@ -2005,11 +2005,13 @@ switch($_GET['mode'])
 		//@todo: Vérif le cas ou pas de fichier conf existe
 		//@todo: Vérif le cas ou fichier conf exist
 
+
+		// @todo: crée un bug sur certaine config apache => http2 ?
 		// Pour éviter les problèmes de cache qui appèlerais un fichier inexistant
-		if(isset($_SERVER['REDIRECT_URL'])) {
+		/*if(isset($_SERVER['REDIRECT_URL'])) {
 			header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
 			exit("<h1>404 error : page not found</h1>");
-		}
+		}*/
 
 		// Charge la config maison si elle existe
 		@include_once("config.php");
@@ -2061,7 +2063,7 @@ switch($_GET['mode'])
 		if($GLOBALS['scheme'] and $GLOBALS['domain'] and $GLOBALS['path'])
 			$scheme_domain_path = $GLOBALS['home'];
 		else {
-			if(isset($_SERVER['[REQUEST_SCHEME'])) $scheme_domain_path .= $_SERVER['REQUEST_SCHEME']."://";
+			if(isset($_SERVER['REQUEST_SCHEME'])) $scheme_domain_path .= $_SERVER['REQUEST_SCHEME']."://";
 			else $scheme_domain_path .= "http://";
 			
 			$scheme_domain_path .= $_SERVER['SERVER_NAME'];
