@@ -18,17 +18,23 @@ switch(@$_GET['mode'])
 		//@todo: Vérif le cas ou fichier conf exist
 		// highlight_string(print_r($_SERVER, true));
 
-		// @todo: crée un bug sur certaine config apache => http2 ?
 		// Pour éviter les problèmes de cache qui appèlerais un fichier inexistant
+		// cas du favicon.ico qui crée une 404 qui charge donc l'install et crée un nouveau nonce
+		// @todo: supp car crée un bug sur certaine config apache => http2 ?
 		/*if(isset($_SERVER['REDIRECT_URL'])) {
 			header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
 			exit("<h1>404 error : page not found</h1>");
 		}*/
 
+		// Verifie que l'on execute bien depuis index.php
+		// Evite d'avoir d'autre chargement de la config (ex: favicon.ico inexistant qui charge la conf une 2ème fois))
+		// Si url de redirection existe, elle doit etre = au nom du script executé qui appel l'install = index.php
+		if(isset($_SERVER['REDIRECT_URL']) and $_SERVER['REDIRECT_URL'] != $_SERVER['SCRIPT_NAME']) exit;
+
 		// Si on appelle directement le fichier depuis le dossier api/ => exit
 		if(strstr($_SERVER['SCRIPT_NAME'], 'install.php')) exit;
 
-		// Charge la config maison si elle existe
+		// Charge la config maison si elle existe depuis les 2 chemins possibles
 		@include_once("config.php");// Si chargement en include
 		@include_once("../config.php");// Si chargement depuis le dossier api dans l'url
 
@@ -76,7 +82,7 @@ switch(@$_GET['mode'])
 		add_translation($add_translation);
 
 
-		// On vérifie si la configuration est déjà créée
+		// On vérifie si la configuration est déjà créée / normalement plus utile car on bloque plus haut le chargement de install.php directement dans l'url
 		if($GLOBALS['db_server'] or $GLOBALS['db_user'] or $GLOBALS['db']) exit('<h1>'.__('Configuration already created').'</h1>');
 	
 
@@ -114,6 +120,9 @@ switch(@$_GET['mode'])
 
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 
+			<link rel="shortcut icon" type="image/x-icon" href="about:blank">
+			<!-- Pour eviter de charger un ico 404 qui recharge la config -->
+
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
 
 			<link rel="stylesheet" href="api/global.css?">
@@ -141,6 +150,8 @@ switch(@$_GET['mode'])
 						text-align: left;
 					}
 				}
+
+				.bt.fixed.top { display: none !important; }
 			</style>
 
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
@@ -205,7 +216,7 @@ switch(@$_GET['mode'])
 
 					<form id="setup">
 
-						<input type="hidden" id="nonce" name="nonce" value="<?=nonce("nonce");?>">
+						<input type="hidden" id="nonce" name="nonce" value="<?=nonce("nonce");?>" class="w100">
 
 						<ul class="unstyled">
 
@@ -311,11 +322,11 @@ switch(@$_GET['mode'])
 
 	case "start":// CRÉATION / Mise à jour des données de configuration
 		
-		@include_once("../config.php");
-
 		// Chemin des fichiers de config
 		$config_sample_file = "config.init.php";
 		$config_final_file = "../config.php";
+
+		@include_once($config_final_file);
 
 		// Vérification du nonce et si la config n'est pas déjà créée
 		if($_SESSION['nonce'] == @$_REQUEST['nonce'] and (!$GLOBALS['db_server'] or !$GLOBALS['db_user'] or !$GLOBALS['db']))
@@ -663,7 +674,7 @@ switch(@$_GET['mode'])
 							light("<?_e("Successful installation ! Redirection to homepage ...")?>");
 							setTimeout(function(){
 								 $("#error, #highlight").slideUp("slow").fadeOut(function() {
-									//window.location.reload();// window.location = window.location.href;
+									window.location.reload();// window.location = window.location.href;
 								 });
 							}, 3000);
 						</script>
