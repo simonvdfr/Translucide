@@ -239,7 +239,7 @@ $(function()
 	$root = $("html, body");
 	$body = $("body");
 	$window = $(window);
-    $animation = $(".animation");
+    $animation = $(".animation, [data-lazy]");
 
 
 	//@todo verif l'utilité car déjà instancier dans fonction.php
@@ -406,10 +406,11 @@ $(function()
 		//if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
 
 
-		// ANIMATION SUR LES CONTENUS
+		// ANIMATION SUR LES CONTENUS // CHARGEMENT DES LAZYLOAD
 		window_height = $window.outerHeight();//height
     	window_top = $window.scrollTop();
     	window_bottom = (window_top + window_height);
+
 
     	$.each($animation, function() 
     	{
@@ -418,9 +419,11 @@ $(function()
     		var element_top = $element.offset().top;
     		var element_bottom = (element_top + element_height);
 
+    		// @todo: Ne pas metre en fire les lazyload
 			// Vérifier si ce conteneur actuel est dans la fenêtre
 			if ((element_bottom >= window_top) &&
-				(element_top <= window_bottom)) {
+				(element_top <= window_bottom) &&
+				!$element.data("lazy")) {
 				$element.addClass("fire");
 			}
 			else $element.removeClass("fire");		
@@ -428,7 +431,7 @@ $(function()
 
 			// LAZY LOAD DES IMAGES (avec marge pour préload avant entré dans la fenetre)
 			var marge = 300; 
-			if($element.data("lazy") == "bg")
+			if($element.data("lazy") == "bg") {
 				if($(this).css("background-image") == "none")
 					if(
 						(element_bottom + marge) >= window_top
@@ -439,6 +442,12 @@ $(function()
 							return "url(" + $(this).attr("data-bg") + ")";
 						});
 					}
+			}
+			else if($element.data("lazy") && !$element.attr("src") && $element.parent().css("display") != "none")
+			{
+	    		// Si l'image est dans data-lazy mais n'est pas chargé et que le parent est visible
+				if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
+			}
 		});
 
 

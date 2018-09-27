@@ -1368,7 +1368,7 @@ switch($_GET['mode'])
 			{
 				if($("#dialog-media-width").val() || $("#dialog-media-height").val()) $(".dialog-media .resize").remove();
 
-				// LAZY LOAD IMAGE Dialog media : Charge les au scroll
+				// LAZY LOAD IMAGE Dialog media : Charge les medias au scroll
 				$window.on("scroll resize", function ()
 				{
 			    	$.each($(".dialog-media img"), function() 
