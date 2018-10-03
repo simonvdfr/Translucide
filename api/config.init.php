@@ -34,6 +34,7 @@ $GLOBALS['db_charset'] = "utf8";
 $GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix']."content";
 $GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix']."meta";
 $GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix']."user";
+$GLOBALS['table_shop'] = $GLOBALS['ts'] = $GLOBALS['db_prefix']."shop";
 
 if(isset($_SERVER['WINDIR'])) {// Dev local
 	$GLOBALS['db_server'] = "";
