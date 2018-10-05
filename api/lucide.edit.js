@@ -1472,7 +1472,7 @@ $(function()
 				// Si la toolbox est autorisé
 				if(!$(this).hasClass("notoolbox"))
 				{
-					//adminbar_height = $("#admin-bar").outerHeight();
+					adminbar_height = $("#admin-bar").outerHeight();
 					//this_offset_top = $(memo_focus).offset().top;
 					//this_left = $(this).offset().left;
 
@@ -1508,7 +1508,7 @@ $(function()
 						// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
 						if(($window.scrollTop() + toolbox_height + 12) > this_top_scroll) 
 							$("#txt-tool").css({
-								top: 5 + "px",
+								top: adminbar_height + "px",
 								left: this_left + "px",
 								position: "fixed"
 							});	
