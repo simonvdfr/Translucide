@@ -37,92 +37,92 @@ else
 
 
 // Variables de la base de données
-$GLOBALS['db_prefix'] = "";
-$GLOBALS['db_charset'] = "utf8";
+$GLOBALS['db_prefix'] = '';
+$GLOBALS['db_charset'] = 'utf8';
 
-$GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix']."content";
-$GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix']."meta";
-$GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix']."user";
-$GLOBALS['table_shop'] = $GLOBALS['ts'] = $GLOBALS['db_prefix']."shop";
+$GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix'].'content';
+$GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix'].'meta';
+$GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix'].'user';
+$GLOBALS['table_shop'] = $GLOBALS['ts'] = $GLOBALS['db_prefix'].'shop';
 
 if($dev) {// Dev local
-	$GLOBALS['db_server'] = "";
-	$GLOBALS['db_user'] = "";
-	$GLOBALS['db'] = "";
-	$GLOBALS['db_pwd'] = "";
+	$GLOBALS['db_server'] = '';
+	$GLOBALS['db_user'] = '';
+	$GLOBALS['db'] = '';
+	$GLOBALS['db_pwd'] = '';
 }
 else {
-	$GLOBALS['db_server'] = "";
-	$GLOBALS['db_user'] = "";
-	$GLOBALS['db'] = "";
-	$GLOBALS['db_pwd'] = "";
+	$GLOBALS['db_server'] = '';
+	$GLOBALS['db_user'] = '';
+	$GLOBALS['db'] = '';
+	$GLOBALS['db_pwd'] = '';
 }
 
 
 // Variables sites
-$GLOBALS['language'] = array("fr");
+$GLOBALS['language'] = array('fr');
 
-$GLOBALS['function'] = "";// Include fonction du theme
+$GLOBALS['function'] = '';// Include fonction du theme
 
-$GLOBALS['theme'] = "";
+$GLOBALS['theme'] = '';
 
 $GLOBALS['sitename'] = "";
 
 if($dev)// Dev local
-	$GLOBALS['scheme'] = "";
+	$GLOBALS['scheme'] = '';
 else 
-	$GLOBALS['scheme'] = "";
+	$GLOBALS['scheme'] = '';
 
 if($dev)// Dev local
-	$GLOBALS['domain'] = "";
+	$GLOBALS['domain'] = '';
 else 
-	$GLOBALS['domain'] = "";
+	$GLOBALS['domain'] = '';
 
-$GLOBALS['path'] = "";
+$GLOBALS['path'] = '';
 
-$GLOBALS['robots'] = "noindex, nofollow";
+$GLOBALS['robots'] = 'noindex, nofollow';
 
-$GLOBALS['email_contact'] = "";
+$GLOBALS['email_contact'] = '';
 
 
 // Utilisation de librairie minifier
 if($dev)// Dev local
-	$GLOBALS['min'] = "";
+	$GLOBALS['min'] = '';
 else 
-	$GLOBALS['min'] = "";//.min
+	$GLOBALS['min'] = '';//.min
 
 
 // https://developers.facebook.com/apps/
-$GLOBALS['facebook_api_id'] = "";
-$GLOBALS['facebook_api_secret'] = "";
-$GLOBALS['facebook_page'] = "";// https://www.facebook.com/***
+$GLOBALS['facebook_api_id'] = '';
+$GLOBALS['facebook_api_secret'] = '';
+$GLOBALS['facebook_page'] = '';// https://www.facebook.com/***
 $GLOBALS['facebook_jssdk'] = false;
 
 // https://console.developers.google.com/apis/credentials/oauthclient => Application Web
-$GLOBALS['google_api_id'] = "";
-$GLOBALS['google_api_secret'] = "";
-$GLOBALS['google_map'] = "";
-$GLOBALS['google_analytics'] = "";
-$GLOBALS['google_page'] = "";// https://plus.google.com/***
+$GLOBALS['google_api_id'] = '';
+$GLOBALS['google_api_secret'] = '';
+$GLOBALS['google_map'] = '';
+$GLOBALS['google_analytics'] = '';
+$GLOBALS['google_page'] = '';// https://plus.google.com/***
 
 // https://developer.yahoo.com/apps/
-$GLOBALS['yahoo_api_id'] = "";
-$GLOBALS['yahoo_api_secret'] = "";
+$GLOBALS['yahoo_api_id'] = '';
+$GLOBALS['yahoo_api_secret'] = '';
 
 // https://account.live.com/developers/applications/create
-$GLOBALS['microsoft_api_id'] = "";
-$GLOBALS['microsoft_api_secret'] = "";
+$GLOBALS['microsoft_api_id'] = '';
+$GLOBALS['microsoft_api_secret'] = '';
 
 
 // Clé hash pour les cryptages
-$GLOBALS['pub_hash'] = "";
-$GLOBALS['priv_hash'] = "";
+$GLOBALS['pub_hash'] = '';
+$GLOBALS['priv_hash'] = '';
 
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
-$GLOBALS['security'] = "medium";
+$GLOBALS['security'] = 'medium';
 
 // Nom de boucle de hashage du mdp
-$GLOBALS['pwd_hash_loop'] = "";
+$GLOBALS['pwd_hash_loop'] = '';
 
 // Temps d'expiration des sessions de connexion
 $GLOBALS['session_expiration'] = 60*60*24*30;
@@ -132,34 +132,34 @@ $GLOBALS['session_expiration'] = 60*60*24*30;
 $GLOBALS['public_account'] = false;
 
 // Statue d'activation par défaut des comptes utilisateur
-$GLOBALS['default_state'] = "active";// moderate / mail / active / deactivate
+$GLOBALS['default_state'] = 'active';// moderate / mail / active / deactivate
 
 // Niveaux d'authentification par défaut des comptes utilisateur
-$GLOBALS['default_auth'] = "add-media-public,edit-public";
+$GLOBALS['default_auth'] = 'add-media-public,edit-public';
 
 // Info supplémentaire sur l'utilisateur
 $GLOBALS['meta_user'] = null;
 
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array(
-	"edit-admin",
-	"edit-user",
-	"edit-config",
-	"edit-nav",
-	"edit-header",
-	"edit-footer",
-	"add-media",
-	"add-page",
-	"add-article",
-	"add-event",
-	"add-product",
-	"edit-media",
-	"edit-page",
-	"edit-article",
-	"edit-event",
-	"edit-product",
-	"add-media-public",
-	"edit-public"
+	'edit-admin',
+	'edit-user',
+	'edit-config',
+	'edit-nav',
+	'edit-header',
+	'edit-footer',
+	'add-media',
+	'add-page',
+	'add-article',
+	'add-event',
+	'add-product',
+	'edit-media',
+	'edit-page',
+	'edit-article',
+	'edit-event',
+	'edit-product',
+	'add-media-public',
+	'edit-public'
 );
 
 
@@ -189,7 +189,7 @@ $GLOBALS['toolbox'] = array(
 	//"justifyFull",
 	//"InsertHorizontalRule",
 	//"viewsource",
-	"icon",
+	//"icon",
 	"media",
 	//"anchor",
 	"link"
@@ -198,22 +198,22 @@ $GLOBALS['toolbox'] = array(
 
 // Type mime supporté pour l'upload
 $GLOBALS['mime_supported'] = array(
-	"image/jpg",
-	"image/jpeg",
-	"image/pjpeg",
-	"image/png",
-	"image/x-png",
-	"image/gif",
-	"image/x-icon",
-	"application/pdf",
-	"application/zip",
-	"application/x-zip-compressed",
-	"text/plain"
+	'image/jpg',
+	'image/jpeg',
+	'image/pjpeg',
+	'image/png',
+	'image/x-png',
+	'image/gif',
+	'image/x-icon',
+	'application/pdf',
+	'application/zip',
+	'application/x-zip-compressed',
+	'text/plain'
 );
 
 
 // Variables tailles images
-$GLOBALS['max_image_size'] = "1920x1080";
+$GLOBALS['max_image_size'] = '1920x1080';
 $GLOBALS['jpg_quality'] = 90;
 $GLOBALS['png_quality'] = 9;
 
@@ -222,30 +222,33 @@ $GLOBALS['png_quality'] = 9;
 $GLOBALS['animation_dialog'] = true;
 
 
-// Icone pour mobile
-$GLOBALS['touch_icon'] = "";
-
-
 // Cache sur les styles
 $GLOBALS['cache'] = "";
 
 
+// Favicon navigateur
+// $GLOBALS['path'].'media/tpl/favicon.ico?'
+$GLOBALS['favicon'] = '';
+
+// Icone pour mobile
+$GLOBALS['touch_icon'] = '';
+
 // Librairie d'icons spécifiques à la template
-$GLOBALS['icons'] = "";// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
+$GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
 
 
 // Librairie externe
-$GLOBALS['font_awesome'] = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+$GLOBALS['font_awesome'] = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
 
-$GLOBALS['jquery'] = "//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js";
+$GLOBALS['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';
 
-$GLOBALS['jquery_ui'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js";
+$GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
 
-$GLOBALS['jquery_ui_css'] = "//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css";// cupertino flick smoothness base 
+$GLOBALS['jquery_ui_css'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css';// cupertino flick smoothness base 
 
 
 // Filtre url autorisé
-$GLOBALS['filter_auth'] = array("page", "user");
+$GLOBALS['filter_auth'] = array('page', 'user');
 
 
 // Sécurité / défaut

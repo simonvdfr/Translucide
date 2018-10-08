@@ -259,7 +259,7 @@ if(!$ajax)
 
 		<?if(@$GLOBALS['touch_icon']){?><link rel="apple-touch-icon" href="<?=$GLOBALS['touch_icon'];?>"/><?}?>
 
-		<link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['path']?>media/favicon.ico?<?=$GLOBALS['cache']?>">
+		<?if(@$GLOBALS['favicon']){?><link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['favicon']?>"><?}?>
 
 
 		<script src="<?=$GLOBALS['jquery']?>"></script>
