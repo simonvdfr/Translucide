@@ -27,6 +27,15 @@ date_default_timezone_set('Europe/Paris');
 setlocale(LC_ALL, 'fr_FR', 'fra');//.UTF8
 
 
+// Serveur local ou online ? DEV || PROD
+if(
+	strpos($_SERVER['SERVER_ADDR'], '::1') !== false or
+	strpos($_SERVER['SERVER_ADDR'], '127.0') !== false)
+	$dev = true;
+else 
+	$dev = false;
+
+
 // Variables de la base de données
 $GLOBALS['db_prefix'] = "";
 $GLOBALS['db_charset'] = "utf8";
@@ -36,7 +45,7 @@ $GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix']."meta";
 $GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix']."user";
 $GLOBALS['table_shop'] = $GLOBALS['ts'] = $GLOBALS['db_prefix']."shop";
 
-if(isset($_SERVER['WINDIR'])) {// Dev local
+if($dev) {// Dev local
 	$GLOBALS['db_server'] = "";
 	$GLOBALS['db_user'] = "";
 	$GLOBALS['db'] = "";
@@ -59,12 +68,12 @@ $GLOBALS['theme'] = "";
 
 $GLOBALS['sitename'] = "";
 
-if(isset($_SERVER['WINDIR']))// Dev local
+if($dev)// Dev local
 	$GLOBALS['scheme'] = "";
 else 
 	$GLOBALS['scheme'] = "";
 
-if(isset($_SERVER['WINDIR']))// Dev local
+if($dev)// Dev local
 	$GLOBALS['domain'] = "";
 else 
 	$GLOBALS['domain'] = "";
@@ -77,7 +86,7 @@ $GLOBALS['email_contact'] = "";
 
 
 // Utilisation de librairie minifier
-if(isset($_SERVER['WINDIR']))// Dev local
+if($dev)// Dev local
 	$GLOBALS['min'] = "";
 else 
 	$GLOBALS['min'] = "";//.min
