@@ -437,7 +437,7 @@ input[type="reset"].unstyled:focus {
 	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
 
 	overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; @todo crée des bug avec les icones <i .fa> */
 
 	transition: all .3s;
 }
@@ -1091,6 +1091,7 @@ div.editable {
 .fa-music:before { content: '\e823'; } /* '' */
 .fa-resize-vertical:before { content: '\e824'; } /* '' */
 .fa-list:before { content: '\e825'; } /* '' */
+.fa-info-circled:before { content: '\e826'; } /* '' */
 .fa-twitter:before { content: '\f099'; } /* '' */
 .fa-facebook:before { content: '\f09a'; } /* '' */
 .fa-rss:before { content: '\f09e'; } /* '' */
