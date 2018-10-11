@@ -282,8 +282,9 @@ header:hover .dragger { display: block; }
 	height: 8px;
 
 	top: -10px;
-
-	margin-left: -0.5rem;
+	
+	left: 0;
+	/*margin-left: -0.5rem;*/
 
 	cursor: move;
 
