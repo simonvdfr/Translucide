@@ -1158,7 +1158,8 @@ $(function()
 	/************** MENU NAV **************/
 
 	// Rends le menu de navigation éditable
-	$("header nav li").attr("contenteditable","true").addClass("editable");
+	// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
+	$("header nav li a").attr("contenteditable","true").addClass("editable");
 
 	// Ajout d'une zone de drag pour chaque élément
 	$("header nav li").prepend("<div class='dragger'></div>");
@@ -1168,7 +1169,7 @@ $(function()
 		addnav+= "<div class='zone' title='"+ __("Add to menu") +"'><i class='fa fa-fw fa-plus bigger vam'></i></div>";
 		addnav+= "<div class='tooltip none pat'>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
-				addnav+= "<li class='add-empty'><div class='dragger'></div>"+__("Empty element")+"</li>";
+				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a></li>";
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
@@ -1189,8 +1190,8 @@ $(function()
 				else
 					$($(event.target).parent()).appendTo("header nav ul:first");// Déplace
 				
-				// Rends editable les éléments du menu
-				$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+				// Rends editable les éléments du menu (pointage sur A)
+				$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
 				editable_event();
 
 				tosave();// A sauvegarder
@@ -1214,7 +1215,7 @@ $(function()
 			$("#add-nav .zone i").removeClass("fa-plus").addClass("fa-trash");
 
 			$(".editable").off();//$("body").off(".editable");		
-			$("header nav ul:first li").attr("contenteditable","false").removeClass("editable");
+			$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable");
 		},
 		stop: function(event, ui) {
 			// Si on drop l'element dans la zone de suppression mais pas dans le ul liste autre page
@@ -1225,7 +1226,7 @@ $(function()
 			$("#add-nav .zone i").removeClass("fa-trash").addClass("fa-plus");
 			
 			// Rends editable les éléments du menu
-			$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+			$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
 			editable_event();
 
 			tosave();// A sauvegarder
