@@ -583,6 +583,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.editable-href {	
 		position: absolute;
 		text-align: center;		
+		font-size: initial;
+		font-family: Arial;
 		width: 100%;
 		display: block;
 		opacity:  0;
