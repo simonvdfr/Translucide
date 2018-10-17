@@ -550,7 +550,6 @@ switch($_GET['mode'])
 				$tags = explode(",", trim($_POST['tag']));
 
 				$i = 1;
-				//while(list($cle, $val) = each($tags)) PHP 7.2
 				foreach($tags as $cle => $val) {
 					if(isset($val) and $val != "") {
 						$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
@@ -629,7 +628,6 @@ switch($_GET['mode'])
 			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='meta'");
 
 			$i = 1;
-			//while(list($cle, $val) = each($_POST['meta'])) PHP 7.2
 			foreach($_POST['meta'] as $cle => $val) {
 				if(isset($val) and $val != "") {
 					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='meta', cle='".encode($cle)."', val='".addslashes(trim($val))."', ordre='".$i."'");
@@ -645,7 +643,6 @@ switch($_GET['mode'])
 		// Ajout aux meta de contenu en commun à plusieur page
 		if(isset($_POST['global']) and $_POST['global'] != "") 
 		{
-			//while(list($cle, $val) = each($_POST['global'])) PHP 7.2
 			foreach($_POST['global'] as $cle => $val)
 			{
 				$connect->query("DELETE FROM ".$table_meta." WHERE type='global' AND cle='".encode($cle)."'");
