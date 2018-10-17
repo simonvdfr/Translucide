@@ -40,9 +40,11 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 - Une fois dans le menu, au survol d'un élément une zone en pointillés apparaît au-dessus pour pouvoir le déplacer en drag&drop.
 - Si vous saisissez un élément et que vous le glissez dans la boîte d'ajout, ça se transforme en poubelle, pour supprimer l’élément du menu.
 
-## Balises maison
-- `text("nom-de-la-zone" [, array("default" => "Texte par défaut", "global" => true)])`
+## Fonction pour rendre éditables des zones
+- `text("nom-de-la-zone" [, array("default" => "Texte par défaut", "global" => true, "class" => "meta number readonly")])`
 	- global : Cet argument permet d'avoir un contenu qui se retrouve à plusieurs endroits du site (il n'est pas rattaché exclusivement à la page en cours)
+	- L'ajout de la class `meta` fait que la donnée est ajoutée à la table `meta` dans la base de donnée. ceci afin par exemple de faire des recherches complexes (jointure entre la table `content` et `meta`)
+	- La class `number` permets de limiter la saisie à des chiffres uniquement
 - `media("nom-de-la-zone" [,'100x100'])` L'argument final et optionnel, il force une taille
 	- On peut ajouter plus d'argument `media("nom-de-la-zone", array("dir" => "product/1/", "size" => "300", "class" => "fl mal"))`. Ici par exemple on spécifie un dossier destination pour le media (dir), une taille (size), ou encore une classe (class)
 - `bg()` A placer dans un `<div>` ou autres pour rendre l'image de fond éditable
