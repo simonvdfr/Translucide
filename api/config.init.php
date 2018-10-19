@@ -227,7 +227,7 @@ $GLOBALS['cache'] = "";
 
 
 // Favicon navigateur
-// $GLOBALS['path'].'media/tpl/favicon.ico?'
+// $GLOBALS['path'].'media/tpl/favicon.ico?'.$GLOBALS['cache'];
 $GLOBALS['favicon'] = '';
 
 // Icone pour mobile
