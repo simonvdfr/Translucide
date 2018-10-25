@@ -227,10 +227,10 @@ $GLOBALS['cache'] = "";
 
 
 // Favicon navigateur
-// $GLOBALS['path'].'media/tpl/favicon.ico?'
+// $GLOBALS['path'].'media/tpl/favicon.ico?'.$GLOBALS['cache'];
 $GLOBALS['favicon'] = '';
 
-// Icone pour mobile
+// Icone pour mobile / fav
 $GLOBALS['touch_icon'] = '';
 
 // Librairie d'icons spécifiques à la template
