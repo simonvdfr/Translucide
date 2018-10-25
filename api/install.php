@@ -456,6 +456,7 @@ switch(@$_GET['mode'])
 								`auth` varchar(255) NOT NULL,
 								`name` varchar(60) DEFAULT NULL,
 								`email` varchar(100) NOT NULL,
+								`info` text,
 								`password` char(64) DEFAULT NULL,
 								`salt` char(16) DEFAULT NULL,
 								`oauth` text,
