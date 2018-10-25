@@ -862,6 +862,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		color: #545454;
 
 		font-size: 1.2rem;
+		font-family: inherit;
 	}
 		.toolbox button:hover {
 			background: #E5F6F1 linear-gradient(#e5f6f1, #6fcdd5) repeat scroll 0 0;
@@ -906,16 +907,16 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		top: -12px;
 	}
 
-	.toolbox #option {
+	.toolbox .option {
 		background-color: #eaeaea;
 		height: 100%;
 		display: none;
 	}
-		.toolbox #option input {
+		.toolbox .option input {
 			color: #516062;
 			height: 100%;			
 			border-radius: 0;
-			padding: 0.4em 0.5rem 0.4rem;
+			padding: 0.33em 0.5rem 0.4rem;
 		}
 	
 	.toolbox#resize-tool {
