@@ -44,8 +44,6 @@ p { line-height: 1.8; }
 
 	border: 1px solid #78cfd6;
 	border-radius: 0.5em;
-
-	overflow: inherit;
 }
 	.bt:hover {
 		background-color: #78cfd6;
@@ -340,7 +338,7 @@ footer div {
 	}
 		header #logo-left img { width: 80px;}
 
-	.w20, .w30, .w33, .w40, .w50, .w60, .w64, .w70, .w80 {
+	.w20, .w30, .w33, .w40, .w50, .w60, .w70, .w80 {
 		width: auto;
 		float: none;
 	}

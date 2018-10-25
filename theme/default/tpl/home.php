@@ -1,54 +1,42 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
 <style>
-	.w64 { width: 64%; }
-
-/* Event */
-	.event {
-		margin-left: -2.5em;
-		border-radius: 0.5em;
-	}
-
-	.event:hover .bt{
+	.link:hover .bt { background-color: #78cfd6; color: #fff; }
+	.link:hover .bt.bg-color { 		
 		background-color: #fff;
 		color: #78cfd6;
 		border-color: #78cfd6;
 	}
-
-	.event .date {
-		border-radius : 100%;
-		margin: 0rem 2rem;
-		padding: 1rem 2rem;
-
-		background-color: white;
-		border-color: #35747f;
-		color: #35747f;
-/* Fin Event */
-	}
 </style>
+
 
 <section class="mw960p mod center mbl">
 
-	<article class="tc mbn">
+	<div class="tc mbn">
 		<h1><?txt('titre')?></h1>
 		<h2 class="pbl"><?txt('sstitre-1')?></h2>
-	</article>
+	</div>
 
-	<article class="w50 fl tc animation slide-left">
-		<div><?media('media-2', '130')?></div>
-		<h3 class="mbn tdn"><?txt('titre-2')?></h3>
-		<div class="w50 center"><?txt('txt-2')?></div>
-		<a <?href("lien-2")?> class="bt"><?_e("Lire plus")?></a>
-	</article>
+	<div class="link w50 fl tc animation slide-left">
+		<article>
+			<div><?media('media-2', '130')?></div>
+			<h3 class="mbn tdn"><a <?href("lien-2")?>><?txt('titre-2')?></a></h3>
+			<div class="w50 center"><?txt('txt-2')?></div>
+			<div class="bt"><?_e("Lire plus")?></div>
+		</article>
+	</div>
 
-	<article class="w50 fl tc animation slide-right">
-		<div><?media('media-3', '130')?></div>
-		<h3 class="mbn tdn"><?txt('titre-3')?></h3>
-		<div class="w50 center"><?txt('txt-3')?></div>
-		<a <?href("lien-3")?> class="bt"><?_e("Lire plus")?></a>
-	</article>
+	<div class="link w50 fl tc animation slide-right">
+		<article>
+			<div><?media('media-3', '130')?></div>
+			<h3 class="mbn tdn"><a <?href("lien-3")?>><?txt('titre-3')?></a></h3>
+			<div class="w50 center"><?txt('txt-3')?></div>
+			<div class="bt"><?_e("Lire plus")?></div>
+		</article>
+	</div>
 
 </section>
+
 
 <section class="mw960p mod center mbl">
 
@@ -92,7 +80,23 @@
 </section>
 
 
+
 <!-- Event -->
+<style>
+	.event {
+		margin-left: -2.5em;
+		border-radius: 0.5em;
+	}
+	.event .date {
+		border-radius : 100%;
+		margin: 0rem 2rem;
+		padding: 1rem 2rem;
+
+		background-color: white;
+		border-color: #35747f;
+		color: #35747f;
+	}
+</style>
 <section>
 
 	<div class="mw960p mod center mbl">
@@ -111,7 +115,7 @@
 				$date = explode("-", explode(" ", $res_event['date_insert'])[0]);
 
 				?>
-				<div class="event pts pbs mtm mbm animation slide-right">
+				<div class="link event pts pbs mtm mbm animation slide-right">
 
 					<article>
 
@@ -152,10 +156,10 @@
 $(function()
 {
 	// Met le lien sur zone la box et supprime le lien sur le h2
-	$(".event article").wrapInner(function() {
+	$(".link article").wrapInner(function() {
 		return "<a href='"+ $("a", this).attr("href") +"'"+ ($(this).attr("class")?" class='"+ $(this).attr("class") +"'":"")+ ($(this).attr("title") ? " title='"+ $(this).attr("title") +"'":"") +" />";
 	}).children(0).unwrap();
-	$(".event article").contents().unwrap();
+	$(".link article").contents().unwrap();
 });
 </script>
 <!-- Fin Event -->
