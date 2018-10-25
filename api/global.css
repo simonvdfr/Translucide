@@ -1,6 +1,6 @@
 /* Inspiré par knacss.com (Raphael Goetter) et donc normalize.css (Nicolas Gallagher & Jonathan Neal) */
 
-/* Reset */
+/* Reset' */
 
 html {
 	font-family: sans-serif;
@@ -831,6 +831,8 @@ div.editable {
 		opacity: 0;
 		transform: translate3d(0, 100px, 0);
 		backface-visibility: hidden;
+
+		transition-duration: 1s !important;
 
 		/* animation: slide-up .3s 1 ease-out; */
 	}
