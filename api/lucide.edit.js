@@ -419,7 +419,7 @@ link_option = function()
 		$("#txt-tool #link-option button i").removeClass("fa-save").addClass("fa-plus");
 	}
 	
-	$("#txt-tool #link-option").show("slide", 300);
+	$("#txt-tool #link-option").show(300);// "slide" Crée un bug du chargement de l'autocomplete
 }
 
 // Supprime le lien autour
@@ -906,7 +906,7 @@ img_position = function(align) {
 // Supprime l'image sélectionnée du contenu
 img_remove = function() {
 	$(memo_img).remove();
-	$("#img_tool").remove();
+	$("#img-tool").remove();
 	memo_img = null;
 }
 
@@ -926,7 +926,7 @@ img_transfert_style = function(event) {
 img_leave = function() 
 {
 	// Supprime la barre d'outil image
-	$("#img_tool").remove();
+	$("#img-tool").remove();
 
 	// Supprime le resizer s'il y en a un
 	if($('.editable .ui-wrapper img').length) $('.editable .ui-wrapper img').resizable('destroy');
@@ -1435,7 +1435,7 @@ $(function()
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
 				$("body").off(".editable-media");// Désactive les events image
-				$("#img_tool").remove();// Supprime la barre d'outil image
+				$("#img-tool").remove();// Supprime la barre d'outil image
 			},
 			"dragend.editable": function() {// drop dragend
 				// Active les events block image
@@ -1655,7 +1655,7 @@ $(function()
 		event.stopPropagation();
 
 		// Supprimer le précédent bloc d'outils
-		$("#img_tool").remove();
+		$("#img-tool").remove();
 
 		// Mémorise l'image sélectionnée
 		memo_img = this;		
@@ -1676,20 +1676,20 @@ $(function()
 		var heightRatio = (this.height / this.naturalHeight) * 100;
 		
 		// Boîte à outils image
-		option = "<ul id='img_tool' class='toolbox'>";
+		option = "<ul id='img-tool' class='toolbox'>";
 			option+= "<li><button onclick=\"img_position('fl')\"><i class='fa fa-fw fa-align-left'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('center')\"><i class='fa fa-fw fa-align-center'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('fr')\"><i class='fa fa-fw fa-align-right'></i></button></li>";
 			if(widthRatio < 80 || heightRatio < 80) option+= "<li><button onclick=\"img_optim()\" class='orange'>"+ __("Optimize") +" <i class='fa fa-fw fa-resize-small'></i></button></li>";
-			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-close'></i></button></li>";
+			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-trash'></i></button></li>";
 		option+= "</ul>";
 
 		$("body").append(option);
 
-		$("#img_tool")
+		$("#img-tool")
 			.show()
 			.offset({
-				top: ( $(this).offset().top - $("#img_tool").height() - 8 ),
+				top: ( $(this).offset().top - $("#img-tool").height() - 8 ),
 				left: ( $(this).offset().left )
 			});
 	});
