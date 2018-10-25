@@ -1,6 +1,17 @@
+<style>
+.textecarte {
+	text-shadow: 2px 2px 5px white;
+}
+
+.color-alt, .color-alt h2, .color-alt h3 {
+	color : #1d3a3f;
+	font-weight : bold;
+}
+</style>
+
 <?
-// Si on a postÈ le formulaire
-if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["champ_vide"])// champ_vide pour Èviter les bots qui remplisse tous les champs
+// Si on a post√© le formulaire
+if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["mrrobot"])// mrrobot pour √©viter les bots qui remplisse tous les champs
 {
 	include_once("../../../config.php");// Les variables
 
@@ -9,7 +20,7 @@ if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) an
 		if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))// Email valide
 		{
 			if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
-			{		
+			{
 				$subject = "[".$GLOBALS['sitename']."] ".htmlspecialchars($_POST["email"]);
 
 				$message = nl2br(strip_tags($_POST["message"]));
@@ -18,10 +29,11 @@ if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) an
 
 				if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."<br />";
 
+				$message .= "Consentement : ".htmlspecialchars($_POST["rgpd_text"])."<br />";
 				$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br />";
-				$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br />";		
-				$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br />";
+				$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br />";
 				$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br />";
+				$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br />";
 
 				$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST["email"] ? htmlspecialchars($_POST["email"]) : $GLOBALS['email_contact']);
 
@@ -29,43 +41,38 @@ if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) an
 				{
 					?>
 					<script>
-						light(__("Message sent"));
+					light(__("Message sent"));
 
-						// IcÙne envoyer
-						$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-ok");
+					// Icone envoyer
+					$("#contact a .fa-spin").removeClass("fa-spin fa-cog").addClass("fa-ok");
 					</script>
 					<?
 				}
+				else {
+					?><script>error("Erreur lors de l'envoi du mail");</script><?
+					//echo error_get_last()['message']; print_r(error_get_last());
+				}
 			}
-			else 	
+			else
 			{
 				?>
-				<script>	
-					error(__("Wrong answer to the question!"));
-					//$("#question").effect("highlight").effect("highlight");
+				<script>
+				error(__("Wrong answer to the verification question!"));
 
-					// On rÈtablie le formulaire
-					$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-envelope");
-					$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
-					$("#contact button").attr("disabled", false);
-					$("#contact").submit(function(event){ send_contact(event) });
+				// On r√©tablie le formulaire
+				activation_form();
 				</script>
 				<?
 			}
 		}
-		else 
+		else
 		{
 			?>
-			<script>	
-				error(__("Invalid email!"));
+			<script>
+			error(__("Invalid email!"));
 
-				//$("#email").effect("highlight").effect("highlight");
-				
-				// On rÈtablie le formulaire
-				$("#contact button i").removeClass("fa-spin fa-cog").addClass("fa-envelope");
-				$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
-				$("#contact button").attr("disabled", false);
-				$("#contact").submit(function(event){ send_contact(event) });
+			// On r√©tablie le formulaire
+			activation_form();
 			</script>
 			<?
 		}
@@ -78,89 +85,135 @@ else// Affichage du formulaire
 	$operators = array("+", "-");
 	$operator = $operators[array_rand($operators)];
 	$nb1 = rand(1, 10);
-    $nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 10); // on Èvite les rÈsultats nÈgatifs en cas de soustraction
+	$nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 10); // on √©vite les r√©sultats n√©gatifs en cas de soustraction
 	eval('$question = strval('.$nb1.$operator.$nb2.');');
 	$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
 
 	?>
 	<script>
 	add_translation({
-		"Thank you to fill out all fields!" : {"fr" : "Merci de remplir tous les champs !"},
-		"Wrong answer to the question!" : {"fr" : "R\u00e9ponse erron\u00e9e \u00e0 la question !"},
+		"Thank you for completing all the required fields!" : {"fr" : "Merci de remplir tous les champs obligatoires !"},
+		"Wrong answer to the verification question!" : {"fr" : "R\u00e9ponse erron\u00e9e \u00e0 la question de v√©rification !"},
 		"Invalid email!" : {"fr" : "Mail invalide !"},
 		"Message sent" : {"fr" : "Message envoy\u00e9"},
 	});
 	</script>
 
 
-	<section class="under-header parallax mod tc ptl white" <?bg('bg-header')?>>		
+	<section class="mod tc">
 		<h1><?txt('titre')?></h1>
 	</section>
 
 
 	<section class="mw960p mod center mtl">
 
-		<article class="w70 center prl pbl mbl">			
+		<article class="w70 center prl pbl mbl">
 
 			<h2 class="mtn"><?txt('sstitre')?></h2>
 
 			<div><?txt('texte')?></div>
 
 			<form id="contact" class="mat">
-				
+
 				<div>
 					<input type="email" name="email" id="email" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
 				</div>
-				
+
 				<div>
 					<textarea name="message" id="message" required placeholder="<?_e("Message")?>" class="w100 mbt" style="height: 200px;"></textarea>
 				</div>
-				
-				<button class="bt fr pat">
-					<?_e(array("Send" => array("fr" => "Envoyer")))?>
-					<i class="fa fa-mail-alt"></i>
-				</button>
 
-				<div class="">
-					<label class="bold" for="question"><?=($nb1." ".$operator." ".$nb2);?> = </label> <input type="text" name="question" id="question" required placeholder="?" class="w50p vatt">
+
+				<div class="mod">
+					<!-- Question -->
+					<div class="fl w20">
+						<?=($nb1." ".$operator." ".$nb2);?> = <input type="text" name="question" id="question" required placeholder="?" class="w50p tc">
+					</div>
+
+					<!-- RGPD -->
+					<div class="fr w80 tr">
+						<input type="checkbox" name="rgpdcheckbox" id="rgpdcheckbox" required>
+						<label for="rgpdcheckbox" class="inline" style="text-transform: none;"><?txt('rgpd')?></label>
+					</div>
 				</div>
-								
+
+				<!-- Bouton envoyer -->
+				<div class="fr mtm mbl">
+					<a href="javascript:$('#contact').submit();void(0)" class="bt bold">
+						<?_e(array("Send" => array("fr" => "Envoyer")))?>
+						<i class="fa fa-mail-alt mlt"></i>
+					</a>
+				</div>
+
+
+				<!-- Pour bien afficher les required -->
+				<button class="none"></button>
+
+				<input type="hidden" name="rgpd_text" value="<?=htmlspecialchars($GLOBALS['content']['rgpd']);?>">
+
 				<input type="hidden" name="question_hash" value="<?=$question_hash;?>">
 
-				<input type="hidden" name="champ_vide" value="">
+				<input type="hidden" name="mrrobot" value="">
 
 				<input type="hidden" name="nonce_contact" value="<?=nonce("nonce_contact");?>">
-				
+
 				<input type="hidden" name="referer" value="<?=htmlspecialchars((isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:""));?>">
-				
+
 			</form>
 
-		</article>	
+		</article>
 
 	</section>
 
 
 	<script>
-		function send_contact(event)
+	// Pour r√©tablir le fonctionnement du formulaire
+	function activation_form(){
+		desactive = false;
+
+		$("#contact a .fa-cog").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
+
+		// Activation des champs du formulaire
+		$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
+
+		// On peut soumettre le formulaire avec la touche entr√©e
+		$("#contact").submit(function(event){ send_contact(event) });
+		$("#contact button").attr("disabled", false);
+
+		// Active le lien submit
+		$("#contact a").on("click", function(event) { send_contact(event) });
+	}
+
+	desactive = false;
+	function send_contact(event)
+	{
+		event.preventDefault();
+
+		if($("#question").val()=="" || $("#message").val()=="" || $("#email").val()=="" || $("#rgpdcheckbox").prop("checked") == false)
+		error(__("Thank you for completing all the required fields!"));
+		else
 		{
-			event.preventDefault();
+			desactive = true;
 
-			if($("#question").val()=="" || $("#message").val()=="" || $("#email").val()=="")
-				error(__("Thank you to fill out all fields!"));
-			else
-			{
-				// Icone envoi en cours
-				$("#contact button i").removeClass("fa-envelope").addClass("fa-spin fa-cog");
+			// Icone envoi en cours
+			$("#contact a .fa-mail-alt").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
 
-				// DÈsactive le formulaire
-				$("#contact input, #contact textarea, #contact button").attr("readonly", true).addClass("disabled");
-				$("#contact button").attr("disabled", true);
-				$("#contact").off("submit");
+			// D√©sactive le formulaire
+			$("#contact input, #contact textarea, #contact button").attr("readonly", true).addClass("disabled");
 
-				$.ajax(
+			// D√©sactive la soumission du formulaire
+			$("#contact").off("submit");
+
+			// D√©sactive le bouton submit cach√© (pour les soumissions avec la touche entr√©e)
+			$("#contact button").attr("disabled", true);
+
+			// D√©sactive le lien submit
+			$("#contact a").on("click", function(event) { event.preventDefault(); });
+
+			$.ajax(
 				{
 					type: "POST",
-					url: path+"theme/"+theme+(theme?"/":"")+"tpl/contact.php",				
+					url: path+"theme/"+theme+(theme?"/":"")+"tpl/contact.php",
 					data: $("#contact").serializeArray(),
 					success: function(html){ $("body").append(html); }
 				});
@@ -171,14 +224,25 @@ else// Affichage du formulaire
 		{
 			send_contact(event)
 		});
-	</script>
+		</script>
 
+		<?
+	}
+	?>
 
-	<section class="mod">
+	<div class="cover" <?bg('bg-carte')?>>
+		<section class="color-alt textecarte mw960p center tc mod pbl">
+			<h2><?txt('titre-2')?></h2>
+			<div class="mw960p tl fr prl">
+				<article class="mtm animation slide-right">
+					<h3 class="mbn"><?txt('sstitre-2')?></h3>
+					<div><?txt('txt-2')?></div>
+				</article>
 
-		<?include("theme/google-map.php");?>
-
-	</section>
-	<?
-}
-?>
+				<article class="mtl animation slide-right">
+					<h3 class="mbn"><?txt('sstitre-3')?></h3>
+					<div><?txt('txt-3')?></div>
+				</article>
+			</div>
+		</section>
+	</div>
