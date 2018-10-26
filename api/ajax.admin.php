@@ -140,6 +140,7 @@ switch($_GET['mode'])
 				$.ajax({
 			        url: "<?=$GLOBALS['jquery_ui']?>",
 			        dataType: 'script',
+			        cache: true,
 					success: function()
 					{ 		
 						// Chargement de la css d'edition		
@@ -287,6 +288,7 @@ switch($_GET['mode'])
 				$.ajax({
 			        url: "<?=$GLOBALS['jquery_ui']?>",
 			        dataType: 'script',
+			        cache: true,
 			        async: true,
 					success: function()// Si Jquery UI bien charger on ouvre la dialog
 					{				
@@ -1182,16 +1184,24 @@ switch($_GET['mode'])
 					}
 				});
 
+
 				// Moteur de recherche dans les médias
+				var timer = null;
 				$("#recherche-media").on("keyup", function(event) {
 					var recherche = $(this).val();
 
 					// Filtre les li
 					if(recherche)// Si on a une recherche
 					{
-						$("#media li").addClass("none");// Masque tous les Li
-						$("#media li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
-						$window.trigger("scroll")// Force le chargement des images
+						if(timer != null) clearTimeout(timer);
+						timer = setTimeout(function() {
+							timer = null;
+
+							$("#media li").addClass("none");// Masque tous les Li
+							$("#media li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
+							$window.trigger("scroll")// Force le chargement des images
+							
+						}, '500');
 					}
 					else $("#media li").removeClass("none");// Re-affiche tous les médias
 				});				
