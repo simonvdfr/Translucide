@@ -66,7 +66,7 @@ function get_url($url_source = null)
 				$explode_dir = explode("_", $dir);
 
 				if($explode_dir[0])
-					$GLOBALS['filter'][encode($explode_dir[0], "-", array("'","."))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array("'",".","@","_"));
+					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","'","@","_"));
 			}
 		}
 		else $url = $path;
@@ -97,7 +97,7 @@ function make_url($url, $filter = array())
 			if($cle == "page" and $val == 1)
 				unset($filter['page']);// Si Page == 1 on ne l'affiche pas dans l'url
 			elseif($val)
-				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array("'",".","@","_"));
+				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array(".","'","@","_"));
 		}
 	}
 
@@ -859,6 +859,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 				$.ajax({
 			        url: "<?=$GLOBALS['jquery_ui']?>",
 			        dataType: 'script',
+			        cache: true,
 					success: function()// Si Jquery UI bien charger on charge la dialog de choix de login
 					{ 						
 						// On ferme la dialog de connexion s'il y en a une d'ouvert
