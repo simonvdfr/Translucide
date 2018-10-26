@@ -599,15 +599,14 @@ switch($_GET['mode'])
 
 			<?
 			// Si il y a des méta/infos complementaire pour cette utilisateur
-			if(is_array($GLOBALS['meta_user'])) 
+			if(is_array($GLOBALS['user_info'])) 
 			{		
 				?>
 				<div class="meta mbs"><?
 					
 					if($res_meta['val']) $metas = json_decode($res_meta['val'], true);
 
-					//while(list($cle, $val) = each($GLOBALS['meta_user'])) PHP 7.2
-					foreach($GLOBALS['meta_user'] as $cle => $val)
+					foreach($GLOBALS['user_info'] as $cle => $val)
 					{
 						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="meta[<?=$cle?>]" value="<?=$metas[$cle]?>" class="w60"></div><?
 					}			

@@ -138,7 +138,7 @@ $GLOBALS['default_state'] = 'active';// moderate / mail / active / deactivate
 $GLOBALS['default_auth'] = 'add-media-public,edit-public';
 
 // Info supplémentaire sur l'utilisateur
-$GLOBALS['meta_user'] = null;
+$GLOBALS['user_info'] = null;
 
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array(
