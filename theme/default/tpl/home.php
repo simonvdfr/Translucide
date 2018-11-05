@@ -159,7 +159,13 @@ $(function()
 	$(".link article").wrapInner(function() {
 		return "<a href='"+ $("a", this).attr("href") +"'"+ ($(this).attr("class")?" class='"+ $(this).attr("class") +"'":"")+ ($(this).attr("title") ? " title='"+ $(this).attr("title") +"'":"") +" />";
 	}).children(0).unwrap();
-	$(".link article").contents().unwrap();
+	//$(".link article").contents().unwrap();
+
+	// Mode admin
+	edit.push(function() {
+		// Supprime l'action de click sur le lien
+		$(".link a").on("click", function(event) { event.preventDefault(); });
+	});
 });
 </script>
 <!-- Fin Event -->
