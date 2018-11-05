@@ -419,7 +419,13 @@ link_option = function()
 		$("#txt-tool #link-option button i").removeClass("fa-save").addClass("fa-plus");
 	}
 	
-	$("#txt-tool #link-option").show(300);// "slide" Crée un bug du chargement de l'autocomplete
+	// Affichage des options pour le lien
+	// 300, car "slide" Crée un bug du chargement de l'autocomplete
+	$("#txt-tool #link-option").show(300, function() {
+		toolbox_height = $("#txt-tool").outerHeight();
+		this_top_scroll = this_top - toolbox_height - 12;
+		toolbox_position(this_top_scroll, this_left);
+	});
 }
 
 // Supprime le lien autour
@@ -1420,6 +1426,18 @@ $(function()
 	// Init la toolbox
 	$("body").append(toolbox);
 	
+	// Fonction de positionnement de la toolbox
+	toolbox_position = function(top, left, position) {		
+		// Valeur par défaut de "position"
+		if(typeof position === 'undefined') var position = "absolute";
+
+		// Posionnement
+		$("#txt-tool").css({
+			top: top + "px",
+			left: left + "px",
+			position: position
+		});
+	}	
 
 	// Action sur les champs éditables
 	editable_event = function() {		
@@ -1498,27 +1516,21 @@ $(function()
 					// Affichage de la boîte à outils texte
 					if($("#txt-tool").css("display") == "none")// Si pas visible // init			
 					$("#txt-tool")
-						.show()
-						.offset({
-							top: this_top_scroll,
-							left: this_left
+						.show(function(){
+							// Positionnement en fonction de la hauteur de la toolbox une fois visible
+							toolbox_height = $("#txt-tool").outerHeight();
+							this_top_scroll = this_top - toolbox_height - 12;
+
+							toolbox_position(this_top_scroll, this_left);
 						});	
 
-					// Positionnement de la toolbox et gestion du Scroll si on descend
+					// Positionnement de la toolbox si déjà affiché et gestion du Scroll si on descend
 					$window.on("scroll click.scroll-toolbox", function(event) {
 						// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
 						if(($window.scrollTop() + toolbox_height + 12) > this_top_scroll) 
-							$("#txt-tool").css({
-								top: adminbar_height + "px",
-								left: this_left + "px",
-								position: "fixed"
-							});	
+							toolbox_position(adminbar_height, this_left, "fixed");
 						else
-							$("#txt-tool").css({
-								top: this_top_scroll + "px",
-								left: this_left + "px",
-								position: "absolute"
-							});
+							toolbox_position(this_top_scroll, this_left, "absolute");
 					});
 				}
 
