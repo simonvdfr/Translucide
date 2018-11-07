@@ -955,6 +955,7 @@ filesize = function(file) {
     var request = new XMLHttpRequest();
     request.open("HEAD", file, false);
     request.send(null);
+	//request.getResponseHeader('content-length')
     /Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
     return Math.ceil(parseInt(RegExp.$1) / 1024);// Taille en Ko
 }
@@ -967,6 +968,7 @@ img_optim = function() {
 	var width = memo_img_cible.width;
 	var height = memo_img_cible.height;
 
+	// @todo en ligne on n'arrive pas à avoir la taille de l'image
 	original_filesize = filesize(memo_img_cible.src);// Poids de l'image d'origine
 
 	var domain_path = window.location.origin + path;// Domaine complet
@@ -1000,7 +1002,10 @@ img_optim = function() {
 			new_filesize = filesize(domain_path + final_file);
 
 			// Infobulle sur le gain de poids
-			light(Math.round((original_filesize - new_filesize)*100/original_filesize) +"% d'économie<div class='grey small'>"+original_filesize+"Ko => "+new_filesize+"Ko</div>", 1500);
+			if($.isNumeric(original_filesize))
+				light(Math.round((original_filesize - new_filesize)*100/original_filesize) +"% d'économie<div class='grey small'>"+original_filesize+"Ko => "+new_filesize+"Ko</div>", 1500);
+			else
+				light("Nouvelle taille de l'image : "+new_filesize+"Ko", 1500);
 
 			// Affectation de la nouvelle image
 			memo_img_cible.src = domain_path + final_file;		
