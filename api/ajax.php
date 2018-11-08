@@ -297,7 +297,7 @@ switch($_GET['mode'])
 		</script>
 		<?
 
-		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+		// Pas de mysql close car déjà close dans le include ajax.php mode profil
 
 	break;
 
