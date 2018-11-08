@@ -961,7 +961,7 @@ switch($_GET['mode'])
 			<?}
 		}
 
-		// Supp car include parfois ?
+		// Supp ?? car include parfois
 		//if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
 	break;
