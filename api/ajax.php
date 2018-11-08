@@ -297,6 +297,8 @@ switch($_GET['mode'])
 		</script>
 		<?
 
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+
 	break;
 
 
@@ -467,7 +469,10 @@ switch($_GET['mode'])
 			});
 			</script>
 			<?
-		}			
+		}	
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+
 	break;
 
 
@@ -724,6 +729,9 @@ switch($_GET['mode'])
 		});
 		</script>
 		<?
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+
 	break;
 
 
@@ -952,6 +960,10 @@ switch($_GET['mode'])
 				</script>
 			<?}
 		}
+
+		// Supp car include parfois ?
+		//if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+
 	break;
 
 
@@ -982,6 +994,8 @@ switch($_GET['mode'])
 			else echo "false mail";
 		}
 		else echo "false nonce";
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
 	break;
 
@@ -1232,6 +1246,8 @@ switch($_GET['mode'])
 
 		//highlight_string(print_r($_SESSION, true));
 		//highlight_string(print_r($_REQUEST, true));
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
 	break;
 	
