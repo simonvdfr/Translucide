@@ -836,8 +836,6 @@ switch($_GET['mode'])
 
 		echo json_encode($data);
 
-		$connect->close();
-
 	break;
 
 
@@ -1604,8 +1602,6 @@ switch($_GET['mode'])
 
 		echo json_encode($tab_tag);//JSON_UNESCAPED_UNICODE
 
-		$connect->close();
-
 	break;
 
 
@@ -1636,4 +1632,8 @@ switch($_GET['mode'])
 	break;
 
 }
+
+
+// Fermeture de la connexion
+if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 ?>
