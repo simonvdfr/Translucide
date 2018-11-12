@@ -403,7 +403,7 @@ input[type="reset"].unstyled:focus {
 
 
 /* Curseur */
-.pointer { cursor: pointer; }
+.pointer { cursor: pointer !important; }
 
 /* Lien */
 .tdn { text-decoration: none !important; }
