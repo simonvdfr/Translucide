@@ -355,6 +355,7 @@ if(!$ajax)
 	</html>
 	<? 
 }
+else {?><script>console.log("<?=benchmark()?>")</script><?}
 
 $connect->close();
 ?>
