@@ -462,7 +462,8 @@ function checkbox($key = null, $filter = array())
 {
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
-	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." fa fa-fw ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "fa-check yes" : "fa-close no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
+	// fa-check/fa-close => fa-ok/fa-cancel
+	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." fa fa-fw ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "fa-ok yes" : "fa-cancel no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
 	
 	$GLOBALS['editkey']++;
 }
