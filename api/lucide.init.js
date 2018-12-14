@@ -368,12 +368,27 @@ $(function()
 	$(document).on("click", "a[href^='#']", function(event) {
 		event.preventDefault();
 
-		var anchor_exist = $('[name="' + $(this).attr("href").substr(1) + '"]');
+		if(typeof lucide === 'undefined')// Si pas en mode edit
+		{
+			var hashtag = $(this).attr("href").substr(1);
+			var name_exist = $('[name="'+hashtag+'"]');
 
-		if(typeof lucide === 'undefined' && anchor_exist.length)// Si pas en mode edit et ancre existante on scroll
+			// name || id ?
+			if(name_exist.length) 
+				var anchor = name_exist;
+			else {
+				var id_exist = $('[id="'+hashtag+'"]');
+				if(id_exist.length) var anchor = id_exist;
+			}
+
+			console.log(anchor);
+
+			// Ancre existante on scroll
+			if(anchor != undefined)
 			$root.animate({ 
-				scrollTop: anchor_exist.offset().top
+				scrollTop: anchor.offset().top
 			}, 800, "linear");
+		}
 	});
 
 
