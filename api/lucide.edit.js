@@ -1156,6 +1156,9 @@ $(function()
 	// Place les contenus au-dessus pour les rendre éditables à coup sur
 	$(".editable").parent().css("z-index", "10");
 
+	// Pour pouvoir éditer un contenu dans un label
+	$(".editable").parent("label").attr("for","");
+
 
 	// Rends communiquant les champs titles dans l'édition et l'admin-bar
 	$("#admin-bar #title").on("keyup", function(event){
