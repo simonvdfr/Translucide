@@ -406,7 +406,7 @@ input[type="reset"].unstyled:focus {
 .pointer { cursor: pointer !important; }
 
 /* Lien */
-.tdn { text-decoration: none !important; }
+.tdn, .tdn a { text-decoration: none !important; }
 .tdn:hover { text-decoration: none !important; }
 
 
