@@ -73,8 +73,8 @@ body { transition: margin-top .2s linear; }
 	#admin-bar input, .tooltip input, .ui-dialog input {			
 		background-color: transparent;
 		color: #516062;
-		border: none;
-		border-bottom: 1px dotted #9cabad;
+		border: none !important;
+		border-bottom: 1px dotted #9cabad !important;
 		font-family: Arial;
 		box-shadow: none;
 		border-radius: 0;
