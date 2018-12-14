@@ -203,7 +203,6 @@ switch($_GET['mode'])
 			<div class="none">
 				<?
 				reset($GLOBALS['add-content']);
-				//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
 				foreach($GLOBALS['add-content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])) echo'<div id="add-'.$cle.'"></div>';
@@ -221,7 +220,6 @@ switch($_GET['mode'])
 						<option value=""><?_e("Select template")?></option>
 						<?
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
-						//while(list($cle, $filename) = each($scandir)) PHP 7.2
 						foreach($scandir as $cle => $filename)
 						{			
 							$filename = pathinfo($filename, PATHINFO_FILENAME);
