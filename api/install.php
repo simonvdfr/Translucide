@@ -380,7 +380,7 @@ switch(@$_GET['mode'])
 								`lang` varchar(8) NOT NULL,
 								`type` varchar(20) NOT NULL DEFAULT 'page',
 								`tpl` varchar(80) NOT NULL,
-								`url` varchar(60) NOT NULL,
+								`url` varchar(60) DEFAULT NULL,
 								`title` varchar(60) NOT NULL,
 								`description` varchar(160) DEFAULT NULL,
 								`content` longtext,
