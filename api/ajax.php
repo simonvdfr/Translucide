@@ -312,7 +312,7 @@ switch($_GET['mode'])
 		{
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
 			{
-				// Supprime les métas
+				// Supprime les métas //@todo migration supp au long terme (12/11/2018)
 				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
 
 				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
@@ -504,9 +504,12 @@ switch($_GET['mode'])
 			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
 			$res = $sel->fetch_assoc();
 
-			// Récupération des infos sur l'utilisateur
-			$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-			$res_meta = $sel_meta->fetch_assoc();
+			//@todo migration supp au long terme (12/11/2018)
+			if(!@$GLOBALS['user_info_in_table_user']) {
+				// Récupération des infos sur l'utilisateur
+				$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+				$res_meta = $sel_meta->fetch_assoc();
+			}
 
 			$array_auth = explode(",", $res['auth']);// Les autorisations
 
@@ -607,14 +610,16 @@ switch($_GET['mode'])
 			if(is_array($GLOBALS['user_info'])) 
 			{		
 				?>
-				<div class="meta mbs"><?
-					
-					if($res_meta['val']) $metas = json_decode($res_meta['val'], true);
+				<div class="info mbs"><?
+						
+					//@todo migration supp au long terme (12/11/2018)
+					if(!@$GLOBALS['user_info_in_table_user'] and $res_meta['val']) $info = json_decode($res_meta['val'], true);
+					elseif($res['info']) $info = json_decode($res['info'], true);
 
 					foreach($GLOBALS['user_info'] as $cle => $val)
 					{
-						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="meta[<?=$cle?>]" value="<?=$metas[$cle]?>" class="w60"></div><?
-					}			
+						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=$info[$cle]?>" class="w60"></div><?
+					}
 					
 				?></div><?
 			}
@@ -743,7 +748,7 @@ switch($_GET['mode'])
 		{
 			include_once("db.php");// Connexion à la db		
 
-			$uid = $insert_user = $insert_meta = null;
+			$uid = $insert_user = $insert_info = null;
 
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
 			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) 
@@ -808,7 +813,13 @@ switch($_GET['mode'])
 
 			$email = $connect->real_escape_string($_POST['email']);
 			$sql .= "email = '".$email."', ";
-			
+
+			// Si informations supplémentaires sur l'utilisateur
+			if(isset($_POST['info']) and is_array($_POST['info'])) {
+				$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
+				$sql .= "info = '".$info."' ";
+			}
+
 			// Mot de passe
 			if($hashed_password) {
 				$sql .= "password = '".addslashes($hashed_password)."', ";
@@ -848,34 +859,38 @@ switch($_GET['mode'])
 
 				if($uid) 
 				{
+					// ANCIENNE METHODE POUR LES INFOS USERS //@todo migration supp au long terme (12/11/2018)
 					// On regarde si il n'y a pas déjà des donnée dans la base
-					$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-					$res_meta = $sel_meta->fetch_assoc();
-
-					// AJOUT DES DONNÉE EN MÉTA
-					if($uid and isset($_POST['meta']) and is_array($_POST['meta']))
+					if(!@$GLOBALS['user_info_in_table_user'])
 					{
-						if($res_meta['id']) 
-							$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
-						else 
-							$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
-						
-						$meta = $connect->real_escape_string(json_encode($_POST['meta'], JSON_UNESCAPED_UNICODE));
-						$sql .= "val = '".$meta."' ";
+						$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+						$res_meta = $sel_meta->fetch_assoc();
 
-						if($res_meta['id']) 
-							$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";
-						else 
-							$sql .= ", type = 'user_info', id = '".(int)$uid."'";
-						
-						$connect->query($sql);
-						
-						//echo "_POST['meta']<br>"; highlight_string(print_r($_POST['meta'], true));
-						//echo $sql;
+						// AJOUT DES DONNÉE EN MÉTA
+						if($uid and isset($_POST['info']) and is_array($_POST['info']))
+						{
+							if($res_meta['id']) 
+								$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
+							else 
+								$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
+							
+							$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
+							$sql .= "val = '".$info."' ";
 
-						if(!$connect->error) {	
-							// Si INSERT réussit						
-							if(!$res_meta['id']) $insert_meta = true;
+							if($res_meta['id']) 
+								$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";
+							else 
+								$sql .= ", type = 'user_info', id = '".(int)$uid."'";
+							
+							$connect->query($sql);
+							
+							//echo "_POST['info']<br>"; highlight_string(print_r($_POST['info'], true));
+							//echo $sql;
+
+							if(!$connect->error) {	
+								// Si INSERT réussit						
+								if(!$res_meta['id']) $insert_info = true;
+							}
 						}
 					}
 
