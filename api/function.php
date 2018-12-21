@@ -499,7 +499,17 @@ function input($key = null, $filter = null)
 	if(!is_array($filter)) $filter = array("class" => $filter);
 	if(!isset($filter['type'])) $filter['type'] = "text";
 
-	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : @$filter['default']).'" class="editable-input '.@$filter['class'].'"'.(($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true)?' checked="checked"':'').'>';
+	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="';
+
+	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key]; else echo @$filter['default'];
+
+	echo'" class="editable-input '.@$filter['class'].'"';
+
+	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true) echo' checked="checked"';
+
+	if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
+
+	echo'>';
 
 	// Si autocomplete
 	if(isset($filter['autocomplete'])) {?>
