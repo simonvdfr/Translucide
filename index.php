@@ -168,6 +168,16 @@ $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['d
 // Image pour les réseaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
 elseif(isset($GLOBALS['content']['alaune'])) $image = $GLOBALS['content']['alaune'];
+elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel-1'])) 
+{
+	if(isset($GLOBALS['content']['visuel'])) $image = $GLOBALS['content']['visuel'];
+	else $image = $GLOBALS['content']['visuel-1'];
+
+	// Si image plus grande (zoom)
+	$parse_url = parse_url($image);
+	parse_str($parse_url['query'], $get);
+	if(isset($get['zoom'])) $image = $get['zoom'];
+} 
 
 
 
