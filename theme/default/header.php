@@ -6,7 +6,7 @@
 	<div class="mw960p mod center tc relative">
 
 		<div class="center ptm"><a href="<?=$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']?>">
-				<?media('logo', '110')?></a></div>
+				<?media('logo', '320')?></a></div>
 
 		<nav class="mtm mbm">
 
