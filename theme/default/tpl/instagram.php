@@ -51,37 +51,58 @@
 	{
 		// Instagram Light
 		// https://www.instagram.com/developer/
-		// https://jelled.com/instagram/access-token
-
-		var token = '0000.00.00000';
-		var uid = 0000;// profilePage_
+		
+		// Suivre la procédure a l'écran une fois la template attribuer à une page
+		var token = '';
 		var num = 4;
 
-		$.ajax({
-			url: "https://api.instagram.com/v1/users/" + uid + "/media/recent",// /users/self/media/recent => Sandbox
-			dataType: 'jsonp',
-			type: 'GET',
-			data: {access_token: token, count: num},
-			success: function(data){
+		if(token == '' || typeof token == 'undefined') 
+		{
+			// Si pas de token => la notice
+			$("ul#instagram").append("<li class='mtm'>Pour obtenir votre CLIENT ID & TOKEN<ul class='mod'><li class='clear'>Créez votre compte client sur <a href='https://www.instagram.com/developer/' target='_blank'>instagram.com/developer</a> => <i>Manage Clients</i> => <i>Register a New Client</i></li><li class='clear'>Mettez l'URL de votre site <input type='text' value='<?=$GLOBALS['home'];?>' onfocus='this.select()'> dans <i>Valid redirect URIs</i></li><li class='clear'>dans l'onglet <i>Security</i> décoché la case <i>Disable implicit OAuth</i></li><li class='clear'>Une fois l'opération finie vous serrez redirigé vers votre site avec le token dans l'URL (#access_token=) à récupérer et coller dans le fichier Php qui affiche les photos instagram</li></ul><div class='mtm'><b>CLIENT ID</b> <input type='text' name='client_id' id='client_id'> <button id='get_token'></button></div></li>");
 
-		 		//console.log(data);
-		 		$("#instagram-header, #instagram-suivre").attr("href", "https://www.instagram.com/" + data.data[0]['user']['username'] +"/");
-		 		$("#instagram-username").text("@"+data.data[0]['user']['username']);
-		 		$("#instagram-logo").attr("src", data.data[0]['user']['profile_picture']);
+			// Si on a saisie le client id
+			$("ul#instagram #client_id").on("change keyup", function(event) {
+				event.preventDefault();
+				$("ul#instagram button").html("Obtenir le token");
+			});
 
-				for(cle in data.data)
-				{
-					$("ul#instagram").append('<li class="animation fade-in"><a href="'+data.data[cle].link+'" target="_blank"><img data-lazy="'+data.data[cle].images.low_resolution.url+'"></a></li>');
-					// data.data[cle].images.low_resolution.url - image, 306х306
-					// data.data[cle].images.thumbnail.url - image 150х150
-					// data.data[cle].images.standard_resolution.url - image 612х612
-					// data.data[cle].link - Instagram URL
-				}
+			// Au click redirection vers insta
+			$("ul#instagram #get_token").on("click", function(event) {
+				event.preventDefault();
+				document.location.href = 'https://api.instagram.com/oauth/authorize/?response_type=token&client_id='+ $("ul#instagram #client_id").val() +'&redirect_uri=<?=urlencode($GLOBALS['home']);?>';
+			});
+		}
+		else {
+			//var token_split = token.split(".");
+			//var uid = token_split[0];// profilePage_
 
-				// Pour bien prendre en compte les images en lazyload injecté fraichement dans la dom
-				$animation = $(".animation, [data-lazy]");
-			},
-			error: function(data){ console.log(data); }
-		});
+			$.ajax({
+				url: "https://api.instagram.com/v1/users/self/media/recent",// /users/'+ uid +'/media/recent
+				dataType: 'jsonp',
+				type: 'GET',
+				data: {access_token: token, count: num},
+				success: function(data){
+
+			 		//console.log(data);
+			 		$("#instagram-header, #instagram-suivre").attr("href", "https://www.instagram.com/" + data.data[0]['user']['username'] +"/");
+			 		$("#instagram-username").text("@"+data.data[0]['user']['username']);
+			 		$("#instagram-logo").attr("src", data.data[0]['user']['profile_picture']);
+
+					for(cle in data.data)
+					{
+						$("ul#instagram").append('<li class="animation fade-in"><a href="'+data.data[cle].link+'" target="_blank"><img data-lazy="'+data.data[cle].images.low_resolution.url+'"></a></li>');
+						// data.data[cle].images.low_resolution.url - image, 306х306
+						// data.data[cle].images.thumbnail.url - image 150х150
+						// data.data[cle].images.standard_resolution.url - image 612х612
+						// data.data[cle].link - Instagram URL
+					}
+
+					// Pour bien prendre en compte les images en lazyload injecté fraichement dans la dom
+					$animation = $(".animation, [data-lazy]");
+				},
+				error: function(data){ console.log(data); }
+			});
+		}
 	});
 	</script>
