@@ -1,10 +1,7 @@
 /* Typo */
 @import url('//fonts.googleapis.com/css?family=Source Sans Pro:300|Amatic SC:700');
 
-body {
-	font-family: Source Sans Pro;
-	-webkit-font-smoothing: antialiased;
-}
+body { font-family: Source Sans Pro; }
 
 header, footer, .content { font-size: 1.6rem; }
 
@@ -51,7 +48,7 @@ p { line-height: 1.8; }
 	}
 
 /* Couleur */
-.color { color: #78cfd6; }
+.color, .selected { color: #78cfd6; }
 .bg-color {
 	color: #fff;
 	background-color: #78cfd6;

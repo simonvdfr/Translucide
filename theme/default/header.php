@@ -17,7 +17,13 @@
 				// Extraction du menu
 				foreach($GLOBALS['nav'] as $cle => $val)
 				{
-					echo"<li><a href=\"".make_url($val['href'])."\"".($val['id']?" id='".$val['id']."'":"")."".($val['target']?" target='".$val['target']."'":"").">".$val['text']."</a></li>";
+					// Menu sélectionné si page en cours ou article (actu)
+					if(get_url() == $val['href'] or ($res['type'] == "article" and $val['href'] == "actualites"))
+						$selected = " selected";
+					else
+						$selected = "";
+
+					echo"<li><a href=\"".make_url($val['href'], array("domaine" => true))."\"".($val['id']?" id='".$val['id']."'":"")."".($val['target']?" target='".$val['target']."'":"")." class='".$selected."'>".$val['text']."</a></li>";
 				}
 				?>
 			</ul>
