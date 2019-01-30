@@ -1390,9 +1390,10 @@ switch($_GET['mode'])
 						}
 					});
 				});
+				*/
 
 				$window.trigger("scroll");// Force le lancement pour les lazyload des images déjà dans l'ecran
-				*/
+				
 			});
 		</script>
 		<?
@@ -1633,5 +1634,5 @@ switch($_GET['mode'])
 
 
 // Fermeture de la connexion
-if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+if(isset($GLOBALS['connect'])) @$GLOBALS['connect']->close();
 ?>
