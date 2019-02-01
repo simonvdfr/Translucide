@@ -238,6 +238,8 @@ footer div {
 #webmaster a { color: #b4442e; }
 
 
+#contact input[name='reponse'] { display: none; }
+
 
 /* RESPONSIVE */
 

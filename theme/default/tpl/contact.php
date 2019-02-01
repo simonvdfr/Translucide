@@ -11,7 +11,7 @@
 
 <?
 // Si on a posté le formulaire
-if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["mrrobot"])// mrrobot pour éviter les bots qui remplisse tous les champs
+if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
 {
 	include_once("../../../config.php");// Les variables
 
@@ -82,6 +82,7 @@ else// Affichage du formulaire
 {
 	if(!$GLOBALS['domain']) exit;
 
+	$chiffre = array('zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix');
 	$operators = array("+", "-");
 	$operator = $operators[array_rand($operators)];
 	$nb1 = rand(1, 10);
@@ -117,6 +118,8 @@ else// Affichage du formulaire
 
 				<div>
 					<input type="email" name="email" id="email" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
+
+					<input name="reponse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" placeholder="nom@domaine.com">
 				</div>
 
 				<div>
@@ -126,12 +129,12 @@ else// Affichage du formulaire
 
 				<div class="mod">
 					<!-- Question -->
-					<div class="fl w20">
-						<?=($nb1." ".$operator." ".$nb2);?> = <input type="text" name="question" id="question" required placeholder="?" class="w50p tc">
+					<div class="fl w30">
+						<?=($chiffre[$nb1]." ".$operator." ".$chiffre[$nb2]);?> = <input type="text" name="question" id="question" required placeholder="5 ?" class="w50p tc">
 					</div>
 
 					<!-- RGPD -->
-					<div class="fr w80 tr">
+					<div class="fr w70 tr">
 						<input type="checkbox" name="rgpdcheckbox" id="rgpdcheckbox" required>
 						<label for="rgpdcheckbox" class="inline" style="text-transform: none;"><?txt('rgpd')?></label>
 					</div>
@@ -152,8 +155,6 @@ else// Affichage du formulaire
 				<input type="hidden" name="rgpd_text" value="<?=htmlspecialchars($GLOBALS['content']['rgpd']);?>">
 
 				<input type="hidden" name="question_hash" value="<?=$question_hash;?>">
-
-				<input type="hidden" name="mrrobot" value="">
 
 				<input type="hidden" name="nonce_contact" value="<?=nonce("nonce_contact");?>">
 
