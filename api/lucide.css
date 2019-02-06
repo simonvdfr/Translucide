@@ -493,6 +493,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		z-index: 8;
 		top: 0;
 		right: 0;
+		line-height: 30px;
 		font-size: initial;
 	}
 	.editable-bg > .bg-tool .open-dialog-media, .module-bt a {
