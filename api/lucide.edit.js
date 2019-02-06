@@ -846,10 +846,16 @@ get_img = function(id, link)
 	
 	var width = $("#dialog-media-width").val();
 	var height = $("#dialog-media-height").val();
-	var data_class = $("#"+$("#dialog-media-source").val()).data("class") || "";
-	var dir = $("#"+$("#dialog-media-source").val()).data("dir") || "";
+
+	var media_source = $("#dialog-media-source").val();
+	
+	var data_class = $("#"+media_source).data("class") || "";
+
+	// Si id ou data-id pour les bg()
+	var dir = $("#"+media_source).data("dir") || ($("[data-id='"+media_source+"']").data("dir") || "");
 
 	var domain_path = window.location.origin + path;
+
 
 	// Resize de l'image et insertion dans la source
 	$.ajax({
@@ -867,16 +873,16 @@ get_img = function(id, link)
 			if($("#dialog-media-target").val() == "isolate")// Insert dans un bloc isolé
 			{
 				// Si pas encore de tag img
-				if($("#"+$("#dialog-media-source").val()+" img").html() == undefined)
+				if($("#"+media_source+" img").html() == undefined)
 				{
 					// Supprime les fichiers
-					$("#"+$("#dialog-media-source").val()+" > .fa").remove();
+					$("#"+media_source+" > .fa").remove();
 
 					// Ajoute l'image
-					$("#"+$("#dialog-media-source").val()).append('<img src="'+ domain_path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
+					$("#"+media_source).append('<img src="'+ domain_path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
 				}
 				else
-					$("#"+$("#dialog-media-source").val()+" img").attr("src", domain_path + final_file);
+					$("#"+media_source+" img").attr("src", domain_path + final_file);
 			}
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
@@ -887,7 +893,7 @@ get_img = function(id, link)
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
-				var dataidsource = "[data-id='"+$("#dialog-media-source").val()+"']";
+				var dataidsource = "[data-id='"+media_source+"']";
 				$(dataidsource).attr("data-bg", domain_path + final_file);
 				$(dataidsource).css("background-image", "url("+ domain_path + final_file +")");
 

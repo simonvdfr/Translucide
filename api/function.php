@@ -405,16 +405,21 @@ function media($key = null, $filter = array())
 }
 
 // Image de fond de bloc
-function bg($key = null, $lazy = false)
+function bg($key = null, $filter = array())
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
+
+	// Si pas d'array et qu'il y a une variable c'est que c'est un lazyload
+	if(!is_array($filter) and isset($filter)) $filter = array("lazy" => true);
 
 	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "");
 
 	echo" data-id='".encode($key)."' data-bg=\"".$url."\"";
 
+	if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
+
 	// Si lazy load des images de fond
-	if($lazy)
+	if(isset($filter['lazy']))
 		echo' data-lazy="bg"';
 	else if($url)
 		echo' style="background-image: url(\''.$url.'\')"';
