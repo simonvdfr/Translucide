@@ -221,6 +221,9 @@ $GLOBALS['png_quality'] = 9;
 // Animation pour l'ouverture / fermeture de la dialogue des medias
 $GLOBALS['animation_dialog'] = true;
 
+// On peut voir les dossiers dans la librairie des médias
+$GLOBALS['media_dir'] = false;
+
 
 // Cache sur les styles
 $GLOBALS['cache'] = "";

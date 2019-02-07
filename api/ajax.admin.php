@@ -1086,8 +1086,28 @@ switch($_GET['mode'])
 				{
 					var id = $(this).attr("id");
 
-					if($(this).attr("data-type") == "image") get_img(id);
-					else get_file(id);
+					if($(this).attr("data-type") == "image") get_img(id);// Si c'est une image
+					else if($(this).attr("data-type") == "dir")// Si c'est un dossier
+					{
+						// Onglet ou on se trouve
+						var id_parent = $(this).parent().parent().attr('id');
+
+						// On inject le contenu du dossier
+						$.ajax({
+							type: "POST",
+							url: path+"api/ajax.admin.php?mode=media&inject=true&filter=dir&dir="+$(this).attr("data-dir"),
+							data: {
+								//"dir": dir,
+								"nonce": $("#nonce").val()
+							},
+							success: function(html)
+							{ 	
+								$("#"+id_parent).html(html);
+							}
+						});
+
+					}
+					else get_file(id);// Si c'est uu fichier
 				});
 
 
@@ -1232,7 +1252,6 @@ switch($_GET['mode'])
 
 			$i = 1;
 			// Crée un tableau avec les fichiers du dossier et infos complètes
-			//while(list($cle, $filename) = each($scandir)) PHP 7.2
 			foreach($scandir as $cle => $filename)
 			{				
 				if($filename != "Thumbs.db" and $filename != ".htaccess" and !is_dir($dir.$filename))
@@ -1270,6 +1289,7 @@ switch($_GET['mode'])
 
 					$i++;
 				}
+				elseif(is_dir($dir.$filename)) $is_dir[] = $filename;
 			}			
 		}
 
@@ -1281,14 +1301,38 @@ switch($_GET['mode'])
 		}
 		
 		?>
-		<ul class="unstyled pan man smaller">	
-	
+		<ul class="unstyled pan man smaller"><?
+
+			// @todo ajouter la possiblitée de remonter dans l'arbo, jusqu'au dossier courant de l'onglet
+			// Si on navige dans un dossier on n'affiche pas l'upload
+			if(!isset($_GET['inject']))
+			{
+			?>	
 			<li class="add-media pas mat tc big" onclick="document.getElementById('add-media').click();">
 				<i class="fa fa-upload biggest pbs"></i><br>
 				<?_e("Drag and drop a file here or click me");?>
 				<input type="file" id="add-media" style="display: none" multiple>
 			</li>
 			<?
+			}
+
+			// Si il y a des dossier
+			if(count($is_dir) and @$GLOBALS['media_dir'])
+			{
+				foreach($is_dir as $cle => $val)
+				{
+					echo'<li 
+					class="pat mat tc"
+					title="'.utf8_encode($val).'"
+					id="dialog-media-dir-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$cle.'"
+					data-media="media/'.$subfolder.utf8_encode($val).'"
+					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
+					data-type="dir"
+					>
+						<div class="file"><i class="fa fa-fw fa-folder-empty mega"></i><div>'.utf8_encode($val).'</div></div>
+					</li>';
+				}
+			}
 
 			// S'il y a des fichiers dans la biblio
 			if(isset($tab_file))
@@ -1298,7 +1342,6 @@ switch($_GET['mode'])
 							
 				$i = 1;
 				// Affiche les fichiers en fonction du tri
-				//while(list($cle, $val) = each($tab_file)) PHP 7.2
 				foreach($tab_file as $cle => $val)
 				{
 					// Convertie la taille en mode lisible
