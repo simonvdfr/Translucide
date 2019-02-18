@@ -166,8 +166,8 @@ $GLOBALS['auth_level'] = array(
 // Type de contenu ajoutable
 $GLOBALS['add-content'] = array(
 	//"product" => ["fa" => "fa-shopping-cart", "tpl" => "product"],
-	//"article" => ["fa" => "fa-feed", "tpl" => "article"],
-	//"event" => ["fa" => "fa-calendar-o", "tpl" => "event"],
+	"article" => ["fa" => "fa-feed", "tpl" => "article"],
+	"event" => ["fa" => "fa-calendar-o", "tpl" => "event"],
 	//"video" => ["fa" => "fa-video-camera", "tpl" => "video"],
 	//"media" => ["fa" => "fa-file-pdf-o", "tpl" => "fichier"],
 	"page" => ["fa" => "fa-file-text-o", "tpl" => "page"]
