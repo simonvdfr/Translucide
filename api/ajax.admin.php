@@ -1329,7 +1329,7 @@ switch($_GET['mode'])
 					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
 					data-type="dir"
 					>
-						<div class="file"><i class="fa fa-fw fa-folder-empty mega"></i><div>'.utf8_encode($val).'</div></div>
+						<div class="file"><i class="fa fa-fw fa-folder-o mega"></i><div>'.utf8_encode($val).'</div></div>
 					</li>';
 				}
 			}
