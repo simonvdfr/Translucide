@@ -1317,7 +1317,7 @@ switch($_GET['mode'])
 			}
 
 			// Si il y a des dossier
-			if(count($is_dir) and @$GLOBALS['media_dir'])
+			if(is_array($is_dir) and count($is_dir) and @$GLOBALS['media_dir'])
 			{
 				foreach($is_dir as $cle => $val)
 				{
