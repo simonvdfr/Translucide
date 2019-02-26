@@ -254,7 +254,7 @@ function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	// Si contenu global on rapatri le contenu depuis la table méta
+	// Si contenu global on rapatri le contenu depuis la table méta (Anciennement "universel")
 	if(isset($filter['global']))
 	{
 		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
