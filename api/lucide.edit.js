@@ -189,7 +189,7 @@ save = function() //callback
 		$("a", this).each(function(j) {
 			data["nav"][i+'-'+j] = {
 				href : $.trim($(this).attr('href')),
-				text : $(this).text(),
+				text : $(this).html(),// text() pour strictifier ?
 				id : $(this).attr('id') || "",
 				class : $(this).attr('class') || "",
 				target : $(this).attr('target') || ""
@@ -879,7 +879,11 @@ get_img = function(id, link)
 					$("#"+media_source+" > .fa").remove();
 
 					// Ajoute l'image
-					$("#"+media_source).append('<img src="'+ domain_path + final_file +'"'+(width?" width=\'"+width+"\'":"") + (height?" height=\'"+height+"\'":"") + (data_class?" class=\'"+data_class+"\'":"")+'>');
+					$("#"+media_source).append('<img src="'+ domain_path + final_file +'"'+
+						(width || height?' style="'+
+								(width?'max-width: '+width+'px;':'') + (height?'max-height: '+height+'px;':'')
+							+'"':'')+
+						(data_class?" class=\'"+data_class+"\'":"")+'>');
 				}
 				else
 					$("#"+media_source+" img").attr("src", domain_path + final_file);
@@ -1875,9 +1879,13 @@ $(function()
 	{
 		module = $(event).parent().prev("ul").attr("id");
 
+		// On regarde qu'elle type d’élément éditable existe pour récupérer l'id le plus grand
+		if($("#" + module + " li .editable").length) var elem = $("#" + module + " li .editable");
+		else if($("#" + module + " li .editable-media").length) var elem = $("#" + module + " li .editable-media");
+
 		// Crée un id unique (dernier id le plus grand + 1)
 		//key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1; Ne tien pas compte de l'ordre des id
-		var key = $.map($("#" + module + " li .editable"), function(k) {
+		var key = $.map(elem, function(k) {
 			return parseInt(k.id.match(/(\d+)(?!.*\d)/));//Récupère le dernier digit de la chaine
 		}).sort(function(a, b) {
 			return(b-a); // reverse sort : tri les id pour prendre le dernier (le plus grand)
@@ -1886,6 +1894,7 @@ $(function()
 		// Unbind les events d'edition
 		$(".editable").off();
 		$(".editable-media").off(".editable-media");
+		$(".editable-href").off(".editable-href");
 
 		// Crée un block
 		$("#" + module + " li:last-child").clone().prependTo("#" + module).show("400", function()
@@ -1904,6 +1913,7 @@ $(function()
 			// Relance les events d'edition
 			editable_event();
 			editable_media_event();
+			editable_href_event();
 		});
 	}
 
