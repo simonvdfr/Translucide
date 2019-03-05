@@ -555,6 +555,9 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 /* Module */
 
+.module { min-height: 55px; }
+	.module li { position: relative; }
+
 .module-bt {
 	position: absolute;	
 	top: 0;
