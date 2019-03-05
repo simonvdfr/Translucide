@@ -10,7 +10,7 @@
 
 J'ai créé le CMS Translucide pour répondre à certains besoins personnels que j'ai en tant que développeur et intégrateur, mais aussi pour permettre aux clients de modifier plus simplement leur site sans casser le travail graphique fait en amont.
 
-En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel, le tout avec le moins de dépendance possible (uniquement jQuery, jQuery UI, Font Awesome). Le moteur du site tient en très peu de fichiers, et pourtant il fait déjà pas mal de choses.
+En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel, le tout avec le moins de dépendance possible (uniquement jQuery, et pour l'administration jQuery UI & Font Awesome) et le plus éprouvé possible (php, mysql, jquery). Le moteur du site tient en très peu de fichiers, et pourtant il fait déjà pas mal de choses.
 
 ## Installation
 Décompresser les fichiers du site sur votre FTP et avec votre navigateur aller à l'adresse où se trouve `index.php`
@@ -21,7 +21,7 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 Prérequis : dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`
 
 ## Premier pas
-- Descendez tout en bas du site, sur la droite doit apparaître un bouton `+` pour ajouter une page
+- Descendez tout en bas du site, sur la gauche doit apparaître un bouton avec un petit crayon pour éditer la page courante, au survol de ce dernier un autre bouton `+` apparaît pour ajouter une page
 - Une fois la page créée (vous lui avez donné un titre et une template, idéalement `home`), vous pouvez l'éditer en cliquant en bas à droite sur le crayon d'édition.
 
 ## Raccourcis clavier
