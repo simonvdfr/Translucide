@@ -511,7 +511,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		opacity: .6;
 		
 		width: initial; /* inherit */
-		padding: 2px 6px;
+		padding: 0 6px;
 		margin: 10px 10px 10px 0px;
 
 		transition: opacity .3s, background .2s;

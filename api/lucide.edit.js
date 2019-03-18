@@ -189,7 +189,7 @@ save = function() //callback
 		$("a", this).each(function(j) {
 			data["nav"][i+'-'+j] = {
 				href : $.trim($(this).attr('href')),
-				text : $(this).html(),// text() pour strictifier ?
+				text : ($(this).hasClass("view-source")?$(this).text():$(this).html()),
 				id : $(this).attr('id') || "",
 				class : $(this).attr('class') || "",
 				target : $(this).attr('target') || ""
@@ -1388,6 +1388,9 @@ $(function()
 		
 		if(typeof toolbox_superscript != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('superscript')\"><i class='fa fa-fw fa-superscript'></i></button></li>";
+				
+		if(typeof toolbox_fontSize != 'undefined') 
+			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
