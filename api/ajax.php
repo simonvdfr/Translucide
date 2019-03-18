@@ -259,7 +259,7 @@ switch($_GET['mode'])
 				
 				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-sign-out big"></i></div>
 
-				<?if($_SESSION['auth']['edit-user']) {?>
+				<?if(@$_SESSION['auth']['edit-user']) {?>
 				<div id="add-user" class="fr prs" title="<?_e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
 				<div id="list-user" class="fr prs" title="<?_e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
 				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-id-card big vam"></i></div>
@@ -532,7 +532,7 @@ switch($_GET['mode'])
 
 			<div class="mbt">
 				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
-				<? if($_SESSION['auth']['edit-user']){?>
+				<? if(@$_SESSION['auth']['edit-user']){?>
 					<select id="state" class="fa-select">
 						<option value="active">&#xf00c; <?_e("Active")?></option>
 						<option value="moderate">&#xf06e; <?_e("Moderate")?></option>
@@ -548,7 +548,7 @@ switch($_GET['mode'])
 
 			<div class="mbs" style="max-height: 100px;">
 				<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
-				<select id="auth" class="fa-select" multiple <?=(!$_SESSION['auth']['edit-admin']?"disabled":"");?>>
+				<select id="auth" class="fa-select" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
 					<option value="edit-admin">&#xf21b; <?_e("Managing admins")?></option>
 					<option value="edit-user">&#xf007; <?_e("Managing users")?></option>
 
