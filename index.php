@@ -100,8 +100,9 @@ if($res)
 		if(!@$_SESSION['auth']['edit-'.$res['type']]) 
 		{
 			// On regarde si une template 503 est définie
-			$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
-			$res = $sel->fetch_assoc();
+			$sel_503 = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
+			$res_503 = $sel_503->fetch_assoc();
+			if($res_503['id']) $res = $res_503;
 
 			header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
 				
