@@ -1990,8 +1990,8 @@ $(function()
 
 	/************** CHAMPS INPUT **************/
 	
-	// Ajout un placeholder
-	$(".editable-input").each(function() {
+	// Ajout un placeholder s'il n'y en a pas
+	$(".editable-input").not("[placeholder]").each(function() {
 		$(this).attr("placeholder", $(this).attr("id")).attr("title", $(this).attr("id"));
 	});
 
