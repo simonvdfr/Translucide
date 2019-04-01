@@ -1094,6 +1094,8 @@ div.editable {
 .fa-resize-vertical:before { content: '\e824'; } /* '' */
 .fa-list:before { content: '\e825'; } /* '' */
 .fa-info-circled:before { content: '\e826'; } /* '' */
+.fa-play-circled2:before { content: '\e827'; } /* '' */
+.fa-up-big:before { content: '\e828'; } /* '' */
 .fa-twitter:before { content: '\f099'; } /* '' */
 .fa-facebook:before { content: '\f09a'; } /* '' */
 .fa-rss:before { content: '\f09e'; } /* '' */
@@ -1104,8 +1106,10 @@ div.editable {
 .fa-quote-right:before { content: '\f10e'; } /* '' */
 .fa-help:before { content: '\f128'; } /* '' */
 .fa-calendar-empty:before { content: '\f133'; } /* '' */
+.fa-play-circled:before { content: '\f144'; } /* '' */
 .fa-youtube:before { content: '\f167'; } /* '' */
 .fa-instagram:before { content: '\f16d'; } /* '' */
+.fa-up:before { content: '\f176'; } /* '' */
 .fa-skype:before { content: '\f17e'; } /* '' */
 .fa-yahoo:before { content: '\f19e'; } /* '' */
 .fa-google:before { content: '\f1a0'; } /* '' */
