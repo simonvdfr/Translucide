@@ -24,7 +24,7 @@ if(!isset($_SESSION))
 date_default_timezone_set('Europe/Paris');
 
 // Langue des dates
-setlocale(LC_ALL, 'fr_FR', 'fra');//.UTF8
+setlocale(LC_ALL, 'fr_FR.utf8', 'fra');//.UTF8
 
 
 // Serveur local ou online ? DEV || PROD
@@ -178,6 +178,7 @@ $GLOBALS['add-content'] = array(
 $GLOBALS['toolbox'] = array(
 	//"h2",
 	//"h3",
+	//"h4",
 	"bold",
 	"italic",
 	//"underline",
@@ -193,6 +194,7 @@ $GLOBALS['toolbox'] = array(
 	//"icon",
 	"media",
 	//"anchor",
+	//"bt",
 	"link"
 );
 

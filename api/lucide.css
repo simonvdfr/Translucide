@@ -892,6 +892,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.toolbox:hover {
 		opacity: 1;
 	}
+
 	/* Fleche sous la toolbox */
 	.toolbox:after {
 		border: 6px solid transparent;
@@ -904,12 +905,15 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		height: 0px;
 		width: 0px;
 	}
+
 	/* Fleche au dessu de la toolbox */
 	.toolbox.under:after { 
 		border-bottom-color: #d4d4d4;
 		border-top-color: transparent;
 		top: -12px;
 	}
+
+	.toolbox #alt { height: 24px; }
 
 	.toolbox .option {
 		background-color: #eaeaea;

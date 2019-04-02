@@ -20,7 +20,6 @@ add_translation({
 	"Delete user" : {"fr" : "Supprimer l'utilisateur"},
 	"User deleted" : {"fr" : "Utilisateur supprim\u00e9"},
 	"Title" : {"fr" : "Titre"},	
-	"Separator" : {"fr" : "S\u00e9parateur"},	
 	"Media Library" : {"fr" : "Biblioth\u00e8que des m\u00e9dias"},		
 	"Icon Library" : {"fr" : "Biblioth\u00e8que d'ic\u00f4ne"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
@@ -314,6 +313,10 @@ exec_tool = function(command, value, ui) {
 			// Si Target = blank // @todo verif marche sous firefox ??
 			if($("#target-blank").hasClass("checked")) memo_selection.anchorNode.parentElement.target = "_blank";
 			else $(memo_node).removeAttr("target");
+
+			// Si class bt
+			if($("#class-bt").hasClass("checked")) memo_selection.anchorNode.parentElement.classList.add("bt");
+			else $(memo_node).removeClass("bt");
 			
 			$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 		}
@@ -396,6 +399,7 @@ link_option = function()
 	$("#unlink").remove();// Supprime le bouton de supp de lien
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 	$("#target-blank").removeClass("checked");// Réinitialise la colorisation du target _blank
+	$("#class-bt").removeClass("checked");// Réinitialise la colorisation du class bt
 
 	var href = $(memo_node).closest('a').attr('href');// On récupère le href de la sélection en cours
 
@@ -404,6 +408,9 @@ link_option = function()
 	{
 		// Si target = blank
 		if(memo_node.target == "_blank") $("#target-blank").addClass("checked");
+
+		// Si class bt
+		if($(memo_node).hasClass("bt")) $("#class-bt").addClass("checked");
 
 		// Bouton pour supp le lien //exec_tool('unlink');
 		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-close plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
@@ -451,7 +458,11 @@ link = function()
 
 		// Si Target = blank
 		if($("#target-blank").hasClass("checked")) $(memo_node).attr("target","_blank");
-		else $(memo_node).removeAttr("target");
+		else $(memo_node).removeAttr("target");	
+
+		// Si class bt
+		if($("#class-bt").hasClass("checked")) $(memo_node).addClass("bt");
+		else $(memo_node).removeClass("bt");
 		
 		$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 
@@ -466,6 +477,12 @@ link = function()
 target_blank = function(mode) {
 	if(mode == true || !$("#target-blank").hasClass("checked")) $("#target-blank").addClass("checked");
 	else $("#target-blank").removeClass("checked");
+}
+
+// Si class bt
+class_bt = function(mode) {
+	if(mode == true || !$("#class-bt").hasClass("checked")) $("#class-bt").addClass("checked");
+	else $("#class-bt").removeClass("checked");
 }
 
 // Ajout/Suppression d'un element html
@@ -1377,6 +1394,9 @@ $(function()
 		if(typeof toolbox_h3 != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('h3')\" id='h3' title=\""+__("Title")+" H3"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>3</span></button></li>";
 
+		if(typeof toolbox_h4 != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('h4')\" id='h4' title=\""+__("Title")+" H4"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>4</span></button></li>";
+
 		if(typeof toolbox_bold != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
 
@@ -1390,7 +1410,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"exec_tool('superscript')\"><i class='fa fa-fw fa-superscript'></i></button></li>";
 				
 		if(typeof toolbox_fontSize != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
@@ -1408,7 +1428,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
 
 		if(typeof toolbox_InsertHorizontalRule != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Separator")+"\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
 
 		if(typeof toolbox_viewsource != 'undefined') 
 			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
@@ -1436,9 +1456,15 @@ $(function()
 			toolbox+= "<li><button onclick=\"link_option(); $('#txt-tool #link-option #link').select();\" title=\""+__("Add Link")+"\"><i class='fa fa-fw fa-link'></i></button></li>";
 
 			toolbox+= "<li id='link-option' class='option'>";
+
 				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
+
+				if(typeof toolbox_bt != 'undefined') toolbox+= "<a href=\"javascript:class_bt();void(0);\" title=\""+ __("Apparence d'un bouton") +"\" id='class-bt' class='o50 ho1'><i class='fa fa-square mlt mrt vam'></i></a>";
+				
 				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
+
 				toolbox+= "<button onclick=\"link()\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+
 			toolbox+= "</li>";
 		}
 
@@ -1562,6 +1588,9 @@ $(function()
 					
 				if($(memo_node).closest("h3").length) $("#txt-tool #h3").addClass("checked");
 				else $("#txt-tool #h3").removeClass("checked");
+
+				if($(memo_node).closest("h4").length) $("#txt-tool #h4").addClass("checked");
+				else $("#txt-tool #h4").removeClass("checked");
 					
 
 				// Désélectionne les alignements
@@ -1672,8 +1701,8 @@ $(function()
 
 	// @todo: voir si on ne peux pas le déplacer sur le blur des event .editable
 	$("body").click(function(event) {
-		// Si on n'est pas sur une image dans un contenu éditable on supp la toolbox image
-		if(!$(event.target).is('.editable img')) img_leave();// Raz Propriétés image
+		// Si on n'est pas sur une image dans un contenu éditable ou edition du alt on supp la toolbox image
+		if(!$(event.target).is('.editable img, #alt')) img_leave();// Raz Propriétés image
 		
 		// Supprime le layer de redimensionnement d'image
 		if($("#resize-tool").html() != undefined && !$(event.target).closest("#resize-tool").is('#resize-tool')) {
@@ -1710,14 +1739,24 @@ $(function()
 		
 		// Boîte à outils image
 		option = "<ul id='img-tool' class='toolbox'>";
+
 			option+= "<li><button onclick=\"img_position('fl')\"><i class='fa fa-fw fa-align-left'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('center')\"><i class='fa fa-fw fa-align-center'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('fr')\"><i class='fa fa-fw fa-align-right'></i></button></li>";
+
 			if(widthRatio < 80 || heightRatio < 80) option+= "<li><button onclick=\"img_optim()\" class='orange'>"+ __("Optimize") +" <i class='fa fa-fw fa-resize-small'></i></button></li>";
+
+			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Légende de l'image") +"\" title=\""+ __("Légende de l'image") +"\" class='w150p small'></li>";
+
 			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-trash'></i></button></li>";
+
 		option+= "</ul>";
 
 		$("body").append(option);
+
+		// Récupère le texte du l'alt de l'image sélectionné pour le mettre dans les options d'édition de l'alt
+		$("#alt").val($(memo_img).attr('alt'));
+		
 
 		$("#img-tool")
 			.show()
@@ -1725,6 +1764,11 @@ $(function()
 				top: ( $(this).offset().top - $("#img-tool").height() - 8 ),
 				left: ( $(this).offset().left )
 			});
+	});
+
+	// Si on tape au clavier on ajoute le texte alt à l'image
+	$("body").on("keyup", "#alt", function(event) {
+		$(memo_img).attr('alt', $(this).val());
 	});
 
 
