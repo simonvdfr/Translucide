@@ -1146,8 +1146,8 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 /********** TEXTE **********/
 
 // Coupe une phrase proprement
-function word_cut($texte, $limit) {
-	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte, '<br><div>'), 0, $limit));
+function word_cut($texte, $limit, $tags = "<br><div>") {
+	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte, $tags), 0, $limit));
 }
 
 
