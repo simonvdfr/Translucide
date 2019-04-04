@@ -4,7 +4,7 @@ if(!$GLOBALS['domain']) exit;
 ?>
 <section class="mod tc">
 	<h1 class="color mbn up"><?txt('title')?></h1>
-	<h2 class="sstitre"><?txt('sstitre')?></h2>
+	<h2 class="color-alt"><?txt('sstitre')?></h2>
 </section>
 
 
