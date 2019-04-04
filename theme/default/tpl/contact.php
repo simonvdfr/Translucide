@@ -141,7 +141,7 @@ else// Affichage du formulaire
 				<!-- Pour bien afficher les required -->
 				<button class="none"></button>
 
-				<input type="hidden" name="rgpd_text" value="<?=htmlspecialchars($GLOBALS['content']['rgpd']);?>">
+				<input type="hidden" name="rgpd_text" value="<?=htmlspecialchars(@$GLOBALS['content']['rgpd']);?>">
 
 				<input type="hidden" name="question_hash" value="<?=$question_hash;?>">
 
