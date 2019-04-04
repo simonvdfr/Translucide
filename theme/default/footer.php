@@ -34,13 +34,13 @@
 		<article class="w33">
 
 			<h3><?txt('footer-titre-suivez-nous')?></h3>
-			<div class="color big"><?txt('footer-suivez-nous')?></div>
+			<div class="color bigger"><?txt('footer-suivez-nous')?></div>
 
 		</article>
 
 	</section>
 
-	<?if(isset($res['url']) == "home"){?><section class="swebmaster mod w100 tc"><?txt('webmaster')?></section><?}?>
+	<section class="mod w100 tc"><?txt('webmaster')?></section>
 
 </footer>
 
@@ -50,7 +50,7 @@ $(function()
 {
 	// BULLE D'INFORMATION SUR L'UTILISATION DES COOKIES
 	// Si bandeau pas masqué
-	if(get_cookie('analytics') == '')
+	if(typeof google_analytics !== 'undefined' && get_cookie('analytics') == '')
 	{
 		// Ajout du bandeau en bas
 		$("body").append("<div id='cnilcookie'><div class='bt'><i class='fa fa-fw fa-bell'></i> Nous utilisons les cookies pour établir des statistiques sur la fréquentation du site. <a href='javascript:void(0)' id='masquer'><u>Masquer</u></a> / <a href='javascript:void(0)' id='desactiver'><u>Désactiver</u></a></div></div>");
