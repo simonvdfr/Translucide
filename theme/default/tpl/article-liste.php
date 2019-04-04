@@ -17,7 +17,7 @@ if(!$GLOBALS['domain']) exit;
 
 		// Liste les tags pour filtrer la page
 		$i = 1;
-		$sel_tag_list = $connect->query("SELECT distinct cle, val, ordre FROM ".$table_meta." WHERE type='tag' ORDER BY ordre ASC, cle ASC");
+		$sel_tag_list = $connect->query("SELECT distinct cle, val FROM ".$table_meta." WHERE type='tag' ORDER BY ordre ASC, cle ASC");
 		while($res_tag_list = $sel_tag_list->fetch_assoc()) {
 			if($i > 1) echo', ';
 			echo'<a href="'.make_url($res['url'], array($res_tag_list['cle'], 'domaine' => true)).'" class="color tdn dash">'.$res_tag_list['val'].'</a>';
