@@ -66,8 +66,6 @@ $GLOBALS['function'] = '';// Include fonction du theme
 
 $GLOBALS['theme'] = '';
 
-$GLOBALS['sitename'] = "";
-
 if($dev)// Dev local
 	$GLOBALS['scheme'] = '';
 else 

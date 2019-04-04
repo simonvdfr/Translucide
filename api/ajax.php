@@ -97,7 +97,7 @@ switch($_GET['mode'])
 				<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
 			<?}?>
 
-			<a href="javascript:login('internal');void(0);" class="bt connect internal short"><?_e("Connection with");?> <?=($GLOBALS['sitename']);?></a>
+			<a href="javascript:login('internal');void(0);" class="bt connect internal short"><?_e("Connection with");?> <?=$_SERVER['HTTP_HOST'];?></a>
 
 			<?if($GLOBALS['facebook_api_secret']){?><a href="javascript:login('facebook');void(0);" class="bt connect facebook"><?_e("Connection with");?> Facebook</a><?}?>
 
@@ -902,7 +902,7 @@ switch($_GET['mode'])
 						unset($_POST['password_new'], $_POST['password_confirm']);
 						
 						// Sujet
-						$subject = "[".utf8_encode($GLOBALS['sitename'])."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
+						$subject = "[".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
 						
 						// Lien vers la fiche admin pour activation
 						$message = "<br><a href='".make_url("", array("domaine" => true))."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
