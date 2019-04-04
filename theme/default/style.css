@@ -9,7 +9,7 @@ body {
 a {
 	color: #35747f;
 	text-decoration: none;
-	transition: color .2s;
+	transition: color .3s;
 }
 	a:hover { color: #78cfd6; }
 
@@ -66,11 +66,19 @@ h2, h3 {
 	}
 
 
+/* Aside */
 aside {
 	border-left: 0.2em solid  #78cfd6;
 	opacity: 0.6;
 }
 
+
+/* Liste avec puce fonticon */
+.fa-ul { margin: 0; }
+	.fa-ul > li {
+		margin-bottom: 1em;
+		color: black;
+	}
 
 .fa-li {
     position: relative;
@@ -81,16 +89,17 @@ aside {
 }
 
 
+/* Formulaire contact */
 #email, #message, #question {
 	border: 0px;
 	border-bottom: 0.2em solid #78cfd6;
 	background-color: #f7f7f7;
 }
 
-
 #contact input[name='reponse'] { display: none; }
 
 
+/* Barre de cookie */
 #cnilcookie {
 	border: none;
 	position: fixed;
@@ -108,13 +117,7 @@ aside {
 	}
 
 
-.fa-ul { margin: 0; }
-	.fa-ul > li {
-		margin-bottom: 1em;
-		color: black;
-	}
-
-
+/* Header */
 header {
 	position: relative;
 	z-index: 10;
@@ -122,6 +125,7 @@ header {
 }
 
 
+/* Footer */
 footer h3 {
 	width : 100%;
 	text-transform: uppercase;

@@ -2,19 +2,19 @@
 
 <footer>
 
-	<section class="grid tl pam mw960p center">
+	<section class="grid mw960p center pam tl">
 
 		<article class="w33">
 
-			<h3><?txt('footer-contact')?></h3>
-			<div><?txt('footer-tel')?></div>
-			<div><?txt('footer-email')?></div>
+			<h3><?txt('footer-titre-contact')?></h3>
+			<div><?txt('footer-texte-contact')?></div>
 
 		</article>
 
+
 		<article class="w33">
 
-			<h3><?txt('footer-derniere-actu')?></h3>
+			<h3><?txt('footer-titre-actu')?></h3>
 
 			<!--Va chercher les dernieres actu-->
 			<ul class="fa-ul">
@@ -31,10 +31,11 @@
 
 		</article>
 
+
 		<article class="w33">
 
 			<h3><?txt('footer-titre-suivez-nous')?></h3>
-			<div class="color bigger"><?txt('footer-suivez-nous')?></div>
+			<div class="color bigger"><?txt('footer-texte-suivez-nous')?></div>
 
 		</article>
 
