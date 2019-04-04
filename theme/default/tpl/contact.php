@@ -1,14 +1,3 @@
-<style>
-.textecarte {
-	text-shadow: 2px 2px 5px white;
-}
-
-.color-alt, .color-alt h2, .color-alt h3 {
-	color : #1d3a3f;
-	font-weight : bold;
-}
-</style>
-
 <?
 // Si on a posté le formulaire
 if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
@@ -21,7 +10,7 @@ if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) an
 		{
 			if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
 			{
-				$subject = "[".$GLOBALS['sitename']."] ".htmlspecialchars($_POST["email"]);
+				$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email"]);
 
 				$message = nl2br(strip_tags($_POST["message"]));
 
@@ -168,56 +157,56 @@ else// Affichage du formulaire
 
 
 	<script>
-	// Pour rétablir le fonctionnement du formulaire
-	function activation_form(){
+		// Pour rétablir le fonctionnement du formulaire
+		function activation_form(){
+			desactive = false;
+
+			$("#contact a .fa-cog").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
+
+			// Activation des champs du formulaire
+			$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
+
+			// On peut soumettre le formulaire avec la touche entrée
+			$("#contact").submit(function(event){ send_contact(event) });
+			$("#contact button").attr("disabled", false);
+
+			// Active le lien submit
+			$("#contact a").on("click", function(event) { send_contact(event) });
+		}
+
 		desactive = false;
-
-		$("#contact a .fa-cog").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
-
-		// Activation des champs du formulaire
-		$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
-
-		// On peut soumettre le formulaire avec la touche entrée
-		$("#contact").submit(function(event){ send_contact(event) });
-		$("#contact button").attr("disabled", false);
-
-		// Active le lien submit
-		$("#contact a").on("click", function(event) { send_contact(event) });
-	}
-
-	desactive = false;
-	function send_contact(event)
-	{
-		event.preventDefault();
-
-		if($("#question").val()=="" || $("#message").val()=="" || $("#email").val()=="" || $("#rgpdcheckbox").prop("checked") == false)
-		error(__("Thank you for completing all the required fields!"));
-		else
+		function send_contact(event)
 		{
-			desactive = true;
+			event.preventDefault();
 
-			// Icone envoi en cours
-			$("#contact a .fa-mail-alt").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
+			if($("#question").val()=="" || $("#message").val()=="" || $("#email").val()=="" || $("#rgpdcheckbox").prop("checked") == false)
+			error(__("Thank you for completing all the required fields!"));
+			else
+			{
+				desactive = true;
 
-			// Désactive le formulaire
-			$("#contact input, #contact textarea, #contact button").attr("readonly", true).addClass("disabled");
+				// Icone envoi en cours
+				$("#contact a .fa-mail-alt").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
 
-			// Désactive la soumission du formulaire
-			$("#contact").off("submit");
+				// Désactive le formulaire
+				$("#contact input, #contact textarea, #contact button").attr("readonly", true).addClass("disabled");
 
-			// Désactive le bouton submit caché (pour les soumissions avec la touche entrée)
-			$("#contact button").attr("disabled", true);
+				// Désactive la soumission du formulaire
+				$("#contact").off("submit");
 
-			// Désactive le lien submit
-			$("#contact a").on("click", function(event) { event.preventDefault(); });
+				// Désactive le bouton submit caché (pour les soumissions avec la touche entrée)
+				$("#contact button").attr("disabled", true);
 
-			$.ajax(
-				{
-					type: "POST",
-					url: path+"theme/"+theme+(theme?"/":"")+"tpl/contact.php",
-					data: $("#contact").serializeArray(),
-					success: function(html){ $("body").append(html); }
-				});
+				// Désactive le lien submit
+				$("#contact a").on("click", function(event) { event.preventDefault(); });
+
+				$.ajax(
+					{
+						type: "POST",
+						url: path+"theme/"+theme+(theme?"/":"")+"tpl/contact.php",
+						data: $("#contact").serializeArray(),
+						success: function(html){ $("body").append(html); }
+					});
 			}
 		}
 
@@ -225,25 +214,7 @@ else// Affichage du formulaire
 		{
 			send_contact(event)
 		});
-		</script>
-
-		<?
-	}
-	?>
-
-	<div class="cover" <?bg('bg-carte')?>>
-		<section class="color-alt textecarte mw960p center tc mod pbl">
-			<h2><?txt('titre-2')?></h2>
-			<div class="mw960p tl fr prl">
-				<article class="mtm animation slide-right">
-					<h3 class="mbn"><?txt('sstitre-2')?></h3>
-					<div><?txt('txt-2')?></div>
-				</article>
-
-				<article class="mtl animation slide-right">
-					<h3 class="mbn"><?txt('sstitre-3')?></h3>
-					<div><?txt('txt-3')?></div>
-				</article>
-			</div>
-		</section>
-	</div>
+	</script>
+<?
+}
+?>
