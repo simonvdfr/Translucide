@@ -1724,6 +1724,9 @@ $(function()
 		// Supprimer le précédent bloc d'outils
 		$("#img-tool").remove();
 
+		// Masque la toolbox d'edition des textes
+		$("#txt-tool").hide();// ferme la toolbox
+		
 		// Mémorise l'image sélectionnée
 		memo_img = this;		
 		
