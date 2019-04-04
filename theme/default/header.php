@@ -8,7 +8,7 @@
 		<div class="center ptm"><a href="<?=$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']?>">
 				<?media('logo', '320')?></a></div>
 
-		<nav class="mtm mbm">
+		<nav class="font-ssp mtm mbm">
 
 			<a class="big burger"><span>menu</span></a>
 
