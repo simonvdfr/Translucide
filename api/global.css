@@ -286,9 +286,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 	margin-left: auto !important;
 	margin-right: auto !important;
 }
-	img.center { 
-		display: block !important;
-	}
+	img.center { display: block !important; }
 
 .txtleft, .tl { text-align: left !important; }
 .txtright, .tr { text-align: right !important; }
@@ -301,6 +299,8 @@ em, .italic, address, cite, i, var { font-style: italic; }
 img.fl { margin-right: 1rem; }
 img.fr { margin-left: 1rem; }
 img.fl, img.fr { margin-bottom: 0.5rem; }
+
+article img { max-width: 100%; } /* Pour que les images ne dépassent pas la taille du contener */
 
 
 /* Table layout */
@@ -449,13 +449,14 @@ input[type="reset"].unstyled:focus {
 	  user-select: none;
 	}
 	.bt:hover {
-		color: #ffffff;
+		color: #fff;
 		text-decoration: none;
 		box-shadow: none;
 		background-color: #75898c;		
 
 		box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset;
 	}
+		.bt a:hover { color: #fff; }
 	.bt:active { 
 		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(0, 0, 0, 0.1) inset;
 	}
@@ -885,7 +886,89 @@ div.editable {
 
 
 
-/* hiding content */
+/* HEADER */
+header #logo { transition: opacity .5s; }
+	header #logo:hover { opacity: 0.6; }
+
+
+/* MENU DE NAVIGATION */
+	header nav ul {
+		list-style: none;
+		display: inline-block;
+		padding: 0;
+		margin-top: 2rem;
+	}
+		header nav li {
+			float: left;
+			padding: 0 5rem;
+			margin: 0 0.5rem;
+		}
+		header nav a { text-decoration: none; }
+
+
+	/* BOUTON BURGER & Animation */
+	header nav .burger {
+		display: none;
+		position: absolute;
+		overflow: hidden;
+		float: right;
+		top: 10px;
+		right: 0;
+		margin: 0 1rem;
+		padding: 0;
+		width: 30px;
+		height: 30px;
+		font-size: 0;
+		text-indent: -9999px;
+		appearance: none;
+		box-shadow: none;
+		border-radius: 3px;
+		border: none;
+		cursor: pointer;
+		transition: background 0.3s;
+
+		background-color: #35747f;
+	}
+	.burger span {
+		display: block;
+		position: absolute;
+		top: 14px;
+		left: 6px;
+		right: 6px;
+		height: 2px;
+		background: white;
+
+		transition: background 0.3s;
+	}
+
+	.burger span::before,
+	.burger span::after {
+		position: absolute;
+		display: block;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background-color: #fff;
+		content: "";
+
+		transition-duration: 0.3s, 0.3s;
+		transition-delay: 0.3s, 0s;
+	}
+
+	.burger span::before { top: -6px; transition-property: top, transform; }
+	.burger span::after { bottom: -6px; transition-property: bottom, transform; }
+
+	/* active state, i.e. menu open */
+	.burger.active { background-color: #cb0032; }
+	.burger.active span { background: none; }
+	.burger.active span::before { top: 0; transform: rotate(45deg);	}
+	.burger.active span::after { bottom: 0; transform: rotate(-45deg); }
+	.burger.active span::before,
+	.burger.active span::after { transition-delay: 0s, 0.3s; }
+
+
+
+/* HIDING content */
 @media (max-width: 640px) {
 	.no-small-screen, .noss { display: none !important; }
 	.small-screen { display: block; }
@@ -894,9 +977,110 @@ div.editable {
 	.no-large-screen { display: none; }
 }
 
-/* ---------------------------------- */
-/* ==Responsive small                 */
-/* ---------------------------------- */
+
+
+/* RESPONSIVE big */
+@media (max-width: 850px)
+{
+	header nav .burger {
+		display: block;
+	    z-index: 12;
+	}
+
+	header nav > ul {
+		background-color: #fff;
+
+		position: fixed !important;
+
+		left: 0;
+		top: 0;
+		bottom: 0;
+
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+
+		width: 300px;
+
+		margin: 0;
+		padding-top: 0.5rem;
+
+		z-index: 10;
+
+		transition-duration: 0.3s;
+		transform: translateX(-100%);
+		-webkit-transform: translateX(-100%);
+	}
+		header nav li {
+			float: none;
+			padding: 0;
+			border-radius: 5px;
+			transition: background 0.3s;
+		}
+			header nav li:hover { background-color: #dfdfdf; }
+			header nav li a {
+				display: block;
+				padding: 0.5rem;
+			}
+
+	/* Raz du header */
+	.responsiv-nav header { position: inherit; }
+	/* Ouvertur du menu */
+	.responsiv-nav header nav ul {
+		transform: translateX(0);
+		-webkit-transform: translateX(0);
+	}
+	/* Overlay menu */
+	.responsiv-nav .responsiv-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.6);
+	}
+	/* Fixe le burger*/
+	.responsiv-nav .burger { position: fixed; }
+
+	/* mode edition : menu d'ajout invisible */
+	.dragger { display: none !important; }
+	#add-nav { display: none !important; }
+}
+
+/* RESPONSIVE medium */
+@media (max-width: 480px)
+{
+	.w10, .w20, .w25, .w30, .w33, .w40, .w50,
+	.w60, .w66, .w70, .w75, .w80, .w90 {
+		width: auto;
+		float: none;
+	}
+
+	.plm { padding-left: 0; }
+	.prl { padding-right: 0; }
+
+	.mrl { margin-right: 0; }
+	.mll { margin-left: 0; }
+
+	.tr, .tl { text-align: center !important; }
+
+	article {
+		/*display: inline-block; Crée un bug collateral avec l'editeur de menu ... utile ?*/
+		padding-left: 0.5rem !important;
+		padding-right: 0.5rem !important;
+	}
+		
+	.editable img.fl, .editable img.fr {
+		float: none;
+		display: block;
+		margin: 0 auto 0.5rem;
+	}
+	.editable img {
+		max-width: 100%;
+		height: auto;
+	}
+}
+
+/* RESPONSIVE small */
 @media (min-width: 321px) and (max-width: 640px) {
 	/* quick reset in small resolution and less */
 	.w600p,
@@ -908,9 +1092,8 @@ div.editable {
 		float: none;
 	}	
 }
-/* ---------------------------------- */
-/* ==Responsive tiny                  */
-/* ---------------------------------- */
+
+/* RESPONSIVE tiny */
 @media (max-width: 320px) {
 	/* quick tiny resolution reset */
 	.mod,
@@ -944,7 +1127,9 @@ div.editable {
 		text-align: left;
 	}
 }
-/* quick print reset */
+
+
+/* PRINT RESET */
 @media print {
 	* {
 		background: transparent !important;
