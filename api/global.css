@@ -900,7 +900,6 @@ header #logo { transition: opacity .5s; }
 	}
 		header nav li {
 			float: left;
-			padding: 0 5rem;
 			margin: 0 0.5rem;
 		}
 		header nav a { text-decoration: none; }
