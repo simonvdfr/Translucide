@@ -1727,8 +1727,8 @@ $(function()
 		// Mémorise l'image sélectionnée
 		memo_img = this;		
 		
-		// Si Chrome on ajoute le resizer jquery
-		if($.browser.webkit)
+		// On ajoute le resizer jquery 
+		//if($.browser.webkit)// Si Chrome // Visiblement Firefox n'a plus d'outil de resize...
 		{
 			// Rend l'image resizeable
 			$(this).resizable({aspectRatio: true});
