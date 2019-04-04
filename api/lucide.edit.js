@@ -1487,7 +1487,12 @@ $(function()
 	}	
 
 	// Action sur les champs éditables
-	editable_event = function() {		
+	editable_event = function()
+	{	
+		// Désactive les liens qui entourent un élément éditable
+		$(".editable").closest("a").on("click", function(event) { event.preventDefault(); });
+		
+		// Action sur les zone éditable
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
 				memo_focus = this;// Pour memo le focus en cours
