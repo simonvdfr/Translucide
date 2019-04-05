@@ -2,11 +2,11 @@
 
 <footer>
 
-	<section class="grid mw960p center pam tl">
+	<section class="grid mw960p center tl">
 
 		<article class="w33">
 
-			<h3><?txt('footer-titre-contact')?></h3>
+			<h3 class="medium up"><?txt('footer-titre-contact')?></h3>
 			<div><?txt('footer-texte-contact')?></div>
 
 		</article>
@@ -14,16 +14,16 @@
 
 		<article class="w33">
 
-			<h3><?txt('footer-titre-actu')?></h3>
+			<h3 class="medium up"><?txt('footer-titre-actu')?></h3>
 
 			<!--Va chercher les dernieres actu-->
-			<ul class="fa-ul">
+			<ul class="unstyled pan">
 			<?
 			$sel_actu = $connect->query("SELECT * FROM ".$tc." WHERE (type='article' OR type='event') AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
 			while($res_actu = $sel_actu->fetch_assoc())
 			{
 				?>
-				<li><i class="fa-li fa fa-fw fa-<?=($res_actu['type']=='article'?'rss':'calendar-empty')?> fl mrt"></i> <a href="<?=make_url($res_actu['url']);?>" class="tdn" style="color: black;"><?=$res_actu['title']?></a></li>
+				<li class="mbs"><i class="fa-li fa fa-fw fa-<?=($res_actu['type']=='article'?'rss':'calendar-empty')?> fl mrt"></i> <a href="<?=make_url($res_actu['url']);?>" class="tdn" style="color: black;"><?=$res_actu['title']?></a></li>
 				<?
 			}
 			?>
@@ -34,14 +34,16 @@
 
 		<article class="w33">
 
-			<h3><?txt('footer-titre-suivez-nous')?></h3>
+			<h3 class="medium up"><?txt('footer-titre-suivez-nous')?></h3>
 			<div class="color bigger"><?txt('footer-texte-suivez-nous')?></div>
 
 		</article>
 
 	</section>
+	
 
 	<section class="mod w100 tc"><?txt('webmaster')?></section>
+
 
 </footer>
 

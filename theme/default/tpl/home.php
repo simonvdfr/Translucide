@@ -151,7 +151,7 @@
 <!-- Fin Event -->
 
 
-<!-- Event -->
+
 <script>
 $(function()
 {
@@ -168,4 +168,3 @@ $(function()
 	});
 });
 </script>
-<!-- Fin Event -->

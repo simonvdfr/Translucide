@@ -1,7 +1,10 @@
-<?
-if(!$GLOBALS['domain']) exit;
+<?if(!$GLOBALS['domain']) exit;?>
 
-?>
+<style>
+	aside { border-left: 0.2em solid  #78cfd6; }
+</style>
+
+
 <section class="mod tc">
 	<h1 class="color mbn up"><?txt('title')?></h1>
 	<h2 class="color-alt"><?txt('sstitre')?></h2>
@@ -61,7 +64,7 @@ if(!$GLOBALS['domain']) exit;
 		{?>
 		<h3 class="big tc mtn mbt"><?_e("Derniers Articles")?></h3>
 
-		<ul class="fa-ul">
+		<ul class="unstyled pan">
 		<?		
 		while($res_article = $sel_article->fetch_assoc())
 		{
@@ -81,7 +84,7 @@ if(!$GLOBALS['domain']) exit;
 		{?>
 			<h3 class="big tc ptm mbt"><?_e("Derniers Évènements")?></h3>
 
-			<ul class="fa-ul">
+			<ul class="unstyled pan">
 			<?
 			
 			while($res_article = $sel_article->fetch_assoc())

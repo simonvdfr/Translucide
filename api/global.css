@@ -1218,12 +1218,19 @@ header #logo { transition: opacity .5s; }
 .fa-ul > li {
   position: relative;
 }
-.fa-li {
+/* .fa-li {
   position: absolute;
   left: -2.14285714em;
   width: 2.14285714em;
-  top: 0.3em;/*0.14285714em*/
+  top: 0.3em;
   text-align: center;
+} */
+.fa-li {
+    position: relative;
+    left: inherit;
+    top: inherit;
+    width: inherit;
+   	float: none;
 }
 
 @keyframes fa-spin {

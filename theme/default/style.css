@@ -34,7 +34,7 @@ h2, h3 {
 
 
 /* bouton pour les liens */
-.bt {
+.bt, .bt.internal {
 	background-color: #fff;
 	color: #78cfd6;
 
@@ -66,27 +66,8 @@ h2, h3 {
 	}
 
 
-/* Aside */
-aside {
-	border-left: 0.2em solid  #78cfd6;
-	opacity: 0.6;
-}
-
-
-/* Liste avec puce fonticon */
-.fa-ul { margin: 0; }
-	.fa-ul > li {
-		margin-bottom: 1em;
-		color: black;
-	}
-
-.fa-li {
-    position: relative;
-    left: inherit;
-    top: inherit;
-    width: inherit;
-   	float: none;
-}
+/* Header */
+header { box-shadow: 0px 10px 9px -9px rgba(153,156,153,0.37); }
 
 
 /* Formulaire contact */
@@ -115,25 +96,3 @@ aside {
 		padding: .3rem .8rem;
 		border: none;
 	}
-
-
-/* Header */
-header {
-	position: relative;
-	z-index: 10;
-	box-shadow: 0px 10px 9px -9px rgba(153,156,153,0.37);
-}
-
-
-/* Footer */
-footer h3 {
-	width : 100%;
-	text-transform: uppercase;
-	font-size: 1em;
-	margin-top: 0em;
-}
-
-footer div {
-	width : 100%;
-	margin-bottom: 0.5em;
-}
