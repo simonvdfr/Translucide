@@ -133,7 +133,7 @@ save = function() //callback
 
 	data["tpl"] = $("#admin-bar #tpl").val();// Template
 
-	data["date-insert"] = $("#admin-bar #date-insert").val();// Template
+	data["date-insert"] = $("#admin-bar #date-insert").val();// Date de création de la page
 	
 
 	get_content(".content");// Contenu de la page
@@ -1093,7 +1093,7 @@ $(function()
 	$("#admin-bar #permalink").val(permalink);
 	$("#admin-bar #type").val(type);
 	$("#admin-bar #tpl").val(tpl);
-	$("#admin-bar #date-insert").val(date_insert);
+	$("#admin-bar #date-insert").val($("meta[property='article:published_time']").last().attr("content"));
 
 
 	// Checkbox homepage si c'est une page

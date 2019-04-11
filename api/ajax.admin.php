@@ -693,7 +693,7 @@ switch($_GET['mode'])
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
 			$sql .= "user_update = '".(int)$_SESSION['uid']."', ";
 			$sql .= "date_update = NOW(), ";
-			$sql .= "date_insert = '".addslashes($_POST['date-insert'])."' ";
+			$sql .= "date_insert = '".addslashes(date('Y-m-d H:i:s', strtotime($_POST['date-insert'])))."' ";
 			$sql .= "WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
 			$connect->query($sql);
 
