@@ -1,6 +1,6 @@
 /* Inspiré par knacss.com (Raphael Goetter) et donc normalize.css (Nicolas Gallagher & Jonathan Neal) */
 
-/* Reset' */
+/* Reset */
 
 html {
 	font-family: sans-serif;
@@ -1293,6 +1293,7 @@ header #logo { transition: opacity .5s; }
 .fa-money:before { content: '\f0d6'; } /* '' */
 .fa-mail-alt:before { content: '\f0e0'; } /* '' */
 .fa-linkedin:before { content: '\f0e1'; } /* '' */
+.fa-angle-double-up:before { content: '\f102'; } /* '' */
 .fa-quote-left:before { content: '\f10d'; } /* '' */
 .fa-quote-right:before { content: '\f10e'; } /* '' */
 .fa-help:before { content: '\f128'; } /* '' */
