@@ -84,7 +84,7 @@ switch($_GET['mode'])
 									</div>
 								</div>
 								
-								<div class="fl">
+								<div class="fl mrl">
 									<div class="small"><?_e("Template")?></div>
 									<div>
 										<select id="tpl">
@@ -98,6 +98,13 @@ switch($_GET['mode'])
 											}
 											?>	
 										</select>
+									</div>
+								</div>	
+
+								<div class="fl">
+									<div class="small"><?_e("Creation date")?></div>
+									<div>
+										<input type="text" id="date-insert" class="w150p">
 									</div>
 								</div>
 
@@ -685,7 +692,8 @@ switch($_GET['mode'])
 			$sql .= "type = '".$type."', ";
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
 			$sql .= "user_update = '".(int)$_SESSION['uid']."', ";
-			$sql .= "date_update = NOW() ";
+			$sql .= "date_update = NOW(), ";
+			$sql .= "date_insert = '".addslashes($_POST['date-insert'])."' ";
 			$sql .= "WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
 			$connect->query($sql);
 

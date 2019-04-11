@@ -132,6 +132,8 @@ save = function() //callback
 	data["type"] = $("#admin-bar #type").val();// Type de contenu
 
 	data["tpl"] = $("#admin-bar #tpl").val();// Template
+
+	data["date-insert"] = $("#admin-bar #date-insert").val();// Template
 	
 
 	get_content(".content");// Contenu de la page
@@ -1091,6 +1093,7 @@ $(function()
 	$("#admin-bar #permalink").val(permalink);
 	$("#admin-bar #type").val(type);
 	$("#admin-bar #tpl").val(tpl);
+	$("#admin-bar #date-insert").val(date_insert);
 
 
 	// Checkbox homepage si c'est une page

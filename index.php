@@ -333,6 +333,7 @@ if(!$ajax)
 			tag = "<?=encode(@$tag)?>";
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
+			date_insert = "<?=@$res['date_insert']?>";
 		</script>
 
 		<!--[if lt IE 9]>

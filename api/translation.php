@@ -62,6 +62,7 @@ $add_translation = array(
 	
 	"Template" => array("fr" => "Modèle de page"),
 	"Type of page" => array("fr" => "Type de page"),
+	"Creation date" => array("fr" => "Date de création"),
 	
 	"Image on social networks" => array("fr" => "Image sur les réseaux sociaux"),
 	
