@@ -364,8 +364,8 @@ $(function()
 
 
 
-	// SMOOTHSCOLL SUR LES ANCRES
-	$(document).on("click", "a[href^='#']", function(event) {
+	// SMOOTHSCOLL SUR LES ANCRES // pas sur les onglet d'ajout de contenu
+	$(document).on("click", "a[href^='#']:not(.ui-tabs-anchor)", function(event) {
 		event.preventDefault();
 
 		if(typeof lucide === 'undefined')// Si pas en mode edit
