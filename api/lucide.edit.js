@@ -2023,7 +2023,7 @@ $(function()
 	$(".module .animation").removeClass("animation fire");
 
 	// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
-	$(".module").after("<div class='module-bt'><a href='javascript:move_module();'><i class='fa fa-fw fa-arrows'></i> "+__("Move")+"</a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus-square-o'></i> "+__("Add a module")+"</a></div>");
+	$(".module").after("<div class='module-bt'><a href='javascript:move_module();'><i class='fa fa-fw fa-arrows'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus-square-o'></i><span> "+__("Add a module")+"</span></a></div>");
 	
 	// Force le parent en relatif pour bien positionner les boutons d'ajout
 	$(".module-bt").parent().addClass("relative");
