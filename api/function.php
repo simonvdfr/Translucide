@@ -445,6 +445,9 @@ function module($module = "module")
 			// Numéro de l'occurence du module
 			$num_module = $exp_key[(count($exp_key)-1)];
 
+			// Si une variable dans la zone originale duplicable (0) on la raz par sécurité
+			if($num_module == 0) $GLOBALS['content'][$key] = "";
+
 			// Nom distinctif du module (txt, img...)
 			$type_module = rtrim($type_num_module, "-".$num_module);
 
