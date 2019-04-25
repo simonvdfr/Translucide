@@ -87,7 +87,7 @@
 
 			<?if(isset($content_fiche['texte'])) echo word_cut($content_fiche['texte'], '350')."...";?>
 
-			<div class="fr"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="bt bg-color bold"><?_e("Lire l'article")?></a></div>
+			<div class="fr mtm"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="bt bg-color bold"><?_e("Lire l'article")?></a></div>
 
 		</article>
 		<?
