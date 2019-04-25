@@ -409,6 +409,15 @@ function bg($key = null, $filter = array())
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
 
+	// Si contenu global on rapatri le contenu depuis la table méta
+	if(isset($filter['global']))
+	{
+		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
+		$res = $sel->fetch_assoc();
+
+		$GLOBALS['content'][$key] = $res['val'];
+	}
+	
 	// Si pas d'array et qu'il y a une variable c'est que c'est un lazyload
 	if(!is_array($filter) and isset($filter)) $filter = array("lazy" => true);
 
