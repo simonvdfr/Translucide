@@ -503,7 +503,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		/* border: 1px solid #909090; */	
 
 		color: #fff;/*#7AD2D9*/
-		font-size: inherit;
+		font-size: 1.5rem;/*inherit*/
 		font-family: sans-serif;
 		text-shadow: none;/*1px 1px 1px #2c5f66*/
 		text-decoration: none;
