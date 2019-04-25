@@ -2010,7 +2010,7 @@ $(function()
 	}
 
 	// Désactive le lien sur le bloc
-	$(".module li > a").attr("href", "javascript:void(0)").css("cursor","default");
+	//$(".module li > a").attr("href", "javascript:void(0)").css("cursor","default");
 
 	// Désactive les bulles d'information
 	//$(".module li a").tooltip("disable");
@@ -2137,19 +2137,21 @@ $(function()
 
 
 	/************** AUTOCOMPLETE DE SUGGESTION DES PAGES EXISTANTES POUR L'AJOUT DE LIEN **************/
-	$("#txt-tool .option #link, .editable-href").autocomplete({
-		minLength: 0,
-		source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
-		select: function(event, ui) { 
-			$(this).val(ui.item.value);// Action au click sur la selection
-		}
-	})
-	.focus(function(){
-		$(this).data("uiAutocomplete").search($(this).val());// Ouvre les suggestions au focus
-	})
-	.autocomplete("instance")._renderItem = function(ul, item) {// Mise en page des résultats
-      	return $("<li>").append("<div title='"+item.value+"'>"+item.label+" <span class='grey italic'>"+item.type+"</span></div>").appendTo(ul);
-    };
+	$(document).on("keydown.autocomplete", "#txt-tool .option #link, .editable-href", function() {
+		$(this).autocomplete({
+			minLength: 0,
+			source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
+			select: function(event, ui) { 
+				$(this).val(ui.item.value);// Action au click sur la selection
+			}
+		})
+		.focus(function(){
+			$(this).data("uiAutocomplete").search($(this).val());// Ouvre les suggestions au focus
+		})
+		.autocomplete("instance")._renderItem = function(ul, item) {// Mise en page des résultats
+	      	return $("<li>").append("<div title='"+item.value+"'>"+item.label+" <span class='grey italic'>"+item.type+"</span></div>").appendTo(ul);
+	    };
+	});
 
     
 
