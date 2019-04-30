@@ -134,11 +134,11 @@ function page($num_total, $page)
 		$num_page = ceil($num_total/$num_pp);
 		
 		// Page 1
-		?><li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
+		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
 
 		if($num_page > 10 and $page >= 10)// + de 10 page
 		{
-			?><li class="fl mls mtt">...</li><?
+			?><li class="fl mrs mtt">...</li><?
 			
 			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
 				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
@@ -147,14 +147,14 @@ function page($num_total, $page)
 		else// - de 10 page
 		{
 			for($i = 2; $i <= 10 and $i < $num_page; $i++){?>
-				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+				<li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 
 		if($num_page > 10 and $page < ($num_page - 2)) {?><li class="fl mls mtt">...</li><?}
 
 		// Page final
-		?><li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
+		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
 
 	}?>
 	</ul>
