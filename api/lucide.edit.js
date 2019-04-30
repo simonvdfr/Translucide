@@ -83,7 +83,7 @@ get_content = function(content)
 	});
 	
 	// Contenu des background images éditables
-	$(document).find(content+" [data-bg], "+content+"[data-bg]").each(function() {
+	$(document).find(content+" [data-bg]:not([data-global]), "+content+"[data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 		
@@ -161,6 +161,10 @@ save = function() //callback
 	// Image
 	$(document).find(".content .editable-media.global img").each(function() {
 		if($(this).attr("src")) data["global"][$(this).closest(".editable-media").attr("id")] = $(this).attr("src");
+	});
+	// BG
+	$(document).find(".content [data-bg][data-global]").each(function() {
+		if($(this).attr("data-bg")) data["global"][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 
 
@@ -1093,7 +1097,7 @@ $(function()
 	$("#admin-bar #permalink").val(permalink);
 	$("#admin-bar #type").val(type);
 	$("#admin-bar #tpl").val(tpl);
-	$("#admin-bar #date-insert").val($("meta[property='article:published_time']").last().attr("content"));
+	$("#admin-bar #date-insert").val($("meta[property='article:published_time']").last().attr("content").slice(0, 19).replace('T', ' ')).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
 
 
 	// Checkbox homepage si c'est une page

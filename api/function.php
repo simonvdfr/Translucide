@@ -425,6 +425,8 @@ function bg($key = null, $filter = array())
 
 	echo" data-id='".encode($key)."' data-bg=\"".$url."\"";
 
+	if(isset($filter['global'])) echo" data-global='true'";
+
 	if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
 
 	// Si lazy load des images de fond
