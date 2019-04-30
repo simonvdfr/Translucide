@@ -1097,7 +1097,7 @@ $(function()
 	$("#admin-bar #permalink").val(permalink);
 	$("#admin-bar #type").val(type);
 	$("#admin-bar #tpl").val(tpl);
-	$("#admin-bar #date-insert").val($("meta[property='article:published_time']").last().attr("content").slice(0, 19).replace('T', ' ')).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
+	$("#admin-bar #date-insert").val($("meta[property='article:published_time']").last().attr("content").slice(0, 19).replace('T', ' ')).datepicker({dateFormat: 'yy-mm-dd 00:00:00', firstDay: 1});
 
 
 	// Checkbox homepage si c'est une page
