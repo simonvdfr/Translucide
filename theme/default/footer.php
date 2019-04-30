@@ -2,9 +2,9 @@
 
 <footer>
 
-	<section class="grid mw960p center tl">
+	<section class="grid mw960p center">
 
-		<article class="w33">
+		<article>
 
 			<h3 class="medium up"><?txt('footer-titre-contact')?></h3>
 			<div><?txt('footer-texte-contact')?></div>
@@ -12,7 +12,7 @@
 		</article>
 
 
-		<article class="w33">
+		<article>
 
 			<h3 class="medium up"><?txt('footer-titre-actu')?></h3>
 
@@ -32,7 +32,7 @@
 		</article>
 
 
-		<article class="w33">
+		<article>
 
 			<h3 class="medium up"><?txt('footer-titre-suivez-nous')?></h3>
 			<div class="color bigger"><?txt('footer-texte-suivez-nous')?></div>

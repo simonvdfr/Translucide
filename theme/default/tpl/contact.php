@@ -95,15 +95,15 @@ else// Affichage du formulaire
 	</section>
 
 
-	<section class="mw960p mod center mtl">
+	<section class="mw960p mod center">
 
-		<article class="w70 center prl pbl mbl">
+		<article class="w80">
 
-			<h2 class="mtn"><?txt('sstitre')?></h2>
+			<h2><?txt('sstitre')?></h2>
 
 			<div><?txt('texte')?></div>
 
-			<form id="contact" class="mat">
+			<form id="contact">
 
 				<div>
 					<input type="email" name="email" id="email" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
