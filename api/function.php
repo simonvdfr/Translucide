@@ -359,6 +359,8 @@ function media($key = null, $filter = array())
 			(isset($size[1])?'max-height:'.$size[1].'px':'').
 			"'";
 
+		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
+
 	echo">";
 
 		if(isset($img))// C'est une image
