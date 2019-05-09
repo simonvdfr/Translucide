@@ -389,7 +389,7 @@ function media($key = null, $filter = array())
 				// Image map
 				if(isset($filter['usemap'])) echo" usemap='".@$filter['usemap']."'";
 
-				echo" atl=\"\" class='";
+				echo" alt=\"\" class='";
 					if(isset($size[0]) and isset($size[1])) echo"crop";
 					if(isset($filter['zoom'])) echo" zoom";
 					if(isset($filter['class'])) echo" ".$filter['class'];
