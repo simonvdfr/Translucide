@@ -49,7 +49,7 @@ switch($_GET['mode'])
 
 				<div id="meta" class="fl mat w30 no-small-screen">
 
-					<input type="text" id="title" value="" placeholder="<?_e("Page title")?>" title="<?_e("Page title")?>" maxlength="60" class="w100 bold">
+					<input type="text" id="title" value="" placeholder="<?_e("Page title")?>" title="<?_e("Page title")?>" maxlength="70" class="w100 bold">
 
 					<div class="w50">
 						<div class="tooltip slide-left fire pas mas mlt">

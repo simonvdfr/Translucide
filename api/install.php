@@ -381,7 +381,7 @@ switch(@$_GET['mode'])
 								`type` varchar(20) NOT NULL DEFAULT 'page',
 								`tpl` varchar(80) NOT NULL,
 								`url` varchar(60) DEFAULT NULL,
-								`title` varchar(60) NOT NULL,
+								`title` varchar(70) NOT NULL,
 								`description` varchar(160) DEFAULT NULL,
 								`content` longtext,
 								`user_update` bigint(20) UNSIGNED DEFAULT NULL,
