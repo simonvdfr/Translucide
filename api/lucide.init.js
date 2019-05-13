@@ -471,16 +471,20 @@ $(function()
 			var parallax_top = $(this).offset().top;
 			var parallax_height = $(this).outerHeight();
 			var parallax_bottom = parallax_top + parallax_height;
+			var parallax_speed = $(this).data("parallax");
+
+			// vitesse de défilement : 1 = image a 100% à la fin du scroll / 2|4 => on divise pour un défilement plus lent
+			if(typeof parallax_speed === 'undefined') var parallax_speed = 2;
 
 			// Si un bg parallax entre dans le champ de vision on le scroll
 			if((parallax_top <= window_bottom) && (parallax_bottom >= window_top))
 			{
-				// / 2|4 => on divise pour un défilement plus lent
+				
 				// Si bg déjà visible quand on arrive sur la page on change le calcule
 				if(parallax_top < window_height)
-					p100 = parseInt(((window_top) * 100 / (parallax_bottom))) / 4;		
+					p100 = parseInt(((window_top) * 100 / (parallax_bottom))) / parallax_speed;		
 				else 
-					p100 = parseInt(((window_bottom - parallax_top) * 100 / (window_height + parallax_height))) / 2;		
+					p100 = parseInt(((window_bottom - parallax_top) * 100 / (window_height + parallax_height))) / parallax_speed;		
 		
 				$(this).css("background-position", "50% " + p100 + "%");
 			}
