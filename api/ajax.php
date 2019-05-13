@@ -122,7 +122,7 @@ switch($_GET['mode'])
 
 			<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
 
-			<button class="bt internal fr mrn mtm pat white">
+			<button class="bt internal fr mrn mtm pat">
 				<?_e("Log in")?>
 				<i class="fa fa-key"></i>
 			</button>
