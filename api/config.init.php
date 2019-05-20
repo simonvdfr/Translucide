@@ -101,6 +101,7 @@ $GLOBALS['google_api_id'] = '';
 $GLOBALS['google_api_secret'] = '';
 $GLOBALS['google_map'] = '';
 $GLOBALS['google_analytics'] = '';
+$GLOBALS['google_verification'] = '';
 $GLOBALS['google_page'] = '';// https://plus.google.com/***
 
 // https://developer.yahoo.com/apps/

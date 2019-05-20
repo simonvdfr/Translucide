@@ -254,6 +254,7 @@ if(!$ajax)
 
 		<?if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 		<?if(@$GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
+		<?if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?}?>
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
