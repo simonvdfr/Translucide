@@ -247,13 +247,18 @@ if(!$ajax)
 
 		<meta property="og:title" content="<?=$title;?>">
 		<meta property="og:type" content="website">
-		<?if(isset($res['url'])){?><meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>"><?}?>
+		<?if(isset($res['url'])){?>
+		<meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>">
+		<link rel="canonical" href="<?=make_url($res['url'], array("domaine" => true))?>">
+		<?}?>
 		<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 		<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
 		<meta property="article:published_time" content="<?=date(DATE_ISO8601, strtotime(@$res['date_insert']));?>">
 
 		<?if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 		<?if(@$GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
+
+
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
