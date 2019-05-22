@@ -389,7 +389,11 @@ function media($key = null, $filter = array())
 				// Image map
 				if(isset($filter['usemap'])) echo" usemap='".@$filter['usemap']."'";
 
-				echo" alt=\"\" class='";
+				// Texte ALT
+				if(isset($GLOBALS['content'][$key.'-alt'])) echo' alt="'.$GLOBALS['content'][$key.'-alt'].'"';
+				else echo' alt=""';
+
+				echo" class='";
 					if(isset($size[0]) and isset($size[1])) echo"crop";
 					if(isset($filter['zoom'])) echo" zoom";
 					if(isset($filter['class'])) echo" ".$filter['class'];
@@ -449,23 +453,31 @@ function module($module = "module")
 	{
 		if(preg_match("/".$module."-/", $key) == 1)
 		{
+			// Récupère le denier chiffre (numéro d'occurance)
+			preg_match('/(\d+)(?!.*\d)/', $key, $match);
+			$num_module = @$match[1];
+
+			// Récupère le type d'élément (txt, img, href, alt...) = dernier texte
+			preg_match('/([a-z]+)(?!.*[a-z])/', $key, $match);
+			$type_module = $match[1];
+
+			// @todo supp = ancienne version qui ne marche pas avec les alt éditables
 			// Supprime le préfix du nom du module en cours
-			$type_num_module = str_replace($module."-", "", $key);
-
+			//$type_num_module = str_replace($module."-", "", $key);
 			// Sépare les elements du nom du module
-			$exp_key = explode("-", $type_num_module);
-
+			//$exp_key = explode("-", $type_num_module);
 			// Numéro de l'occurence du module
-			$num_module = $exp_key[(count($exp_key)-1)];
+			//$num_module = $exp_key[(count($exp_key)-1)];
+			// Nom distinctif du module (txt, img...)
+			//$type_module = rtrim($type_num_module, "-".$num_module);
 
 			// Si une variable dans la zone originale duplicable (0) on la raz par sécurité
 			if($num_module == 0) $GLOBALS['content'][$key] = "";
 
-			// Nom distinctif du module (txt, img...)
-			$type_module = rtrim($type_num_module, "-".$num_module);
-
 			// Création du tableau avec les elements de modules
 			$array_module[$module][$num_module][$type_module] = $GLOBALS['content'][$key];
+
+			//echo $key." | ".$type_module."*".$num_module."*".($num_module == 0)." : ".$GLOBALS['content'][$key]."<br>";
 		}
 	}
 

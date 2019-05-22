@@ -584,8 +584,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	}
 
 
-/* Hidden éditable & Href éditable */
-.editable-input, .editable-href, .editable-select.none {	
+/* Hidden éditable & Href éditable & alt éditable */
+.editable-input, .editable-href, .editable-select.none, .editable-alt {	
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
 	border-style: dotted;
 }
@@ -595,15 +595,28 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	position: relative;
     display: inline-block;
 }
-	.editable-href {	
+	.editable-href, .editable-alt {	
 		position: absolute;
 		text-align: center;		
 		font-size: initial;
 		font-family: Arial;
 		width: 100%;
 		display: block;
-		opacity:  0;
+		opacity: 0;
 	}
+
+/* ALT éditable */
+.editable-alt {
+	font-size: 1.2rem;
+	
+	top: 0;
+
+	z-index: 2;
+
+	opacity: 1;
+
+	display: none;
+}
 
 
 

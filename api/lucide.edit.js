@@ -33,6 +33,7 @@ add_translation({
 	"Destination URL" : {"fr" : "URL de destination"},	
 
 	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la s\u00e9lection"},
+	"Image caption" : {"fr" : "L\u00e9gende de l'image"},		
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
 	"Zoom link" : {"fr" : "Lien zoom"},
@@ -93,7 +94,7 @@ get_content = function(content)
 	});
 
 	// Contenu des select, input hidden, href éditables // content+" input, "+
-	$(document).find(content+" .editable-select, "+content+" .editable-input, "+content+" .editable-href").each(function() {
+	$(document).find(content+" .editable-select, "+content+" .editable-input, "+content+" .editable-href, "+content+" .editable-alt").each(function() {
 		if($(this).attr("type") == "checkbox") data[content_array][this.id] = $(this).prop("checked");			
 		else if($(this).val()) data[content_array][this.id] = $(this).val(); 
 	});
@@ -1761,7 +1762,7 @@ $(function()
 
 			if(widthRatio < 80 || heightRatio < 80) option+= "<li><button onclick=\"img_optim()\" class='orange'>"+ __("Optimize") +" <i class='fa fa-fw fa-resize-small'></i></button></li>";
 
-			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Légende de l'image") +"\" title=\""+ __("Légende de l'image") +"\" class='w150p small'></li>";
+			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='w150p small'></li>";
 
 			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-trash'></i></button></li>";
 
@@ -1816,8 +1817,14 @@ $(function()
 
 
 
-	// Icone d'upload et de supp du fichier
-	$(".editable-media").append("<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div><div class='clear-file' title=\""+ __("Delete file") +"\"><i class='fa fa-trash-o'></i> "+ __("Delete file") +"</a>");
+	// Icone d'upload + supp du fichier + alt éditable
+	$(".editable-media").append(function() {
+		var alt = $('img', this).attr("alt");
+		return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
+			"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
+			"<div class='clear-file' title=\""+ __("Delete file") +"\"><i class='fa fa-trash-o'></i> "+ __("Delete file") +"</div>"
+	});
+
 
 	// Rends éditables les images/fichiers
 	editable_media_event = function() {
@@ -1856,6 +1863,18 @@ $(function()
 					// Affichage de l'option pour supprimer le fichier si il y en a un
 					if($("img", this).attr("src") || $("a i", this).length || $(".fa-file-o", this).length)
 						$(".clear-file", this).fadeIn("fast");
+
+					// Affiche le alt éditable pour les images
+					if($("img", this).attr("src")) {
+						// Positionnement
+						/*$('#'+ $(this).attr("id") +'-alt').css({
+							"width": $("img", this).width(),
+							"left": $("img", this).parent().parent().offset().left
+						});*/
+
+						// Affichage
+						$('#'+ $(this).attr("id") +'-alt').css('display','block');;
+					}
 				},
 				// Out
 				"mouseleave.editable-media": function(event) {
@@ -1863,9 +1882,13 @@ $(function()
 					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
 					$(".clear-file", this).hide();
+
+					// Masque le alt éditable
+					$('#'+ $(this).attr("id") +'-alt').css('display','none');;
 				},
 				// Ouverture de la fenêtre des médias
 				"click.editable-media": function(event) {
+					// Suppression
 					if($(event.target).hasClass("clear-file")){
 						if($("img", this).attr("src")) $("img", this).attr("src","");// Supp img src
 						else {
@@ -1874,8 +1897,16 @@ $(function()
 						} 
 
 						$(".clear-file", this).hide();
+
+						return false;
+					}					
+					// Edition des alt
+					else if($(event.target).hasClass("editable-alt"))
+					{
+						return false;
 					}
-					else// Ouverture de la fenêtre de média
+					else
+					// Ouverture de la fenêtre de média
 					{
 						// Masque le hover de l'image/fichier sélectionnée
 						$(this).removeClass("drag-over");
@@ -2117,8 +2148,8 @@ $(function()
 		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"' value='"+ $(this).attr("href") +"'>";
 	});
 
-	// Rends éditables les images en background
-	// Note: on utilise animate car l'e 'input est inline-block par défaut avec le fadeIn
+	// Rends éditables les liens
+	// Note: on utilise animate car l'input est inline-block par défaut avec le fadeIn
 	editable_href_event = function(event) {
 		$("[data-href]")
 			.on({
@@ -2135,7 +2166,7 @@ $(function()
 			});		
 	}
 
-	// Exécute l'event sur les images
+	// Exécute l'event sur les liens éditables
 	editable_href_event();
 
 
