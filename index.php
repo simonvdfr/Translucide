@@ -260,7 +260,6 @@ if(!$ajax)
 		<?if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?}?>
 
 
-
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
@@ -348,6 +347,8 @@ if(!$ajax)
 
 	</head>
 	<body>
+
+	<div>
 	<?
 
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
@@ -377,7 +378,10 @@ if(!$ajax)
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
 	?>
 
+	</div>
+
 	<script>console.log("<?=benchmark()?>")</script>
+
 	</body>
 	</html>
 	<? 
