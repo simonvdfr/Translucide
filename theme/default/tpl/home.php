@@ -14,7 +14,7 @@
 
 	<div class="tc mbn">
 		<h1><?txt('titre')?></h1>
-		<h2 class="pbl"><?txt('sstitre-1')?></h2>
+		<h2 class="pbl"><?txt('sstitre')?></h2>
 	</div>
 
 	<div class="link w50 fl tc animation slide-left">
@@ -45,7 +45,7 @@
 	<article class="pbm mtl mod">
 
 		<!-- image : 470 x 320 -->
-		<div class="plm fl w40 animation slide-left imageArticle"><a <?href('lien-6')?> target="_blank"><?media('image-6', '470')?></a></div>
+		<div class="plm fl w40 animation slide-left"><a <?href('lien-6')?>><?media('image-6', '470')?></a></div>
 
 		<div class="pll fr w60">
 
@@ -72,7 +72,7 @@
 			</div>
 
 		<!-- image : 470 x 320 -->
-		<div class="prl fr w40 animation slide-right imageArticle"><a <?href('lien-map')?> target="_blank"><?media('image-7', '470')?></a></div>
+		<div class="prl fr w40 animation slide-right"><a <?href('lien-map')?>><?media('image-7', '470')?></a></div>
 
 
 	</article>
@@ -133,7 +133,7 @@
 						</div>
 
 						<div>
-							<h2 class="bold mod up bigger man nowrap tdn"><a href="<?=make_url($res_event['url']);?>" class="tdn" target="_blank"><?=$res_event['title']?></a></h2>
+							<h2 class="bold mod up bigger man nowrap tdn"><a href="<?=make_url($res_event['url']);?>" class="tdn"><?=$res_event['title']?></a></h2>
 
 							<div class="bold bt bg-color"><?_e("Lire")?></div>
 						</div>
