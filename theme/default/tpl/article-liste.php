@@ -44,18 +44,15 @@
 	$sql ="SELECT SQL_CALC_FOUND_ROWS ".$tc.".id, ".$tc.".* FROM ".$tc;
 
 	// Si filtre tag
-	if(isset($res_tag['cle']))
+	if(isset($tag))
 	$sql.=" RIGHT JOIN ".$table_meta."
 	ON
 	(
 		".$table_meta.".id = ".$tc.".id AND
 		".$table_meta.".type = 'tag' AND
-		".$table_meta.".cle = '".$res_tag['cle']."'
+		".$table_meta.".cle = '".$tag."'
 	)";
 
-	/*	$sql.=" WHERE (".$tc.".type='article' OR ".$tc.".type='event') AND ".$tc.".lang='".$lang."' ".$sql_state."
-	ORDER BY ".$tc.".date_insert DESC
-	LIMIT ".$start.", ".$num_pp;*/
 	$sql.=" WHERE (".$tc.".type='article') AND ".$tc.".lang='".$lang."' ".$sql_state."
 	ORDER BY ".$tc.".date_insert DESC
 	LIMIT ".$start.", ".$num_pp;
