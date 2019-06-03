@@ -90,7 +90,7 @@ get_content = function(content)
 		
 	// Checkbox fa
 	$(document).find(content+" .editable-checkbox").each(function() {
-		if($(this).hasClass("fa-check")) data[content_array][this.id] = true;					
+		if($(this).hasClass("fa-ok")) data[content_array][this.id] = true;					
 	});
 
 	// Contenu des select, input hidden, href éditables // content+" input, "+
@@ -113,7 +113,7 @@ save = function() //callback
 	if(memo_img) img_leave();
 
 	// Animation sauvegarde en cours (loading)
-	$("#save i").removeClass("fa-save").addClass("fa-spin fa-cog");
+	$("#save i").removeClass("fa-floppy").addClass("fa-spin fa-cog");
 
 	data = {};
 	
@@ -232,7 +232,7 @@ save = function() //callback
 
 // Changement d'état des boutons de sauvegarde
 tosave = function() {	
-	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-save");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
+	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-floppy");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
 	$("#save").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
 
@@ -353,17 +353,17 @@ anchor_option = function()
 	if(name) 
 	{
 		// Bouton pour supp l'ancre //exec_tool('unanchor');
-		$("#txt-tool #anchor-option").prepend("<a href=\"javascript:unanchor();void(0);\" id='unanchor'><i class='fa fa-close plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
+		$("#txt-tool #anchor-option").prepend("<a href=\"javascript:unanchor();void(0);\" id='unanchor'><i class='fa fa-cancel plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
 
 		$("#txt-tool #anchor-option #anchor").val(name);
 		$("#txt-tool #anchor-option button span").text(__("Change Anchor"));
-		$("#txt-tool #anchor-option button i").removeClass("fa-plus").addClass("fa-save");
+		$("#txt-tool #anchor-option button i").removeClass("fa-plus").addClass("fa-floppy");
 	}
 	else 
 	{
 		$("#txt-tool #anchor-option #anchor").val('');
 		$("#txt-tool #anchor-option button span").text(__("Add Anchor"));
-		$("#txt-tool #anchor-option button i").removeClass("fa-save").addClass("fa-plus");
+		$("#txt-tool #anchor-option button i").removeClass("fa-floppy").addClass("fa-plus");
 	}
 	
 	$("#txt-tool #anchor-option").show("slide", 300);
@@ -420,17 +420,17 @@ link_option = function()
 		if($(memo_node).hasClass("bt")) $("#class-bt").addClass("checked");
 
 		// Bouton pour supp le lien //exec_tool('unlink');
-		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-close plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
+		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-cancel plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
 
 		$("#txt-tool #link-option #link").val(href);
 		$("#txt-tool #link-option button span").text(__("Change Link"));
-		$("#txt-tool #link-option button i").removeClass("fa-plus").addClass("fa-save");
+		$("#txt-tool #link-option button i").removeClass("fa-plus").addClass("fa-floppy");
 	}
 	else 
 	{
 		$("#txt-tool #link-option #link").val('');
 		$("#txt-tool #link-option button span").text(__("Add Link"));
-		$("#txt-tool #link-option button i").removeClass("fa-save").addClass("fa-plus");
+		$("#txt-tool #link-option button i").removeClass("fa-floppy").addClass("fa-plus");
 	}
 	
 	// Affichage des options pour le lien
@@ -788,7 +788,7 @@ upload = function(source, file, resize)
 							$("[class*='fa-file']", source).remove();// Supprime les fichier déjà présent
 
 							// On crée un bloc fichier
-							$(source).append('<i class="fa fa-fw fa-file-o mega" title="'+ media +'"></i>');	
+							$(source).append('<i class="fa fa-fw fa-doc mega" title="'+ media +'"></i>');	
 						}
 						
 						// Nom du fichier final si dialog médias
@@ -846,7 +846,7 @@ get_file = function(id)
 		$("#"+$("#dialog-media-source").val()+" > .fa").remove();
 
 		// Ajoute le fichier
-		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-file-o mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
+		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
 	}
 	else// Insertion du lien vers le fichier dans bloc texte
 		exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
@@ -1132,7 +1132,7 @@ $(function()
 		$("#admin-bar #og-image img").attr("src", $("meta[property='og:image']").last().attr("content"));
 
 		// Option de suppression de l'image
-		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='fa fa-close absolute' title='"+ __("Remove") +"'></i></a>");
+		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='fa fa-cancel absolute' title='"+ __("Remove") +"'></i></a>");
 	}
 
 	// Ajout de l'état de la page
@@ -1436,7 +1436,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
 
 		if(typeof toolbox_InsertHorizontalRule != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='fa fa-fw fa-arrows-h'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='fa fa-fw fa-resize-horizontal'></i></button></li>";
 
 		if(typeof toolbox_viewsource != 'undefined') 
 			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
@@ -1445,7 +1445,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 
 		if(typeof toolbox_media != 'undefined') 
-			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture-o'></i></button></li>";
+			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture'></i></button></li>";
 
 		//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
 
@@ -1467,9 +1467,9 @@ $(function()
 
 				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
 
-				if(typeof toolbox_bt != 'undefined') toolbox+= "<a href=\"javascript:class_bt();void(0);\" title=\""+ __("Apparence d'un bouton") +"\" id='class-bt' class='o50 ho1'><i class='fa fa-square mlt mrt vam'></i></a>";
+				if(typeof toolbox_bt != 'undefined') toolbox+= "<a href=\"javascript:class_bt();void(0);\" title=\""+ __("Apparence d'un bouton") +"\" id='class-bt' class='o50 ho1'><i class='fa fa-login mlt mrt vam'></i></a>";
 				
-				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-external-link mlt mrt vam'></i></a>";
+				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-link-ext mlt mrt vam'></i></a>";
 
 				toolbox+= "<button onclick=\"link()\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 
@@ -1822,7 +1822,7 @@ $(function()
 		var alt = $('img', this).attr("alt");
 		return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
 			"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
-			"<div class='clear-file' title=\""+ __("Delete file") +"\"><i class='fa fa-trash-o'></i> "+ __("Delete file") +"</div>"
+			"<div class='clear-file' title=\""+ __("Delete file") +"\"><i class='fa fa-trash'></i> "+ __("Delete file") +"</div>"
 	});
 
 
@@ -1861,7 +1861,7 @@ $(function()
 					$(".open-dialog-media", this).fadeIn("fast");
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
-					if($("img", this).attr("src") || $("a i", this).length || $(".fa-file-o", this).length)
+					if($("img", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
 						$(".clear-file", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
@@ -1892,7 +1892,7 @@ $(function()
 					if($(event.target).hasClass("clear-file")){
 						if($("img", this).attr("src")) $("img", this).attr("src","");// Supp img src
 						else {
-							$(".fa-file-o", this).remove();// Supp le fichier qui vien d'etre ajouté <i>
+							$(".fa-doc", this).remove();// Supp le fichier qui vien d'etre ajouté <i>
 							$("a", this).remove();// Supp le fichier déjà présent avec lien <a><i>
 						} 
 
@@ -1930,7 +1930,7 @@ $(function()
 	
 	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
 	$("[data-bg]").addClass("editable-bg");
-	$("[data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture-o'></i></a></div>");
+	$("[data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
 
 	// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
 	clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
@@ -2014,7 +2014,7 @@ $(function()
 	move_module = function() {
 
 		// Change le style du bouton et l'action
-		$(".module-bt .fa-arrows").css("transform","scale(.5)");
+		$(".module-bt .fa-move").css("transform","scale(.5)");
 
 		// Désactive l'edition
 		$(".editable-media").off(".editable-media");
@@ -2031,7 +2031,7 @@ $(function()
 	unmove_module = function() {
 
 		// Change le style du bouton et l'action
-		$(".module-bt .fa-arrows").css("transform","scale(1)");
+		$(".module-bt .fa-move").css("transform","scale(1)");
 
 		// Change l'action sur le lien 'move'
 		$(".module-bt [href='javascript:unmove_module();']").attr("href","javascript:move_module();");
@@ -2058,7 +2058,7 @@ $(function()
 	$(".module .animation").removeClass("animation fire");
 
 	// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
-	$(".module").after("<div class='module-bt'><a href='javascript:move_module();'><i class='fa fa-fw fa-arrows'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus-square-o'></i><span> "+__("Add a module")+"</span></a></div>");
+	$(".module").after("<div class='module-bt'><a href='javascript:move_module();'><i class='fa fa-fw fa-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus'></i><span> "+__("Add a module")+"</span></a></div>");
 	
 	// Force le parent en relatif pour bien positionner les boutons d'ajout
 	$(".module-bt").parent().addClass("relative");
@@ -2135,8 +2135,8 @@ $(function()
 		if($(this).attr("for")) var id = $(this).attr("for");
 		else var id = this.id;
 
-		if($("#"+id).hasClass("fa-check")) $("#"+id).removeClass("fa-check yes").addClass("fa-close no");
-		else $("#"+id).removeClass("fa-close no").addClass("fa-check yes");
+		if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
+		else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
 	})
 
 
@@ -2420,7 +2420,7 @@ $(function()
 			// Affiche la liste des medias
 			$.each(medias_clean, function(media, type) {
 				if(type == "img") $(".dialog-del ul").append("<li><label for=\""+ media +"\"><img src=\""+ media +"\" title=\""+ media +"\"></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
-				else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-file-o biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+				else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-doc biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
 			});
 
 			// Au click sur la checkbox générale on coche tous les médias ont supprimé

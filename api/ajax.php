@@ -186,7 +186,6 @@ switch($_GET['mode'])
 			<meta name="robots" content="noindex, nofollow">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
 			<link rel="stylesheet" href="global<?=$GLOBALS['min']?>.css?">
 			<link rel="stylesheet" href="lucide.css?">
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
@@ -204,8 +203,8 @@ switch($_GET['mode'])
 					max-width: 420px;
 					margin: auto;
 				}
-				.fa-refresh { display: none; }
-				.fa-sign-out { display: none; }
+				.fa-arrows-cw { display: none; }
+				.fa-logout { display: none; }
 			</style>
 		</head>
 		<body>
@@ -257,12 +256,12 @@ switch($_GET['mode'])
 		<div class="absolute">
 			<div class="tooltip slide-left fire pas mas mlt mod">
 				
-				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-sign-out big"></i></div>
+				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-logout big"></i></div>
 
 				<?if(@$_SESSION['auth']['edit-user']) {?>
 				<div id="add-user" class="fr prs" title="<?_e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
 				<div id="list-user" class="fr prs" title="<?_e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
-				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-id-card big vam"></i></div>
+				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-user big vam"></i></div>
 				<?}?>				
 
 				<div class="load">
@@ -379,11 +378,11 @@ switch($_GET['mode'])
 
 		while($res = $sel->fetch_assoc())
 		{
-			if($res['state'] == "active") $state = "check";
+			if($res['state'] == "active") $state = "ok";
 			elseif($res['state'] == "moderate") $state = "eye";
-			elseif($res['state'] == "email") $state = "envelope";
+			elseif($res['state'] == "email") $state = "mail";
 			elseif($res['state'] == "blacklist") $state = "lock";
-			elseif($res['state'] == "deactivate") $state = "close";
+			elseif($res['state'] == "deactivate") $state = "cancel";
 
 			echo"
 			<li class='plt prt' onclick=\"select_user('".$res['id']."');\">
@@ -534,11 +533,11 @@ switch($_GET['mode'])
 				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
 				<? if(@$_SESSION['auth']['edit-user']){?>
 					<select id="state" class="fa-select">
-						<option value="active">&#xf00c; <?_e("Active")?></option>
-						<option value="moderate">&#xf06e; <?_e("Moderate")?></option>
-						<option value="email">&#xf0e0; <?_e("User email")?></option>
-						<option value="blacklist">&#xf023; <?_e("Blacklist")?></option>
-						<option value="deactivate">&#xf00d; <?_e("Deactivate")?></option>
+						<option value="active">&#xe806; <?_e("Active")?></option>
+						<option value="moderate">&#xe80d; <?_e("Moderate")?></option>
+						<option value="email">&#xe800; <?_e("User email")?></option>
+						<option value="blacklist">&#xe80b; <?_e("Blacklist")?></option>
+						<option value="deactivate">&#xe807; <?_e("Deactivate")?></option>
 					</select>
 					<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
 				<?}else{?>
@@ -549,17 +548,17 @@ switch($_GET['mode'])
 			<div class="mbs" style="max-height: 100px;">
 				<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
 				<select id="auth" class="fa-select" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
-					<option value="edit-admin">&#xf21b; <?_e("Managing admins")?></option>
-					<option value="edit-user">&#xf007; <?_e("Managing users")?></option>
+					<option value="edit-admin">&#xe81f; <?_e("Managing admins")?></option>
+					<option value="edit-user">&#xe803; <?_e("Managing users")?></option>
 
-					<option value="edit-config">&#xf013; <?_e("Edit Config")?></option>
+					<option value="edit-config">&#xe815; <?_e("Edit Config")?></option>
 
-					<option value="edit-nav">&#xf0ca; <?_e("Edit menu")?></option>
-					<option value="edit-header">&#xf0a6; <?_e("Edit header")?></option>
-					<option value="edit-footer">&#xf0a7; <?_e("Edit footer")?></option>
+					<option value="edit-nav">&#xe825; <?_e("Edit menu")?></option>
+					<option value="edit-header">&#xe83b; <?_e("Edit header")?></option>
+					<option value="edit-footer">&#xe81d; <?_e("Edit footer")?></option>
 
-					<option value="add-media">&#xf093; <?_e("Send Files")?></option>
-					<option value="edit-media">&#xf07b; <?_e("Edit Files")?></option>
+					<option value="add-media">&#xe82d; <?_e("Send Files")?></option>
+					<option value="edit-media">&#xf114; <?_e("Edit Files")?></option>
 					
 					<?
 					//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
@@ -570,8 +569,8 @@ switch($_GET['mode'])
 					}
 					?>
 
-					<option value="add-media-public">&#xf114; <?_e("Public file")?></option>
-					<option value="edit-public">&#xf0a1; <?_e("Public content")?></option>
+					<option value="add-media-public">&#xe82d; <?_e("Public file")?></option>
+					<option value="edit-public">&#xe803; <?_e("Public content")?></option>
 				</select>
 				<script>
 				$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
@@ -594,7 +593,7 @@ switch($_GET['mode'])
 
 				<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
 
-				<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh vam"></i></a>
+				<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
 			</div>
 
 			<?if($GLOBALS['facebook_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="facebook"><?_e("Facebook id")?></label> <input type="text" id="oauth[facebook]" value="<?=$oauth['facebook']?>" class="w60 small search_user_id"></div><?}?>
@@ -632,14 +631,14 @@ switch($_GET['mode'])
 
 			<button id="save-user" class="fr mat small">
 				<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
-				<i class="fa fa-fw fa-<?=($uid?"save":"plus")?> big white"></i>
+				<i class="fa fa-fw fa-<?=($uid?"floppy":"plus")?> big white"></i>
 			</button>
 		
 		</form>
 
 		<script>
 		user_tosave = function() {
-			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-save"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
+			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-floppy"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
 			$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 		}
 
@@ -707,7 +706,7 @@ switch($_GET['mode'])
 				event.preventDefault();
 					
 				// Animation sauvegarde en cours (loading)
-				$("#save-user i").removeClass("fa-save").removeClass("fa-plus").addClass("fa-spin fa-cog");
+				$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
 				
 				data = {};
 
@@ -937,7 +936,7 @@ switch($_GET['mode'])
 					if(!$connect->error){
 						if(@$_REQUEST['uid']){?>// Update réussit
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
 						<?}
@@ -945,7 +944,7 @@ switch($_GET['mode'])
 
 							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 							
 							<?if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users

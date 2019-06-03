@@ -330,7 +330,7 @@ function media($key = null, $filter = array())
 				$img = true; 
 			break;
 
-			default: $fa = "file-o"; break;
+			default: $fa = "doc"; break;
 
 			case"zip": $fa = "file-archive"; break;
 			case"msword": $fa = "file-word"; break;
@@ -886,8 +886,6 @@ function login($level = 'low', $auth = null, $quiet = null)
 	{
 		?>
 		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
-
-		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css">
 

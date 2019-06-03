@@ -84,7 +84,7 @@ error = function(txt, fadeout){
 	.fadeIn();
 
 	// Box avec le message d'erreur fa-times
-	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-attention fa-warning mrs'></i>" + txt + "<i class='fa fa-cancel fa-close absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
+	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-attention mrs'></i>" + txt + "<i class='fa fa-cancel absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
 	var height = $("#error").outerHeight();
 	
 	// Affichage de la box
@@ -117,7 +117,7 @@ light = function(txt, fadeout){
 	$("#highlight").remove();
 	
 	// Box avec le message d'information
-	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circled fa-info-circle color mrs'></i>" + txt + "</div>");
+	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circled color mrs'></i>" + txt + "</div>");
 	var height = $("#highlight").outerHeight();
 	
 	// Affichage
@@ -198,7 +198,7 @@ $.fn.make_password = function() {
 	var $this = this;
 
 	// Animation de chargement
-	$(".fa-refresh").addClass("fa-spin");
+	$(".fa-arrows-cw").addClass("fa-spin");
 
 	// Récupère un password
 	$.ajax({
@@ -206,7 +206,7 @@ $.fn.make_password = function() {
 		url: path+"api/ajax.php?mode=make-password",
 		data: {"nonce": $("#nonce").val()},
 		success: function(password){ 
-			$(".fa-refresh").removeClass("fa-spin");
+			$(".fa-arrows-cw").removeClass("fa-spin");
 			$this.attr("type","text").val(password);
 		}
 	});

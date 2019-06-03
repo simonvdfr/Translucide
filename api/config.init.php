@@ -164,12 +164,12 @@ $GLOBALS['auth_level'] = array(
 
 // Type de contenu ajoutable
 $GLOBALS['add-content'] = array(
-	//"product" => ["fa" => "fa-shopping-cart", "tpl" => "product"],
-	"article" => ["fa" => "fa-feed", "tpl" => "article"],
-	"event" => ["fa" => "fa-calendar-o", "tpl" => "event"],
-	//"video" => ["fa" => "fa-video-camera", "tpl" => "video"],
-	//"media" => ["fa" => "fa-file-pdf-o", "tpl" => "fichier"],
-	"page" => ["fa" => "fa-file-text-o", "tpl" => "page"]
+	//"product" => ["fa" => "fa-basket", "tpl" => "product"],
+	"article" => ["fa" => "fa-rss", "tpl" => "article"],
+	//"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],
+	//"video" => ["fa" => "fa-video", "tpl" => "video"],
+	//"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
+	"page" => ["fa" => "fa-doc-text", "tpl" => "page"]
 );
 
 
@@ -242,8 +242,6 @@ $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']
 
 
 // Librairie externe
-$GLOBALS['font_awesome'] = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
-
 $GLOBALS['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';
 
 $GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';

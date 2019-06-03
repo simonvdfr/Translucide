@@ -34,8 +34,6 @@ switch($_GET['mode'])
 			
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
-
 
 			<!-- Barre du haut avec bouton sauvegarder et option -->			
 			<div id="admin-bar" class="none">
@@ -43,7 +41,7 @@ switch($_GET['mode'])
 				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?_e("Show user info")?>"></i></div>
 				
 				<!-- list/bars -->
-				<div id="list-content" class="fl pat"><i class="fa fa-bars vam" title="<?_e("List of contents")?>"></i></div>
+				<div id="list-content" class="fl pat"><i class="fa fa-menu vam" title="<?_e("List of contents")?>"></i></div>
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?_e("Page title")?>"></i></div>
 
@@ -63,7 +61,7 @@ switch($_GET['mode'])
 								
 								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?_e("Home page")?></label></span>
 
-								<label id="refresh-permalink"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
+								<label id="refresh-permalink"><i class="fa fa-fw fa-arrows-cw"></i><?_e("Regenerate address")?></label>
 							</div>
 
 							<div class="mod mtm">
@@ -119,9 +117,9 @@ switch($_GET['mode'])
 
 				</div>		
 
-				<div id="close" class="fr mrt bigger" title="<?_e("Close the edit mode")?>"><i class="fa fa-fw fa-window-close-o"></i></div>
+				<div id="close" class="fr mrt bigger" title="<?_e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
 
-				<button id="save" class="fr mat small" title="<?_e("Save")?>"><span class="no-small-screen"><?_e("Save")?></span> <i class="fa fa-fw fa-save big"></i></button>
+				<button id="save" class="fr mat small" title="<?_e("Save")?>"><span class="no-small-screen"><?_e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
 
 				<button id="del" class="fr mat small o50 ho1 t5" title="<?_e("Delete")?>"><span class="no-small-screen"><?_e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
 
@@ -186,8 +184,6 @@ switch($_GET['mode'])
 		?>
 		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
-
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
 
 
@@ -239,7 +235,7 @@ switch($_GET['mode'])
 				<div class="mas mtm">
 					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
 					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
-					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-refresh"></i><?_e("Regenerate address")?></label>
+					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?_e("Regenerate address")?></label>
 				</div>
 
 			</div>
@@ -716,7 +712,7 @@ switch($_GET['mode'])
 					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
 				<?}?>
 
-				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
+				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
 			</script>
@@ -795,7 +791,7 @@ switch($_GET['mode'])
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-slash' title='".__("Deactivate")."'></i>").'</li>';
+			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__("Deactivate")."'></i>").'</li>';
 
 			$type = $res['type'];
 		}
@@ -908,13 +904,13 @@ switch($_GET['mode'])
 
 			<ul class="small">
 
-				<li data-filter="all"><a href="#media" title="<?_e("Media")?>"><i class="fa fa-files-o"></i> <span><?_e("Media")?></span></a></li>
+				<li data-filter="all"><a href="#media" title="<?_e("Media")?>"><i class="fa fa-doc"></i> <span><?_e("Media")?></span></a></li>
 
 				<!-- <li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?_e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Files")?></span></a></li> -->	
 
 				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?_e("Images")?>"><i class="fa fa-picture-o"></i> <span><?_e("Images")?></span></a></li> -->
 
-				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?_e("Resized")?>"><i class="fa fa-compress"></i> <span><?_e("Resized")?></span></a></li>
+				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?_e("Resized")?>"><i class="fa fa-resize-small"></i> <span><?_e("Resized")?></span></a></li>
 
 
 				<?if(isset($_REQUEST['dir']) and $_REQUEST['dir']){?>
@@ -952,7 +948,7 @@ switch($_GET['mode'])
 
 				// Option de resize à afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
-					var resize = "<a class='resize' title=\"<?_e("Get resized image");?>\"><i class='fa fa-fw fa-compress bigger'></i></a>";
+					var resize = "<a class='resize' title=\"<?_e("Get resized image");?>\"><i class='fa fa-fw fa-resize-small bigger'></i></a>";
 				else 
 					var resize = "";
 
@@ -964,7 +960,7 @@ switch($_GET['mode'])
 					if(mime[0] == "image") 
 						container += "<img src=''>" + resize;
 					else 
-						container += "<div class='file'><i class='fa fa-fw fa-file-o mega'></i><div>"+ file.name +"</div></div>"
+						container += "<div class='file'><i class='fa fa-fw fa-doc mega'></i><div>"+ file.name +"</div></div>"
 
 					container += "<div class='infos'></div>";
 
@@ -1013,7 +1009,7 @@ switch($_GET['mode'])
 				{
 					$("#dialog-media-width").val($("#resize-width").val());
 					$("#dialog-media-height").val($("#resize-height").val());
-					get_img(id, $('#resize-tool .fa-expand').hasClass('checked'));
+					get_img(id, $('#resize-tool .fa-resize-full').hasClass('checked'));
 				}
 			}
 
@@ -1043,8 +1039,8 @@ switch($_GET['mode'])
 					resize_tool = "<div id='resize-tool' class='toolbox'>";
 						resize_tool+= __("Width") +": <input type='text' id='resize-width' class='w50p'> ";
 						resize_tool+= __("Height") +": <input type='text' id='resize-height' class='w50p'>";
-						resize_tool+= "<a href=\"javascript:$('#resize-tool .fa-expand').toggleClass('checked');void(0);\"><i class='fa fa-fw fa-expand'></i>"+ __("Zoom link") +"</a> ";
-						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='fa fa-fw fa-cogs'></i> "+ __("Add") +"</button>";
+						resize_tool+= "<a href=\"javascript:$('#resize-tool .fa-resize-full').toggleClass('checked');void(0);\"><i class='fa fa-fw fa-resize-full'></i>"+ __("Zoom link") +"</a> ";
+						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='fa fa-fw fa-cog'></i> "+ __("Add") +"</button>";
 					resize_tool+= "</div>";
 			
 					$(".ui-dialog").append(resize_tool);
@@ -1338,7 +1334,7 @@ switch($_GET['mode'])
 					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
 					data-type="dir"
 					>
-						<div class="file"><i class="fa fa-fw fa-folder-o mega"></i><div>'.utf8_encode($val).'</div></div>
+						<div class="file"><i class="fa fa-fw fa-folder-empty mega"></i><div>'.utf8_encode($val).'</div></div>
 					</li>';
 				}
 			}
@@ -1365,23 +1361,23 @@ switch($_GET['mode'])
 						default:						
 							switch($ext)
 							{
-								default: $fa = "file-o"; break;
-								case"zip": $fa = "file-archive-o"; break;
-								case"msword": $fa = "file-word-o"; break;
-								case"vnd.ms-excel": $fa = "file-excel-o"; break;
-								case"vnd.ms-powerpoint": $fa = "file-powerpoint-o"; break;
-								case"pdf": $fa = "file-pdf-o"; break;
+								default: $fa = "doc"; break;
+								case"zip": $fa = "file-archive"; break;
+								case"msword": $fa = "file-word"; break;
+								case"vnd.ms-excel": $fa = "file-excel"; break;
+								case"vnd.ms-powerpoint": $fa = "file-powerpoint"; break;
+								case"pdf": $fa = "file-pdf"; break;
 							}
 						break;
 						case"text": 
 							switch($ext)
 							{
-								default: $fa = "file-o"; break;
-								case"plain": $fa = "file-text-o"; break;
-								case"html": $fa = "file-code-o"; break;
+								default: $fa = "doc"; break;
+								case"plain": $fa = "doc-text"; break;
+								case"html": $fa = "file-code"; break;
 							}
 						break;
-						case"video": $fa = "film"; break;
+						case"video": $fa = "video"; break;
 						case"audio": $fa = "volume-up"; break;
 					}
 					
@@ -1402,7 +1398,7 @@ switch($_GET['mode'])
 						if($type == "image") {
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-lazy="'.$src.'"':'').'>';
-							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-compress bigger"></i></a>';
+							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
 						}
 						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
