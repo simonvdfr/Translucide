@@ -19,7 +19,7 @@
 				foreach($GLOBALS['nav'] as $cle => $val)
 				{
 					// Menu sélectionné si page en cours ou article (actu)
-					if(get_url() == $val['href'] or ($res['type'] == "article" and $val['href'] == "actualites"))
+					if(get_url() == $val['href'] or (@$res['type'] == "article" and $val['href'] == "actualites"))
 						$selected = " selected";
 					else
 						$selected = "";
