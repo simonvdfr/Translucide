@@ -1567,14 +1567,20 @@ switch($_GET['mode'])
 			//$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';	
 			$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";	
 
-			// On récupère la css qui contient les icônes
-			if($GLOBALS['icons'])
-				$subject = file_get_contents($GLOBALS['icons']);
-			else
-				$subject = file_get_contents($GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/global.min.css");
+			// Url du fichier qui contient les icônes
+			if($GLOBALS['icons']) $file = $GLOBALS['icons'];
+			else $file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/global.min.css";
+
+
+			// On récupère le contenu du fichier css qui contient les icones
+			$content = curl($file);
+
+			// Nécessite allow_url_include
+    		//$content = file_get_contents($file);
 			
+
 			// On extrait seulement les icônes
-			preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
+			preg_match_all($pattern, $content, $matches, PREG_SET_ORDER);
 			//highlight_string(print_r($subject, true));
 			
 			// On crée un tableau propre
