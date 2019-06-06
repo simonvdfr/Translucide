@@ -32,14 +32,14 @@ switch($_GET['mode'])
 			<style>
 				/* Font Awesome pour bt connexion */
 				.loading:before {
-					content: "\f013" !important;
+					content: "\e815" !important;
 					animation: fa-spin 2s infinite linear;
 
 					border-right: none !important;
 					padding-right: 0 !important;
 				}
 				.down:before {
-					content: "\f0a7" !important;
+					content: "\e81d" !important;
 					animation: bounce-light .35s ease 6 alternate;
 
 					border-right: none !important;
