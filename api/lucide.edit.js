@@ -1970,7 +1970,7 @@ $(function()
 	/************** MODULE DUPLICABLE **************/
 	add_module = function(event)
 	{
-		module = $(event).parent().prev("ul").attr("id");
+		module = $(event).parent().prev("ul, ol").attr("id");
 
 		// On regarde qu'elle type d’élément éditable existe pour récupérer l'id le plus grand
 		if($("#" + module + " li .editable").length) var elem = $("#" + module + " li .editable");
