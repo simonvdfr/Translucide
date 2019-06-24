@@ -32,14 +32,14 @@ switch($_GET['mode'])
 			<style>
 				/* Font Awesome pour bt connexion */
 				.loading:before {
-					content: "\f013" !important;
+					content: "\e815" !important;
 					animation: fa-spin 2s infinite linear;
 
 					border-right: none !important;
 					padding-right: 0 !important;
 				}
 				.down:before {
-					content: "\f0a7" !important;
+					content: "\e81d" !important;
 					animation: bounce-light .35s ease 6 alternate;
 
 					border-right: none !important;
@@ -97,7 +97,7 @@ switch($_GET['mode'])
 				<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
 			<?}?>
 
-			<a href="javascript:login('internal');void(0);" class="bt connect internal"><?_e("Connection with");?> <?=($GLOBALS['sitename']);?></a>
+			<a href="javascript:login('internal');void(0);" class="bt connect internal short"><?_e("Connection with");?> <?=$_SERVER['HTTP_HOST'];?></a>
 
 			<?if($GLOBALS['facebook_api_secret']){?><a href="javascript:login('facebook');void(0);" class="bt connect facebook"><?_e("Connection with");?> Facebook</a><?}?>
 
@@ -122,7 +122,7 @@ switch($_GET['mode'])
 
 			<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
 
-			<button class="bt internal fr mrn mtm pat white">
+			<button class="bt internal fr mrn mtm pat">
 				<?_e("Log in")?>
 				<i class="fa fa-key"></i>
 			</button>
@@ -186,7 +186,6 @@ switch($_GET['mode'])
 			<meta name="robots" content="noindex, nofollow">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">	
 			<link rel="stylesheet" href="global<?=$GLOBALS['min']?>.css?">
 			<link rel="stylesheet" href="lucide.css?">
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
@@ -204,8 +203,8 @@ switch($_GET['mode'])
 					max-width: 420px;
 					margin: auto;
 				}
-				.fa-refresh { display: none; }
-				.fa-sign-out { display: none; }
+				.fa-arrows-cw { display: none; }
+				.fa-logout { display: none; }
 			</style>
 		</head>
 		<body>
@@ -257,12 +256,12 @@ switch($_GET['mode'])
 		<div class="absolute">
 			<div class="tooltip slide-left fire pas mas mlt mod">
 				
-				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-sign-out big"></i></div>
+				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-logout big"></i></div>
 
-				<?if($_SESSION['auth']['edit-user']) {?>
+				<?if(@$_SESSION['auth']['edit-user']) {?>
 				<div id="add-user" class="fr prs" title="<?_e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
 				<div id="list-user" class="fr prs" title="<?_e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
-				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-id-card big vam"></i></div>
+				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-user big vam"></i></div>
 				<?}?>				
 
 				<div class="load">
@@ -297,6 +296,8 @@ switch($_GET['mode'])
 		</script>
 		<?
 
+		// Pas de mysql close car déjà close dans le include ajax.php mode profil
+
 	break;
 
 
@@ -310,7 +311,7 @@ switch($_GET['mode'])
 		{
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
 			{
-				// Supprime les métas
+				// Supprime les métas //@todo migration supp au long terme (12/11/2018)
 				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
 
 				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
@@ -377,11 +378,11 @@ switch($_GET['mode'])
 
 		while($res = $sel->fetch_assoc())
 		{
-			if($res['state'] == "active") $state = "check";
+			if($res['state'] == "active") $state = "ok";
 			elseif($res['state'] == "moderate") $state = "eye";
-			elseif($res['state'] == "email") $state = "envelope";
+			elseif($res['state'] == "email") $state = "mail";
 			elseif($res['state'] == "blacklist") $state = "lock";
-			elseif($res['state'] == "deactivate") $state = "close";
+			elseif($res['state'] == "deactivate") $state = "cancel";
 
 			echo"
 			<li class='plt prt' onclick=\"select_user('".$res['id']."');\">
@@ -467,7 +468,10 @@ switch($_GET['mode'])
 			});
 			</script>
 			<?
-		}			
+		}	
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+
 	break;
 
 
@@ -499,9 +503,12 @@ switch($_GET['mode'])
 			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
 			$res = $sel->fetch_assoc();
 
-			// Récupération des infos sur l'utilisateur
-			$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-			$res_meta = $sel_meta->fetch_assoc();
+			//@todo migration supp au long terme (12/11/2018)
+			if(!@$GLOBALS['user_info_in_table_user']) {
+				// Récupération des infos sur l'utilisateur
+				$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+				$res_meta = $sel_meta->fetch_assoc();
+			}
 
 			$array_auth = explode(",", $res['auth']);// Les autorisations
 
@@ -524,13 +531,13 @@ switch($_GET['mode'])
 
 			<div class="mbt">
 				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
-				<? if($_SESSION['auth']['edit-user']){?>
+				<? if(@$_SESSION['auth']['edit-user']){?>
 					<select id="state" class="fa-select">
-						<option value="active">&#xf00c; <?_e("Active")?></option>
-						<option value="moderate">&#xf06e; <?_e("Moderate")?></option>
-						<option value="email">&#xf0e0; <?_e("User email")?></option>
-						<option value="blacklist">&#xf023; <?_e("Blacklist")?></option>
-						<option value="deactivate">&#xf00d; <?_e("Deactivate")?></option>
+						<option value="active">&#xe806; <?_e("Active")?></option>
+						<option value="moderate">&#xe80d; <?_e("Moderate")?></option>
+						<option value="email">&#xe800; <?_e("User email")?></option>
+						<option value="blacklist">&#xe80b; <?_e("Blacklist")?></option>
+						<option value="deactivate">&#xe807; <?_e("Deactivate")?></option>
 					</select>
 					<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
 				<?}else{?>
@@ -540,18 +547,18 @@ switch($_GET['mode'])
 
 			<div class="mbs" style="max-height: 100px;">
 				<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
-				<select id="auth" class="fa-select" multiple <?=(!$_SESSION['auth']['edit-admin']?"disabled":"");?>>
-					<option value="edit-admin">&#xf21b; <?_e("Managing admins")?></option>
-					<option value="edit-user">&#xf007; <?_e("Managing users")?></option>
+				<select id="auth" class="fa-select" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
+					<option value="edit-admin">&#xe81f; <?_e("Managing admins")?></option>
+					<option value="edit-user">&#xe803; <?_e("Managing users")?></option>
 
-					<option value="edit-config">&#xf013; <?_e("Edit Config")?></option>
+					<option value="edit-config">&#xe815; <?_e("Edit Config")?></option>
 
-					<option value="edit-nav">&#xf0ca; <?_e("Edit menu")?></option>
-					<option value="edit-header">&#xf0a6; <?_e("Edit header")?></option>
-					<option value="edit-footer">&#xf0a7; <?_e("Edit footer")?></option>
+					<option value="edit-nav">&#xe825; <?_e("Edit menu")?></option>
+					<option value="edit-header">&#xe83b; <?_e("Edit header")?></option>
+					<option value="edit-footer">&#xe81d; <?_e("Edit footer")?></option>
 
-					<option value="add-media">&#xf093; <?_e("Send Files")?></option>
-					<option value="edit-media">&#xf07b; <?_e("Edit Files")?></option>
+					<option value="add-media">&#xe82d; <?_e("Send Files")?></option>
+					<option value="edit-media">&#xf114; <?_e("Edit Files")?></option>
 					
 					<?
 					//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
@@ -562,8 +569,8 @@ switch($_GET['mode'])
 					}
 					?>
 
-					<option value="add-media-public">&#xf114; <?_e("Public file")?></option>
-					<option value="edit-public">&#xf0a1; <?_e("Public content")?></option>
+					<option value="add-media-public">&#xe82d; <?_e("Public file")?></option>
+					<option value="edit-public">&#xe803; <?_e("Public content")?></option>
 				</select>
 				<script>
 				$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
@@ -586,7 +593,7 @@ switch($_GET['mode'])
 
 				<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
 
-				<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh vam"></i></a>
+				<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
 			</div>
 
 			<?if($GLOBALS['facebook_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="facebook"><?_e("Facebook id")?></label> <input type="text" id="oauth[facebook]" value="<?=$oauth['facebook']?>" class="w60 small search_user_id"></div><?}?>
@@ -599,18 +606,19 @@ switch($_GET['mode'])
 
 			<?
 			// Si il y a des méta/infos complementaire pour cette utilisateur
-			if(is_array($GLOBALS['meta_user'])) 
+			if(is_array($GLOBALS['user_info'])) 
 			{		
 				?>
-				<div class="meta mbs"><?
-					
-					if($res_meta['val']) $metas = json_decode($res_meta['val'], true);
+				<div class="info mbs"><?
+						
+					//@todo migration supp au long terme (12/11/2018)
+					if(!@$GLOBALS['user_info_in_table_user'] and $res_meta['val']) $info = json_decode($res_meta['val'], true);
+					elseif($res['info']) $info = json_decode($res['info'], true);
 
-					//while(list($cle, $val) = each($GLOBALS['meta_user'])) PHP 7.2
-					foreach($GLOBALS['meta_user'] as $cle => $val)
+					foreach($GLOBALS['user_info'] as $cle => $val)
 					{
-						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="meta[<?=$cle?>]" value="<?=$metas[$cle]?>" class="w60"></div><?
-					}			
+						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=$info[$cle]?>" class="w60"></div><?
+					}
 					
 				?></div><?
 			}
@@ -623,14 +631,14 @@ switch($_GET['mode'])
 
 			<button id="save-user" class="fr mat small">
 				<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
-				<i class="fa fa-fw fa-<?=($uid?"save":"plus")?> big white"></i>
+				<i class="fa fa-fw fa-<?=($uid?"floppy":"plus")?> big white"></i>
 			</button>
 		
 		</form>
 
 		<script>
 		user_tosave = function() {
-			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-save"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
+			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-floppy"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
 			$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 		}
 
@@ -698,7 +706,7 @@ switch($_GET['mode'])
 				event.preventDefault();
 					
 				// Animation sauvegarde en cours (loading)
-				$("#save-user i").removeClass("fa-save").removeClass("fa-plus").addClass("fa-spin fa-cog");
+				$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
 				
 				data = {};
 
@@ -725,6 +733,9 @@ switch($_GET['mode'])
 		});
 		</script>
 		<?
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+
 	break;
 
 
@@ -736,7 +747,7 @@ switch($_GET['mode'])
 		{
 			include_once("db.php");// Connexion à la db		
 
-			$uid = $insert_user = $insert_meta = null;
+			$uid = $insert_user = $insert_info = null;
 
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
 			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) 
@@ -801,7 +812,13 @@ switch($_GET['mode'])
 
 			$email = $connect->real_escape_string($_POST['email']);
 			$sql .= "email = '".$email."', ";
-			
+
+			// Si informations supplémentaires sur l'utilisateur
+			if(isset($_POST['info']) and is_array($_POST['info'])) {
+				$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
+				$sql .= "info = '".$info."' ";
+			}
+
 			// Mot de passe
 			if($hashed_password) {
 				$sql .= "password = '".addslashes($hashed_password)."', ";
@@ -841,34 +858,38 @@ switch($_GET['mode'])
 
 				if($uid) 
 				{
+					// ANCIENNE METHODE POUR LES INFOS USERS //@todo migration supp au long terme (12/11/2018)
 					// On regarde si il n'y a pas déjà des donnée dans la base
-					$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-					$res_meta = $sel_meta->fetch_assoc();
-
-					// AJOUT DES DONNÉE EN MÉTA
-					if($uid and isset($_POST['meta']) and is_array($_POST['meta']))
+					if(!@$GLOBALS['user_info_in_table_user'])
 					{
-						if($res_meta['id']) 
-							$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
-						else 
-							$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
-						
-						$meta = $connect->real_escape_string(json_encode($_POST['meta'], JSON_UNESCAPED_UNICODE));
-						$sql .= "val = '".$meta."' ";
+						$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+						$res_meta = $sel_meta->fetch_assoc();
 
-						if($res_meta['id']) 
-							$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";
-						else 
-							$sql .= ", type = 'user_info', id = '".(int)$uid."'";
-						
-						$connect->query($sql);
-						
-						//echo "_POST['meta']<br>"; highlight_string(print_r($_POST['meta'], true));
-						//echo $sql;
+						// AJOUT DES DONNÉE EN MÉTA
+						if($uid and isset($_POST['info']) and is_array($_POST['info']))
+						{
+							if($res_meta['id']) 
+								$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
+							else 
+								$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
+							
+							$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
+							$sql .= "val = '".$info."' ";
 
-						if(!$connect->error) {	
-							// Si INSERT réussit						
-							if(!$res_meta['id']) $insert_meta = true;
+							if($res_meta['id']) 
+								$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";
+							else 
+								$sql .= ", type = 'user_info', id = '".(int)$uid."'";
+							
+							$connect->query($sql);
+							
+							//echo "_POST['info']<br>"; highlight_string(print_r($_POST['info'], true));
+							//echo $sql;
+
+							if(!$connect->error) {	
+								// Si INSERT réussit						
+								if(!$res_meta['id']) $insert_info = true;
+							}
 						}
 					}
 
@@ -880,7 +901,7 @@ switch($_GET['mode'])
 						unset($_POST['password_new'], $_POST['password_confirm']);
 						
 						// Sujet
-						$subject = "[".utf8_encode($GLOBALS['sitename'])."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
+						$subject = "[".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
 						
 						// Lien vers la fiche admin pour activation
 						$message = "<br><a href='".make_url("", array("domaine" => true))."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
@@ -915,7 +936,7 @@ switch($_GET['mode'])
 					if(!$connect->error){
 						if(@$_REQUEST['uid']){?>// Update réussit
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
 						<?}
@@ -923,7 +944,7 @@ switch($_GET['mode'])
 
 							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-check");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 							
 							<?if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users
@@ -953,6 +974,10 @@ switch($_GET['mode'])
 				</script>
 			<?}
 		}
+
+		// Supp ?? car include parfois
+		//if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+
 	break;
 
 
@@ -983,6 +1008,8 @@ switch($_GET['mode'])
 			else echo "false mail";
 		}
 		else echo "false nonce";
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
 	break;
 
@@ -1233,6 +1260,8 @@ switch($_GET['mode'])
 
 		//highlight_string(print_r($_SESSION, true));
 		//highlight_string(print_r($_REQUEST, true));
+
+		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
 	break;
 	

@@ -77,8 +77,17 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 /********** UNE PAGE EXISTE **********/
 if($res) 
 {
+	// Si on demande du https on force le domaine en https
+	if(strpos($GLOBALS['scheme'], 'https')) 
+	{
+		// Verif si https dans l'url
+		if(strpos($_SERVER['SCRIPT_URI'], 'https') === 0) $http = "https://";
+		else $http = "http://";
+	}
+	else $http = $GLOBALS['scheme'];//
+
 	// On verifie l'url pour eviter les duplicates : si erreur = redirection
-	if((@$_SERVER['HTTPS']?"https":"http")."://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
+	if($http.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
 	{
 		header($_SERVER['SERVER_PROTOCOL']." 301 Moved Permanently");		
 		header("location: ".make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))));
@@ -91,8 +100,9 @@ if($res)
 		if(!@$_SESSION['auth']['edit-'.$res['type']]) 
 		{
 			// On regarde si une template 503 est définie
-			$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
-			$res = $sel->fetch_assoc();
+			$sel_503 = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
+			$res_503 = $sel_503->fetch_assoc();
+			if($res_503['id']) $res = $res_503;
 
 			header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
 				
@@ -168,6 +178,16 @@ $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['d
 // Image pour les réseaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
 elseif(isset($GLOBALS['content']['alaune'])) $image = $GLOBALS['content']['alaune'];
+elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel-1'])) 
+{
+	if(isset($GLOBALS['content']['visuel'])) $image = $GLOBALS['content']['visuel'];
+	else $image = $GLOBALS['content']['visuel-1'];
+
+	// Si image plus grande (zoom)
+	$parse_url = parse_url($image);
+	parse_str($parse_url['query'], $get);
+	if(isset($get['zoom'])) $image = $get['zoom'];
+} 
 
 
 
@@ -225,15 +245,20 @@ if(!$ajax)
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<meta property="og:site_name" content="<?=utf8_encode($GLOBALS['sitename']);?>">
 		<meta property="og:title" content="<?=$title;?>">
 		<meta property="og:type" content="website">
-		<?if(isset($res['url'])){?><meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>"><?}?>
+		<?if(isset($res['url'])){?>
+		<meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>">
+		<link rel="canonical" href="<?=make_url($res['url'], array("domaine" => true))?>">
+		<?}?>
 		<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 		<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
+		<meta property="article:published_time" content="<?=date(DATE_ISO8601, strtotime(@$res['date_insert']));?>">
 
 		<?if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
 		<?if(@$GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
+		<?if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?}?>
+
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
@@ -273,11 +298,12 @@ if(!$ajax)
 			if(get_cookie('analytics') != "desactiver") 
 			{
 				// Google Analytics
+				google_analytics = '<?=$GLOBALS['google_analytics'];?>';
 				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-				ga('create', '<?=$GLOBALS['google_analytics'];?>', 'auto');
+				ga('create', google_analytics, 'auto');
 				ga('send', 'pageview');
 			}
 			<? }
@@ -321,6 +347,8 @@ if(!$ajax)
 
 	</head>
 	<body>
+
+	<div>
 	<?
 
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
@@ -350,11 +378,15 @@ if(!$ajax)
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
 	?>
 
+	</div>
+
 	<script>console.log("<?=benchmark()?>")</script>
+
 	</body>
 	</html>
 	<? 
 }
+else {?><script>console.log("<?=benchmark()?>")</script><?}
 
 $connect->close();
 ?>

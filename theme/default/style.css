@@ -1,331 +1,93 @@
 /* Typo */
-@import url('//fonts.googleapis.com/css?family=Montserrat|Raleway|Yellowtail');
+@import url('//fonts.googleapis.com/css?family=Source Sans Pro:300|Amatic SC:700');
 
-body {
-	font-family: Raleway;
-	-webkit-font-smoothing: antialiased;
+body { 
+	font-family: Source Sans Pro;
+	font-size: 1.5rem;
 }
 
-a { 
-	/*text-decoration: none;*/
-	transition: color .2s;
-}
-a:hover { color: #BB9F5D; }
-
-nav, h1, h2 { font-family: Montserrat; }
-h3 { font-family: Raleway; }
-
-p { line-height: 1.8; }
-
-
-
-/* Bloc avec grande image en bg sous le menu */
-.under-header {
-	margin-top: -100px;/* !default par sécurité pour etre sur qu'il est bien sous le header meme si le js ne s'execute pas */
-    height: 320px;
-    padding-top: 100px;	
-	position: relative;
-	z-index: 0;
-}
-.under-header * {	
-	position: relative;
-	z-index: 1;
-}
-	.overlay {
-		background-color: rgba(0, 0, 0, 0.2);
-
-		position: absolute;
-
-		top: 0;
-		left: 0;
-
-		z-index: 0;
-
-		width: 100%;
-		height: 100%;
-	}
-
-
-/* Bg cover toutes la fenetre */
-.fullpage {
-	position: relative;
-	min-height: 100vh;
-	overflow: hidden;
-	background-size: cover;
-}
-
-
-/* Bloc avec effet de paralax */
-.parallax, .fullpage {
-	background-size: cover !important;
-	text-shadow: 1px 1px 1px #545454;	
-	background-position: 50% 0%;
-	/*transition: background-position-y .1s;*/
-}
-	.parallax h1, .parallax h2, .fullpage h1 { 
-		font-family: Yellowtail;
-		font-size: 5em;
-	}
-	.parallax h3 { font-family: Montserrat;	}
-
-
-/* bloc jaune de lien */
-.link-box a {
-    background-color: #f2ce3e;
-
-	margin: 10px 0;
-	padding: 5px 20px;
-
-	display: inline-block;
-
-	color: #fff;
+a {
+	color: #35747f;
 	text-decoration: none;
+	transition: color .3s;
+}
+	a:hover { color: #78cfd6; }
+
+
+h1 {
+	font-family: Amatic SC;
+	color: #78cfd6;
 	text-transform: uppercase;
-	font-weight: bold;
-	font-family: Montserrat;
-
-	transition: background .2s;
 }
-	.link-box a:hover {
-		background-color: #BB9F5D;
-	}
 
-
-aside { border: 2px solid #000; }
-aside > div { 
-	border: 1px solid #000;
-	height: 100%;
+h2, h3 {
+	color: #35747f;
+	font-weight: lighter;
 }
 
 
+/* Fonts */
+.font-ssp { font-family: Source Sans Pro; }
+.font-amatic { font-family: Amatic SC; }
 
-header {
-	position: relative;
-	z-index: 10;
-	height: 85px;
+
+/* bouton pour les liens */
+.bt, .bt.internal {
+	background-color: #fff;
+	color: #78cfd6;
+
+	font-family: inherit;
+
+	border: 1px solid #78cfd6;
+	border-radius: 0.5em;
 }
-	header #header-logo { transition: opacity .5s; }
-		header #header-logo:hover { opacity: 0.6; }
-	
-
-	/* MENU DE NAVIGATION */
-	header nav ul {
-		list-style: none;
-		display: inline-block;
-		padding: 0;
-		margin-top: 2rem;
-	}
-		header nav li {
-			float: left;
-			padding: 0 0.5rem;
-			margin: 0 0.5rem;
-		}
-		header nav a { 
-			text-decoration: none;
-			color: #fff;
-			text-shadow: 1px 2px 2px rgb(153, 153, 153);
-		}
-
-
-	/* BOUTON BURGER & Animation */
-	header nav .burger {
-		display: none;
-		position: relative;
-		overflow: hidden;
-		float: right;
-		right: 0;
-		margin: 0 1rem;
-		padding: 0;
-		width: 30px;
-		height: 30px;
-		font-size: 0;
-		text-indent: -9999px;
-		appearance: none;
-		box-shadow: none;
-		border-radius: 3px;
-		border: none;
-		cursor: pointer;
-		transition: background 0.3s;
-
-		background-color: #000;
-	}
-	.burger span {
-		display: block;
-		position: absolute;
-		top: 14px;
-		left: 6px;
-		right: 6px;
-		height: 2px;
-		background: white;
-
-		transition: background 0.3s;
+	.bt:hover {
+		background-color: #78cfd6;
+		color: #fff;
 	}
 
-	.burger span::before,
-	.burger span::after {
-		position: absolute;
-		display: block;
-		left: 0;
-		width: 100%;
-		height: 2px;
-		background-color: #fff;
-		content: "";
 
-		transition-duration: 0.3s, 0.3s;
-		transition-delay: 0.3s, 0s;
-	}
+/* Couleur */
+.color, .selected { color: #78cfd6; }
+.color-alt { color: #35747f; }
 
-	.burger span::before { top: -6px; transition-property: top, transform; }
-	.burger span::after { bottom: -6px; transition-property: bottom, transform; }
-
-	/* active state, i.e. menu open */
-	.burger.active { background-color: #cb0032; }
-	.burger.active span { background: none; }
-	.burger.active span::before { top: 0; transform: rotate(45deg);	}
-	.burger.active span::after { bottom: 0; transform: rotate(-45deg); }
-	.burger.active span::before,
-	.burger.active span::after { transition-delay: 0s, 0.3s;	}
-
-
-
-footer {
-	background-color: #000;
+.bg-color {
+	background-color: #78cfd6;
 	color: #fff;
 }
-
-	#webmaster a { color: #bb9f5d; }
-
-	.gold a { background-color: #bb9f5d; }	
-
-	.social .fa a {
-		background-color: #222222;
-		color: #fff;
-
-		width: 1.5em;
-
-		padding: 0.5rem;	
-		margin: 0.5rem;
-
-		display: inline-block;
-
-		text-decoration: none;
-		
-		transition: background .3s;
-	}	
-		.social a[href*='facebook']:hover { background-color: #3a5795; }
-		.social a[href*='google']:hover { background-color: #dd4b39; }
-
-
-
-
-/* RESPONSIVE */
-
-@media (max-width: 850px) 
-{
-	header nav .burger { 
-		display: block;
-	    z-index: 12;
+	a.bg-color:hover  {
+		background-color: #fff;
+		color: #78cfd6;
 	}
 
-	header nav > ul {
-		background-color: #c0c0c0;
 
-		position: fixed !important;
-
-		left: 0;
-		top: 0;
-		bottom: 0;
-
-		overflow-y: auto;
-		-webkit-overflow-scrolling: touch;
-		
-		width: 300px;
-
-		margin: 0;
-		padding-top: 0.5rem;
-
-		z-index: 10;
-
-		transition-duration: 0.3s;
-		transform: translateX(-100%);
-		-webkit-transform: translateX(-100%);
-	}
-		header nav li { 
-			float: none;
-			padding: 0;
-			border-radius: 5px;
-			transition: background 0.3s;
-		}
-			header nav li:hover { background-color: #dfdfdf; }
-			header nav li a {
-				display: block;
-				padding: 0.5rem;
-			}
-	
-	/* Raz du header */
-	.responsiv-nav header { position: inherit; }
-	/* Ouvertur du menu */
-	.responsiv-nav header nav ul { 
-		transform: translateX(0);
-		-webkit-transform: translateX(0);
-	}
-	/* Overlay menu */
-	.responsiv-nav .responsiv-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: rgba(0, 0, 0, 0.6); 
-	}
-	/* Fixe le burger*/
-	.responsiv-nav .burger { position: fixed; }
-
-	/* mode edition : menu d'ajout invisible */
-	.dragger { display: none !important; }
-	#add-nav { display: none !important; }
+/* Header */
+header { box-shadow: 0px 10px 9px -9px rgba(153,156,153,0.37); }
 
 
-	/* Animation intro */
-	.intro h1 {	
-		top: 150px;
-	    left: auto;
-
-	    font-size: 2.5em;
-	    text-align: center;
-	}
-	.intro h2 {	
-		top: 205px;
-	    left: auto;
-
-	    font-size: 1.5em;
-	    text-align: center;
-	}
+/* Formulaire contact */
+#email, #message, #question {
+	border: 0px;
+	border-bottom: 0.2em solid #78cfd6;
+	background-color: #f7f7f7;
 }
 
-@media (max-width: 480px) 
-{
-	.w20, .w30, .w33, .w40, .w50, .w70 { 
-		width: auto;
-		float: none;
-	}
+#contact input[name='reponse'] { display: none; }
 
-	.plm { padding-left: 0; }
-	.prl { padding-right: 0; }
 
-	article { 
-		/*display: inline-block; Crée un bug collateral avec l'editeur de menu ... utile ?*/
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
-	}
-
-	.editable img.fl, .editable img.fr {
-		float: none;
-		display: block;
-		margin: 0 auto 0.5rem;
-	}
-	.editable img {
-		max-width: 100%;
-		height: auto;
-	}
+/* Barre de cookie */
+#cnilcookie {
+	border: none;
+	position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 25px;
+    text-align: center;
+    font-size: 1.4rem;
+    display: none;
 }
+	#cnilcookie:hover { opacity: 1 !important; }
+	#cnilcookie .bt {
+		padding: .3rem .8rem;
+		border: none;
+	}

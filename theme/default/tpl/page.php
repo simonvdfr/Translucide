@@ -1,10 +1,14 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
+<section class="mw960p mod center" <?bg("fond")?>>
 
-<section class="under-header parallax mod tc white" <?bg('bg-header')?>>		
-	<h1><?txt('titre')?></h1>
-</section>
+	<h1 class="mbn tc up color"><?txt('title')?></h1>
+	<h2 class="mbn tc big color-alt"><?txt('sstitre')?></h2>
 
-<section class="mw960p mod center mtl mbl tofadein">
-	<article><?txt('texte')?></article>	
+	<article class="tj ptm pll prl">
+
+		<?txt('texte')?>
+
+	</article>
+
 </section>

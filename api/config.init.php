@@ -24,7 +24,7 @@ if(!isset($_SESSION))
 date_default_timezone_set('Europe/Paris');
 
 // Langue des dates
-setlocale(LC_ALL, 'fr_FR', 'fra');//.UTF8
+setlocale(LC_ALL, 'fr_FR.utf8', 'fra');//.UTF8
 
 
 // Serveur local ou online ? DEV || PROD
@@ -66,8 +66,6 @@ $GLOBALS['function'] = '';// Include fonction du theme
 
 $GLOBALS['theme'] = '';
 
-$GLOBALS['sitename'] = "";
-
 if($dev)// Dev local
 	$GLOBALS['scheme'] = '';
 else 
@@ -103,6 +101,7 @@ $GLOBALS['google_api_id'] = '';
 $GLOBALS['google_api_secret'] = '';
 $GLOBALS['google_map'] = '';
 $GLOBALS['google_analytics'] = '';
+$GLOBALS['google_verification'] = '';
 $GLOBALS['google_page'] = '';// https://plus.google.com/***
 
 // https://developer.yahoo.com/apps/
@@ -138,7 +137,7 @@ $GLOBALS['default_state'] = 'active';// moderate / mail / active / deactivate
 $GLOBALS['default_auth'] = 'add-media-public,edit-public';
 
 // Info supplémentaire sur l'utilisateur
-$GLOBALS['meta_user'] = null;
+$GLOBALS['user_info'] = null;
 
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array(
@@ -165,12 +164,12 @@ $GLOBALS['auth_level'] = array(
 
 // Type de contenu ajoutable
 $GLOBALS['add-content'] = array(
-	//"product" => ["fa" => "fa-shopping-cart", "tpl" => "product"],
-	//"article" => ["fa" => "fa-feed", "tpl" => "article"],
-	//"event" => ["fa" => "fa-calendar-o", "tpl" => "event"],
-	//"video" => ["fa" => "fa-video-camera", "tpl" => "video"],
-	//"media" => ["fa" => "fa-file-pdf-o", "tpl" => "fichier"],
-	"page" => ["fa" => "fa-file-text-o", "tpl" => "page"]
+	//"product" => ["fa" => "fa-basket", "tpl" => "product"],
+	"article" => ["fa" => "fa-rss", "tpl" => "article"],
+	//"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],
+	//"video" => ["fa" => "fa-video", "tpl" => "video"],
+	//"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
+	"page" => ["fa" => "fa-doc-text", "tpl" => "page"]
 );
 
 
@@ -178,10 +177,12 @@ $GLOBALS['add-content'] = array(
 $GLOBALS['toolbox'] = array(
 	//"h2",
 	//"h3",
+	//"h4",
 	"bold",
 	"italic",
 	//"underline",
 	//"superscript",
+	//"fontSize",
 	//"insertUnorderedList",
 	//"justifyLeft",
 	//"justifyCenter",
@@ -192,6 +193,7 @@ $GLOBALS['toolbox'] = array(
 	//"icon",
 	"media",
 	//"anchor",
+	//"bt",
 	"link"
 );
 
@@ -221,13 +223,15 @@ $GLOBALS['png_quality'] = 9;
 // Animation pour l'ouverture / fermeture de la dialogue des medias
 $GLOBALS['animation_dialog'] = true;
 
+// On peut voir les dossiers dans la librairie des médias
+$GLOBALS['media_dir'] = false;
+
 
 // Cache sur les styles
 $GLOBALS['cache'] = "";
 
 
 // Favicon navigateur
-// $GLOBALS['path'].'media/tpl/favicon.ico?'.$GLOBALS['cache'];
 $GLOBALS['favicon'] = '';
 
 // Icone pour mobile / fav
@@ -238,8 +242,6 @@ $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']
 
 
 // Librairie externe
-$GLOBALS['font_awesome'] = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
-
 $GLOBALS['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';
 
 $GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';

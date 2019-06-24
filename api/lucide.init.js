@@ -84,7 +84,7 @@ error = function(txt, fadeout){
 	.fadeIn();
 
 	// Box avec le message d'erreur fa-times
-	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-attention fa-warning mrs'></i>" + txt + "<i class='fa fa-cancel fa-close absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
+	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-attention mrs'></i>" + txt + "<i class='fa fa-cancel absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
 	var height = $("#error").outerHeight();
 	
 	// Affichage de la box
@@ -117,7 +117,7 @@ light = function(txt, fadeout){
 	$("#highlight").remove();
 	
 	// Box avec le message d'information
-	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circled fa-info-circle color mrs'></i>" + txt + "</div>");
+	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circled color mrs'></i>" + txt + "</div>");
 	var height = $("#highlight").outerHeight();
 	
 	// Affichage
@@ -198,7 +198,7 @@ $.fn.make_password = function() {
 	var $this = this;
 
 	// Animation de chargement
-	$(".fa-refresh").addClass("fa-spin");
+	$(".fa-arrows-cw").addClass("fa-spin");
 
 	// Récupère un password
 	$.ajax({
@@ -206,7 +206,7 @@ $.fn.make_password = function() {
 		url: path+"api/ajax.php?mode=make-password",
 		data: {"nonce": $("#nonce").val()},
 		success: function(password){ 
-			$(".fa-refresh").removeClass("fa-spin");
+			$(".fa-arrows-cw").removeClass("fa-spin");
 			$this.attr("type","text").val(password);
 		}
 	});
@@ -364,16 +364,31 @@ $(function()
 
 
 
-	// SMOOTHSCOLL SUR LES ANCRES
-	$(document).on("click", "a[href^='#']", function(event) {
+	// SMOOTHSCOLL SUR LES ANCRES // pas sur les onglet d'ajout de contenu
+	$(document).on("click", "a[href^='#']:not(.ui-tabs-anchor)", function(event) {
 		event.preventDefault();
 
-		var anchor_exist = $('[name="' + $(this).attr("href").substr(1) + '"]');
+		if(typeof lucide === 'undefined')// Si pas en mode edit
+		{
+			var hashtag = $(this).attr("href").substr(1);
+			var name_exist = $('[name="'+hashtag+'"]');
 
-		if(typeof lucide === 'undefined' && anchor_exist.length)// Si pas en mode edit et ancre existante on scroll
+			// name || id ?
+			if(name_exist.length) 
+				var anchor = name_exist;
+			else {
+				var id_exist = $('[id="'+hashtag+'"]');
+				if(id_exist.length) var anchor = id_exist;
+			}
+
+			console.log(anchor);
+
+			// Ancre existante on scroll
+			if(anchor != undefined)
 			$root.animate({ 
-				scrollTop: anchor_exist.offset().top
+				scrollTop: anchor.offset().top
 			}, 800, "linear");
+		}
 	});
 
 
@@ -456,16 +471,20 @@ $(function()
 			var parallax_top = $(this).offset().top;
 			var parallax_height = $(this).outerHeight();
 			var parallax_bottom = parallax_top + parallax_height;
+			var parallax_speed = $(this).data("parallax");
+
+			// vitesse de défilement : 1 = image a 100% à la fin du scroll / 2|4 => on divise pour un défilement plus lent
+			if(typeof parallax_speed === 'undefined') var parallax_speed = 2;
 
 			// Si un bg parallax entre dans le champ de vision on le scroll
 			if((parallax_top <= window_bottom) && (parallax_bottom >= window_top))
 			{
-				// / 2|4 => on divise pour un défilement plus lent
+				
 				// Si bg déjà visible quand on arrive sur la page on change le calcule
 				if(parallax_top < window_height)
-					p100 = parseInt(((window_top) * 100 / (parallax_bottom))) / 4;		
+					p100 = parseInt(((window_top) * 100 / (parallax_bottom))) / parallax_speed;		
 				else 
-					p100 = parseInt(((window_bottom - parallax_top) * 100 / (window_height + parallax_height))) / 2;		
+					p100 = parseInt(((window_bottom - parallax_top) * 100 / (window_height + parallax_height))) / parallax_speed;		
 		
 				$(this).css("background-position", "50% " + p100 + "%");
 			}

@@ -73,8 +73,8 @@ body { transition: margin-top .2s linear; }
 	#admin-bar input, .tooltip input, .ui-dialog input {			
 		background-color: transparent;
 		color: #516062;
-		border: none;
-		border-bottom: 1px dotted #9cabad;
+		border: none !important;
+		border-bottom: 1px dotted #9cabad !important;
 		font-family: Arial;
 		box-shadow: none;
 		border-radius: 0;
@@ -165,7 +165,7 @@ body { transition: margin-top .2s linear; }
 		/* Croix du désactivé */
 		#admin-bar .switch label:before {
 			font-family: FontAwesome;
-			content: "\f070";/* Off f00d */
+			content: "\e82a";/* Off f00d */
 			margin-left: 18px;
 			transition: all .2s ease;
 		}
@@ -177,7 +177,7 @@ body { transition: margin-top .2s linear; }
 			/* Activé */
 			#admin-bar .switch input[type=checkbox]:checked ~ label:before {
 				font-family: FontAwesome;
-				content: "\f06e";/* On f00c */
+				content: "\e80d";/* On f00c */
 				margin-left: 6px;
 			}
 			/* Calage du bouton si activé */
@@ -356,7 +356,7 @@ header:hover .dragger { display: block; }
 		cursor: pointer;
 	}
 		#add-nav .dragger:before {
-			content: "\f055";
+			content: "\e808";
 			font-family: FontAwesome;
 		}
 
@@ -422,6 +422,17 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		content: attr(placeholder); 
 		opacity: .6;
 	}
+
+	.editable-media[placeholder]:before { 
+		content: attr(placeholder);
+		opacity: .6;
+		padding-top: 0.5rem;
+		text-align: center;
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+		.editable-media[placeholder]:hover:before { content: ''; }
 
 	.editable .ui-wrapper {		
 		overflow: inherit !important;
@@ -493,6 +504,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		z-index: 8;
 		top: 0;
 		right: 0;
+		line-height: 30px;
 		font-size: initial;
 	}
 	.editable-bg > .bg-tool .open-dialog-media, .module-bt a {
@@ -502,7 +514,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		/* border: 1px solid #909090; */	
 
 		color: #fff;/*#7AD2D9*/
-		font-size: inherit;
+		font-size: 1.5rem;/*inherit*/
 		font-family: sans-serif;
 		text-shadow: none;/*1px 1px 1px #2c5f66*/
 		text-decoration: none;
@@ -510,7 +522,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		opacity: .6;
 		
 		width: initial; /* inherit */
-		padding: 2px 6px;
+		padding: 0 6px;
 		margin: 10px 10px 10px 0px;
 
 		transition: opacity .3s, background .2s;
@@ -554,6 +566,9 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 /* Module */
 
+.module { min-height: 55px; }
+	.module li { position: relative; }
+
 .module-bt {
 	position: absolute;	
 	top: 0;
@@ -569,8 +584,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	}
 
 
-/* Hidden éditable & Href éditable */
-.editable-input, .editable-href, .editable-select.none {	
+/* Hidden éditable & Href éditable & alt éditable */
+.editable-input, .editable-href, .editable-select.none, .editable-alt {	
 	background: transparent url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEX29vbu7u4m5kP6AAAAAnRSTlPMzIMO2+EAAABPSURBVAjXxc2xEYAwDMVQcRSUjMAoGS2MxigZIWWKXIw1ADXt1zubY1IfzkHcXH0LKG1f5JglxyyEhWVhWhgW5BfygrwiD74OyTvy9tffFyMcWadHur+/AAAAAElFTkSuQmCC') repeat scroll 0 0;
 	border-style: dotted;
 }
@@ -580,15 +595,28 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	position: relative;
     display: inline-block;
 }
-	.editable-href {	
+	.editable-href, .editable-alt {	
 		position: absolute;
 		text-align: center;		
 		font-size: initial;
 		font-family: Arial;
 		width: 100%;
 		display: block;
-		opacity:  0;
+		opacity: 0;
 	}
+
+/* ALT éditable */
+.editable-alt {
+	font-size: 1.2rem;
+	
+	top: 0;
+
+	z-index: 2;
+
+	opacity: 1;
+
+	display: none;
+}
 
 
 
@@ -750,7 +778,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		font-size: 5rem;
 		color: #5eba7d;
 
-		content: "\f05d";
+		content: "\e806";
 
 		animation: fade-in-out 1s ease forwards;
 
@@ -862,6 +890,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		color: #545454;
 
 		font-size: 1.2rem;
+		font-family: inherit;
 	}
 		.toolbox button:hover {
 			background: #E5F6F1 linear-gradient(#e5f6f1, #6fcdd5) repeat scroll 0 0;
@@ -887,6 +916,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.toolbox:hover {
 		opacity: 1;
 	}
+
 	/* Fleche sous la toolbox */
 	.toolbox:after {
 		border: 6px solid transparent;
@@ -899,6 +929,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		height: 0px;
 		width: 0px;
 	}
+
 	/* Fleche au dessu de la toolbox */
 	.toolbox.under:after { 
 		border-bottom-color: #d4d4d4;
@@ -906,16 +937,18 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		top: -12px;
 	}
 
-	.toolbox #option {
+	.toolbox #alt { height: 24px; }
+
+	.toolbox .option {
 		background-color: #eaeaea;
 		height: 100%;
 		display: none;
 	}
-		.toolbox #option input {
+		.toolbox .option input {
 			color: #516062;
 			height: 100%;			
 			border-radius: 0;
-			padding: 0.4em 0.5rem 0.4rem;
+			padding: 0.33em 0.5rem 0.4rem;
 		}
 	
 	.toolbox#resize-tool {
@@ -928,7 +961,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		}
 
 	/*couleur icone */
-	.toolbox .fa-picture-o { color: #56aead; }
+	.toolbox .fa-picture { color: #56aead; }
 	.toolbox .fa-link { color: #b64e4e; }
 
 

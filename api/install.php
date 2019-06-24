@@ -127,8 +127,6 @@ switch(@$_GET['mode'])
 
 			<link rel="stylesheet" href="api/global.css?">
 
-			<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
-
 			<style>
 				body { background-color: #75898c; }
 				.layer { box-shadow: 0 0 60px rgba(53, 116, 127, 0.3) inset, 0 0 5px rgba(0, 0, 0, 0.3);	}
@@ -165,7 +163,7 @@ switch(@$_GET['mode'])
 
 				submittable = function() {
 					// Icône de chargement
-					$("#setup button i").removeClass("fa-spin fa-cog").addClass("fa-cogs");
+					$("#setup button i").removeClass("fa-spin");
 					
 					// Active le submit
 					$("#setup button").attr("disabled", false);
@@ -179,7 +177,7 @@ switch(@$_GET['mode'])
 						event.preventDefault();
 
 						// Icône de chargement
-						$("#setup button i").removeClass("fa-cogs").addClass("fa-spin fa-cog");
+						$("#setup button i").addClass("fa-spin");
 						
 						// Désactive le submit
 						$("#setup button").attr("disabled", true);
@@ -256,7 +254,7 @@ switch(@$_GET['mode'])
 
 
 							<li class="mtm">
-								<label class="w30 bold"><i class="fa fa-fw fa-user-secret"></i> <?_e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
+								<label class="w30 bold"><i class="fa fa-fw fa-globe"></i> <?_e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
 							</li>
 							<li>
 								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
@@ -264,7 +262,7 @@ switch(@$_GET['mode'])
 
 								<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
 
-								<!-- <a href="javascript:void(0);" onclick="$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-refresh mts vam"></i></a> -->
+								<!-- <a href="javascript:void(0);" onclick="$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a> -->
 
 							</li>
 
@@ -302,7 +300,7 @@ switch(@$_GET['mode'])
 							 -->
 						</ul>
 
-						<button class="fr mam bold"><?_e("Start installation");?> <i class="fa fa-fw fa-cogs"></i></button>
+						<button class="fr mam bold"><?_e("Start installation");?> <i class="fa fa-fw fa-cog"></i></button>
 
 					</form>
 
@@ -380,8 +378,8 @@ switch(@$_GET['mode'])
 								`lang` varchar(8) NOT NULL,
 								`type` varchar(20) NOT NULL DEFAULT 'page',
 								`tpl` varchar(80) NOT NULL,
-								`url` varchar(60) NOT NULL,
-								`title` varchar(60) NOT NULL,
+								`url` varchar(60) DEFAULT NULL,
+								`title` varchar(70) NOT NULL,
 								`description` varchar(160) DEFAULT NULL,
 								`content` longtext,
 								`user_update` bigint(20) UNSIGNED DEFAULT NULL,
@@ -456,6 +454,7 @@ switch(@$_GET['mode'])
 								`auth` varchar(255) NOT NULL,
 								`name` varchar(60) DEFAULT NULL,
 								`email` varchar(100) NOT NULL,
+								`info` text,
 								`password` char(64) DEFAULT NULL,
 								`salt` char(16) DEFAULT NULL,
 								`oauth` text,

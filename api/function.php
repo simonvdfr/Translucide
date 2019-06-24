@@ -66,7 +66,7 @@ function get_url($url_source = null)
 				$explode_dir = explode("_", $dir);
 
 				if($explode_dir[0])
-					$GLOBALS['filter'][encode($explode_dir[0], "-", array("'","."))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array("'",".","@","_"));
+					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","'","@","_"));
 			}
 		}
 		else $url = $path;
@@ -97,7 +97,7 @@ function make_url($url, $filter = array())
 			if($cle == "page" and $val == 1)
 				unset($filter['page']);// Si Page == 1 on ne l'affiche pas dans l'url
 			elseif($val)
-				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array("'",".","@","_"));
+				$dir .= "/" . (($cle and $cle != $val) ? encode($cle)."_" : "") . encode($val, "-", array(".","'","@","_"));
 		}
 	}
 
@@ -134,11 +134,11 @@ function page($num_total, $page)
 		$num_page = ceil($num_total/$num_pp);
 		
 		// Page 1
-		?><li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
+		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
 
 		if($num_page > 10 and $page >= 10)// + de 10 page
 		{
-			?><li class="fl mls mtt">...</li><?
+			?><li class="fl mrs mtt">...</li><?
 			
 			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
 				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
@@ -147,14 +147,14 @@ function page($num_total, $page)
 		else// - de 10 page
 		{
 			for($i = 2; $i <= 10 and $i < $num_page; $i++){?>
-				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+				<li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 
 		if($num_page > 10 and $page < ($num_page - 2)) {?><li class="fl mls mtt">...</li><?}
 
 		// Page final
-		?><li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
+		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
 
 	}?>
 	</ul>
@@ -254,7 +254,7 @@ function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
-	// Si contenu global on rapatri le contenu depuis la table méta
+	// Si contenu global on rapatri le contenu depuis la table méta (Anciennement "universel")
 	if(isset($filter['global']))
 	{
 		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
@@ -330,7 +330,7 @@ function media($key = null, $filter = array())
 				$img = true; 
 			break;
 
-			default: $fa = "file-o"; break;
+			default: $fa = "doc"; break;
 
 			case"zip": $fa = "file-archive"; break;
 			case"msword": $fa = "file-word"; break;
@@ -358,6 +358,8 @@ function media($key = null, $filter = array())
 			(isset($size[0])?'max-width:'.$size[0].'px;':'').
 			(isset($size[1])?'max-height:'.$size[1].'px':'').
 			"'";
+
+		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
 
 	echo">";
 
@@ -387,7 +389,11 @@ function media($key = null, $filter = array())
 				// Image map
 				if(isset($filter['usemap'])) echo" usemap='".@$filter['usemap']."'";
 
-				echo" atl=\"\" class='";
+				// Texte ALT
+				if(isset($GLOBALS['content'][$key.'-alt'])) echo' alt="'.$GLOBALS['content'][$key.'-alt'].'"';
+				else echo' alt=""';
+
+				echo" class='";
 					if(isset($size[0]) and isset($size[1])) echo"crop";
 					if(isset($filter['zoom'])) echo" zoom";
 					if(isset($filter['class'])) echo" ".$filter['class'];
@@ -405,16 +411,32 @@ function media($key = null, $filter = array())
 }
 
 // Image de fond de bloc
-function bg($key = null, $lazy = false)
+function bg($key = null, $filter = array())
 {
 	$key = ($key ? $key : "bg-".$GLOBALS['editkey']);
+
+	// Si contenu global on rapatri le contenu depuis la table méta
+	if(isset($filter['global']))
+	{
+		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
+		$res = $sel->fetch_assoc();
+
+		$GLOBALS['content'][$key] = $res['val'];
+	}
+	
+	// Si pas d'array et qu'il y a une variable c'est que c'est un lazyload
+	if(!is_array($filter) and isset($filter)) $filter = array("lazy" => true);
 
 	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "");
 
 	echo" data-id='".encode($key)."' data-bg=\"".$url."\"";
 
+	if(isset($filter['global'])) echo" data-global='true'";
+
+	if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
+
 	// Si lazy load des images de fond
-	if($lazy)
+	if(isset($filter['lazy']))
 		echo' data-lazy="bg"';
 	else if($url)
 		echo' style="background-image: url(\''.$url.'\')"';
@@ -431,20 +453,31 @@ function module($module = "module")
 	{
 		if(preg_match("/".$module."-/", $key) == 1)
 		{
+			// Récupère le denier chiffre (numéro d'occurance)
+			preg_match('/(\d+)(?!.*\d)/', $key, $match);
+			$num_module = @$match[1];
+
+			// Récupère le type d'élément (txt, img, href, alt...) = dernier texte
+			preg_match('/([a-z]+)(?!.*[a-z])/', $key, $match);
+			$type_module = $match[1];
+
+			// @todo supp = ancienne version qui ne marche pas avec les alt éditables
 			// Supprime le préfix du nom du module en cours
-			$type_num_module = str_replace($module."-", "", $key);
-
+			//$type_num_module = str_replace($module."-", "", $key);
 			// Sépare les elements du nom du module
-			$exp_key = explode("-", $type_num_module);
-
+			//$exp_key = explode("-", $type_num_module);
 			// Numéro de l'occurence du module
-			$num_module = $exp_key[(count($exp_key)-1)];
-
+			//$num_module = $exp_key[(count($exp_key)-1)];
 			// Nom distinctif du module (txt, img...)
-			$type_module = rtrim($type_num_module, "-".$num_module);
+			//$type_module = rtrim($type_num_module, "-".$num_module);
+
+			// Si une variable dans la zone originale duplicable (0) on la raz par sécurité
+			if($num_module == 0) $GLOBALS['content'][$key] = "";
 
 			// Création du tableau avec les elements de modules
 			$array_module[$module][$num_module][$type_module] = $GLOBALS['content'][$key];
+
+			//echo $key." | ".$type_module."*".$num_module."*".($num_module == 0)." : ".$GLOBALS['content'][$key]."<br>";
 		}
 	}
 
@@ -462,7 +495,8 @@ function checkbox($key = null, $filter = array())
 {
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
-	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." fa fa-fw ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "fa-check yes" : "fa-close no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
+	// fa-check/fa-close => fa-ok/fa-cancel
+	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." fa fa-fw ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "fa-ok yes" : "fa-cancel no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
 	
 	$GLOBALS['editkey']++;
 }
@@ -498,7 +532,17 @@ function input($key = null, $filter = null)
 	if(!is_array($filter)) $filter = array("class" => $filter);
 	if(!isset($filter['type'])) $filter['type'] = "text";
 
-	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : @$filter['default']).'" class="editable-input '.@$filter['class'].'"'.(($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true)?' checked="checked"':'').'>';
+	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="';
+
+	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key]; else echo @$filter['default'];
+
+	echo'" class="editable-input '.@$filter['class'].'"';
+
+	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true) echo' checked="checked"';
+
+	if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
+
+	echo'>';
 
 	// Si autocomplete
 	if(isset($filter['autocomplete'])) {?>
@@ -843,8 +887,6 @@ function login($level = 'low', $auth = null, $quiet = null)
 		?>
 		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-		<link rel="stylesheet" href="<?=$GLOBALS['font_awesome']?>">
-
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css">
 
 		<script>
@@ -859,6 +901,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 				$.ajax({
 			        url: "<?=$GLOBALS['jquery_ui']?>",
 			        dataType: 'script',
+			        cache: true,
 					success: function()// Si Jquery UI bien charger on charge la dialog de choix de login
 					{ 						
 						// On ferme la dialog de connexion s'il y en a une d'ouvert
@@ -1129,8 +1172,8 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 /********** TEXTE **********/
 
 // Coupe une phrase proprement
-function word_cut($texte, $limit) {
-	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte), 0, $limit));
+function word_cut($texte, $limit, $tags = '') {//$tags = '<br><div>'
+	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte, $tags), 0, $limit));
 }
 
 
