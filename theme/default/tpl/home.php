@@ -80,6 +80,39 @@
 </section>
 
 
+<!-- Module -->
+<section class="mw960p mod center mbl">
+
+	<h2 class="tc mbt mtt ptm"><?txt('titre-module')?></h2>
+
+		<div class="flex mbm tc">
+
+			<?
+			$module = module("partenaire");
+			/* nom du module "partenaire" = id du module, et au début des id des txt() media() ... */
+			?>
+
+
+			<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
+			<ul id="partenaire" class="module unstyled pan auto">
+			<?
+			foreach($module as $key => $val)
+			{
+				?>
+				<li>
+					<div class='img fl mrl'><?media("partenaire-img-".$key, array('size' => '250x250'));?></div>
+					<div class="pal">« <?txt("partenaire-text-".$key, array("tag" => "span"));?> »</div>
+				</li>
+				<?
+			}
+			?>
+			</ul>
+
+		</div>
+
+</section>
+
+
 
 <!-- Event -->
 <style>
