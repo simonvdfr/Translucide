@@ -376,6 +376,7 @@ switch(@$_GET['mode'])
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'deactivate',
 								`lang` varchar(8) NOT NULL,
+								`robots` varchar(18) DEFAULT NULL,
 								`type` varchar(20) NOT NULL DEFAULT 'page',
 								`tpl` varchar(80) NOT NULL,
 								`url` varchar(60) DEFAULT NULL,

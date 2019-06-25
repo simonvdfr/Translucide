@@ -134,6 +134,14 @@ save = function() //callback
 
 	data["tpl"] = $("#admin-bar #tpl").val();// Template
 
+	// Robots 
+	if($("#admin-bar #noindex").prop("checked")) data["robots"] = "noindex";
+	if($("#admin-bar #nofollow").prop("checked")) 
+		data["robots"] = 
+			(data["robots"]?data["robots"]:"") +
+			(data["robots"]?", ":"") +
+			"nofollow";
+
 	data["date-insert"] = $("#admin-bar #date-insert").val();// Date de création de la page
 	
 
@@ -1094,6 +1102,11 @@ $(function()
 		description = "";
 
 	$("#admin-bar #description").val(description);
+
+
+	if($('meta[name=robots]').last().attr("content").includes("noindex")) $("#admin-bar #noindex").prop("checked", true);
+	if($('meta[name=robots]').last().attr("content").includes("nofollow")) $("#admin-bar #nofollow").prop("checked", true);
+
 
 	$("#admin-bar #permalink").val(permalink);
 	$("#admin-bar #type").val(type);
@@ -2131,7 +2144,7 @@ $(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox, .lucide [for]").on("click", function(event) {
+	$(".editable-checkbox, .lucide [for]").not(".lucide #admin-bar [for]").on("click", function(event) {
 		if($(this).attr("for")) var id = $(this).attr("for");
 		else var id = this.id;
 

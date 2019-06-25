@@ -52,7 +52,14 @@ switch($_GET['mode'])
 					<div class="w50">
 						<div class="tooltip slide-left fire pas mas mlt">
 
-							<div class="small"><?_e("Description for search engines")?></div>
+							<div class="small">
+								<?_e("Description for search engines")?>
+
+								<div class="fr">
+									<input type="checkbox" id="noindex"> <label for="noindex" class="mrs" title="<?_e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
+									<input type="checkbox" id="nofollow"> <label for="nofollow" title="<?_e("Empêche les liens d'être suivis par les robots et de transmettre de la popularité")?>">nofollow</label>
+								</div>
+							</div>
 							<input type="text" id="description" value="" maxlength="160" class="w100">
 
 							<div class="small mtm"><?_e("Formatted web address")?></div>
@@ -435,7 +442,6 @@ switch($_GET['mode'])
 			exit("<script>error(\"".__("No permanent link for content")."\");</script>");
 	
 
-
 		// MENU DE NAVIGATION
 		if(isset($_POST['nav']))
 		{
@@ -684,6 +690,7 @@ switch($_GET['mode'])
 			$sql .= "title = '".addslashes($_POST['title'])."', ";
 			$sql .= "description = '".addslashes($_POST['description'])."', ";
 			$sql .= "content = '".addslashes($json_content)."', ";
+			$sql .= "robots = '".addslashes($_POST['robots'])."', ";
 			$sql .= "state = '".addslashes($_POST['state'])."', ";
 			$sql .= "type = '".$type."', ";
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";

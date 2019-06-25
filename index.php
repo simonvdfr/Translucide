@@ -111,7 +111,11 @@ if($res)
 
 		$robots = "noindex, follow";
 	}
-	else $robots = $GLOBALS['robots'];// Si la page est active elle est référençable (on utilise la config)
+	else// Si la page est active elle est référençable (on utilise la config ou les param de la page)
+	{
+		if($res['robots']) $robots = $res['robots'];
+		else $robots = $GLOBALS['robots'];
+	} 
 }
 else/********** PAS DE PAGE EXISTANTE **********/
 {
