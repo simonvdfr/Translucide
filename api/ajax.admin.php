@@ -690,7 +690,7 @@ switch($_GET['mode'])
 			$sql .= "title = '".addslashes($_POST['title'])."', ";
 			$sql .= "description = '".addslashes($_POST['description'])."', ";
 			$sql .= "content = '".addslashes($json_content)."', ";
-			$sql .= "robots = '".addslashes($_POST['robots'])."', ";
+			$sql .= "robots = '".addslashes(@$_POST['robots'])."', ";
 			$sql .= "state = '".addslashes($_POST['state'])."', ";
 			$sql .= "type = '".$type."', ";
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";

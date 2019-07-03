@@ -78,9 +78,9 @@ else
 
 $GLOBALS['path'] = '';
 
-$GLOBALS['robots'] = 'noindex, nofollow';
-
 $GLOBALS['email_contact'] = '';
+
+$GLOBALS['online'] = false;
 
 
 // Utilisation de librairie minifier

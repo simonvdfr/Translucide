@@ -1104,8 +1104,8 @@ $(function()
 	$("#admin-bar #description").val(description);
 
 
-	if($('meta[name=robots]').last().attr("content").includes("noindex")) $("#admin-bar #noindex").prop("checked", true);
-	if($('meta[name=robots]').last().attr("content").includes("nofollow")) $("#admin-bar #nofollow").prop("checked", true);
+	if($('meta[name=robots]').last().attr("data").includes("noindex")) $("#admin-bar #noindex").prop("checked", true);
+	if($('meta[name=robots]').last().attr("data").includes("nofollow")) $("#admin-bar #nofollow").prop("checked", true);
 
 
 	$("#admin-bar #permalink").val(permalink);

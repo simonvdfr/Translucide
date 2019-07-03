@@ -94,6 +94,10 @@ if($res)
 		exit;
 	}
 
+
+	$res_robots = @$res['robots'];// paramètre des robots propriétaire à la page courante
+
+
 	if($res['state'] != "active")// Page non activé
 	{
 		// Si pas admin on affiche page en construction
@@ -113,8 +117,9 @@ if($res)
 	}
 	else// Si la page est active elle est référençable (on utilise la config ou les param de la page)
 	{
-		if(@$res['robots']) $robots = $res['robots'];
-		else $robots = $GLOBALS['robots'];
+		if(@$GLOBALS['online'] === false) $robots = 'noindex, nofollow';// Offline
+		elseif(@$res['robots']) $robots = $res_robots;// Online + paramètre déterminé
+		else $robots = 'index, follow';// Online + pas de paramètre
 	} 
 }
 else/********** PAS DE PAGE EXISTANTE **********/
@@ -216,7 +221,7 @@ if(!$ajax)
 	$sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
 	$res_header = $sel_header->fetch_assoc();
 
-	// Ajout des données du footer
+	// Ajout des données du header
 	if($res_header['val'])
 		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
 
@@ -245,7 +250,7 @@ if(!$ajax)
 		<title><?=$title;?></title>
 		<?if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
-		<meta name="robots" content="<?=$robots;?>">
+		<meta name="robots" content="<?=$robots;?>" data="<?=$res_robots;?>">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 

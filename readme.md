@@ -68,31 +68,26 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 	- Permet la création de plusieurs blocs de contenus éditables au format identique sur une même page
 	- Avant la zone du module, mettez `<? $module = module("nom-du-module"); ?>` : le nom du module servira d'id plus loin
 	- La zone de module aura par exemple la structure suivante (attention, chaque fonction doit contenir le nom du module) :
-	<section>
-	    <ul id="nom-du-module" class="module unstyled man pan">
+	
+	    `<ul id="nom-du-module" class="module">
 		<? foreach($module as $key => $val){ ?>
-     		<li>
-    			<article>
-        			<div>
-            			<h3><? txt("nom-du-module-nom-de-la-zone-".$key) ?></h3>
-            			<? media("nom-du-module-nom-de-la-zone-".$key) ?>
-        			</div>
-        			<div>
-           				<? txt("nom-du-module-nom-de-la-zone-".$key) ?>
-        			</div>
-    			</article>
+     		<li>   			
+    			<h3><? txt("nom-du-module-nom-de-la-zone-titre-".$key) ?></h3>
+    			<? media("nom-du-module-nom-de-la-zone-media-".$key) ?>
+   				<? txt("nom-du-module-nom-de-la-zone-texte-".$key) ?>    			
     		</li>
     	<? } ?>
+    	</ul>`
 
 ## A faire à la mise en ligne
 - minifiez fichiers js et css
 - dans `config.php` :
-	- modifiez la valeur de `$GLOBALS['min']` en `.min` hors dev si vous avez minifié les fichiers js et css 
-	- modifiez les valeurs de `$GLOBALS['robots']` en `index, follow`
-	- modifiez l'email de contact dans `$GLOBALS['email_contact']` si le site contient un formulaire
-	- modifiez la valeur de `$GLOBALS['google_analytics']` avec le code UA de Google Analytics si nécessaire
 	- modifiez la valeur de `$GLOBALS['scheme']` en `https://` hors dev si nécessaire
 	- modifiez la valeur de `$GLOBALS['domain']` hors dev avec l'adresse définitive du site
+	- modifiez les valeurs de `$GLOBALS['online']` en `true` (passe le site en `index, follow`)
+	- modifiez l'email de contact dans `$GLOBALS['email_contact']` si le site contient un formulaire
+	- modifiez la valeur de `$GLOBALS['min']` en `.min` hors dev si vous avez minifié les fichiers js et css 
+	- modifiez la valeur de `$GLOBALS['google_analytics']` avec le code UA de Google Analytics si nécessaire
 
 ## Gestion du multilingue
 Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/testé. Globalement les traductions de l'interface du CMS se trouvent dans le fichier `api/translation.php`
