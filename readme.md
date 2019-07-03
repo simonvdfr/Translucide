@@ -69,15 +69,17 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 	- Avant la zone du module, mettez `<? $module = module("nom-du-module"); ?>` : le nom du module servira d'id plus loin
 	- La zone de module aura par exemple la structure suivante (attention, chaque fonction doit contenir le nom du module) :
 	
-	    `<ul id="nom-du-module" class="module">
+	```
+	    <ul id="nom-du-module" class="module">
 		<? foreach($module as $key => $val){ ?>
      		<li>   			
-    			<h3><? txt("nom-du-module-nom-de-la-zone-titre-".$key) ?></h3>
-    			<? media("nom-du-module-nom-de-la-zone-media-".$key) ?>
-   				<? txt("nom-du-module-nom-de-la-zone-texte-".$key) ?>    			
+    			<h3><? txt('nom-du-module-nom-de-la-zone-titre-'.$key) ?></h3>
+    			<? media('nom-du-module-nom-de-la-zone-media-'.$key) ?>
+   				<? txt('nom-du-module-nom-de-la-zone-texte-'.$key) ?>    			
     		</li>
     	<? } ?>
-    	</ul>`
+    	</ul> 	
+	```
 
 ## A faire à la mise en ligne
 - minifiez fichiers js et css
