@@ -419,7 +419,7 @@ input[type="reset"].unstyled:focus {
 
 
 /* Bouton */
-.bt {
+.bt, button {
 	background-color: #f5f5f5;		
 	color: #507075;
 	text-align: center;
@@ -448,7 +448,7 @@ input[type="reset"].unstyled:focus {
 	  -ms-user-select: none;
 	  user-select: none;
 	}
-	.bt:hover {
+	.bt:hover, button:hover {
 		color: #fff;
 		text-decoration: none;
 		box-shadow: none;
@@ -457,7 +457,7 @@ input[type="reset"].unstyled:focus {
 		box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset;
 	}
 		.bt a:hover { color: #fff; }
-	.bt:active { 
+	.bt:active, button:active { 
 		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(0, 0, 0, 0.1) inset;
 	}
 
