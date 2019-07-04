@@ -75,6 +75,8 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 
 
 /********** UNE PAGE EXISTE **********/
+$robots_data = '';
+
 if($res) 
 {
 	// Si on demande du https on force le domaine en https
@@ -95,7 +97,7 @@ if($res)
 	}
 
 
-	$res_robots = @$res['robots'];// paramètre des robots propriétaire à la page courante
+	$robots_data = @$res['robots'];// paramètre des robots propriétaire à la page courante
 
 
 	if($res['state'] != "active")// Page non activé
@@ -118,7 +120,7 @@ if($res)
 	else// Si la page est active elle est référençable (on utilise la config ou les param de la page)
 	{
 		if(@$GLOBALS['online'] === false) $robots = 'noindex, nofollow';// Offline
-		elseif(@$res['robots']) $robots = $res_robots;// Online + paramètre déterminé
+		elseif(@$res['robots']) $robots = $robots_data;// Online + paramètre déterminé
 		else $robots = 'index, follow';// Online + pas de paramètre
 	} 
 }
@@ -250,7 +252,7 @@ if(!$ajax)
 		<title><?=$title;?></title>
 		<?if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
-		<meta name="robots" content="<?=$robots;?>" data="<?=$res_robots;?>">
+		<meta name="robots" content="<?=$robots;?>" data="<?=$robots_data;?>">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
