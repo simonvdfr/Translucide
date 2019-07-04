@@ -254,13 +254,8 @@ $GLOBALS['filter_auth'] = array('page', 'user');
 
 
 // Sécurité / défaut
-$id = null;
-$title = null;
-$description = null;
-$image = null;
-$mode = null;
-$uid = null;
-$error = null;
+$id = $title = $description = $image = null;
+$mode = $uid = $error = $robots = $robots_data = null;
 $GLOBALS['filter'] = array();
 $GLOBALS['translation'] = array();
 $GLOBALS['content'] = array();
