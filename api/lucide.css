@@ -3,9 +3,7 @@ body { transition: margin-top .2s linear; }
 .body-margin-top { margin-top: 35px; }
 
 /* Légère transition sur les FontAwesome */
-.fa { transition: all 0.3s; }
-
-.acolor { color: #75898c; }
+/* .fa { transition: all 0.3s; } */
 
 #admin-bar {		
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -146,7 +144,7 @@ body { transition: margin-top .2s linear; }
 		position: relative;
 		display: inline-block;
 
-		width: 38px;
+		min-width: 38px;
 		height: 16px;
 		margin: 0;
 		border-radius: 5px;
@@ -194,7 +192,9 @@ body { transition: margin-top .2s linear; }
 			display: block;
 
 			top: -2px;
-			right: 25px;
+			/* right: 25px; */
+			margin-left: -5px;
+
 			width: 18px;
 			height: 18px;
 			border-radius: 18px;
