@@ -78,8 +78,9 @@ else// Affichage du formulaire
 	$nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 10); // on évite les résultats négatifs en cas de soustraction
 	eval('$question = strval('.$nb1.$operator.$nb2.');');
 	$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
-
 	?>
+
+
 	<script>
 	add_translation({
 		"Thank you for completing all the required fields!" : {"fr" : "Merci de remplir tous les champs obligatoires !"},
@@ -88,6 +89,15 @@ else// Affichage du formulaire
 		"Message sent" : {"fr" : "Message envoy\u00e9"},
 	});
 	</script>
+	
+
+	<style>
+		#email, #message, #question {
+			border: 0px;
+			border-bottom: 0.2em solid #78cfd6;
+			background-color: #f7f7f7;
+		}
+	</style>
 
 
 	<section class="mod tc">

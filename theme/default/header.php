@@ -5,8 +5,7 @@
 
 	<section class="mw960p mod center tc relative">
 
-		<div class="center ptm"><a href="<?=$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']?>">
-				<?media('logo', '320')?></a></div>
+		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?media('logo', '320')?></a></div>
 
 
 		<nav class="font-ssp mtm mbm">

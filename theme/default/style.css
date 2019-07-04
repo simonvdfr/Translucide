@@ -66,12 +66,6 @@ header { box-shadow: 0px 10px 9px -9px rgba(153,156,153,0.37); }
 
 
 /* Formulaire contact */
-#email, #message, #question {
-	border: 0px;
-	border-bottom: 0.2em solid #78cfd6;
-	background-color: #f7f7f7;
-}
-
 #contact input[name='reponse'] { display: none; }
 
 
