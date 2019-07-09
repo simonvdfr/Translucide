@@ -711,7 +711,6 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt d
 	// Cookie+Session pour connaitre les autorisations utilisateur
 	if($auth) {
 		$array_auth = explode(",", $auth);
-		//while(list($cle, $val) = each($array_auth)) PHP 7.2
 		foreach($array_auth as $cle => $val) { $_SESSION['auth'][$val] = true; }
 		setcookie("auth", encode($auth, ",", array("-")), $time, $GLOBALS['path'], $GLOBALS['domain']);
 	}

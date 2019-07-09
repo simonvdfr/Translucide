@@ -747,7 +747,7 @@ switch($_GET['mode'])
 		{
 			include_once("db.php");// Connexion à la db		
 
-			$uid = $insert_user = $insert_info = null;
+			$uid = $insert_user = $insert_info = $logout = null;
 
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
 			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) 
@@ -760,6 +760,13 @@ switch($_GET['mode'])
 
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
 				$res = $sel->fetch_assoc();
+
+				// Si les droits d'accès ont changé on déconnecte l'utilisateur pour qu'il recrée son cookie auth
+				if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth'])) 
+					$logout = true;
+				// Si on change nos propres droits on recrée le cookie auth (on doit avoir les droits d'édition user)
+				elseif($_REQUEST['uid'] == $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']) and isset($_SESSION['auth']['edit-user']))
+					token($_REQUEST['uid'], null, implode(",", $_POST['auth']));
 			}
 
 			// Nettoyage du email
@@ -828,6 +835,7 @@ switch($_GET['mode'])
 				if($GLOBALS['security'] != 'high' and @$_REQUEST['uid'])
 					$sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
 			}
+			else if($logout) $sql .= "token = '', ";// Déconnecte l'utilisateur
 			
 			// Token d'api externe
 			if(isset($_POST['oauth'])) {
