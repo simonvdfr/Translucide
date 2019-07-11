@@ -552,23 +552,29 @@ switch($_GET['mode'])
 		// TAG ajout au meta
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
-			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
+			$tag_key = encode(key($_POST['tag']));
 
-			if(isset($_POST['tag'])) 
-			{
-				$tags = explode(",", trim($_POST['tag']));
+			// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
+			//$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
+			$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$tag_key."'");
 
-				$i = 1;
-				foreach($tags as $cle => $val) {
-					if(isset($val) and $val != "") {
-						$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
-						$i++;
-					}
-				}		
+
+			$tags = explode(",", trim($_POST['tag'][$tag_key]));
+
+			$i = 1;
+			foreach($tags as $cle => $val) {
+				if(isset($val) and $val != "") {
+					// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
+					//$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
+					$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$tag_key."', encode='".encode($val)."', name='".addslashes(trim($val))."', ordre='".$i."'");
+					$i++;
+				}
 			}
+
 			
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
+
 		
 		// TAG-INFO ajout au meta les informations d'une page tag
 		if(isset($_POST['tag-info']) and isset($_POST['tag'])) 
@@ -590,7 +596,9 @@ switch($_GET['mode'])
 
 
 			// Update les tags des contenus
-			$connect->query("UPDATE ".$table_meta." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
+			// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
+			//$connect->query("UPDATE ".$table_meta." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
+			$connect->query("UPDATE ".$table_tag." SET encode='".encode($tag)."', name='".addslashes($tag)."' WHERE zone='".encode($_POST['permalink'])."' AND encode='".$tag_url."'");
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 
 
@@ -741,12 +749,10 @@ switch($_GET['mode'])
 
 
 		// SUPPRIME LA PAGE
-		$sql = "DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
-		$connect->query($sql);
-
+		$connect->query("DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'");
 
 		// SUPPRIME LES TAGS LIÉES
-		$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
+		$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."'");
 
 
 		if(isset($_POST['medias']))
@@ -1653,9 +1659,9 @@ switch($_GET['mode'])
 
 		login('medium');
 
-		$sel_tag = $connect->query("SELECT distinct cle, val FROM ".$table_meta." WHERE type='tag' ORDER BY ordre ASC, cle ASC");
+		$sel_tag = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' ORDER BY ordre ASC, encode ASC");
 		while($res_tag = $sel_tag->fetch_assoc()) {
-			$tab_tag[] = $res_tag['val'];
+			$tab_tag[] = $res_tag['name'];
 		}	
 
 		header("Content-Type: application/json; charset=utf-8");

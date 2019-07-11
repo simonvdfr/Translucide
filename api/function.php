@@ -583,13 +583,14 @@ function tag($key = null, $filter = array())
 	.(isset($filter['itemprop'])?' itemprop="'.$filter['itemprop'].'"' : '').'>';
 
 		$i = 1;
-		$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");
+		//$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
+		$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_tag']." WHERE id='".(int)$GLOBALS['id']."' AND zone='".$key."' ORDER BY ordre ASC LIMIT 10");
 		while($res_tag = $sel_tag->fetch_assoc()) 
 		{ 
-			$GLOBALS['tags'][$res_tag['cle']] = $res_tag['val'];
+			$GLOBALS['tags'][$res_tag['encode']] = $res_tag['name'];
 
 			if($i > 1) echo', ';
-			echo'<a href="'.make_url($key, array($res_tag['cle'], 'domaine' => true)).'" class="tdn">'.$res_tag['val'].'</a>';
+			echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
 			$i++;
 		}
 

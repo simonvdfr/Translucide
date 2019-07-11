@@ -63,11 +63,11 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 		if(!$res_tag_info['val'])
 		{
 			// On rapatrie simplement le nom du tag, pour le fil d'ariane par exemple
-			$sel_tag = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag' AND cle='".$tag."' LIMIT 1");
+			$sel_tag = $connect->query("SELECT * FROM ".$table_tag." WHERE zone='".$res['url']."' AND encode='".$tag."' LIMIT 1");
 			$res_tag = $sel_tag->fetch_assoc();
 
 			// Si tag n'existe pas => page 404
-			if(!$res_tag['val']) $res = null;
+			if(!$res_tag['name']) $res = null;
 		}
 	}
 }
@@ -170,9 +170,9 @@ if(isset($res_tag_info['val']))// Il y a des infos sur le tag
 	if(isset($GLOBALS['content']['description'])) $res['description'] = htmlspecialchars(strip_tags($GLOBALS['content']['description'], ENT_COMPAT));
 	if(isset($GLOBALS['content']['img'])) $GLOBALS['content']['og-image'] = $GLOBALS['content']['img'];
 }
-elseif(isset($res_tag['val']))// Si il y a juste le nom du tag
+elseif(isset($res_tag['name']))// Si il y a juste le nom du tag
 {
-	$res['title'] = $GLOBALS['content']['title'] = $res_tag['val'];
+	$res['title'] = $GLOBALS['content']['title'] = $res_tag['name'];
 	$res['description'] = $GLOBALS['content']['description'] = "";
 }
 elseif(in_array($get_url, $GLOBALS['filter_auth']) and isset($GLOBALS['filter'])) {// Si url dans filtre autorisé on ajoute le mot cle dans le title

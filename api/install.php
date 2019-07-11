@@ -377,11 +377,7 @@ switch(@$_GET['mode'])
 										
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content'])){// Table déjà existante
-						?>
-						<script>
-							light("<?_e("Table already exists")?> : content");
-						</script>
-						<?
+						?><script>light("<?_e("Table already exists")?> : content");</script><?
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -421,11 +417,7 @@ switch(@$_GET['mode'])
 
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta'])){// Table déjà existante
-						?>
-						<script>
-							light("<?_e("Table already exists")?> : meta");
-						</script>
-						<?
+						?><script>light("<?_e("Table already exists")?> : meta");</script><?
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -453,12 +445,37 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_tag'])){// Table déjà existante
+						?><script>light("<?_e("Table already exists")?> : tag");</script><?
+					}
+					else {// Création de la base de données
+						$GLOBALS['connect']->query("
+							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_tag']."` (
+								`id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+								`zone` varchar(32) NOT NULL,
+								`encode` varchar(255) NOT NULL DEFAULT '',
+								`name` text NOT NULL,
+								`ordre` smallint(6) NOT NULL DEFAULT '0',
+								PRIMARY KEY (`id`,`zone`,`encode`),
+								KEY `type` (`zone`,`encode`),
+								KEY `ordre` (`ordre`)
+							) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+						");
+
+						if($GLOBALS['connect']->error) {
+							?>
+							<script>
+								submittable();
+								error("<?=utf8_encode($connect->error);?>");
+							</script>
+							<?
+							exit;
+						}
+					}
+
+					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user'])){// Table déjà existante
-						?>
-						<script>
-							light("<?_e("Table already exists")?> : user");
-						</script>
-						<?
+						?><script>light("<?_e("Table already exists")?> : user");</script><?
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("

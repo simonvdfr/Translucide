@@ -178,7 +178,9 @@ save = function() //callback
 
 
 	// Tags de la fiche en cours //@todo ajouter une boucle pour save tout les champs tag possible
-	data["tag"] = $(".editable-tag").text();
+	data["tag"] = {};
+	//data["tag"] = $(".editable-tag").text();
+	data["tag"][$(".editable-tag").attr("id")] = $(".editable-tag").text();
 
 
 	// Si sur page tag
@@ -2212,6 +2214,7 @@ $(function()
 		$(".editable-tag").attr("contenteditable", "true");
 
 		// AUTOCOMPLETE
+		tag_zone = $(".editable-tag").attr('id');
 		autocomplete_keydown = false;
 		function split(val) { return val.split(/,\s*/); }
 	    function extractLast(term) { return split(term).pop(); }
@@ -2239,7 +2242,10 @@ $(function()
 					type: "POST",
 					dataType: "json",
 					url: path+"api/ajax.admin.php?mode=tags",
-					data: {"nonce": $("#nonce").val()},
+					data: {
+						"zone": tag_zone,
+						"nonce": $("#nonce").val()
+					},
 					success: function(data) {
 						
 						// hide loading image
@@ -2291,6 +2297,7 @@ $(function()
 			}
 		})
 		.focus(function(){// Chargement au focus de la liste des tags dispo
+			tag_zone = $(this).attr('id');
 			$(this).autocomplete("search", "");
 		});
 	}

@@ -42,6 +42,7 @@ $GLOBALS['db_charset'] = 'utf8';
 
 $GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix'].'content';
 $GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix'].'meta';
+$GLOBALS['table_tag'] = $GLOBALS['tt'] = $GLOBALS['db_prefix'].'tag';
 $GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix'].'user';
 $GLOBALS['table_shop'] = $GLOBALS['ts'] = $GLOBALS['db_prefix'].'shop';
 
@@ -254,7 +255,7 @@ $GLOBALS['filter_auth'] = array('page', 'user');
 
 
 // Sécurité / défaut
-$id = $title = $description = $image = null;
+$id = $title = $description = $image = $tag = null;
 $mode = $uid = $error = $robots = $robots_data = null;
 $GLOBALS['filter'] = array();
 $GLOBALS['translation'] = array();
