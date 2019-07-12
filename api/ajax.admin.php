@@ -497,7 +497,7 @@ switch($_GET['mode'])
 			$res_header = $sel_header->fetch_assoc();	
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['header'] = str_replace($GLOBALS['home'], "", $_POST['header']);
+			$_POST['header'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['header']);
 			
 			// On  encode les données
 			$json_header = json_encode($_POST['header'], JSON_UNESCAPED_UNICODE);
@@ -527,7 +527,7 @@ switch($_GET['mode'])
 			$res_footer = $sel_footer->fetch_assoc();		
 
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['footer'] = str_replace($GLOBALS['home'], "", $_POST['footer']);
+			$_POST['footer'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['footer']);
 			
 			// On  encode les données
 			$json_footer = json_encode($_POST['footer'], JSON_UNESCAPED_UNICODE);
@@ -587,7 +587,7 @@ switch($_GET['mode'])
 			$connect->query("DELETE FROM ".$table_meta." WHERE type='tag-info' AND (cle='".encode($tag)."' OR cle='".$tag_url."')");
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['tag-info'] = str_replace($GLOBALS['home'], "", $_POST['tag-info']);
+			$_POST['tag-info'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['tag-info']);
 
 			// Insertion des infos du tag
 			$tag_info = json_encode($_POST['tag-info'], JSON_UNESCAPED_UNICODE);
@@ -665,7 +665,7 @@ switch($_GET['mode'])
 				$connect->query("DELETE FROM ".$table_meta." WHERE type='global' AND cle='".encode($cle)."'");
 
 				if(isset($val) and $val != "") {
-					$val = str_replace($GLOBALS['home'], "", $val);// Supprime le domaine des urls
+					$val = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $val);// Supprime le domaine des urls
 
 					$connect->query("INSERT INTO ".$table_meta." SET type='global', cle='".encode($cle)."', val='".addslashes(trim($val))."'");
 				}
@@ -680,7 +680,7 @@ switch($_GET['mode'])
 		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
 		{
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], "", $_POST['content']) : "");
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['content']) : "");
 
 			// Encode le contenu
 			if(isset($_POST['content']) and $_POST['content'] != "") 

@@ -78,6 +78,7 @@ else
 	$GLOBALS['domain'] = '';
 
 $GLOBALS['path'] = '';
+$GLOBALS['replace_path'] = "/";// Pour les chemins des média lors du clean de la sauvegarde
 
 $GLOBALS['email_contact'] = '';
 
