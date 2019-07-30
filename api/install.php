@@ -372,6 +372,7 @@ switch(@$_GET['mode'])
 					
 					// Nom des tables
 					$GLOBALS['table_content'] = addslashes($_POST['db_prefix']."content");
+					$GLOBALS['table_tag'] = addslashes($_POST['db_prefix']."tag");
 					$GLOBALS['table_meta'] = addslashes($_POST['db_prefix']."meta");
 					$GLOBALS['table_user'] = addslashes($_POST['db_prefix']."user");
 										
