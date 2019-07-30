@@ -151,7 +151,7 @@ function page($num_total, $page)
 			<?}
 		}
 
-		if($num_page > 10 and $page < ($num_page - 2)) {?><li class="fl mls mtt">...</li><?}
+		if($num_page > 10 and $page < ($num_page - 2)) {?><li class="fl mrs">...</li><?}
 
 		// Page final
 		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
