@@ -182,6 +182,9 @@ save = function() //callback
 	//data["tag"] = $(".editable-tag").text();
 	data["tag"][$(".editable-tag").attr("id")] = $(".editable-tag").text();
 
+	// Séparateur de tag
+	data["tag-separator"] = $(".editable-tag").data("separator");
+
 
 	// Si sur page tag
 	if(tag) 
@@ -201,16 +204,19 @@ save = function() //callback
 	//@todo voir pourquoi ça ne supp pas de la nav quand on glisse sur poubelle un element du menu
 	// Contenu du menu de navigation
 	data["nav"] = {};
-	$(document).find("header nav ul li").not("#add-nav ul li, .exclude").each(function(i) {
-		$("a", this).each(function(j) {
-			data["nav"][i+'-'+j] = {
+	//$(document).find("header nav ul li").not("#add-nav ul li, .exclude").each(function(i) {
+	$(document).find("header nav ul li a").not("#add-nav ul li a, .exclude").each(function(index, element) {
+		//$("a", this).each(function(index, element) {
+			//data["nav"][i+'-'+index] = {
+			data["nav"][index] = {
 				href : $.trim($(this).attr('href')),
 				text : ($(this).hasClass("view-source")?$(this).text():$(this).html()),
 				id : $(this).attr('id') || "",
 				class : $(this).attr('class') || "",
-				target : $(this).attr('target') || ""
+				target : $(this).attr('target') || "",
+				level : $(element).parents('ul').length
 			};
-		});
+		//});
 	});
 
 
@@ -1237,7 +1243,7 @@ $(function()
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
-	$("header nav ul").after(addnav);
+	$("header nav > ul").after(addnav);
 	
 	// Déplace un élément du menu add vers le menu courant au click sur le +
 	hover_add_nav = false;	
@@ -1365,13 +1371,13 @@ $(function()
 						"nonce": $("#nonce").val()
 					},
 					success: function(html){ 
-						$("#add-nav ul").append(html);		
+						$("#add-nav .tooltip ul").append(html);		
 						
 						// Pour éviter de relancer l'ajax
 						add_page_list = true;
 
 						// Rends draggable les pages manquantes du menu
-						$("#add-nav ul").sortable({
+						$("#add-nav .tooltip ul").sortable({
 							connectWith: "header nav ul",
 							start: function() {
 								$(".editable").off();//$("body").off(".editable");
@@ -2216,7 +2222,14 @@ $(function()
 		// AUTOCOMPLETE
 		tag_zone = $(".editable-tag").attr('id');
 		autocomplete_keydown = false;
-		function split(val) { return val.split(/,\s*/); }
+
+		// Séparateur
+		var separator = $(".editable-tag").data('separator');// Si on en force un
+		if(!separator) separator = ', ';// Sinon celui par défaut
+		var regex = separator.replace(" ", "\\s*");// Replace les espaces par des espaces optionnels
+		regex = new RegExp(regex, "g");// Crée une regex avec la string
+
+		function split(val) { return val.split(regex); }// /,\s*/
 	    function extractLast(term) { return split(term).pop(); }
 
 		$(".editable-tag").on("keydown", function(event) {				
@@ -2280,7 +2293,7 @@ $(function()
 				//terms.push("");
 
 				// Ajoute le tag
-				$(this).text(terms.join(", "));
+				$(this).text(terms.join(separator));
 
 				// Pour focus à la fin du champ tags
 				range = document.createRange();//Create a range (a range is a like the selection but invisible)

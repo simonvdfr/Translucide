@@ -558,19 +558,19 @@ switch($_GET['mode'])
 			//$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
 			$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$tag_key."'");
 
-
-			$tags = explode(",", trim($_POST['tag'][$tag_key]));
+			// split les tags en fonction du séparateur
+			$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($_POST['tag'][$tag_key]));
 
 			$i = 1;
 			foreach($tags as $cle => $val) {
 				if(isset($val) and $val != "") {
+					echo $val."/".htmlentities($val)."/".encode($val)."\n";
 					// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
 					//$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
 					$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$tag_key."', encode='".encode($val)."', name='".addslashes(trim($val))."', ordre='".$i."'");
 					$i++;
 				}
 			}
-
 			
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
@@ -665,7 +665,7 @@ switch($_GET['mode'])
 				$connect->query("DELETE FROM ".$table_meta." WHERE type='global' AND cle='".encode($cle)."'");
 
 				if(isset($val) and $val != "") {
-					$val = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $val);// Supprime le domaine des urls
+					$val = str_replace($GLOBALS['home'], '', $val);// Supprime le domaine des urls
 
 					$connect->query("INSERT INTO ".$table_meta." SET type='global', cle='".encode($cle)."', val='".addslashes(trim($val))."'");
 				}
@@ -680,7 +680,7 @@ switch($_GET['mode'])
 		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
 		{
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['content']) : "");
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], '', $_POST['content']) : "");
 
 			// Encode le contenu
 			if(isset($_POST['content']) and $_POST['content'] != "") 
