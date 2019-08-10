@@ -549,7 +549,7 @@ switch($_GET['mode'])
 		}
 
 		
-		// TAG ajout au meta
+		// TAG ajout au tag
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
 			$tag_key = encode(key($_POST['tag']));
