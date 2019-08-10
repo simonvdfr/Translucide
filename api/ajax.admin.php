@@ -563,11 +563,11 @@ switch($_GET['mode'])
 
 			$i = 1;
 			foreach($tags as $cle => $val) {
-				if(isset($val) and $val != "") {
-					echo $val."/".htmlentities($val)."/".encode($val)."\n";
+				if(isset($val) and $val != "") {			
+					//echo $val."/".htmlentities($val)."/".encode($val)."\n";		
 					// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
 					//$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
-					$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$tag_key."', encode='".encode($val)."', name='".addslashes(trim($val))."', ordre='".$i."'");
+					$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$tag_key."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".$i."'");
 					$i++;
 				}
 			}

@@ -9,6 +9,12 @@ function benchmark() {
 
 /********** URL / NAVIGATION **********/
 
+// Trim tous type d'espaces
+function trimer($value) 
+{
+	return trim($value, " \t\n\r\0\x0B\xC2\xA0");
+}
+
 // Nettoie et encode les mots
 function encode($value, $separator = "-", $pass = null) 
 {
@@ -27,7 +33,7 @@ function encode($value, $separator = "-", $pass = null)
 
 	$value = strtolower(strtr(utf8_decode($value), implode($from), implode($to)));// Supp les caractères indésirables
 
-	$value = trim($value, "\xC2\xA0\n");// Supprime les espaces et espaces insecable de début et fin
+	$value = trimer($value, " \t\n\r\0\x0B\xC2\xA0");// Supprime les espaces et espaces insecable de début et fin
 	$value = preg_replace('/ {2,}/', $separator, $value);// Remplace les double espaces
 	$value = preg_replace('/ /', $separator, $value);// Remplace les espaces simple
 	//$value = preg_replace('/\xa0/', $separator, $value);// Remplace les espaces insecable [\xc2\xa0]
