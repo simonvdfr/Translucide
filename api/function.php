@@ -26,7 +26,11 @@ function encode($value, $separator = "-", $pass = null)
 	}
 
 	$value = strtolower(strtr(utf8_decode($value), implode($from), implode($to)));// Supp les caractères indésirables
-	$value = preg_replace("/ /", $separator, preg_replace("/ {2,}/", $separator, trim($value)));// Supp les espaces et remplace par des tirés {1,}
+
+	$value = trim($value, "\xC2\xA0\n");// Supprime les espaces et espaces insecable de début et fin
+	$value = preg_replace('/ {2,}/', $separator, $value);// Remplace les double espaces
+	$value = preg_replace('/ /', $separator, $value);// Remplace les espaces simple
+	//$value = preg_replace('/\xa0/', $separator, $value);// Remplace les espaces insecable [\xc2\xa0]
 
 	return $value;
 }
