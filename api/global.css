@@ -185,7 +185,8 @@ ul.unstyled, ol.unstyled { list-style: none; }
 
 
 p, .p-like, ul, ol, dl, blockquote, pre, td, th, label, textarea, caption, details, figure {
-	margin-top: 0.75em;
+	/* margin-top: 0.75em; */
+	margin-top: 0;
 	margin-bottom: 0;
 	line-height: 1.5;
 }
