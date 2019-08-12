@@ -642,12 +642,16 @@ switch($_GET['mode'])
 		// Ajout des données aux meta liée à un contenu
 		if(isset($_POST['meta']) and $_POST['meta'] != "") 
 		{
-			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='meta'");
-
 			$i = 1;
-			foreach($_POST['meta'] as $cle => $val) {
-				if(isset($val) and $val != "") {
-					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='meta', cle='".encode($cle)."', val='".addslashes(trim($val))."', ordre='".$i."'");
+			foreach($_POST['meta'] as $cle => $val) 
+			{
+				// Supprime la meta
+				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."'");
+
+				// Ajoute la meta si elle contient une variable
+				if(isset($val) and $val != "")
+				{
+					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='".encode($cle)."', cle='".addslashes(trim($val))."', val='', ordre='".$i."'");
 					$i++;
 				}
 			}		

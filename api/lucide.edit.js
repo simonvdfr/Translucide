@@ -155,7 +155,7 @@ save = function() //callback
 	// Donnée Méta
 	data["meta"] = {};
 	$(document).find(".content .editable-input.meta").each(function() {
-		if($(this).val()) data["meta"][this.id] = $(this).val();					
+		data["meta"][this.id] = $(this).val();// if($(this).val()) 		
 	});
 	$(document).find(".content .editable.meta").each(function() {
 		if($(this).html()) data["meta"][this.id] = $(this).html();					
