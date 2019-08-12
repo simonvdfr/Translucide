@@ -1871,9 +1871,9 @@ $(function()
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
 					$("img, i", this).removeClass("drag-elem");
-					
+
 					// Upload du fichier dropé
-					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], true);
+					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], $('img', this).hasClass('crop') ? 'crop':true);
 				},
 				// Hover zone upload	
 				"mouseenter.editable-media": function(event) {

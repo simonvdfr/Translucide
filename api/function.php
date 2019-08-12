@@ -404,7 +404,8 @@ function media($key = null, $filter = array())
 				else echo' alt=""';
 
 				echo" class='";
-					if(isset($size[0]) and isset($size[1])) echo"crop";
+					//if(isset($size[0]) and isset($size[1])) echo"crop";
+					if(isset($filter['crop'])) echo"crop";
 					if(isset($filter['zoom'])) echo" zoom";
 					if(isset($filter['class'])) echo" ".$filter['class'];
 				echo"'>";
@@ -1045,7 +1046,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 					
 					// Positionnement de l'image cropé
 					$x = ($new_width - $dest_width) / 2;
-					$y = ($new_height - $dest_height) / 5;// Paramètre pour callé en hauteur le crop (2 à l'origine)
+					$y = ($new_height - $dest_height) / 3;// Paramètre pour callé en hauteur le crop (2 à l'origine)
 				}
 				else// Si pas crop on resize la taille la plus grande
 				{
