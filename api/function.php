@@ -12,7 +12,7 @@ function benchmark() {
 // Trim tous type d'espaces
 function trimer($value) 
 {
-	return trim($value, " \t\n\r\0\x0B\xC2\xA0");
+	return trim(html_entity_decode($value), " \t\n\r\0\x0B\xC2\xA0");
 }
 
 // Nettoie et encode les mots
