@@ -291,7 +291,10 @@ function txt($key = null, $filter = array())
 
 	echo">";
 
-	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key];
+	if(isset($GLOBALS['content'][$key])) {
+		if(isset($filter['function'])) echo $filter['function']($GLOBALS['content'][$key]);
+		else echo $GLOBALS['content'][$key];
+	}
 	elseif(isset($filter['default'])) echo $filter['default'];
 
 	echo"</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
