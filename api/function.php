@@ -524,6 +524,12 @@ function select($key = null, $filter = array())
 
 	$option_decode = json_decode($filter['option'], true);
 
+	// inverse les clés et les valeurs
+	if(@$filter['flip']) {
+		$option_decode = array_flip($option_decode);
+		$filter['option'] = json_encode($option_decode, JSON_UNESCAPED_UNICODE);
+	}
+
 	if(isset($GLOBALS['content'][$key]) and isset($option_decode[$GLOBALS['content'][$key]])) {
 		$selected_key = $GLOBALS['content'][$key];
 		$selected_option = $option_decode[$GLOBALS['content'][$key]];
@@ -555,6 +561,8 @@ function input($key = null, $filter = null)
 	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true) echo' checked="checked"';
 
 	if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
+	
+	if(@$filter['readonly']) echo' readonly';
 
 	echo'>';
 
