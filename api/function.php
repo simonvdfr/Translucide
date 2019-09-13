@@ -264,6 +264,9 @@ function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
 
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array("class" => $filter);
+
 	// Si contenu global on rapatri le contenu depuis la table méta (Anciennement "universel")
 	if(isset($filter['global']))
 	{
@@ -302,6 +305,47 @@ function txt($key = null, $filter = array())
 	$GLOBALS['editkey']++;
 }
 
+
+// Fonction raccourcie
+function h1($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+function h2($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+function h3($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+function span($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+
+
+
 // Contenu image/fichier
 function media($key = null, $filter = array())
 {
@@ -316,7 +360,7 @@ function media($key = null, $filter = array())
 		$GLOBALS['content'][$key] = $res['val'];
 	}
 
-	// S'il y a une valeur pour le filter mais que ce n'est pas un tableau
+	// S'il y a une valeur pour le filter mais != tableau => c'est la taille de l'image
 	if(!is_array($filter)) $filter = array("size" => $filter);
 
 	// Une taille est définie
