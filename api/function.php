@@ -429,7 +429,12 @@ function media($key = null, $filter = array())
 				if(@$get['zoom']) echo'<a href="'.$get['zoom'].'">';
 			}
 
-				echo"<img src=\"".$filename."\"";
+				echo"<img ";
+
+				if(isset($filter['lazy']))
+					echo"data-lazy=\"".$filename."\"";
+				else 
+					echo"src=\"".$filename."\"";
 
 				if(isset($size[0]) or isset($size[1])) {
 					echo" style='";
@@ -509,7 +514,7 @@ function module($module = "module")
 	$keys = array_keys($GLOBALS['content']);
 	foreach($keys as $key)
 	{
-		if(preg_match("/".$module."-/", $key) == 1)
+		if(preg_match("/^".$module."-/", $key) == 1)
 		{
 			// Récupère le denier chiffre (numéro d'occurance)
 			preg_match('/(\d+)(?!.*\d)/', $key, $match);
