@@ -601,11 +601,21 @@ function input($key = null, $filter = null)
 	if(!is_array($filter)) $filter = array("class" => $filter);
 	if(!isset($filter['type'])) $filter['type'] = "text";
 
-	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="';
+	echo'<input type="'.$filter['type'].'" id="'.encode($key).'"';
 
-	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key]; else echo @$filter['default'];
 
-	echo'" class="editable-input '.@$filter['class'].'"';
+	echo' value="';
+
+	if(isset($GLOBALS['content'][$key])) 
+		if(@$filter['type'] == 'number') echo str_replace(',', '.', $GLOBALS['content'][$key]);
+		else echo $GLOBALS['content'][$key]; 
+	else 
+		echo @$filter['default'];
+	
+	echo'"';
+
+
+	echo' class="editable-input '.@$filter['class'].'"';
 
 	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true) echo' checked="checked"';
 
