@@ -1811,6 +1811,12 @@ $(function()
 
 
 	/************** IMAGE/FICHIER SEUL **************/
+
+	// Charge les images en lazy load pour qu'elles puissent être sauvegardé
+	$("[data-lazy]").each(function() {
+		$(this).attr("src", $(this).data("lazy"));
+	});
+
 	
 	// On highlight les zones où l'on peut droper des fichiers
 	body_editable_media_event = function() {
