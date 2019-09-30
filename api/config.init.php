@@ -183,6 +183,7 @@ $GLOBALS['toolbox'] = array(
 	"bold",
 	"italic",
 	//"underline",
+	//"fontColor",
 	//"superscript",
 	//"fontSize",
 	//"insertUnorderedList",

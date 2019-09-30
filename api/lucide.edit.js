@@ -521,6 +521,11 @@ html_tool = function(html){
 	}
 }
 
+// Modification couleur
+setColor = function() {
+	exec_tool('foreColor', $("#colorPicker")[0].value);
+}
+
 // Voir le code source
 view_source = function(memo, force){
 
@@ -1435,6 +1440,9 @@ $(function()
 		if(typeof toolbox_underline != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
 		
+		if(typeof toolbox_fontColor != 'undefined') 
+			toolbox+= "<li><button id=\"fontColor\"><input type=\"color\" id=\"colorPicker\" onchange=\"setColor()\"></button></li>";
+	
 		if(typeof toolbox_superscript != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('superscript')\"><i class='fa fa-fw fa-superscript'></i></button></li>";
 				
