@@ -302,6 +302,10 @@ exec_tool = function(command, value, ui) {
 		// Si Ajout d'une ancre
 		if(command == "CreateAnchor") { var command_source = command; command = "CreateLink"; }
 		
+		// Si changement de couleur
+		if(command == "foreColor") {
+			value = $("#colorPicker")[0].value;
+		}
 
 		// Exécution de la commande
 		document.execCommand(command, ui, value);
@@ -519,11 +523,6 @@ html_tool = function(html){
 		$("#"+html).addClass("checked");
 		exec_tool('formatBlock', html);
 	}
-}
-
-// Modification couleur
-setColor = function() {
-	exec_tool('foreColor', $("#colorPicker")[0].value);
 }
 
 // Voir le code source
