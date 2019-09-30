@@ -2106,6 +2106,11 @@ $(function()
 		$(this).attr("placeholder", $(this).attr("id")).attr("title", $(this).attr("id"));
 	});
 
+	// Si le contenu d'un input change on doit sauvegarder
+	$(".editable-input").on("change", function(event) {
+		tosave();
+	});
+
 	// Transforme les inputs hidden en texte visible
 	$("input[type='hidden'].editable-input").attr("type","text");
 
@@ -2572,7 +2577,7 @@ $(function()
 		{	
 			// Caractères texte ou 0/96 ou entrée
 			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 96 || event.keyCode == 13)
-			{
+			{console.log(event.keyCode+"log")
 				tosave();// A sauvegarder
 			}
 			else if(event.keyCode == 46 || event.keyCode == 8)// Suppr ou Backspace
