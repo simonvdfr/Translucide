@@ -426,7 +426,7 @@ switch(@$_GET['mode'])
 								`id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
 								`type` varchar(32) NOT NULL,
 								`cle` varchar(255) NOT NULL DEFAULT '',
-								`val` text NOT NULL,
+								`val` text,
 								`ordre` smallint(6) NOT NULL DEFAULT '0',
 								PRIMARY KEY (`id`,`type`,`cle`),
 								KEY `type` (`type`,`cle`),
