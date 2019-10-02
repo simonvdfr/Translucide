@@ -312,7 +312,7 @@ switch($_GET['mode'])
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
 			{
 				// Supprime les métas //@todo migration supp au long terme (12/11/2018)
-				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
+				//$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
 
 				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
 			}
@@ -506,8 +506,8 @@ switch($_GET['mode'])
 			//@todo migration supp au long terme (12/11/2018)
 			if(!@$GLOBALS['user_info_in_table_user']) {
 				// Récupération des infos sur l'utilisateur
-				$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-				$res_meta = $sel_meta->fetch_assoc();
+				/*$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+				$res_meta = $sel_meta->fetch_assoc();*/
 			}
 
 			$array_auth = explode(",", $res['auth']);// Les autorisations
@@ -612,8 +612,9 @@ switch($_GET['mode'])
 				<div class="info mbs"><?
 						
 					//@todo migration supp au long terme (12/11/2018)
-					if(!@$GLOBALS['user_info_in_table_user'] and $res_meta['val']) $info = json_decode($res_meta['val'], true);
-					elseif($res['info']) $info = json_decode($res['info'], true);
+					//if(!@$GLOBALS['user_info_in_table_user'] and $res_meta['val']) $info = json_decode($res_meta['val'], true);
+					//elseif($res['info']) 
+						$info = json_decode($res['info'], true);
 
 					foreach($GLOBALS['user_info'] as $cle => $val)
 					{
@@ -754,19 +755,23 @@ switch($_GET['mode'])
 				login('high', 'edit-user');			
 			elseif(@$_REQUEST['uid'])
 			{				
-				// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
+				// Si l'utilisateur est différent de nous on vérifie que l'on est admin
 				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
 				else login('high');				
 
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
 				$res = $sel->fetch_assoc();
 
-				// Si les droits d'accès ont changé on déconnecte l'utilisateur pour qu'il recrée son cookie auth
-				if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth'])) 
-					$logout = true;
-				// Si on change nos propres droits on recrée le cookie auth (on doit avoir les droits d'édition user)
-				elseif($_REQUEST['uid'] == $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']) and isset($_SESSION['auth']['edit-user']))
-					token($_REQUEST['uid'], null, implode(",", $_POST['auth']));
+				// Si on édite les droits d'un utilisateur
+				if(isset($_POST['auth']))
+				{
+					// Si les droits d'accès ont changé on déconnecte l'utilisateur pour qu'il recrée son cookie auth
+					if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth'])) 
+						$logout = true;
+					// Si on change nos propres droits on recrée le cookie auth (on doit avoir les droits d'édition user)
+					elseif($_REQUEST['uid'] == $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']) and isset($_SESSION['auth']['edit-user']))
+						token($_REQUEST['uid'], null, implode(",", $_POST['auth']));
+				}
 			}
 
 			// Nettoyage du email
@@ -823,7 +828,7 @@ switch($_GET['mode'])
 			// Si informations supplémentaires sur l'utilisateur
 			if(isset($_POST['info']) and is_array($_POST['info'])) {
 				$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
-				$sql .= "info = '".$info."' ";
+				$sql .= "info = '".$info."', ";
 			}
 
 			// Mot de passe
@@ -870,7 +875,7 @@ switch($_GET['mode'])
 					// On regarde si il n'y a pas déjà des donnée dans la base
 					if(!@$GLOBALS['user_info_in_table_user'])
 					{
-						$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+						/*$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
 						$res_meta = $sel_meta->fetch_assoc();
 
 						// AJOUT DES DONNÉE EN MÉTA
@@ -898,7 +903,7 @@ switch($_GET['mode'])
 								// Si INSERT réussit						
 								if(!$res_meta['id']) $insert_info = true;
 							}
-						}
+						}*/
 					}
 
 
