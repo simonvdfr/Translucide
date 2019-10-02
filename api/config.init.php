@@ -77,8 +77,11 @@ if($dev)// Dev local
 else 
 	$GLOBALS['domain'] = '';
 
+
 $GLOBALS['path'] = '';
-$GLOBALS['replace_path'] = "";// "/" Pour les chemins des média lors du clean de la sauvegarde
+
+$GLOBALS['replace_path'] = "";// "/" Pour les chemins des média sur les sites avec dossier dans les url (filtre)
+
 
 $GLOBALS['email_contact'] = '';
 

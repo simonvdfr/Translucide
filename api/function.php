@@ -368,7 +368,7 @@ function media($key = null, $filter = array())
 
 	// Nom du fichier
 	if(isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key]!="") 
-		$filename = $GLOBALS['home'].$GLOBALS['content'][$key];
+		$filename = $GLOBALS['home'].ltrim($GLOBALS['content'][$key], $GLOBALS['replace_path']);
 	else
 		$filename = "";
 
