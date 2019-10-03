@@ -13,15 +13,15 @@
 <section class="mw960p mod center mbl">
 
 	<div class="tc mbn">
-		<h1><?txt('titre')?></h1>
-		<h2 class="pbl"><?txt('sstitre')?></h2>
+		<?h1('titre')?>
+		<?h2('sstitre', 'pbl')?>
 	</div>
 
 	<div class="link w50 fl tc animation slide-left">
 		<article>
 			<div><?media('media-2', '130')?></div>
-			<h3 class="mbn tdn"><a <?href("lien-2")?>><?txt('titre-2')?></a></h3>
-			<div class="w50 center"><?txt('txt-2')?></div>
+			<h3 class="mbn tdn"><a <?href("lien-2")?>><?span('titre-2')?></a></h3>
+			<?txt('txt-2','w50 center')?>
 			<div class="bt"><?_e("Lire plus")?></div>
 		</article>
 	</div>
@@ -29,8 +29,8 @@
 	<div class="link w50 fl tc animation slide-right">
 		<article>
 			<div><?media('media-3', '130')?></div>
-			<h3 class="mbn tdn"><a <?href("lien-3")?>><?txt('titre-3')?></a></h3>
-			<div class="w50 center"><?txt('txt-3')?></div>
+			<h3 class="mbn tdn"><a <?href("lien-3")?>><?span('titre-3')?></a></h3>
+			<?txt('txt-3','w50 center')?>
 			<div class="bt"><?_e("Lire plus")?></div>
 		</article>
 	</div>
@@ -40,7 +40,7 @@
 
 <section class="mw960p mod center mbl">
 
-	<h2 class="tc mbt mtt ptm"><?txt('titre-4')?></h2>
+	<?h2('titre-4', 'tc mbt mtt ptm')?>
 
 	<article class="pbm mtl mod">
 
@@ -50,13 +50,13 @@
 		<div class="pll fr w60">
 
 			<div class="animation slide-right">
-				<h3 class="mbn"><?txt('titre-5')?></h3>
-				<div><?txt('txt-5')?></div>
+				<?h3('titre-5','mbn')?>
+				<?txt('txt-5')?>
 			</div>
 
 			<div class="mtl animation slide-right">
-				<h3 class="mbn"><?txt('titre-6')?></h3>
-				<div><?txt('txt-6')?></div>
+				<?h3('titre-6','mbn')?>
+				<?txt('txt-6')?>
 			</div>
 
 		</div>
@@ -67,8 +67,8 @@
 	<article class="ptm mod" style="border-top: solid 1px #eee;">
 
 			<div class="prs mtl ptm fl w60 tr animation slide-left">
-				<h3 class="mbn"><?txt('titre-7')?></h3>
-				<div><?txt('txt-7')?></div>
+				<?h3('titre-7','mbn')?>
+				<?txt('txt-7')?>
 			</div>
 
 		<!-- image : 470 x 320 -->
@@ -83,19 +83,15 @@
 <!-- Module -->
 <section class="mw960p mod center mbl">
 
-	<h2 class="tc mbt mtt ptm"><?txt('titre-module')?></h2>
+	<?h2('titre-module', 'tc mbt mtt ptm')?>
 
 		<div class="flex mbm tc">
-
-			<?
-			$module = module("partenaire");
-			/* nom du module "partenaire" = id du module, et au début des id des txt() media() ... */
-			?>
-
 
 			<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
 			<ul id="partenaire" class="module unstyled pan auto">
 			<?
+			// nom du module "partenaire" = id du module, et au début des id des txt() media() ...
+			$module = module("partenaire");
 			foreach($module as $key => $val)
 			{
 				?>
@@ -134,7 +130,7 @@
 
 	<div class="mw960p mod center mbl">
 
-		<h2 class="tc"><?txt('titre-event')?></h2>
+		<?h2('titre-event', 'tc')?>
 
 		<div class="fl w50 tr no-small-screen">
 			<span class="editable-event" id="img-illu-event"><?media('media-event','425')?></span>
