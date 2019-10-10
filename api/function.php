@@ -1022,6 +1022,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 		<?
 		exit;
 	}
+	elseif ($quiet == 'error') {?><script>$(function() {error("<?=$msg?>", 4000); });</script><?}
 }
 
 function logout($redirect = null)
