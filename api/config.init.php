@@ -44,7 +44,6 @@ $GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix'].'content';
 $GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix'].'meta';
 $GLOBALS['table_tag'] = $GLOBALS['tt'] = $GLOBALS['db_prefix'].'tag';
 $GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix'].'user';
-$GLOBALS['table_shop'] = $GLOBALS['ts'] = $GLOBALS['db_prefix'].'shop';
 
 if($dev) {// Dev local
 	$GLOBALS['db_server'] = '';
