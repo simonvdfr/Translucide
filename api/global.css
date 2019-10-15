@@ -992,6 +992,8 @@ header #logo { transition: opacity .5s; }
 	header nav > ul {
 		background-color: #fff;
 
+		display: block !important;
+
 		position: fixed !important;
 
 		left: 0;
@@ -1008,6 +1010,8 @@ header #logo { transition: opacity .5s; }
 
 		z-index: 10;
 
+		text-align: center;
+
 		transition-duration: 0.3s;
 		transform: translateX(-100%);
 		-webkit-transform: translateX(-100%);
@@ -1015,6 +1019,7 @@ header #logo { transition: opacity .5s; }
 		header nav li {
 			float: none;
 			padding: 0;
+			margin-left: 0 !important;
 			border-radius: 5px;
 			transition: background 0.3s;
 		}
