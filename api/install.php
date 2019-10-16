@@ -1,5 +1,5 @@
 <?
-include_once("config.init.php");// Les variables par défaut
+include_once("config.init.php");// Les variables par défauts
 include_once("function.php");// Fonction
 
 $lang = get_lang();// Sélectionne  la langue
