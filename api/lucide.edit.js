@@ -1112,8 +1112,8 @@ $(function()
 	$("#admin-bar #description").val(description);
 
 
-	if($('meta[name=robots]').last().attr("data").includes("noindex")) $("#admin-bar #noindex").prop("checked", true);
-	if($('meta[name=robots]').last().attr("data").includes("nofollow")) $("#admin-bar #nofollow").prop("checked", true);
+	if(/noindex/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #noindex").prop("checked", true);
+	if(/nofollow/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #nofollow").prop("checked", true);
 
 
 	$("#admin-bar #permalink").val(permalink);
@@ -1550,6 +1550,9 @@ $(function()
 					memo_range = memo_selection.getRangeAt(0);
 					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
 				}
+			},
+			"click.editable": function(event){// Désactive les ouvertures de liens sous ie
+				event.preventDefault();
 			},
 			"mouseup.editable": function(event)// Si on click dans un contenu éditable
 			{		
