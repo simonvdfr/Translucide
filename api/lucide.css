@@ -163,7 +163,7 @@ body { transition: margin-top .2s linear; }
 		/* Croix du désactivé */
 		#admin-bar .switch label:before {
 			font-family: FontAwesome;
-			content: "\e82a";/* Off f00d */
+			content: "\e813";/* Off f00d e82a */
 			margin-left: 18px;
 			transition: all .2s ease;
 		}
@@ -175,7 +175,7 @@ body { transition: margin-top .2s linear; }
 			/* Activé */
 			#admin-bar .switch input[type=checkbox]:checked ~ label:before {
 				font-family: FontAwesome;
-				content: "\e80d";/* On f00c */
+				content: "\e812";/* On f00c e80d */
 				margin-left: 6px;
 			}
 			/* Calage du bouton si activé */
