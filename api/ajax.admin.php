@@ -143,9 +143,6 @@ switch($_GET['mode'])
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
 				foreach($GLOBALS['toolbox'] as $cle => $val) { echo'toolbox_'.$val.' = true;'; }
-
-				// Animation sur la dialogue média ?
-				echo"animation_dialog = '".$GLOBALS['animation_dialog']."';";
 				?>
 			
 				// Chargement de Jquery UI
