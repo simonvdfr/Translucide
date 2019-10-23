@@ -96,25 +96,12 @@ else
 
 // https://developers.facebook.com/apps/
 $GLOBALS['facebook_api_id'] = '';
-$GLOBALS['facebook_api_secret'] = '';
-$GLOBALS['facebook_page'] = '';// https://www.facebook.com/***
-$GLOBALS['facebook_jssdk'] = false;
 
-// https://console.developers.google.com/apis/credentials/oauthclient => Application Web
-$GLOBALS['google_api_id'] = '';
-$GLOBALS['google_api_secret'] = '';
-$GLOBALS['google_map'] = '';
+https://analytics.google.com/analytics/web/
 $GLOBALS['google_analytics'] = '';
+
+https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
-$GLOBALS['google_page'] = '';// https://plus.google.com/***
-
-// https://developer.yahoo.com/apps/
-$GLOBALS['yahoo_api_id'] = '';
-$GLOBALS['yahoo_api_secret'] = '';
-
-// https://account.live.com/developers/applications/create
-$GLOBALS['microsoft_api_id'] = '';
-$GLOBALS['microsoft_api_secret'] = '';
 
 
 // Clé hash pour les cryptages

@@ -992,7 +992,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 						
 						// On ouvre la dialog de choix du système de login et affiche une erreur
 						$.ajax({
-							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=internal-login", 
 							data: {
 								callback: "<?=(isset($_REQUEST['callback']) ? encode($_REQUEST['callback'], "_") : "")?>",
 								msg: "<?=htmlspecialchars((isset($msg) ? $msg : ""));?>"

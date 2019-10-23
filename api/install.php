@@ -283,33 +283,6 @@ switch(@$_GET['mode'])
 							<li class="mtl bold"><?_e("Option");?></li>
 
 							<li><label class="w30"><i class="fa fa-fw fa-line-chart"></i> <?_e("Google analytics code");?></label> <input type="text" id="google_analytics" placeholder="UA-00000000-1" class="w20 vatt"></li>
-
-
-							<li class="mtm bold"><?_e("System login third");?></li>
-
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-facebook-f"></i> <?_e("Id of the app facebook");?></label> <input type="text" id="facebook_api_id" placeholder="" class="w60 vatt">
-								<a href="https://developers.facebook.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret key of the app facebook");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
-
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-google"></i> <?_e("Id of the app google");?></label> <input type="text" id="google_api_id" placeholder="" class="w60 vatt">
-								<a href="https://console.developers.google.com/apis/credentials/oauthclient" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret Key to google app");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
-							
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-yahoo"></i> <?_e("Id of the app yahoo");?></label> <input type="text" id="yahoo_api_id" placeholder="" class="w60 vatt">
-								<a href="https://developer.yahoo.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret key to the app yahoo");?></label> <input type="text" id="yahoo_api_secret" placeholder="" class="w60 vatt"></li>
-
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-windows"></i> <?_e("Id of the app microsoft");?></label> <input type="text" id="microsoft_api_id" placeholder="" class="w60 vatt">
-								<a href="https://account.live.com/developers/applications/create" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret key of microsoft app");?></label> <input type="text" id="microsoft_api_secret" placeholder="" class="w60 vatt"></li>
 							 -->
 						</ul>
 
