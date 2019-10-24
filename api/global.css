@@ -590,10 +590,10 @@ input[type="reset"].unstyled:focus {
 
 
 /* GRIDS */
-[class*="grid-"], [class^="grid-"] { display: grid }
+.grid, [class*="grid-"], [class^="grid-"] { display: grid }
 
 /* grids gap */
-[class*="grid-"].space-m, [class^="grid-"].space-m { grid-gap: 1rem; }
+[class*="grid-"].space, [class^="grid-"].space { grid-gap: 1rem; }
 [class*="grid-"].space-l, [class^="grid-"].space-l { grid-gap: 2rem; }
 [class*="grid-"].space-xl, [class^="grid-"].space-xl { grid-gap: 4rem; }
 
@@ -604,7 +604,7 @@ input[type="reset"].unstyled:focus {
 	.flex { display: flex;	}
 
 	/* grid template */
-	[class*="grid-"], [class^="grid-"] { display: grid }
+	.grid	{ grid-auto-flow: column; }
 	.grid-2 { grid-template-columns: repeat(2, 1fr); }
 	.grid-3 { grid-template-columns: repeat(3, 1fr); }
 	.grid-4 { grid-template-columns: repeat(4, 1fr); }
