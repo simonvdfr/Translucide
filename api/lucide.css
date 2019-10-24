@@ -912,6 +912,17 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 			vertical-align: top;
 		}
 
+		.toolbox button#fontColor {
+			padding: 0;
+		}
+		.toolbox button#fontColor input[type="color" i] {
+			width: 26px;
+			cursor: pointer;
+			border: 0;
+			padding: 0;
+			background-color: transparent;
+		}
+
 
 	.toolbox:hover {
 		opacity: 1;

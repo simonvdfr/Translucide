@@ -903,18 +903,6 @@ header #logo { transition: opacity .5s; }
 	.burger.active span::before,
 	.burger.active span::after { transition-delay: 0s, 0.3s; }
 
-/* TOOLBOX */
-.toolbox button#fontColor {
-	padding: 0;
-}
-.toolbox button#fontColor input[type="color" i] {
-    width: 26px;
-    cursor: pointer;
-    border: 0;
-	padding: 0;
-	background-color: transparent;
-}
-
 /* HIDING content */
 @media (max-width: 640px) {
 	.no-small-screen, .noss { display: none !important; }

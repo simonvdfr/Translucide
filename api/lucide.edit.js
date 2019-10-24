@@ -1440,7 +1440,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
 		
 		if(typeof toolbox_fontColor != 'undefined') 
-			toolbox+= "<li><button id=\"fontColor\"><input type=\"color\" id=\"colorPicker\" onchange=\"setColor()\"></button></li>";
+			toolbox+= "<li><button id=\"fontColor\"><input type=\"color\" id=\"colorPicker\" onchange=\"exec_tool('foreColor')\"></button></li>";
 	
 		if(typeof toolbox_superscript != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('superscript')\"><i class='fa fa-fw fa-superscript'></i></button></li>";
