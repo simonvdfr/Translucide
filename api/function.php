@@ -404,6 +404,8 @@ function media($key = null, $filter = array())
 		echo" class='";
 		if(isset($filter['editable'])) echo $filter['editable']; else echo"editable-media";
 		if(isset($filter['global'])) echo" global";
+		//if(isset($size[0]) and isset($size[1])) echo" crop";
+		if(isset($filter['crop'])) echo" crop";
 		echo"'";
 
 		if(isset($filter['class'])) echo" data-class='".$filter['class']."'";
@@ -455,9 +457,7 @@ function media($key = null, $filter = array())
 				if(isset($GLOBALS['content'][$key.'-alt'])) echo' alt="'.$GLOBALS['content'][$key.'-alt'].'"';
 				else echo' alt=""';
 
-				echo" class='";
-					//if(isset($size[0]) and isset($size[1])) echo"crop";
-					if(isset($filter['crop'])) echo"crop";
+				echo" class='";					
 					if(isset($filter['zoom'])) echo" zoom";
 					if(isset($filter['class'])) echo" ".$filter['class'];
 				echo"'>";

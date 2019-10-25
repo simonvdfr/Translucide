@@ -559,7 +559,7 @@ view_source = function(memo, force){
 
 
 // Dialog box avec effet de transfert
-dialog_transfert = function(mode, source, target, callback) {
+dialog = function(mode, source, target, callback) {
 
 	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle apparaît/disparaît. Pas juste visibility:hidden/visible...
 
@@ -643,7 +643,7 @@ media = function(source, target) {
 	//$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
 	
 	// Dialog de gestion des medias
-	dialog_transfert("media", source, target, function() {					
+	dialog("media", source, target, function() {					
 			// Unbind le drag&drop pour l'ajout de média
 			$("body").off(".dialog-media");
 
@@ -863,6 +863,8 @@ get_img = function(id, link)
 	var height = $("#dialog-media-height").val();
 
 	var media_source = $("#dialog-media-source").val();
+
+	var crop = $("#"+media_source).hasClass('crop');
 	
 	var data_class = $("#"+media_source).data("class") || "";
 
@@ -881,6 +883,7 @@ get_img = function(id, link)
 			"width": width,
 			"height": height,
 			"dir": dir,
+			"crop": crop,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
@@ -1438,7 +1441,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
 
 		if(typeof toolbox_icon != 'undefined') 
-			toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
+			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 
 		if(typeof toolbox_media != 'undefined') 
 			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture'></i></button></li>";
@@ -1857,7 +1860,7 @@ $(function()
 					$("img, i", this).removeClass("drag-elem");
 
 					// Upload du fichier dropé
-					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], $('img', this).hasClass('crop') ? 'crop':true);
+					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], $(this).hasClass('crop') ? 'crop':true);
 				},
 				// Hover zone upload	
 				"mouseenter.editable-media": function(event) {

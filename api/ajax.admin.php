@@ -1482,7 +1482,7 @@ switch($_GET['mode'])
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
 		
 		// Resize l'image ou simple copie
-		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], $dir);
+		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], $dir, (@$_POST['crop'] == 'true'?'crop':null));
 
 	break;
 

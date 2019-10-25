@@ -455,9 +455,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
     position: relative;
 	overflow: hidden;
 	vertical-align: middle;
-
-	min-width: 45px;
-	min-height: 30px;
+	min-width: 60px;
+	min-height: 60px;
 	border: 1px dotted rgba(61, 128, 179, 0.2);
 }
 	.lucide .editable-media img { 
@@ -778,7 +777,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		font-size: 5rem;
 		color: #5eba7d;
 
-		content: "\e806";
+		content: "\e80a";/*fa-ok*/
 
 		animation: fade-in-out 1s ease forwards;
 
