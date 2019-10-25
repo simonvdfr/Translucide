@@ -643,11 +643,13 @@ function input($key = null, $filter = null)
 }
 
 // Lien éditable
-function href($key = null)
+function href($key = null, $target = null)
 {
 	$key = ($key ? $key : "href-".$GLOBALS['editkey']);
 
 	echo'href="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "").'" data-href="'.encode($key).'"';
+
+	if($target == 'file' and strstr(@$GLOBALS['content'][$key], ".")) echo' target="_blank"';
 
 	$GLOBALS['editkey']++;
 }
