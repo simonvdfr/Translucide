@@ -97,10 +97,10 @@ else
 // https://developers.facebook.com/apps/
 $GLOBALS['facebook_api_id'] = '';
 
-https://analytics.google.com/analytics/web/
+// https://analytics.google.com/analytics/web/
 $GLOBALS['google_analytics'] = '';
 
-https://search.google.com/search-console
+// https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
 
 
