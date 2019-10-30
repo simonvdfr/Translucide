@@ -1232,13 +1232,15 @@ switch($_GET['mode'])
 						timer = setTimeout(function() {
 							timer = null;
 
-							$("#media li").addClass("none");// Masque tous les Li
-							$("#media li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
+							console.log("recherche"+recherche);
+
+							$(".dialog-media [aria-hidden='false'] li").addClass("none");// Masque tous les Li
+							$(".dialog-media [aria-hidden='false'] li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
 							$window.trigger("scroll")// Force le chargement des images
 							
 						}, '500');
 					}
-					else $("#media li").removeClass("none");// Re-affiche tous les médias
+					else $(".dialog-media [aria-hidden='false'] li").removeClass("none");// Re-affiche tous les médias
 				});				
 
 			});
