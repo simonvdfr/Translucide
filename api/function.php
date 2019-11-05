@@ -151,7 +151,7 @@ function page($num_total, $page)
 			?><li class="fl mrs mtt">...</li><?
 			
 			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
-				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+				<li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 		else// - de 10 page
