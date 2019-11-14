@@ -109,10 +109,12 @@ if($res)
 			$sel_503 = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
 			$res_503 = $sel_503->fetch_assoc();
 			if($res_503['id']) $res = $res_503;
+			else {
+				$res = null;
+				$res['title'] = $msg = __("Under Construction");
+			}
 
 			header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
-				
-			if(!$res) $res['title'] = $msg = __("Under Construction");
 		}
 
 		$robots = "noindex, follow";
