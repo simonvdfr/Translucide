@@ -133,7 +133,7 @@ function make_url($url, $filter = array())
 }
 
 // Navigation par page
-function page($num_total, $page)
+function page($num_total, $page, $full = false)
 {
 	global $num_pp, $res;
 
@@ -146,7 +146,7 @@ function page($num_total, $page)
 		// Page 1
 		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
 
-		if($num_page > 10 and $page >= 10)// + de 10 page
+		if($num_page > 10 and $page >= 10 and !$full)// + de 10 page
 		{
 			?><li class="fl mrs mtt">...</li><?
 			
@@ -156,12 +156,12 @@ function page($num_total, $page)
 		}
 		else// - de 10 page
 		{
-			for($i = 2; $i <= 10 and $i < $num_page; $i++){?>
+			for($i = 2; $i <= ($full?$num_page:10) and $i < $num_page; $i++){?>
 				<li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 
-		if($num_page > 10 and $page < ($num_page - 2)) {?><li class="fl mrs">...</li><?}
+		if($num_page > 10 and $page < ($num_page - 2) and !$full) {?><li class="fl mrs">...</li><?}
 
 		// Page final
 		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
