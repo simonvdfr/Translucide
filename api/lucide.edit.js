@@ -2221,8 +2221,6 @@ $(function()
 		var regex = separator.replace(" ", "\\s*");// Replace les espaces par des espaces optionnels
 		regex = new RegExp(regex, "g");// Crée une regex avec la string
 
-		function split(val) { return val.split(regex); }// /,\s*/
-	    function extractLast(term) { return split(term).pop(); }
 
 		$(".editable-tag").on("keydown", function(event) {				
 			// Ne quitte pas le champ lorsque l'on utilise TAB pour sélectionner un élément
@@ -2239,7 +2237,7 @@ $(function()
 
 	            // Si les data on déjà était chargé donc on affiche direct le resultat
 	            if(typeof all_data !== 'undefined') {
-	            	response($.ui.autocomplete.filter(all_data, extractLast(request.term)));
+	            	response($.ui.autocomplete.filter(all_data, request.term.split(regex).pop()));
 	            	return;
 	            }
 
@@ -2261,7 +2259,7 @@ $(function()
 						all_data = data;// Pour la mise en cache de la liste complete
 
 						// Déléguer à la saisie semi-automatique et extrait le dernier terme
-	                	response($.ui.autocomplete.filter(data, extractLast(request.term)));
+	                	response($.ui.autocomplete.filter(data, request.term.split(regex).pop()));
 		            }
 		        });
 			},
@@ -2272,7 +2270,7 @@ $(function()
 			select: function(event, ui) {
 
 				// Crée un tableau avec les éléments déjà présents dans la liste
-				if($(this).text()) var terms = split($(this).text());
+				if($(this).text()) var terms = $(this).text().split(regex);
 				else var terms = [];
 
 				// Supprimer l'entrée actuelle SI on a fait une recherche
@@ -2564,7 +2562,7 @@ $(function()
 		{	
 			// Caractères texte ou 0/96 ou entrée
 			if(String.fromCharCode(event.which).match(/\w/) || event.keyCode == 96 || event.keyCode == 13)
-			{console.log(event.keyCode+"log")
+			{
 				tosave();// A sauvegarder
 			}
 			else if(event.keyCode == 46 || event.keyCode == 8)// Suppr ou Backspace
