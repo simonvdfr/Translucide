@@ -1258,8 +1258,11 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 /********** TEXTE **********/
 
 // Coupe une phrase proprement
-function word_cut($texte, $limit, $tags = '') {//$tags = '<br><div>'
-	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte, $tags), 0, $limit));
+function word_cut($texte, $limit, $end = '', $tags = '') {//$tags = '<br><div>'  $end = '...'
+	$texte = strip_tags($texte.' ', $tags);// texte sans html
+	$word_cut = preg_replace('/\s+?(\S+)?$/u', '', substr($texte, 0, $limit));// /u > pour l'utf8
+	if(strlen($word_cut) < strlen(trim($texte))) $word_cut .= $end;// Si coupure on ajoute une ponctuation à la fin
+	return $word_cut;
 }
 
 
