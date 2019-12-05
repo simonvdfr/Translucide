@@ -1053,6 +1053,26 @@ function logout($redirect = null)
 
 /********** IMAGE **********/
 
+// Verifie que le fichier et supporter et pas de hack
+function file_check($file)
+{
+	$finfo = finfo_open(FILEINFO_MIME_TYPE);
+	$file_infos['mime'] = finfo_file($finfo, $_FILES[$file]['tmp_name']);
+	finfo_close($finfo);
+
+	// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
+	if(in_array($file_infos['mime'], $GLOBALS['mime_supported'])) 
+	{
+		// Le fichier tmp ne contient pas de php ou de javascript
+		if(!preg_match("/<\?php|<scr/", file_get_contents($_FILES[$file]['tmp_name']))) 
+			return true;
+		else 
+			return false;
+	}
+	else return false;
+}
+
+// Redimentionne une image
 function resize($source_file, $new_width = null, $new_height = null, $dest_dir = null, $option = null)
 {
 	// Supprime les arguments après l'extension (timer...)
@@ -1213,7 +1233,7 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 	// Valeur par défaut
 	$option = null;
 	$dir = ($dest_dir ? 'media/'.$dest_dir : 'media');
-	$src_file = $dir.'/'.basename($root_file)."?".time();
+	$src_file = $dir.'/'.basename($root_file).'?'.time();
 
 	// Taille de l'image uploadée
 	list($source_width, $source_height, $type) = getimagesize($root_file);
@@ -1234,11 +1254,14 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 	// Image trop grande (> global) pour le web : on la redimensionne
 	if($source_width > $max_width or $source_height > $max_height or $option) 
 	{
-		$src_file = resize($root_file, $max_width, $max_height, $dir, $option);// Redimensionne sans crop
+		// Redimensionne sans crop
+		$src_file = resize($root_file, $max_width, $max_height, $dir, $option);
 
-		unlink($root_file);// Supprime l'image originale puisque l'on ne garde que la maxsize
+		// Supprime l'image originale puisque l'on ne garde que la maxsize
+		unlink($root_file);
 
-		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];// La maxsize devient l'image root (explode: supp le timer)
+		// La maxsize devient l'image root (explode: supp le timer)
+		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];
 	}
 	
 
@@ -1249,8 +1272,23 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 
 		//unlink($root_file);// Si on a redimensionné on supp l'image de base
 	}
-	else
-		return $src_file;// Retourne l'url du fichier original si pas de redimensionnement	
+	else// Pas de redimensionnement
+	{
+		$dest_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];
+
+		// Le fichier destination est demandé dans un endroit different du fichier source
+		if($root_file != $dest_file)
+		{
+			// Si dossier destination on copie l'image dans la destination
+			copy($root_file, $dest_file);
+
+			// Et on supprime l'image source
+			unlink($root_file);
+		}
+
+		// Retourne l'url du fichier
+		return $src_file;
+	}
 }
 
 

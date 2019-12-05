@@ -78,8 +78,7 @@ switch($_GET['mode'])
 									<div>
 										<select id="type">
 											<?
-											//while(list($cle, $array) = each()) PHP 7.2
-											foreach($GLOBALS['add-content'] as $cle => $array)
+											foreach($GLOBALS['add_content'] as $cle => $array)
 											{
 												if(isset($_SESSION['auth']['add-'.$cle]))
 													echo'<option value="'.$cle.'">'.__($cle).'</option>';
@@ -197,8 +196,7 @@ switch($_GET['mode'])
 
 			<ul class="small">
 				<?
-				//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
-				foreach($GLOBALS['add-content'] as $cle => $array)
+				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
 						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
@@ -209,8 +207,8 @@ switch($_GET['mode'])
 
 			<div class="none">
 				<?
-				reset($GLOBALS['add-content']);
-				foreach($GLOBALS['add-content'] as $cle => $array)
+				reset($GLOBALS['add_content']);
+				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])) echo'<div id="add-'.$cle.'"></div>';
 				}
@@ -1525,35 +1523,32 @@ switch($_GET['mode'])
 		finfo_close($finfo);
 
 		// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
-		if(in_array($file_infos['mime'], $GLOBALS['mime_supported']))
+		// + Le fichier tmp ne contient pas de php ou de javascript
+		if(file_check('file'))
 		{
-			// Le fichier tmp ne contient pas de php ou de javascript
-			if(!preg_match("/<\?php|<scr/", file_get_contents($_FILES["file"]["tmp_name"])))
-			{	
-				@mkdir(dirname($root_file), 0705, true);
+			@mkdir(dirname($root_file), 0705, true);
 
-				// Upload du fichier
-				if(move_uploaded_file($_FILES['file']['tmp_name'], $root_file))
+			// Upload du fichier
+			if(move_uploaded_file($_FILES['file']['tmp_name'], $root_file))
+			{
+				// Type mime
+				list($type, $ext) = explode("/", $file_infos['mime']);
+
+				// Si c'est une image
+				if($type == "image")
 				{
-					// Type mime
-					list($type, $ext) = explode("/", $file_infos['mime']);
-
-					// Si c'est une image
-					if($type == "image")
-					{
-						// Resize l'image si besoin 
-						// SUPP ?? (On ajoute le path du site pour gerer l'édition dans les sous catégories) $GLOBALS['path']. => maintenant ça se passe dans le edit.js
-						echo img_process($root_file,
-								$dir,
-								(int)$_POST['width'],
-								(int)$_POST['height'],
-								(isset($_POST['resize'])?$_POST['resize']:'')
-							);
-					}		
-					else 
-						echo $src_file;// Retourne l'url du fichier original		
-				}
-			}
+					// Resize l'image si besoin 
+					// SUPP ?? (On ajoute le path du site pour gerer l'édition dans les sous catégories) $GLOBALS['path']. => maintenant ça se passe dans le edit.js
+					echo img_process($root_file,
+							$dir,
+							(int)$_POST['width'],
+							(int)$_POST['height'],
+							(isset($_POST['resize'])?$_POST['resize']:'')
+						);
+				}		
+				else 
+					echo $src_file;// Retourne l'url du fichier original		
+			}			
 		}
 		//else echo $file_infos['mime'];
 
