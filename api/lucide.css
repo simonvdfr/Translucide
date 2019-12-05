@@ -49,6 +49,10 @@ body { transition: margin-top .2s linear; }
 		#admin-bar #user i:hover { color: #6b6f7a; }
 		#admin-bar #user .absolute { position: absolute; }
 		#admin-bar #user .absolute .load { min-width: 298px; }
+		#admin-bar #user .absolute .load .scroll { 
+			overflow-y: auto;
+			max-height:  500px;
+		}
 		#admin-bar #user .absolute i { color: #75898c; transition: color .3s; }
 		#admin-bar #user .absolute i:hover { color: #6b6f7a; }
 		#admin-bar #user .absolute li { 
