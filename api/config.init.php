@@ -123,6 +123,7 @@ $GLOBALS['public_account'] = false;
 
 // Statue d'activation par défaut des comptes utilisateur
 $GLOBALS['default_state'] = 'active';// moderate / mail / active / deactivate
+$GLOBALS['mail_moderate'] = true;
 
 // Niveaux d'authentification par défaut des comptes utilisateur
 $GLOBALS['default_auth'] = 'add-media-public,edit-public';
@@ -132,29 +133,25 @@ $GLOBALS['user_info'] = null;
 
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array(
-	'edit-admin',
-	'edit-user',
-	'edit-config',
-	'edit-nav',
-	'edit-header',
-	'edit-footer',
-	'add-media',
-	'add-page',
-	'add-article',
-	'add-event',
-	'add-product',
-	'edit-media',
-	'edit-page',
-	'edit-article',
-	'edit-event',
-	'edit-product',
-	'add-media-public',
-	'edit-public'
+	'edit-admin' => 'Managing admins',
+	'edit-user' => 'Managing users',
+
+	'edit-config' => 'Edit Config',
+
+	'edit-nav' => 'Edit menu',
+	'edit-header' => 'Edit header',
+	'edit-footer' => 'Edit footer',
+
+	'add-media' => 'Send Files',
+	'edit-media' => 'Edit Files',
+
+	'add-media-public' => 'Public file',
+	'edit-public' => 'Public content',
 );
 
 
 // Type de contenu ajoutable
-$GLOBALS['add-content'] = array(
+$GLOBALS['add_content'] = array(
 	//"product" => ["fa" => "fa-basket", "tpl" => "product"],
 	"article" => ["fa" => "fa-rss", "tpl" => "article"],
 	//"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],

@@ -139,7 +139,7 @@ switch($_GET['mode'])
 			<script>
 			path = "<?=$GLOBALS['path']?>";
 
-			$(document).ready(function()
+			$(function()
 			{
 				// Injection du la fiche user
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=user&uid=<?=(int)$_REQUEST['uid']?>&callback=reload", data: { nonce: $("#nonce").val() } })
@@ -448,104 +448,95 @@ switch($_GET['mode'])
 
 			<input type="hidden" id="uid" value="<?=@$res['id']?>">
 
-			<div class="mbt">
-				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
-				<? if(@$_SESSION['auth']['edit-user']){?>
-					<select id="state">
-						<option value="active"><?_e("Active")?></option>
-						<option value="moderate"><?_e("Moderate")?></option>
-						<option value="email"><?_e("User email")?></option>
-						<option value="blacklist"><?_e("Blacklist")?></option>
-						<option value="deactivate"><?_e("Deactivate")?></option>
-					</select>
-					<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
-				<?}else{?>
-					<?_e(@$res['state'])?>
-				<?}?>
-			</div>
+			<div class="scroll">
 
-			<div class="mbs" style="max-height: 100px;">
-				<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
-				<select id="auth" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
-					<option value="edit-admin"><?_e("Managing admins")?></option>
-					<option value="edit-user"><?_e("Managing users")?></option>
+				<div class="mbt">
+					<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
+					<? if(@$_SESSION['auth']['edit-user']){?>
+						<select id="state">
+							<option value="active"><?_e("Active")?></option>
+							<option value="moderate"><?_e("Moderate")?></option>
+							<option value="email"><?_e("User email")?></option>
+							<option value="blacklist"><?_e("Blacklist")?></option>
+							<option value="deactivate"><?_e("Deactivate")?></option>
+						</select>
+						<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
+					<?}else{?>
+						<?_e(@$res['state'])?>
+					<?}?>
+				</div>
 
-					<option value="edit-config"><?_e("Edit Config")?></option>
-
-					<option value="edit-nav"><?_e("Edit menu")?></option>
-					<option value="edit-header"><?_e("Edit header")?></option>
-					<option value="edit-footer"><?_e("Edit footer")?></option>
-
-					<option value="add-media"><?_e("Send Files")?></option>
-					<option value="edit-media"><?_e("Edit Files")?></option>
-					
-					<?
-					//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
-					foreach($GLOBALS['add-content'] as $cle => $array)
-					{
-						echo'<option value="add-'.$cle.'">'.__("Add ".$cle).'</option>';
-						echo'<option value="edit-'.$cle.'">'.__("Edit ".$cle).'</option>';
-					}
-					?>
-
-					<option value="add-media-public"><?_e("Public file")?></option>
-					<option value="edit-public"><?_e("Public content")?></option>
-				</select>
-				<script>
-				$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
-					$('#user #auth option[value="'+ val +'"]').prop('selected', true);
-				});
-				</script>					
-			</div>
-			
-			<!-- Désactive l'autocomplet du navigateur -->
-			<input type="text" id="email-fake" class="none">
-			<input type="password" id="password-fake" class="none">
-
-			<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
-
-			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
-
-			<div class="mbs nowrap">
-				<label class="w100p tr mrt" for="password_new"><?_e("Password")?></label>
-				<input type="password" id="password_new" class="w50" autocomplete="new-password">
-
-				<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
-
-				<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
-			</div>
-
-
-			<?
-			// Si il y a des méta/infos complementaire pour cette utilisateur
-			if(is_array($GLOBALS['user_info'])) 
-			{		
-				?>
-				<div class="info mbs"><?
+				<div class="mbs" style="max-height: 100px;">
+					<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
+					<select id="auth" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
+						<?
+						// Droit de base
+						foreach($GLOBALS['auth_level'] as $cle => $val)	{
+							echo'<option value="'.$cle.'">'.__($val).'</option>';
+						}
 						
-					//@todo migration supp au long terme (12/11/2018)
-					//if(!@$GLOBALS['user_info_in_table_user'] and $res_meta['val']) $info = json_decode($res_meta['val'], true);
-					//elseif($res['info']) 
+						// Droit contenu
+						foreach($GLOBALS['add_content'] as $cle => $array)
+						{
+							echo'<option value="add-'.$cle.'">'.__("Add ".$cle).'</option>';
+							echo'<option value="edit-'.$cle.'">'.__("Edit ".$cle).'</option>';
+						}
+						?>
+					</select>
+					<script>
+					$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
+						$('#user #auth option[value="'+ val +'"]').prop('selected', true);
+					});
+					</script>					
+				</div>
+				
+				<!-- Désactive l'autocomplet du navigateur -->
+				<input type="text" id="email-fake" class="none">
+				<input type="password" id="password-fake" class="none">
+
+				<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
+
+				<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
+
+				<div class="mbs nowrap">
+					<label class="w100p tr mrt" for="password_new"><?_e("Password")?></label>
+					<input type="password" id="password_new" class="w50" autocomplete="new-password">
+
+					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
+
+					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
+				</div>
+
+
+				<?
+				// Si il y a des méta/infos complementaire pour cette utilisateur
+				if(is_array($GLOBALS['user_info'])) 
+				{		
+					?>
+					<div class="info mbs"><?
+
 						$info = json_decode($res['info'], true);
 
-					foreach($GLOBALS['user_info'] as $cle => $val)
-					{
-						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=$info[$cle]?>" class="w60"></div><?
-					}
-					
-				?></div><?
-			}
-			?>
+						foreach($GLOBALS['user_info'] as $cle => $val)
+						{
+							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?
+						}
+						
+					?></div><?
+				}
+				?>
 
-			<?if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
-			<?if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
+				<?if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
+				<?if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
 
-			<?if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
+				<?if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
 
-			<button id="save-user" class="fr mat small">
-				<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
-				<i class="fa fa-fw fa-<?=($uid?"floppy":"plus")?> big white"></i>
-			</button>
+				<button id="save-user" class="fr mat small">
+					<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
+					<i class="fa fa-fw fa-<?=($uid?"floppy":"plus")?> big white"></i>
+				</button>
+
+			</div>
 		
 		</form>
 
@@ -671,6 +662,7 @@ switch($_GET['mode'])
 				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
 				else login('high');				
 
+				// Récupère les données sur l'utilisateurs
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
 				$res = $sel->fetch_assoc();
 
@@ -703,7 +695,6 @@ switch($_GET['mode'])
 			// Sécurisation supplémentaire
 			$_POST = array_map(function($value) use($connect) {
 				if(is_array($value)) { 
-					//while(list($cle, $val) = each($value)) PHP 7.2
 					foreach($value as $cle => $val) $value[$cle] = $connect->real_escape_string($val);
 				}
 				else $value = $connect->real_escape_string($value);
@@ -762,6 +753,12 @@ switch($_GET['mode'])
 
 			$sql .= "date_update = NOW() ";
 
+			if(isset($_SESSION['auth']['edit-user']) and isset($_POST['date_insert']))
+			{
+				$date_insert = $connect->real_escape_string($_POST['date_insert']);
+				$sql .= ", date_insert = '".$date_insert."' ";
+			}
+
 			if(@$_REQUEST['uid'])
 				$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
 			else
@@ -783,44 +780,8 @@ switch($_GET['mode'])
 
 				if($uid) 
 				{
-					// ANCIENNE METHODE POUR LES INFOS USERS //@todo migration supp au long terme (12/11/2018)
-					// On regarde si il n'y a pas déjà des donnée dans la base
-					if(!@$GLOBALS['user_info_in_table_user'])
-					{
-						/*$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-						$res_meta = $sel_meta->fetch_assoc();
-
-						// AJOUT DES DONNÉE EN MÉTA
-						if($uid and isset($_POST['info']) and is_array($_POST['info']))
-						{
-							if($res_meta['id']) 
-								$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
-							else 
-								$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
-							
-							$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
-							$sql .= "val = '".$info."' ";
-
-							if($res_meta['id']) 
-								$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";
-							else 
-								$sql .= ", type = 'user_info', id = '".(int)$uid."'";
-							
-							$connect->query($sql);
-							
-							//echo "_POST['info']<br>"; highlight_string(print_r($_POST['info'], true));
-							//echo $sql;
-
-							if(!$connect->error) {	
-								// Si INSERT réussit						
-								if(!$res_meta['id']) $insert_info = true;
-							}
-						}*/
-					}
-
-
 					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
-					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state']) 
+					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state'] and $GLOBALS['mail_moderate']) 
 					{
 						// Pour le garder secret
 						unset($_POST['password_new'], $_POST['password_confirm']);

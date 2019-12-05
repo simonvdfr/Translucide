@@ -520,7 +520,7 @@ switch(@$_GET['mode'])
 							// Création de la requête
 							$sql = "UPDATE ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
-							$sql .= "auth = '".addslashes(implode(",", $GLOBALS['auth_level']))."', ";// Donne tous les droits
+							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])).','.implode(",", array_keys($GLOBALS['add_content'])))."', ";// Donne tous les droits
 							
 							list($password, $unique_salt) = hash_pwd($_POST['password']);
 
@@ -558,7 +558,7 @@ switch(@$_GET['mode'])
 							// Création de la requête
 							$sql = "INSERT INTO ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
-							$sql .= "auth = '".addslashes(implode(",", $GLOBALS['auth_level']))."', ";// Donne tous les droits
+							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])).','.implode(",", array_keys($GLOBALS['add_content'])))."', ";// Donne tous les droits
 
 							$sql .= "email = '".addslashes($email)."', ";
 							
