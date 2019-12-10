@@ -487,6 +487,11 @@ switch(@$_GET['mode'])
 					
 					// UTILISATEUR
 
+
+					// Droit d'edition de base
+					$auth = null;
+					foreach($GLOBALS['add_content'] as $cle => $val) $auth.=',add-'.$cle.',edit-'.$cle;
+
 					// Vérification de l'email
 					$email = filter_input(INPUT_POST, 'email_contact', FILTER_SANITIZE_EMAIL);
 					if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -520,7 +525,7 @@ switch(@$_GET['mode'])
 							// Création de la requête
 							$sql = "UPDATE ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
-							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])).','.implode(",", array_keys($GLOBALS['add_content'])))."', ";// Donne tous les droits
+							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])) . $auth)."', ";// Donne tous les droits
 							
 							list($password, $unique_salt) = hash_pwd($_POST['password']);
 
@@ -558,7 +563,8 @@ switch(@$_GET['mode'])
 							// Création de la requête
 							$sql = "INSERT INTO ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
-							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])).','.implode(",", array_keys($GLOBALS['add_content'])))."', ";// Donne tous les droits
+							
+							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])) . $auth)."', ";// Donne tous les droits
 
 							$sql .= "email = '".addslashes($email)."', ";
 							
