@@ -1,13 +1,15 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
 <style>
-	aside { border-left: 0.2em solid  #78cfd6; }
+	aside { border-left: 0.2em solid #78cfd6; }
 </style>
 
 
 <section class="mod tc">
-	<h1 class="color mbn up"><?txt('title')?></h1>
-	<h2 class="color-alt"><?txt('sstitre')?></h2>
+	
+	<?h1('title', 'color mbn up')?>
+	<?h2('sstitre', 'color-alt')?>
+
 </section>
 
 
