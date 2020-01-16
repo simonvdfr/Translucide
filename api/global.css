@@ -1062,8 +1062,8 @@ header #logo { transition: opacity .5s; }
 		float: none;
 	}
 
-	.plm { padding-left: 0; }
-	.prl { padding-right: 0; }
+	.plm, .pll { padding-left: 0; }
+	.prm, .prl { padding-right: 0; }
 
 	.mrl { margin-right: 0; }
 	.mll { margin-left: 0; }
