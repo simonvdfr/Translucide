@@ -102,8 +102,18 @@ switch(@$_GET['mode'])
 		}
 
 		// Nom du site
-		$domains = explode('.', $_SERVER['SERVER_NAME']);
-		$sitename = (isset($GLOBALS['sitename']) ? utf8_encode($GLOBALS['sitename']) : ucfirst($domains[count($domains)-2]));
+		if(isset($GLOBALS['sitename'])) $sitename =  utf8_encode($GLOBALS['sitename']);
+		else 
+		{
+			$parse_url = parse_url($scheme_domain_path);
+			// Si dossier
+			if($parse_url['path'] != '/') $sitename = ucfirst(trim($parse_url['path'],'/'));
+			else// Si juste domaine
+			{
+				$domains = explode('.', $_SERVER['SERVER_NAME']);
+				$sitename = ucfirst($domains[count($domains)-2]);
+			}
+		}
 
 
 		header('Content-type: text/html; charset=UTF-8');
