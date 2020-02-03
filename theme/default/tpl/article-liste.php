@@ -1,7 +1,7 @@
 <? if(!$GLOBALS['domain']) exit; ?>
 
 <style>
-	article { border-left: 0.2em solid #35747f; }
+	.content article { border-left: 0.2em solid #35747f; }
 </style>
 
 
@@ -15,13 +15,14 @@
 		<?
 		// Liste les tags pour filtrer la page
 		$i = 1;
-		$sel_tag_list = $connect->query("SELECT distinct cle, val FROM ".$table_meta." WHERE type='tag' ORDER BY ordre ASC, cle ASC");
+		$sel_tag_list = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".$res['url']."' ORDER BY ordre ASC, encode ASC");
+		//echo $connect->error;
 
 		if($sel_tag_list->num_rows) _e("Catégories : ");
 
 		while($res_tag_list = $sel_tag_list->fetch_assoc()) {
 			if($i > 1) echo', ';
-			echo'<a href="'.make_url($res['url'], array($res_tag_list['cle'], 'domaine' => true)).'" class="color tdn dash">'.$res_tag_list['val'].'</a>';
+			echo'<a href="'.make_url($res['url'], array($res_tag_list['encode'], 'domaine' => true)).'" class="color tdn dash">'.$res_tag_list['name'].'</a>';
 			$i++;
 		}
 		?>
