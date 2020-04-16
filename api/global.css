@@ -416,7 +416,7 @@ input[type="reset"].unstyled:focus {
 
 
 /* Module */
-.module li:last-child { display: none; }
+.module > li:last-child { display: none; }
 
 
 /* Bouton */

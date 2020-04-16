@@ -1998,7 +1998,7 @@ $(function()
 		$(".editable-href").off(".editable-href");
 
 		// Crée un block
-		$("#" + module + " li:last-child").clone().prependTo("#" + module).show("400", function()
+		$("#" + module + " > li:last-child").clone().prependTo("#" + module).show("400", function()
 		{
 			// Modifie les cles
 			$("[class*='editable']", this).each(function() {
