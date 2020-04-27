@@ -1670,7 +1670,9 @@ $(function()
 			prompt(__("Paste something..."));
 
 		// Supprimes les commentaires HTML
-		paste = paste.replace(/<!--[\s\S]*?-->/gi, "");
+		//paste = paste.replace(/<!--[\s\S]*?-->/gi, "");
+		// + Supprime aussi les supportLists de word (Correction de Dominique)
+		paste = paste.replace(/<![\s\S]*?>/gi, "");
 
 		// Si pas en mode visionnage du code source & 
 		if(!$(this).hasClass("view-source")) 
