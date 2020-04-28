@@ -587,8 +587,6 @@ input[type="reset"].unstyled:focus {
     z-index: 1000;
 }
 
-
-
 /* GRIDS */
 @media (min-width: 480px) {/* 544px */
 	

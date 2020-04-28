@@ -365,7 +365,7 @@ if(!$ajax)
 
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
 
-	echo"<div class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : "")."'>";
+	echo"<main class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : "")."'>";
 }
 
 
@@ -384,7 +384,7 @@ else // Pas de contenu a chargé
 // Si pas ajax on charge toute la page
 if(!$ajax)
 {
-	echo"</div>";
+	echo"</main>";
 
 
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
