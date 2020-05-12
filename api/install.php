@@ -372,7 +372,7 @@ switch(@$_GET['mode'])
 								`robots` varchar(18) DEFAULT NULL,
 								`type` varchar(20) NOT NULL DEFAULT 'page',
 								`tpl` varchar(80) NOT NULL,
-								`url` varchar(60) DEFAULT NULL,
+								`url` varchar(70) DEFAULT NULL,
 								`title` varchar(70) NOT NULL,
 								`description` varchar(160) DEFAULT NULL,
 								`content` longtext,
