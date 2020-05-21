@@ -73,7 +73,7 @@ error = function(txt, fadeout){
 	$("#error, #under-error").remove();
 
 	// Ajout du fond gris
-	$("body").append("<div id='under-error' class='none absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 101; top: 0; left: 0; right: 0;'></div>");
+	$("body").append("<div id='under-error' class='none absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 1001; top: 0; left: 0; right: 0;'></div>");
 		
 	// Donne la bonne taille au fond gris et l'affiche
 	$("#under-error")
@@ -90,7 +90,7 @@ error = function(txt, fadeout){
 	// Affichage de la box
 	$("#error")
 		.css({
-			zIndex: 102,
+			zIndex: 1002,
 			opacity: 0,
 			top: -height,
 			left: (($(window).width() - $("#error").outerWidth()) / 2),
