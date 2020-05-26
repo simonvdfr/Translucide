@@ -576,6 +576,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	position: absolute;	
 	top: 0;
     right: 0;
+    z-index: 10;
 }
 	.module-bt a { 
 		position: relative;
