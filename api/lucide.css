@@ -239,7 +239,7 @@ body { transition: margin-top .2s linear; }
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	background-color: rgba(245, 245, 245, 0.95) !important;
 	border-radius: 5px;
-	overflow: hidden;
+	/* overflow: hidden; => fait que l'on ne voie pas les elements du menu sortir lors du drag */
 }
 	.tooltip label { margin-top: 0;	}
 
