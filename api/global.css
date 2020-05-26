@@ -1350,6 +1350,7 @@ header #logo { transition: opacity .5s; }
 .fa-share:before { content: '\f1e0'; } /* '' */
 .fa-paypal:before { content: '\f1ed'; } /* '' */
 .fa-trash:before { content: '\f1f8'; } /* '' */
+.fa-pinterest:before { content: '\f231'; } /* '' */
 .fa-user-plus:before { content: '\f234'; } /* '' */
 .fa-shopping-basket:before { content: '\f291'; } /* '' */
 .fa-hashtag:before { content: '\f292'; } /* '' */
