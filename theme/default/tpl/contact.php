@@ -10,21 +10,31 @@ if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["questi
 		{
 			if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
 			{
+				$from = ($_POST["email_contact"] ? htmlspecialchars($_POST["email_contact"]) : $GLOBALS['email_contact']);
+
+
 				$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email_contact"]);
 
-				$message = nl2br(strip_tags($_POST["message"]));
 
-				$message .= "<br /><br />-------------------------------------------------------<br />";
+				// Message
+				$message = (strip_tags($_POST["message"]));
 
-				if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."<br />";
+				$message .= "\n\n-------------------------------------------------------\n";
 
-				$message .= "Consentement : ".htmlspecialchars($_POST["rgpd_text"])."<br />";
-				$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br />";
-				$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br />";
-				$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br />";
-				$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br />";
+				if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."\n";
 
-				$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST["email_contact"] ? htmlspecialchars($_POST["email_contact"]) : $GLOBALS['email_contact']);
+				$message .= "Consentement : ".htmlspecialchars($_POST["rgpd_text"])."\n";
+				$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."\n";
+				$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."\n";
+				$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."\n";
+				$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."\n";
+
+
+				// header
+				$header = "From:".$from."\r\n";
+				$header.= "Reply-To: ".$from."\r\n";
+				$header.= "Content-Type: text/plain; charset=ISO-8859-1\r\n";// utf-8 ISO-8859-1
+
 
 				if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))
 				{
@@ -107,7 +117,7 @@ else// Affichage du formulaire
 
 	<section class="mw960p mod center">
 
-		<article class="w80">
+		<article class="w80 center">
 
 			<h2><?txt('sstitre')?></h2>
 
