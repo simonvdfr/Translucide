@@ -251,7 +251,7 @@ $(function()
 
 
 	// Masque le module/bloc duplicable vide de défaut
-	$(".module li:last-child").hide();
+	$(".module > li:last-child").hide();
 
 
 
