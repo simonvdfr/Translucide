@@ -301,7 +301,7 @@ exec_tool = function(command, value, ui) {
 
 		// Si Ajout d'une ancre
 		if(command == "CreateAnchor") { var command_source = command; command = "CreateLink"; }
-		
+
 
 		// Exécution de la commande
 		document.execCommand(command, ui, value);
@@ -461,7 +461,7 @@ link_option = function()
 // Supprime le lien autour
 unlink = function() 
 {
-	$(memo_node).contents().unwrap();
+	$(memo_node).closest("a").contents().unwrap();
 	$("#txt-tool #link-option").hide("slide", 300);
 
 	$(memo_focus).focus();
@@ -477,15 +477,15 @@ link = function()
 		exec_tool('CreateLink', link)
 	else
 	{
-		$(memo_node).attr("href", link);
+		$(memo_node).closest("a").attr("href", link);
 
 		// Si Target = blank
-		if($("#target-blank").hasClass("checked")) $(memo_node).attr("target","_blank");
-		else $(memo_node).removeAttr("target");	
+		if($("#target-blank").hasClass("checked")) $(memo_node).closest("a").attr("target","_blank");
+		else $(memo_node).closest("a").removeAttr("target");	
 
 		// Si class bt
-		if($("#class-bt").hasClass("checked")) $(memo_node).addClass("bt");
-		else $(memo_node).removeClass("bt");
+		if($("#class-bt").hasClass("checked")) $(memo_node).closest("a").addClass("bt");
+		else $(memo_node).closest("a").removeClass("bt");
 		
 		$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 
