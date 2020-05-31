@@ -117,7 +117,12 @@ function make_url($url, $filter = array())
 
 		if(isset($domaine)) $url = $GLOBALS['home'];
 	}
-	else {
+	elseif(preg_match("/(http|https):\/\//", $url))// Si url externe on retourne l'url directement
+	{
+		return $url;
+	}
+	else
+	{
 		$url = encode($url, "-", array("#","/"));
 
 		if(isset($domaine)) $url = $GLOBALS['home'] . ltrim($url, "/");
