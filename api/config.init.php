@@ -171,6 +171,7 @@ $GLOBALS['toolbox'] = array(
 	//"underline",
 	//"superscript",
 	//"fontSize",
+	//"blockquote",
 	//"insertUnorderedList",
 	//"justifyLeft",
 	//"justifyCenter",

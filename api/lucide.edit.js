@@ -1419,6 +1419,9 @@ $(function()
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
+		if(typeof toolbox_blockquote != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote'><i class='fa fa-fw fa-quote-left'></i></button></li>";
+
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
@@ -1606,6 +1609,9 @@ $(function()
 
 				if($(memo_node).closest("h4").length) $("#txt-tool #h4").addClass("checked");
 				else $("#txt-tool #h4").removeClass("checked");
+
+				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
+				else $("#txt-tool #blockquote").removeClass("checked");
 					
 
 				// Désélectionne les alignements
