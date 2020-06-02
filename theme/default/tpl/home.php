@@ -21,7 +21,7 @@
 		<article>
 			<div><?media('media-2', '130')?></div>
 			<h3 class="mbn tdn"><a <?href("lien-2")?>><?span('titre-2')?></a></h3>
-			<?txt('txt-2','w50 center')?>
+			<?txt('txt-2','w50 center block')?>
 			<div class="bt"><?_e("Lire plus")?></div>
 		</article>
 	</div>
@@ -30,7 +30,7 @@
 		<article>
 			<div><?media('media-3', '130')?></div>
 			<h3 class="mbn tdn"><a <?href("lien-3")?>><?span('titre-3')?></a></h3>
-			<?txt('txt-3','w50 center')?>
+			<?txt('txt-3','w50 center block')?>
 			<div class="bt"><?_e("Lire plus")?></div>
 		</article>
 	</div>
