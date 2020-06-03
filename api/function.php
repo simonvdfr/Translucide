@@ -68,7 +68,6 @@ function get_url($url_source = null)
 				unset($explode_path[0]);// Supp la racine des filtres si dossier
 			}
 			
-			//while(list($cle, $dir) = each($explode_path)) PHP 7.2
 			foreach($explode_path as $cle => $dir)
 			{
 				$dir = urldecode($dir);// Pour supprimer les %20 ..
@@ -101,7 +100,6 @@ function make_url($url, $filter = array())
 		unset($filter['absolu']);
 
 		// Création des dossier dans l'url en fonction des filtres
-		//while(list($cle, $val) = each($filter)) PHP 7.2
 		foreach($filter as $cle => $val)
 		{
 			if($cle == "page" and $val == 1)
@@ -695,7 +693,6 @@ function secure_value($value) {
 
 	// htmlentities htmlspecialchars
 	if(is_array($value)) {
-		//while(list($cle, $val) = each($value)) PHP 7.2
 		foreach($value as $cle => $val) $value[$cle] = trim(htmlspecialchars($val, ENT_QUOTES));
 	}
 	else $value = trim(htmlspecialchars($value, ENT_QUOTES));
