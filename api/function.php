@@ -76,7 +76,7 @@ function get_url($url_source = null)
 				$explode_dir = explode("_", $dir);
 
 				if($explode_dir[0])
-					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","'","@","_"));
+					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_","'","@"));
 			}
 		}
 		else $url = $path;
