@@ -303,6 +303,9 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 
 article img { max-width: 100%; } /* Pour que les images ne dépassent pas la taille du contener */
 
+/* Pour que l'image au clic soit bien centré dans le figure*/
+figure img { display: inline-block !important; }
+
 
 /* Table layout */
 .row {

@@ -181,6 +181,7 @@ $GLOBALS['toolbox'] = array(
 	//"viewsource",
 	//"icon",
 	"media",
+	//"figure",
 	//"anchor",
 	//"bt",
 	"link"

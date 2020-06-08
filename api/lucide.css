@@ -871,6 +871,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.toolbox li {
 		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 		float: left;		
+		height: 26px;
 	}
 	.toolbox button {
 		background: #fff linear-gradient(#ffffff, #eaeaea) repeat scroll 0 0;
@@ -889,7 +890,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		min-width: 24px;
 
 		margin: 0 0 0 -1px;			    
-		padding: 0.3rem;
+		padding: 0.3rem 0.4rem;
 
 		color: #545454;
 
@@ -909,6 +910,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		}
 		.toolbox li:last-child, .toolbox li:last-child button {
 			border-radius: 0 4px 4px 0;
+			height: 26px !important;
 		}
 		.toolbox button .minus {
 			font-size: 0.6em;
@@ -941,28 +943,26 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		top: -12px;
 	}
 
-	.toolbox #alt { height: 24px; }
-
 	.toolbox .option {
 		background-color: #eaeaea;
 		height: 100%;
 		display: none;
 	}
-		.toolbox .option input {
-			color: #516062;
-			height: 100%;			
-			border-radius: 0;
-			padding: 0.33em 0.5rem 0.4rem;
-		}
+
+	.toolbox input {
+		color: #516062;
+		height: 100%;			
+		border-radius: 0;
+		padding: 0.33em 0.5rem 0.4rem;
+	}
+	.toolbox input:focus { border: 1px solid #c0dede; }
 	
 	.toolbox#resize-tool {
 		background-color: #eaeaea;
 		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 		padding: 0.2rem;
 	}
-		.toolbox#resize-tool input {
-			height: 22px;
-		}
+		.toolbox#resize-tool input { height: 22px; }
 
 	/*couleur icone */
 	.toolbox .fa-picture { color: #56aead; }
