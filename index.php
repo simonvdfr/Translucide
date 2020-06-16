@@ -79,14 +79,17 @@ $robots_data = '';
 
 if($res) 
 {
-	// Si on demande du https on force le domaine en https
-	if(strpos($GLOBALS['scheme'], 'https')) 
+	// Si on veut que le CMS soit en https dans la config on vérifie le statut d'origine de l'url
+	if(strpos($GLOBALS['scheme'], 'https') !== false) 
 	{
 		// Verif si https dans l'url
-		if(strpos($_SERVER['SCRIPT_URI'], 'https') === 0) $http = "https://";
-		else $http = "http://";
+		if(strpos(@$_SERVER['SCRIPT_URI'], 'https') !== false or $_SERVER['REQUEST_SCHEME'] == 'https') 
+			$http = "https://";
+		else 
+			$http = "http://";
 	}
-	else $http = $GLOBALS['scheme'];//
+	else $http = $GLOBALS['scheme'];
+
 
 	// On verifie l'url pour eviter les duplicates : si erreur = redirection
 	if($http.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
