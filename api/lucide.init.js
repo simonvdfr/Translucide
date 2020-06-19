@@ -48,7 +48,12 @@ ismobile = function(){
 
 
 // Traduit un texte
-__ = function(txt) {
+__ = function(txt) {	
+	if(typeof txt == 'object') {// Si l'argument txt est un tableau de traduction
+		add_translation(txt);// On ajoute la traduction
+		var txt = Object.keys(txt)[0];// On met la clé dans la variable
+	}
+
 	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) 
 		return translation[txt][get_cookie('lang')];	
 	else 
@@ -319,7 +324,7 @@ $(function()
 		function() { hover_add = true; },
 		function() {
 			hover_add = false;
-			setTimeout(function() { if(!hover_add && !edit_on) $("a.bt.fixed.add").fadeOut("fast");	}, 1000);
+			setTimeout(function() { if(!hover_add && !edit_on && $("a.bt.fixed.edit").length) $("a.bt.fixed.add").fadeOut("fast");	}, 1000);
 	});
 
 
@@ -341,10 +346,10 @@ $(function()
 		return false;
 	});
 
-		
+
 
 	// On affiche au bout de x seconde le bouton d'édition si pas de scrollbar
-	if($("body").height() < $window.height() && !$("#admin-bar").length && !$("#dialog-connect").length)
+	if($("body").height() <= $window.height() && !$("#admin-bar").length && !$("#dialog-connect").length)
 	{
 		if(typeof state !== 'undefined')
 			if(state) $("a.bt.fixed.edit").delay("2500").fadeIn("slow");

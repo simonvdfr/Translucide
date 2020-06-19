@@ -381,7 +381,7 @@ switch(@$_GET['mode'])
 								`user_insert` bigint(20) UNSIGNED NOT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
-								UNIQUE KEY `url` (`url`),
+								UNIQUE KEY `url` (`url`,`lang`) USING BTREE,
 								KEY `state` (`state`),
 								KEY `type` (`type`),
 								KEY `lang` (`lang`)

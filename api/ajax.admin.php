@@ -798,7 +798,7 @@ switch($_GET['mode'])
 
 		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mtn mbs pls">';
 
-		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE 1 ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
+		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE lang='".$lang."' ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
 		while($res = $sel->fetch_assoc()) 
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';
