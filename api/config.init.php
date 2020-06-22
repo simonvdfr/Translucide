@@ -197,6 +197,11 @@ $GLOBALS['toolbox'] = array(
 );
 
 
+// Bouton en bas en layer
+$GLOBALS['bt_edit'] = true;
+$GLOBALS['bt_up'] = false;
+
+
 // Type mime supporté pour l'upload
 $GLOBALS['mime_supported'] = array(
 	'image/jpg',

@@ -354,6 +354,8 @@ if(!$ajax)
 			tag = "<?=encode(@$tag)?>";
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
+			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)? 'bt_edit = true;':'')?>
+			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)? 'bt_top = true;':'')?>
 		</script>
 
 		<!--[if lt IE 9]>

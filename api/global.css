@@ -499,6 +499,7 @@ input[type="reset"].unstyled:focus {
 	.bt.connect.nohover:hover { box-shadow: none !important; }
 	.bt.connect.nohover:active { box-shadow: none !important; }
 
+	/* @todo voir pour déplacer dans le plugin multi-connexion*/
 	.bt.internal { background-color: #77d1d0; }
 		.bt.connect.internal:before { content: "\e838"; }
 	.bt.facebook { background-color: #3A5795; }

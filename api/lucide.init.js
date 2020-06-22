@@ -245,33 +245,29 @@ $(function()
 	$body = $("body");
 	$window = $(window);
     $animation = $(".animation, [data-lazy]");
-
-
-	//@todo verif l'utilité car déjà instancier dans fonction.php
-	// On met en background les images data-bg 
-	/*$("[data-bg]").css("background-image", function() {
-		return "url(" + $(this).attr("data-bg") + ")";
-	});*/
+	hover_add = false;
+	edit_on = false;
 
 
 
+	// MODULE
 	// Masque le module/bloc duplicable vide de défaut
 	$(".module > li:last-child").hide();
 
 
 
+	// BOUTON EDITION | AJOUT
 	// Bouton ajout de page/article
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
-	
+
 	// Bind le bouton d'ajout
 	$("a.bt.add").click(function(){
 		add_content();
 	});	
 
 
-
 	// Bouton d'édition ou de connexion si la page existe dans la base
-	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "pencil"; else var icon_edit = "key"; 
+	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "pencil"; else var icon_edit = "key";// logé ou pas ?
 	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam'></i></a>");
 
 	// Bind le bouton d'édition
@@ -283,18 +279,18 @@ $(function()
 		$("a.bt.fixed.edit").fadeOut();
 
 		// Force l'affichage du bouton  +
-		$("a.bt.fixed.add").css({"bottom":"10px", "opacity":".2"});
+		$("a.bt.fixed.add").show().css({"bottom":"10px", "opacity":".2"});
 		edit_on = true;
 	});	
 
 
-	// Mode édition au ctrl+q
+	// Mode édition au ctrl+e
 	$(document).keydown(function(event) 
 	{
 		if(!$("#admin-bar").length)// Admin pas lancé
 		{
 			if(event.ctrlKey || event.metaKey)
-			if(String.fromCharCode(event.which).toLowerCase() == 'q') {
+			if(String.fromCharCode(event.which).toLowerCase() == 'e') {
 				event.preventDefault();
 				$("a.bt.edit").click();
 			}
@@ -302,14 +298,9 @@ $(function()
 	});
 
 
-
-	hover_add = false;
-	edit_on = false;
-
-	// Affichage du bouton add
+	// Affichage du bouton add au survole du bt edition
 	$("a.bt.fixed.edit").hover(
 		function() {
-			//$("a.bt.fixed.add").css("right", parseInt($("a.bt.fixed.edit").css("right")) + "px");// même niveau right
 			$("a.bt.fixed.add").fadeIn();//fadeIn
 			$("a.bt.fixed.add").css("bottom", parseInt($("a.bt.fixed.edit").css("bottom")) + $("a.bt.fixed.edit").outerHeight() + "px");// au dessus bt edit
 			hover_add = true;
@@ -328,42 +319,37 @@ $(function()
 	});
 
 
+	// AFFICHAGE DU BOUTON D'ÉDITION || AJOUT
+	// Si bt edit activé dans config & pas de barre d'admin & pas de dialog de connexion & state de défini
+	if(typeof bt_edit !== 'undefined'
+		&& !$("#admin-bar").length
+		&& !$("#dialog-connect").length
+		&& typeof state !== 'undefined') 
+	{
+		if(state) $("a.bt.fixed.edit").delay("2000").fadeIn("slow");// get_cookie("auth").indexOf("edit-page")
+		else $("a.bt.fixed.add").delay("2000").fadeIn("slow");	
+	}
 
-	// Page désactivé => message admin
+
+
+	// PAGE DÉSACTIVÉ => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
 		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-attention vam no'></i> "+ __("Activation status") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 
-	
-
-	// Bouton pour remonter en haut au scroll
-	$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-up-open bigger'></i></a>");	
-
-	// Smoothscroll to top
-	$("a.bt.fixed.top").click(function() {
-		$root.animate({scrollTop: 0}, 300);
-		return false;
-	});
-
-
-
-	// On affiche au bout de x seconde le bouton d'édition si pas de scrollbar
-	if($("body").height() <= $window.height() && !$("#admin-bar").length && !$("#dialog-connect").length)
-	{
-		if(typeof state !== 'undefined')
-			if(state) $("a.bt.fixed.edit").delay("2500").fadeIn("slow");
-			else $("a.bt.fixed.add").delay("2500").fadeIn("slow");	
-	}
-
 
 	
-	// Verifi les droits, si l'admin n'est pas lancé
-	if(get_cookie("auth").indexOf("edit-page") && !$("#admin-bar").length && !$("#dialog-connect").length)
+	// BT TOP activé dans la config
+	if(typeof bt_top !== 'undefined')
 	{
-		// Si on appuie sur la touche haut ou bas on ouvre le bouton d'édition
-		$(document).keyup(function(event) {			
-			if((event.which == 38 || event.which == 40) && !$("#admin-bar").length) $("a.bt.fixed.edit").fadeIn();			
+		// Bouton pour remonter en haut au scroll
+		$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-up-open bigger'></i></a>");	
+
+		// Smoothscroll to top
+		$("a.bt.fixed.top").click(function() {
+			$root.animate({scrollTop: 0}, 300);
+			return false;
 		});
 	}
 
@@ -403,27 +389,17 @@ $(function()
 	{
 
 		// AFFICHAGE DU BOUTON SCROLL TO TOP
-		if($window.scrollTop() > 50) $("a.bt.fixed.top").show();
-		else
+		if(typeof bt_top !== 'undefined')
 		{
-			$("a.bt.fixed.top").fadeOut("fast", function(){
-				//$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
-			});
+			if($window.scrollTop() > 50) $("a.bt.fixed.top").show();
+			else
+			{
+				$("a.bt.fixed.top").fadeOut("fast", function(){
+					//$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
+				});
+			}
 		}
 
-
-		// AFFICHAGE DU BOUTON D'ÉDITION  
-		// Si la barre d'administration n'est pas ouverte et la dialog de connexion inexistante
-		if(!$("#admin-bar").length && !$("#dialog-connect").length)
-		{
-			if(($(document).height() - 50) <= ($window.height() + $window.scrollTop()) || get_cookie("auth").indexOf("edit-page"))
-				$("a.bt.fixed.edit").fadeIn("slow");				
-			else if($("a.bt.fixed.edit").css("display") == "block")
-				$("a.bt.fixed.edit").fadeOut();
-		}
-
-		// Décale l'icone si il y a le bt to top avec 70px de marge OU si on est admin
-		//if($("a.bt.fixed.top").css("display") != "none") $("a.bt.fixed.edit, a.bt.fixed.add").css("right","70px");
 
 
 		// ANIMATION SUR LES CONTENUS // CHARGEMENT DES LAZYLOAD
@@ -469,6 +445,7 @@ $(function()
 				if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
 			}
 		});
+
 
 
 		// PARALLAX DES BG
