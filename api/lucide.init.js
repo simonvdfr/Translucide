@@ -274,7 +274,7 @@ $(function()
 	$("a.bt.edit").click(function() 
 	{
 		// Si la page n'est pas activée et que l'on n'est pas admin on callback un reload
-		edit_launcher(((state != "active" && !get_cookie("auth").indexOf("edit-page")) ? "reload_edit":"edit_launcher"));
+		edit_launcher(((state != "active" && get_cookie("auth").indexOf("edit-page") < 0) ? "reload_edit":"edit_launcher"));
 
 		$("a.bt.fixed.edit").fadeOut();
 
@@ -333,7 +333,7 @@ $(function()
 
 
 	// PAGE DÉSACTIVÉ => message admin
-	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page")) {
+	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page") > 0) {
 		$("body").append("<a href='javascript:void(0);' class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-attention vam no'></i> "+ __("Activation status") +" : "+ __(state) +"</a>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
@@ -392,12 +392,7 @@ $(function()
 		if(typeof bt_top !== 'undefined')
 		{
 			if($window.scrollTop() > 50) $("a.bt.fixed.top").show();
-			else
-			{
-				$("a.bt.fixed.top").fadeOut("fast", function(){
-					//$("a.bt.fixed.edit, a.bt.fixed.add").css("right","20px");
-				});
-			}
+			else $("a.bt.fixed.top").fadeOut("fast");
 		}
 
 

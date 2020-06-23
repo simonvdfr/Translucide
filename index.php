@@ -115,6 +115,7 @@ if($res)
 			else {
 				$res = null;
 				$res['title'] = $msg = __("Under Construction");
+				$res['state'] = 'deactivate';
 			}
 
 			header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
