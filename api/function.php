@@ -387,6 +387,7 @@ function media($key = null, $filter = array())
 			case"jpeg":  
 			case"png": 
 			case"gif": 
+			case"svg":
 				$img = true; 
 			break;
 
@@ -1080,10 +1081,13 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	// Supprime les arguments après l'extension (timer...)
 	$source_file = explode("?", $source_file)[0];
 
+	// Extention du fichier
+	$ext = pathinfo($source_file, PATHINFO_EXTENSION);
+
 	// Récupération des informations de l'image source
 	list($source_width, $source_height, $type, $attr) = getimagesize($source_file);
 
-	if(!$source_width and !$source_height) exit(__("Size of source file unspecified"));
+	if(!$source_width and !$source_height and $ext!='svg') exit(__("Size of source file unspecified"));
 
 	// Récupération de l'extension
 	$source_ext = pathinfo($source_file, PATHINFO_EXTENSION);

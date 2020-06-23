@@ -211,6 +211,8 @@ $GLOBALS['mime_supported'] = array(
 	'image/x-png',
 	'image/gif',
 	'image/x-icon',
+	'image/svg',
+	'image/svg+xml',
 	'application/pdf',
 	'application/zip',
 	'application/x-zip-compressed',
