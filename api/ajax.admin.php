@@ -64,7 +64,7 @@ switch($_GET['mode'])
 
 							<div class="small mtm"><?_e("Formatted web address")?></div>
 							<div class="grid">
-								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'home' if homepage")?>" maxlength="60" class="w50 mrm">
+								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'home' if homepage")?>" maxlength="70" class="w50 mrm">
 								
 								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?_e("Home page")?></label></span>
 
@@ -219,7 +219,7 @@ switch($_GET['mode'])
 			<div>
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Title")?>" maxlength="60" class="w60 bold">
+					<input type="text" id="title" placeholder="<?_e("Title")?>" maxlength="70" class="w60 bold">
 					
 					<select id="tpl" required class="w30">
 						<option value=""><?_e("Select template")?></option>
@@ -235,7 +235,7 @@ switch($_GET['mode'])
 				</div>
 
 				<div class="mas mtm">
-					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
+					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="70" class="w50 mrm">
 					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
 					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?_e("Regenerate address")?></label>
 				</div>
@@ -798,7 +798,7 @@ switch($_GET['mode'])
 
 		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mtn mbs pls">';
 
-		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE 1 ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
+		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE lang='".$lang."' ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
 		while($res = $sel->fetch_assoc()) 
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';

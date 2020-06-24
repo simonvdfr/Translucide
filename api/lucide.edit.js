@@ -41,6 +41,7 @@ add_translation({
 	"Width" : {"fr" : "Largeur"},
 	"Height" : {"fr" : "Hauteur"},
 	"Optimize" : {"fr" : "Optimiser"},
+	"Subtitle" : {"fr" : "Sous-titre"},
 
 	"Add a module" : {"fr" : "Ajouter un module"},
 	"Move" : {"fr" : "D\u00e9placer"},
@@ -301,7 +302,7 @@ exec_tool = function(command, value, ui) {
 
 		// Si Ajout d'une ancre
 		if(command == "CreateAnchor") { var command_source = command; command = "CreateLink"; }
-		
+
 
 		// Exécution de la commande
 		document.execCommand(command, ui, value);
@@ -461,7 +462,7 @@ link_option = function()
 // Supprime le lien autour
 unlink = function() 
 {
-	$(memo_node).contents().unwrap();
+	$(memo_node).closest("a").contents().unwrap();
 	$("#txt-tool #link-option").hide("slide", 300);
 
 	$(memo_focus).focus();
@@ -477,15 +478,15 @@ link = function()
 		exec_tool('CreateLink', link)
 	else
 	{
-		$(memo_node).attr("href", link);
+		$(memo_node).closest("a").attr("href", link);
 
 		// Si Target = blank
-		if($("#target-blank").hasClass("checked")) $(memo_node).attr("target","_blank");
-		else $(memo_node).removeAttr("target");	
+		if($("#target-blank").hasClass("checked")) $(memo_node).closest("a").attr("target","_blank");
+		else $(memo_node).closest("a").removeAttr("target");	
 
 		// Si class bt
-		if($("#class-bt").hasClass("checked")) $(memo_node).addClass("bt");
-		else $(memo_node).removeClass("bt");
+		if($("#class-bt").hasClass("checked")) $(memo_node).closest("a").addClass("bt");
+		else $(memo_node).closest("a").removeClass("bt");
 		
 		$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 
@@ -934,7 +935,45 @@ get_img = function(id, link)
 
 // Alignement de l'image intext
 img_position = function(align) {
-	$(memo_img).removeClass("center fl fr").addClass(align);
+	var figure = $(memo_img).closest("figure");
+
+	// Si l'image est dans une figure
+	if(figure.length) 
+		if(figure.hasClass(align)) figure.removeClass(align);
+		else figure.removeClass("center fl fr").addClass(align);
+	else 
+		if($(memo_img).hasClass(align)) $(memo_img).removeClass(align);
+		else $(memo_img).removeClass("center fl fr").addClass(align);
+}
+
+// Pour ajouter une légende sous l'image
+img_figure = function() {
+	// Si on est déjà dans un élément entouré du 'figure & figcaption' => on les supp
+	if($(memo_img).closest("figure").length)
+	{
+		$("#figure").removeClass("checked");
+
+		// Récupère les class de figure pour la remettre sur l'image
+		var figure_class = $(memo_img).closest("figure").attr("class");
+		$(memo_img).addClass(figure_class);
+
+		// Supprime figure & figcaption
+		$(memo_img).parent(".editable .ui-wrapper").unwrap().next("figcaption").remove();
+	}
+	else 
+	{
+		$("#figure").addClass("checked");
+
+		// Récupère les class de l'image pour les mettre sur figure
+		var img_class = $(memo_img).removeClass("ui-resizable").attr("class");
+		$(memo_img).removeClass("center fl fr")
+
+		// Ajoute la figure et le figcaption
+		$(memo_img).parent(".editable .ui-wrapper")
+	   		.after("<br>")// Pour pouvoir ajouter des contenus à la suite de la figure
+	    	.wrap("<figure class='"+img_class+"' />")
+	    	.after("<figcaption>"+ __("Subtitle") +"</figcaption>");
+	}
 }
 
 // Supprime l'image sélectionnée du contenu
@@ -1419,6 +1458,9 @@ $(function()
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
+		if(typeof toolbox_blockquote != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote'><i class='fa fa-fw fa-quote-left'></i></button></li>";
+
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
@@ -1606,6 +1648,9 @@ $(function()
 
 				if($(memo_node).closest("h4").length) $("#txt-tool #h4").addClass("checked");
 				else $("#txt-tool #h4").removeClass("checked");
+
+				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
+				else $("#txt-tool #blockquote").removeClass("checked");
 					
 
 				// Désélectionne les alignements
@@ -1760,9 +1805,11 @@ $(function()
 		// Boîte à outils image
 		option = "<ul id='img-tool' class='toolbox'>";
 
-			option+= "<li><button onclick=\"img_position('fl')\"><i class='fa fa-fw fa-align-left'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('center')\"><i class='fa fa-fw fa-align-center'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('fr')\"><i class='fa fa-fw fa-align-right'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('fl')\" class='img-position' id='img-fl'><i class='fa fa-fw fa-align-left'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('center')\" class='img-position' id='img-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='fa fa-fw fa-align-right'></i></button></li>";
+
+			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
 
 			if(widthRatio < 80 || heightRatio < 80) option+= "<li><button onclick=\"img_optim()\" class='orange'>"+ __("Optimize") +" <i class='fa fa-fw fa-resize-small'></i></button></li>";
 
@@ -1777,6 +1824,17 @@ $(function()
 		// Récupère le texte du l'alt de l'image sélectionné pour le mettre dans les options d'édition de l'alt
 		$("#alt").val($(memo_img).attr('alt'));
 		
+
+		// Si l'image est encadrer par une <figure> pour un <figcaption>
+		if($(memo_img).closest("figure").length) $("#img-figure").addClass("checked");	
+		else $("#img-figure").removeClass("checked");
+
+
+		// Alignement de l'image
+		$("#img-position").removeClass("checked");
+		if($(memo_img).hasClass("fl") || $(memo_img).closest("figure").hasClass("fl")) $("#img-fl").addClass("checked");
+		if($(memo_img).hasClass("center") || $(memo_img).closest("figure").hasClass("center")) $("#img-center").addClass("checked");
+		if($(memo_img).hasClass("fr") || $(memo_img).closest("figure").hasClass("fr")) $("#img-fr").addClass("checked");	
 
 		$("#img-tool")
 			.show()
@@ -2074,7 +2132,7 @@ $(function()
 	$(".module-bt").parent().addClass("relative");
 
 	// Ajout de la SUPPRESION au survole d'un bloc
-	$(".module li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 1;' title='"+ __("Remove") +"'></i></a>");
+	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 1;' title='"+ __("Remove") +"'></i></a>");
 
 	// Affiche les boutons de suppression
 	//$(".module li .fa-cancel").fadeIn();

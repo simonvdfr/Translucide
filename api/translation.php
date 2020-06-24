@@ -29,6 +29,8 @@ $add_translation = array(
 	"Remember me" => array("fr" => "Se souvenir de moi"),
 	"Forgot your password" => array("fr" => "Mot de passe oublié"),
 	"Suggest a password" => array("fr" => "Suggérer un mot de passe"),
+	"Send password by mail" => array("fr" => "Envoyer le mot de passe par mail"),
+	"New Password" => array("fr" => "Nouveau mot de passe"),
 	"See password" => array("fr" => "Voir le mot de passe"),
 	"Not a member yet ?" => array("fr" => "Pas encore membre ?"),
 	"Sign up" => array("fr" => "Inscrivez-vous"),

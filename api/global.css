@@ -303,6 +303,9 @@ img.fl, img.fr { margin-bottom: 0.5rem; }
 
 article img { max-width: 100%; } /* Pour que les images ne dépassent pas la taille du contener */
 
+/* Pour que l'image au clic soit bien centré dans le figure*/
+figure img { display: inline-block !important; }
+
 
 /* Table layout */
 .row {
@@ -496,6 +499,7 @@ input[type="reset"].unstyled:focus {
 	.bt.connect.nohover:hover { box-shadow: none !important; }
 	.bt.connect.nohover:active { box-shadow: none !important; }
 
+	/* @todo voir pour déplacer dans le plugin multi-connexion*/
 	.bt.internal { background-color: #77d1d0; }
 		.bt.connect.internal:before { content: "\e838"; }
 	.bt.facebook { background-color: #3A5795; }
@@ -1348,6 +1352,7 @@ header #logo { transition: opacity .5s; }
 .fa-share:before { content: '\f1e0'; } /* '' */
 .fa-paypal:before { content: '\f1ed'; } /* '' */
 .fa-trash:before { content: '\f1f8'; } /* '' */
+.fa-pinterest:before { content: '\f231'; } /* '' */
 .fa-user-plus:before { content: '\f234'; } /* '' */
 .fa-shopping-basket:before { content: '\f291'; } /* '' */
 .fa-hashtag:before { content: '\f292'; } /* '' */

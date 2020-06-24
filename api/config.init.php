@@ -20,11 +20,20 @@ if(!isset($_SESSION))
 	if(!isset($cron)) session_start();
 }
 
+
+// Fixe la langue
+if(strstr($_SERVER['SERVER_NAME'], 'domaine.com')) 
+	$lang = $_SESSION['lang'] = "en";
+else
+	$lang = $_SESSION['lang'] = "fr";
+
+
 // Définition de la zone horaire
 date_default_timezone_set('Europe/Paris');
 
-// Langue des dates
-setlocale(LC_ALL, 'fr_FR.utf8', 'fra');//.UTF8
+// Langue des dates .UTF8
+if($lang == 'fr') setlocale(LC_ALL, 'fr_FR.utf8', 'fra');
+else setlocale(LC_ALL, 'en_US.utf8');
 
 
 // Serveur local ou online ? DEV || PROD
@@ -171,6 +180,7 @@ $GLOBALS['toolbox'] = array(
 	//"underline",
 	//"superscript",
 	//"fontSize",
+	//"blockquote",
 	//"insertUnorderedList",
 	//"justifyLeft",
 	//"justifyCenter",
@@ -180,10 +190,16 @@ $GLOBALS['toolbox'] = array(
 	//"viewsource",
 	//"icon",
 	"media",
+	//"figure",
 	//"anchor",
 	//"bt",
 	"link"
 );
+
+
+// Bouton en bas en layer
+$GLOBALS['bt_edit'] = true;
+$GLOBALS['bt_top'] = false;
 
 
 // Type mime supporté pour l'upload
@@ -195,6 +211,8 @@ $GLOBALS['mime_supported'] = array(
 	'image/x-png',
 	'image/gif',
 	'image/x-icon',
+	'image/svg',
+	'image/svg+xml',
 	'application/pdf',
 	'application/zip',
 	'application/x-zip-compressed',

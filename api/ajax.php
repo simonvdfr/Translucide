@@ -500,11 +500,13 @@ switch($_GET['mode'])
 
 				<div class="mbs nowrap">
 					<label class="w100p tr mrt" for="password_new"><?_e("Password")?></label>
-					<input type="password" id="password_new" class="w50" autocomplete="new-password">
+					<input type="password" id="password_new" class="w40" autocomplete="new-password">
 
-					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
+					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>" class="tdn"><i class="fa fa-fw fa-eye vam"></i></a>
 
-					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
+					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
+
+					<a href="javascript:send_password();" title="<?_e("Send password by mail");?>" class="tdn" id="send-password"><i class="fa fa-fw fa-mail-alt vam"></i></a>
 				</div>
 
 
@@ -541,100 +543,124 @@ switch($_GET['mode'])
 		</form>
 
 		<script>
-		user_tosave = function() {
-			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-floppy"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
-			$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
-		}
+			user_tosave = function() {
+				$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-floppy"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
+				$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
+			}
 
-		$(function()
-		{			
-			// On focus on select le contenu
-			$("#user .search_user_id").focus(function() {
-				$(this).select();
-			});
+			send_password = function(){				
+				if(confirm("Envoyer un nouveau mot de passe à "+ $("#user-profil #email").val() +" ?"))
+				{
+					$("#send-password .fa").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
 
-			// Recherche d'un utilisateur sur un api tiers
-			$("#user #facebook, #user #google").autocomplete({
-				source: function(request, response) {	
-					
-					var selector = this.element.attr('id');
-					
-					$("#user #"+selector).after("<i class='fa fa-spin fa-cog' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
-					
-					// Chargement des résultats
-					$.ajax({
-						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=get-external-uid",
-						dataType: "json",
-						data: {
-							search: request.term,
-							api: selector,
-							nonce: $("#nonce").val()
-						},
-						success: function(data) {						
-							response(data);
-						},
-						complete: function() {		
-							$("#user #"+selector).next("i").fadeOut();// Close loading
-						}
-					});
-				},
-				minLength: 3,
-				delay: 500
-			}).each(function() {
-				$(this).autocomplete("instance")._renderItem = function(ul, item) {
-					if(item.img) return $("<li>").append("<a class='block mod'><img src='"+ item.img +"' width='30' class='fl'>"+ item.label +"</a>").appendTo(ul);					
-				}
-			});
-
-			// Si on click sur supprimer
-			$("#user .load #del").click(function(event) { 
-				event.preventDefault();
-				if(confirm(__("Delete user")+" "+ $("#uid").val() +" ?")) {
+					// Envoi du mail
 					$.ajax({ 
-						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=del-user",
-						data: { uid: $("#uid").val(), nonce: $("#nonce").val() }
-					}).done(function(html) { 
-						$("#user .load").html(html); 
+						type: "POST",
+						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=send-password",
+						data: { 
+							uid: $("#user-profil #uid").val(),
+							email: $("#user-profil #email").val(),
+							nonce: $("#nonce").val()
+						}
+					})
+					.done(function(html) { 
+						$("#send-password .fa").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
+						
+						// On exécute le retour
+						$("body").append(html);
 					});
 				}
-			});
-			
+			}
 
-			// Si le contenu change, on change le statut du bouton sauvegarder
-			$("#user .load input").keyup(function() { user_tosave(); });
-			$("#user .load select").change(function() { user_tosave(); });
+			$(function()
+			{			
+				// On focus on select le contenu
+				$("#user .search_user_id").focus(function() {
+					$(this).select();
+				});
 
+				// Recherche d'un utilisateur sur un api tiers
+				$("#user #facebook, #user #google").autocomplete({
+					source: function(request, response) {	
+						
+						var selector = this.element.attr('id');
+						
+						$("#user #"+selector).after("<i class='fa fa-spin fa-cog' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
+						
+						// Chargement des résultats
+						$.ajax({
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=get-external-uid",
+							dataType: "json",
+							data: {
+								search: request.term,
+								api: selector,
+								nonce: $("#nonce").val()
+							},
+							success: function(data) {						
+								response(data);
+							},
+							complete: function() {		
+								$("#user #"+selector).next("i").fadeOut();// Close loading
+							}
+						});
+					},
+					minLength: 3,
+					delay: 500
+				}).each(function() {
+					$(this).autocomplete("instance")._renderItem = function(ul, item) {
+						if(item.img) return $("<li>").append("<a class='block mod'><img src='"+ item.img +"' width='30' class='fl'>"+ item.label +"</a>").appendTo(ul);					
+					}
+				});
+
+				// Si on click sur supprimer
+				$("#user .load #del").click(function(event) { 
+					event.preventDefault();
+					if(confirm(__("Delete user")+" "+ $("#uid").val() +" ?")) {
+						$.ajax({ 
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=del-user",
+							data: { uid: $("#uid").val(), nonce: $("#nonce").val() }
+						}).done(function(html) { 
+							$("#user .load").html(html); 
+						});
+					}
+				});
 				
-			$("#user-profil").submit(function(event)
-			{
-				event.preventDefault();
+
+				// Si le contenu change, on change le statut du bouton sauvegarder
+				$("#user .load input").keyup(function() { user_tosave(); });
+				$("#user .load select").change(function() { user_tosave(); });
+
 					
-				// Animation sauvegarde en cours (loading)
-				$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
-				
-				data = {};
+				$("#user-profil").submit(function(event)
+				{
+					event.preventDefault();
+						
+					// Animation sauvegarde en cours (loading)
+					$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
+					
+					data = {};
 
-				data["nonce"] = $("#nonce").val();
+					data["nonce"] = $("#nonce").val();
 
-				// Contenu des input
-				$(document).find("#user .load input, #user .load select").each(function() {
-					data[$(this).attr("id")] = $(this).val();
-				});
+					// Contenu des input
+					$(document).find("#user .load input, #user .load select").each(function() {
+						data[$(this).attr("id")] = $(this).val();
+					});
 
-				// On sauvegarde en ajax les contenus éditables
-				$.ajax({
-					type: "POST",
-					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=save-user",
-					data: data
-				})
-				.done(function(html) {
-					$("body").append(html);
-				})
-				.fail(function() {
-					error(__("Error"));
+					// On sauvegarde en ajax les contenus éditables
+					$.ajax({
+						type: "POST",
+						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=save-user",
+						data: data
+					})
+					.done(function(html) {
+						$("body").append(html);
+					})
+					.fail(function() {
+						error(__("Error"));
+					});
 				});
 			});
-		});
 		</script>
 		<?
 
@@ -904,6 +930,32 @@ switch($_GET['mode'])
 
 	case "make-password":// Crée un password aléatoirement		
 		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(8,12));
+	break;
+
+	case "send-password":// Crée un password aléatoirement & l'envoi par mail à l'utilisateur	
+		if($_SESSION['nonce'] == $_REQUEST['nonce'] and @$_REQUEST['uid'] and @$_REQUEST['email']) 
+		{
+			login('high', 'edit-user');
+
+			$pwd = make_pwd(mt_rand(8,12));
+			list($hashed_password, $unique_salt) = hash_pwd($pwd);
+
+			$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
+			$sql .= "password = '".addslashes($hashed_password)."', ";
+			$sql .= "salt = '".addslashes($unique_salt)."', ";
+			$sql .= "token = '', ";// Déconnecte l'utilisateur
+			$sql .= "date_update = NOW() ";
+			$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
+
+			$connect->query($sql);
+
+			// Mail avec le mdp
+			$subject = "[".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))."] ".__("New Password");
+			$message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))." : ".($pwd);
+			$header="Content-type:text/html; charset=utf-8\r\nFrom:".$GLOBALS['email_contact'];
+
+			mail($_REQUEST['email'], $subject, stripslashes($message), $header);
+		}
 	break;
 
 	case "get-external-uid":// Cherche l'id d'un utilisateur sur une api tiers

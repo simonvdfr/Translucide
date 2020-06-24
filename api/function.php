@@ -68,7 +68,6 @@ function get_url($url_source = null)
 				unset($explode_path[0]);// Supp la racine des filtres si dossier
 			}
 			
-			//while(list($cle, $dir) = each($explode_path)) PHP 7.2
 			foreach($explode_path as $cle => $dir)
 			{
 				$dir = urldecode($dir);// Pour supprimer les %20 ..
@@ -76,7 +75,7 @@ function get_url($url_source = null)
 				$explode_dir = explode("_", $dir);
 
 				if($explode_dir[0])
-					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","'","@","_"));
+					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_","'","@"));
 			}
 		}
 		else $url = $path;
@@ -101,7 +100,6 @@ function make_url($url, $filter = array())
 		unset($filter['absolu']);
 
 		// Création des dossier dans l'url en fonction des filtres
-		//while(list($cle, $val) = each($filter)) PHP 7.2
 		foreach($filter as $cle => $val)
 		{
 			if($cle == "page" and $val == 1)
@@ -117,7 +115,12 @@ function make_url($url, $filter = array())
 
 		if(isset($domaine)) $url = $GLOBALS['home'];
 	}
-	else {
+	elseif(preg_match("/(http|https):\/\//", $url))// Si url externe on retourne l'url directement
+	{
+		return $url;
+	}
+	else
+	{
 		$url = encode($url, "-", array("#","/"));
 
 		if(isset($domaine)) $url = $GLOBALS['home'] . ltrim($url, "/");
@@ -384,6 +387,7 @@ function media($key = null, $filter = array())
 			case"jpeg":  
 			case"png": 
 			case"gif": 
+			case"svg":
 				$img = true; 
 			break;
 
@@ -690,7 +694,6 @@ function secure_value($value) {
 
 	// htmlentities htmlspecialchars
 	if(is_array($value)) {
-		//while(list($cle, $val) = each($value)) PHP 7.2
 		foreach($value as $cle => $val) $value[$cle] = trim(htmlspecialchars($val, ENT_QUOTES));
 	}
 	else $value = trim(htmlspecialchars($value, ENT_QUOTES));
@@ -1078,10 +1081,13 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	// Supprime les arguments après l'extension (timer...)
 	$source_file = explode("?", $source_file)[0];
 
+	// Extention du fichier
+	$ext = pathinfo($source_file, PATHINFO_EXTENSION);
+
 	// Récupération des informations de l'image source
 	list($source_width, $source_height, $type, $attr) = getimagesize($source_file);
 
-	if(!$source_width and !$source_height) exit(__("Size of source file unspecified"));
+	if(!$source_width and !$source_height and $ext!='svg') exit(__("Size of source file unspecified"));
 
 	// Récupération de l'extension
 	$source_ext = pathinfo($source_file, PATHINFO_EXTENSION);
