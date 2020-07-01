@@ -603,31 +603,41 @@ input[type="reset"].unstyled:focus {
 		/* flex-wrap: wrap; Crée un bug */
 	}
 
+	/* INFO
+	IE ne gère pas l'implicite du auto-flow. il est donc necessaire de spécifier le positionnement de chaque élément fils des grids en css avec :
+		-ms-grid-column: x;
+		-ms-grid-column: y;
+	*/
 	.grid {
-	  display: grid;
-	  grid-auto-flow: column;
-	  grid-auto-columns: 1fr;
-	  /* support ie */	
-	  display: -ms-grid;
-	  -ms-grid-columns: 1fr;
-	  -ms-grid-rows: auto;
+		display: -ms-grid;
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
 	}
 
 	[class*=" grid-"],
 	[class^="grid-"] {
+		display: -ms-grid;
 		display: grid;
 		grid-auto-flow: dense;
-
-		/* support ie */
-		display: -ms-grid;
-		-ms-grid-columns: 1fr;
-		-ms-grid-rows: auto;
 	}
 	
 	/* space */
-	.grid.space, [class*=" grid-"].space, [class^="grid-"].space { grid-column-gap: 1rem;}
-	.grid.space-l, [class*=" grid-"].space-l, [class^="grid-"].space-l { grid-column-gap: 2rem;}
-	.grid.space-xl, [class*=" grid-"].space-xl, [class^="grid-"].space-xl { grid-column-gap: 4rem; }
+	.grid.space, 
+	[class*=" grid-"].space, 
+	[class^="grid-"].space { 
+		grid-gap: 1rem;
+	}
+	.grid.space-l, 
+	[class*=" grid-"].space-l, 
+	[class^="grid-"].space-l { 
+		grid-gap: 2rem;
+	}
+	.grid.space-xl, 
+	[class*=" grid-"].space-xl, 
+	[class^="grid-"].space-xl { 
+		grid-gap: 4rem;	
+	}
 
 }
 
@@ -644,16 +654,6 @@ input[type="reset"].unstyled:focus {
 [class*="grid-4"] {
 	-ms-grid-columns: (1fr)[4];
 	grid-template-columns: repeat(4, 1fr);
-}
-  
-[class*="grid-5"] {
-	-ms-grid-columns: (1fr)[5];
-	grid-template-columns: repeat(5, 1fr);
-}
-  
-[class*="grid-6"] {
-	-ms-grid-columns: (1fr)[6];
-	grid-template-columns: repeat(6, 1fr);
 }
 
 .pull { margin-right: auto; }
