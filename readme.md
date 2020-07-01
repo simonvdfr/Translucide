@@ -21,7 +21,7 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 	- modifiez la valeur de `$GLOBALS['theme']` avec le nom de votre thème
 	- modifiez les valeurs de `$GLOBALS['domain']` avec les noms de votre site local et de votre site en ligne
 	- modifier les valeurs de `$GLOBALS['db*']` hors dev local aves les infos de connexion de la BDD de votre hébergeur.
-	- décommentez les valeurs de `$GLOBALS['add-content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
+	- décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
 	- décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
 
 Prérequis : dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`
