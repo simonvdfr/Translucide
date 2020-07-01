@@ -224,7 +224,11 @@ function add_translation($add_translation)
 {	
 	// On met toutes les clés en minuscule pour une recherche insensible à la case
 	$add_translation = array_change_key_case($add_translation, CASE_LOWER);
-	
+
+	// Encodage des clés avec accent => ne fonctionne pas / a peaufiné pour les traductions à partir du Français
+	//foreach($add_translation as $cle => $val) $add_translation_encode[utf8_encode($cle)] = $val;
+	//$add_translation = $add_translation_encode;
+
 	// On ajoute la nouvelle traduction au tableau de toutes les traductions
 	$GLOBALS['translation'] = array_merge($GLOBALS['translation'], $add_translation);
 }
@@ -243,7 +247,7 @@ function __($singulier, $pluriel = "", $num = 0)
 	else
 	{
 		if($num > 1) $txt = $pluriel; else $txt = $singulier;
-		
+
 		// Si une traduction existe
 		if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]))
 			return $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
