@@ -876,7 +876,7 @@ switch($_GET['mode'])
 		}
 
 		// Liste les pages abs du menu
-		$sql = "SELECT * FROM ".$table_content." WHERE type = 'page' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
+		$sql = "SELECT * FROM ".$table_content." WHERE type='page' AND lang='".$lang."' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
 		//echo $sql."<br>";
 
 		$sel = $connect->query($sql);
