@@ -94,7 +94,6 @@ switch($_GET['mode'])
 										<select id="tpl">
 											<?
 											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
-											//while(list($cle, $filename) = each($scandir)) PHP 7.2
 											foreach($scandir as $cle => $filename)
 											{			
 												$filename = pathinfo($filename, PATHINFO_FILENAME);
@@ -760,7 +759,6 @@ switch($_GET['mode'])
 			$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
 			// On a demandé la SUPPRESSION DES FICHIERS liées au contenu
-			//while(list($cle, $media) = each($_POST['medias'])) PHP 7.2
 			foreach($_POST['medias'] as $cle => $media) {
 				// strtok : Supprime les arguments après l'extension (timer...)
 				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
@@ -861,7 +859,6 @@ switch($_GET['mode'])
 
 		// Nettoyage et conversion du menu existant
 		if(isset($_REQUEST['menu']))
-		//while(list($cle, $val) = each($_REQUEST['menu'])) PHP 7.2
 		foreach($_REQUEST['menu'] as $cle => $val)
 		{
 			// Si c'est un lien vers la home
@@ -1606,7 +1603,6 @@ switch($_GET['mode'])
 					//uksort($list, 'strnatcmp');// Tri Ascendant
 					//if($sort == 'DESC') $list = array_reverse($list, true);// Tri Descendant
 					
-					//while(list($cle, $val) = each($list)) PHP 7.2
 					foreach($list as $cle => $val)
 					{						
 						echo"<li class='pat fl' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
