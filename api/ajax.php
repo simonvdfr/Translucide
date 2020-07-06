@@ -512,7 +512,7 @@ switch($_GET['mode'])
 
 				<?
 				// Si il y a des méta/infos complementaire pour cette utilisateur
-				if(is_array($GLOBALS['user_info'])) 
+				if(is_array(@$GLOBALS['user_info'])) 
 				{		
 					?>
 					<div class="info mbs"><?
