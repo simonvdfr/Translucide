@@ -71,8 +71,6 @@ else {
 // Variables sites
 $GLOBALS['language'] = array('fr');
 
-$GLOBALS['function'] = '';// Include fonction du theme
-
 $GLOBALS['theme'] = '';
 
 if($dev)// Dev local
@@ -101,6 +99,11 @@ if($dev)// Dev local
 	$GLOBALS['min'] = '';
 else 
 	$GLOBALS['min'] = '';//.min
+
+
+// Include
+$GLOBALS['function'] = '';// fonction du theme
+$GLOBALS['after_get_tag'] = '';// Action avant d'afficher l'header
 
 
 // https://developers.facebook.com/apps/
