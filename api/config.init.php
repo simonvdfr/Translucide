@@ -264,6 +264,7 @@ $GLOBALS['translation'] = array();
 $GLOBALS['content'] = array();
 $GLOBALS['editkey'] = 1;
 $GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
+$GLOBALS['root'] = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"");
 
 
 // Numéro de la page en cours
