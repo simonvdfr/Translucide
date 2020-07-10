@@ -678,7 +678,7 @@ switch($_GET['mode'])
 		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
 		{
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], '', $_POST['content']) : "");
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], $GLOBALS['path'], $_POST['content']) : "");
 
 			// Encode le contenu
 			if(isset($_POST['content']) and $_POST['content'] != "") 
