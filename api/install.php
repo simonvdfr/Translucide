@@ -652,7 +652,7 @@ switch(@$_GET['mode'])
 
 						// AJOUTE LA PAGE D'ACCUEIL
 						// Vérifie qu'il n'y a pas déjà une page home
-						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."content WHERE url='home' LIMIT 1");
+						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."content WHERE url='index' LIMIT 1");
 						$res = $sel->fetch_assoc();
 						if(!$res['id'])// Page non existante : on la crée
 						{	
@@ -660,7 +660,7 @@ switch(@$_GET['mode'])
 							$sql = "INSERT ".addslashes($_POST['db_prefix'])."content SET ";
 							$sql .= "title = '".addslashes(utf8_decode($_POST['sitename']))."', ";
 							$sql .= "tpl = 'home', ";
-							$sql .= "url = 'home', ";
+							$sql .= "url = 'index', ";
 							$sql .= "lang = '".$GLOBALS['language'][0]."', ";
 							$sql .= "type = 'page', ";
 							$sql .= "user_insert = '".(int)$uid."', ";

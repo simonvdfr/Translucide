@@ -52,8 +52,8 @@ function get_url($url_source = null)
 	$parse_url = parse_url($url_source);
 	$path = preg_replace("/^".addcslashes($GLOBALS['path'], "/")."*/", "", $parse_url['path']);
 
-	// Si l'url est vide : url = home
-	if(!encode($path)) $url = "home"; 
+	// Si l'url est vide : url = index
+	if(!encode($path)) $url = (isset($GLOBALS['static'])?'index':'home');// @todo mettre que 'index' à terme 13/07/2020
 	else
 	{
 		// Si il y a des filtres/page dans l'url
@@ -61,7 +61,8 @@ function get_url($url_source = null)
 		{
 			$explode_path = explode("/", $path);
 
-			if(strstr($explode_path[0], "page_")) $url = "home";// Home si le premier element est la nav par page
+			// Home si le premier element est la nav par page
+			if(strstr($explode_path[0], "page_")) $url = (isset($GLOBALS['static'])?'index':'home');// @todo mettre que 'index' à terme 
 			else
 			{
 				$url = $explode_path[0];// Url raçine
@@ -109,7 +110,7 @@ function make_url($url, $filter = array())
 		}
 	}
 
-	if($url == "home") 
+	if($url == "home" or $url == "index")// @todo A terme supprimer "home" car on utilise "index" 13/07/2020
 	{
 		$url = $GLOBALS['path'];
 
@@ -185,7 +186,7 @@ function get_lang($lang = '')
 	if(isset($_SESSION['lang'])) {
 		$lang = $_SESSION['lang'];		
 	}
-	elseif(!$lang) // Si pas de langue on prend la 1er langue du navigateur
+	elseif(!$lang and @$_SERVER['HTTP_ACCEPT_LANGUAGE']) // Si pas de langue on prend la 1er langue du navigateur
 	{
 		preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), $matches, PREG_SET_ORDER);
 		$explode = explode("-", $matches[0][1]);
@@ -1050,7 +1051,7 @@ function logout($redirect = null)
 		header("Location: ajax.php");
 		exit;
 	}
-	elseif($redirect == "home") {
+	elseif($redirect == "home" or $redirect == "index") {// @todo A terme supprimer "home" car on utilise "index" maintenant 13/07/2020
 		header("Location: ".$GLOBALS['home']);
 		exit;
 	}

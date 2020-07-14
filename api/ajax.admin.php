@@ -64,7 +64,7 @@ switch($_GET['mode'])
 
 							<div class="small mtm"><?_e("Formatted web address")?></div>
 							<div class="grid">
-								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'home' if homepage")?>" maxlength="70" class="w50 mrm">
+								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'index' if homepage")?>" maxlength="70" class="w50 mrm">
 								
 								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?_e("Home page")?></label></span>
 
@@ -131,6 +131,8 @@ switch($_GET['mode'])
 				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?_e("Activation status")?>"><i></i></label></div>
 
 			</div>
+			<div id="progress"></div>
+
 
 
 			<script>				
@@ -265,7 +267,7 @@ switch($_GET['mode'])
 
 				// Changement au click de la checkbox homepage
 				$(".dialog-add #homepage").change(function() {
-					if(this.checked) $(".dialog-add #permalink").val("home");
+					if(this.checked) $(".dialog-add #permalink").val("index");
 					else refresh_permalink(".dialog-add");
 				});
 
@@ -449,7 +451,7 @@ switch($_GET['mode'])
 					$key['href'] = str_replace($GLOBALS['home'], "", $key['href']);// Supprime les url avec le domaine pour faciliter le transport du site
 
 					// Si vide ou raçine path on est sur la home
-					if($key['href'] == "" or $key['href'] == $GLOBALS['path']) $key['href'] = "home";
+					if($key['href'] == "" or $key['href'] == $GLOBALS['path']) $key['href'] = "index";
 				}
 			);
 
@@ -725,6 +727,40 @@ switch($_GET['mode'])
 					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
 				<?}?>
 
+				
+				<?if(@$GLOBALS['static'])// GÉNÉRATION DE LA PAGE EN STATIQUE .HTML
+				{
+					//@todo gerer le cas ou la page n'est pas activé
+
+					$dir = (@$GLOBALS['static_dir']?$GLOBALS['static_dir'].'/':'');
+
+					// Supprime le .html statique
+					$url = (isset($change_url)?$change_url:$res['url']);
+
+					$file = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['path'].$dir.$res['url'].'.html';
+
+					@unlink($file);
+
+					// Génération en php
+					// Récupération du contenu de la page
+					$html = curl(make_url($url, array('domaine' => true)));
+
+					// Encodage du contenu html
+					$html = mb_convert_encoding($html, 'UTF-8', 'auto');
+
+					// Création du fichier avec le html
+					file_put_contents($file, $html.'<!-- STATIC '.date('d-m-Y H:i:s').' -->');//time().
+					?>
+
+					$("#progress").css({"opacity":"1", "width":"100%"});
+
+					setTimeout(function() { 
+						$("#progress").css({"opacity":"0"});
+						setTimeout(function() { $("#progress").css({"width":"0"});}, 1000);	
+					}, 1000);	
+				<?}?>
+				
+
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
@@ -863,7 +899,7 @@ switch($_GET['mode'])
 		{
 			// Si c'est un lien vers la home
 			if($val == $GLOBALS['home'] or $val == $GLOBALS['path'])
-				$menu[] = "home";
+				$menu[] = "index";
 			else {
 				// Supprime l'url root du site
 				$val = str_replace($GLOBALS['home'], "", $val);

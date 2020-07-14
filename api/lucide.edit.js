@@ -1143,17 +1143,17 @@ $(function()
 	if(type == "page") $("#admin-bar #ispage").show();
 
 	// Etat de la checkbox homepage onready
-	if($("#admin-bar #permalink").val() == "home") $("#admin-bar #homepage").prop("checked", true);
+	if($("#admin-bar #permalink").val() == "index") $("#admin-bar #homepage").prop("checked", true);
 	
 	// Si on change le permalink on verif que c'est 'home'
 	$("#admin-bar #permalink").keyup(function() {
-		if($(this).val() == "home") $("#admin-bar #homepage").prop("checked", true);
+		if($(this).val() == "index") $("#admin-bar #homepage").prop("checked", true);
 		else $("#admin-bar #homepage").prop("checked", false);
 	});
 
 	// Changement au click de la checkbox homepage
 	$("#admin-bar #homepage").change(function() {
-		if(this.checked) $("#admin-bar #permalink").val("home");
+		if(this.checked) $("#admin-bar #permalink").val("index");
 		else refresh_permalink("#admin-bar");
 		tosave();// A sauvegarder
 	});

@@ -101,6 +101,11 @@ else
 	$GLOBALS['min'] = '';//.min
 
 
+// Générer un site statique
+$GLOBALS['static'] = false;
+$GLOBALS['static_dir'] = '';
+
+
 // Include
 $GLOBALS['function'] = '';// fonction du theme
 $GLOBALS['after_get_tag'] = '';// Action avant d'afficher l'header
