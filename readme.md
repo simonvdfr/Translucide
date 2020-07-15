@@ -32,8 +32,7 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 - Pour créer une nouvelle template, ajoutez un fichier php dans le dossier `tpl` de votre thème. Créez la trame avec la structure html de votre choix et ajoutez les contenus éditables à l'aide des fonctions existantes (cf. plus loin). Ajoutez le contenu directement sur le site en mode édition, ceci alimentera directement la BDD.
 
 ## Raccourcis clavier (sur Chrome)
-- <kbd>⇧</kbd> force l'affichage du bouton édition en bas à gauche
-- <kbd>ctrl + q</kbd>Lance le mode édition
+- <kbd>ctrl + e</kbd>Lance le mode édition
 
 ### Raccourcis en mode édition
 - <kbd>ctrl + s</kbd> Sauvegarde les changements

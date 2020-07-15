@@ -71,8 +71,6 @@ else {
 // Variables sites
 $GLOBALS['language'] = array('fr');
 
-$GLOBALS['function'] = '';// Include fonction du theme
-
 $GLOBALS['theme'] = '';
 
 if($dev)// Dev local
@@ -101,6 +99,16 @@ if($dev)// Dev local
 	$GLOBALS['min'] = '';
 else 
 	$GLOBALS['min'] = '';//.min
+
+
+// Générer un site statique
+$GLOBALS['static'] = false;
+$GLOBALS['static_dir'] = '';
+
+
+// Include
+$GLOBALS['function'] = '';// fonction du theme
+$GLOBALS['after_get_tag'] = '';// Action avant d'afficher l'header
 
 
 // https://developers.facebook.com/apps/
@@ -264,6 +272,7 @@ $GLOBALS['translation'] = array();
 $GLOBALS['content'] = array();
 $GLOBALS['editkey'] = 1;
 $GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
+$GLOBALS['root'] = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"");
 
 
 // Numéro de la page en cours

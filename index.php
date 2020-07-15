@@ -24,7 +24,7 @@ else
 
 
 // Sélectionne la langue
-$lang = get_lang();
+$GLOBALS['lang'] = get_lang();
 
 load_translation('api');// Chargement des traductions du système
 
@@ -71,6 +71,11 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 		}
 	}
 }
+
+
+
+/********** ACTION après la récupération des données du tag **********/
+if(@$GLOBALS['after_get_tag']) include_once($GLOBALS['root'].$GLOBALS['after_get_tag']);
 
 
 
@@ -265,8 +270,8 @@ if(!$ajax)
 		<meta property="og:title" content="<?=$title;?>">
 		<meta property="og:type" content="website">
 		<?if(isset($res['url'])){?>
-		<meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>">
-		<link rel="canonical" href="<?=make_url($res['url'], array("domaine" => true))?>">
+		<meta property="og:url" content="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
+		<link rel="canonical" href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
 		<?}?>
 		<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 		<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>

@@ -234,6 +234,20 @@ body { transition: margin-top .2s linear; }
 			}
 
 
+
+/* Progression de la sauvegarde */
+#progress {
+	width: 0;
+	height: 4px;
+	top: 30px;
+	position: fixed;
+	z-index: 12;
+	background-color: #78cfd6;
+	transition: all 1s; 
+}
+
+
+
 /* Layer tooltip */
 .tooltip, .ui-autocomplete { 
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);

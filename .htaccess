@@ -21,6 +21,30 @@ Options -Indexes
 # On exclut les fichiers des extensions suivantes. Permets de ne pas charger index.php en cas de 404
 RewriteCond %{REQUEST_FILENAME} !\.(css|js|html|htm|txt|xml|jpg|jpeg|png|gif|tif|tiff|bmp|ico|svg|svgz|pdf|exe|gz|gzip|tar|zip|mp3|ogg|wav|wma|avi|mp4|mpeg|odb|odc|odf|odg|odp|ods|odt|rtf|doc|docx|xls|xlsx|pps|ppt|pptx|swf)$ [NC]
 
+
+
+# SITE STATIQUE
+
+#### Si tous les fichiers statiques sont dans un dossier activé ce qui est
+## Dans robot.txt indiquer de ne par référencer ce qu'il y a dans static/
+
+## Pour charger le index.html statique s'il existe, sinon execution de index.php
+#DirectoryIndex static/index.html index.php
+
+## Charche le fichier en cache s'il existe
+#RewriteCond %{DOCUMENT_ROOT}/static/$1.html -f
+#RewriteRule (.*) /static/$1.html [L]
+
+
+#### Si pas de dossier spécifique pour les fichiers statiques activer la priorisation de lecture des .HTML sur l'exécution de PHP
+
+## Si fichier HTML existant on le charge au lieu de l'execution de PHP
+#RewriteCond %{REQUEST_FILENAME}.html -f
+#RewriteRule ^(.*?)/?$ $1.html [L]
+
+
+
+# EXECUTION PHP
 # Pas un fichier
 RewriteCond %{REQUEST_FILENAME} !-f
 
