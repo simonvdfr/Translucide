@@ -499,7 +499,7 @@ function bg($key = null, $filter = array())
 	// Si pas d'array et qu'il y a une variable c'est que c'est un lazyload
 	if(!is_array($filter) and isset($filter)) $filter = array("lazy" => true);
 
-	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "");
+	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @$GLOBALS['replace_path']) : "");
 
 	echo" data-id='".encode($key)."' data-bg=\"".$url."\"";
 
