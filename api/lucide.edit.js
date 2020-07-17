@@ -910,9 +910,9 @@ get_img = function(id, link)
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
 				if(typeof link !== 'undefined' && link)// Avec lien zoom
-					exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" class='fl'></a>");
+					exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" loading=\"lazy\" class='fl'></a>");
 				else// Juste l'image
-					exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" class='fl'>");				
+					exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" loading=\"lazy\" class='fl'>");				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
