@@ -446,6 +446,9 @@ function media($key = null, $filter = array())
 				else 
 					echo"src=\"".$filename."\"";
 
+				//chargement paresseux de l'image
+				echo "loading=\"lazy\"";
+
 				if(isset($size[0]) or isset($size[1])) {
 					echo" style='";
 					if(isset($size[0])) echo"max-width: ".$size[0]."px;";
