@@ -249,6 +249,11 @@ save = function() //callback
 
 // Changement d'état des boutons de sauvegarde
 tosave = function() {	
+	// Si site statique on check la modification du header/footer | contenu global
+	//console.log($(memo_node).closest("header")) pour les contenu éditable
+	// detecter les deplacement du menu
+	// detecter le changement de média
+
 	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-floppy");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
 	$("#save").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
