@@ -283,6 +283,8 @@ switch(@$_GET['mode'])
 								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
 								<input type="password" id="password" required class="w60 vatt">
 
+								<a href="javascript:$('#setup #password').make_password();" title="<?_e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a>
+
 								<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
 
 								<!-- <a href="javascript:void(0);" onclick="$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a> -->
