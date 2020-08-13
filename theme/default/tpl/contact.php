@@ -110,22 +110,18 @@ else// Affichage du formulaire
 	</style>
 
 
-	<section class="mod tc">
-		<h1><?txt('titre')?></h1>
-	</section>
-
-
 	<section class="mw960p mod center">
 
 		<article class="w80 center">
 
-			<h2><?txt('sstitre')?></h2>
+			<?h1('titre', 'tc')?>
+			<?h2('sstitre', 'tc')?>
 
-			<div><?txt('texte')?></div>
+			<?txt('texte', 'mbl')?>
 
 			<form id="contact">
 
-				<div>
+				<div class="mbm">
 					<input type="email" name="email_contact" id="email_contact" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
 
 					<input name="reponse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" placeholder="nom@domaine.com">

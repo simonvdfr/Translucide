@@ -2,17 +2,17 @@
 
 <footer>
 
-	<section class="grid mw960p center">
+	<section class="mw960p center grid">
 
-		<article>
+		<div>
 
 			<?h3('footer-titre-contact', 'medium up')?>
 			<?txt('footer-texte-contact')?>
 
-		</article>
+		</div>
 
 
-		<article>
+		<div>
 
 			<?h3('footer-titre-actu', 'medium up')?>
 
@@ -29,15 +29,15 @@
 			?>
 			</ul>
 
-		</article>
+		</div>
 
 
-		<article>
+		<div>
 
 			<?h3('footer-titre-suivez-nous', 'medium up')?>
 			<?txt('footer-texte-suivez-nous', 'color bigger')?>
 
-		</article>
+		</div>
 
 	</section>
 	
