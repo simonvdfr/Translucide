@@ -47,7 +47,7 @@ else
 
 // Variables de la base de données
 $GLOBALS['db_prefix'] = '';
-$GLOBALS['db_charset'] = 'utf8';
+$GLOBALS['db_charset'] = 'utf8mb4';// utf8 => classique || utf8mb4 => pour les emoji mac
 
 $GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix'].'content';
 $GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix'].'meta';
