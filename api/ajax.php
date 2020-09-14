@@ -1,6 +1,6 @@
 <?
 @include_once("config.init.php");// Les variables par défaut
-@include_once("../config.php");// Les variables
+@include($_SERVER['DOCUMENT_ROOT']."/config.php");// Les variables ../config.php
 @include_once("function.php");// Fonction
 
 $lang = get_lang();// Sélectionne la langue
