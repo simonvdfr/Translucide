@@ -680,7 +680,7 @@ switch($_GET['mode'])
 		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
 		{
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], $GLOBALS['path'], $_POST['content']) : "");
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], $GLOBALS['replace_path'], $_POST['content']) : "");
 
 			// Encode le contenu
 			if(isset($_POST['content']) and $_POST['content'] != "") 
@@ -731,6 +731,8 @@ switch($_GET['mode'])
 				<?if(@$GLOBALS['static'])// GÉNÉRATION DE LA PAGE EN STATIQUE .HTML
 				{
 					//@todo gerer le cas ou la page n'est pas activé
+					//@todo metre la généaration dans un switch ajax.admin.php et faire une boucle en js sur la génération des url demander en cascade pour voir une progression de la génération des pages (progressbar)
+					//@todo afficher dans un after le nom de la page en cours de génération en dessou de la progressbar
 
 					$dir = (@$GLOBALS['static_dir']?$GLOBALS['static_dir'].'/':'');
 
@@ -749,7 +751,7 @@ switch($_GET['mode'])
 					$html = mb_convert_encoding($html, 'UTF-8', 'auto');
 
 					// Création du fichier avec le html
-					file_put_contents($file, $html.'<!-- STATIC '.date('d-m-Y H:i:s').' -->');//time().
+					file_put_contents($file, time().$html.'<!-- STATIC '.date('d-m-Y H:i:s').' -->');//time().
 					?>
 
 					$("#progress").css({"opacity":"1", "width":"100%"});

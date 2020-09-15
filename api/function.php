@@ -148,27 +148,27 @@ function page($num_total, $page, $full = false)
 		$num_page = ceil($num_total/$num_pp);
 		
 		// Page 1
-		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
+		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
 
 		if($num_page > 10 and $page >= 10 and !$full)// + de 10 page
 		{
 			?><li class="fl mrs mtt">...</li><?
 			
 			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
-				<li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 		else// - de 10 page
 		{
 			for($i = 2; $i <= ($full?$num_page:10) and $i < $num_page; $i++){?>
-				<li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 
 		if($num_page > 10 and $page < ($num_page - 2) and !$full) {?><li class="fl mrs">...</li><?}
 
 		// Page final
-		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
+		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
 
 	}?>
 	</ul>
@@ -499,7 +499,7 @@ function bg($key = null, $filter = array())
 	// Si pas d'array et qu'il y a une variable c'est que c'est un lazyload
 	if(!is_array($filter) and isset($filter)) $filter = array("lazy" => true);
 
-	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "");
+	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @$GLOBALS['replace_path']) : "");
 
 	echo" data-id='".encode($key)."' data-bg=\"".$url."\"";
 

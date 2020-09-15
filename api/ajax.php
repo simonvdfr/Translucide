@@ -1,4 +1,5 @@
 <?
+@include_once("config.init.php");// Les variables par défaut
 @include_once("../config.php");// Les variables
 @include_once("function.php");// Fonction
 

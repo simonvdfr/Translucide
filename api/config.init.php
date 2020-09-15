@@ -47,7 +47,7 @@ else
 
 // Variables de la base de données
 $GLOBALS['db_prefix'] = '';
-$GLOBALS['db_charset'] = 'utf8';
+$GLOBALS['db_charset'] = 'utf8mb4';// utf8 => classique || utf8mb4 => pour les emoji mac
 
 $GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix'].'content';
 $GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix'].'meta';
@@ -106,6 +106,10 @@ $GLOBALS['static'] = false;
 $GLOBALS['static_dir'] = '';
 
 
+// Cache sur les styles
+$GLOBALS['cache'] = "";
+
+
 // Include
 $GLOBALS['function'] = '';// fonction du theme
 $GLOBALS['after_get_tag'] = '';// Action avant d'afficher l'header
@@ -119,6 +123,33 @@ $GLOBALS['google_analytics'] = '';
 
 // https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
+
+
+// Toolbox
+$GLOBALS['toolbox'] = array(
+	//"h2",
+	//"h3",
+	//"h4",
+	"bold",
+	"italic",
+	//"underline",
+	//"superscript",
+	//"fontSize",
+	//"blockquote",
+	//"insertUnorderedList",
+	//"justifyLeft",
+	//"justifyCenter",
+	//"justifyRight",
+	//"justifyFull",
+	//"InsertHorizontalRule",
+	//"viewsource",
+	//"icon",
+	"media",
+	//"figure",
+	//"anchor",
+	//"bt",
+	"link"
+);
 
 
 // Clé hash pour les cryptages
@@ -153,17 +184,20 @@ $GLOBALS['auth_level'] = array(
 	'edit-admin' => 'Managing admins',
 	'edit-user' => 'Managing users',
 
-	'edit-config' => 'Edit Config',
+	//'edit-config' => 'Edit Config',// A codé une admin de la config
 
 	'edit-nav' => 'Edit menu',
-	'edit-header' => 'Edit header',
-	'edit-footer' => 'Edit footer',
+
+	//'edit-header' => 'Edit header',// Pas utilisée pour le moment
+	//'edit-footer' => 'Edit footer',// Pas utilisée pour le moment
 
 	'add-media' => 'Send Files',
-	'edit-media' => 'Edit Files',
 
-	'add-media-public' => 'Public file',
-	'edit-public' => 'Public content',
+	//'edit-media' => 'Edit Files',// Pas utilisée pour le moment
+
+	// Pour que les utilisateurs puissent ajouter du contenu au site
+	//'add-media-public' => 'Public file',
+	//'edit-public' => 'Public content',
 );
 
 
@@ -175,33 +209,6 @@ $GLOBALS['add_content'] = array(
 	//"video" => ["fa" => "fa-video", "tpl" => "video"],
 	//"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
 	"page" => ["fa" => "fa-doc-text", "tpl" => "page"]
-);
-
-
-// Toolbox
-$GLOBALS['toolbox'] = array(
-	//"h2",
-	//"h3",
-	//"h4",
-	"bold",
-	"italic",
-	//"underline",
-	//"superscript",
-	//"fontSize",
-	//"blockquote",
-	//"insertUnorderedList",
-	//"justifyLeft",
-	//"justifyCenter",
-	//"justifyRight",
-	//"justifyFull",
-	//"InsertHorizontalRule",
-	//"viewsource",
-	//"icon",
-	"media",
-	//"figure",
-	//"anchor",
-	//"bt",
-	"link"
 );
 
 
@@ -238,10 +245,6 @@ $GLOBALS['png_quality'] = 9;
 $GLOBALS['media_dir'] = false;
 
 
-// Cache sur les styles
-$GLOBALS['cache'] = "";
-
-
 // Favicon navigateur
 $GLOBALS['favicon'] = '';
 
@@ -272,7 +275,7 @@ $GLOBALS['translation'] = array();
 $GLOBALS['content'] = array();
 $GLOBALS['editkey'] = 1;
 $GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
-$GLOBALS['root'] = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"");
+$GLOBALS['root'] = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'');
 
 
 // Numéro de la page en cours
