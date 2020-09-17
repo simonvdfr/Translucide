@@ -26,9 +26,9 @@
 <!-- Event -->
 <section>
 
-	<div class="mw960p mod center mbl">
+	<div class="mw960p mod center mtm mbl">
 
-		<h2 class="tc"><?txt('titre-event')?></h2>
+		<?h2('titre-event', 'tc')?>
 
 		<div class="fl w50 tr no-small-screen">
 			<span class="editable-event" id="img-illu-event"><?media('media-event','425')?></span>

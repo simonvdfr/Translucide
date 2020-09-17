@@ -1,10 +1,3 @@
-/* Typo */
-@import url('//fonts.googleapis.com/css?family=Source Sans Pro:300|Amatic SC:700');
-
-body { 
-	font-family: Source Sans Pro;
-}
-
 a {
 	color: #35747f;
 	text-decoration: none;
@@ -14,20 +7,15 @@ a {
 
 
 h1 {
-	font-family: Amatic SC;
 	color: #78cfd6;
 	text-transform: uppercase;
+	font-weight: lighter;
 }
 
 h2, h3 {
 	color: #35747f;
 	font-weight: lighter;
 }
-
-
-/* Fonts */
-.font-ssp { font-family: Source Sans Pro; }
-.font-amatic { font-family: Amatic SC; }
 
 
 /* bouton pour les liens */

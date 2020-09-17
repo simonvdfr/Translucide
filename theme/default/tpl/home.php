@@ -10,7 +10,7 @@
 </style>
 
 
-<section class="mw960p mod center mbl">
+<section class="mw960p mod center mtm mbl">
 
 	<div class="tc mbn">
 		<?h1('titre')?>
