@@ -8,7 +8,7 @@
 <section class="w700p mod center mtm mbl">
 
 
-	<h1 class="mbn tc"><?txt('title')?></h1>
+	<?h1('title', 'mbn tc')?>
 
 
 	<div class="mts tc italic">

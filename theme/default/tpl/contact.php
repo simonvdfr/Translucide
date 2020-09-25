@@ -110,7 +110,7 @@ else// Affichage du formulaire
 	</style>
 
 
-	<section class="mw960p mod center">
+	<section class="mw960p mod center mtm">
 
 		<article class="w80 center">
 

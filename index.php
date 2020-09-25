@@ -371,7 +371,7 @@ if(!$ajax)
 	</head>
 	<body>
 
-	<div>
+	<main>
 	<?
 
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
@@ -401,7 +401,7 @@ if(!$ajax)
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
 	?>
 
-	</div>
+	</main>
 
 	<script>console.log("<?=benchmark()?>")</script>
 

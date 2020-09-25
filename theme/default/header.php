@@ -8,7 +8,7 @@
 		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?media('logo', '320')?></a></div>
 
 
-		<nav class="font-ssp mtm mbm">
+		<nav class="mtm mbm">
 
 			<a class="big burger"><span>menu</span></a>
 

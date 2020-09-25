@@ -5,15 +5,10 @@
 </style>
 
 
-<section class="mod tc">
-	
-	<?h1('title', 'color mbn up')?>
-	<?h2('sstitre', 'color-alt')?>
+<section class="mw960p mod center mtm mbl">
 
-</section>
-
-
-<section class="mw960p mod center mtl mbl">
+	<?h1('title', 'tc up')?>
+	<?h2('sstitre', 'tc')?>
 
 
 	<article class="fl w80 prl pbm tj">
