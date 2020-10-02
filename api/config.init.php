@@ -101,9 +101,13 @@ else
 	$GLOBALS['min'] = '';//.min
 
 
-// Générer un site statique
+// Générer une page en statique html
 $GLOBALS['static'] = false;
 $GLOBALS['static_dir'] = '';
+
+
+// Vérifie l'état d'écoconception des images
+$GLOBALS['img_check'] = false;
 
 
 // Cache sur les styles
@@ -225,6 +229,7 @@ $GLOBALS['mime_supported'] = array(
 	'image/png',
 	'image/x-png',
 	'image/gif',
+	'image/webp',
 	'image/x-icon',
 	'image/svg',
 	'image/svg+xml',
@@ -239,6 +244,12 @@ $GLOBALS['mime_supported'] = array(
 $GLOBALS['max_image_size'] = '1920x1080';
 $GLOBALS['jpg_quality'] = 90;
 $GLOBALS['png_quality'] = 9;
+$GLOBALS['webp_quality'] = 90;
+$GLOBALS['img_green'] = '100';//ko
+$GLOBALS['img_warning'] = '400';//ko
+$GLOBALS['imgs_green'] = '800';//ko
+$GLOBALS['imgs_warning'] = '1000';//ko
+$GLOBALS['imgs_num'] = '15';// nombre d'image max
 
 
 // On peut voir les dossiers dans la librairie des médias
@@ -247,9 +258,6 @@ $GLOBALS['media_dir'] = false;
 
 // Favicon navigateur
 $GLOBALS['favicon'] = '';
-
-// Icone pour mobile / fav
-$GLOBALS['touch_icon'] = '';
 
 // Librairie d'icons spécifiques à la template
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"

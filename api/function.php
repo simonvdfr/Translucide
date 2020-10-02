@@ -1124,6 +1124,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			case 1: $source_img = imagecreatefromgif($source_file); break;
 			case 2: $source_img = imagecreatefromjpeg($source_file); break;
 			case 3: $source_img = imagecreatefrompng($source_file); break;
+			case 18: $source_img = imagecreatefromwebp($source_file); break;
 			default: exit(__("Unsupported file type")); break;
 		}  
 			
@@ -1181,6 +1182,12 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			$new_width = $dest_width = $new_height * $source_width / $source_height;
 			$new_height = $dest_height = $new_height;
 		}
+
+		// Cas ou pas de nouvelle taille => on prend les tailles de l'image d'origine
+		if(!$new_width and !$new_height) {
+			$new_width = $dest_width = $source_width; 
+			$new_height = $dest_height = $source_height;
+		}
 		
 		// Création de l'image vide de base pour y coller l'image finale
 		$final_img = imagecreatetruecolor($new_width, $new_height);
@@ -1189,9 +1196,19 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		switch($type) {
 			case 1: // Gif
 				imagecolortransparent($final_img, imagecolorallocatealpha($final_img, 0, 0, 0, 127));
-			case 3: // Png + Gif
-				imagealphablending($final_img, false);
-				imagesavealpha($final_img, true);
+			case 3: // Png
+			case 18: // Webp
+				// Si conversion vers image sans transparence on met du blanc au fond
+				if($option == 'tojpg') 
+				{
+					$white = imagecolorallocate($final_img,  255, 255, 255);
+					imagefilledrectangle($final_img, 0, 0, $new_width, $new_height, $white);
+				}
+				else
+				{
+					imagealphablending($final_img, false);
+					imagesavealpha($final_img, true);
+				}
 			break;
 		}  
 		
@@ -1208,6 +1225,13 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
           case 8: $deg = 90; break;
 		}
 		if(isset($deg)) $final_img = imagerotate($final_img, $deg, 0);
+
+		// Si convertion de format
+		switch ($option) {
+		  case 'tojpg': $source_ext = 'jpg'; $type = 2; break;
+          case 'topng': $source_ext = 'png'; $type = 3; break;
+		}
+
 		
 		// Ajoute la taille de la nouvelle image en supprimant l'ancienne si besoin
 		preg_match("/(-[0-9]+x[0-9]+)$/", $file_name, $matches);
@@ -1219,6 +1243,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			case 1: imagegif($final_img, $root_dir . $dir . $file_name_ext); break;
 			case 2: imagejpeg($final_img, $root_dir . $dir . $file_name_ext, $GLOBALS['jpg_quality']); break;
 			case 3: imagepng($final_img, $root_dir . $dir . $file_name_ext); break;// $GLOBALS['png_quality']
+			case 18: imagewebp($final_img, $root_dir . $dir . $file_name_ext, $GLOBALS['webp_quality']); break;
 		}		
 		
 		imagedestroy($final_img);// Libère la mémoire	

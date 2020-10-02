@@ -139,6 +139,13 @@ switch($_GET['mode'])
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 
+				// Warnings des poids des images pour suggérer des optimisations
+				<?=(isset($GLOBALS['img_green'])? 'img_green = '.$GLOBALS['img_green'].';':'')?>
+				<?=(isset($GLOBALS['img_warning'])? 'img_warning = '.$GLOBALS['img_warning'].';':'')?>
+				<?=(isset($GLOBALS['imgs_green'])? 'imgs_green = '.$GLOBALS['imgs_green'].';':'')?>
+				<?=(isset($GLOBALS['imgs_warning'])? 'imgs_warning = '.$GLOBALS['imgs_warning'].';':'')?>
+				<?=(isset($GLOBALS['imgs_num'])? 'imgs_num = '.$GLOBALS['imgs_num'].';':'')?>
+
 				<?
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
@@ -761,7 +768,13 @@ switch($_GET['mode'])
 						setTimeout(function() { $("#progress").css({"width":"0"});}, 1000);	
 					}, 1000);	
 				<?}?>
-				
+
+
+				<?if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
+				{?>
+					img_check();
+				<?}?>
+								
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
@@ -1515,9 +1528,14 @@ switch($_GET['mode'])
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
+
+		// Option crop, convert, compress
+		if(@$_POST['crop'] == 'true') $option = 'crop';
+		elseif(isset($_POST['option'])) $option = $_POST['option'];
+		else $option = null;
 		
 		// Resize l'image ou simple copie
-		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], $dir, (@$_POST['crop'] == 'true'?'crop':null));
+		echo resize($file, @(int)$_POST['width'], @(int)$_POST['height'], $dir, $option);
 
 	break;
 
