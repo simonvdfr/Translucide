@@ -1177,7 +1177,7 @@ img_check = function(file)
 	if(Object.keys(imgs).length > 0)
 	{
 		// Dialog des images // nw
-		$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='smaller'></ul></div>");
+		$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='pan unstyled smaller'></ul></div>");
 
 		// Dialog en layer
 		$(".dialog-optim-img").dialog({
@@ -1231,7 +1231,7 @@ img_check = function(file)
 			else if(size >= img_warning) var imgcolor = 'red';
 
 			// Affichage
-			$(".dialog-optim-img ul").append("<li class='"+imgcolor+" ptt'><img src='"+src+"' width='40' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+			$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
 
 			++num;
 
@@ -1250,7 +1250,7 @@ img_check = function(file)
 		else if(num == imgs_num) var numcolor = 'orange';
 		else if(num > imgs_num) var numcolor = 'red';
 
-		$(".dialog-optim-img ul").after("<div class='pts smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
+		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
 
 	}
 }
