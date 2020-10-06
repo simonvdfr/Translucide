@@ -625,14 +625,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 /* ALT éditable */
 .editable-alt {
-	font-size: 1.2rem;
-	
+	font-size: 1.2rem;	
 	top: 0;
-
 	z-index: 2;
-
 	opacity: 1;
-
 	display: none;
 }
 
@@ -643,6 +639,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 .ui-dialog #recherche-media {/* Position du moteur de recherche de média */
 	position: absolute;
+    top: 4px;
     right: 0px;
     z-index: 1;
 }

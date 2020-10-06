@@ -52,6 +52,7 @@ add_translation({
 	"Convert to" : {"fr" : "Convertir en"},
 	"Compress" : {"fr" : "Compresser"},
 	"Limit" : {"fr" : "Limite"},
+	"Background" : {"fr" : "Fond"},
 });
 
 
@@ -624,10 +625,10 @@ dialog = function(mode, source, target, callback) {
 							});
 
 							// Place les onglets à la place du titre de la dialog
-							$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+							$(".dialog-media").siblings(".ui-dialog-titlebar").children(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 
 							// Place le moteur de recherche de media dans le titre de la dialog
-							$("#recherche-media").detach().prependTo(".ui-dialog");
+							$("#recherche-media").detach().insertBefore(".dialog-media")//.prependTo(".ui-dialog");
 						}
 					},
 					resize: function(event, ui) 
@@ -1065,13 +1066,13 @@ img_optim = function(option, that) {
 
 	src = src.replace(domain_path, "");// Supprime le domaine du nom de l'image
 	
-	var img_nomedia = src.replace(/media\//, "");// Chemin sans media
+	var img_nomedia = src.replace(/media\//, "").replace(/resize\//, "");// Chemin sans media
 
 	// Si le chemin contien un dossier
 	if(img_nomedia.indexOf("/") !== -1) 
 	{
-		var img_name = src.split('/').pop();// nom-image.ext?time
-		var dir = img_nomedia.replace("/"+img_name, "");
+		var img_name = src.split("?")[0].split('/').pop();// nom-image.ext sans ce qu'il y a après "?" et après le dossier "/"
+		var dir = img_nomedia.split("/"+img_name).shift();// Prends la première partie avant le nom de l'image
 	}
 	else var dir = "";
 
@@ -1230,7 +1231,7 @@ img_check = function(file)
 			else if(size >= img_warning) var imgcolor = 'red';
 
 			// Affichage
-			$(".dialog-optim-img ul").append("<li class='"+imgcolor+"'><img src='"+src+"' width='20' class='pointer "+img.type+"' onclick='scrollToImg(this)'> "+src.split("?")[0]+" <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+			$(".dialog-optim-img ul").append("<li class='"+imgcolor+" ptt'><img src='"+src+"' width='40' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
 
 			++num;
 
