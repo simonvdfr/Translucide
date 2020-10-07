@@ -683,6 +683,19 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		transition: opacity .5s;
 	}
 	
+	.dialog-media li .mime { 
+		background-color: rgb(255 255 255 / 0.8);
+		position: absolute;
+		display: none;
+	    font-size: 8px;
+	    top: 4px;
+	    right: 4px;
+	    line-height: 14px;
+	    padding: 1px 3px;
+	    border-radius: 2px;
+	    animation: fade-in .2s;
+	}
+
 	.dialog-media li .infos { 
 		box-shadow: inset 0px -22px 10px -10px #fff;/*0 0 0 1px rgba(0, 0, 0, 0.15) inset*/
 
@@ -699,6 +712,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		animation: fade-in .2s;
 	}
+
 		@keyframes fade-in {
 			0% { opacity: 0; }
 			100% { opacity: 1; }
@@ -740,7 +754,17 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 	.dialog-media li:hover, .dialog-media li.select { background: #fff; }
 	
-	.dialog-media li:hover > .infos, .dialog-media li:hover > .supp, .dialog-media li:hover > .resize { display: block; }
+	.dialog-media li:hover > .mime,
+	.dialog-media li:hover > .infos,
+	.dialog-media li:hover > .supp,
+	.dialog-media li:hover > .resize 
+	{ display: block; }
+
+
+	.dialog-optim-img img {
+		border: 1px solid #bbbbbb;
+	}
+
 
 	/* Image à moitié transparante */
 	.to50 {

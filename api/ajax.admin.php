@@ -1412,9 +1412,12 @@ switch($_GET['mode'])
 				foreach($tab_file as $cle => $val)
 				{
 					// Convertie la taille en mode lisible
-					if($val['size'] >= 1048576) $val['size'] = round($val['size'] / 1048576) . "Mo";
-					elseif($val['size'] >= 1024) $val['size'] = round($val['size'] / 1024) . "Ko";
-					elseif($val['size'] < 1024) $val['size'] = $val['size'] . "oct";
+					if($val['size'] >= 1048576) $size = round($val['size'] / 1048576) . "Mo";
+					elseif($val['size'] >= 1024) $size = round($val['size'] / 1024) . "Ko";
+					elseif($val['size'] < 1024) $size = $val['size'] . "oct";
+
+					// Poids en ko
+					$val['size'] = round($val['size'] / 1024);
 					
 					// Le type de fichier
 					list($type, $ext) = explode("/", $val['mime']);
@@ -1457,7 +1460,21 @@ switch($_GET['mode'])
 						data-type="'.$type.'"
 					>';
 
-						if($type == "image") {
+						$sizecolor = "";
+
+						if($type == "image") 
+						{
+							// Poids
+							if(isset($GLOBALS['img_green']) and
+								$val['size'] <= $GLOBALS['img_green']) 
+								$sizecolor = 'green';
+							else if(isset($GLOBALS['img_warning']) and
+								$val['size'] > $GLOBALS['img_green'] and $val['size'] < $GLOBALS['img_warning'])
+								$sizecolor = 'orange';
+							else if($val['size'] >= $GLOBALS['img_warning'])
+								$sizecolor = 'red';
+
+							// Affichage de l'image
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-lazy="'.$src.'"':'').'>';
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
@@ -1465,7 +1482,8 @@ switch($_GET['mode'])
 						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
 						echo"						
-						<div class='infos'>".$info." - ".$val['size']."</div>
+						<div class='mime ".$sizecolor."'>".$val['mime']."</div>
+						<div class='infos'>".$info." - ".$size."</div>
 						<a class='supp' title=\"".__("Delete file")."\"><i class='fa fa-fw fa-trash bigger'></i></a>
 					</li>";
 					
