@@ -393,6 +393,7 @@ function media($key = null, $filter = array())
 			case"png": 
 			case"gif": 
 			case"svg":
+			case"webp":
 				$img = true; 
 			break;
 
