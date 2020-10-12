@@ -555,27 +555,26 @@ switch($_GET['mode'])
 		// TAG ajout au tag
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
-			$tag_key = encode(key($_POST['tag']));
+			foreach($_POST['tag'] as $zone => $tags) 
+			{
+				$zone = encode($zone);
 
-			// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
-			//$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
-			$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$tag_key."'");
+				// Clean les tags de la fiche dans la bdd
+				$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$zone."'");
 
-			// split les tags en fonction du séparateur
-			$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($_POST['tag'][$tag_key]));
+				// split les tags en fonction du séparateur
+				$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($tags));
 
-			$i = 1;
-			foreach($tags as $cle => $val) {
-				if(isset($val) and $val != "") {			
-					//echo $val."/".htmlentities($val)."/".encode($val)."\n";		
-					// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
-					//$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
-					$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$tag_key."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".$i."'");
-					$i++;
+				$i = 1;
+				foreach($tags as $cle => $val) {
+					if(isset($val) and $val != "") {			
+						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".$i."'");
+						$i++;
+					}
 				}
+				
+				if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 			}
-			
-			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
 
 		

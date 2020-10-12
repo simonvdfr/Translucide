@@ -185,10 +185,11 @@ save = function() //callback
 	});
 
 
-	// Tags de la fiche en cours //@todo ajouter une boucle pour save tout les champs tag possible
+	// Tags de la fiche en cours
 	data["tag"] = {};
-	//data["tag"] = $(".editable-tag").text();
-	data["tag"][$(".editable-tag").attr("id")] = $(".editable-tag").text();
+	$(document).find(".content .editable-tag").each(function() {
+		if($(this).text()) data["tag"][$(this).attr("id")] = $(this).text();
+	});	
 
 	// Séparateur de tag
 	data["tag-separator"] = $(".editable-tag").data("separator");
