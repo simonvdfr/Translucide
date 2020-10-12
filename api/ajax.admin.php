@@ -1471,7 +1471,8 @@ switch($_GET['mode'])
 							else if(isset($GLOBALS['img_warning']) and
 								$val['size'] > $GLOBALS['img_green'] and $val['size'] < $GLOBALS['img_warning'])
 								$sizecolor = 'orange';
-							else if($val['size'] >= $GLOBALS['img_warning'])
+							else if(isset($GLOBALS['img_warning']) and
+								$val['size'] >= $GLOBALS['img_warning'])
 								$sizecolor = 'red';
 
 							// Affichage de l'image
