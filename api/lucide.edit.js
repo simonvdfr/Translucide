@@ -45,7 +45,14 @@ add_translation({
 
 	"Add a module" : {"fr" : "Ajouter un module"},
 	"Move" : {"fr" : "D\u00e9placer"},
-	"Remove" : {"fr" : "Supprimer"}
+	"Remove" : {"fr" : "Supprimer"},
+
+	"Image optimization" : {"fr" : "Optimisation des images"},
+	"Resize" : {"fr" : "Redimensionner"},
+	"Convert to" : {"fr" : "Convertir en"},
+	"Compress" : {"fr" : "Compresser"},
+	"Limit" : {"fr" : "Limite"},
+	"Background" : {"fr" : "Fond"},
 });
 
 
@@ -178,10 +185,11 @@ save = function() //callback
 	});
 
 
-	// Tags de la fiche en cours //@todo ajouter une boucle pour save tout les champs tag possible
+	// Tags de la fiche en cours
 	data["tag"] = {};
-	//data["tag"] = $(".editable-tag").text();
-	data["tag"][$(".editable-tag").attr("id")] = $(".editable-tag").text();
+	$(document).find(".content .editable-tag").each(function() {
+		if($(this).text()) data["tag"][$(this).attr("id")] = $(this).text();
+	});	
 
 	// Séparateur de tag
 	data["tag-separator"] = $(".editable-tag").data("separator");
@@ -618,10 +626,10 @@ dialog = function(mode, source, target, callback) {
 							});
 
 							// Place les onglets à la place du titre de la dialog
-							$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+							$(".dialog-media").siblings(".ui-dialog-titlebar").children(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 
 							// Place le moteur de recherche de media dans le titre de la dialog
-							$("#recherche-media").detach().prependTo(".ui-dialog");
+							$("#recherche-media").detach().insertBefore(".dialog-media")//.prependTo(".ui-dialog");
 						}
 					},
 					resize: function(event, ui) 
@@ -1032,28 +1040,40 @@ filesize = function(file) {
     return Math.ceil(parseInt(RegExp.$1) / 1024);// Taille en Ko
 }
 
-// Redimentionne/Optimise l'image à la demande
-img_optim = function() {
+// Optimise l'image à la demande
+img_optim = function(option, that) {
 
-	memo_img_cible = memo_img;
+	// Loading
+	$(that).html("<i class='fa fa-cog fa-spin'></i>");
 
-	var width = memo_img_cible.width;
-	var height = memo_img_cible.height;
+	// Disable les bt d'optim
+	$(".dialog-optim-img .bt").attr("onclick","");
 
-	// @todo en ligne on n'arrive pas à avoir la taille de l'image
-	original_filesize = filesize(memo_img_cible.src);// Poids de l'image d'origine
+	// L'image
+	img = $("img", $(that).parent());
+
+	// Scroll jusqu'a l'image
+	scrollToImg(img);
+
+	// Donnée sur l'image
+	src = $(img).attr("src");
+
+	var width = imgs[src]['width'];
+	var height = imgs[src]['height'];
+
+	original_filesize = imgs[src]['size'];// Poids de l'image d'origine
 
 	var domain_path = window.location.origin + path;// Domaine complet
 
-	var img = memo_img_cible.src.replace(domain_path, "");// Supprime le domaine du nom de l'image
+	src = src.replace(domain_path, "");// Supprime le domaine du nom de l'image
 	
-	var img_nomedia = img.replace(/media\//, "");// Chemin sans media
+	var img_nomedia = src.replace(/media\//, "").replace(/resize\//, "");// Chemin sans media
 
 	// Si le chemin contien un dossier
 	if(img_nomedia.indexOf("/") !== -1) 
 	{
-		var img_name = img.split('/').pop();// nom-image.ext?time
-		var dir = img_nomedia.replace("/"+img_name, "");
+		var img_name = src.split("?")[0].split('/').pop();// nom-image.ext sans ce qu'il y a après "?" et après le dossier "/"
+		var dir = img_nomedia.split("/"+img_name).shift();// Prends la première partie avant le nom de l'image
 	}
 	else var dir = "";
 
@@ -1062,10 +1082,11 @@ img_optim = function() {
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=get-img",
 		data: {
-			"img": img,
+			"img": src,
 			"width": width,
 			"height": height,
 			"dir": dir,
+			"option": option,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
@@ -1075,17 +1096,168 @@ img_optim = function() {
 
 			// Infobulle sur le gain de poids
 			if($.isNumeric(original_filesize))
-				light(Math.round((original_filesize - new_filesize)*100/original_filesize) +"% d'économie<div class='grey small'>"+original_filesize+"Ko => "+new_filesize+"Ko</div>", 1500);
+				light(Math.round((original_filesize - new_filesize)*100/original_filesize) +"% d'économie<div class='grey small'>"+original_filesize+"Ko => "+new_filesize+"Ko</div>", 2500);
 			else
-				light("Nouvelle taille de l'image : "+new_filesize+"Ko", 1500);
+				light("Nouvelle taille de l'image : "+new_filesize+"Ko", 2500);
 
 			// Affectation de la nouvelle image
-			memo_img_cible.src = domain_path + final_file;		
+			if(imgs[src]['type'] == 'bg')
+				$('[data-bg$="'+src+'"]').attr({
+					"data-bg": domain_path + final_file,
+					"style": "background-image: url('"+domain_path + final_file+"')"
+				});
+			else
+				$('img[src$="'+src+'"]').attr("src", domain_path + final_file);		
 		
 			tosave();// A sauvegarder
+
+			// On recharge les optimisations d'image
+			setTimeout(function() {// Timeout pour eviter la cache navigateur sur les widthXheight
+				img_check();
+			}, 1000);			
+		}
+	});
+}
+
+
+// Scroll jusqu'a une image
+scrollToImg = function(that){
+	
+	//@todo test le cas ou 2 fois la meme image dans le contenu
+
+	// si c'est une image en fond
+	if($(that).hasClass('bg'))
+		var scrollTo = $('[data-bg$="'+$(that).attr("src")+'"]').offset().top - $("#admin-bar").height();
+	else
+		var scrollTo = $('img[src$="'+$(that).attr("src")+'"]').offset().top - $("#admin-bar").height();	
+
+	var scrollTo = (scrollTo > $("#admin-bar").height() ? scrollTo : 0);
+
+	$root.animate({ scrollTop: scrollTo	}, 300, "linear");
+}
+
+// Liste les images dans la page pour suggérer des optimisations
+img_check = function(file) 
+{
+	imgs = {};
+	var imgs_size = 0;
+	host = location.protocol +'//'+ location.host + path;
+
+	// Contenu des images éditables, bg et dans les contenus textuels
+	$(document).find("main .editable-media img, main .editable img, main [data-bg]").each(function()
+	{
+		if($(this).hasClass("editable-bg")) {// Image en background
+			var src = $(this).attr("data-bg").replace(host, "");
+			if(src) {
+				imgs[src] = {};
+				imgs[src]['type'] = 'bg';
+			}
+
+			// Taille de l'image
+			/*var bg = new Image();
+		    bg.src = item.css('background-image').replace(/url\(|\)$|"/ig, '');
+			imgs[src]['width'] = bg.width;
+			imgs[src]['height'] = bg.height;*/
+		}
+		else {// Image dans contenu éditable ou fonction media
+			var src = $(this).attr("src").replace(host, "");
+			if(src) {
+				imgs[src] = {};
+				imgs[src]['type'] = 'img';
+
+				// Taille dans la dom
+				imgs[src]['width'] = $(this)[0].width;//clientWidth
+				imgs[src]['height'] = $(this)[0].height;
+
+				// Taille réel de l'image
+				imgs[src]['naturalWidth'] = $(this)[0].naturalWidth;
+				imgs[src]['naturalHeight'] = $(this)[0].naturalHeight;
+			}
 		}
 	});
 
+	console.log(imgs);
+
+	// S'il y a des images
+	if(Object.keys(imgs).length > 0)
+	{
+		// Dialog des images // nw
+		$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='pan unstyled smaller'></ul></div>");
+
+		// Dialog en layer
+		$(".dialog-optim-img").dialog({
+			autoOpen: false,
+			width: 'auto',
+			position: { my: "right-10 top", at: "left bottom+10", of: $("#admin-bar") },
+			show: function() {$(this).fadeIn(300);},
+			close: function() { $(".dialog-optim-img").remove(); }
+		});
+		$(".dialog-optim-img").parent().css({position:"fixed"}).end().dialog('open');
+
+		// Liste les images
+		var num = 0;
+		$.each(imgs, function(src, img)
+		{
+			var optimize = '';
+
+			// extraction de l'Extention
+			var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
+
+			// extraction de la Taille		
+			var size = filesize(src);
+			imgs[src]['size'] = size;
+
+			// total des poids d'image
+			imgs_size = imgs_size + size;
+
+			// Image dans le contenu
+			if(img.type == 'img')
+			{
+				// Vérifie la taille de l'image pour proposer une optimisation
+				var widthRatio = (img.width / img.naturalWidth) * 100;
+				var heightRatio = (img.height / img.naturalHeight) * 100;
+
+				// Image + grande que la zone afficher => Redimentionnement
+				if(widthRatio < 80 || heightRatio < 80)
+					optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+			}
+
+			// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
+			if(ext == 'png' && size > img_green)
+				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+
+			// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
+			/*if(ext == 'jpg' && size > img_warning)
+				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
+
+			// Couleur de vigilance
+			if(size <= img_green) var imgcolor = 'green';
+			else if(size > img_green && size < img_warning) var imgcolor = 'orange';
+			else if(size >= img_warning) var imgcolor = 'red';
+
+			// Affichage
+			$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+
+			++num;
+
+		});
+
+
+		// Statistique final
+
+		// Poids
+		if(imgs_size <= imgs_green) var sizecolor = 'green';
+		else if(imgs_size > imgs_green && imgs_size < imgs_warning) var sizecolor = 'orange';
+		else if(imgs_size >= imgs_warning) var sizecolor = 'red';
+
+		// Nombre d'image
+		if(num < imgs_num) var numcolor = 'green';
+		else if(num == imgs_num) var numcolor = 'orange';
+		else if(num > imgs_num) var numcolor = 'red';
+
+		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
+
+	}
 }
 
 
@@ -1802,10 +1974,6 @@ $(function()
 			$(this).parent(".ui-wrapper").addClass($(this).attr('class'));
 			$(this).parent(".ui-wrapper").css('display', $(this).css('display'));
 		}
-
-		// Vérifie la taille de l'image pour proposer une optimisation
-		var widthRatio = (this.width / this.naturalWidth) * 100;
-		var heightRatio = (this.height / this.naturalHeight) * 100;
 		
 		// Boîte à outils image
 		option = "<ul id='img-tool' class='toolbox'>";
@@ -1815,8 +1983,6 @@ $(function()
 			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
-
-			if(widthRatio < 80 || heightRatio < 80) option+= "<li><button onclick=\"img_optim()\" class='orange'>"+ __("Optimize") +" <i class='fa fa-fw fa-resize-small'></i></button></li>";
 
 			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='w150p small'></li>";
 

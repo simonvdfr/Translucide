@@ -139,6 +139,13 @@ switch($_GET['mode'])
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 
+				// Warnings des poids des images pour suggérer des optimisations
+				<?=(isset($GLOBALS['img_green'])? 'img_green = '.$GLOBALS['img_green'].';':'')?>
+				<?=(isset($GLOBALS['img_warning'])? 'img_warning = '.$GLOBALS['img_warning'].';':'')?>
+				<?=(isset($GLOBALS['imgs_green'])? 'imgs_green = '.$GLOBALS['imgs_green'].';':'')?>
+				<?=(isset($GLOBALS['imgs_warning'])? 'imgs_warning = '.$GLOBALS['imgs_warning'].';':'')?>
+				<?=(isset($GLOBALS['imgs_num'])? 'imgs_num = '.$GLOBALS['imgs_num'].';':'')?>
+
 				<?
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
@@ -548,27 +555,26 @@ switch($_GET['mode'])
 		// TAG ajout au tag
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
-			$tag_key = encode(key($_POST['tag']));
+			foreach($_POST['tag'] as $zone => $tags) 
+			{
+				$zone = encode($zone);
 
-			// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
-			//$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
-			$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$tag_key."'");
+				// Clean les tags de la fiche dans la bdd
+				$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$zone."'");
 
-			// split les tags en fonction du séparateur
-			$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($_POST['tag'][$tag_key]));
+				// split les tags en fonction du séparateur
+				$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($tags));
 
-			$i = 1;
-			foreach($tags as $cle => $val) {
-				if(isset($val) and $val != "") {			
-					//echo $val."/".htmlentities($val)."/".encode($val)."\n";		
-					// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
-					//$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
-					$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$tag_key."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".$i."'");
-					$i++;
+				$i = 1;
+				foreach($tags as $cle => $val) {
+					if(isset($val) and $val != "") {			
+						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".$i."'");
+						$i++;
+					}
 				}
+				
+				if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 			}
-			
-			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
 
 		
@@ -761,7 +767,13 @@ switch($_GET['mode'])
 						setTimeout(function() { $("#progress").css({"width":"0"});}, 1000);	
 					}, 1000);	
 				<?}?>
-				
+
+
+				<?if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
+				{?>
+					img_check();
+				<?}?>
+								
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
@@ -1399,9 +1411,12 @@ switch($_GET['mode'])
 				foreach($tab_file as $cle => $val)
 				{
 					// Convertie la taille en mode lisible
-					if($val['size'] >= 1048576) $val['size'] = round($val['size'] / 1048576) . "Mo";
-					elseif($val['size'] >= 1024) $val['size'] = round($val['size'] / 1024) . "Ko";
-					elseif($val['size'] < 1024) $val['size'] = $val['size'] . "oct";
+					if($val['size'] >= 1048576) $size = round($val['size'] / 1048576) . "Mo";
+					elseif($val['size'] >= 1024) $size = round($val['size'] / 1024) . "Ko";
+					elseif($val['size'] < 1024) $size = $val['size'] . "oct";
+
+					// Poids en ko
+					$val['size'] = round($val['size'] / 1024);
 					
 					// Le type de fichier
 					list($type, $ext) = explode("/", $val['mime']);
@@ -1444,7 +1459,22 @@ switch($_GET['mode'])
 						data-type="'.$type.'"
 					>';
 
-						if($type == "image") {
+						$sizecolor = "";
+
+						if($type == "image") 
+						{
+							// Poids
+							if(isset($GLOBALS['img_green']) and
+								$val['size'] <= $GLOBALS['img_green']) 
+								$sizecolor = 'green';
+							else if(isset($GLOBALS['img_warning']) and
+								$val['size'] > $GLOBALS['img_green'] and $val['size'] < $GLOBALS['img_warning'])
+								$sizecolor = 'orange';
+							else if(isset($GLOBALS['img_warning']) and
+								$val['size'] >= $GLOBALS['img_warning'])
+								$sizecolor = 'red';
+
+							// Affichage de l'image
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-lazy="'.$src.'"':'').'>';
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
@@ -1452,7 +1482,8 @@ switch($_GET['mode'])
 						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
 						echo"						
-						<div class='infos'>".$info." - ".$val['size']."</div>
+						<div class='mime ".$sizecolor."'>".$val['mime']."</div>
+						<div class='infos'>".$info." - ".$size."</div>
 						<a class='supp' title=\"".__("Delete file")."\"><i class='fa fa-fw fa-trash bigger'></i></a>
 					</li>";
 					
@@ -1515,9 +1546,14 @@ switch($_GET['mode'])
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
+
+		// Option crop, convert, compress
+		if(@$_POST['crop'] == 'true') $option = 'crop';
+		elseif(isset($_POST['option'])) $option = $_POST['option'];
+		else $option = null;
 		
 		// Resize l'image ou simple copie
-		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], $dir, (@$_POST['crop'] == 'true'?'crop':null));
+		echo resize($file, @(int)$_POST['width'], @(int)$_POST['height'], $dir, $option);
 
 	break;
 
@@ -1691,7 +1727,7 @@ switch($_GET['mode'])
 
 		login('medium');
 
-		$sel_tag = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' ORDER BY ordre ASC, encode ASC");
+		$sel_tag = $connect->query("SELECT distinct encode, name, ordre FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' ORDER BY ordre ASC, encode ASC");
 		while($res_tag = $sel_tag->fetch_assoc()) {
 			$tab_tag[] = $res_tag['name'];
 		}	
