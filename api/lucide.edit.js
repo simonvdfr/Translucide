@@ -1148,8 +1148,10 @@ img_check = function(file)
 	{
 		if($(this).hasClass("editable-bg")) {// Image en background
 			var src = $(this).attr("data-bg").replace(host, "");
-			imgs[src] = {};
-			imgs[src]['type'] = 'bg';
+			if(src) {
+				imgs[src] = {};
+				imgs[src]['type'] = 'bg';
+			}
 
 			// Taille de l'image
 			/*var bg = new Image();
@@ -1159,20 +1161,22 @@ img_check = function(file)
 		}
 		else {// Image dans contenu éditable ou fonction media
 			var src = $(this).attr("src").replace(host, "");
-			imgs[src] = {};
-			imgs[src]['type'] = 'img';
+			if(src) {
+				imgs[src] = {};
+				imgs[src]['type'] = 'img';
 
-			// Taille dans la dom
-			imgs[src]['width'] = $(this)[0].width;//clientWidth
-			imgs[src]['height'] = $(this)[0].height;
+				// Taille dans la dom
+				imgs[src]['width'] = $(this)[0].width;//clientWidth
+				imgs[src]['height'] = $(this)[0].height;
 
-			// Taille réel de l'image
-			imgs[src]['naturalWidth'] = $(this)[0].naturalWidth;
-			imgs[src]['naturalHeight'] = $(this)[0].naturalHeight;
+				// Taille réel de l'image
+				imgs[src]['naturalWidth'] = $(this)[0].naturalWidth;
+				imgs[src]['naturalHeight'] = $(this)[0].naturalHeight;
+			}
 		}
 	});
 
-	//console.log(imgs);
+	console.log(imgs);
 
 	// S'il y a des images
 	if(Object.keys(imgs).length > 0)
