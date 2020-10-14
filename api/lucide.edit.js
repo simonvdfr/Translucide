@@ -2443,7 +2443,6 @@ $(function()
 		$(".editable-tag").attr("contenteditable", "true");
 
 		// AUTOCOMPLETE
-		tag_zone = $(".editable-tag").attr('id');
 		autocomplete_keydown = false;
 
 		// Séparateur
@@ -2459,6 +2458,7 @@ $(function()
 				event.preventDefault();	
 
 			autocomplete_keydown = true;// On a fait une saisie au clavier
+			tag_zone = $(".editable-tag").attr('id');
 
 			tosave();// A sauvegarder si on écrit
 		})
