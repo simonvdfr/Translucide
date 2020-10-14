@@ -1,17 +1,14 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
 <style>
-	aside { border-left: 0.2em solid  #78cfd6; }
+	aside { border-left: 0.2em solid #78cfd6; }
 </style>
 
 
-<section class="mod tc">
-	<h1 class="color mbn up"><?txt('title')?></h1>
-	<h2 class="color-alt"><?txt('sstitre')?></h2>
-</section>
+<section class="mw960p mod center mtm mbl">
 
-
-<section class="mw960p mod center mtl mbl">
+	<?h1('title', 'tc up')?>
+	<?h2('sstitre', 'tc')?>
 
 
 	<article class="fl w80 prl pbm tj">

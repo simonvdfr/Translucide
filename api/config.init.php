@@ -20,11 +20,20 @@ if(!isset($_SESSION))
 	if(!isset($cron)) session_start();
 }
 
+
+// Fixe la langue
+if(strstr($_SERVER['SERVER_NAME'], 'domaine.com')) 
+	$lang = $_SESSION['lang'] = "en";
+else
+	$lang = $_SESSION['lang'] = "fr";
+
+
 // Définition de la zone horaire
 date_default_timezone_set('Europe/Paris');
 
-// Langue des dates
-setlocale(LC_ALL, 'fr_FR.utf8', 'fra');//.UTF8
+// Langue des dates .UTF8
+if($lang == 'fr') setlocale(LC_ALL, 'fr_FR.utf8', 'fra');
+else setlocale(LC_ALL, 'en_US.utf8');
 
 
 // Serveur local ou online ? DEV || PROD
@@ -38,12 +47,12 @@ else
 
 // Variables de la base de données
 $GLOBALS['db_prefix'] = '';
-$GLOBALS['db_charset'] = 'utf8';
+$GLOBALS['db_charset'] = 'utf8mb4';// utf8 => classique || utf8mb4 => pour les emoji mac
 
 $GLOBALS['table_content'] = $GLOBALS['tc'] = $GLOBALS['db_prefix'].'content';
 $GLOBALS['table_meta'] = $GLOBALS['tm'] = $GLOBALS['db_prefix'].'meta';
+$GLOBALS['table_tag'] = $GLOBALS['tt'] = $GLOBALS['db_prefix'].'tag';
 $GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix'].'user';
-$GLOBALS['table_shop'] = $GLOBALS['ts'] = $GLOBALS['db_prefix'].'shop';
 
 if($dev) {// Dev local
 	$GLOBALS['db_server'] = '';
@@ -62,8 +71,6 @@ else {
 // Variables sites
 $GLOBALS['language'] = array('fr');
 
-$GLOBALS['function'] = '';// Include fonction du theme
-
 $GLOBALS['theme'] = '';
 
 if($dev)// Dev local
@@ -76,11 +83,15 @@ if($dev)// Dev local
 else 
 	$GLOBALS['domain'] = '';
 
+
 $GLOBALS['path'] = '';
 
-$GLOBALS['robots'] = 'noindex, nofollow';
+$GLOBALS['replace_path'] = "";// "/" Pour les chemins des média sur les sites avec dossier dans les url (filtre)
+
 
 $GLOBALS['email_contact'] = '';
+
+$GLOBALS['online'] = false;
 
 
 // Utilisation de librairie minifier
@@ -90,27 +101,59 @@ else
 	$GLOBALS['min'] = '';//.min
 
 
+// Générer une page en statique html
+$GLOBALS['static'] = false;
+$GLOBALS['static_dir'] = '';
+
+
+// Vérifie l'état d'écoconception des images
+$GLOBALS['img_check'] = false;
+
+
+// Cache sur les styles
+$GLOBALS['cache'] = "";
+
+
+// Include
+$GLOBALS['function'] = '';// fonction du theme
+$GLOBALS['after_get_tag'] = '';// Action avant d'afficher l'header
+
+
 // https://developers.facebook.com/apps/
 $GLOBALS['facebook_api_id'] = '';
-$GLOBALS['facebook_api_secret'] = '';
-$GLOBALS['facebook_page'] = '';// https://www.facebook.com/***
-$GLOBALS['facebook_jssdk'] = false;
 
-// https://console.developers.google.com/apis/credentials/oauthclient => Application Web
-$GLOBALS['google_api_id'] = '';
-$GLOBALS['google_api_secret'] = '';
-$GLOBALS['google_map'] = '';
+// https://analytics.google.com/analytics/web/
 $GLOBALS['google_analytics'] = '';
+
+// https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
-$GLOBALS['google_page'] = '';// https://plus.google.com/***
 
-// https://developer.yahoo.com/apps/
-$GLOBALS['yahoo_api_id'] = '';
-$GLOBALS['yahoo_api_secret'] = '';
 
-// https://account.live.com/developers/applications/create
-$GLOBALS['microsoft_api_id'] = '';
-$GLOBALS['microsoft_api_secret'] = '';
+// Toolbox
+$GLOBALS['toolbox'] = array(
+	//"h2",
+	//"h3",
+	//"h4",
+	"bold",
+	"italic",
+	//"underline",
+	//"superscript",
+	//"fontSize",
+	//"blockquote",
+	//"insertUnorderedList",
+	//"justifyLeft",
+	//"justifyCenter",
+	//"justifyRight",
+	//"justifyFull",
+	//"InsertHorizontalRule",
+	//"viewsource",
+	//"icon",
+	"media",
+	//"figure",
+	//"anchor",
+	//"bt",
+	"link"
+);
 
 
 // Clé hash pour les cryptages
@@ -132,6 +175,7 @@ $GLOBALS['public_account'] = false;
 
 // Statue d'activation par défaut des comptes utilisateur
 $GLOBALS['default_state'] = 'active';// moderate / mail / active / deactivate
+$GLOBALS['mail_moderate'] = true;
 
 // Niveaux d'authentification par défaut des comptes utilisateur
 $GLOBALS['default_auth'] = 'add-media-public,edit-public';
@@ -141,29 +185,28 @@ $GLOBALS['user_info'] = null;
 
 // Niveaux d'authentification possible
 $GLOBALS['auth_level'] = array(
-	'edit-admin',
-	'edit-user',
-	'edit-config',
-	'edit-nav',
-	'edit-header',
-	'edit-footer',
-	'add-media',
-	'add-page',
-	'add-article',
-	'add-event',
-	'add-product',
-	'edit-media',
-	'edit-page',
-	'edit-article',
-	'edit-event',
-	'edit-product',
-	'add-media-public',
-	'edit-public'
+	'edit-admin' => 'Managing admins',
+	'edit-user' => 'Managing users',
+
+	//'edit-config' => 'Edit Config',// A codé une admin de la config
+
+	'edit-nav' => 'Edit menu',
+
+	//'edit-header' => 'Edit header',// Pas utilisée pour le moment
+	//'edit-footer' => 'Edit footer',// Pas utilisée pour le moment
+
+	'add-media' => 'Send Files',
+
+	//'edit-media' => 'Edit Files',// Pas utilisée pour le moment
+
+	// Pour que les utilisateurs puissent ajouter du contenu au site
+	//'add-media-public' => 'Public file',
+	//'edit-public' => 'Public content',
 );
 
 
 // Type de contenu ajoutable
-$GLOBALS['add-content'] = array(
+$GLOBALS['add_content'] = array(
 	//"product" => ["fa" => "fa-basket", "tpl" => "product"],
 	"article" => ["fa" => "fa-rss", "tpl" => "article"],
 	//"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],
@@ -173,29 +216,9 @@ $GLOBALS['add-content'] = array(
 );
 
 
-// Toolbox
-$GLOBALS['toolbox'] = array(
-	//"h2",
-	//"h3",
-	//"h4",
-	"bold",
-	"italic",
-	//"underline",
-	//"superscript",
-	//"fontSize",
-	//"insertUnorderedList",
-	//"justifyLeft",
-	//"justifyCenter",
-	//"justifyRight",
-	//"justifyFull",
-	//"InsertHorizontalRule",
-	//"viewsource",
-	//"icon",
-	"media",
-	//"anchor",
-	//"bt",
-	"link"
-);
+// Bouton en bas en layer
+$GLOBALS['bt_edit'] = true;
+$GLOBALS['bt_top'] = false;
 
 
 // Type mime supporté pour l'upload
@@ -206,7 +229,10 @@ $GLOBALS['mime_supported'] = array(
 	'image/png',
 	'image/x-png',
 	'image/gif',
+	'image/webp',
 	'image/x-icon',
+	'image/svg',
+	'image/svg+xml',
 	'application/pdf',
 	'application/zip',
 	'application/x-zip-compressed',
@@ -218,24 +244,20 @@ $GLOBALS['mime_supported'] = array(
 $GLOBALS['max_image_size'] = '1920x1080';
 $GLOBALS['jpg_quality'] = 90;
 $GLOBALS['png_quality'] = 9;
+$GLOBALS['webp_quality'] = 90;
+$GLOBALS['img_green'] = '100';//ko
+$GLOBALS['img_warning'] = '400';//ko
+$GLOBALS['imgs_green'] = '800';//ko
+$GLOBALS['imgs_warning'] = '1000';//ko
+$GLOBALS['imgs_num'] = '15';// nombre d'image max
 
-
-// Animation pour l'ouverture / fermeture de la dialogue des medias
-$GLOBALS['animation_dialog'] = true;
 
 // On peut voir les dossiers dans la librairie des médias
 $GLOBALS['media_dir'] = false;
 
 
-// Cache sur les styles
-$GLOBALS['cache'] = "";
-
-
 // Favicon navigateur
 $GLOBALS['favicon'] = '';
-
-// Icone pour mobile / fav
-$GLOBALS['touch_icon'] = '';
 
 // Librairie d'icons spécifiques à la template
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
@@ -254,18 +276,14 @@ $GLOBALS['filter_auth'] = array('page', 'user');
 
 
 // Sécurité / défaut
-$id = null;
-$title = null;
-$description = null;
-$image = null;
-$mode = null;
-$uid = null;
-$error = null;
+$id = $title = $description = $image = $tag = null;
+$mode = $uid = $error = $robots = $robots_data = null;
 $GLOBALS['filter'] = array();
 $GLOBALS['translation'] = array();
 $GLOBALS['content'] = array();
 $GLOBALS['editkey'] = 1;
 $GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
+$GLOBALS['root'] = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'');
 
 
 // Numéro de la page en cours

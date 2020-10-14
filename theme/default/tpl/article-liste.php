@@ -1,26 +1,28 @@
 <? if(!$GLOBALS['domain']) exit; ?>
 
 <style>
-	article { border-left: 0.2em solid  #35747f; }
+	.content article { border-left: 0.2em solid #35747f; }
 </style>
 
 
 <section class="w700p mod center mtm mbl">
 
 
-	<h1 class="mbn tc"><?txt('title')?></h1>
+	<?h1('title', 'mbn tc')?>
 
 
 	<div class="mts tc italic">
 		<?
-		_e("Catégories : ");
-
 		// Liste les tags pour filtrer la page
 		$i = 1;
-		$sel_tag_list = $connect->query("SELECT distinct cle, val FROM ".$table_meta." WHERE type='tag' ORDER BY ordre ASC, cle ASC");
+		$sel_tag_list = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".$res['url']."' ORDER BY ordre ASC, encode ASC");
+		//echo $connect->error;
+
+		if($sel_tag_list->num_rows) _e("Catégories : ");
+
 		while($res_tag_list = $sel_tag_list->fetch_assoc()) {
 			if($i > 1) echo', ';
-			echo'<a href="'.make_url($res['url'], array($res_tag_list['cle'], 'domaine' => true)).'" class="color tdn dash">'.$res_tag_list['val'].'</a>';
+			echo'<a href="'.make_url($res['url'], array($res_tag_list['encode'], 'domaine' => true)).'" class="color tdn dash">'.$res_tag_list['name'].'</a>';
 			$i++;
 		}
 		?>
@@ -45,12 +47,12 @@
 
 	// Si filtre tag
 	if(isset($tag))
-	$sql.=" RIGHT JOIN ".$table_meta."
+	$sql.=" RIGHT JOIN ".$tt."
 	ON
 	(
-		".$table_meta.".id = ".$tc.".id AND
-		".$table_meta.".type = 'tag' AND
-		".$table_meta.".cle = '".$tag."'
+		".$tt.".id = ".$tc.".id AND
+		".$tt.".zone = 'actualites' AND
+		".$tt.".encode = '".$tag."'
 	)";
 
 	$sql.=" WHERE (".$tc.".type='article') AND ".$tc.".lang='".$lang."' ".$sql_state."

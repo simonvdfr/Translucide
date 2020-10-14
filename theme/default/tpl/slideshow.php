@@ -43,7 +43,7 @@ $count = count($module) - 1;/* pour l'animation du slide */
 
 	<article class="mw1200p center pam ptn mod">
 
-		<h2 class="tc bold up"><?txt('titre-slideshow')?></h2>
+		<?h2('titre-slideshow','tc bold up')?>
 
 		<div class="flex mbm tc">
 

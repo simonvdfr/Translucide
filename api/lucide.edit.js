@@ -41,10 +41,18 @@ add_translation({
 	"Width" : {"fr" : "Largeur"},
 	"Height" : {"fr" : "Hauteur"},
 	"Optimize" : {"fr" : "Optimiser"},
+	"Subtitle" : {"fr" : "Sous-titre"},
 
 	"Add a module" : {"fr" : "Ajouter un module"},
 	"Move" : {"fr" : "D\u00e9placer"},
-	"Remove" : {"fr" : "Supprimer"}
+	"Remove" : {"fr" : "Supprimer"},
+
+	"Image optimization" : {"fr" : "Optimisation des images"},
+	"Resize" : {"fr" : "Redimensionner"},
+	"Convert to" : {"fr" : "Convertir en"},
+	"Compress" : {"fr" : "Compresser"},
+	"Limit" : {"fr" : "Limite"},
+	"Background" : {"fr" : "Fond"},
 });
 
 
@@ -134,6 +142,14 @@ save = function() //callback
 
 	data["tpl"] = $("#admin-bar #tpl").val();// Template
 
+	// Robots 
+	if($("#admin-bar #noindex").prop("checked")) data["robots"] = "noindex";
+	if($("#admin-bar #nofollow").prop("checked")) 
+		data["robots"] = 
+			(data["robots"]?data["robots"]:"") +
+			(data["robots"]?", ":"") +
+			"nofollow";
+
 	data["date-insert"] = $("#admin-bar #date-insert").val();// Date de création de la page
 	
 
@@ -147,7 +163,7 @@ save = function() //callback
 	// Donnée Méta
 	data["meta"] = {};
 	$(document).find(".content .editable-input.meta").each(function() {
-		if($(this).val()) data["meta"][this.id] = $(this).val();					
+		data["meta"][this.id] = $(this).val();// if($(this).val()) 		
 	});
 	$(document).find(".content .editable.meta").each(function() {
 		if($(this).html()) data["meta"][this.id] = $(this).html();					
@@ -169,8 +185,14 @@ save = function() //callback
 	});
 
 
-	// Tags de la fiche en cours //@todo ajouter une boucle pour save tout les champs tag possible
-	data["tag"] = $(".editable-tag").text();
+	// Tags de la fiche en cours
+	data["tag"] = {};
+	$(document).find(".content .editable-tag").each(function() {
+		if($(this).text()) data["tag"][$(this).attr("id")] = $(this).text();
+	});	
+
+	// Séparateur de tag
+	data["tag-separator"] = $(".editable-tag").data("separator");
 
 
 	// Si sur page tag
@@ -191,16 +213,19 @@ save = function() //callback
 	//@todo voir pourquoi ça ne supp pas de la nav quand on glisse sur poubelle un element du menu
 	// Contenu du menu de navigation
 	data["nav"] = {};
-	$(document).find("header nav ul li").not("#add-nav ul li, .exclude").each(function(i) {
-		$("a", this).each(function(j) {
-			data["nav"][i+'-'+j] = {
+	//$(document).find("header nav ul li").not("#add-nav ul li, .exclude").each(function(i) {
+	$(document).find("header nav ul li a").not("#add-nav ul li a, .exclude").each(function(index, element) {
+		//$("a", this).each(function(index, element) {
+			//data["nav"][i+'-'+index] = {
+			data["nav"][index] = {
 				href : $.trim($(this).attr('href')),
 				text : ($(this).hasClass("view-source")?$(this).text():$(this).html()),
 				id : $(this).attr('id') || "",
 				class : $(this).attr('class') || "",
-				target : $(this).attr('target') || ""
+				target : $(this).attr('target') || "",
+				level : $(element).parents('ul').length
 			};
-		});
+		//});
 	});
 
 
@@ -232,6 +257,11 @@ save = function() //callback
 
 // Changement d'état des boutons de sauvegarde
 tosave = function() {	
+	// Si site statique on check la modification du header/footer | contenu global
+	//console.log($(memo_node).closest("header")) pour les contenu éditable
+	// detecter les deplacement du menu
+	// detecter le changement de média
+
 	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-floppy");// Affiche l'icône disant qu'il faut sauvegarder sur le bt save	
 	$("#save").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
@@ -285,7 +315,7 @@ exec_tool = function(command, value, ui) {
 
 		// Si Ajout d'une ancre
 		if(command == "CreateAnchor") { var command_source = command; command = "CreateLink"; }
-		
+
 
 		// Exécution de la commande
 		document.execCommand(command, ui, value);
@@ -445,7 +475,7 @@ link_option = function()
 // Supprime le lien autour
 unlink = function() 
 {
-	$(memo_node).contents().unwrap();
+	$(memo_node).closest("a").contents().unwrap();
 	$("#txt-tool #link-option").hide("slide", 300);
 
 	$(memo_focus).focus();
@@ -461,15 +491,15 @@ link = function()
 		exec_tool('CreateLink', link)
 	else
 	{
-		$(memo_node).attr("href", link);
+		$(memo_node).closest("a").attr("href", link);
 
 		// Si Target = blank
-		if($("#target-blank").hasClass("checked")) $(memo_node).attr("target","_blank");
-		else $(memo_node).removeAttr("target");	
+		if($("#target-blank").hasClass("checked")) $(memo_node).closest("a").attr("target","_blank");
+		else $(memo_node).closest("a").removeAttr("target");	
 
 		// Si class bt
-		if($("#class-bt").hasClass("checked")) $(memo_node).addClass("bt");
-		else $(memo_node).removeClass("bt");
+		if($("#class-bt").hasClass("checked")) $(memo_node).closest("a").addClass("bt");
+		else $(memo_node).closest("a").removeClass("bt");
 		
 		$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 
@@ -543,7 +573,7 @@ view_source = function(memo, force){
 
 
 // Dialog box avec effet de transfert
-dialog_transfert = function(mode, source, target, callback) {
+dialog = function(mode, source, target, callback) {
 
 	// @todo: faire en sorte que la dialog fadeIn et fadeOut lorsqu'elle apparaît/disparaît. Pas juste visibility:hidden/visible...
 
@@ -575,16 +605,6 @@ dialog_transfert = function(mode, source, target, callback) {
 					modal: true,
 					autoOpen: false,
 					width: "80%",
-					//show: {effect: "fadeIn"},
-					hide: {effect: (animation_dialog?"fadeOut":"none")},
-					beforeClose: function ()
-					{		
-						if(animation_dialog == true)			
-						$(this).dialog("widget").effect("transfer", {// Effet de transfert
-							to: $(source),
-							className: "ui-effects-transfer"
-						}, 300);
-					},						
 					close: function()
 					{
 						$(".dialog-"+mode).remove();
@@ -606,25 +626,10 @@ dialog_transfert = function(mode, source, target, callback) {
 							});
 
 							// Place les onglets à la place du titre de la dialog
-							$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+							$(".dialog-media").siblings(".ui-dialog-titlebar").children(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
 
 							// Place le moteur de recherche de media dans le titre de la dialog
-							$("#recherche-media").detach().prependTo(".ui-dialog");
-						}
-					},
-					open: function(event, ui) {
-						// Animation sur l'ouverture de la dialog ?
-						if(animation_dialog == true) {
-							$(".dialog-"+mode).dialog("widget").css("visibility", "hidden");
-
-							// Effet d'ouverture : transfert
-							$(source).effect("transfer", {
-								to: $(".dialog-"+mode).dialog("widget"),
-								className: "ui-effects-transfer"
-								}, 300, function() {
-									$(".dialog-"+mode).dialog("widget").hide().css("visibility", "visible").fadeIn("fast");
-								}
-							);
+							$("#recherche-media").detach().insertBefore(".dialog-media")//.prependTo(".ui-dialog");
 						}
 					},
 					resize: function(event, ui) 
@@ -652,7 +657,7 @@ media = function(source, target) {
 	//$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
 	
 	// Dialog de gestion des medias
-	dialog_transfert("media", source, target, function() {					
+	dialog("media", source, target, function() {					
 			// Unbind le drag&drop pour l'ajout de média
 			$("body").off(".dialog-media");
 
@@ -872,6 +877,8 @@ get_img = function(id, link)
 	var height = $("#dialog-media-height").val();
 
 	var media_source = $("#dialog-media-source").val();
+
+	var crop = $("#"+media_source).hasClass('crop');
 	
 	var data_class = $("#"+media_source).data("class") || "";
 
@@ -890,6 +897,7 @@ get_img = function(id, link)
 			"width": width,
 			"height": height,
 			"dir": dir,
+			"crop": crop,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
@@ -940,7 +948,45 @@ get_img = function(id, link)
 
 // Alignement de l'image intext
 img_position = function(align) {
-	$(memo_img).removeClass("center fl fr").addClass(align);
+	var figure = $(memo_img).closest("figure");
+
+	// Si l'image est dans une figure
+	if(figure.length) 
+		if(figure.hasClass(align)) figure.removeClass(align);
+		else figure.removeClass("center fl fr").addClass(align);
+	else 
+		if($(memo_img).hasClass(align)) $(memo_img).removeClass(align);
+		else $(memo_img).removeClass("center fl fr").addClass(align);
+}
+
+// Pour ajouter une légende sous l'image
+img_figure = function() {
+	// Si on est déjà dans un élément entouré du 'figure & figcaption' => on les supp
+	if($(memo_img).closest("figure").length)
+	{
+		$("#figure").removeClass("checked");
+
+		// Récupère les class de figure pour la remettre sur l'image
+		var figure_class = $(memo_img).closest("figure").attr("class");
+		$(memo_img).addClass(figure_class);
+
+		// Supprime figure & figcaption
+		$(memo_img).parent(".editable .ui-wrapper").unwrap().next("figcaption").remove();
+	}
+	else 
+	{
+		$("#figure").addClass("checked");
+
+		// Récupère les class de l'image pour les mettre sur figure
+		var img_class = $(memo_img).removeClass("ui-resizable").attr("class");
+		$(memo_img).removeClass("center fl fr")
+
+		// Ajoute la figure et le figcaption
+		$(memo_img).parent(".editable .ui-wrapper")
+	   		.after("<br>")// Pour pouvoir ajouter des contenus à la suite de la figure
+	    	.wrap("<figure class='"+img_class+"' />")
+	    	.after("<figcaption>"+ __("Subtitle") +"</figcaption>");
+	}
 }
 
 // Supprime l'image sélectionnée du contenu
@@ -994,28 +1040,40 @@ filesize = function(file) {
     return Math.ceil(parseInt(RegExp.$1) / 1024);// Taille en Ko
 }
 
-// Redimentionne/Optimise l'image à la demande
-img_optim = function() {
+// Optimise l'image à la demande
+img_optim = function(option, that) {
 
-	memo_img_cible = memo_img;
+	// Loading
+	$(that).html("<i class='fa fa-cog fa-spin'></i>");
 
-	var width = memo_img_cible.width;
-	var height = memo_img_cible.height;
+	// Disable les bt d'optim
+	$(".dialog-optim-img .bt").attr("onclick","");
 
-	// @todo en ligne on n'arrive pas à avoir la taille de l'image
-	original_filesize = filesize(memo_img_cible.src);// Poids de l'image d'origine
+	// L'image
+	img = $("img", $(that).parent());
+
+	// Scroll jusqu'a l'image
+	scrollToImg(img);
+
+	// Donnée sur l'image
+	src = $(img).attr("src");
+
+	var width = imgs[src]['width'];
+	var height = imgs[src]['height'];
+
+	original_filesize = imgs[src]['size'];// Poids de l'image d'origine
 
 	var domain_path = window.location.origin + path;// Domaine complet
 
-	var img = memo_img_cible.src.replace(domain_path, "");// Supprime le domaine du nom de l'image
+	src = src.replace(domain_path, "");// Supprime le domaine du nom de l'image
 	
-	var img_nomedia = img.replace(/media\//, "");// Chemin sans media
+	var img_nomedia = src.replace(/media\//, "").replace(/resize\//, "");// Chemin sans media
 
 	// Si le chemin contien un dossier
 	if(img_nomedia.indexOf("/") !== -1) 
 	{
-		var img_name = img.split('/').pop();// nom-image.ext?time
-		var dir = img_nomedia.replace("/"+img_name, "");
+		var img_name = src.split("?")[0].split('/').pop();// nom-image.ext sans ce qu'il y a après "?" et après le dossier "/"
+		var dir = img_nomedia.split("/"+img_name).shift();// Prends la première partie avant le nom de l'image
 	}
 	else var dir = "";
 
@@ -1024,10 +1082,11 @@ img_optim = function() {
 		type: "POST",
 		url: path+"api/ajax.admin.php?mode=get-img",
 		data: {
-			"img": img,
+			"img": src,
 			"width": width,
 			"height": height,
 			"dir": dir,
+			"option": option,
 			"nonce": $("#nonce").val()
 		},
 		success: function(final_file)
@@ -1037,17 +1096,168 @@ img_optim = function() {
 
 			// Infobulle sur le gain de poids
 			if($.isNumeric(original_filesize))
-				light(Math.round((original_filesize - new_filesize)*100/original_filesize) +"% d'économie<div class='grey small'>"+original_filesize+"Ko => "+new_filesize+"Ko</div>", 1500);
+				light(Math.round((original_filesize - new_filesize)*100/original_filesize) +"% d'économie<div class='grey small'>"+original_filesize+"Ko => "+new_filesize+"Ko</div>", 2500);
 			else
-				light("Nouvelle taille de l'image : "+new_filesize+"Ko", 1500);
+				light("Nouvelle taille de l'image : "+new_filesize+"Ko", 2500);
 
 			// Affectation de la nouvelle image
-			memo_img_cible.src = domain_path + final_file;		
+			if(imgs[src]['type'] == 'bg')
+				$('[data-bg$="'+src+'"]').attr({
+					"data-bg": domain_path + final_file,
+					"style": "background-image: url('"+domain_path + final_file+"')"
+				});
+			else
+				$('img[src$="'+src+'"]').attr("src", domain_path + final_file);		
 		
 			tosave();// A sauvegarder
+
+			// On recharge les optimisations d'image
+			setTimeout(function() {// Timeout pour eviter la cache navigateur sur les widthXheight
+				img_check();
+			}, 1000);			
+		}
+	});
+}
+
+
+// Scroll jusqu'a une image
+scrollToImg = function(that){
+	
+	//@todo test le cas ou 2 fois la meme image dans le contenu
+
+	// si c'est une image en fond
+	if($(that).hasClass('bg'))
+		var scrollTo = $('[data-bg$="'+$(that).attr("src")+'"]').offset().top - $("#admin-bar").height();
+	else
+		var scrollTo = $('img[src$="'+$(that).attr("src")+'"]').offset().top - $("#admin-bar").height();	
+
+	var scrollTo = (scrollTo > $("#admin-bar").height() ? scrollTo : 0);
+
+	$root.animate({ scrollTop: scrollTo	}, 300, "linear");
+}
+
+// Liste les images dans la page pour suggérer des optimisations
+img_check = function(file) 
+{
+	imgs = {};
+	var imgs_size = 0;
+	host = location.protocol +'//'+ location.host + path;
+
+	// Contenu des images éditables, bg et dans les contenus textuels
+	$(document).find("main .editable-media img, main .editable img, main [data-bg]").each(function()
+	{
+		if($(this).hasClass("editable-bg")) {// Image en background
+			var src = $(this).attr("data-bg").replace(host, "");
+			if(src) {
+				imgs[src] = {};
+				imgs[src]['type'] = 'bg';
+			}
+
+			// Taille de l'image
+			/*var bg = new Image();
+		    bg.src = item.css('background-image').replace(/url\(|\)$|"/ig, '');
+			imgs[src]['width'] = bg.width;
+			imgs[src]['height'] = bg.height;*/
+		}
+		else {// Image dans contenu éditable ou fonction media
+			var src = $(this).attr("src").replace(host, "");
+			if(src) {
+				imgs[src] = {};
+				imgs[src]['type'] = 'img';
+
+				// Taille dans la dom
+				imgs[src]['width'] = $(this)[0].width;//clientWidth
+				imgs[src]['height'] = $(this)[0].height;
+
+				// Taille réel de l'image
+				imgs[src]['naturalWidth'] = $(this)[0].naturalWidth;
+				imgs[src]['naturalHeight'] = $(this)[0].naturalHeight;
+			}
 		}
 	});
 
+	console.log(imgs);
+
+	// S'il y a des images
+	if(Object.keys(imgs).length > 0)
+	{
+		// Dialog des images // nw
+		$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='pan unstyled smaller'></ul></div>");
+
+		// Dialog en layer
+		$(".dialog-optim-img").dialog({
+			autoOpen: false,
+			width: 'auto',
+			position: { my: "right-10 top", at: "left bottom+10", of: $("#admin-bar") },
+			show: function() {$(this).fadeIn(300);},
+			close: function() { $(".dialog-optim-img").remove(); }
+		});
+		$(".dialog-optim-img").parent().css({position:"fixed"}).end().dialog('open');
+
+		// Liste les images
+		var num = 0;
+		$.each(imgs, function(src, img)
+		{
+			var optimize = '';
+
+			// extraction de l'Extention
+			var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
+
+			// extraction de la Taille		
+			var size = filesize(src);
+			imgs[src]['size'] = size;
+
+			// total des poids d'image
+			imgs_size = imgs_size + size;
+
+			// Image dans le contenu
+			if(img.type == 'img')
+			{
+				// Vérifie la taille de l'image pour proposer une optimisation
+				var widthRatio = (img.width / img.naturalWidth) * 100;
+				var heightRatio = (img.height / img.naturalHeight) * 100;
+
+				// Image + grande que la zone afficher => Redimentionnement
+				if(widthRatio < 80 || heightRatio < 80)
+					optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+			}
+
+			// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
+			if(ext == 'png' && size > img_green)
+				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+
+			// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
+			/*if(ext == 'jpg' && size > img_warning)
+				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
+
+			// Couleur de vigilance
+			if(size <= img_green) var imgcolor = 'green';
+			else if(size > img_green && size < img_warning) var imgcolor = 'orange';
+			else if(size >= img_warning) var imgcolor = 'red';
+
+			// Affichage
+			$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+
+			++num;
+
+		});
+
+
+		// Statistique final
+
+		// Poids
+		if(imgs_size <= imgs_green) var sizecolor = 'green';
+		else if(imgs_size > imgs_green && imgs_size < imgs_warning) var sizecolor = 'orange';
+		else if(imgs_size >= imgs_warning) var sizecolor = 'red';
+
+		// Nombre d'image
+		if(num < imgs_num) var numcolor = 'green';
+		else if(num == imgs_num) var numcolor = 'orange';
+		else if(num > imgs_num) var numcolor = 'red';
+
+		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
+
+	}
 }
 
 
@@ -1095,6 +1305,11 @@ $(function()
 
 	$("#admin-bar #description").val(description);
 
+
+	if(/noindex/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #noindex").prop("checked", true);
+	if(/nofollow/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #nofollow").prop("checked", true);
+
+
 	$("#admin-bar #permalink").val(permalink);
 	$("#admin-bar #type").val(type);
 	$("#admin-bar #tpl").val(tpl);
@@ -1105,17 +1320,17 @@ $(function()
 	if(type == "page") $("#admin-bar #ispage").show();
 
 	// Etat de la checkbox homepage onready
-	if($("#admin-bar #permalink").val() == "home") $("#admin-bar #homepage").prop("checked", true);
+	if($("#admin-bar #permalink").val() == "index") $("#admin-bar #homepage").prop("checked", true);
 	
 	// Si on change le permalink on verif que c'est 'home'
 	$("#admin-bar #permalink").keyup(function() {
-		if($(this).val() == "home") $("#admin-bar #homepage").prop("checked", true);
+		if($(this).val() == "index") $("#admin-bar #homepage").prop("checked", true);
 		else $("#admin-bar #homepage").prop("checked", false);
 	});
 
 	// Changement au click de la checkbox homepage
 	$("#admin-bar #homepage").change(function() {
-		if(this.checked) $("#admin-bar #permalink").val("home");
+		if(this.checked) $("#admin-bar #permalink").val("index");
 		else refresh_permalink("#admin-bar");
 		tosave();// A sauvegarder
 	});
@@ -1222,7 +1437,7 @@ $(function()
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
-	$("header nav ul").after(addnav);
+	$("header nav > ul").after(addnav);
 	
 	// Déplace un élément du menu add vers le menu courant au click sur le +
 	hover_add_nav = false;	
@@ -1350,13 +1565,13 @@ $(function()
 						"nonce": $("#nonce").val()
 					},
 					success: function(html){ 
-						$("#add-nav ul").append(html);		
+						$("#add-nav .tooltip ul").append(html);		
 						
 						// Pour éviter de relancer l'ajax
 						add_page_list = true;
 
 						// Rends draggable les pages manquantes du menu
-						$("#add-nav ul").sortable({
+						$("#add-nav .tooltip ul").sortable({
 							connectWith: "header nav ul",
 							start: function() {
 								$(".editable").off();//$("body").off(".editable");
@@ -1420,6 +1635,9 @@ $(function()
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
+		if(typeof toolbox_blockquote != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote'><i class='fa fa-fw fa-quote-left'></i></button></li>";
+
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
@@ -1442,7 +1660,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
 
 		if(typeof toolbox_icon != 'undefined') 
-			toolbox+= "<li><button onclick=\"dialog_transfert('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
+			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 
 		if(typeof toolbox_media != 'undefined') 
 			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture'></i></button></li>";
@@ -1530,6 +1748,9 @@ $(function()
 					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
 				}
 			},
+			"click.editable": function(event){// Désactive les ouvertures de liens sous ie
+				event.preventDefault();
+			},
 			"mouseup.editable": function(event)// Si on click dans un contenu éditable
 			{		
 				$("#txt-tool .option").hide();// Cache le menu d'option		
@@ -1604,6 +1825,9 @@ $(function()
 
 				if($(memo_node).closest("h4").length) $("#txt-tool #h4").addClass("checked");
 				else $("#txt-tool #h4").removeClass("checked");
+
+				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
+				else $("#txt-tool #blockquote").removeClass("checked");
 					
 
 				// Désélectionne les alignements
@@ -1668,7 +1892,9 @@ $(function()
 			prompt(__("Paste something..."));
 
 		// Supprimes les commentaires HTML
-		paste = paste.replace(/<!--[\s\S]*?-->/gi, "");
+		//paste = paste.replace(/<!--[\s\S]*?-->/gi, "");
+		// + Supprime aussi les supportLists de word (Correction de Dominique)
+		paste = paste.replace(/<![\s\S]*?>/gi, "");
 
 		// Si pas en mode visionnage du code source & 
 		if(!$(this).hasClass("view-source")) 
@@ -1748,19 +1974,15 @@ $(function()
 			$(this).parent(".ui-wrapper").addClass($(this).attr('class'));
 			$(this).parent(".ui-wrapper").css('display', $(this).css('display'));
 		}
-
-		// Vérifie la taille de l'image pour proposer une optimisation
-		var widthRatio = (this.width / this.naturalWidth) * 100;
-		var heightRatio = (this.height / this.naturalHeight) * 100;
 		
 		// Boîte à outils image
 		option = "<ul id='img-tool' class='toolbox'>";
 
-			option+= "<li><button onclick=\"img_position('fl')\"><i class='fa fa-fw fa-align-left'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('center')\"><i class='fa fa-fw fa-align-center'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('fr')\"><i class='fa fa-fw fa-align-right'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('fl')\" class='img-position' id='img-fl'><i class='fa fa-fw fa-align-left'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('center')\" class='img-position' id='img-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
-			if(widthRatio < 80 || heightRatio < 80) option+= "<li><button onclick=\"img_optim()\" class='orange'>"+ __("Optimize") +" <i class='fa fa-fw fa-resize-small'></i></button></li>";
+			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
 
 			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='w150p small'></li>";
 
@@ -1773,6 +1995,17 @@ $(function()
 		// Récupère le texte du l'alt de l'image sélectionné pour le mettre dans les options d'édition de l'alt
 		$("#alt").val($(memo_img).attr('alt'));
 		
+
+		// Si l'image est encadrer par une <figure> pour un <figcaption>
+		if($(memo_img).closest("figure").length) $("#img-figure").addClass("checked");	
+		else $("#img-figure").removeClass("checked");
+
+
+		// Alignement de l'image
+		$("#img-position").removeClass("checked");
+		if($(memo_img).hasClass("fl") || $(memo_img).closest("figure").hasClass("fl")) $("#img-fl").addClass("checked");
+		if($(memo_img).hasClass("center") || $(memo_img).closest("figure").hasClass("center")) $("#img-center").addClass("checked");
+		if($(memo_img).hasClass("fr") || $(memo_img).closest("figure").hasClass("fr")) $("#img-fr").addClass("checked");	
 
 		$("#img-tool")
 			.show()
@@ -1790,6 +2023,12 @@ $(function()
 
 
 	/************** IMAGE/FICHIER SEUL **************/
+
+	// Charge les images en lazy load pour qu'elles puissent être sauvegardé
+	$("[data-lazy]").each(function() {
+		$(this).attr("src", $(this).data("lazy"));
+	});
+
 	
 	// On highlight les zones où l'on peut droper des fichiers
 	body_editable_media_event = function() {
@@ -1850,9 +2089,9 @@ $(function()
 					event.stopPropagation();
 					$(this).removeClass("drag-over");
 					$("img, i", this).removeClass("drag-elem");
-					
+
 					// Upload du fichier dropé
-					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], true);
+					if(event.originalEvent.dataTransfer) upload($(this), event.originalEvent.dataTransfer.files[0], $(this).hasClass('crop') ? 'crop':true);
 				},
 				// Hover zone upload	
 				"mouseenter.editable-media": function(event) {
@@ -1990,7 +2229,7 @@ $(function()
 		$(".editable-href").off(".editable-href");
 
 		// Crée un block
-		$("#" + module + " li:last-child").clone().prependTo("#" + module).show("400", function()
+		$("#" + module + " > li:last-child").clone().prependTo("#" + module).show("400", function()
 		{
 			// Modifie les cles
 			$("[class*='editable']", this).each(function() {
@@ -2064,7 +2303,7 @@ $(function()
 	$(".module-bt").parent().addClass("relative");
 
 	// Ajout de la SUPPRESION au survole d'un bloc
-	$(".module li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 1;' title='"+ __("Remove") +"'></i></a>");
+	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 1;' title='"+ __("Remove") +"'></i></a>");
 
 	// Affiche les boutons de suppression
 	//$(".module li .fa-cancel").fadeIn();
@@ -2083,6 +2322,11 @@ $(function()
 	// Ajout un placeholder s'il n'y en a pas
 	$(".editable-input").not("[placeholder]").each(function() {
 		$(this).attr("placeholder", $(this).attr("id")).attr("title", $(this).attr("id"));
+	});
+
+	// Si le contenu d'un input change on doit sauvegarder
+	$(".editable-input").on("change", function(event) {
+		tosave();
 	});
 
 	// Transforme les inputs hidden en texte visible
@@ -2131,7 +2375,7 @@ $(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox, .lucide [for]").on("click", function(event) {
+	$(".editable-checkbox, .lucide [for]").not(".lucide #admin-bar [for]").on("click", function(event) {
 		if($(this).attr("for")) var id = $(this).attr("for");
 		else var id = this.id;
 
@@ -2199,9 +2443,15 @@ $(function()
 		$(".editable-tag").attr("contenteditable", "true");
 
 		// AUTOCOMPLETE
+		tag_zone = $(".editable-tag").attr('id');
 		autocomplete_keydown = false;
-		function split(val) { return val.split(/,\s*/); }
-	    function extractLast(term) { return split(term).pop(); }
+
+		// Séparateur
+		var separator = $(".editable-tag").data('separator');// Si on en force un
+		if(!separator) separator = ', ';// Sinon celui par défaut
+		var regex = separator.replace(" ", "\\s*");// Replace les espaces par des espaces optionnels
+		regex = new RegExp(regex, "g");// Crée une regex avec la string
+
 
 		$(".editable-tag").on("keydown", function(event) {				
 			// Ne quitte pas le champ lorsque l'on utilise TAB pour sélectionner un élément
@@ -2218,7 +2468,7 @@ $(function()
 
 	            // Si les data on déjà était chargé donc on affiche direct le resultat
 	            if(typeof all_data !== 'undefined') {
-	            	response($.ui.autocomplete.filter(all_data, extractLast(request.term)));
+	            	response($.ui.autocomplete.filter(all_data, request.term.split(regex).pop()));
 	            	return;
 	            }
 
@@ -2226,7 +2476,10 @@ $(function()
 					type: "POST",
 					dataType: "json",
 					url: path+"api/ajax.admin.php?mode=tags",
-					data: {"nonce": $("#nonce").val()},
+					data: {
+						"zone": tag_zone,
+						"nonce": $("#nonce").val()
+					},
 					success: function(data) {
 						
 						// hide loading image
@@ -2237,7 +2490,7 @@ $(function()
 						all_data = data;// Pour la mise en cache de la liste complete
 
 						// Déléguer à la saisie semi-automatique et extrait le dernier terme
-	                	response($.ui.autocomplete.filter(data, extractLast(request.term)));
+	                	response($.ui.autocomplete.filter(data, request.term.split(regex).pop()));
 		            }
 		        });
 			},
@@ -2248,7 +2501,7 @@ $(function()
 			select: function(event, ui) {
 
 				// Crée un tableau avec les éléments déjà présents dans la liste
-				if($(this).text()) var terms = split($(this).text());
+				if($(this).text()) var terms = $(this).text().split(regex);
 				else var terms = [];
 
 				// Supprimer l'entrée actuelle SI on a fait une recherche
@@ -2261,7 +2514,7 @@ $(function()
 				//terms.push("");
 
 				// Ajoute le tag
-				$(this).text(terms.join(", "));
+				$(this).text(terms.join(separator));
 
 				// Pour focus à la fin du champ tags
 				range = document.createRange();//Create a range (a range is a like the selection but invisible)
@@ -2278,6 +2531,7 @@ $(function()
 			}
 		})
 		.focus(function(){// Chargement au focus de la liste des tags dispo
+			tag_zone = $(this).attr('id');
 			$(this).autocomplete("search", "");
 		});
 	}

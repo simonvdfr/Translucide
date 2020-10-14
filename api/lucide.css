@@ -3,9 +3,7 @@ body { transition: margin-top .2s linear; }
 .body-margin-top { margin-top: 35px; }
 
 /* Légère transition sur les FontAwesome */
-.fa { transition: all 0.3s; }
-
-.acolor { color: #75898c; }
+/* .fa { transition: all 0.3s; } */
 
 #admin-bar {		
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -51,6 +49,10 @@ body { transition: margin-top .2s linear; }
 		#admin-bar #user i:hover { color: #6b6f7a; }
 		#admin-bar #user .absolute { position: absolute; }
 		#admin-bar #user .absolute .load { min-width: 298px; }
+		#admin-bar #user .absolute .load .scroll { 
+			overflow-y: auto;
+			max-height:  500px;
+		}
 		#admin-bar #user .absolute i { color: #75898c; transition: color .3s; }
 		#admin-bar #user .absolute i:hover { color: #6b6f7a; }
 		#admin-bar #user .absolute li { 
@@ -146,7 +148,7 @@ body { transition: margin-top .2s linear; }
 		position: relative;
 		display: inline-block;
 
-		width: 38px;
+		min-width: 38px;
 		height: 16px;
 		margin: 0;
 		border-radius: 5px;
@@ -165,7 +167,7 @@ body { transition: margin-top .2s linear; }
 		/* Croix du désactivé */
 		#admin-bar .switch label:before {
 			font-family: FontAwesome;
-			content: "\e82a";/* Off f00d */
+			content: "\e813";/* Off f00d e82a */
 			margin-left: 18px;
 			transition: all .2s ease;
 		}
@@ -177,7 +179,7 @@ body { transition: margin-top .2s linear; }
 			/* Activé */
 			#admin-bar .switch input[type=checkbox]:checked ~ label:before {
 				font-family: FontAwesome;
-				content: "\e80d";/* On f00c */
+				content: "\e812";/* On f00c e80d */
 				margin-left: 6px;
 			}
 			/* Calage du bouton si activé */
@@ -194,7 +196,9 @@ body { transition: margin-top .2s linear; }
 			display: block;
 
 			top: -2px;
-			right: 25px;
+			/* right: 25px; */
+			margin-left: -5px;
+
 			width: 18px;
 			height: 18px;
 			border-radius: 18px;
@@ -230,12 +234,26 @@ body { transition: margin-top .2s linear; }
 			}
 
 
+
+/* Progression de la sauvegarde */
+#progress {
+	width: 0;
+	height: 4px;
+	top: 30px;
+	position: fixed;
+	z-index: 12;
+	background-color: #78cfd6;
+	transition: all 1s; 
+}
+
+
+
 /* Layer tooltip */
 .tooltip, .ui-autocomplete { 
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	background-color: rgba(245, 245, 245, 0.95) !important;
 	border-radius: 5px;
-	overflow: hidden;
+	/* overflow: hidden; => fait que l'on ne voie pas les elements du menu sortir lors du drag */
 }
 	.tooltip label { margin-top: 0;	}
 
@@ -356,7 +374,7 @@ header:hover .dragger { display: block; }
 		cursor: pointer;
 	}
 		#add-nav .dragger:before {
-			content: "\e808";
+			content: "\e80c";/*fa-plus*/
 			font-family: FontAwesome;
 		}
 
@@ -455,9 +473,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
     position: relative;
 	overflow: hidden;
 	vertical-align: middle;
-
-	min-width: 45px;
-	min-height: 30px;
+	min-width: 60px;
+	min-height: 60px;
 	border: 1px dotted rgba(61, 128, 179, 0.2);
 }
 	.lucide .editable-media img { 
@@ -573,6 +590,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	position: absolute;	
 	top: 0;
     right: 0;
+    z-index: 10;
 }
 	.module-bt a { 
 		position: relative;
@@ -607,14 +625,10 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 /* ALT éditable */
 .editable-alt {
-	font-size: 1.2rem;
-	
+	font-size: 1.2rem;	
 	top: 0;
-
 	z-index: 2;
-
 	opacity: 1;
-
 	display: none;
 }
 
@@ -625,6 +639,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 .ui-dialog #recherche-media {/* Position du moteur de recherche de média */
 	position: absolute;
+    top: 4px;
     right: 0px;
     z-index: 1;
 }
@@ -668,6 +683,19 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		transition: opacity .5s;
 	}
 	
+	.dialog-media li .mime { 
+		background-color: rgb(255 255 255 / 0.8);
+		position: absolute;
+		display: none;
+	    font-size: 8px;
+	    top: 4px;
+	    right: 4px;
+	    line-height: 14px;
+	    padding: 1px 3px;
+	    border-radius: 2px;
+	    animation: fade-in .2s;
+	}
+
 	.dialog-media li .infos { 
 		box-shadow: inset 0px -22px 10px -10px #fff;/*0 0 0 1px rgba(0, 0, 0, 0.15) inset*/
 
@@ -684,6 +712,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		animation: fade-in .2s;
 	}
+
 		@keyframes fade-in {
 			0% { opacity: 0; }
 			100% { opacity: 1; }
@@ -725,7 +754,17 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 	.dialog-media li:hover, .dialog-media li.select { background: #fff; }
 	
-	.dialog-media li:hover > .infos, .dialog-media li:hover > .supp, .dialog-media li:hover > .resize { display: block; }
+	.dialog-media li:hover > .mime,
+	.dialog-media li:hover > .infos,
+	.dialog-media li:hover > .supp,
+	.dialog-media li:hover > .resize 
+	{ display: block; }
+
+
+	.dialog-optim-img img {
+		border: 1px solid #bbbbbb;
+	}
+
 
 	/* Image à moitié transparante */
 	.to50 {
@@ -778,7 +817,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		font-size: 5rem;
 		color: #5eba7d;
 
-		content: "\e806";
+		content: "\e80a";/*fa-ok*/
 
 		animation: fade-in-out 1s ease forwards;
 
@@ -844,6 +883,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	list-style: none;
 
 	font-family: Arial;
+	font-size: initial;
 
 	padding: 0;	
 	margin: 0;
@@ -867,6 +907,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	.toolbox li {
 		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 		float: left;		
+		height: 26px;
 	}
 	.toolbox button {
 		background: #fff linear-gradient(#ffffff, #eaeaea) repeat scroll 0 0;
@@ -885,7 +926,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		min-width: 24px;
 
 		margin: 0 0 0 -1px;			    
-		padding: 0.3rem;
+		padding: 0.3rem 0.4rem;
 
 		color: #545454;
 
@@ -905,6 +946,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		}
 		.toolbox li:last-child, .toolbox li:last-child button {
 			border-radius: 0 4px 4px 0;
+			height: 26px !important;
 		}
 		.toolbox button .minus {
 			font-size: 0.6em;
@@ -937,28 +979,26 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		top: -12px;
 	}
 
-	.toolbox #alt { height: 24px; }
-
 	.toolbox .option {
 		background-color: #eaeaea;
 		height: 100%;
 		display: none;
 	}
-		.toolbox .option input {
-			color: #516062;
-			height: 100%;			
-			border-radius: 0;
-			padding: 0.33em 0.5rem 0.4rem;
-		}
+
+	.toolbox input {
+		color: #516062;
+		height: 100%;			
+		border-radius: 0;
+		padding: 0.33em 0.5rem 0.4rem;
+	}
+	.toolbox input:focus { border: 1px solid #c0dede; }
 	
 	.toolbox#resize-tool {
 		background-color: #eaeaea;
 		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 		padding: 0.2rem;
 	}
-		.toolbox#resize-tool input {
-			height: 22px;
-		}
+		.toolbox#resize-tool input { height: 22px; }
 
 	/*couleur icone */
 	.toolbox .fa-picture { color: #56aead; }

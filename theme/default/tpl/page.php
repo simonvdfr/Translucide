@@ -1,11 +1,11 @@
 <?if(!$GLOBALS['domain']) exit;?>
 
-<section class="mw960p mod center" <?bg("fond")?>>
+<section class="mw960p mod center">
 
-	<h1 class="mbn tc up color"><?txt('title')?></h1>
-	<h2 class="mbn tc big color-alt"><?txt('sstitre')?></h2>
+	<?h1('title', 'mbn tc up color')?>
+	<?h2('sstitre', 'mbn tc big color-alt')?>
 
-	<article class="tj ptm pll prl">
+	<article class="tj pal ptm">
 
 		<?txt('texte')?>
 

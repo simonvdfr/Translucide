@@ -1,5 +1,6 @@
 <?
-@include_once("../config.php");// Les variables
+@include_once("config.init.php");// Les variables par défaut
+@include($_SERVER['DOCUMENT_ROOT']."/config.php");// Les variables ../config.php
 @include_once("function.php");// Fonction
 
 $lang = get_lang();// Sélectionne la langue
@@ -14,129 +15,48 @@ switch($_GET['mode'])
 		
 		?>
 		<script>
-		$(function()
-		{	
-			// S'il y a un callback à exécuter
-			if(callback) eval(callback + "()");
-		});
+			$(function() {	
+				if(callback) eval(callback + "()");// S'il y a un callback à exécuter
+			});
 		</script>
-		<?
-
-	break;
-	
-	case "select-login-mode":
-		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
-		?>
-		<div id="dialog-connect" title="<?_e("Log in");?>">
-
-			<style>
-				/* Font Awesome pour bt connexion */
-				.loading:before {
-					content: "\e815" !important;
-					animation: fa-spin 2s infinite linear;
-
-					border-right: none !important;
-					padding-right: 0 !important;
-				}
-				.down:before {
-					content: "\e81d" !important;
-					animation: bounce-light .35s ease 6 alternate;
-
-					border-right: none !important;
-					padding-right: 0 !important;
-				}				
-					@keyframes bounce-light {
-						from { transform: translateY(0);}
-						to { transform: translateY(-5px);}
-					}
-			</style>
-
-			<script>
-			// S'il y a une fonction de callback
-			callback = <?if($_REQUEST['callback']){ echo'"'.encode($_REQUEST['callback'], "_").'"';} else echo"null";?>;
-
-			// Connexion
-			login = function(login_api) 
-			{
-				bt = $("#dialog-connect a.bt.connect."+login_api);
-				
-				// FadeOut les autres boutons
-				$("#dialog-connect a.bt.connect:not(."+login_api+")").slideUp();
-				
-				if(login_api != 'internal')// On utilise une api tiers pour la connexion => popup
-				{
-					// Change l'icône en loading
-					$(bt).addClass("loading");
-					
-					// Affichage du message
-					$("#dialog-connect").append("<div class='tc small'>"+ __("Validate the connection in the popup") +"</div>");
-
-					// Création d'un popup qui charge le site de connexion tierce
-					width = 420;
-					height = 510;
-					window.open("<?=$GLOBALS['path']?>api/ajax.php?mode=external-login&login_api="+login_api, "popup_connect", "top="+((screen.height / 2) - (height / 2))+", left="+((screen.width / 2) - (width / 2))+", width="+width+", height="+height+", location=no, menubar=no, directories=no, status=no, scrollbars=auto");
-				}
-				else// On utilise le système de login interne
-				{
-					// Unbind le click
-					$(bt).attr("href","javascript://").css("cursor","default");
-
-					// Change l'icône en flèche vers le bas
-					$(bt).addClass("down");
-
-					// Supprime les css :hover
-					$(bt).addClass("nohover");
-
-					// Injection du formulaire de login en dessous du bt
-					$.ajax({url: "<?=$GLOBALS['path']?>api/ajax.php?mode=internal-login"}).done(function(html) { $("#dialog-connect").append(html); });
-				}
-			};
-			</script>		
-
-			<?if($_REQUEST['msg']){?>
-				<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
-			<?}?>
-
-			<a href="javascript:login('internal');void(0);" class="bt connect internal short"><?_e("Connection with");?> <?=$_SERVER['HTTP_HOST'];?></a>
-
-			<?if($GLOBALS['facebook_api_secret']){?><a href="javascript:login('facebook');void(0);" class="bt connect facebook"><?_e("Connection with");?> Facebook</a><?}?>
-
-			<?if($GLOBALS['google_api_secret']){?><a href="javascript:login('google');void(0);" class="bt connect google"><?_e("Connection with");?> Google</a><?}?>
-
-			<?if($GLOBALS['yahoo_api_secret']){?><a href="javascript:login('yahoo');void(0);" class="bt connect yahoo"><?_e("Connection with");?> Yahoo</a><?}?>
-			
-			<?if($GLOBALS['microsoft_api_secret']){?><a href="javascript:login('microsoft');void(0);" class="bt connect microsoft"><?_e("Connection with");?> Hotmail - Microsoft</a><?}?>
-
-		</div>
 		<?
 	break;
 
 
 	case "internal-login":// Connexion avec un login/passe interne au site
+		
+		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
 		?>
-		<form id="internal-login" class="mts none small">
+		<div id="dialog-connect" title="<?_e("Log in");?>">
 
-			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
+			<?if($_REQUEST['msg']){?>
+			<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
+			<?}?>
 
-			<div class="mbs"><input type="email" id="email" placeholder="<?_e("My email");?>" required class="w100"><span class="wrapper big bold">@</span></div>
+			<form id="internal-login" class="mts small">
 
-			<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
+				<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<button class="bt internal fr mrn mtm pat">
-				<?_e("Log in")?>
-				<i class="fa fa-key"></i>
-			</button>
+				<div class="mbs"><input type="email" id="email" placeholder="<?_e("My email");?>" required class="w100"><span class="wrapper big bold">@</span></div>
 
-		</form>		
+				<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
+
+				<button class="bt internal fr mrn mtm pat">
+					<?_e("Log in")?>
+					<i class="fa fa-key"></i>
+				</button>
+
+			</form>		
+		</div>
 
 		<script>
+		// S'il y a une fonction de callback
+		callback = <?if($_REQUEST['callback']){ echo'"'.encode($_REQUEST['callback'], "_").'"';} else echo"null";?>;
+
 		$(function()
 		{
 			// Update les nonces dans la page courante pour éviter de perdre le nonce
 			$("#nonce").val('<?=$_SESSION['nonce']?>');
-
-			// Affichage du formulaire de login interne
-			$("#internal-login").slideDown("slow");
 
 			// Login
 			$("#internal-login").submit(function(event) 
@@ -144,7 +64,7 @@ switch($_GET['mode'])
 				event.preventDefault();
 
 				// Icône de chargement
-				$(bt).removeClass("down").addClass("loading");
+				$("#dialog-connect .bt .fa").removeClass("fa-key").addClass("fa-spin fa-cog");
 				
 				// Désactive le submit
 				$("#internal-login input[type='submit']").attr("disabled", true);
@@ -220,7 +140,7 @@ switch($_GET['mode'])
 			<script>
 			path = "<?=$GLOBALS['path']?>";
 
-			$(document).ready(function()
+			$(function()
 			{
 				// Injection du la fiche user
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=user&uid=<?=(int)$_REQUEST['uid']?>&callback=reload", data: { nonce: $("#nonce").val() } })
@@ -312,7 +232,7 @@ switch($_GET['mode'])
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
 			{
 				// Supprime les métas //@todo migration supp au long terme (12/11/2018)
-				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
+				//$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
 
 				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
 			}
@@ -506,8 +426,8 @@ switch($_GET['mode'])
 			//@todo migration supp au long terme (12/11/2018)
 			if(!@$GLOBALS['user_info_in_table_user']) {
 				// Récupération des infos sur l'utilisateur
-				$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-				$res_meta = $sel_meta->fetch_assoc();
+				/*$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+				$res_meta = $sel_meta->fetch_assoc();*/
 			}
 
 			$array_auth = explode(",", $res['auth']);// Les autorisations
@@ -529,208 +449,219 @@ switch($_GET['mode'])
 
 			<input type="hidden" id="uid" value="<?=@$res['id']?>">
 
-			<div class="mbt">
-				<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
-				<? if(@$_SESSION['auth']['edit-user']){?>
-					<select id="state" class="fa-select">
-						<option value="active">&#xe806; <?_e("Active")?></option>
-						<option value="moderate">&#xe80d; <?_e("Moderate")?></option>
-						<option value="email">&#xe800; <?_e("User email")?></option>
-						<option value="blacklist">&#xe80b; <?_e("Blacklist")?></option>
-						<option value="deactivate">&#xe807; <?_e("Deactivate")?></option>
-					</select>
-					<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
-				<?}else{?>
-					<?_e(@$res['state'])?>
-				<?}?>
-			</div>
+			<div class="scroll">
 
-			<div class="mbs" style="max-height: 100px;">
-				<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
-				<select id="auth" class="fa-select" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
-					<option value="edit-admin">&#xe81f; <?_e("Managing admins")?></option>
-					<option value="edit-user">&#xe803; <?_e("Managing users")?></option>
+				<div class="mbt">
+					<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
+					<? if(@$_SESSION['auth']['edit-user']){?>
+						<select id="state">
+							<option value="active"><?_e("Active")?></option>
+							<option value="moderate"><?_e("Moderate")?></option>
+							<option value="email"><?_e("User email")?></option>
+							<option value="blacklist"><?_e("Blacklist")?></option>
+							<option value="deactivate"><?_e("Deactivate")?></option>
+						</select>
+						<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
+					<?}else{?>
+						<?_e(@$res['state'])?>
+					<?}?>
+				</div>
 
-					<option value="edit-config">&#xe815; <?_e("Edit Config")?></option>
-
-					<option value="edit-nav">&#xe825; <?_e("Edit menu")?></option>
-					<option value="edit-header">&#xe83b; <?_e("Edit header")?></option>
-					<option value="edit-footer">&#xe81d; <?_e("Edit footer")?></option>
-
-					<option value="add-media">&#xe82d; <?_e("Send Files")?></option>
-					<option value="edit-media">&#xf114; <?_e("Edit Files")?></option>
-					
-					<?
-					//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
-					foreach($GLOBALS['add-content'] as $cle => $array)
-					{
-						echo'<option value="add-'.$cle.'">&#xf0f6; '.__("Add ".$cle).'</option>';
-						echo'<option value="edit-'.$cle.'">&#xf0f6; '.__("Edit ".$cle).'</option>';
-					}
-					?>
-
-					<option value="add-media-public">&#xe82d; <?_e("Public file")?></option>
-					<option value="edit-public">&#xe803; <?_e("Public content")?></option>
-				</select>
-				<script>
-				$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
-					$('#user #auth option[value="'+ val +'"]').prop('selected', true);
-				});
-				</script>					
-			</div>
-			
-			<!-- Désactive l'autocomplet du navigateur -->
-			<input type="text" id="email-fake" class="none">
-			<input type="password" id="password-fake" class="none">
-
-			<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
-
-			<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
-
-			<div class="mbs nowrap">
-				<label class="w100p tr mrt" for="password_new"><?_e("Password")?></label>
-				<input type="password" id="password_new" class="w50" autocomplete="new-password">
-
-				<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>"><i class="fa fa-fw fa-eye vam"></i></a>
-
-				<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
-			</div>
-
-			<?if($GLOBALS['facebook_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="facebook"><?_e("Facebook id")?></label> <input type="text" id="oauth[facebook]" value="<?=$oauth['facebook']?>" class="w60 small search_user_id"></div><?}?>
-
-			<?if($GLOBALS['google_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="google"><?_e("Google id")?></label> <input type="text" id="oauth[google]" value="<?=$oauth['google']?>" class="w60 small search_user_id"></div><?}?>
-
-			<?if($GLOBALS['yahoo_api_secret']){?><div class="mbt"><label class="w100p tr mrt" for="yahoo"><?_e("Yahoo id")?></label> <input type="text" id="oauth[yahoo]" value="<?=$oauth['yahoo']?>" class="w60 small search_user_id"></div><?}?>
-
-			<?if($GLOBALS['microsoft_api_secret']){?><div class="mbs"><label class="w100p tr mrt" for="microsoft"><?_e("Microsoft id")?></label> <input type="text" id="oauth[microsoft]" value="<?=$oauth['microsoft']?>" class="w60 small search_user_id"></div><?}?>
-
-			<?
-			// Si il y a des méta/infos complementaire pour cette utilisateur
-			if(is_array($GLOBALS['user_info'])) 
-			{		
-				?>
-				<div class="info mbs"><?
+				<div class="mbs" style="max-height: 100px;">
+					<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
+					<select id="auth" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
+						<?
+						// Droit de base
+						foreach($GLOBALS['auth_level'] as $cle => $val)	{
+							echo'<option value="'.$cle.'">'.__($val).'</option>';
+						}
 						
-					//@todo migration supp au long terme (12/11/2018)
-					if(!@$GLOBALS['user_info_in_table_user'] and $res_meta['val']) $info = json_decode($res_meta['val'], true);
-					elseif($res['info']) $info = json_decode($res['info'], true);
+						// Droit contenu
+						foreach($GLOBALS['add_content'] as $cle => $array)
+						{
+							echo'<option value="add-'.$cle.'">'.__("Add ".$cle).'</option>';
+							echo'<option value="edit-'.$cle.'">'.__("Edit ".$cle).'</option>';
+						}
+						?>
+					</select>
+					<script>
+					$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
+						$('#user #auth option[value="'+ val +'"]').prop('selected', true);
+					});
+					</script>					
+				</div>
+				
+				<!-- Désactive l'autocomplet du navigateur -->
+				<input type="text" id="email-fake" class="none">
+				<input type="password" id="password-fake" class="none">
 
-					foreach($GLOBALS['user_info'] as $cle => $val)
-					{
-						?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=$info[$cle]?>" class="w60"></div><?
-					}
-					
-				?></div><?
-			}
-			?>
+				<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
 
-			<?if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
-			<?if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
+				<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
 
-			<?if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
+				<div class="mbs nowrap">
+					<label class="w100p tr mrt" for="password_new"><?_e("Password")?></label>
+					<input type="password" id="password_new" class="w40" autocomplete="new-password">
 
-			<button id="save-user" class="fr mat small">
-				<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
-				<i class="fa fa-fw fa-<?=($uid?"floppy":"plus")?> big white"></i>
-			</button>
+					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>" class="tdn"><i class="fa fa-fw fa-eye vam"></i></a>
+
+					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
+
+					<a href="javascript:send_password();" title="<?_e("Send password by mail");?>" class="tdn" id="send-password"><i class="fa fa-fw fa-mail-alt vam"></i></a>
+				</div>
+
+
+				<?
+				// Si il y a des méta/infos complementaire pour cette utilisateur
+				if(is_array(@$GLOBALS['user_info'])) 
+				{		
+					?>
+					<div class="info mbs"><?
+
+						$info = json_decode($res['info'], true);
+
+						foreach($GLOBALS['user_info'] as $cle => $val)
+						{
+							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?
+						}
+						
+					?></div><?
+				}
+				?>
+
+				<?if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
+				<?if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
+
+				<?if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
+
+				<button id="save-user" class="fr mat small">
+					<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
+					<i class="fa fa-fw fa-<?=($uid?"floppy":"plus")?> big white"></i>
+				</button>
+
+			</div>
 		
 		</form>
 
 		<script>
-		user_tosave = function() {
-			$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-floppy"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
-			$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
-		}
+			user_tosave = function() {
+				$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-floppy"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
+				$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
+			}
 
-		$(function()
-		{			
-			// On focus on select le contenu
-			$("#user .search_user_id").focus(function() {
-				$(this).select();
-			});
+			send_password = function(){				
+				if(confirm("Envoyer un nouveau mot de passe à "+ $("#user-profil #email").val() +" ?"))
+				{
+					$("#send-password .fa").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
 
-			// Recherche d'un utilisateur sur un api tiers
-			$("#user #facebook, #user #google").autocomplete({
-				source: function(request, response) {	
-					
-					var selector = this.element.attr('id');
-					
-					$("#user #"+selector).after("<i class='fa fa-spin fa-cog' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
-					
-					// Chargement des résultats
-					$.ajax({
-						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=get-external-uid",
-						dataType: "json",
-						data: {
-							search: request.term,
-							api: selector,
-							nonce: $("#nonce").val()
-						},
-						success: function(data) {						
-							response(data);
-						},
-						complete: function() {		
-							$("#user #"+selector).next("i").fadeOut();// Close loading
-						}
-					});
-				},
-				minLength: 3,
-				delay: 500
-			}).each(function() {
-				$(this).autocomplete("instance")._renderItem = function(ul, item) {
-					if(item.img) return $("<li>").append("<a class='block mod'><img src='"+ item.img +"' width='30' class='fl'>"+ item.label +"</a>").appendTo(ul);					
-				}
-			});
-
-			// Si on click sur supprimer
-			$("#user .load #del").click(function(event) { 
-				event.preventDefault();
-				if(confirm(__("Delete user")+" "+ $("#uid").val() +" ?")) {
+					// Envoi du mail
 					$.ajax({ 
-						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=del-user",
-						data: { uid: $("#uid").val(), nonce: $("#nonce").val() }
-					}).done(function(html) { 
-						$("#user .load").html(html); 
+						type: "POST",
+						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=send-password",
+						data: { 
+							uid: $("#user-profil #uid").val(),
+							email: $("#user-profil #email").val(),
+							nonce: $("#nonce").val()
+						}
+					})
+					.done(function(html) { 
+						$("#send-password .fa").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
+						
+						// On exécute le retour
+						$("body").append(html);
 					});
 				}
-			});
-			
+			}
 
-			// Si le contenu change, on change le statut du bouton sauvegarder
-			$("#user .load input").keyup(function() { user_tosave(); });
-			$("#user .load select").change(function() { user_tosave(); });
+			$(function()
+			{			
+				// On focus on select le contenu
+				$("#user .search_user_id").focus(function() {
+					$(this).select();
+				});
 
+				// Recherche d'un utilisateur sur un api tiers
+				$("#user #facebook, #user #google").autocomplete({
+					source: function(request, response) {	
+						
+						var selector = this.element.attr('id');
+						
+						$("#user #"+selector).after("<i class='fa fa-spin fa-cog' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
+						
+						// Chargement des résultats
+						$.ajax({
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=get-external-uid",
+							dataType: "json",
+							data: {
+								search: request.term,
+								api: selector,
+								nonce: $("#nonce").val()
+							},
+							success: function(data) {						
+								response(data);
+							},
+							complete: function() {		
+								$("#user #"+selector).next("i").fadeOut();// Close loading
+							}
+						});
+					},
+					minLength: 3,
+					delay: 500
+				}).each(function() {
+					$(this).autocomplete("instance")._renderItem = function(ul, item) {
+						if(item.img) return $("<li>").append("<a class='block mod'><img src='"+ item.img +"' width='30' class='fl'>"+ item.label +"</a>").appendTo(ul);					
+					}
+				});
+
+				// Si on click sur supprimer
+				$("#user .load #del").click(function(event) { 
+					event.preventDefault();
+					if(confirm(__("Delete user")+" "+ $("#uid").val() +" ?")) {
+						$.ajax({ 
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=del-user",
+							data: { uid: $("#uid").val(), nonce: $("#nonce").val() }
+						}).done(function(html) { 
+							$("#user .load").html(html); 
+						});
+					}
+				});
 				
-			$("#user-profil").submit(function(event)
-			{
-				event.preventDefault();
+
+				// Si le contenu change, on change le statut du bouton sauvegarder
+				$("#user .load input").keyup(function() { user_tosave(); });
+				$("#user .load select").change(function() { user_tosave(); });
+
 					
-				// Animation sauvegarde en cours (loading)
-				$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
-				
-				data = {};
+				$("#user-profil").submit(function(event)
+				{
+					event.preventDefault();
+						
+					// Animation sauvegarde en cours (loading)
+					$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
+					
+					data = {};
 
-				data["nonce"] = $("#nonce").val();
+					data["nonce"] = $("#nonce").val();
 
-				// Contenu des input
-				$(document).find("#user .load input, #user .load select").each(function() {
-					data[$(this).attr("id")] = $(this).val();
-				});
+					// Contenu des input
+					$(document).find("#user .load input, #user .load select").each(function() {
+						data[$(this).attr("id")] = $(this).val();
+					});
 
-				// On sauvegarde en ajax les contenus éditables
-				$.ajax({
-					type: "POST",
-					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=save-user",
-					data: data
-				})
-				.done(function(html) {
-					$("body").append(html);
-				})
-				.fail(function() {
-					error(__("Error"));
+					// On sauvegarde en ajax les contenus éditables
+					$.ajax({
+						type: "POST",
+						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=save-user",
+						data: data
+					})
+					.done(function(html) {
+						$("body").append(html);
+					})
+					.fail(function() {
+						error(__("Error"));
+					});
 				});
 			});
-		});
 		</script>
 		<?
 
@@ -747,19 +678,31 @@ switch($_GET['mode'])
 		{
 			include_once("db.php");// Connexion à la db		
 
-			$uid = $insert_user = $insert_info = null;
+			$uid = $insert_user = $insert_info = $logout = null;
 
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
 			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) 
 				login('high', 'edit-user');			
 			elseif(@$_REQUEST['uid'])
 			{				
-				// Si on l'utilisateur est différent de nous on vérifie que l'on est admin
+				// Si l'utilisateur est différent de nous on vérifie que l'on est admin
 				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
 				else login('high');				
 
+				// Récupère les données sur l'utilisateurs
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
 				$res = $sel->fetch_assoc();
+
+				// Si on édite les droits d'un utilisateur
+				if(isset($_POST['auth']))
+				{
+					// Si les droits d'accès ont changé on déconnecte l'utilisateur pour qu'il recrée son cookie auth
+					if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth'])) 
+						$logout = true;
+					// Si on change nos propres droits on recrée le cookie auth (on doit avoir les droits d'édition user)
+					elseif($_REQUEST['uid'] == $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']) and isset($_SESSION['auth']['edit-user']))
+						token($_REQUEST['uid'], null, implode(",", $_POST['auth']));
+				}
 			}
 
 			// Nettoyage du email
@@ -779,7 +722,6 @@ switch($_GET['mode'])
 			// Sécurisation supplémentaire
 			$_POST = array_map(function($value) use($connect) {
 				if(is_array($value)) { 
-					//while(list($cle, $val) = each($value)) PHP 7.2
 					foreach($value as $cle => $val) $value[$cle] = $connect->real_escape_string($val);
 				}
 				else $value = $connect->real_escape_string($value);
@@ -816,7 +758,7 @@ switch($_GET['mode'])
 			// Si informations supplémentaires sur l'utilisateur
 			if(isset($_POST['info']) and is_array($_POST['info'])) {
 				$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
-				$sql .= "info = '".$info."' ";
+				$sql .= "info = '".$info."', ";
 			}
 
 			// Mot de passe
@@ -828,6 +770,7 @@ switch($_GET['mode'])
 				if($GLOBALS['security'] != 'high' and @$_REQUEST['uid'])
 					$sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
 			}
+			else if($logout) $sql .= "token = '', ";// Déconnecte l'utilisateur
 			
 			// Token d'api externe
 			if(isset($_POST['oauth'])) {
@@ -836,6 +779,12 @@ switch($_GET['mode'])
 			}
 
 			$sql .= "date_update = NOW() ";
+
+			if(isset($_SESSION['auth']['edit-user']) and isset($_POST['date_insert']))
+			{
+				$date_insert = $connect->real_escape_string($_POST['date_insert']);
+				$sql .= ", date_insert = '".$date_insert."' ";
+			}
 
 			if(@$_REQUEST['uid'])
 				$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
@@ -858,44 +807,8 @@ switch($_GET['mode'])
 
 				if($uid) 
 				{
-					// ANCIENNE METHODE POUR LES INFOS USERS //@todo migration supp au long terme (12/11/2018)
-					// On regarde si il n'y a pas déjà des donnée dans la base
-					if(!@$GLOBALS['user_info_in_table_user'])
-					{
-						$sel_meta = $connect->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-						$res_meta = $sel_meta->fetch_assoc();
-
-						// AJOUT DES DONNÉE EN MÉTA
-						if($uid and isset($_POST['info']) and is_array($_POST['info']))
-						{
-							if($res_meta['id']) 
-								$sql = "UPDATE ".$GLOBALS['table_meta']." SET ";
-							else 
-								$sql = "INSERT INTO ".$GLOBALS['table_meta']." SET ";
-							
-							$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
-							$sql .= "val = '".$info."' ";
-
-							if($res_meta['id']) 
-								$sql .= "WHERE id = '".(int)$uid."' AND type = 'user_info' LIMIT 1";
-							else 
-								$sql .= ", type = 'user_info', id = '".(int)$uid."'";
-							
-							$connect->query($sql);
-							
-							//echo "_POST['info']<br>"; highlight_string(print_r($_POST['info'], true));
-							//echo $sql;
-
-							if(!$connect->error) {	
-								// Si INSERT réussit						
-								if(!$res_meta['id']) $insert_info = true;
-							}
-						}
-					}
-
-
 					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
-					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state']) 
+					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state'] and $GLOBALS['mail_moderate']) 
 					{
 						// Pour le garder secret
 						unset($_POST['password_new'], $_POST['password_confirm']);
@@ -1020,6 +933,32 @@ switch($_GET['mode'])
 		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(8,12));
 	break;
 
+	case "send-password":// Crée un password aléatoirement & l'envoi par mail à l'utilisateur	
+		if($_SESSION['nonce'] == $_REQUEST['nonce'] and @$_REQUEST['uid'] and @$_REQUEST['email']) 
+		{
+			login('high', 'edit-user');
+
+			$pwd = make_pwd(mt_rand(8,12));
+			list($hashed_password, $unique_salt) = hash_pwd($pwd);
+
+			$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
+			$sql .= "password = '".addslashes($hashed_password)."', ";
+			$sql .= "salt = '".addslashes($unique_salt)."', ";
+			$sql .= "token = '', ";// Déconnecte l'utilisateur
+			$sql .= "date_update = NOW() ";
+			$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
+
+			$connect->query($sql);
+
+			// Mail avec le mdp
+			$subject = "[".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))."] ".__("New Password");
+			$message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))." : ".($pwd);
+			$header="Content-type:text/html; charset=utf-8\r\nFrom:".$GLOBALS['email_contact'];
+
+			mail($_REQUEST['email'], $subject, stripslashes($message), $header);
+		}
+	break;
+
 	case "get-external-uid":// Cherche l'id d'un utilisateur sur une api tiers
 
 		// @todo si pas le token tiers on ajoute un élément de retour dans le tableau pour ouvrir la boite de login (relog, sans pour autant changer le token maison)
@@ -1070,200 +1009,6 @@ switch($_GET['mode'])
 	break;
 
 
-	case "external-login":// external_token : utilisation de systèmes de connexion tierce, se déroule dans une Popup
-		
-		// @todo: ajouter un mode pour ajouter un login silencieux, juste pour avoir les tokens tiers
-		// @todo: Twitter, Instagram, Flicker
-
-		// Vérifie que l'on a sélectionné un système tiers
-		if($_REQUEST['login_api']) $login_api = $_SESSION['login_api'] = encode($_REQUEST['login_api']);
-		else exit(false);
-
-		// Variable générique
-		$redirect_uri = $GLOBALS['home']."api/ajax.php?mode=external-login&login_api=";
-
-		if(!isset($_REQUEST["code"])) nonce('state');// CSRF protection
-
-		
-		
-		// FACEBOOK params &scope=user_photos
-
-		$get_code['facebook'] = "https://graph.facebook.com/oauth/authorize?client_id=".$GLOBALS['facebook_api_id']."&state=".$_SESSION['state']."&display=popup&redirect_uri=".urlencode($redirect_uri)."facebook";
-
-		$token_return_type['facebook'] = "json";// url
-
-		$get_token['facebook'] = "https://graph.facebook.com/oauth/access_token?client_id=".$GLOBALS['facebook_api_id']."&client_secret=".$GLOBALS['facebook_api_secret']."&code=".(isset($_REQUEST['code'])?$_REQUEST['code']:"")."&redirect_uri=".urlencode($redirect_uri)."facebook";
-
-		$token_params['facebook'] = null;
-		
-		// https://graph.facebook.com/me/albums?fields=photos&access_token=
-		$get_info['facebook'] = "https://graph.facebook.com/me?fields=id,name,picture&access_token=";
-		$get_info_uid['facebook'] = "id";
-
-
-
-		// GOOGLE params
-		
-		// Le scope plus.login permet de faire des recherches d'autre utilisateur
-		$get_code['google'] = "https://accounts.google.com/o/oauth2/auth?scope=".urlencode("profile https://www.googleapis.com/auth/plus.login")."&state=".$_SESSION['state']."&response_type=code&client_id=".$GLOBALS['google_api_id']."&redirect_uri=".urlencode($redirect_uri)."google";// pour obtenir le code
-		
-		$token_return_type['google'] = "json";
-
-		$get_token['google'] = "https://accounts.google.com/o/oauth2/token";// pour obtenir le token avec le code
-
-		$token_params['google'] = array(
-			"code" => (isset($_REQUEST['code'])?$_REQUEST['code']:""),
-			"client_id" => $GLOBALS['google_api_id'],
-			"client_secret" => $GLOBALS['google_api_secret'],
-			"redirect_uri" => $redirect_uri."google",
-			"grant_type" => "authorization_code"
-		);
-
-		$get_info['google'] = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=";// pour obtenir id de l'utilisateur
-		$get_info_uid['google'] = "id";
-
-
-
-		// YAHOO params
-
-		$get_code['yahoo'] = "https://api.login.yahoo.com/oauth2/request_auth?client_id=".$GLOBALS['yahoo_api_id']."&state=".$_SESSION['state']."&response_type=code&redirect_uri=".urlencode($redirect_uri)."yahoo";
-
-		$token_return_type['yahoo'] = "json";
-
-		$get_token['yahoo'] = "https://api.login.yahoo.com/oauth2/get_token";
-		$get_token_uid['yahoo'] = "xoauth_yahoo_guid";
-
-		$token_params['yahoo'] = array(
-			"code" => (isset($_REQUEST['code'])?$_REQUEST['code']:""),
-			"client_id" => $GLOBALS['yahoo_api_id'],
-			"client_secret" => $GLOBALS['yahoo_api_secret'],
-			"redirect_uri" => $redirect_uri."yahoo",
-			"grant_type" => "authorization_code"
-		);
-
-
-
-		// MICROSOFT params
-
-		$get_code['microsoft'] = "https://oauth.live.com/authorize?response_type=code&client_id=".$GLOBALS['microsoft_api_id']."&state=".$_SESSION['state']."&scope=wl.signin wl.basic&redirect_uri=".urlencode($redirect_uri)."microsoft";
-
-		$token_return_type['microsoft'] = "json";
-		
-		//https://login.microsoftonline.com/common/oauth2/token
-		$get_token['microsoft'] = "https://oauth.live.com/token";
-		$get_token_uid['microsoft'] = "user_id";
-
-		$token_params['microsoft'] = array(
-			"code" => (isset($_REQUEST['code'])?$_REQUEST['code']:""),
-			"client_id" => $GLOBALS['microsoft_api_id'],
-			"client_secret" => $GLOBALS['microsoft_api_secret'],
-			"redirect_uri" => $redirect_uri."microsoft",
-			"grant_type" => "authorization_code"
-		);
-		
-		// https://graph.microsoft.com/v1.0/me?access_token=
-		$get_info['microsoft'] = "https://apis.live.net/v5.0/me?access_token=";
-
-
-		
-		// On ouvre l'URL tierse pour récupérer le code
-		if($get_code[$login_api] and !isset($_REQUEST["code"])) {			
-			header("Location: ".$get_code[$login_api]);
-			exit;
-		}
-
-
-		
-		// On a le code donc on va chercher le token
-		if($login_api and $_REQUEST["code"] and $_SESSION['state'] and $_SESSION['state'] === $_REQUEST['state'])
-		{
-			// Plus besoin du state, on le supprime
-			unset($_SESSION['state']);
-
-			// Récupération du token
-			$token_response = curl($get_token[$login_api], $token_params[$login_api]);
-			
-			// Extraction du token de la réponse
-			if($token_return_type[$login_api] == "url") {			
-				$tab_token_response = null;
-				parse_str($token_response, $tab_token_response);
-			}
-			else {
-				$tab_token_response = json_decode($token_response, true);
-			}
-
-			//echo"<br><br><strong>Response</strong> : "; highlight_string(print_r($tab_token_response, true));
-
-			// On a un access_token
-			if($tab_token_response['access_token'])
-			{
-				// On récupère le token tiers
-				$_SESSION['access_token_external'][$login_api] = $tab_token_response['access_token'];
-
-				// On récupère l'id tiers s'il se trouve dans le retour avec le access_token
-				if(isset($get_token_uid[$login_api])) $uid = $tab_token_response[$get_token_uid[$login_api]];
-
-				// Rapatriement des données de l'user (id, nom...)
-				if($get_info[$login_api]) {
-					$info_response = json_decode(curl($get_info[$login_api].$tab_token_response['access_token']), true);
-					//echo"<br><br><strong>User info</strong> : "; highlight_string(print_r($info_response, true));
-
-					// On récupère l'id tiers s'il se trouve dans les infos
-					if($get_info_uid[$login_api]) $uid = $info_response[$get_info_uid[$login_api]];
-				}
-
-				// Si on a un access_token tiers on crée un token maison checkable facilement et avec une durée de vie plus longue
-				if($uid)
-				{
-					if(!isset($GLOBALS['connect'])) include_once("db.php");
-					
-					// On vérifie l'utilisateur
-					$uid = $connect->real_escape_string($uid);
-					$sel = $connect->query("SELECT * FROM ".$table_user." WHERE oauth LIKE '%\"".$login_api."\":\"".$uid."\"%' AND state='active' LIMIT 1");
-					$res = $sel->fetch_assoc();
-					
-					// L'utilisateur existe et est activé
-					if($res['id'])
-					{
-						// Supprime l'ancienne session
-						session_regenerate_id(true);
-
-						if(token($res['id'], $res['email'], $res['auth']))// On crée le token maison
-						{
-							// Crée le token light pour vérifier si on a le bon mot de passe
-							token_light($res['id'], $res['salt']);
-
-							?>
-							<script>
-								// Quand l'utilisateur ferme la fenêtre ou le js
-								window.onunload = function() 
-								{
-									// S'il y a une fonction de callback à lancer : typiquement l'edition
-									if(window.opener.callback) {										
-										eval("opener." + window.opener.callback + "()");
-									}
-								}	
-								window.close();								
-							</script>
-							<?
-						}
-					}
-					else $msg = __("Unknown user")." ".htmlspecialchars($uid);
-				}
-				else $msg = __("Unable to find the user number");
-			}
-			else $msg = __("Unable to find the access token");
-		}
-		else $msg = __("Connection error")." 1";
-
-		if($msg) echo $msg;
-
-		//highlight_string(print_r($_SESSION, true));
-		//highlight_string(print_r($_REQUEST, true));
-
-		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
-
-	break;
 	
 	case "logout":
 		logout();

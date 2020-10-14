@@ -24,7 +24,7 @@ else
 
 
 // Sélectionne la langue
-$lang = get_lang();
+$GLOBALS['lang'] = get_lang();
 
 load_translation('api');// Chargement des traductions du système
 
@@ -63,28 +63,38 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 		if(!$res_tag_info['val'])
 		{
 			// On rapatrie simplement le nom du tag, pour le fil d'ariane par exemple
-			$sel_tag = $connect->query("SELECT * FROM ".$table_meta." WHERE type='tag' AND cle='".$tag."' LIMIT 1");
+			$sel_tag = $connect->query("SELECT * FROM ".$table_tag." WHERE zone='".$res['url']."' AND encode='".$tag."' LIMIT 1");
 			$res_tag = $sel_tag->fetch_assoc();
 
 			// Si tag n'existe pas => page 404
-			if(!$res_tag['val']) $res = null;
+			if(!$res_tag['name']) $res = null;
 		}
 	}
 }
 
 
 
+/********** ACTION après la récupération des données du tag **********/
+if(@$GLOBALS['after_get_tag']) include_once($GLOBALS['root'].$GLOBALS['after_get_tag']);
+
+
+
 /********** UNE PAGE EXISTE **********/
+$robots_data = '';
+
 if($res) 
 {
-	// Si on demande du https on force le domaine en https
-	if(strpos($GLOBALS['scheme'], 'https')) 
+	// Si on veut que le CMS soit en https dans la config on vérifie le statut d'origine de l'url
+	if(strpos($GLOBALS['scheme'], 'https') !== false) 
 	{
 		// Verif si https dans l'url
-		if(strpos($_SERVER['SCRIPT_URI'], 'https') === 0) $http = "https://";
-		else $http = "http://";
+		if(strpos(@$_SERVER['SCRIPT_URI'], 'https') !== false or $_SERVER['REQUEST_SCHEME'] == 'https') 
+			$http = "https://";
+		else 
+			$http = "http://";
 	}
-	else $http = $GLOBALS['scheme'];//
+	else $http = $GLOBALS['scheme'];
+
 
 	// On verifie l'url pour eviter les duplicates : si erreur = redirection
 	if($http.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
@@ -93,6 +103,10 @@ if($res)
 		header("location: ".make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))));
 		exit;
 	}
+
+
+	$robots_data = @$res['robots'];// paramètre des robots propriétaire à la page courante
+
 
 	if($res['state'] != "active")// Page non activé
 	{
@@ -103,15 +117,23 @@ if($res)
 			$sel_503 = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
 			$res_503 = $sel_503->fetch_assoc();
 			if($res_503['id']) $res = $res_503;
+			else {
+				$res = null;
+				$res['title'] = $msg = __("Under Construction");
+				$res['state'] = 'deactivate';
+			}
 
 			header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
-				
-			if(!$res) $res['title'] = $msg = __("Under Construction");
 		}
 
 		$robots = "noindex, follow";
 	}
-	else $robots = $GLOBALS['robots'];// Si la page est active elle est référençable (on utilise la config)
+	else// Si la page est active elle est référençable (on utilise la config ou les param de la page)
+	{
+		if(@$GLOBALS['online'] === false) $robots = 'noindex, nofollow';// Offline
+		elseif(@$res['robots']) $robots = $robots_data;// Online + paramètre déterminé
+		else $robots = 'index, follow';// Online + pas de paramètre
+	} 
 }
 else/********** PAS DE PAGE EXISTANTE **********/
 {
@@ -159,9 +181,9 @@ if(isset($res_tag_info['val']))// Il y a des infos sur le tag
 	if(isset($GLOBALS['content']['description'])) $res['description'] = htmlspecialchars(strip_tags($GLOBALS['content']['description'], ENT_COMPAT));
 	if(isset($GLOBALS['content']['img'])) $GLOBALS['content']['og-image'] = $GLOBALS['content']['img'];
 }
-elseif(isset($res_tag['val']))// Si il y a juste le nom du tag
+elseif(isset($res_tag['name']))// Si il y a juste le nom du tag
 {
-	$res['title'] = $GLOBALS['content']['title'] = $res_tag['val'];
+	$res['title'] = $GLOBALS['content']['title'] = $res_tag['name'];
 	$res['description'] = $GLOBALS['content']['description'] = "";
 }
 elseif(in_array($get_url, $GLOBALS['filter_auth']) and isset($GLOBALS['filter'])) {// Si url dans filtre autorisé on ajoute le mot cle dans le title
@@ -212,7 +234,7 @@ if(!$ajax)
 	$sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
 	$res_header = $sel_header->fetch_assoc();
 
-	// Ajout des données du footer
+	// Ajout des données du header
 	if($res_header['val'])
 		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
 
@@ -241,22 +263,21 @@ if(!$ajax)
 		<title><?=$title;?></title>
 		<?if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
-		<meta name="robots" content="<?=$robots;?>">
+		<meta name="robots" content="<?=$robots;?>" data="<?=$robots_data;?>">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<meta property="og:title" content="<?=$title;?>">
 		<meta property="og:type" content="website">
 		<?if(isset($res['url'])){?>
-		<meta property="og:url" content="<?=make_url($res['url'], array("domaine" => true))?>">
-		<link rel="canonical" href="<?=make_url($res['url'], array("domaine" => true))?>">
+		<meta property="og:url" content="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
+		<link rel="canonical" href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
 		<?}?>
 		<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
 		<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
 		<meta property="article:published_time" content="<?=date(DATE_ISO8601, strtotime(@$res['date_insert']));?>">
 
 		<?if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
-		<?if(@$GLOBALS['google_page']){?><link href="<?=$GLOBALS['google_page'];?>" rel="publisher" /><?}?>
 		<?if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?}?>
 
 
@@ -281,8 +302,6 @@ if(!$ajax)
 			}
 		</style>
 		<?}?>
-
-		<?if(@$GLOBALS['touch_icon']){?><link rel="apple-touch-icon" href="<?=$GLOBALS['touch_icon'];?>"/><?}?>
 
 		<?if(@$GLOBALS['favicon']){?><link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['favicon']?>"><?}?>
 
@@ -339,6 +358,8 @@ if(!$ajax)
 			tag = "<?=encode(@$tag)?>";
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
+			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)? 'bt_edit = true;':'')?>
+			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)? 'bt_top = true;':'')?>
 		</script>
 
 		<!--[if lt IE 9]>
@@ -348,7 +369,7 @@ if(!$ajax)
 	</head>
 	<body>
 
-	<div>
+	<main>
 	<?
 
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
@@ -378,7 +399,7 @@ if(!$ajax)
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
 	?>
 
-	</div>
+	</main>
 
 	<script>console.log("<?=benchmark()?>")</script>
 

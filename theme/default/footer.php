@@ -2,19 +2,19 @@
 
 <footer>
 
-	<section class="grid mw960p center">
+	<section class="mw960p center grid">
 
-		<article>
+		<div>
 
-			<h3 class="medium up"><?txt('footer-titre-contact')?></h3>
-			<div><?txt('footer-texte-contact')?></div>
+			<?h3('footer-titre-contact', 'medium up')?>
+			<?txt('footer-texte-contact')?>
 
-		</article>
+		</div>
 
 
-		<article>
+		<div>
 
-			<h3 class="medium up"><?txt('footer-titre-actu')?></h3>
+			<?h3('footer-titre-actu', 'medium up')?>
 
 			<!--Va chercher les dernieres actu-->
 			<ul class="unstyled pan">
@@ -29,15 +29,15 @@
 			?>
 			</ul>
 
-		</article>
+		</div>
 
 
-		<article>
+		<div>
 
-			<h3 class="medium up"><?txt('footer-titre-suivez-nous')?></h3>
-			<div class="color bigger"><?txt('footer-texte-suivez-nous')?></div>
+			<?h3('footer-titre-suivez-nous', 'medium up')?>
+			<?txt('footer-texte-suivez-nous', 'color bigger')?>
 
-		</article>
+		</div>
 
 	</section>
 	

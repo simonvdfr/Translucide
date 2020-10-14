@@ -1,30 +1,40 @@
 <?
 // Si on a posté le formulaire
-if(isset($_POST["email"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
+if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
 {
 	include_once("../../../config.php");// Les variables
 
 	if($_SESSION["nonce_contact"] and $_SESSION["nonce_contact"] == $_POST["nonce_contact"])// Protection CSRF
 	{
-		if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL))// Email valide
+		if(filter_var($_POST["email_contact"], FILTER_VALIDATE_EMAIL))// Email valide
 		{
 			if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
 			{
-				$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email"]);
+				$from = ($_POST["email_contact"] ? htmlspecialchars($_POST["email_contact"]) : $GLOBALS['email_contact']);
 
-				$message = nl2br(strip_tags($_POST["message"]));
 
-				$message .= "<br /><br />-------------------------------------------------------<br />";
+				$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email_contact"]);
 
-				if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."<br />";
 
-				$message .= "Consentement : ".htmlspecialchars($_POST["rgpd_text"])."<br />";
-				$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br />";
-				$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br />";
-				$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br />";
-				$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br />";
+				// Message
+				$message = (strip_tags($_POST["message"]));
 
-				$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST["email"] ? htmlspecialchars($_POST["email"]) : $GLOBALS['email_contact']);
+				$message .= "\n\n-------------------------------------------------------\n";
+
+				if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."\n";
+
+				$message .= "Consentement : ".htmlspecialchars($_POST["rgpd_text"])."\n";
+				$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."\n";
+				$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."\n";
+				$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."\n";
+				$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."\n";
+
+
+				// header
+				$header = "From:".$from."\r\n";
+				$header.= "Reply-To: ".$from."\r\n";
+				$header.= "Content-Type: text/plain; charset=ISO-8859-1\r\n";// utf-8 ISO-8859-1
+
 
 				if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))
 				{
@@ -78,8 +88,9 @@ else// Affichage du formulaire
 	$nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 10); // on évite les résultats négatifs en cas de soustraction
 	eval('$question = strval('.$nb1.$operator.$nb2.');');
 	$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
-
 	?>
+
+
 	<script>
 	add_translation({
 		"Thank you for completing all the required fields!" : {"fr" : "Merci de remplir tous les champs obligatoires !"},
@@ -88,25 +99,30 @@ else// Affichage du formulaire
 		"Message sent" : {"fr" : "Message envoy\u00e9"},
 	});
 	</script>
+	
+
+	<style>
+		#email_contact, #message, #question {
+			border: 0px;
+			border-bottom: 0.2em solid #78cfd6;
+			background-color: #f7f7f7;
+		}
+	</style>
 
 
-	<section class="mod tc">
-		<h1><?txt('titre')?></h1>
-	</section>
+	<section class="mw960p mod center mtm">
 
+		<article class="w80 center">
 
-	<section class="mw960p mod center">
+			<?h1('titre', 'tc')?>
+			<?h2('sstitre', 'tc')?>
 
-		<article class="w80">
-
-			<h2><?txt('sstitre')?></h2>
-
-			<div><?txt('texte')?></div>
+			<?txt('texte', 'mbl')?>
 
 			<form id="contact">
 
-				<div>
-					<input type="email" name="email" id="email" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
+				<div class="mbm">
+					<input type="email" name="email_contact" id="email_contact" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
 
 					<input name="reponse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" placeholder="nom@domaine.com">
 				</div>
@@ -179,7 +195,7 @@ else// Affichage du formulaire
 		{
 			event.preventDefault();
 
-			if($("#question").val()=="" || $("#message").val()=="" || $("#email").val()=="" || $("#rgpdcheckbox").prop("checked") == false)
+			if($("#question").val()=="" || $("#message").val()=="" || $("#email_contact").val()=="" || $("#rgpdcheckbox").prop("checked") == false)
 			error(__("Thank you for completing all the required fields!"));
 			else
 			{

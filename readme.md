@@ -21,7 +21,7 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 	- modifiez la valeur de `$GLOBALS['theme']` avec le nom de votre thème
 	- modifiez les valeurs de `$GLOBALS['domain']` avec les noms de votre site local et de votre site en ligne
 	- modifier les valeurs de `$GLOBALS['db*']` hors dev local aves les infos de connexion de la BDD de votre hébergeur.
-	- décommentez les valeurs de `$GLOBALS['add-content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
+	- décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
 	- décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
 
 Prérequis : dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`
@@ -32,8 +32,7 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 - Pour créer une nouvelle template, ajoutez un fichier php dans le dossier `tpl` de votre thème. Créez la trame avec la structure html de votre choix et ajoutez les contenus éditables à l'aide des fonctions existantes (cf. plus loin). Ajoutez le contenu directement sur le site en mode édition, ceci alimentera directement la BDD.
 
 ## Raccourcis clavier (sur Chrome)
-- <kbd>⇧</kbd> force l'affichage du bouton édition en bas à gauche
-- <kbd>ctrl + q</kbd>Lance le mode édition
+- <kbd>ctrl + e</kbd>Lance le mode édition
 
 ### Raccourcis en mode édition
 - <kbd>ctrl + s</kbd> Sauvegarde les changements
@@ -68,31 +67,28 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 	- Permet la création de plusieurs blocs de contenus éditables au format identique sur une même page
 	- Avant la zone du module, mettez `<? $module = module("nom-du-module"); ?>` : le nom du module servira d'id plus loin
 	- La zone de module aura par exemple la structure suivante (attention, chaque fonction doit contenir le nom du module) :
-	<section>
-	    <ul id="nom-du-module" class="module unstyled man pan">
-		<? foreach($module as $key => $val){ ?>
-     		<li>
-    			<article>
-        			<div>
-            			<h3><? txt("nom-du-module-nom-de-la-zone-".$key) ?></h3>
-            			<? media("nom-du-module-nom-de-la-zone-".$key) ?>
-        			</div>
-        			<div>
-           				<? txt("nom-du-module-nom-de-la-zone-".$key) ?>
-        			</div>
-    			</article>
-    		</li>
-    	<? } ?>
+	
+	~~~~
+	<ul id="nom-du-module" class="module">
+	<? foreach($module as $key => $val){ ?>
+		<li>   			
+			<h2><? txt('nom-du-module-nom-de-la-zone-titre-'.$key) ?></h2>
+			<? media('nom-du-module-nom-de-la-zone-media-'.$key) ?>
+			<? txt('nom-du-module-nom-de-la-zone-texte-'.$key) ?>    			
+		</li>
+	<? } ?>
+	</ul> 	
+	~~~~
 
 ## A faire à la mise en ligne
 - minifiez fichiers js et css
 - dans `config.php` :
-	- modifiez la valeur de `$GLOBALS['min']` en `.min` hors dev si vous avez minifié les fichiers js et css 
-	- modifiez les valeurs de `$GLOBALS['robots']` en `index, follow`
-	- modifiez l'email de contact dans `$GLOBALS['email_contact']` si le site contient un formulaire
-	- modifiez la valeur de `$GLOBALS['google_analytics']` avec le code UA de Google Analytics si nécessaire
 	- modifiez la valeur de `$GLOBALS['scheme']` en `https://` hors dev si nécessaire
 	- modifiez la valeur de `$GLOBALS['domain']` hors dev avec l'adresse définitive du site
+	- modifiez les valeurs de `$GLOBALS['online']` en `true` (passe le site en `index, follow`)
+	- modifiez l'email de contact dans `$GLOBALS['email_contact']` si le site contient un formulaire
+	- modifiez la valeur de `$GLOBALS['min']` en `.min` hors dev si vous avez minifié les fichiers js et css 
+	- modifiez la valeur de `$GLOBALS['google_analytics']` avec le code UA de Google Analytics si nécessaire
 
 ## Gestion du multilingue
 Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/testé. Globalement les traductions de l'interface du CMS se trouvent dans le fichier `api/translation.php`

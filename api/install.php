@@ -102,8 +102,18 @@ switch(@$_GET['mode'])
 		}
 
 		// Nom du site
-		$domains = explode('.', $_SERVER['SERVER_NAME']);
-		$sitename = (isset($GLOBALS['sitename']) ? utf8_encode($GLOBALS['sitename']) : ucfirst($domains[count($domains)-2]));
+		if(isset($GLOBALS['sitename'])) $sitename =  utf8_encode($GLOBALS['sitename']);
+		else 
+		{
+			$parse_url = parse_url($scheme_domain_path);
+			// Si dossier
+			if($parse_url['path'] != '/') $sitename = ucfirst(trim($parse_url['path'],'/'));
+			else// Si juste domaine
+			{
+				$domains = explode('.', $_SERVER['SERVER_NAME']);
+				$sitename = ucfirst($domains[count($domains)-2]);
+			}
+		}
 
 
 		header('Content-type: text/html; charset=UTF-8');
@@ -128,6 +138,19 @@ switch(@$_GET['mode'])
 			<link rel="stylesheet" href="api/global.css?">
 
 			<style>
+				@font-face {
+					font-family: 'FontAwesome';
+					src:  url('<?=$GLOBALS['path']?>api/icons/icons.eot?<?=$GLOBALS['cache']?>');
+					src:  
+						url('<?=$GLOBALS['path']?>api/icons/icons.eot?<?=$GLOBALS['cache']?>#iefix') format('embedded-opentype'),
+						url('<?=$GLOBALS['path']?>api/icons/icons.woff2?<?=$GLOBALS['cache']?>') format('woff2'),
+						url('<?=$GLOBALS['path']?>api/icons/icons.woff?<?=$GLOBALS['cache']?>') format('woff'),
+						url('<?=$GLOBALS['path']?>api/icons/icons.ttf?<?=$GLOBALS['cache']?>') format('truetype'),
+						url('<?=$GLOBALS['path']?>api/icons/icons.svg?<?=$GLOBALS['cache']?>#icons') format('svg');
+					font-weight: normal;
+					font-style: normal;
+				}
+				
 				body { background-color: #75898c; }
 				.layer { box-shadow: 0 0 60px rgba(53, 116, 127, 0.3) inset, 0 0 5px rgba(0, 0, 0, 0.3);	}
 				.layer:after { display: none; }
@@ -260,6 +283,8 @@ switch(@$_GET['mode'])
 								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
 								<input type="password" id="password" required class="w60 vatt">
 
+								<a href="javascript:$('#setup #password').make_password();" title="<?_e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a>
+
 								<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
 
 								<!-- <a href="javascript:void(0);" onclick="$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a> -->
@@ -270,33 +295,6 @@ switch(@$_GET['mode'])
 							<li class="mtl bold"><?_e("Option");?></li>
 
 							<li><label class="w30"><i class="fa fa-fw fa-line-chart"></i> <?_e("Google analytics code");?></label> <input type="text" id="google_analytics" placeholder="UA-00000000-1" class="w20 vatt"></li>
-
-
-							<li class="mtm bold"><?_e("System login third");?></li>
-
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-facebook-f"></i> <?_e("Id of the app facebook");?></label> <input type="text" id="facebook_api_id" placeholder="" class="w60 vatt">
-								<a href="https://developers.facebook.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret key of the app facebook");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
-
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-google"></i> <?_e("Id of the app google");?></label> <input type="text" id="google_api_id" placeholder="" class="w60 vatt">
-								<a href="https://console.developers.google.com/apis/credentials/oauthclient" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret Key to google app");?></label> <input type="text" id="facebook_api_secret" placeholder="" class="w60 vatt"></li>
-							
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-yahoo"></i> <?_e("Id of the app yahoo");?></label> <input type="text" id="yahoo_api_id" placeholder="" class="w60 vatt">
-								<a href="https://developer.yahoo.com/apps/" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret key to the app yahoo");?></label> <input type="text" id="yahoo_api_secret" placeholder="" class="w60 vatt"></li>
-
-							<li class="mts">
-								<label class="w30"><i class="fa fa-fw fa-windows"></i> <?_e("Id of the app microsoft");?></label> <input type="text" id="microsoft_api_id" placeholder="" class="w60 vatt">
-								<a href="https://account.live.com/developers/applications/create" target="_blank"><i class="fa fa-fw fa-info-circle mts vam"></i></a>
-							</li>
-							<li><label class="w30"><?_e("Secret key of microsoft app");?></label> <input type="text" id="microsoft_api_secret" placeholder="" class="w60 vatt"></li>
 							 -->
 						</ul>
 
@@ -359,16 +357,13 @@ switch(@$_GET['mode'])
 					
 					// Nom des tables
 					$GLOBALS['table_content'] = addslashes($_POST['db_prefix']."content");
+					$GLOBALS['table_tag'] = addslashes($_POST['db_prefix']."tag");
 					$GLOBALS['table_meta'] = addslashes($_POST['db_prefix']."meta");
 					$GLOBALS['table_user'] = addslashes($_POST['db_prefix']."user");
 										
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content'])){// Table déjà existante
-						?>
-						<script>
-							light("<?_e("Table already exists")?> : content");
-						</script>
-						<?
+						?><script>light("<?_e("Table already exists")?> : content");</script><?
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -376,9 +371,10 @@ switch(@$_GET['mode'])
 								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'deactivate',
 								`lang` varchar(8) NOT NULL,
+								`robots` varchar(18) DEFAULT NULL,
 								`type` varchar(20) NOT NULL DEFAULT 'page',
 								`tpl` varchar(80) NOT NULL,
-								`url` varchar(60) DEFAULT NULL,
+								`url` varchar(70) DEFAULT NULL,
 								`title` varchar(70) NOT NULL,
 								`description` varchar(160) DEFAULT NULL,
 								`content` longtext,
@@ -387,7 +383,7 @@ switch(@$_GET['mode'])
 								`user_insert` bigint(20) UNSIGNED NOT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
-								UNIQUE KEY `url` (`url`),
+								UNIQUE KEY `url` (`url`,`lang`) USING BTREE,
 								KEY `state` (`state`),
 								KEY `type` (`type`),
 								KEY `lang` (`lang`)
@@ -407,11 +403,7 @@ switch(@$_GET['mode'])
 
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta'])){// Table déjà existante
-						?>
-						<script>
-							light("<?_e("Table already exists")?> : meta");
-						</script>
-						<?
+						?><script>light("<?_e("Table already exists")?> : meta");</script><?
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -419,7 +411,7 @@ switch(@$_GET['mode'])
 								`id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
 								`type` varchar(32) NOT NULL,
 								`cle` varchar(255) NOT NULL DEFAULT '',
-								`val` text NOT NULL,
+								`val` text,
 								`ordre` smallint(6) NOT NULL DEFAULT '0',
 								PRIMARY KEY (`id`,`type`,`cle`),
 								KEY `type` (`type`,`cle`),
@@ -439,12 +431,37 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_tag'])){// Table déjà existante
+						?><script>light("<?_e("Table already exists")?> : tag");</script><?
+					}
+					else {// Création de la base de données
+						$GLOBALS['connect']->query("
+							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_tag']."` (
+								`id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+								`zone` varchar(32) NOT NULL,
+								`encode` varchar(255) NOT NULL DEFAULT '',
+								`name` text NOT NULL,
+								`ordre` smallint(6) NOT NULL DEFAULT '0',
+								PRIMARY KEY (`id`,`zone`,`encode`),
+								KEY `type` (`zone`,`encode`),
+								KEY `ordre` (`ordre`)
+							) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+						");
+
+						if($GLOBALS['connect']->error) {
+							?>
+							<script>
+								submittable();
+								error("<?=utf8_encode($connect->error);?>");
+							</script>
+							<?
+							exit;
+						}
+					}
+
+					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user'])){// Table déjà existante
-						?>
-						<script>
-							light("<?_e("Table already exists")?> : user");
-						</script>
-						<?
+						?><script>light("<?_e("Table already exists")?> : user");</script><?
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -457,8 +474,8 @@ switch(@$_GET['mode'])
 								`info` text,
 								`password` char(64) DEFAULT NULL,
 								`salt` char(16) DEFAULT NULL,
-								`oauth` text,
-								`token` varchar(255) DEFAULT NULL,
+								`token` varchar(255) DEFAULT NULL COMMENT 'token light',
+								`oauth` text COMMENT 'Token api externe',
 								`date_update` datetime DEFAULT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
@@ -481,6 +498,11 @@ switch(@$_GET['mode'])
 				
 					
 					// UTILISATEUR
+
+
+					// Droit d'edition de base
+					$auth = null;
+					foreach($GLOBALS['add_content'] as $cle => $val) $auth.=',add-'.$cle.',edit-'.$cle;
 
 					// Vérification de l'email
 					$email = filter_input(INPUT_POST, 'email_contact', FILTER_SANITIZE_EMAIL);
@@ -515,7 +537,7 @@ switch(@$_GET['mode'])
 							// Création de la requête
 							$sql = "UPDATE ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
-							$sql .= "auth = '".addslashes(implode(",", $GLOBALS['auth_level']))."', ";// Donne tous les droits
+							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])) . $auth)."', ";// Donne tous les droits
 							
 							list($password, $unique_salt) = hash_pwd($_POST['password']);
 
@@ -553,7 +575,8 @@ switch(@$_GET['mode'])
 							// Création de la requête
 							$sql = "INSERT INTO ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
-							$sql .= "auth = '".addslashes(implode(",", $GLOBALS['auth_level']))."', ";// Donne tous les droits
+							
+							$sql .= "auth = '".addslashes(implode(",", array_keys($GLOBALS['auth_level'])) . $auth)."', ";// Donne tous les droits
 
 							$sql .= "email = '".addslashes($email)."', ";
 							
@@ -631,7 +654,7 @@ switch(@$_GET['mode'])
 
 						// AJOUTE LA PAGE D'ACCUEIL
 						// Vérifie qu'il n'y a pas déjà une page home
-						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."content WHERE url='home' LIMIT 1");
+						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."content WHERE url='index' LIMIT 1");
 						$res = $sel->fetch_assoc();
 						if(!$res['id'])// Page non existante : on la crée
 						{	
@@ -639,7 +662,7 @@ switch(@$_GET['mode'])
 							$sql = "INSERT ".addslashes($_POST['db_prefix'])."content SET ";
 							$sql .= "title = '".addslashes(utf8_decode($_POST['sitename']))."', ";
 							$sql .= "tpl = 'home', ";
-							$sql .= "url = 'home', ";
+							$sql .= "url = 'index', ";
 							$sql .= "lang = '".$GLOBALS['language'][0]."', ";
 							$sql .= "type = 'page', ";
 							$sql .= "user_insert = '".(int)$uid."', ";

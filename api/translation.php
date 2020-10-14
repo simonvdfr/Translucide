@@ -29,6 +29,8 @@ $add_translation = array(
 	"Remember me" => array("fr" => "Se souvenir de moi"),
 	"Forgot your password" => array("fr" => "Mot de passe oublié"),
 	"Suggest a password" => array("fr" => "Suggérer un mot de passe"),
+	"Send password by mail" => array("fr" => "Envoyer le mot de passe par mail"),
+	"New Password" => array("fr" => "Nouveau mot de passe"),
 	"See password" => array("fr" => "Voir le mot de passe"),
 	"Not a member yet ?" => array("fr" => "Pas encore membre ?"),
 	"Sign up" => array("fr" => "Inscrivez-vous"),
@@ -52,7 +54,7 @@ $add_translation = array(
 	"Select template" => array("fr" => "Sélectionner un modèle"),
 	"Permanent link" => array("fr" => "Lien Permanent"),
 	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
-	"Permanent link: 'home' if homepage" => array("fr" => "Lien permanent: 'home' si c'est la page d'accueil"),
+	"Permanent link: 'index' if homepage" => array("fr" => "Lien permanent: 'index' si c'est la page d'accueil"),
 	"No permanent link for content" => array("fr" => "Pas de lien permanent pour le contenu"),
 
 

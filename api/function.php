@@ -9,6 +9,12 @@ function benchmark() {
 
 /********** URL / NAVIGATION **********/
 
+// Trim tous type d'espaces
+function trimer($value) 
+{
+	return trim(html_entity_decode($value), " \t\n\r\0\x0B\xC2\xA0");
+}
+
 // Nettoie et encode les mots
 function encode($value, $separator = "-", $pass = null) 
 {
@@ -26,7 +32,11 @@ function encode($value, $separator = "-", $pass = null)
 	}
 
 	$value = strtolower(strtr(utf8_decode($value), implode($from), implode($to)));// Supp les caractères indésirables
-	$value = preg_replace("/ /", $separator, preg_replace("/ {2,}/", $separator, trim($value)));// Supp les espaces et remplace par des tirés {1,}
+
+	$value = trimer($value, " \t\n\r\0\x0B\xC2\xA0");// Supprime les espaces et espaces insecable de début et fin
+	$value = preg_replace('/ {2,}/', $separator, $value);// Remplace les double espaces
+	$value = preg_replace('/ /', $separator, $value);// Remplace les espaces simple
+	//$value = preg_replace('/\xa0/', $separator, $value);// Remplace les espaces insecable [\xc2\xa0]
 
 	return $value;
 }
@@ -42,8 +52,8 @@ function get_url($url_source = null)
 	$parse_url = parse_url($url_source);
 	$path = preg_replace("/^".addcslashes($GLOBALS['path'], "/")."*/", "", $parse_url['path']);
 
-	// Si l'url est vide : url = home
-	if(!encode($path)) $url = "home"; 
+	// Si l'url est vide : url = index
+	if(!encode($path)) $url = (isset($GLOBALS['static'])?'index':'home');// @todo mettre que 'index' à terme 13/07/2020
 	else
 	{
 		// Si il y a des filtres/page dans l'url
@@ -51,14 +61,14 @@ function get_url($url_source = null)
 		{
 			$explode_path = explode("/", $path);
 
-			if(strstr($explode_path[0], "page_")) $url = "home";// Home si le premier element est la nav par page
+			// Home si le premier element est la nav par page
+			if(strstr($explode_path[0], "page_")) $url = (isset($GLOBALS['static'])?'index':'home');// @todo mettre que 'index' à terme 
 			else
 			{
 				$url = $explode_path[0];// Url raçine
 				unset($explode_path[0]);// Supp la racine des filtres si dossier
 			}
 			
-			//while(list($cle, $dir) = each($explode_path)) PHP 7.2
 			foreach($explode_path as $cle => $dir)
 			{
 				$dir = urldecode($dir);// Pour supprimer les %20 ..
@@ -66,7 +76,7 @@ function get_url($url_source = null)
 				$explode_dir = explode("_", $dir);
 
 				if($explode_dir[0])
-					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","'","@","_"));
+					$GLOBALS['filter'][encode($explode_dir[0], "-", array(".","'"))] = encode(preg_replace("/^".$explode_dir[0]."_/", "", $dir), "-", array(".","_","'","@"));
 			}
 		}
 		else $url = $path;
@@ -91,7 +101,6 @@ function make_url($url, $filter = array())
 		unset($filter['absolu']);
 
 		// Création des dossier dans l'url en fonction des filtres
-		//while(list($cle, $val) = each($filter)) PHP 7.2
 		foreach($filter as $cle => $val)
 		{
 			if($cle == "page" and $val == 1)
@@ -101,13 +110,18 @@ function make_url($url, $filter = array())
 		}
 	}
 
-	if($url == "home") 
+	if($url == "home" or $url == "index")// @todo A terme supprimer "home" car on utilise "index" 13/07/2020
 	{
 		$url = $GLOBALS['path'];
 
 		if(isset($domaine)) $url = $GLOBALS['home'];
 	}
-	else {
+	elseif(preg_match("/(http|https):\/\//", $url))// Si url externe on retourne l'url directement
+	{
+		return $url;
+	}
+	else
+	{
 		$url = encode($url, "-", array("#","/"));
 
 		if(isset($domaine)) $url = $GLOBALS['home'] . ltrim($url, "/");
@@ -123,7 +137,7 @@ function make_url($url, $filter = array())
 }
 
 // Navigation par page
-function page($num_total, $page)
+function page($num_total, $page, $full = false)
 {
 	global $num_pp, $res;
 
@@ -134,27 +148,27 @@ function page($num_total, $page)
 		$num_page = ceil($num_total/$num_pp);
 		
 		// Page 1
-		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
+		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
 
-		if($num_page > 10 and $page >= 10)// + de 10 page
+		if($num_page > 10 and $page >= 10 and !$full)// + de 10 page
 		{
 			?><li class="fl mrs mtt">...</li><?
 			
 			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
-				<li class="fl mls"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 		else// - de 10 page
 		{
-			for($i = 2; $i <= 10 and $i < $num_page; $i++){?>
-				<li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
+			for($i = 2; $i <= ($full?$num_page:10) and $i < $num_page; $i++){?>
+				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
 			<?}
 		}
 
-		if($num_page > 10 and $page < ($num_page - 2)) {?><li class="fl mls mtt">...</li><?}
+		if($num_page > 10 and $page < ($num_page - 2) and !$full) {?><li class="fl mrs">...</li><?}
 
 		// Page final
-		?><li class="fl mrs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
+		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
 
 	}?>
 	</ul>
@@ -172,7 +186,7 @@ function get_lang($lang = '')
 	if(isset($_SESSION['lang'])) {
 		$lang = $_SESSION['lang'];		
 	}
-	elseif(!$lang) // Si pas de langue on prend la 1er langue du navigateur
+	elseif(!$lang and @$_SERVER['HTTP_ACCEPT_LANGUAGE']) // Si pas de langue on prend la 1er langue du navigateur
 	{
 		preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), $matches, PREG_SET_ORDER);
 		$explode = explode("-", $matches[0][1]);
@@ -211,7 +225,11 @@ function add_translation($add_translation)
 {	
 	// On met toutes les clés en minuscule pour une recherche insensible à la case
 	$add_translation = array_change_key_case($add_translation, CASE_LOWER);
-	
+
+	// Encodage des clés avec accent => ne fonctionne pas / a peaufiné pour les traductions à partir du Français
+	//foreach($add_translation as $cle => $val) $add_translation_encode[utf8_encode($cle)] = $val;
+	//$add_translation = $add_translation_encode;
+
 	// On ajoute la nouvelle traduction au tableau de toutes les traductions
 	$GLOBALS['translation'] = array_merge($GLOBALS['translation'], $add_translation);
 }
@@ -230,7 +248,7 @@ function __($singulier, $pluriel = "", $num = 0)
 	else
 	{
 		if($num > 1) $txt = $pluriel; else $txt = $singulier;
-		
+
 		// Si une traduction existe
 		if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]))
 			return $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
@@ -253,6 +271,9 @@ function _e($singulier, $pluriel = "", $num = 0)
 function txt($key = null, $filter = array())
 {
 	$key = ($key ? $key : "txt-".$GLOBALS['editkey']);
+
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array("class" => $filter);
 
 	// Si contenu global on rapatri le contenu depuis la table méta (Anciennement "universel")
 	if(isset($filter['global']))
@@ -281,13 +302,57 @@ function txt($key = null, $filter = array())
 
 	echo">";
 
-	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key];
+	if(isset($GLOBALS['content'][$key])) {
+		if(isset($filter['function'])) echo $filter['function']($GLOBALS['content'][$key]);
+		else echo $GLOBALS['content'][$key];
+	}
 	elseif(isset($filter['default'])) echo $filter['default'];
 
 	echo"</".(isset($filter['tag']) ? $filter['tag'] : "div").">";
 
 	$GLOBALS['editkey']++;
 }
+
+
+// Fonction raccourcie
+function h1($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+function h2($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+function h3($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+function span($key = null, $filter = array())
+{
+	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
+	if(!is_array($filter)) $filter = array('class' => $filter);
+	
+	$filter['tag'] = __FUNCTION__;// Force le tag
+	
+	txt($key, $filter);// Appel de la fonction d'origine
+}
+
+
 
 // Contenu image/fichier
 function media($key = null, $filter = array())
@@ -303,7 +368,7 @@ function media($key = null, $filter = array())
 		$GLOBALS['content'][$key] = $res['val'];
 	}
 
-	// S'il y a une valeur pour le filter mais que ce n'est pas un tableau
+	// S'il y a une valeur pour le filter mais != tableau => c'est la taille de l'image
 	if(!is_array($filter)) $filter = array("size" => $filter);
 
 	// Une taille est définie
@@ -311,7 +376,7 @@ function media($key = null, $filter = array())
 
 	// Nom du fichier
 	if(isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key]!="") 
-		$filename = $GLOBALS['home'].$GLOBALS['content'][$key];
+		$filename = $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @$GLOBALS['replace_path']);
 	else
 		$filename = "";
 
@@ -327,6 +392,8 @@ function media($key = null, $filter = array())
 			case"jpeg":  
 			case"png": 
 			case"gif": 
+			case"svg":
+			case"webp":
 				$img = true; 
 			break;
 
@@ -347,6 +414,8 @@ function media($key = null, $filter = array())
 		echo" class='";
 		if(isset($filter['editable'])) echo $filter['editable']; else echo"editable-media";
 		if(isset($filter['global'])) echo" global";
+		//if(isset($size[0]) and isset($size[1])) echo" crop";
+		if(isset($filter['crop'])) echo" crop";
 		echo"'";
 
 		if(isset($filter['class'])) echo" data-class='".$filter['class']."'";
@@ -372,7 +441,12 @@ function media($key = null, $filter = array())
 				if(@$get['zoom']) echo'<a href="'.$get['zoom'].'">';
 			}
 
-				echo"<img src=\"".$filename."\"";
+				echo"<img ";
+
+				if(isset($filter['lazy']))
+					echo"data-lazy=\"".$filename."\"";
+				else 
+					echo"src=\"".$filename."\"";
 
 				if(isset($size[0]) or isset($size[1])) {
 					echo" style='";
@@ -393,8 +467,7 @@ function media($key = null, $filter = array())
 				if(isset($GLOBALS['content'][$key.'-alt'])) echo' alt="'.$GLOBALS['content'][$key.'-alt'].'"';
 				else echo' alt=""';
 
-				echo" class='";
-					if(isset($size[0]) and isset($size[1])) echo"crop";
+				echo" class='";					
 					if(isset($filter['zoom'])) echo" zoom";
 					if(isset($filter['class'])) echo" ".$filter['class'];
 				echo"'>";
@@ -427,7 +500,7 @@ function bg($key = null, $filter = array())
 	// Si pas d'array et qu'il y a une variable c'est que c'est un lazyload
 	if(!is_array($filter) and isset($filter)) $filter = array("lazy" => true);
 
-	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].$GLOBALS['content'][$key] : "");
+	$url = (isset($GLOBALS['content'][$key]) ? $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @$GLOBALS['replace_path']) : "");
 
 	echo" data-id='".encode($key)."' data-bg=\"".$url."\"";
 
@@ -451,7 +524,7 @@ function module($module = "module")
 	$keys = array_keys($GLOBALS['content']);
 	foreach($keys as $key)
 	{
-		if(preg_match("/".$module."-/", $key) == 1)
+		if(preg_match("/^".$module."-/", $key) == 1)
 		{
 			// Récupère le denier chiffre (numéro d'occurance)
 			preg_match('/(\d+)(?!.*\d)/', $key, $match);
@@ -510,6 +583,12 @@ function select($key = null, $filter = array())
 
 	$option_decode = json_decode($filter['option'], true);
 
+	// inverse les clés et les valeurs
+	if(@$filter['flip']) {
+		$option_decode = array_flip($option_decode);
+		$filter['option'] = json_encode($option_decode, JSON_UNESCAPED_UNICODE);
+	}
+
 	if(isset($GLOBALS['content'][$key]) and isset($option_decode[$GLOBALS['content'][$key]])) {
 		$selected_key = $GLOBALS['content'][$key];
 		$selected_option = $option_decode[$GLOBALS['content'][$key]];
@@ -532,15 +611,27 @@ function input($key = null, $filter = null)
 	if(!is_array($filter)) $filter = array("class" => $filter);
 	if(!isset($filter['type'])) $filter['type'] = "text";
 
-	echo'<input type="'.$filter['type'].'" id="'.encode($key).'" value="';
+	echo'<input type="'.$filter['type'].'" id="'.encode($key).'"';
 
-	if(isset($GLOBALS['content'][$key])) echo $GLOBALS['content'][$key]; else echo @$filter['default'];
 
-	echo'" class="editable-input '.@$filter['class'].'"';
+	echo' value="';
+
+	if(isset($GLOBALS['content'][$key])) 
+		if(@$filter['type'] == 'number') echo str_replace(',', '.', $GLOBALS['content'][$key]);
+		else echo $GLOBALS['content'][$key]; 
+	else 
+		echo @$filter['default'];
+	
+	echo'"';
+
+
+	echo' class="editable-input '.@$filter['class'].'"';
 
 	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true) echo' checked="checked"';
 
 	if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
+	
+	if(@$filter['readonly']) echo' readonly';
 
 	echo'>';
 
@@ -562,11 +653,13 @@ function input($key = null, $filter = null)
 }
 
 // Lien éditable
-function href($key = null)
+function href($key = null, $target = null)
 {
 	$key = ($key ? $key : "href-".$GLOBALS['editkey']);
 
 	echo'href="'.(isset($GLOBALS['content'][$key]) ? $GLOBALS['content'][$key] : "").'" data-href="'.encode($key).'"';
+
+	if($target == 'file' and strstr(@$GLOBALS['content'][$key], ".")) echo' target="_blank"';
 
 	$GLOBALS['editkey']++;
 }
@@ -578,20 +671,23 @@ function tag($key = null, $filter = array())
 
 	echo'<'
 	.(isset($filter['tag'])?$filter['tag']:"div")
-	.' id="'.$key.'" class="editable-tag'.(isset($filter['class'])?" ".$filter['class'] : "").'"'
-	.(isset($filter['itemprop'])?' itemprop="'.$filter['itemprop'].'"' : '').'>';
+	.' id="'.$key.'" class="editable-tag'.(isset($filter['class'])?" ".$filter['class'] : '').'"'
+	.(isset($filter['placeholder'])?' placeholder="'.$filter['placeholder'].'"' : '')
+	.(isset($filter['separator'])?' data-separator="'.$filter['separator'].'"' : '')
+	.(isset($filter['itemprop'])?' itemprop="'.$filter['itemprop'].'"' : '')
+	.'>';
 
+		$i = 1;
+		//$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
+		$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_tag']." WHERE id='".(int)$GLOBALS['id']."' AND zone='".$key."' ORDER BY ordre ASC LIMIT 10");
+		while($res_tag = $sel_tag->fetch_assoc()) 
+		{ 
+			$GLOBALS['tags'][$res_tag['encode']] = $res_tag['name'];
 
-	$i = 1;
-	$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");
-	while($res_tag = $sel_tag->fetch_assoc()) 
-	{ 
-		$GLOBALS['tags'][$res_tag['cle']] = $res_tag['val'];
-
-		if($i > 1) echo', ';
-		echo'<a href="'.make_url($key, array($res_tag['cle'], 'domaine' => true)).'" class="tdn">'.$res_tag['val'].'</a>';
-		$i++;
-	}
+			if($i > 1) echo (@$filter['separator']?$filter['separator']:', ');
+			echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
+			$i++;
+		}
 
 	echo'</'.(isset($filter['tag']) ? $filter['tag'] : "div").'>';
 }
@@ -604,7 +700,6 @@ function secure_value($value) {
 
 	// htmlentities htmlspecialchars
 	if(is_array($value)) {
-		//while(list($cle, $val) = each($value)) PHP 7.2
 		foreach($value as $cle => $val) $value[$cle] = trim(htmlspecialchars($val, ENT_QUOTES));
 	}
 	else $value = trim(htmlspecialchars($value, ENT_QUOTES));
@@ -711,7 +806,6 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt d
 	// Cookie+Session pour connaitre les autorisations utilisateur
 	if($auth) {
 		$array_auth = explode(",", $auth);
-		//while(list($cle, $val) = each($array_auth)) PHP 7.2
 		foreach($array_auth as $cle => $val) { $_SESSION['auth'][$val] = true; }
 		setcookie("auth", encode($auth, ",", array("-")), $time, $GLOBALS['path'], $GLOBALS['domain']);
 	}
@@ -909,7 +1003,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 						
 						// On ouvre la dialog de choix du système de login et affiche une erreur
 						$.ajax({
-							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=select-login-mode", 
+							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=internal-login", 
 							data: {
 								callback: "<?=(isset($_REQUEST['callback']) ? encode($_REQUEST['callback'], "_") : "")?>",
 								msg: "<?=htmlspecialchars((isset($msg) ? $msg : ""));?>"
@@ -939,6 +1033,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 		<?
 		exit;
 	}
+	elseif ($quiet == 'error') {?><script>$(function() {error("<?=$msg?>", 4000); });</script><?}
 }
 
 function logout($redirect = null)
@@ -957,7 +1052,7 @@ function logout($redirect = null)
 		header("Location: ajax.php");
 		exit;
 	}
-	elseif($redirect == "home") {
+	elseif($redirect == "home" or $redirect == "index") {// @todo A terme supprimer "home" car on utilise "index" maintenant 13/07/2020
 		header("Location: ".$GLOBALS['home']);
 		exit;
 	}
@@ -967,15 +1062,38 @@ function logout($redirect = null)
 
 /********** IMAGE **********/
 
+// Verifie que le fichier et supporter et pas de hack
+function file_check($file)
+{
+	$finfo = finfo_open(FILEINFO_MIME_TYPE);
+	$file_infos['mime'] = finfo_file($finfo, $_FILES[$file]['tmp_name']);
+	finfo_close($finfo);
+
+	// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
+	if(in_array($file_infos['mime'], $GLOBALS['mime_supported'])) 
+	{
+		// Le fichier tmp ne contient pas de php ou de javascript
+		if(!preg_match("/<\?php|<scr/", file_get_contents($_FILES[$file]['tmp_name']))) 
+			return true;
+		else 
+			return false;
+	}
+	else return false;
+}
+
+// Redimentionne une image
 function resize($source_file, $new_width = null, $new_height = null, $dest_dir = null, $option = null)
 {
 	// Supprime les arguments après l'extension (timer...)
 	$source_file = explode("?", $source_file)[0];
 
+	// Extention du fichier
+	$ext = pathinfo($source_file, PATHINFO_EXTENSION);
+
 	// Récupération des informations de l'image source
 	list($source_width, $source_height, $type, $attr) = getimagesize($source_file);
 
-	if(!$source_width and !$source_height) exit(__("Size of source file unspecified"));
+	if(!$source_width and !$source_height and $ext!='svg') exit(__("Size of source file unspecified"));
 
 	// Récupération de l'extension
 	$source_ext = pathinfo($source_file, PATHINFO_EXTENSION);
@@ -1007,6 +1125,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			case 1: $source_img = imagecreatefromgif($source_file); break;
 			case 2: $source_img = imagecreatefromjpeg($source_file); break;
 			case 3: $source_img = imagecreatefrompng($source_file); break;
+			case 18: $source_img = imagecreatefromwebp($source_file); break;
 			default: exit(__("Unsupported file type")); break;
 		}  
 			
@@ -1033,7 +1152,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 					
 					// Positionnement de l'image cropé
 					$x = ($new_width - $dest_width) / 2;
-					$y = ($new_height - $dest_height) / 5;// Paramètre pour callé en hauteur le crop (2 à l'origine)
+					$y = ($new_height - $dest_height) / 3;// Paramètre pour callé en hauteur le crop (2 à l'origine)
 				}
 				else// Si pas crop on resize la taille la plus grande
 				{
@@ -1064,6 +1183,12 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			$new_width = $dest_width = $new_height * $source_width / $source_height;
 			$new_height = $dest_height = $new_height;
 		}
+
+		// Cas ou pas de nouvelle taille => on prend les tailles de l'image d'origine
+		if(!$new_width and !$new_height) {
+			$new_width = $dest_width = $source_width; 
+			$new_height = $dest_height = $source_height;
+		}
 		
 		// Création de l'image vide de base pour y coller l'image finale
 		$final_img = imagecreatetruecolor($new_width, $new_height);
@@ -1072,9 +1197,19 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		switch($type) {
 			case 1: // Gif
 				imagecolortransparent($final_img, imagecolorallocatealpha($final_img, 0, 0, 0, 127));
-			case 3: // Png + Gif
-				imagealphablending($final_img, false);
-				imagesavealpha($final_img, true);
+			case 3: // Png
+			case 18: // Webp
+				// Si conversion vers image sans transparence on met du blanc au fond
+				if($option == 'tojpg') 
+				{
+					$white = imagecolorallocate($final_img,  255, 255, 255);
+					imagefilledrectangle($final_img, 0, 0, $new_width, $new_height, $white);
+				}
+				else
+				{
+					imagealphablending($final_img, false);
+					imagesavealpha($final_img, true);
+				}
 			break;
 		}  
 		
@@ -1091,6 +1226,13 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
           case 8: $deg = 90; break;
 		}
 		if(isset($deg)) $final_img = imagerotate($final_img, $deg, 0);
+
+		// Si convertion de format
+		switch ($option) {
+		  case 'tojpg': $source_ext = 'jpg'; $type = 2; $zoom = ''; break;
+          case 'topng': $source_ext = 'png'; $type = 3; $zoom = ''; break;
+		}
+
 		
 		// Ajoute la taille de la nouvelle image en supprimant l'ancienne si besoin
 		preg_match("/(-[0-9]+x[0-9]+)$/", $file_name, $matches);
@@ -1102,6 +1244,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			case 1: imagegif($final_img, $root_dir . $dir . $file_name_ext); break;
 			case 2: imagejpeg($final_img, $root_dir . $dir . $file_name_ext, $GLOBALS['jpg_quality']); break;
 			case 3: imagepng($final_img, $root_dir . $dir . $file_name_ext); break;// $GLOBALS['png_quality']
+			case 18: imagewebp($final_img, $root_dir . $dir . $file_name_ext, $GLOBALS['webp_quality']); break;
 		}		
 		
 		imagedestroy($final_img);// Libère la mémoire	
@@ -1127,7 +1270,7 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 	// Valeur par défaut
 	$option = null;
 	$dir = ($dest_dir ? 'media/'.$dest_dir : 'media');
-	$src_file = $dir.'/'.basename($root_file)."?".time();
+	$src_file = $dir.'/'.basename($root_file).'?'.time();
 
 	// Taille de l'image uploadée
 	list($source_width, $source_height, $type) = getimagesize($root_file);
@@ -1148,11 +1291,14 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 	// Image trop grande (> global) pour le web : on la redimensionne
 	if($source_width > $max_width or $source_height > $max_height or $option) 
 	{
-		$src_file = resize($root_file, $max_width, $max_height, $dir, $option);// Redimensionne sans crop
+		// Redimensionne sans crop
+		$src_file = resize($root_file, $max_width, $max_height, $dir, $option);
 
-		unlink($root_file);// Supprime l'image originale puisque l'on ne garde que la maxsize
+		// Supprime l'image originale puisque l'on ne garde que la maxsize
+		unlink($root_file);
 
-		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];// La maxsize devient l'image root (explode: supp le timer)
+		// La maxsize devient l'image root (explode: supp le timer)
+		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];
 	}
 	
 
@@ -1163,8 +1309,23 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 
 		//unlink($root_file);// Si on a redimensionné on supp l'image de base
 	}
-	else
-		return $src_file;// Retourne l'url du fichier original si pas de redimensionnement	
+	else// Pas de redimensionnement
+	{
+		$dest_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];
+
+		// Le fichier destination est demandé dans un endroit different du fichier source
+		if($root_file != $dest_file)
+		{
+			// Si dossier destination on copie l'image dans la destination
+			copy($root_file, $dest_file);
+
+			// Et on supprime l'image source
+			unlink($root_file);
+		}
+
+		// Retourne l'url du fichier
+		return $src_file;
+	}
 }
 
 
@@ -1172,8 +1333,11 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 /********** TEXTE **********/
 
 // Coupe une phrase proprement
-function word_cut($texte, $limit, $tags = '') {//$tags = '<br><div>'
-	return preg_replace('/\s+?(\S+)?$/', '', substr(strip_tags($texte, $tags), 0, $limit));
+function word_cut($texte, $limit, $end = '', $tags = '') {//$tags = '<br><div>'  $end = '...'
+	$texte = strip_tags($texte.' ', $tags);// texte sans html
+	$word_cut = preg_replace('/\s+?(\S+)?$/u', '', substr($texte, 0, $limit));// /u > pour l'utf8
+	if(strlen($word_cut) < strlen(trim($texte))) $word_cut .= $end;// Si coupure on ajoute une ponctuation à la fin
+	return $word_cut;
 }
 
 

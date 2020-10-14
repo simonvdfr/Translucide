@@ -52,12 +52,19 @@ switch($_GET['mode'])
 					<div class="w50">
 						<div class="tooltip slide-left fire pas mas mlt">
 
-							<div class="small"><?_e("Description for search engines")?></div>
+							<div class="small">
+								<?_e("Description for search engines")?>
+
+								<div class="fr">
+									<input type="checkbox" id="noindex"> <label for="noindex" class="mrs" title="<?_e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
+									<input type="checkbox" id="nofollow"> <label for="nofollow" title="<?_e("Empêche les liens d'être suivis par les robots et de transmettre de la popularité")?>">nofollow</label>
+								</div>
+							</div>
 							<input type="text" id="description" value="" maxlength="160" class="w100">
 
 							<div class="small mtm"><?_e("Formatted web address")?></div>
 							<div class="grid">
-								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'home' if homepage")?>" maxlength="60" class="w50 mrm">
+								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'index' if homepage")?>" maxlength="70" class="w50 mrm">
 								
 								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?_e("Home page")?></label></span>
 
@@ -71,8 +78,7 @@ switch($_GET['mode'])
 									<div>
 										<select id="type">
 											<?
-											//while(list($cle, $array) = each()) PHP 7.2
-											foreach($GLOBALS['add-content'] as $cle => $array)
+											foreach($GLOBALS['add_content'] as $cle => $array)
 											{
 												if(isset($_SESSION['auth']['add-'.$cle]))
 													echo'<option value="'.$cle.'">'.__($cle).'</option>';
@@ -88,7 +94,6 @@ switch($_GET['mode'])
 										<select id="tpl">
 											<?
 											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
-											//while(list($cle, $filename) = each($scandir)) PHP 7.2
 											foreach($scandir as $cle => $filename)
 											{			
 												$filename = pathinfo($filename, PATHINFO_FILENAME);
@@ -126,19 +131,25 @@ switch($_GET['mode'])
 				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?_e("Activation status")?>"><i></i></label></div>
 
 			</div>
+			<div id="progress"></div>
+
 
 
 			<script>				
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');
 
+				// Warnings des poids des images pour suggérer des optimisations
+				<?=(isset($GLOBALS['img_green'])? 'img_green = '.$GLOBALS['img_green'].';':'')?>
+				<?=(isset($GLOBALS['img_warning'])? 'img_warning = '.$GLOBALS['img_warning'].';':'')?>
+				<?=(isset($GLOBALS['imgs_green'])? 'imgs_green = '.$GLOBALS['imgs_green'].';':'')?>
+				<?=(isset($GLOBALS['imgs_warning'])? 'imgs_warning = '.$GLOBALS['imgs_warning'].';':'')?>
+				<?=(isset($GLOBALS['imgs_num'])? 'imgs_num = '.$GLOBALS['imgs_num'].';':'')?>
+
 				<?
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
 				foreach($GLOBALS['toolbox'] as $cle => $val) { echo'toolbox_'.$val.' = true;'; }
-
-				// Animation sur la dialogue média ?
-				echo"animation_dialog = '".$GLOBALS['animation_dialog']."';";
 				?>
 			
 				// Chargement de Jquery UI
@@ -193,8 +204,7 @@ switch($_GET['mode'])
 
 			<ul class="small">
 				<?
-				//while(list($cle, $array) = each($GLOBALS['add-content'])) PHP 7.2
-				foreach($GLOBALS['add-content'] as $cle => $array)
+				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
 						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
@@ -205,8 +215,8 @@ switch($_GET['mode'])
 
 			<div class="none">
 				<?
-				reset($GLOBALS['add-content']);
-				foreach($GLOBALS['add-content'] as $cle => $array)
+				reset($GLOBALS['add_content']);
+				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])) echo'<div id="add-'.$cle.'"></div>';
 				}
@@ -217,7 +227,7 @@ switch($_GET['mode'])
 			<div>
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Title")?>" maxlength="60" class="w60 bold">
+					<input type="text" id="title" placeholder="<?_e("Title")?>" maxlength="70" class="w60 bold">
 					
 					<select id="tpl" required class="w30">
 						<option value=""><?_e("Select template")?></option>
@@ -233,7 +243,7 @@ switch($_GET['mode'])
 				</div>
 
 				<div class="mas mtm">
-					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="60" class="w50 mrm">
+					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="70" class="w50 mrm">
 					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
 					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?_e("Regenerate address")?></label>
 				</div>
@@ -264,7 +274,7 @@ switch($_GET['mode'])
 
 				// Changement au click de la checkbox homepage
 				$(".dialog-add #homepage").change(function() {
-					if(this.checked) $(".dialog-add #permalink").val("home");
+					if(this.checked) $(".dialog-add #permalink").val("index");
 					else refresh_permalink(".dialog-add");
 				});
 
@@ -435,7 +445,6 @@ switch($_GET['mode'])
 			exit("<script>error(\"".__("No permanent link for content")."\");</script>");
 	
 
-
 		// MENU DE NAVIGATION
 		if(isset($_POST['nav']))
 		{
@@ -449,7 +458,7 @@ switch($_GET['mode'])
 					$key['href'] = str_replace($GLOBALS['home'], "", $key['href']);// Supprime les url avec le domaine pour faciliter le transport du site
 
 					// Si vide ou raçine path on est sur la home
-					if($key['href'] == "" or $key['href'] == $GLOBALS['path']) $key['href'] = "home";
+					if($key['href'] == "" or $key['href'] == $GLOBALS['path']) $key['href'] = "index";
 				}
 			);
 
@@ -491,7 +500,7 @@ switch($_GET['mode'])
 			$res_header = $sel_header->fetch_assoc();	
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['header'] = str_replace($GLOBALS['home'], "", $_POST['header']);
+			$_POST['header'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['header']);
 			
 			// On  encode les données
 			$json_header = json_encode($_POST['header'], JSON_UNESCAPED_UNICODE);
@@ -521,7 +530,7 @@ switch($_GET['mode'])
 			$res_footer = $sel_footer->fetch_assoc();		
 
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['footer'] = str_replace($GLOBALS['home'], "", $_POST['footer']);
+			$_POST['footer'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['footer']);
 			
 			// On  encode les données
 			$json_footer = json_encode($_POST['footer'], JSON_UNESCAPED_UNICODE);
@@ -543,26 +552,31 @@ switch($_GET['mode'])
 		}
 
 		
-		// TAG ajout au meta
+		// TAG ajout au tag
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
-			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
-
-			if(isset($_POST['tag'])) 
+			foreach($_POST['tag'] as $zone => $tags) 
 			{
-				$tags = explode(",", trim($_POST['tag']));
+				$zone = encode($zone);
+
+				// Clean les tags de la fiche dans la bdd
+				$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$zone."'");
+
+				// split les tags en fonction du séparateur
+				$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($tags));
 
 				$i = 1;
 				foreach($tags as $cle => $val) {
-					if(isset($val) and $val != "") {
-						$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='tag', cle='".encode($val)."', val='".addslashes(trim($val))."', ordre='".$i."'");
+					if(isset($val) and $val != "") {			
+						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".$i."'");
 						$i++;
 					}
-				}		
+				}
+				
+				if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 			}
-			
-			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
+
 		
 		// TAG-INFO ajout au meta les informations d'une page tag
 		if(isset($_POST['tag-info']) and isset($_POST['tag'])) 
@@ -575,7 +589,7 @@ switch($_GET['mode'])
 			$connect->query("DELETE FROM ".$table_meta." WHERE type='tag-info' AND (cle='".encode($tag)."' OR cle='".$tag_url."')");
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['tag-info'] = str_replace($GLOBALS['home'], "", $_POST['tag-info']);
+			$_POST['tag-info'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['tag-info']);
 
 			// Insertion des infos du tag
 			$tag_info = json_encode($_POST['tag-info'], JSON_UNESCAPED_UNICODE);
@@ -584,7 +598,9 @@ switch($_GET['mode'])
 
 
 			// Update les tags des contenus
-			$connect->query("UPDATE ".$table_meta." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
+			// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
+			//$connect->query("UPDATE ".$table_meta." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
+			$connect->query("UPDATE ".$table_tag." SET encode='".encode($tag)."', name='".addslashes($tag)."' WHERE zone='".encode($_POST['permalink'])."' AND encode='".$tag_url."'");
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 
 
@@ -628,12 +644,16 @@ switch($_GET['mode'])
 		// Ajout des données aux meta liée à un contenu
 		if(isset($_POST['meta']) and $_POST['meta'] != "") 
 		{
-			$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='meta'");
-
 			$i = 1;
-			foreach($_POST['meta'] as $cle => $val) {
-				if(isset($val) and $val != "") {
-					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='meta', cle='".encode($cle)."', val='".addslashes(trim($val))."', ordre='".$i."'");
+			foreach($_POST['meta'] as $cle => $val) 
+			{
+				// Supprime la meta
+				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."'");
+
+				// Ajoute la meta si elle contient une variable
+				if(isset($val) and $val != "")
+				{
+					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='".encode($cle)."', cle='".addslashes(trim($val))."', val='', ordre='".$i."'");
 					$i++;
 				}
 			}		
@@ -651,7 +671,7 @@ switch($_GET['mode'])
 				$connect->query("DELETE FROM ".$table_meta." WHERE type='global' AND cle='".encode($cle)."'");
 
 				if(isset($val) and $val != "") {
-					$val = str_replace($GLOBALS['home'], "", $val);// Supprime le domaine des urls
+					$val = str_replace($GLOBALS['home'], '', $val);// Supprime le domaine des urls
 
 					$connect->query("INSERT INTO ".$table_meta." SET type='global', cle='".encode($cle)."', val='".addslashes(trim($val))."'");
 				}
@@ -666,7 +686,7 @@ switch($_GET['mode'])
 		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
 		{
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], "", $_POST['content']) : "");
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], $GLOBALS['replace_path'], $_POST['content']) : "");
 
 			// Encode le contenu
 			if(isset($_POST['content']) and $_POST['content'] != "") 
@@ -684,6 +704,7 @@ switch($_GET['mode'])
 			$sql .= "title = '".addslashes($_POST['title'])."', ";
 			$sql .= "description = '".addslashes($_POST['description'])."', ";
 			$sql .= "content = '".addslashes($json_content)."', ";
+			$sql .= "robots = '".addslashes(@$_POST['robots'])."', ";
 			$sql .= "state = '".addslashes($_POST['state'])."', ";
 			$sql .= "type = '".$type."', ";
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
@@ -712,6 +733,48 @@ switch($_GET['mode'])
 					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
 				<?}?>
 
+				
+				<?if(@$GLOBALS['static'])// GÉNÉRATION DE LA PAGE EN STATIQUE .HTML
+				{
+					//@todo gerer le cas ou la page n'est pas activé
+					//@todo metre la généaration dans un switch ajax.admin.php et faire une boucle en js sur la génération des url demander en cascade pour voir une progression de la génération des pages (progressbar)
+					//@todo afficher dans un after le nom de la page en cours de génération en dessou de la progressbar
+
+					$dir = (@$GLOBALS['static_dir']?$GLOBALS['static_dir'].'/':'');
+
+					// Supprime le .html statique
+					$url = (isset($change_url)?$change_url:$res['url']);
+
+					$file = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['path'].$dir.$res['url'].'.html';
+
+					@unlink($file);
+
+					// Génération en php
+					// Récupération du contenu de la page
+					$html = curl(make_url($url, array('domaine' => true)));
+
+					// Encodage du contenu html
+					$html = mb_convert_encoding($html, 'UTF-8', 'auto');
+
+					// Création du fichier avec le html
+					file_put_contents($file, time().$html.'<!-- STATIC '.date('d-m-Y H:i:s').' -->');//time().
+					?>
+
+					$("#progress").css({"opacity":"1", "width":"100%"});
+
+					setTimeout(function() { 
+						$("#progress").css({"opacity":"0"});
+						setTimeout(function() { $("#progress").css({"width":"0"});}, 1000);	
+					}, 1000);	
+				<?}?>
+
+
+				<?if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
+				{?>
+					img_check();
+				<?}?>
+								
+
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
@@ -734,12 +797,10 @@ switch($_GET['mode'])
 
 
 		// SUPPRIME LA PAGE
-		$sql = "DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'";
-		$connect->query($sql);
-
+		$connect->query("DELETE FROM ".$table_content." WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'");
 
 		// SUPPRIME LES TAGS LIÉES
-		$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='tag'");
+		$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."'");
 
 
 		if(isset($_POST['medias']))
@@ -748,7 +809,6 @@ switch($_GET['mode'])
 			$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
 			// On a demandé la SUPPRESSION DES FICHIERS liées au contenu
-			//while(list($cle, $media) = each($_POST['medias'])) PHP 7.2
 			foreach($_POST['medias'] as $cle => $media) {
 				// strtok : Supprime les arguments après l'extension (timer...)
 				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
@@ -786,7 +846,7 @@ switch($_GET['mode'])
 
 		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mtn mbs pls">';
 
-		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE 1 ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
+		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE lang='".$lang."' ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
 		while($res = $sel->fetch_assoc()) 
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';
@@ -849,12 +909,11 @@ switch($_GET['mode'])
 
 		// Nettoyage et conversion du menu existant
 		if(isset($_REQUEST['menu']))
-		//while(list($cle, $val) = each($_REQUEST['menu'])) PHP 7.2
 		foreach($_REQUEST['menu'] as $cle => $val)
 		{
 			// Si c'est un lien vers la home
 			if($val == $GLOBALS['home'] or $val == $GLOBALS['path'])
-				$menu[] = "home";
+				$menu[] = "index";
 			else {
 				// Supprime l'url root du site
 				$val = str_replace($GLOBALS['home'], "", $val);
@@ -864,7 +923,7 @@ switch($_GET['mode'])
 		}
 
 		// Liste les pages abs du menu
-		$sql = "SELECT * FROM ".$table_content." WHERE type = 'page' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
+		$sql = "SELECT * FROM ".$table_content." WHERE type='page' AND lang='".$lang."' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
 		//echo $sql."<br>";
 
 		$sel = $connect->query($sql);
@@ -1218,13 +1277,15 @@ switch($_GET['mode'])
 						timer = setTimeout(function() {
 							timer = null;
 
-							$("#media li").addClass("none");// Masque tous les Li
-							$("#media li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
+							console.log("recherche"+recherche);
+
+							$(".dialog-media [aria-hidden='false'] li").addClass("none");// Masque tous les Li
+							$(".dialog-media [aria-hidden='false'] li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
 							$window.trigger("scroll")// Force le chargement des images
 							
 						}, '500');
 					}
-					else $("#media li").removeClass("none");// Re-affiche tous les médias
+					else $(".dialog-media [aria-hidden='false'] li").removeClass("none");// Re-affiche tous les médias
 				});				
 
 			});
@@ -1350,9 +1411,12 @@ switch($_GET['mode'])
 				foreach($tab_file as $cle => $val)
 				{
 					// Convertie la taille en mode lisible
-					if($val['size'] >= 1048576) $val['size'] = round($val['size'] / 1048576) . "Mo";
-					elseif($val['size'] >= 1024) $val['size'] = round($val['size'] / 1024) . "Ko";
-					elseif($val['size'] < 1024) $val['size'] = $val['size'] . "oct";
+					if($val['size'] >= 1048576) $size = round($val['size'] / 1048576) . "Mo";
+					elseif($val['size'] >= 1024) $size = round($val['size'] / 1024) . "Ko";
+					elseif($val['size'] < 1024) $size = $val['size'] . "oct";
+
+					// Poids en ko
+					$val['size'] = round($val['size'] / 1024);
 					
 					// Le type de fichier
 					list($type, $ext) = explode("/", $val['mime']);
@@ -1395,7 +1459,22 @@ switch($_GET['mode'])
 						data-type="'.$type.'"
 					>';
 
-						if($type == "image") {
+						$sizecolor = "";
+
+						if($type == "image") 
+						{
+							// Poids
+							if(isset($GLOBALS['img_green']) and
+								$val['size'] <= $GLOBALS['img_green']) 
+								$sizecolor = 'green';
+							else if(isset($GLOBALS['img_warning']) and
+								$val['size'] > $GLOBALS['img_green'] and $val['size'] < $GLOBALS['img_warning'])
+								$sizecolor = 'orange';
+							else if(isset($GLOBALS['img_warning']) and
+								$val['size'] >= $GLOBALS['img_warning'])
+								$sizecolor = 'red';
+
+							// Affichage de l'image
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-lazy="'.$src.'"':'').'>';
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
@@ -1403,7 +1482,8 @@ switch($_GET['mode'])
 						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
 						echo"						
-						<div class='infos'>".$info." - ".$val['size']."</div>
+						<div class='mime ".$sizecolor."'>".$val['mime']."</div>
+						<div class='infos'>".$info." - ".$size."</div>
 						<a class='supp' title=\"".__("Delete file")."\"><i class='fa fa-fw fa-trash bigger'></i></a>
 					</li>";
 					
@@ -1466,9 +1546,14 @@ switch($_GET['mode'])
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
 		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
+
+		// Option crop, convert, compress
+		if(@$_POST['crop'] == 'true') $option = 'crop';
+		elseif(isset($_POST['option'])) $option = $_POST['option'];
+		else $option = null;
 		
 		// Resize l'image ou simple copie
-		echo resize($file, (int)$_POST['width'], (int)$_POST['height'], $dir);
+		echo resize($file, @(int)$_POST['width'], @(int)$_POST['height'], $dir, $option);
 
 	break;
 
@@ -1509,35 +1594,32 @@ switch($_GET['mode'])
 		finfo_close($finfo);
 
 		// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
-		if(in_array($file_infos['mime'], $GLOBALS['mime_supported']))
+		// + Le fichier tmp ne contient pas de php ou de javascript
+		if(file_check('file'))
 		{
-			// Le fichier tmp ne contient pas de php ou de javascript
-			if(!preg_match("/<\?php|<scr/", file_get_contents($_FILES["file"]["tmp_name"])))
-			{	
-				@mkdir(dirname($root_file), 0705, true);
+			@mkdir(dirname($root_file), 0705, true);
 
-				// Upload du fichier
-				if(move_uploaded_file($_FILES['file']['tmp_name'], $root_file))
+			// Upload du fichier
+			if(move_uploaded_file($_FILES['file']['tmp_name'], $root_file))
+			{
+				// Type mime
+				list($type, $ext) = explode("/", $file_infos['mime']);
+
+				// Si c'est une image
+				if($type == "image")
 				{
-					// Type mime
-					list($type, $ext) = explode("/", $file_infos['mime']);
-
-					// Si c'est une image
-					if($type == "image")
-					{
-						// Resize l'image si besoin 
-						// SUPP ?? (On ajoute le path du site pour gerer l'édition dans les sous catégories) $GLOBALS['path']. => maintenant ça se passe dans le edit.js
-						echo img_process($root_file,
-								$dir,
-								(int)$_POST['width'],
-								(int)$_POST['height'],
-								(isset($_POST['resize'])?$_POST['resize']:'')
-							);
-					}		
-					else 
-						echo $src_file;// Retourne l'url du fichier original		
-				}
-			}
+					// Resize l'image si besoin 
+					// SUPP ?? (On ajoute le path du site pour gerer l'édition dans les sous catégories) $GLOBALS['path']. => maintenant ça se passe dans le edit.js
+					echo img_process($root_file,
+							$dir,
+							(int)$_POST['width'],
+							(int)$_POST['height'],
+							(isset($_POST['resize'])?$_POST['resize']:'')
+						);
+				}		
+				else 
+					echo $src_file;// Retourne l'url du fichier original		
+			}			
 		}
 		//else echo $file_infos['mime'];
 
@@ -1595,7 +1677,6 @@ switch($_GET['mode'])
 					//uksort($list, 'strnatcmp');// Tri Ascendant
 					//if($sort == 'DESC') $list = array_reverse($list, true);// Tri Descendant
 					
-					//while(list($cle, $val) = each($list)) PHP 7.2
 					foreach($list as $cle => $val)
 					{						
 						echo"<li class='pat fl' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
@@ -1646,9 +1727,9 @@ switch($_GET['mode'])
 
 		login('medium');
 
-		$sel_tag = $connect->query("SELECT distinct cle, val FROM ".$table_meta." WHERE type='tag' ORDER BY ordre ASC, cle ASC");
+		$sel_tag = $connect->query("SELECT distinct encode, name, ordre FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' ORDER BY ordre ASC, encode ASC");
 		while($res_tag = $sel_tag->fetch_assoc()) {
-			$tab_tag[] = $res_tag['val'];
+			$tab_tag[] = $res_tag['name'];
 		}	
 
 		header("Content-Type: application/json; charset=utf-8");
