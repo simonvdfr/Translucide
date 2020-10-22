@@ -798,7 +798,7 @@ upload = function(source, file, resize)
 						
 						// Nom du fichier final si dialog médias
 						if(source.attr("data-media")) {
-							source.attr("data-media", path + media);// Pour la manipulation							
+							source.attr("data-media", media);// Pour la manipulation (path + media)
 							$(".file div", source).html(media.split('/').pop());// Pour l'affichage 
 						}				
 
