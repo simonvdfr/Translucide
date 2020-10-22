@@ -369,6 +369,12 @@ function media($key = null, $filter = array())
 		$GLOBALS['content'][$key] = $res['val'];
 	}
 
+
+	// Verification de la config de https pour crée le bon chemin (on force https dans les chemins)
+	if(@$_SERVER['REQUEST_SCHEME'] == 'https' and $GLOBALS['scheme'] != 'https://')
+		$GLOBALS['home'] = str_replace('http://', 'https://', $GLOBALS['home']);
+
+
 	// S'il y a une valeur pour le filter mais != tableau => c'est la taille de l'image
 	if(!is_array($filter)) $filter = array("size" => $filter);
 

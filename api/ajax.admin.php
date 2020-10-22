@@ -443,7 +443,18 @@ switch($_GET['mode'])
 		// Check si la page a bien une url par sécuritée
 		if((isset($change_url) and $change_url == "") or get_url($_POST['url']) == "")
 			exit("<script>error(\"".__("No permanent link for content")."\");</script>");
-	
+
+
+		// Verification de la config de https
+		if(@$_SERVER['REQUEST_SCHEME'] == 'https' and $GLOBALS['scheme'] != 'https://')
+		{
+			// Message d'erreur pour inviter à éditer config.php
+			echo "<script>error(\"".__("Vous naviguer en https mais ça n'est pas spécifié dans config.php (scheme = https://)")."\");</script>";
+
+			// On change la variable qui permet de supprimer les chemins pour qu'elle soit appropriée
+			$GLOBALS['home'] = str_replace('http://', 'https://', $GLOBALS['home']);
+		}
+
 
 		// MENU DE NAVIGATION
 		if(isset($_POST['nav']))
