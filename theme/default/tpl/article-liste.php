@@ -1,4 +1,4 @@
-<? if(!$GLOBALS['domain']) exit; ?>
+<?php  if(!$GLOBALS['domain']) exit; ?>
 
 <style>
 	.content article { border-left: 0.2em solid #35747f; }
@@ -8,11 +8,11 @@
 <section class="w700p mod center mtm mbl">
 
 
-	<?h1('title', 'mbn tc')?>
+	<?php h1('title', 'mbn tc')?>
 
 
 	<div class="mts tc italic">
-		<?
+		<?php 
 		// Liste les tags pour filtrer la page
 		$i = 1;
 		$sel_tag_list = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".$res['url']."' ORDER BY ordre ASC, encode ASC");
@@ -29,7 +29,7 @@
 	</div>
 
 
-	<?
+	<?php 
 	// Si on n'a pas les droits d'édition des articles on affiche uniquement ceux actifs
 	if(!@$_SESSION['auth']['edit-article']) $sql_state = "AND state='active'";
 	else $sql_state = "";
@@ -84,12 +84,12 @@
 
 			<h2 class="mts up bigger"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="tdn"><?=$res_fiche['title']?></a><?=$state?></h2>
 
-			<?if(isset($content_fiche['texte'])) echo word_cut($content_fiche['texte'], '350')."...";?>
+			<?php if(isset($content_fiche['texte'])) echo word_cut($content_fiche['texte'], '350')."...";?>
 
-			<div class="fr mtm"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="bt bg-color bold"><?_e("Lire l'article")?></a></div>
+			<div class="fr mtm"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="bt bg-color bold"><?php _e("Lire l'article")?></a></div>
 
 		</article>
-		<?
+		<?php 
 	}
 
 	page($num_total, $page);

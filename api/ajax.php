@@ -1,4 +1,4 @@
-<?
+<?php 
 @include_once("config.init.php");// Les variables par défaut
 @include($_SERVER['DOCUMENT_ROOT']."/config.php");// Les variables ../config.php
 @include_once("function.php");// Fonction
@@ -19,7 +19,7 @@ switch($_GET['mode'])
 				if(callback) eval(callback + "()");// S'il y a un callback à exécuter
 			});
 		</script>
-		<?
+		<?php 
 	break;
 
 
@@ -27,22 +27,22 @@ switch($_GET['mode'])
 		
 		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
 		?>
-		<div id="dialog-connect" title="<?_e("Log in");?>">
+		<div id="dialog-connect" title="<?php _e("Log in");?>">
 
-			<?if($_REQUEST['msg']){?>
+			<?php if($_REQUEST['msg']){?>
 			<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
-			<?}?>
+			<?php }?>
 
 			<form id="internal-login" class="mts small">
 
 				<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-				<div class="mbs"><input type="email" id="email" placeholder="<?_e("My email");?>" required class="w100"><span class="wrapper big bold">@</span></div>
+				<div class="mbs"><input type="email" id="email" placeholder="<?php _e("My email");?>" required class="w100"><span class="wrapper big bold">@</span></div>
 
-				<input type="password" id="password" placeholder="<?_e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
+				<input type="password" id="password" placeholder="<?php _e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
 
 				<button class="bt internal fr mrn mtm pat">
-					<?_e("Log in")?>
+					<?php _e("Log in")?>
 					<i class="fa fa-key"></i>
 				</button>
 
@@ -51,7 +51,7 @@ switch($_GET['mode'])
 
 		<script>
 		// S'il y a une fonction de callback
-		callback = <?if($_REQUEST['callback']){ echo'"'.encode($_REQUEST['callback'], "_").'"';} else echo"null";?>;
+		callback = <?php if($_REQUEST['callback']){ echo'"'.encode($_REQUEST['callback'], "_").'"';} else echo"null";?>;
 
 		$(function()
 		{
@@ -91,7 +91,7 @@ switch($_GET['mode'])
 			});
 		});
 		</script>
-		<?
+		<?php 
 	break;
 
 
@@ -113,9 +113,9 @@ switch($_GET['mode'])
 			<script src="lucide.init<?=$GLOBALS['min']?>.js"></script>
 			
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
-			<?if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
+			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
 					<script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>admin.init.js"></script>
-			<?}?>
+			<?php }?>
 
 			<style>
 				#user .absolute { width: 100%; }
@@ -157,7 +157,7 @@ switch($_GET['mode'])
 
 		</body>
 		</html>
-		<?
+		<?php 
 
 	break;
 
@@ -176,16 +176,16 @@ switch($_GET['mode'])
 		<div class="absolute">
 			<div class="tooltip slide-left fire pas mas mlt mod">
 				
-				<div id="logout" class="fr" title="<?_e("Log out")?>"><i class="fa fa-fw fa-logout big"></i></div>
+				<div id="logout" class="fr" title="<?php _e("Log out")?>"><i class="fa fa-fw fa-logout big"></i></div>
 
-				<?if(@$_SESSION['auth']['edit-user']) {?>
-				<div id="add-user" class="fr prs" title="<?_e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
-				<div id="list-user" class="fr prs" title="<?_e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
-				<div id="profil" class="fr prs" title="<?_e("My profil")?>"><i class="fa fa-fw fa-user big vam"></i></div>
-				<?}?>				
+				<?php if(@$_SESSION['auth']['edit-user']) {?>
+				<div id="add-user" class="fr prs" title="<?php _e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
+				<div id="list-user" class="fr prs" title="<?php _e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
+				<div id="profil" class="fr prs" title="<?php _e("My profil")?>"><i class="fa fa-fw fa-user big vam"></i></div>
+				<?php }?>				
 
 				<div class="load">
-					<?
+					<?php 
 					$_GET['mode'] = "profil";
 					include("ajax.php");
 					?>
@@ -214,7 +214,7 @@ switch($_GET['mode'])
 			});
 		});
 		</script>
-		<?
+		<?php 
 
 		// Pas de mysql close car déjà close dans le include ajax.php mode profil
 
@@ -250,12 +250,12 @@ switch($_GET['mode'])
 		if(!isset($_POST['search']) and !isset($_POST['page']))
 		{
 			?>
-			<h3 class="medium man mbs"><?_e("List of user")?></h3>
+			<h3 class="medium man mbs"><?php _e("List of user")?></h3>
 
-			<div class="mbs"><input type="text" class="search w70" placeholder="<?_e("Search")?>" value=""></div>			
+			<div class="mbs"><input type="text" class="search w70" placeholder="<?php _e("Search")?>" value=""></div>			
 
 			<ul class="unstyled pan man">
-			<?
+			<?php 
 		}
 
 		$num_pp = 10;
@@ -373,10 +373,10 @@ switch($_GET['mode'])
 
 			$(document).ready(function()
 			{
-				<?if(isset($msg)) {?>
+				<?php if(isset($msg)) {?>
 					// S'il y a un message
 					light("<?=$msg?>");
-				<?}?>
+				<?php }?>
 
 				// Recherche avec timer
 				var timer = null;
@@ -387,7 +387,7 @@ switch($_GET['mode'])
 				});
 			});
 			</script>
-			<?
+			<?php 
 		}	
 
 		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
@@ -452,25 +452,25 @@ switch($_GET['mode'])
 			<div class="scroll">
 
 				<div class="mbt">
-					<label class="w100p tr mrt" for="state"><?_e("State")?></label> 
-					<? if(@$_SESSION['auth']['edit-user']){?>
+					<label class="w100p tr mrt" for="state"><?php _e("State")?></label> 
+					<?php if(@$_SESSION['auth']['edit-user']){?>
 						<select id="state">
-							<option value="active"><?_e("Active")?></option>
-							<option value="moderate"><?_e("Moderate")?></option>
-							<option value="email"><?_e("User email")?></option>
-							<option value="blacklist"><?_e("Blacklist")?></option>
-							<option value="deactivate"><?_e("Deactivate")?></option>
+							<option value="active"><?php _e("Active")?></option>
+							<option value="moderate"><?php _e("Moderate")?></option>
+							<option value="email"><?php _e("User email")?></option>
+							<option value="blacklist"><?php _e("Blacklist")?></option>
+							<option value="deactivate"><?php _e("Deactivate")?></option>
 						</select>
 						<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
-					<?}else{?>
-						<?_e(@$res['state'])?>
-					<?}?>
+					<?php }else{?>
+						<?php _e(@$res['state'])?>
+					<?php }?>
 				</div>
 
 				<div class="mbs" style="max-height: 100px;">
-					<label class="w100p tr mrt" for="auth"><?_e("Authorization")?></label>
+					<label class="w100p tr mrt" for="auth"><?php _e("Authorization")?></label>
 					<select id="auth" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
-						<?
+						<?php 
 						// Droit de base
 						foreach($GLOBALS['auth_level'] as $cle => $val)	{
 							echo'<option value="'.$cle.'">'.__($val).'</option>';
@@ -495,44 +495,44 @@ switch($_GET['mode'])
 				<input type="text" id="email-fake" class="none">
 				<input type="password" id="password-fake" class="none">
 
-				<div class="mbt"><label class="w100p tr mrt bold" for="name"><?_e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
+				<div class="mbt"><label class="w100p tr mrt bold" for="name"><?php _e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
 
-				<div class="mbt"><label class="w100p tr mrt" for="email"><?_e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
+				<div class="mbt"><label class="w100p tr mrt" for="email"><?php _e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
 
 				<div class="mbs nowrap">
-					<label class="w100p tr mrt" for="password_new"><?_e("Password")?></label>
+					<label class="w100p tr mrt" for="password_new"><?php _e("Password")?></label>
 					<input type="password" id="password_new" class="w40" autocomplete="new-password">
 
-					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?_e("See password");?>" class="tdn"><i class="fa fa-fw fa-eye vam"></i></a>
+					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?php _e("See password");?>" class="tdn"><i class="fa fa-fw fa-eye vam"></i></a>
 
-					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?_e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
+					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?php _e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
 
-					<a href="javascript:send_password();" title="<?_e("Send password by mail");?>" class="tdn" id="send-password"><i class="fa fa-fw fa-mail-alt vam"></i></a>
+					<a href="javascript:send_password();" title="<?php _e("Send password by mail");?>" class="tdn" id="send-password"><i class="fa fa-fw fa-mail-alt vam"></i></a>
 				</div>
 
 
-				<?
+				<?php 
 				// Si il y a des méta/infos complementaire pour cette utilisateur
 				if(is_array(@$GLOBALS['user_info'])) 
 				{		
 					?>
-					<div class="info mbs"><?
+					<div class="info mbs"><?php 
 
 						$info = json_decode($res['info'], true);
 
 						foreach($GLOBALS['user_info'] as $cle => $val)
 						{
-							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?_e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?
+							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?php _e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?php 
 						}
 						
-					?></div><?
+					?></div><?php 
 				}
 				?>
 
-				<?if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Updated the")?></label> <?=$res['date_update']?></div><?}?>
-				<?if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?_e("Add the")?></label> <?=$res['date_insert']?></div><?}?>			
+				<?php if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
+				<?php if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>			
 
-				<?if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?}?>
+				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?php }?>
 
 				<button id="save-user" class="fr mat small">
 					<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
@@ -663,7 +663,7 @@ switch($_GET['mode'])
 				});
 			});
 		</script>
-		<?
+		<?php 
 
 		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
@@ -845,14 +845,14 @@ switch($_GET['mode'])
 				<script>
 				$(function()
 				{
-					<?
+					<?php 
 					if(!$connect->error){
 						if(@$_REQUEST['uid']){?>// Update réussit
 
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
-						<?}
+						<?php }
 						elseif($insert_user){?>// Ajout d'un utilisateur
 
 							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
@@ -860,32 +860,32 @@ switch($_GET['mode'])
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 							
-							<?if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users
+							<?php if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users
 
-								$("#save-user span").html("<?_e("Save")?>");
+								$("#save-user span").html("<?php _e("Save")?>");
 
-							<?}else{?>// Inscription
+							<?php }else{?>// Inscription
 
-								$("#save-user span").html("<?_e("Account created")?>");
+								$("#save-user span").html("<?php _e("Account created")?>");
 
 								// @todo: bouton de sauvegarde readonly (pour éviter re-submit) + message si validation par mail/admin requise 
 
-							<?}?>
+							<?php }?>
 
-						<?}
+						<?php }
 					}
 					else {?>
 						error("<?=$connect->error;?>");
-					<?}?>
+					<?php }?>
 				});
 				</script>
-				<?
+				<?php 
 			}
 			elseif($connect->error){?>
 				<script>
 					error("<?=$connect->error;?>");
 				</script>
-			<?}
+			<?php }
 		}
 
 		// Supp ?? car include parfois

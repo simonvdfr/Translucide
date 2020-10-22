@@ -1,4 +1,4 @@
-<?
+<?php
 include_once("../config.php");// Les variables
 include_once("function.php");// Fonction
 
@@ -25,7 +25,7 @@ switch($_GET['mode'])
 			<script>
 			reload();
 			</script>
-		<?}
+		<?php }
 		else 
 		{				
 			// JS pour mettre en mode édit les contenus et ajout d'un nonce pour signer les formulaires
@@ -38,46 +38,46 @@ switch($_GET['mode'])
 			<!-- Barre du haut avec bouton sauvegarder et option -->			
 			<div id="admin-bar" class="none">
 
-				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?_e("Show user info")?>"></i></div>
+				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?php _e("Show user info")?>"></i></div>
 				
 				<!-- list/bars -->
-				<div id="list-content" class="fl pat"><i class="fa fa-menu vam" title="<?_e("List of contents")?>"></i></div>
+				<div id="list-content" class="fl pat"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
 
-				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?_e("Page title")?>"></i></div>
+				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
 
 				<div id="meta" class="fl mat w30 no-small-screen">
 
-					<input type="text" id="title" value="" placeholder="<?_e("Page title")?>" title="<?_e("Page title")?>" maxlength="70" class="w100 bold">
+					<input type="text" id="title" value="" placeholder="<?php _e("Page title")?>" title="<?php _e("Page title")?>" maxlength="70" class="w100 bold">
 
 					<div class="w50">
 						<div class="tooltip slide-left fire pas mas mlt">
 
 							<div class="small">
-								<?_e("Description for search engines")?>
+								<?php _e("Description for search engines")?>
 
 								<div class="fr">
-									<input type="checkbox" id="noindex"> <label for="noindex" class="mrs" title="<?_e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
-									<input type="checkbox" id="nofollow"> <label for="nofollow" title="<?_e("Empêche les liens d'être suivis par les robots et de transmettre de la popularité")?>">nofollow</label>
+									<input type="checkbox" id="noindex"> <label for="noindex" class="mrs" title="<?php _e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
+									<input type="checkbox" id="nofollow"> <label for="nofollow" title="<?php _e("Empêche les liens d'être suivis par les robots et de transmettre de la popularité")?>">nofollow</label>
 								</div>
 							</div>
 							<input type="text" id="description" value="" maxlength="160" class="w100">
 
-							<div class="small mtm"><?_e("Formatted web address")?></div>
+							<div class="small mtm"><?php _e("Formatted web address")?></div>
 							<div class="grid">
-								<input type="text" id="permalink" value="" placeholder="<?_e("Permanent link: 'index' if homepage")?>" maxlength="70" class="w50 mrm">
+								<input type="text" id="permalink" value="" placeholder="<?php _e("Permanent link: 'index' if homepage")?>" maxlength="70" class="w50 mrm">
 								
-								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?_e("Home page")?></label></span>
+								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?php _e("Home page")?></label></span>
 
-								<label id="refresh-permalink"><i class="fa fa-fw fa-arrows-cw"></i><?_e("Regenerate address")?></label>
+								<label id="refresh-permalink"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
 							</div>
 
 							<div class="mod mtm">
 
 								<div class="fl mrl">
-									<div class="small"><?_e("Type of page")?></div>
+									<div class="small"><?php _e("Type of page")?></div>
 									<div>
 										<select id="type">
-											<?
+											<?php 
 											foreach($GLOBALS['add_content'] as $cle => $array)
 											{
 												if(isset($_SESSION['auth']['add-'.$cle]))
@@ -89,10 +89,10 @@ switch($_GET['mode'])
 								</div>
 								
 								<div class="fl mrl">
-									<div class="small"><?_e("Template")?></div>
+									<div class="small"><?php _e("Template")?></div>
 									<div>
 										<select id="tpl">
-											<?
+											<?php 
 											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
 											foreach($scandir as $cle => $filename)
 											{			
@@ -105,7 +105,7 @@ switch($_GET['mode'])
 								</div>	
 
 								<div class="fl">
-									<div class="small"><?_e("Creation date")?></div>
+									<div class="small"><?php _e("Creation date")?></div>
 									<div>
 										<input type="text" id="date-insert" class="w150p">
 									</div>
@@ -114,7 +114,7 @@ switch($_GET['mode'])
 							</div>
 
 							
-							<div class="small mtm"><?_e("Image on social networks")?></div>
+							<div class="small mtm"><?php _e("Image on social networks")?></div>
 							<div class=""><span class="editable-media" id="og-image"><img src=""></span></div>
 							
 						</div>
@@ -122,13 +122,13 @@ switch($_GET['mode'])
 
 				</div>		
 
-				<div id="close" class="fr mrt bigger" title="<?_e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
+				<div id="close" class="fr mrt bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
 
-				<button id="save" class="fr mat small" title="<?_e("Save")?>"><span class="no-small-screen"><?_e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
+				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="no-small-screen"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
 
-				<button id="del" class="fr mat small o50 ho1 t5" title="<?_e("Delete")?>"><span class="no-small-screen"><?_e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="no-small-screen"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
 
-				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?_e("Activation status")?>"><i></i></label></div>
+				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
 			</div>
 			<div id="progress"></div>
@@ -146,7 +146,7 @@ switch($_GET['mode'])
 				<?=(isset($GLOBALS['imgs_warning'])? 'imgs_warning = '.$GLOBALS['imgs_warning'].';':'')?>
 				<?=(isset($GLOBALS['imgs_num'])? 'imgs_num = '.$GLOBALS['imgs_num'].';':'')?>
 
-				<?
+				<?php 
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
 				foreach($GLOBALS['toolbox'] as $cle => $val) { echo'toolbox_'.$val.' = true;'; }
@@ -177,7 +177,7 @@ switch($_GET['mode'])
 			        async: true
 			    });				
 			</script>
-			<?
+			<?php 
 		}
 
 	break;
@@ -198,12 +198,12 @@ switch($_GET['mode'])
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
 
 
-		<div class="dialog-add" title="<?_e("Add content")?>">
+		<div class="dialog-add" title="<?php _e("Add content")?>">
 			
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
 			<ul class="small">
-				<?
+				<?php 
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
@@ -214,7 +214,7 @@ switch($_GET['mode'])
 			</ul>					
 
 			<div class="none">
-				<?
+				<?php 
 				reset($GLOBALS['add_content']);
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
@@ -227,11 +227,11 @@ switch($_GET['mode'])
 			<div>
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?_e("Title")?>" maxlength="70" class="w60 bold">
+					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 bold">
 					
 					<select id="tpl" required class="w30">
-						<option value=""><?_e("Select template")?></option>
-						<?
+						<option value=""><?php _e("Select template")?></option>
+						<?php 
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
 						foreach($scandir as $cle => $filename)
 						{			
@@ -243,9 +243,9 @@ switch($_GET['mode'])
 				</div>
 
 				<div class="mas mtm">
-					<input type="text" id="permalink" placeholder="<?_e("Permanent link")?>" maxlength="70" class="w50 mrm">
-					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?_e("Home page")?></label>
-					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?_e("Regenerate address")?></label>
+					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70" class="w50 mrm">
+					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
+					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
 				</div>
 
 			</div>
@@ -358,7 +358,7 @@ switch($_GET['mode'])
 			</script>
 
 		</div>
-		<?				
+		<?php 				
 	break;
 
 
@@ -404,7 +404,7 @@ switch($_GET['mode'])
 					document.location.href = "<?=make_url($url, array("domaine" => true));?>";
 				});
 				</script>
-				<?
+				<?php 
 			}
 		}
 		else 
@@ -686,7 +686,7 @@ switch($_GET['mode'])
 		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
 		{
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], $GLOBALS['replace_path'], $_POST['content']) : "");
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['content']) : "");
 
 			// Encode le contenu
 			if(isset($_POST['content']) and $_POST['content'] != "") 
@@ -729,12 +729,12 @@ switch($_GET['mode'])
 			{
 				document.title = "<?=addslashes($_POST['title']);?>";
 
-				<?if(isset($change_url)){?>					
+				<?php if(isset($change_url)){?>					
 					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
-				<?}?>
+				<?php }?>
 
 				
-				<?if(@$GLOBALS['static'])// GÉNÉRATION DE LA PAGE EN STATIQUE .HTML
+				<?php if(@$GLOBALS['static'])// GÉNÉRATION DE LA PAGE EN STATIQUE .HTML
 				{
 					//@todo gerer le cas ou la page n'est pas activé
 					//@todo metre la généaration dans un switch ajax.admin.php et faire une boucle en js sur la génération des url demander en cascade pour voir une progression de la génération des pages (progressbar)
@@ -766,20 +766,20 @@ switch($_GET['mode'])
 						$("#progress").css({"opacity":"0"});
 						setTimeout(function() { $("#progress").css({"width":"0"});}, 1000);	
 					}, 1000);	
-				<?}?>
+				<?php }?>
 
 
-				<?if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
+				<?php if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
 				{?>
 					img_check();
-				<?}?>
+				<?php }?>
 								
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
 			</script>
-			<?
+			<?php 
 		}
 
 	break;
@@ -824,13 +824,13 @@ switch($_GET['mode'])
 			$(function()
 			{		
 				// Message page supprimé
-				light("<?_e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
+				light("<?php _e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
 
 				// Redirection vers la page d'accueil
 				setTimeout(function(){ document.location.href = "<?=$GLOBALS['home'];?>"; }, 2000);
 			});
 			</script>
-			<?
+			<?php 
 		}
 
 	break;
@@ -950,7 +950,7 @@ switch($_GET['mode'])
 		//highlight_string(print_r($tab_img, true));
 		?>
 
-		<div class="dialog-media" title="<?_e("Media Library")?>">
+		<div class="dialog-media" title="<?php _e("Media Library")?>">
 
 			<input type="hidden" id="dialog-media-target" value="<?=htmlspecialchars($_REQUEST['target'])?>">
 			<input type="hidden" id="dialog-media-source" value="<?=htmlspecialchars($_REQUEST['source'])?>">
@@ -959,31 +959,31 @@ switch($_GET['mode'])
 			<input type="hidden" id="dialog-media-dir" value="<?=htmlspecialchars($_REQUEST['dir'])?>">
 			
 			<!-- Chargement du moteur de recherche des médias -->
-			<input type="text" id="recherche-media" placeholder="<?_e("Search")?>" class="mrl">
+			<input type="text" id="recherche-media" placeholder="<?php _e("Search")?>" class="mrl">
 
 			<ul class="small">
 
-				<li data-filter="all"><a href="#media" title="<?_e("Media")?>"><i class="fa fa-doc"></i> <span><?_e("Media")?></span></a></li>
+				<li data-filter="all"><a href="#media" title="<?php _e("Media")?>"><i class="fa fa-doc"></i> <span><?php _e("Media")?></span></a></li>
 
-				<!-- <li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?_e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?_e("Files")?></span></a></li> -->	
+				<!-- <li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?php _e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?php _e("Files")?></span></a></li> -->	
 
-				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?_e("Images")?>"><i class="fa fa-picture-o"></i> <span><?_e("Images")?></span></a></li> -->
+				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?php _e("Images")?>"><i class="fa fa-picture-o"></i> <span><?php _e("Images")?></span></a></li> -->
 
-				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?_e("Resized")?>"><i class="fa fa-resize-small"></i> <span><?_e("Resized")?></span></a></li>
+				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?php _e("Resized")?>"><i class="fa fa-resize-small"></i> <span><?php _e("Resized")?></span></a></li>
 
 
-				<?if(isset($_REQUEST['dir']) and $_REQUEST['dir']){?>
-				<li data-filter="dir"><a href="api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?_e("Specific")?>"><i class="fa fa-file"></i> <span><?_e("Specific")?></span></a></li>
-				<?}?>
+				<?php if(isset($_REQUEST['dir']) and $_REQUEST['dir']){?>
+				<li data-filter="dir"><a href="api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?php _e("Specific")?>"><i class="fa fa-file"></i> <span><?php _e("Specific")?></span></a></li>
+				<?php }?>
 
-				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?_e("Videos")?>"><i class="fa fa-film"></i> <span><?_e("Videos")?></span></a></li>
+				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?php _e("Videos")?>"><i class="fa fa-film"></i> <span><?php _e("Videos")?></span></a></li>
 
-				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?_e("Audios")?>"><i class="fa fa-volume-up"></i> <span><?_e("Audios")?></span></a></li> -->
+				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?php _e("Audios")?>"><i class="fa fa-volume-up"></i> <span><?php _e("Audios")?></span></a></li> -->
 
 			</ul>
 			
 			<div id="media">
-				<?
+				<?php 
 				$_GET['mode'] = "media";
 
 				include("ajax.admin.php");
@@ -1007,7 +1007,7 @@ switch($_GET['mode'])
 
 				// Option de resize à afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
-					var resize = "<a class='resize' title=\"<?_e("Get resized image");?>\"><i class='fa fa-fw fa-resize-small bigger'></i></a>";
+					var resize = "<a class='resize' title=\"<?php _e("Get resized image");?>\"><i class='fa fa-fw fa-resize-small bigger'></i></a>";
 				else 
 					var resize = "";
 
@@ -1291,7 +1291,7 @@ switch($_GET['mode'])
 			});
 			</script>
 		</div>
-		<?
+		<?php 
 	break;
 
 
@@ -1367,7 +1367,7 @@ switch($_GET['mode'])
 		}
 		
 		?>
-		<ul class="unstyled pan man smaller"><?
+		<ul class="unstyled pan man smaller"><?php 
 
 			// @todo ajouter la possiblitée de remonter dans l'arbo, jusqu'au dossier courant de l'onglet
 			// Si on navige dans un dossier on n'affiche pas l'upload
@@ -1376,10 +1376,10 @@ switch($_GET['mode'])
 			?>	
 			<li class="add-media pas mat tc big" onclick="document.getElementById('add-media').click();">
 				<i class="fa fa-upload biggest pbs"></i><br>
-				<?_e("Drag and drop a file here or click me");?>
+				<?php _e("Drag and drop a file here or click me");?>
 				<input type="file" id="add-media" style="display: none" multiple>
 			</li>
-			<?
+			<?php 
 			}
 
 			// Si il y a des dossier
@@ -1524,7 +1524,7 @@ switch($_GET['mode'])
 				
 			});
 		</script>
-		<?
+		<?php 
 	break;
 
 	
@@ -1634,14 +1634,14 @@ switch($_GET['mode'])
 		// @todo: ajouter une recherche en js (qui masque)
 		?>
 
-		<div class="dialog-icon" title="<?_e("Icon Library")?>">
+		<div class="dialog-icon" title="<?php _e("Icon Library")?>">
 
 			<input type="hidden" id="dialog-icon-target" value="<?=(isset($_GET['target']) ? htmlspecialchars($_GET['target']) : "");?>"><!-- SUPP ?? -->
 			<input type="hidden" id="dialog-icon-source" value="<?=htmlspecialchars(isset($_GET['target']) ? $_GET['source'] : "")?>">
 			
-			<input type="text" class="search w20 mbs" placeholder="<?_e("Search")?>" value="">
+			<input type="text" class="search w20 mbs" placeholder="<?php _e("Search")?>" value="">
 
-			<?
+			<?php 
 			//$pattern = '/\.([\w-]+):before\s*{\s*content:\s*(["\']\\\w+["\']);?\s*}/';
 			//$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
 			//$pattern = '/\\.(fa-\\w+):before{content:"(\\\\\w+)"}/';	
@@ -1670,7 +1670,7 @@ switch($_GET['mode'])
 
 			?>
 			<ul id="icon" class="unstyled pan man smaller">	
-			<?
+			<?php 
 				// S'il y a des fichiers dans la biblio
 				if(isset($list))
 				{
@@ -1716,7 +1716,7 @@ switch($_GET['mode'])
 			});
 			</script>
 		</div>
-		<?
+		<?php 
 	break;
 
 
