@@ -28,6 +28,12 @@
 		?>
 	</div>
 
+	<div class="mod">
+		<div class="fl"><?php media('img', '130')?></div>
+
+		<div class="fl mlm"><?php txt('description')?></div>
+	</div>
+
 
 	<?php 
 	// Si on n'a pas les droits d'édition des articles on affiche uniquement ceux actifs
@@ -73,7 +79,7 @@
 
 		$date = explode("-", explode(" ", $res_fiche['date_insert'])[0]);
 		?>
-		<article class=" mod plm mrm mtl">
+		<article class="mod plm mrm mtl mbm">
 
 			<!--
 			<div class="date fl mrm prm up bold big tc">
