@@ -1,6 +1,6 @@
 <?php 
 @include_once("config.init.php");// Les variables par défaut
-@include($_SERVER['DOCUMENT_ROOT']."/config.php");// Les variables ../config.php
+@include(str_replace('api/ajax.php', '', $_SERVER['SCRIPT_FILENAME'])."config.php");// Les variables ../config.php || $_SERVER['DOCUMENT_ROOT']."/config.php"
 @include_once("function.php");// Fonction
 
 $lang = get_lang();// Sélectionne la langue
