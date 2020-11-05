@@ -1,4 +1,4 @@
-<?
+<?php 
 include_once("config.init.php");// Les variables par défaut
 include_once("function.php");// Fonction
 
@@ -124,7 +124,7 @@ switch(@$_GET['mode'])
 			
 			<meta charset="utf-8">
 
-			<title><?_e("Site Installation");?></title>
+			<title><?php _e("Site Installation");?></title>
 
 			<meta name="robots" content="noindex, nofollow">
 
@@ -231,7 +231,7 @@ switch(@$_GET['mode'])
 
 			<div class="w80 center">
 
-				<h2 class="tc"><?_e("Site Installation");?></h2>
+				<h2 class="tc"><?php _e("Site Installation");?></h2>
 
 				<div class="layer mod pam mbm">
 
@@ -241,26 +241,26 @@ switch(@$_GET['mode'])
 
 						<ul class="unstyled">
 
-							<li><label class="w30"><?_e("Address database");?></label> <input type="text" id="db_server" value="<?=$GLOBALS['db_server'];?>" placeholder="localhost" required class="w60 vatt"></li>
+							<li><label class="w30"><?php _e("Address database");?></label> <input type="text" id="db_server" value="<?=$GLOBALS['db_server'];?>" placeholder="localhost" required class="w60 vatt"></li>
 							
-							<li><label class="w30"><?_e("Name of the data base");?></label> <input type="text" id="db" value="<?=$GLOBALS['db'];?>" required class="w60 vatt"></li>
+							<li><label class="w30"><?php _e("Name of the data base");?></label> <input type="text" id="db" value="<?=$GLOBALS['db'];?>" required class="w60 vatt"></li>
 							
-							<li><label class="w30"><?_e("MySQL Username");?></label> <input type="text" id="db_user" value="<?=$GLOBALS['db_user'];?>" placeholder="root" required class="w60 vatt"></li>
+							<li><label class="w30"><?php _e("MySQL Username");?></label> <input type="text" id="db_user" value="<?=$GLOBALS['db_user'];?>" placeholder="root" required class="w60 vatt"></li>
 							
 							<li>
-								<label class="w30"><?_e("MySQL User Password");?></label> <input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="w60 vatt">
+								<label class="w30"><?php _e("MySQL User Password");?></label> <input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="w60 vatt">
 								<a href="javascript:void(0);" onclick="if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
 							</li>
 							
-							<li><label class="w30"><?_e("Table Prefix");?></label> <input type="text" id="db_prefix" value="<?=$GLOBALS['db_prefix'];?>" placeholder="tl_" class="w10 vatt"></li>
+							<li><label class="w30"><?php _e("Table Prefix");?></label> <input type="text" id="db_prefix" value="<?=$GLOBALS['db_prefix'];?>" placeholder="tl_" class="w10 vatt"></li>
 
 
-							<li class="mtm"><label class="w30 bold"><?_e("Name of the site");?></label> <input type="text" id="sitename" value="<?=$sitename;?>" class="w60 vatt"></li>
+							<li class="mtm"><label class="w30 bold"><?php _e("Name of the site");?></label> <input type="text" id="sitename" value="<?=$sitename;?>" class="w60 vatt"></li>
 							<li>
-								<label class="w30"><?_e("Site theme");?></label>
+								<label class="w30"><?php _e("Site theme");?></label>
 
 								<select id="theme" class="vatt">
-								<?
+								<?php 
 								// Un thème dans la racine
 								if(file_exists("theme/header.php")) echo"<option value=\"\"".($GLOBALS['theme'] == "" ? " selected":"").">/</option>";
 								
@@ -273,32 +273,32 @@ switch(@$_GET['mode'])
 								</select>
 								
 							</li>
-							<li><label class="w30"><?_e("Site Location");?></label> <input type="text" id="scheme_domain_path" value="<?=$scheme_domain_path;?>" required class="w60 vatt"></li>
+							<li><label class="w30"><?php _e("Site Location");?></label> <input type="text" id="scheme_domain_path" value="<?=$scheme_domain_path;?>" required class="w60 vatt"></li>
 
 
 							<li class="mtm">
-								<label class="w30 bold"><i class="fa fa-fw fa-globe"></i> <?_e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
+								<label class="w30 bold"><i class="fa fa-fw fa-globe"></i> <?php _e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
 							</li>
 							<li>
-								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?_e("Administrator password");?></label>
+								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?php _e("Administrator password");?></label>
 								<input type="password" id="password" required class="w60 vatt">
 
-								<a href="javascript:$('#setup #password').make_password();" title="<?_e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a>
+								<a href="javascript:$('#setup #password').make_password();" title="<?php _e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a>
 
 								<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
 
-								<!-- <a href="javascript:void(0);" onclick="$('#setup #password').make_password();" title="<?_e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a> -->
+								<!-- <a href="javascript:void(0);" onclick="$('#setup #password').make_password();" title="<?php _e("Suggest a password");?>"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a> -->
 
 							</li>
 
 							<!-- 
-							<li class="mtl bold"><?_e("Option");?></li>
+							<li class="mtl bold"><?php _e("Option");?></li>
 
-							<li><label class="w30"><i class="fa fa-fw fa-line-chart"></i> <?_e("Google analytics code");?></label> <input type="text" id="google_analytics" placeholder="UA-00000000-1" class="w20 vatt"></li>
+							<li><label class="w30"><i class="fa fa-fw fa-line-chart"></i> <?php _e("Google analytics code");?></label> <input type="text" id="google_analytics" placeholder="UA-00000000-1" class="w20 vatt"></li>
 							 -->
 						</ul>
 
-						<button class="fr mam bold"><?_e("Start installation");?> <i class="fa fa-fw fa-cog"></i></button>
+						<button class="fr mam bold"><?php _e("Start installation");?> <i class="fa fa-fw fa-cog"></i></button>
 
 					</form>
 
@@ -308,7 +308,7 @@ switch(@$_GET['mode'])
 
 		</body>
 		</html>
-		<?
+		<?php 
 
 		exit;
 
@@ -350,7 +350,7 @@ switch(@$_GET['mode'])
 						submittable();
 						error("<?=utf8_encode($GLOBALS['connect']->connect_error);?>");
 					</script>
-					<?
+					<?php 
 					exit;
 				}
 				else {// Réussite
@@ -363,7 +363,7 @@ switch(@$_GET['mode'])
 										
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content'])){// Table déjà existante
-						?><script>light("<?_e("Table already exists")?> : content");</script><?
+						?><script>light("<?php _e("Table already exists")?> : content");</script><?php 
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -396,14 +396,14 @@ switch(@$_GET['mode'])
 								submittable();
 								error("<?=utf8_encode($connect->error);?>");
 							</script>
-							<?
+							<?php 
 							exit;
 						}
 					}
 
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta'])){// Table déjà existante
-						?><script>light("<?_e("Table already exists")?> : meta");</script><?
+						?><script>light("<?php _e("Table already exists")?> : meta");</script><?php 
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -425,14 +425,14 @@ switch(@$_GET['mode'])
 								submittable();
 								error("<?=utf8_encode($connect->error);?>");
 							</script>
-							<?
+							<?php 
 							exit;
 						}
 					}
 
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_tag'])){// Table déjà existante
-						?><script>light("<?_e("Table already exists")?> : tag");</script><?
+						?><script>light("<?php _e("Table already exists")?> : tag");</script><?php 
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -454,14 +454,14 @@ switch(@$_GET['mode'])
 								submittable();
 								error("<?=utf8_encode($connect->error);?>");
 							</script>
-							<?
+							<?php 
 							exit;
 						}
 					}
 
 					// Vérification de l'existence des base de données
 					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user'])){// Table déjà existante
-						?><script>light("<?_e("Table already exists")?> : user");</script><?
+						?><script>light("<?php _e("Table already exists")?> : user");</script><?php 
 					}
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -490,7 +490,7 @@ switch(@$_GET['mode'])
 								submittable();
 								error("<?=utf8_encode($connect->error);?>");
 							</script>
-							<?
+							<?php 
 							exit;
 						}
 					}
@@ -510,9 +510,9 @@ switch(@$_GET['mode'])
 						?>
 						<script>
 							submittable();
-							light("<?_e("Wrong email")?>");
+							light("<?php _e("Wrong email")?>");
 						</script>
-						<?
+						<?php 
 						exit;
 					}
 					else {
@@ -560,15 +560,15 @@ switch(@$_GET['mode'])
 									submittable();
 									error("<?=utf8_encode($connect->error);?>");
 								</script>
-								<?
+								<?php 
 								exit;
 							}
 
 							?>
 							<script>
-								light("<?_e("User already exists : update password")?>");
+								light("<?php _e("User already exists : update password")?>");
 							</script>
-							<?
+							<?php 
 						}
 						else {// Création de l'utilisateur admin avec tous les droits
 
@@ -599,7 +599,7 @@ switch(@$_GET['mode'])
 									submittable();
 									error("<?=utf8_encode($connect->error);?>");
 								</script>
-								<?
+								<?php 
 								exit;
 							}
 							else $uid = $GLOBALS['connect']->insert_id;
@@ -675,7 +675,7 @@ switch(@$_GET['mode'])
 									submittable();
 									error("<?=utf8_encode($connect->error);?>");
 								</script>
-								<?
+								<?php 
 								exit;
 							}
 							else
@@ -693,14 +693,14 @@ switch(@$_GET['mode'])
 						// MESSAGE DE BIENVENUE et d'information qu'il faut créé la page d'accueil du site
 						?>
 						<script>
-							light("<?_e("Successful installation ! Redirection to homepage ...")?>");
+							light("<?php _e("Successful installation ! Redirection to homepage ...")?>");
 							setTimeout(function(){
 								 $("#error, #highlight").slideUp("slow").fadeOut(function() {
 									window.location.reload();// window.location = window.location.href;
 								 });
 							}, 3000);
 						</script>
-						<?
+						<?php 
 
 					}
 				}

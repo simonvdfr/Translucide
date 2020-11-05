@@ -1,4 +1,4 @@
-<?
+<?php
 // benchmark
 $GLOBALS['microtime'] = microtime(true);
 

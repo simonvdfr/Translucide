@@ -1,4 +1,4 @@
-<?if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) exit;?>
 
 <style>
 .event {
@@ -28,14 +28,14 @@
 
 	<div class="mw960p mod center mtm mbl">
 
-		<?h2('titre-event', 'tc')?>
+		<?php h2('titre-event', 'tc')?>
 
 		<div class="fl w50 tr no-small-screen">
-			<span class="editable-event" id="img-illu-event"><?media('media-event','425')?></span>
+			<span class="editable-event" id="img-illu-event"><?php media('media-event','425')?></span>
 		</div>
 
 		<div class="fl w50 mts">
-			<?
+			<?php 
 			$sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
 			while($res_event = $sel_event->fetch_assoc())
 			{
@@ -62,13 +62,13 @@
 					<div>
 						<h2 class="bold mod up bigger man nowrap tdn"><a href="<?=make_url($res_event['url']);?>" class="tdn" target="_blank"><?=$res_event['title']?></a></h2>
 
-						<div class="bold bt bg-color"><?_e("Lire")?></div>
+						<div class="bold bt bg-color"><?php _e("Lire")?></div>
 					</div>
 
 				</article>
 
 			</div>
-			<?
+			<?php 
 		}
 		?>
 	</div>
@@ -100,7 +100,7 @@ $(function()
 
 <!-- slide event -->
 
-<?
+<?php 
 // Actu à la une
 $sel_alaune = $connect->query("SELECT * FROM ".$table_meta." WHERE type='content' AND cle='alaune' LIMIT 1");
 $res_alaune = $sel_alaune->fetch_assoc();
@@ -143,6 +143,6 @@ if($res_alaune['cle'])
 		}).children(0).unwrap();
 		$(".alaune a").contents().unwrap();
 	</script>
-	<?
+	<?php 
 }
 ?>

@@ -1,4 +1,4 @@
-<?if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) exit;?>
 
 <style>
 	aside { border-left: 0.2em solid #78cfd6; }
@@ -7,26 +7,26 @@
 
 <section class="mw960p mod center mtm mbl">
 
-	<?h1('title', 'tc up')?>
-	<?h2('sstitre', 'tc')?>
+	<?php h1('title', 'tc up')?>
+	<?php h2('sstitre', 'tc')?>
 
 
 	<article class="fl w80 prl pbm tj">
 
-		<?txt('texte')?>
+		<?php txt('texte')?>
 
-		<?if($res['tpl'] == "event-formulaire") include 'contact.php';?>
+		<?php if($res['tpl'] == "event-formulaire") include 'contact.php';?>
 
 	</article>
 
 
 	<aside class="fr w20 plt animation slide-right">
 
-		<?
+		<?php 
 		// Date évènement
 		if(stristr($res['tpl'], 'event'))
 		{
-			?><div class="tc mbm"><?
+			?><div class="tc mbm"><?php 
 			if(@$GLOBALS["content"]["aaaa-mm-jj"])
 			{
 				//@todo faire une transformation de la date en une ligne au lieu du explode
@@ -36,15 +36,15 @@
 
 			input("aaaa-mm-jj", array("type" => "hidden", "class" => "meta tc"));
 
-			?></div><?
+			?></div><?php 
 		}?>
 
 		<!-- Tag -->
 		<div class="tc">
 
-			<h3 class="big tc mtn mbt"><?_e("Catégories")?></h3>
+			<h3 class="big tc mtn mbt"><?php _e("Catégories")?></h3>
 
-			<?tag('actualites')?>
+			<?php tag('actualites')?>
 
 			<script>
 			if(!$(".editable-tag").text()) $("#actualites").prev("h3").hide();
@@ -55,44 +55,44 @@
 
 
 		<!-- Liste des autres articles -->
-		<?
+		<?php 
 		$sel_article = $connect->query("SELECT * FROM ".$table_content." WHERE type='article' AND lang='".$lang."' AND state='active' AND id!='".$res['id']."' ORDER BY date_insert DESC LIMIT 0, 3");
 		if($sel_article->num_rows)
 		{?>
-		<h3 class="big tc mtn mbt"><?_e("Derniers Articles")?></h3>
+		<h3 class="big tc mtn mbt"><?php _e("Derniers Articles")?></h3>
 
 		<ul class="unstyled pan">
-		<?		
+		<?php 		
 		while($res_article = $sel_article->fetch_assoc())
 		{
 			?>
 			<li class="medium mbs mls"><a href="<?=make_url($res_article['url']);?>" class="tdn"><i class="fa-li fa fa-fw fa-rss fl mrt"></i> <?=$res_article['title']?></a></li>
-			<?
+			<?php 
 		}
 		?>
 		</ul>
-		<?}?>
+		<?php }?>
 
 
 		<!-- Liste des autres évènements -->
-		<?
+		<?php 
 		$sel_article = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' AND id!='".$res['id']."' ORDER BY date_insert DESC LIMIT 0, 3");
 		if($sel_article->num_rows)
 		{?>
-			<h3 class="big tc ptm mbt"><?_e("Derniers Évènements")?></h3>
+			<h3 class="big tc ptm mbt"><?php _e("Derniers Évènements")?></h3>
 
 			<ul class="unstyled pan">
-			<?
+			<?php 
 			
 			while($res_article = $sel_article->fetch_assoc())
 			{
 				?>
 				<li class="medium mbs mls"><a href="<?=make_url($res_article['url']);?>" class="tdn"><i class="fa-li fa fa-fw fa-calendar-empty fl mrt"></i> <?=$res_article['title']?></a></li>
-				<?
+				<?php 
 			}
 			?>
 			</ul>
-		<?}?>
+		<?php }?>
 
 
 	</aside>

@@ -1,6 +1,6 @@
-<?if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) exit;?>
 
-<?
+<?php 
 $module = module("slide");/* nom du module "slide" = id du UL, et au début des id des txt() media() ... */
 $count = count($module) - 1;/* pour l'animation du slide */
 ?>
@@ -43,7 +43,7 @@ $count = count($module) - 1;/* pour l'animation du slide */
 
 	<article class="mw1200p center pam ptn mod">
 
-		<?h2('titre-slideshow','tc bold up')?>
+		<?php h2('titre-slideshow','tc bold up')?>
 
 		<div class="flex mbm tc">
 
@@ -57,15 +57,15 @@ $count = count($module) - 1;/* pour l'animation du slide */
 				#slide id unique du module (pour le cas ou plusieurs modules dans une page)
 				-->
 				<ul id="slide" class="module slideshow unstyled pan auto">
-				<?
+				<?php 
 				foreach($module as $key => $val)
 				{
 					?>
 					<li>
-						<div class='img fl mrl'><?media("slide-img-".$key, array('size' => '250x250'));?></div>
-						<div class="pal">« <?txt("slide-text-".$key, array("tag" => "span"));?> »</div>
+						<div class='img fl mrl'><?php media("slide-img-".$key, array('size' => '250x250'));?></div>
+						<div class="pal">« <?php txt("slide-text-".$key, array("tag" => "span"));?> »</div>
 					</li>
-					<?
+					<?php 
 				}
 				?>
 				</ul>

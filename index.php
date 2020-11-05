@@ -1,6 +1,6 @@
 <?php
-// Vérifie la configuration de short open tag
-if(!ini_get('short_open_tag')) exit('Please put "short_open_tag = On" in php.ini');
+// Vérifie la configuration de short open tag // Supp 6 mois après le 22/10/2020
+//if(!ini_get('short_open_tag')) exit('Please put "short_open_tag = On" in php.ini');
 
 @include_once("config.php");// Variables
 include_once("api/function.php");// Fonctions
@@ -261,7 +261,7 @@ if(!$ajax)
 		<meta charset="utf-8">
 
 		<title><?=$title;?></title>
-		<?if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
+		<?php if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
 		<meta name="robots" content="<?=$robots;?>" data="<?=$robots_data;?>">
 
@@ -269,23 +269,23 @@ if(!$ajax)
 
 		<meta property="og:title" content="<?=$title;?>">
 		<meta property="og:type" content="website">
-		<?if(isset($res['url'])){?>
+		<?php if(isset($res['url'])){?>
 		<meta property="og:url" content="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
 		<link rel="canonical" href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
-		<?}?>
-		<?if($description){?><meta property="og:description" content="<?=$description;?>"><?}?>
-		<?if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?}?>
+		<?php }?>
+		<?php if($description){?><meta property="og:description" content="<?=$description;?>"><?php }?>
+		<?php if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?php }?>
 		<meta property="article:published_time" content="<?=date(DATE_ISO8601, strtotime(@$res['date_insert']));?>">
 
-		<?if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?}?>
-		<?if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?}?>
+		<?php if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?php }?>
+		<?php if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?php }?>
 
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
-		<?if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?}
+		<?php if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?php }
 		else{?>
 		<style>
 			@font-face {
@@ -301,9 +301,9 @@ if(!$ajax)
 				font-style: normal;
 			}
 		</style>
-		<?}?>
+		<?php }?>
 
-		<?if(@$GLOBALS['favicon']){?><link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['favicon']?>"><?}?>
+		<?php if(@$GLOBALS['favicon']){?><link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['favicon']?>"><?php }?>
 
 		<script src="<?=$GLOBALS['jquery']?>"></script>
 
@@ -311,7 +311,7 @@ if(!$ajax)
 
 
 		<script>
-			<? if(@$GLOBALS['google_analytics']) { ?>
+			<?php if(@$GLOBALS['google_analytics']) { ?>
 			// Si Analytics pas desactivé
 			if(get_cookie('analytics') != "desactiver") 
 			{
@@ -324,7 +324,7 @@ if(!$ajax)
 				ga('create', google_analytics, 'auto');
 				ga('send', 'pageview');
 			}
-			<? }
+			<?php }
 
 			if(@$GLOBALS['facebook_api_id']) { ?>
 			// Facebook
@@ -335,7 +335,7 @@ if(!$ajax)
 				js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.7&cookie=true&appId=<?=$GLOBALS['facebook_api_id'];?>";
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
-			<? } 
+			<?php } 
 
 			if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
 				// Si demande l'autoload du mode édition et si admin
@@ -343,7 +343,7 @@ if(!$ajax)
 					edit_launcher();
 					$("a.bt.fixed.edit").fadeOut();				
 				});
-				<?
+				<?php
 				// Supprime le cookie qui demande de charger automatiquement l'admin
 				@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
 			}?>			
@@ -369,7 +369,7 @@ if(!$ajax)
 	<body>
 
 	<main>
-	<?
+	<?php
 
 	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
 
@@ -404,9 +404,9 @@ if(!$ajax)
 
 	</body>
 	</html>
-	<? 
+	<?php
 }
-else {?><script>console.log("<?=benchmark()?>")</script><?}
+else {?><script>console.log("<?=benchmark()?>")</script><?php }
 
 $connect->close();
 ?>

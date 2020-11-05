@@ -1,4 +1,4 @@
-<?
+<?php
 // Connexion a la base de données
 if(isset($GLOBALS['db_server']) and $GLOBALS['db_user'] and $GLOBALS['db'])
 {

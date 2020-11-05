@@ -798,7 +798,7 @@ upload = function(source, file, resize)
 						
 						// Nom du fichier final si dialog médias
 						if(source.attr("data-media")) {
-							source.attr("data-media", path + media);// Pour la manipulation							
+							source.attr("data-media", media);// Pour la manipulation (path + media)
 							$(".file div", source).html(media.split('/').pop());// Pour l'affichage 
 						}				
 
@@ -2445,6 +2445,7 @@ $(function()
 		// AUTOCOMPLETE
 		tag_zone = $(".editable-tag").attr('id');
 		autocomplete_keydown = false;
+		var samezone = false;
 
 		// Séparateur
 		var separator = $(".editable-tag").data('separator');// Si on en force un
@@ -2459,7 +2460,7 @@ $(function()
 				event.preventDefault();	
 
 			autocomplete_keydown = true;// On a fait une saisie au clavier
-
+			
 			tosave();// A sauvegarder si on écrit
 		})
 		.autocomplete({
@@ -2467,7 +2468,7 @@ $(function()
 			source: function(request, response) {
 
 	            // Si les data on déjà était chargé donc on affiche direct le resultat
-	            if(typeof all_data !== 'undefined') {
+	            if(samezone && typeof all_data !== 'undefined') {
 	            	response($.ui.autocomplete.filter(all_data, request.term.split(regex).pop()));
 	            	return;
 	            }
@@ -2531,7 +2532,13 @@ $(function()
 			}
 		})
 		.focus(function(){// Chargement au focus de la liste des tags dispo
-			tag_zone = $(this).attr('id');
+			// Si on selection la meme zone de tag
+			if(tag_zone == $(this).attr('id')) {
+				samezone = true;
+			} else {
+				tag_zone = $(this).attr('id');
+				samezone = false;
+			}
 			$(this).autocomplete("search", "");
 		});
 	}

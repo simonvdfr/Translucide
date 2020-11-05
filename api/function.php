@@ -1,4 +1,4 @@
-<?
+<?php
 /********** BENCHMARK **********/
 // Mesure le temps de traitement Php
 function benchmark() {
@@ -143,36 +143,37 @@ function page($num_total, $page, $full = false)
 
 	?>
 	<ul class="page unstyled inbl man pan">		
-	<?if($num_total > $num_pp)
+	<?php
+	if($num_total > $num_pp)
 	{
 		$num_page = ceil($num_total/$num_pp);
 		
 		// Page 1
-		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?if($page == 1) echo" selected";?>">1</a></li><?
+		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?=($page == 1?' selected':'');?>">1</a></li><?php
 
 		if($num_page > 10 and $page >= 10 and !$full)// + de 10 page
 		{
-			?><li class="fl mrs mtt">...</li><?
+			?><li class="fl mrs mtt">...</li><?php
 			
 			for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
-				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
-			<?}
+				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"><?=$i?></a></li>
+			<?php }
 		}
 		else// - de 10 page
 		{
 			for($i = 2; $i <= ($full?$num_page:10) and $i < $num_page; $i++){?>
-				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?if($page == $i) echo" selected";?>"><?=$i?></a></li>
-			<?}
+				<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"><?=$i?></a></li>
+			<?php }
 		}
 
-		if($num_page > 10 and $page < ($num_page - 2) and !$full) {?><li class="fl mrs">...</li><?}
+		if($num_page > 10 and $page < ($num_page - 2) and !$full) {?><li class="fl mrs">...</li><?php }
 
 		// Page final
-		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?if($page == $num_page) echo" selected";?>"><?=$num_page?></a></li><?
+		?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?=($page == $num_page?' selected':'');?>"><?=$num_page?></a></li><?php
 
 	}?>
 	</ul>
-	<?
+	<?php
 }
 
 
@@ -367,6 +368,12 @@ function media($key = null, $filter = array())
 
 		$GLOBALS['content'][$key] = $res['val'];
 	}
+
+
+	// Verification de la config de https pour crée le bon chemin (on force https dans les chemins)
+	if(@$_SERVER['REQUEST_SCHEME'] == 'https' and $GLOBALS['scheme'] != 'https://')
+		$GLOBALS['home'] = str_replace('http://', 'https://', $GLOBALS['home']);
+
 
 	// S'il y a une valeur pour le filter mais != tableau => c'est la taille de l'image
 	if(!is_array($filter)) $filter = array("size" => $filter);
@@ -639,15 +646,15 @@ function input($key = null, $filter = null)
 	if(isset($filter['autocomplete'])) {?>
 		<script>
 			edit.push(function() {	
-				$("#<?echo encode($key)?>").autocomplete({
-					source: <?echo'["'.implode('","', $filter['autocomplete']).'"]';?>,
+				$("#<?=encode($key)?>").autocomplete({
+					source: <?='["'.implode('","', $filter['autocomplete']).'"]';?>,
 					minLength: 0,
 				}).focus(function () {
 					$(this).autocomplete("search");
 				});
 			});
 		</script>
-	<?}
+	<?php }
 	
 	$GLOBALS['editkey']++;
 }
@@ -1030,10 +1037,10 @@ function login($level = 'low', $auth = null, $quiet = null)
 				
 			});
 		</script>
-		<?
+		<?php
 		exit;
 	}
-	elseif ($quiet == 'error') {?><script>$(function() {error("<?=$msg?>", 4000); });</script><?}
+	elseif ($quiet == 'error') {?><script>$(function() {error("<?=$msg?>", 4000); });</script><?php }
 }
 
 function logout($redirect = null)

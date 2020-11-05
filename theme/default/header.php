@@ -1,11 +1,11 @@
-<?if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) exit;?>
 
 
 <header>
 
 	<section class="mw960p mod center tc relative">
 
-		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?media('logo', '320')?></a></div>
+		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
 
 
 		<nav class="mtm mbm">
@@ -13,7 +13,7 @@
 			<a class="big burger"><span>menu</span></a>
 
 			<ul class="grid up">
-				<?
+				<?php
 				// Extraction du menu
 				foreach($GLOBALS['nav'] as $cle => $val)
 				{
