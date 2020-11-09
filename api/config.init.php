@@ -160,11 +160,13 @@ $GLOBALS['toolbox'] = array(
 $GLOBALS['pub_hash'] = '';
 $GLOBALS['priv_hash'] = '';
 
+// Nom de boucle de hashage du mdp
+$GLOBALS['pwd_hash_loop'] = '';
+
+
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = 'medium';
 
-// Nom de boucle de hashage du mdp
-$GLOBALS['pwd_hash_loop'] = '';
 
 // Temps d'expiration des sessions de connexion
 $GLOBALS['session_expiration'] = 60*60*24*30;
