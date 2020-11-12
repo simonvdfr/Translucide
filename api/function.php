@@ -1021,7 +1021,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 							
 							// Effet sur la dialog
 							$("#dialog-connect").dialog({
-								modal: true,
+								//modal: true, // Fond gris lors du login
 								minHeight: 0,
 								show: {effect: "fadeIn"},
 								//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
