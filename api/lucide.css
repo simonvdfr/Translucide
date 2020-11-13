@@ -392,6 +392,16 @@ nav ul li i.fa-cancel {
 			font-family: FontAwesome;
 		}
 
+
+	/* bt de fermeture du menu d'ajout */
+	#add-nav .fa-cancel {
+		position: absolute;
+		top: 12px;
+		right: 5px;
+		cursor: pointer;
+	}
+
+
 	#add-nav .zone {	
 		/* background-color: rgba(245, 245, 245, 0.95);
 		border: 2px dashed;

@@ -1425,6 +1425,7 @@ $(function()
 	addnav = "<div id='add-nav'>";
 		addnav+= "<div class='zone bt' title='"+ __("Edit menu") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></div>";
 		addnav+= "<div class='tooltip none pat'>";
+			addnav+= "<i class='fa fa-cancel grey o50'></i>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
 				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a></li>";
 			addnav+= "</ul>";
@@ -1538,7 +1539,7 @@ $(function()
 
 	// Ouverture de la liste des pages disponibles absente du menu au click sur le +
     add_page_list = false;
-	$("#add-nav .zone").on({
+	$("#add-nav .zone, #add-nav .fa-cancel").on({
 		"click": function(event) {
 			event.preventDefault();  
 			//event.stopPropagation();
@@ -1598,8 +1599,8 @@ $(function()
 						// Changement de la class zone +
 						$("#add-nav").addClass("open");
 
-						// Ajoute la croix de suppression
-						$("nav ul:first li").append("<i onclick='$(this).parent().remove()' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
+						// Ajoute la croix de suppression // $(this).parent().remove()
+						$("nav ul:first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
 					}
 				});
 			}
