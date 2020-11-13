@@ -933,8 +933,12 @@ switch($_GET['mode'])
 			}
 		}
 
+		// Quel type de contenu on ressort
+		if(isset($GLOBALS['add_menu']))  $type = "type IN ('".implode("','", $GLOBALS['add_menu'])."')";
+		else $type = "type='page'";
+
 		// Liste les pages abs du menu
-		$sql = "SELECT * FROM ".$table_content." WHERE type='page' AND lang='".$lang."' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
+		$sql = "SELECT * FROM ".$table_content." WHERE ".$type." AND lang='".$lang."' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
 		//echo $sql."<br>";
 
 		$sel = $connect->query($sql);

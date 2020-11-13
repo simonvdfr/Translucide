@@ -218,6 +218,13 @@ $GLOBALS['add_content'] = array(
 );
 
 
+// Type de contenu ajoutable dans le menu
+$GLOBALS['add_menu'] = array(
+	//"article",
+	"page"
+);
+
+
 // Bouton en bas en layer
 $GLOBALS['bt_edit'] = true;
 $GLOBALS['bt_top'] = false;
