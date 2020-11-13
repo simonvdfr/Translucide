@@ -943,7 +943,7 @@ switch($_GET['mode'])
 
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
-			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a></li>";
+			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().remove()' class='fa fa-cancel red' title='\"+ __(\"Remove\") +\"'></i></li>";
 		}
 
 	break;

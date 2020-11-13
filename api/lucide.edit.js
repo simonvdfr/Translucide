@@ -10,7 +10,7 @@ add_translation({
 	"Cancel" : {"fr" : "Annuler"},	
 
 	"Empty element" : {"fr" : "El\u00e9ment vide"},		
-	"Add to menu" : {"fr" : "Ajouter au menu"},		
+	"Edit menu" : {"fr" : "Editer le menu"},		
 	"To remove slide here" : {"fr" : "Pour supprimer glisser ici"},		
 	"Paste something..." : {"fr" : "Collez quelque chose..."},
 	"Upload file" : {"fr" : "T\u00e9l\u00e9charger un fichier"},
@@ -1277,9 +1277,9 @@ unlucide = function()
 
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
-/*$(window).on("beforeunload", function(){
+$(window).on("beforeunload", function(){
 	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
-});*/
+});
 
 
 /************** ONLOAD **************/
@@ -1420,17 +1420,10 @@ $(function()
 
 
 	/************** MENU NAV **************/
-
-	// Rends le menu de navigation éditable
-	// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
-	$("header nav li a").attr("contenteditable","true").addClass("editable");
-
-	// Ajout d'une zone de drag pour chaque élément
-	$("header nav li").prepend("<div class='dragger'></div>");
 	
-	// Bloc d'option pour le menu de navigation
-	addnav = "<div id='add-nav' class='black'>";
-		addnav+= "<div class='zone' title='"+ __("Add to menu") +"'><i class='fa fa-fw fa-plus bigger vam'></i></div>";
+	// Bloc d'option pour le menu de navigation  class='black'
+	addnav = "<div id='add-nav'>";
+		addnav+= "<div class='zone bt' title='"+ __("Edit menu") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></div>";
 		addnav+= "<div class='tooltip none pat'>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
 				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a></li>";
@@ -1513,14 +1506,14 @@ $(function()
 		connectToSortable: "header nav ul:first",
 		helper: "clone",
 		revert: "invalid"
-    });	
+    });
 
 
-	// Page disponible absente du menu
+	// Affichage du bouton pour ouvrir le menu d'ajout
 	on_header = false;
 	add_page_bt = false;		
 	$("header").on({
-		"mouseenter": function(event) {
+		"mouseover": function(event) {//mouseenter
 
 			on_header = true;// On est sur le header avec la souris
 
@@ -1538,7 +1531,7 @@ $(function()
 		"mouseleave": function(event) {
 			on_header = false;
 			setTimeout(function() { 
-				if(!hover_add_nav && !on_header) $("#add-nav").fadeOut("fast");
+				if(!add_page_list && !hover_add_nav && !on_header) $("#add-nav").fadeOut("fast");
 			}, 1000);			
 		}
 	});
@@ -1550,9 +1543,21 @@ $(function()
 			event.preventDefault();  
 			//event.stopPropagation();
 
+			// Ouvre le menu d'ajout
 			// Cherche dans la base les pages manquantes
 			if(!add_page_list)
 			{
+				// Rends le menu de navigation éditable
+				// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
+				$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+
+				// Pour la toolbox sur les éléments du menu
+				editable_event();
+
+				// Ajout d'une zone de drag pour chaque élément
+				$("header nav ul:first li").prepend("<div class='dragger'></div>");
+
+
 				// Liste les pages déjà dans le menu
 				var menu = {};
 				$(document).find("header nav ul a").each(function(index) { menu[index] = $(this).attr('href'); });
@@ -1575,10 +1580,10 @@ $(function()
 							connectWith: "header nav ul",
 							start: function() {
 								$(".editable").off();//$("body").off(".editable");
-								$("header nav ul:first li").attr("contenteditable","false").removeClass("editable");
+								$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable");
 							},
 							stop: function() {
-								$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+								$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
 								editable_event();
 								tosave();// A sauvegarder
 							}
@@ -1588,18 +1593,34 @@ $(function()
 						$("#add-nav ul a").click(function() { return false; });
 
 						// Affichage de la liste
-						$("#add-nav .tooltip").slideDown();
+						$("#add-nav .tooltip").show();//slideDown
+
 						// Changement de la class zone +
 						$("#add-nav").addClass("open");
+
+						// Ajoute la croix de suppression
+						$("nav ul:first li").append("<i onclick='$(this).parent().remove()' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
 					}
 				});
 			}
-			else {
+			else// Ferme le menu d'ajout
+			{
 				add_page_list = false;
+
 				// Affichage de la liste
-				$("#add-nav .tooltip").slideUp();
+				$("#add-nav .tooltip").hide();//slideUp
+
 				// Changement de la class zone +
 				$("#add-nav").removeClass("open");
+
+				// Supprime la croix de suppression
+				$("nav ul:first .fa-cancel").remove();
+
+				// Supprime l'edition des élément du menu
+				$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable").off();
+
+				// Supprime la zone de drag pour chaque élément
+				$("header nav ul:first li .dragger").remove();
 			}
 		}
 	});
