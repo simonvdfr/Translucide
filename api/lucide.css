@@ -397,7 +397,7 @@ nav ul li i.fa-cancel {
 	#add-nav .fa-cancel {
 		position: absolute;
 		top: 12px;
-		right: 5px;
+		right: 2px;
 		cursor: pointer;
 	}
 
