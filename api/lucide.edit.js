@@ -1432,6 +1432,10 @@ $(function()
 		addnav+= "</div>";	
 	addnav+= "</div>";	
 	$("header nav > ul").after(addnav);
+
+	// Positionne le menu
+	console.log($("header nav > ul").offset().top)
+	$("#add-nav").css("top", $("header nav > ul").offset().top + $("#admin-bar").outerHeight() + "px");
 	
 	// Déplace un élément du menu add vers le menu courant au click sur le +
 	hover_add_nav = false;	
