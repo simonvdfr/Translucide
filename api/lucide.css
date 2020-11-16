@@ -331,7 +331,7 @@ nav ul li i.fa-cancel {
 	/* -3rem @todo voir si ça ne crée pas de bug*/
     /* margin-left -6rem */
 
-	display: none;
+	display: none;/*block !important*/
 		
 	opacity: 0.8;	
 
@@ -413,7 +413,7 @@ nav ul li i.fa-cancel {
 
 		display: inline-block;
 		
-		margin: -4rem 0 0;
+		/* margin: -4rem 0 0; plus utiliser si on force la position */
 		padding: 5px 0px 8px 5px;
 
 		cursor: pointer;

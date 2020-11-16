@@ -1434,9 +1434,11 @@ $(function()
 	$("header nav > ul").after(addnav);
 
 	// Positionne le menu
-	console.log($("header nav > ul").offset().top)
-	$("#add-nav").css("top", $("header nav > ul").offset().top + $("#admin-bar").outerHeight() + "px");
+	// Barre admin + position top du menu + marge du menu - hauteur du bt edit menu
+	var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul").offset().top + parseInt($("header nav > ul").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
+	$("#add-nav").css("top", top_bt_menu + "px");
 	
+
 	// Déplace un élément du menu add vers le menu courant au click sur le +
 	hover_add_nav = false;	
 	$("#add-nav").on({
