@@ -1188,6 +1188,7 @@ img_check = function(file)
 		$(".dialog-optim-img").dialog({
 			autoOpen: false,
 			width: 'auto',
+			maxHeight: 500,
 			position: { my: "right-10 top", at: "left bottom+10", of: $("#admin-bar") },
 			show: function() {$(this).fadeIn(300);},
 			close: function() { $(".dialog-optim-img").remove(); }
