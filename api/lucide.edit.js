@@ -1032,9 +1032,13 @@ img_leave = function()
 
 // Retourne le poids d'un fichier
 filesize = function(file) {
+
     var request = new XMLHttpRequest();
+
     request.open("HEAD", file, false);
+
     request.send(null);
+
 	//request.getResponseHeader('content-length')
     /Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
     return Math.ceil(parseInt(RegExp.$1) / 1024);// Taille en Ko
@@ -1199,47 +1203,51 @@ img_check = function(file)
 		var num = 0;
 		$.each(imgs, function(src, img)
 		{
-			var optimize = '';
-
-			// extraction de l'Extention
-			var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
-
-			// extraction de la Taille		
-			var size = filesize(src);
-			imgs[src]['size'] = size;
-
-			// total des poids d'image
-			imgs_size = imgs_size + size;
-
-			// Image dans le contenu
-			if(img.type == 'img')
+			// Si l'image existe !=0
+			if(img.naturalWidth != 0)
 			{
-				// Vérifie la taille de l'image pour proposer une optimisation
-				var widthRatio = (img.width / img.naturalWidth) * 100;
-				var heightRatio = (img.height / img.naturalHeight) * 100;
+				var optimize = '';
 
-				// Image + grande que la zone afficher => Redimentionnement
-				if(widthRatio < 80 || heightRatio < 80)
-					optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+				// extraction de l'Extention
+				var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
+
+				// extraction de la Taille
+				var size = filesize(src);
+				imgs[src]['size'] = size;
+
+				// total des poids d'image
+				imgs_size = imgs_size + size;
+
+				// Image dans le contenu
+				if(img.type == 'img')
+				{
+					// Vérifie la taille de l'image pour proposer une optimisation
+					var widthRatio = (img.width / img.naturalWidth) * 100;
+					var heightRatio = (img.height / img.naturalHeight) * 100;
+
+					// Image + grande que la zone afficher => Redimentionnement
+					if(widthRatio < 80 || heightRatio < 80)
+						optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+				}
+
+				// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
+				if(ext == 'png' && size > img_green)
+					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+
+				// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
+				/*if(ext == 'jpg' && size > img_warning)
+					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
+
+				// Couleur de vigilance
+				if(size <= img_green) var imgcolor = 'green';
+				else if(size > img_green && size < img_warning) var imgcolor = 'orange';
+				else if(size >= img_warning) var imgcolor = 'red';
+
+				// Affichage
+				$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+
+				++num;
 			}
-
-			// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
-			if(ext == 'png' && size > img_green)
-				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
-
-			// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
-			/*if(ext == 'jpg' && size > img_warning)
-				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
-
-			// Couleur de vigilance
-			if(size <= img_green) var imgcolor = 'green';
-			else if(size > img_green && size < img_warning) var imgcolor = 'orange';
-			else if(size >= img_warning) var imgcolor = 'red';
-
-			// Affichage
-			$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
-
-			++num;
 
 		});
 
