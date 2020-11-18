@@ -561,17 +561,17 @@ switch($_GET['mode'])
 			if($connect->error)
 				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
-
 		
+		
+		// Clean les tags de la fiche dans la bdd
+		$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."'");
+
 		// TAG ajout au tag
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
 			foreach($_POST['tag'] as $zone => $tags) 
 			{
 				$zone = encode($zone);
-
-				// Clean les tags de la fiche dans la bdd
-				$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$zone."'");
 
 				// split les tags en fonction du séparateur
 				$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($tags));
