@@ -1203,7 +1203,7 @@ img_check = function(file)
 		var num = 0;
 		$.each(imgs, function(src, img)
 		{
-			// Si l'image existe !=0
+			// Si l'image existe sa taille original est !=0
 			if(img.naturalWidth != 0)
 			{
 				var optimize = '';
