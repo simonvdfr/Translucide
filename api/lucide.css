@@ -289,8 +289,7 @@ header nav ul { position: relative; }
 		padding-top: 4.5rem;/* Pour que le menu en responsive soit bien en dessous de l'admin bar */
 	}
 
-
-header:hover .dragger { display: block; }
+/* Barre pour déplacer un élément du menu */
 .dragger {
 	background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAABlBMVEUAAAC/v79T5hyIAAAAAXRSTlMAQObYZgAAAAxJREFUCNdjaGBgAAABhACBKN161wAAAABJRU5ErkJggg==') repeat;
 
@@ -308,16 +307,31 @@ header:hover .dragger { display: block; }
 
 	display: none;
 }
+	header:hover .dragger { display: block; }
+
+
+/* Croix rouge pour supprimer un élément du menu */
+nav ul li i.fa-cancel {
+	display: none;
+	position: absolute;
+	cursor: pointer;
+	padding: 0 2px 2px;
+	top: -5px;
+	right: -5px;
+	z-index: 1;
+}
+	nav > ul li:hover i.fa-cancel { display: block; }
 
 
 /* Menu d'ajout/supp au menu */
 #add-nav {
 	position: fixed;
 
-	right: 1rem;/* -3rem @todo voir si ça ne crée pas de bug*/
+	right: 0;/* 1rem */
+	/* -3rem @todo voir si ça ne crée pas de bug*/
     /* margin-left -6rem */
 
-	display: none;
+	display: none;/*block !important*/
 		
 	opacity: 0.8;	
 
@@ -378,25 +392,40 @@ header:hover .dragger { display: block; }
 			font-family: FontAwesome;
 		}
 
+
+	/* bt de fermeture du menu d'ajout */
+	#add-nav .fa-cancel {
+		position: absolute;
+		top: 12px;
+		right: 2px;
+		cursor: pointer;
+	}
+
+
 	#add-nav .zone {	
-		background-color: rgba(245, 245, 245, 0.95);
+		/* background-color: rgba(245, 245, 245, 0.95);
 		border: 2px dashed;
 		border-radius: 100%;
-		
-		border-color: #7ad2d9;		
+		border-color: #7ad2d9; */	
+
+		border-radius: 100% 0 0 100%;	
+		border-right: 0px;
 
 		display: inline-block;
 		
-		margin: 1rem 0 0;
-		padding: 2px;
+		/* margin: -4rem 0 0; plus utiliser si on force la position */
+		padding: 5px 0px 8px 5px;
 
 		cursor: pointer;
 
 		transition: all .3s;
 	}
+		#add-nav.open .zone { margin: 0; }
 		
 	#add-nav.open {	
 		margin: 0;
+		right: 1rem;
+		top: initial !important;
 	}
 	#add-nav.open .zone {	
 		border-radius: 30px 30px 0 0;

@@ -1,4 +1,4 @@
-<?
+<?php
 $add_translation = array(
 	"404 error : page not found" => array("fr" => "Erreur 404 : page introuvable"),
 	"Under Construction" => array("fr" => "En construction"),

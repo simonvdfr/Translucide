@@ -1,4 +1,4 @@
-<?
+<?php 
 // Si on a posté le formulaire
 if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
 {
@@ -45,10 +45,10 @@ if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["questi
 					// Icone envoyer
 					$("#contact a .fa-spin").removeClass("fa-spin fa-cog").addClass("fa-ok");
 					</script>
-					<?
+					<?php 
 				}
 				else {
-					?><script>error("Erreur lors de l'envoi du mail");</script><?
+					?><script>error("Erreur lors de l'envoi du mail");</script><?php 
 					//echo error_get_last()['message']; print_r(error_get_last());
 				}
 			}
@@ -61,7 +61,7 @@ if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["questi
 				// On rétablie le formulaire
 				activation_form();
 				</script>
-				<?
+				<?php 
 			}
 		}
 		else
@@ -73,7 +73,7 @@ if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["questi
 			// On rétablie le formulaire
 			activation_form();
 			</script>
-			<?
+			<?php 
 		}
 	}
 }
@@ -114,21 +114,21 @@ else// Affichage du formulaire
 
 		<article class="w80 center">
 
-			<?h1('titre', 'tc')?>
-			<?h2('sstitre', 'tc')?>
+			<?php h1('titre', 'tc')?>
+			<?php h2('sstitre', 'tc')?>
 
-			<?txt('texte', 'mbl')?>
+			<?php txt('texte', 'mbl')?>
 
 			<form id="contact">
 
 				<div class="mbm">
-					<input type="email" name="email_contact" id="email_contact" required placeholder="<?_e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
+					<input type="email" name="email_contact" id="email_contact" required placeholder="<?php _e("Email")?>" class="w40 vatt"><span class="wrapper big white vam o50">@</span>
 
 					<input name="reponse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" placeholder="nom@domaine.com">
 				</div>
 
 				<div>
-					<textarea name="message" id="message" required placeholder="<?_e("Message")?>" class="w100 mbt" style="height: 200px;"></textarea>
+					<textarea name="message" id="message" required placeholder="<?php _e("Message")?>" class="w100 mbt" style="height: 200px;"></textarea>
 				</div>
 
 
@@ -141,14 +141,14 @@ else// Affichage du formulaire
 					<!-- RGPD -->
 					<div class="fr w70 tr">
 						<input type="checkbox" name="rgpdcheckbox" id="rgpdcheckbox" required>
-						<label for="rgpdcheckbox" class="inline" style="text-transform: none;"><?txt('rgpd')?></label>
+						<label for="rgpdcheckbox" class="inline" style="text-transform: none;"><?php txt('rgpd')?></label>
 					</div>
 				</div>
 
 				<!-- Bouton envoyer -->
 				<div class="fr mtm mbl">
 					<a href="javascript:$('#contact').submit();void(0)" class="bt bold">
-						<?_e(array("Send" => array("fr" => "Envoyer")))?>
+						<?php _e(array("Send" => array("fr" => "Envoyer")))?>
 						<i class="fa fa-mail-alt mlt"></i>
 					</a>
 				</div>
@@ -231,6 +231,6 @@ else// Affichage du formulaire
 			send_contact(event)
 		});
 	</script>
-<?
+<?php 
 }
 ?>

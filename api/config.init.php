@@ -1,4 +1,4 @@
-<?
+<?php
 // benchmark
 $GLOBALS['microtime'] = microtime(true);
 
@@ -160,11 +160,13 @@ $GLOBALS['toolbox'] = array(
 $GLOBALS['pub_hash'] = '';
 $GLOBALS['priv_hash'] = '';
 
+// Nom de boucle de hashage du mdp
+$GLOBALS['pwd_hash_loop'] = '';
+
+
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = 'medium';
 
-// Nom de boucle de hashage du mdp
-$GLOBALS['pwd_hash_loop'] = '';
 
 // Temps d'expiration des sessions de connexion
 $GLOBALS['session_expiration'] = 60*60*24*30;
@@ -213,6 +215,13 @@ $GLOBALS['add_content'] = array(
 	//"video" => ["fa" => "fa-video", "tpl" => "video"],
 	//"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
 	"page" => ["fa" => "fa-doc-text", "tpl" => "page"]
+);
+
+
+// Type de contenu ajoutable dans le menu
+$GLOBALS['add_menu'] = array(
+	//"article",
+	"page"
 );
 
 
