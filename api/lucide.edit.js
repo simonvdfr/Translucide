@@ -1349,6 +1349,10 @@ $(function()
 		refresh_permalink("#admin-bar");
 	});
 
+	// Dossier spécifique média pour l'image pour og:image
+	if($("#visuel").data('dir')) $("#admin-bar #og-image").data('dir', $("#visuel").data('dir'));
+	else if($("#alaune").data('dir')) $("#admin-bar #og-image").data('dir', $("#alaune").data('dir'));
+
 	// On récupère og:image des meta
 	if($("meta[property='og:image']").last().attr("content") != undefined) 
 	{
