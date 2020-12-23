@@ -44,7 +44,6 @@
 
 	<article class="pbm mtl mod">
 
-		<!-- image : 470 x 320 -->
 		<div class="plm fl w40 animation slide-left"><a <?php href('lien-6')?>><?php media('image-6', '470')?></a></div>
 
 		<div class="pll fr w60">
@@ -64,16 +63,14 @@
 
 	</article>
 
-	<article class="ptm mod" style="border-top: solid 1px #eee;">
+	<article class="ptm mod" style="border-top: solid 1px #eee;" <?bg("bg", 'lazy')?>>
 
-			<div class="prs mtl ptm fl w60 tr animation slide-left">
-				<?php h3('titre-7','mbn')?>
-				<?php txt('txt-7')?>
-			</div>
+		<div class="prs mtl ptm fl w60 tr animation slide-left">
+			<?php h3('titre-7','mbn')?>
+			<?php txt('txt-7')?>
+		</div>
 
-		<!-- image : 470 x 320 -->
 		<div class="prl fr w40 animation slide-right"><a <?php href('lien-map')?>><?php media('image-7', '470')?></a></div>
-
 
 	</article>
 
@@ -83,28 +80,28 @@
 <!-- Module -->
 <section class="mw960p mod center mbl">
 
-	<?php h2('titre-module', 'tc mbt mtt ptm')?>
+	<?php h2('titre-module', 'tc')?>
 
-		<div class="flex mbm tc">
+	<div class="flex">
 
-			<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
-			<ul id="partenaire" class="module unstyled pan auto">
-			<?php
-			// nom du module "partenaire" = id du module, et au début des id des txt() media() ...
-			$module = module("partenaire");
-			foreach($module as $key => $val)
-			{
-				?>
-				<li>
-					<div class='img fl mrl'><?php media("partenaire-img-".$key, array('size' => '250x250'));?></div>
-					<div class="pal">« <?php txt("partenaire-text-".$key, array("tag" => "span"));?> »</div>
-				</li>
-				<?php
-			}
+		<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
+		<ul id="partenaire" class="module unstyled pan auto tc">
+		<?php
+		// nom du module "partenaire" = id du module, et au début des id des txt() media() ...
+		$module = module("partenaire");
+		foreach($module as $key => $val)
+		{
 			?>
-			</ul>
+			<li class="fl">
+				<div><?php media("partenaire-img-".$key, array('size' => '250x250', 'lazy' => true));?></div>
+				<div class="pam">« <?php txt("partenaire-text-".$key, array("tag" => "span"));?> »</div>
+			</li>
+			<?php
+		}
+		?>
+		</ul>
 
-		</div>
+	</div>
 
 </section>
 
