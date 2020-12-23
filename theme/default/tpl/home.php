@@ -67,7 +67,7 @@
 
 		<div class="prs mtl ptm fl w60 tr animation slide-left">
 			<?php h3('titre-7','mbn')?>
-			<?php txt('txt-7')?>
+			<?php txt('txt-7', array('lazy' => true))?>
 		</div>
 
 		<div class="prl fr w40 animation slide-right"><a <?php href('lien-map')?>><?php media('image-7', '470')?></a></div>
