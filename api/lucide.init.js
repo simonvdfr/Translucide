@@ -244,7 +244,18 @@ $(function()
 	$root = $("html, body");
 	$body = $("body");
 	$window = $(window);
-    $animation = $(".animation, [data-lazy]");
+
+	// Détecte si le navigateur gère nativement les LAZYLOAD des images, si oui on assigne les images au src
+	if('loading' in HTMLImageElement.prototype) {
+		$.each($("img[loading='lazy']"), function() 
+    	{
+			$(this).attr("src", $(this).data("src")).removeAttr("data-src");
+		});
+	}
+
+	// Sélectionne les animations, les backgrounds et les images en lazy loading si le navigateur ne les gère pas nativement
+    $animation = $(".animation, [data-lazy='bg'], img[loading='lazy']:not([src=''])");
+
 	hover_add = false;
 	edit_on = false;
 
@@ -410,35 +421,36 @@ $(function()
     		var element_top = $element.offset().top;
     		var element_bottom = (element_top + element_height);
 
-    		// @todo: Ne pas metre en fire les lazyload
-			// Vérifier si ce conteneur actuel est dans la fenêtre
-			if ((element_bottom >= window_top) &&
+			// Vérifier si ce conteneur actuel est dans la fenêtre (!=lazy)
+			if (
+				(element_bottom >= window_top) &&
 				(element_top <= window_bottom) &&
-				!$element.data("lazy")) {
+				!$element[0].hasAttribute("loading") &&
+				!$element.data("lazy")
+			) 
 				$element.addClass("fire");
-			}
-			else $element.removeClass("fire");		
+			else 
+				$element.removeClass("fire");		
 
 
 			// LAZY LOAD DES IMAGES (avec marge pour préload avant entré dans la fenetre)
-			var marge = 300; 
-			if($element.data("lazy") == "bg") {
-				if($(this).css("background-image") == "none")
-					if(
-						(element_bottom + marge) >= window_top
-						&& (element_top - marge) <= window_bottom
-					)
-					{
-						$(this).css("background-image", function() {
-							return "url(" + $(this).attr("data-bg") + ")";
-						});
-					}
-			}
-			else if($element.data("lazy") && !$element.attr("src") && $element.parent().css("display") != "none")
-			{
-	    		// Si l'image est dans data-lazy mais n'est pas chargé et que le parent est visible
-				if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
-			}
+			var marge = 300;
+			if(
+				(element_bottom + marge) >= window_top
+				&& (element_top - marge) <= window_bottom
+				//element_top <= window_bottom
+			)
+				if($element.data("bg") && $element.css("background-image") == "none")// Si background
+				{			
+					$element.css("background-image", function() {
+						return "url(" + $element.attr("data-bg") + ")";
+					});					
+				}
+				else if($element.data("src") && !$element.attr("src") && $element.parent().css("display") != "none")// Si image
+				{
+		    		// Si l'image est dans data-src mais n'est pas chargé et que le parent est visible
+					$element.attr("src", $element.data("src"));
+				}
 		});
 
 

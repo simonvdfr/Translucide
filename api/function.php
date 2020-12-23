@@ -293,6 +293,7 @@ function txt($key = null, $filter = array())
 		if(isset($filter['editable'])) echo $filter['editable']; else echo"editable";
 		if(isset($filter['class'])) echo" ".$filter['class'];
 		if(isset($filter['global'])) echo" global";
+		if(isset($filter['lazy'])) echo" lazy";
 		echo"'";
 
 		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
@@ -414,30 +415,31 @@ function media($key = null, $filter = array())
 		}
 	}
 
-	echo"<span";
+	echo'<span';
 
-		echo" id='".encode($key)."'";
+		echo' id="'.encode($key).'"';
 
-		echo" class='";
-		if(isset($filter['editable'])) echo $filter['editable']; else echo"editable-media";
-		if(isset($filter['global'])) echo" global";
-		//if(isset($size[0]) and isset($size[1])) echo" crop";
-		if(isset($filter['crop'])) echo" crop";
-		echo"'";
+		echo' class="';
+		if(isset($filter['editable'])) echo $filter['editable']; else echo'editable-media';
+		if(isset($filter['global'])) echo' global';
+		//if(isset($size[0]) and isset($size[1])) echo' crop';
+		if(isset($filter['crop'])) echo' crop';
+		echo'"';
 
-		if(isset($filter['class'])) echo" data-class='".$filter['class']."'";
-		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
-		if(isset($size[0])) echo" data-width='".$size[0]."'";
-		if(isset($size[1])) echo" data-height='".$size[1]."'";
+		if(isset($filter['class'])) echo' data-class="'.$filter['class'].'"';
+		if(isset($filter['dir'])) echo' data-dir="'.$filter['dir'].'"';// Desitation de stockage du fichier
+		if(isset($size[0])) echo' data-width="'.$size[0].'"';
+		if(isset($size[1])) echo' data-height="'.$size[1].'"';
+
 		if(isset($size[0]) or isset($size[1])) // @todo Vérifier si on met max-width ou width
-			echo" style='".
+			echo' style="'.
 			(isset($size[0])?'max-width:'.$size[0].'px;':'').
 			(isset($size[1])?'max-height:'.$size[1].'px':'').
-			"'";
+			'"';
 
-		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
+		if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
 
-	echo">";
+	echo'>';
 
 		if(isset($img))// C'est une image
 		{
@@ -448,44 +450,44 @@ function media($key = null, $filter = array())
 				if(@$get['zoom']) echo'<a href="'.$get['zoom'].'">';
 			}
 
-				echo"<img ";
+				echo'<img ';
 
 				if(isset($filter['lazy']))
-					echo"data-lazy=\"".$filename."\"";
+					echo'data-src="'.$filename.'" loading="lazy"';
 				else 
-					echo"src=\"".$filename."\"";
+					echo'src="'.$filename.'"';
 
 				if(isset($size[0]) or isset($size[1])) {
-					echo" style='";
-					if(isset($size[0])) echo"max-width: ".$size[0]."px;";
-					if(isset($size[1])) echo"max-height: ".$size[1]."px;";
-					echo"'";
+					echo' style="';
+					if(isset($size[0])) echo'max-width: '.$size[0].'px;';
+					if(isset($size[1])) echo'max-height: '.$size[1].'px;';
+					echo'"';
 				}
 
 				// On met en data l'url de la version grande
-				if(isset($filter['data-zoom'])) echo" data-zoom='".@$filter['data-zoom']."'";
+				if(isset($filter['data-zoom'])) echo' data-zoom="'.@$filter['data-zoom'].'"';
 
-				if(isset($filter['itemprop'])) echo" itemprop='".@$filter['itemprop']."'";
+				if(isset($filter['itemprop'])) echo' itemprop="'.@$filter['itemprop'].'"';
 
 				// Image map
-				if(isset($filter['usemap'])) echo" usemap='".@$filter['usemap']."'";
+				if(isset($filter['usemap'])) echo' usemap="'.@$filter['usemap'].'"';
 
 				// Texte ALT
 				if(isset($GLOBALS['content'][$key.'-alt'])) echo' alt="'.$GLOBALS['content'][$key.'-alt'].'"';
 				else echo' alt=""';
 
-				echo" class='";					
-					if(isset($filter['zoom'])) echo" zoom";
-					if(isset($filter['class'])) echo" ".$filter['class'];
-				echo"'>";
+				echo' class="';					
+					if(isset($filter['zoom'])) echo' zoom';
+					if(isset($filter['class'])) echo' '.$filter['class'];
+				echo'">';
 
 			// Fin lien zoom
-			if(isset($filter['zoom'])) echo"</a>";
+			if(isset($filter['zoom'])) echo'</a>';
 		}
 		elseif($filename) // C'est un fichier
-			echo"<a href=\"".$GLOBALS['content'][$key]."\" target='_blank'><i class='fa fa-fw fa-".$fa." mega' title=\"".$GLOBALS['content'][$key]."\"></i></a>";
+			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="fa fa-fw fa-'.$fa.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
 
-	echo"</span>";
+	echo'</span>';
 
 	$GLOBALS['editkey']++;
 }

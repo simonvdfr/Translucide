@@ -887,6 +887,9 @@ get_img = function(id, link)
 
 	var domain_path = window.location.origin + path;
 
+	// Image en lazyloading dans un contenu éditable
+	var lazy = ($("#"+media_source).hasClass("lazy")?' loading="lazy"':'');
+
 
 	// Resize de l'image et insertion dans la source
 	$.ajax({
@@ -923,9 +926,9 @@ get_img = function(id, link)
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
 				if(typeof link !== 'undefined' && link)// Avec lien zoom
-					exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" class='fl'></a>");
+					exec_tool("insertHTML", '<a href="'+ $("#"+id).attr("data-media") +'"><img src="'+ domain_path + final_file +'" class="fl"'+lazy+'></a>');
 				else// Juste l'image
-					exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" class='fl'>");				
+					exec_tool("insertHTML", '<img src="'+ domain_path + final_file +'" class="fl"'+lazy+'>');				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
@@ -2066,8 +2069,8 @@ $(function()
 	/************** IMAGE/FICHIER SEUL **************/
 
 	// Charge les images en lazy load pour qu'elles puissent être sauvegardé
-	$("[data-lazy]").each(function() {
-		$(this).attr("src", $(this).data("lazy"));
+	$("[loading='lazy']").each(function() {
+		$(this).attr("src", $(this).data("src"));
 	});
 
 	
