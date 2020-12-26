@@ -401,6 +401,8 @@ if(!$ajax)
 
 	</main>
 
+	<div class="responsive-overlay"></div>
+
 	<script>console.log("<?=benchmark()?>")</script>
 
 	<noscript>

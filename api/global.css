@@ -1007,14 +1007,14 @@ header #logo { transition: opacity .5s; }
 			}
 
 	/* Raz du header */
-	.responsiv-nav header { position: inherit; }
+	.responsive-nav header { position: inherit; }
 	/* Ouvertur du menu */
-	.responsiv-nav header nav ul {
+	.responsive-nav header nav ul {
 		transform: translateX(0);
 		-webkit-transform: translateX(0);
 	}
 	/* Overlay menu */
-	.responsiv-nav .responsiv-overlay {
+	.responsive-nav .responsive-overlay {
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -1023,7 +1023,7 @@ header #logo { transition: opacity .5s; }
 		background-color: rgba(0, 0, 0, 0.6);
 	}
 	/* Fixe le burger*/
-	.responsiv-nav .burger { position: fixed; }
+	.responsive-nav .burger { position: fixed; }
 
 	/* mode edition : menu d'ajout invisible */
 	.dragger { display: none !important; }

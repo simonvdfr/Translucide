@@ -487,26 +487,20 @@ $(function()
 
 
 	// MENU BURGER
-
 	function toggleBurger() {
-		document.body.classList.toggle('responsiv-nav');
+		document.body.classList.toggle('responsive-nav');
 		document.querySelector('.burger').classList.toggle('active');
 	}
 
-	// Au clic, afficher ou masquer le menu burger.
+	// Au clic, afficher ou masquer le menu burger
 	document.querySelector('.burger').onclick = function() {
 		toggleBurger();
 	};
 
-	// Si n'existe pas (idéalement, à prévoir directement en HTML ?)
-	if(!document.querySelector('.responsiv-overlay')) {
-		var overlayElm = document.createElement('div');
-		overlayElm.classList.add('responsiv-overlay');
-		// Au clic, ne peut que masquer le menu burger.
-		overlayElm.onclick = function() {
-			toggleBurger();	
-		};	
-		document.body.appendChild(overlayElm);
-	}
+	// Ferme le menu si on click sur l'overlay gris du fond
+	document.querySelector('.responsive-overlay').onclick = function() {
+		console.log('close')
+		toggleBurger();
+	};
 	
 });
