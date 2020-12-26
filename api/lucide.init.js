@@ -3,22 +3,20 @@ translation = {
 	"" : {"fr" : ""},
 	"Edit the content of the page" : {"fr" : "Modifier le contenu de la page"},
 	"Add content" : {"fr" : "Ajouter un contenu"},
-	"Thank you to select a template" : {"fr" : "Merci de s\u00e9lectionner un model de page"},
+	"Thank you to select a template" : {"fr" : "Merci de sélectionner un model de page"},
 	"Back to Top" : {"fr" : "Retour en haut"},
 	"Error" : {"fr" : "Erreur"},
-	"Validate the connection in the popup" : {"fr" : "Valider la connexion dans la fen\u00eatre"},
 	"Activation status" : {"fr" : "Etat d'activation"},
 	"Active" : {"fr" : "Actif"},
-	"Deactivate" : {"fr" : "D\u00e9sactiv\u00e9"},
+	"Deactivate" : {"fr" : "Désactivé"},
 	"Visitors do not see this content" : {"fr" : "Les visiteurs ne voient pas ce contenu"},
-	"Disconnection" : {"fr" : "D\u00e9connexion"}
 }
 
 // Fonction d'ajout d'une liste de traduction
 add_translation = function(new_translation) {
-	$.each(new_translation, function(i, val) { 
-		translation[i] = val; 
-		translation[i.toLowerCase()] = val;// Lowercase les index de traduction
+	Object.keys(new_translation).forEach(function(i){
+		translation[i] = new_translation[i]; 
+		translation[i.toLowerCase()] = new_translation[i];// Lowercase les index de traduction
 	});
 }
 
