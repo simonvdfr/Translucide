@@ -487,24 +487,26 @@ $(function()
 
 
 	// MENU BURGER
-	$(".burger").click(function() {
-		// Animation sur le buger
-		$(this).toggleClass("active");
 
-		// Fond gris derrière le menu
-		if(!$(".responsiv-overlay").length)
-		{
-			$("body").append("<div class='responsiv-overlay'></div>");
+	function toggleBurger() {
+		document.body.classList.toggle('responsiv-nav');
+		document.querySelector('.burger').classList.toggle('active');
+	}
 
-			// Ferme le menu si on click sur l'overlay
-			$(".responsiv-overlay").click(function() {
-				$("body").removeClass("responsiv-nav");
-				$(".burger").removeClass("active");
-			})
-		}
-		
-		// Ouverture du menu
-		$("body").toggleClass("responsiv-nav");		
-	});
+	// Au clic, afficher ou masquer le menu burger.
+	document.querySelector('.burger').onclick = function() {
+		toggleBurger();
+	};
+
+	// Si n'existe pas (idéalement, à prévoir directement en HTML ?)
+	if(!document.querySelector('.responsiv-overlay')) {
+		var overlayElm = document.createElement('div');
+		overlayElm.classList.add('responsiv-overlay');
+		// Au clic, ne peut que masquer le menu burger.
+		overlayElm.onclick = function() {
+			toggleBurger();	
+		};	
+		document.body.appendChild(overlayElm);
+	}
 	
 });
