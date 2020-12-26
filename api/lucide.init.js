@@ -64,7 +64,7 @@ logout = function() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', path+'api/ajax.php?mode=logout', true);
 	xhr.onload = function() {
-		$("body").html(this.response);// Retour
+		document.body.insertAdjacentHTML('beforeend', this.response);
 		reload();// Recharge la page	
 	}
 	xhr.send();
@@ -167,13 +167,23 @@ before_data = [];
 // Formulaire d'ajout d'un contenu
 add_content = function()
 {	
-	$.ajax({url: path+"api/ajax.admin.php?mode=add-content&callback=add_content"})
-		.done(function(html) {			
-			$("body").append(html);// Dialog d'ajout
-		});
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', path+'api/ajax.admin.php?mode=add-content&callback=add_content', true);
+	xhr.onload = function() {
+		//document.body.innerHTML += this.response;
+		//document.body.insertAdjacentHTML('beforeend', this.responseText);
+		//$("body").append(this.response);
+
+		// Dialog d'ajout
+		// Pour bien exécuter le js injecté par l'Ajax ES6
+		const response = document.createRange().createContextualFragment(this.response);
+		document.body.append(response);
+	}
+	xhr.send();
 }
 
 
+// Déplacer dans add-content de ajax.admin.php et aussi dans edit.js (dupliquer mais pas utile en front)
 // Crée le permalink à partir du titre de la page
 refresh_permalink = function(target) {
 	// Animation de chargement
@@ -195,7 +205,7 @@ refresh_permalink = function(target) {
 	});
 }
 
-
+// @todo repasser dans edit.js car pas suffisament utiliser pour etre charger à chaque fois & supp de install.php
 // Renvoi un mot de passe
 $.fn.make_password = function() {
 	var $this = this;
