@@ -63,10 +63,10 @@ __ = function(txt) {
 logout = function() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', path+'api/ajax.php?mode=logout', true);
-	xhr.onload = function() { if(this.status >= 200 && this.status < 400) {
+	xhr.onload = function() {
 		$("body").html(this.response);// Retour
 		reload();// Recharge la page	
-	}};
+	}
 	xhr.send();
 }
 
