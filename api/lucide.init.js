@@ -61,13 +61,13 @@ __ = function(txt) {
 
 // Déconnexion
 logout = function() {
-	$.ajax({
-		url: path+"api/ajax.php?mode=logout",
-		success: function(html){ 
-			$("body").html(html);// Retour
-			reload();// Recharge la page	
-		}
-	});
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', path+'api/ajax.php?mode=logout', true);
+	xhr.onload = function() { if(this.status >= 200 && this.status < 400) {
+		$("body").html(this.response);// Retour
+		reload();// Recharge la page	
+	}};
+	xhr.send();
 }
 
 
@@ -497,7 +497,6 @@ $(function()
 
 	// Ferme le menu si on click sur l'overlay gris du fond
 	document.querySelector('.responsive-overlay').onclick = function() {
-		console.log('close')
 		toggleBurger();
 	};
 	
