@@ -21,12 +21,13 @@ body {
 }
 
 
-body > script { display: none !important; }
+/*body > script { display: none !important; } Vérif la pertinence 06/01/2021 */
 
 * { box-sizing: inherit; }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary { display: block; }
 
+/* Pas utilisé 06/01/2021
 audio, canvas, progress, video {
 	display: inline-block;
 	vertical-align: baseline;
@@ -35,7 +36,7 @@ audio, canvas, progress, video {
 audio:not([controls]) {
 	display: none;
 	height: 0;
-}
+} */
 
 [hidden], template { display: none; }
 
@@ -45,25 +46,25 @@ a {
 }
 
 a:active, a:hover, a:focus { 
-	outline: 0;
-	color: #000;
+	outline: 0;/* Problème d'accessibilité ? 06/01/2021 */
+	/* color: #000; */
 }
 
-abbr[title] { border-bottom: 1px dotted; }
+/* abbr[title] { border-bottom: 1px dotted; } Très spécifique 06/01/2021 */
 
 b, strong { font-weight: bold; }
 
-dfn { font-style: italic; }
+/* dfn { font-style: italic; } Pas utilisé 06/01/2021 */
 
 h1 {
 	font-size: 2em;
 	margin: 0.67em 0;
 }
 
-mark {
+/* mark { Pas utilisé 06/01/2021
 	background: #ff0;
 	color: #000;
-}
+} */
 
 small { font-size: 80%; }
 
@@ -96,15 +97,15 @@ hr {
 	height: 0;
 }
 
-pre { overflow: auto; }
+/* pre { overflow: auto; } Pas utilisé 06/01/2021 */
 
-code, kbd, pre, samp {
+/* code, kbd, pre, samp { Pas utilisé 06/01/2021
 	white-space: pre-line;
 	white-space: pre-wrap;
 	font-family: Consolas, "DejaVu Sans Mono", Courier, monospace;
 	line-height: normal;
 	font-size: 1em;
-}
+} */
 
 button, input, optgroup, select, textarea {
 	color: inherit;
@@ -156,7 +157,7 @@ input[type="search"] {
 
 input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
 
-fieldset {
+/* fieldset { Pas utilisé 06/01/2021
 	border: 1px solid #c0c0c0;
 	margin: 0 2px;
 	padding: 0.35em 0.625em 0.75em;
@@ -165,14 +166,14 @@ fieldset {
 legend {
 	border: 0;
 	padding: 0;
-}
+} */
 
 textarea { 
 	overflow: auto;
 	padding: 0.4em;
 }
 
-optgroup { font-weight: bold; }
+/* optgroup { font-weight: bold; } Pas utilisé 06/01/2021 */
 
 table {
 	border-collapse: collapse;
@@ -233,19 +234,20 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 .color { color: #77d1d0; }
 .bg-color { background-color: #77d1d0; }
-.box-shadow { box-shadow: 0 1px 2px 0 rgba(150, 150, 150, 0.8); }
+/* .box-shadow { box-shadow: 0 1px 2px 0 rgba(150, 150, 150, 0.8); } Pas utilisé 06/01/2021 */
 
 
+/* @todo transfert dans lucide.css */
 /* Transparence */
 .o50 { opacity: 0.5; }
 .o80 { opacity: 0.8; }
-.ho1:hover { opacity: 1; }
+.ho1:hover { opacity: 1; } 
 
 
 /* Rotation */
 .r90 { transform: rotate(90deg) }
 .r180 { transform: rotate(180deg) }
-.r270 { transform: rotate(270deg) }
+.r270 { transform: rotate(270deg) }/* @todo vérif l'utilisation */
 
 
 /* Background */
@@ -255,7 +257,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 	background-repeat: no-repeat;
     background-position: top center;
 }
-.bg-center { background-position: center !important; }
+/* .bg-center { background-position: center !important; } Pas utilisé 06/01/2021 */
 
 
 /* Alignement */
@@ -269,11 +271,11 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 
 /*  Layout and modules */
-.mod, .ofh { overflow: hidden; }
+.mod { overflow: hidden; }
 
-.clear, .line, .row { clear: both; }
+.clear { clear: both; }
 
-.clearfix::after, .line::after {
+.clearfix::after {
 	content: "";
 	display: table;
 	clear: both;
@@ -289,10 +291,10 @@ em, .italic, address, cite, i, var { font-style: italic; }
 }
 	img.center { display: block !important; }
 
-.txtleft, .tl { text-align: left !important; }
-.txtright, .tr { text-align: right !important; }
-.txtcenter, .tc { text-align: center !important; }
-.txtjustify, .tj { text-align: justify; }
+.tl { text-align: left !important; }
+.tr { text-align: right !important; }
+.tc { text-align: center !important; }
+.tj { text-align: justify; }
 
 .fl { float: left; }
 .fr { float: right; }
@@ -308,7 +310,7 @@ figure img { display: inline-block !important; }
 
 
 /* Table layout */
-.row {
+/* .row { Pas utilisé 06/01/2021
 	display: table;
 	table-layout: fixed;
 	width: 100%;
@@ -316,7 +318,7 @@ figure img { display: inline-block !important; }
 .row > *, .col {
 	display: table-cell;
 	vertical-align: top;
-}
+} */
 
 .inbl {
   display: inline-block;
@@ -325,7 +327,7 @@ figure img { display: inline-block !important; }
 
 .inline { display: inline !important; }
 .block { display: block !important; }
-.inflex { display: inline-flex !important; }
+/* .inflex { display: inline-flex !important; } Pas utilisé 06/01/2021 */
 .none, .editable-hidden { display: none; }
 
 .hidden { visibility: hidden; }
@@ -336,8 +338,9 @@ figure img { display: inline-block !important; }
 .relative { position: relative; }
 
 
+/* @todo revoir */
 /* Forms */
-form, fieldset, .bn {
+form, .bn {
   border: none;
 }
 input, button, select, label, .bt {
@@ -415,7 +418,7 @@ input[type="reset"].unstyled:focus {
 
 
 /* Pour ajouter des pictos dans les menus select */
-.fa-select { font-family: FontAwesome, Helvetica, Arial, sans-serif; }
+/* .fa-select { font-family: FontAwesome, Helvetica, Arial, sans-serif; } Pas utilisé 06/01/2021  */
 
 
 /* Module */
@@ -438,7 +441,7 @@ input[type="reset"].unstyled:focus {
 
 	border-radius: 3px;
 	border: 1px solid rgba(117, 137, 140, 0.5);
-	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	/* box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1); Pas utilisé 06/01/2021  */
 
 	overflow: hidden;
     /* text-overflow: ellipsis; @todo crée des bug avec les icones <i .fa> */
@@ -458,7 +461,7 @@ input[type="reset"].unstyled:focus {
 		box-shadow: none;
 		background-color: #75898c;		
 
-		box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset;
+		/* box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset; Pas utilisé 06/01/2021  */
 	}
 		.bt a:hover { color: #fff; }
 	.bt:active, button:active { 
@@ -502,14 +505,14 @@ input[type="reset"].unstyled:focus {
 	/* @todo voir pour déplacer dans le plugin multi-connexion*/
 	.bt.internal { background-color: #77d1d0; }
 		.bt.connect.internal:before { content: "\e838"; }
-	.bt.facebook { background-color: #3A5795; }
+	/*.bt.facebook { background-color: #3A5795; }  Pas utilisé 06/01/2021 
 		.bt.connect.facebook:before { content: "\f09a"; }
 	.bt.google { background-color: #dd4b39; }
 		.bt.connect.google:before { content: "\f1a0"; }
 	.bt.yahoo { background-color: #4101af; }
 		.bt.connect.yahoo:before { content: "\f19e"; }
 	.bt.microsoft { background-color: #008299; }
-		.bt.connect.microsoft:before { content: "\f17a"; }
+		.bt.connect.microsoft:before { content: "\f17a"; }*/
 
 
 /* Bouton flottant */
@@ -656,8 +659,8 @@ input[type="reset"].unstyled:focus {
 	grid-template-columns: repeat(4, 1fr);
 }
 
-.pull { margin-right: auto; }
-.push { margin-left: auto; }
+/*.pull { margin-right: auto; }
+.push { margin-left: auto; } */
 
 
 /* blocks widths (percentage and pixels) */
@@ -675,18 +678,21 @@ input[type="reset"].unstyled:focus {
 .w80 { width: 80%; }
 .w90 { width: 90%; }
 .w100 { width: 100%; }
+
 .w50p { width: 50px; }
 .w100p { width: 100px; }
 .w150p { width: 150px; }
 .w200p { width: 200px; }
 .w300p { width: 300px; }
-.w400p { width: 400px; }
+
+/* .w400p { width: 400px; } Pas utilisé 06/01/2021
 .w500p { width: 500px; }
 .w600p { width: 600px; }
 .w700p { width: 700px; }
 .w800p { width: 800px; }
 .w960p { width: 960px; }
-.w1140p { width: 1140px; }
+.w1140p { width: 1140px; } */
+
 .mw320p { max-width: 320px; }
 .mw960p { max-width: 960px; }
 .mw1140p { max-width: 1140px; }
@@ -798,6 +804,7 @@ div.editable {
 		}
 
 
+/* @todo externalisé dans un css et js */
 /* Animation onscroll */
 .animation { transition: all 1s .2s ease-out; }
 	
@@ -817,10 +824,6 @@ div.editable {
 
 		/* animation: slide-up .3s 1 ease-out; */
 	}
-		/* @keyframes slide-up {SUPP ???
-		    0% { transform: translate3d(0, 100%, 0); }
-		    100% { transform: translate3d(0, 0, 0); }
-		} */
 
 	.slide-down {
 		opacity: 0;
@@ -829,10 +832,6 @@ div.editable {
 
 		/* animation: slide-down .3s 1 ease-out; */
 	}
-		/* @keyframes slide-down {SUPP ???
-		    0% { transform: translate3d(0, -100%, 0); }
-		    100% { transform: translate3d(0, 0, 0); }
-		} */
 
 	.slide-left {
 		opacity: 0;
@@ -841,11 +840,7 @@ div.editable {
 
 		/* animation: slide-left .3s 1 ease-out; */
 	}
-		/* @keyframes slide-left {SUPP ???
-		    0% { transform: translate3d(-100%, 0, 0); }
-		    100% { transform: translate3d(0, 0, 0); }
-		}
-		 */
+
 	.slide-right {
 		opacity: 0;
 		transform: translate3d(100px, 0, 0);
@@ -853,10 +848,6 @@ div.editable {
 		
 		/* animation: slide-right .3s 1 ease-out; */
 	}
-		/* @keyframes slide-right {SUPP ???
-		    0% { transform: translate3d(100%, 0, 0); }
-		    100% { transform: translate3d(0, 0, 0); }
-		} */
 
 
 	.fire {
@@ -1039,9 +1030,11 @@ header #logo { transition: opacity .5s; }
 		float: none;
 	}
 
+	/* @todo revoir les trailles */
 	.plm, .pll { padding-left: 0; }
 	.prm, .prl { padding-right: 0; }
 
+	/* @todo revoir les trailles */
 	.mrl { margin-right: 0; }
 	.mll { margin-left: 0; }
 
@@ -1067,10 +1060,10 @@ header #logo { transition: opacity .5s; }
 /* RESPONSIVE small */
 @media (min-width: 321px) and (max-width: 640px) {
 	/* quick reset in small resolution and less */
-	.w600p,
+	/* .w600p, Pas utilisé 06/01/2021
 	.w700p,
 	.w800p,
-	.w960p,
+	.w960p, */
 	.mw960p {
 		width: auto;
 		float: none;
@@ -1080,9 +1073,7 @@ header #logo { transition: opacity .5s; }
 /* RESPONSIVE tiny */
 @media (max-width: 320px) {
 	/* quick tiny resolution reset */
-	.mod,
-	.col,
-	fieldset {
+	.mod {
 		/* display: block !important; empèche les toggle js */
 		float: none !important;
 		clear: none !important;
@@ -1091,18 +1082,14 @@ header #logo { transition: opacity .5s; }
 		margin-right: 0 !important;
 		border: 0;
 	}
-	.w300p,
-	.w400p,
-	.w500p,
-	.w600p,
-	.w700p {
+	.w300p {
 		width: auto;
 		float: none;
 	}
-	.row {
+	/* .row {  Pas utilisé 06/01/2021
 		display: block !important;
 		width: 100% !important;
-	}
+	} */
 
 	th,
 	td {
@@ -1120,6 +1107,7 @@ header #logo { transition: opacity .5s; }
 		box-shadow: none !important;
 		text-shadow: none !important;
 	}
+	/* @todo voir pour passer les textes en noir et les images en grayscale pour plus d'écoconception */
 	body {
 		width: auto;
 		margin: auto;
