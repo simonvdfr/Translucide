@@ -272,6 +272,10 @@ $GLOBALS['favicon'] = '';
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
 
 
+// Utilisation de global.css ? à supprimer à termes (06/01/2021)
+$GLOBALS['global.css'] = false;
+
+
 // Librairie externe
 $GLOBALS['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';
 

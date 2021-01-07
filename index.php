@@ -281,7 +281,7 @@ if(!$ajax)
 		<?php if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?php }?>
 
 
-		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
+		<?php if(!isset($GLOBALS['global.css']) or @$GLOBALS['global.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
