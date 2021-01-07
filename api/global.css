@@ -1,3 +1,5 @@
+/* /!\ FICHIER PLUS UTILISÉ, MAINTENANT TOUS SE PASSE DANS LE STYLE.CSS DANS LE THÈME /!\ */
+
 /* Inspiré par knacss.com (Raphael Goetter) et donc normalize.css (Nicolas Gallagher & Jonathan Neal) */
 
 /* Reset */
@@ -456,10 +458,10 @@ input[type="reset"].unstyled:focus {
 	  user-select: none;
 	}
 	.bt:hover, button:hover {
+		background-color: #75898c;
 		color: #fff;
 		text-decoration: none;
 		box-shadow: none;
-		background-color: #75898c;		
 
 		/* box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset, 0 100px 0 rgba(255, 255, 255, 0.05) inset; Pas utilisé 06/01/2021  */
 	}
