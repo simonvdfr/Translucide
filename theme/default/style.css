@@ -56,24 +56,6 @@ header { box-shadow: 0px 10px 9px -9px rgba(153,156,153,0.37); }
 #contact input[name='reponse'] { display: none; }
 
 
-/* Barre de cookie */
-#cnilcookie {
-	border: none;
-	position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 25px;
-    text-align: center;
-    font-size: 1.4rem;
-    display: none;
-}
-	#cnilcookie:hover { opacity: 1 !important; }
-	#cnilcookie .bt {
-		padding: .3rem .8rem;
-		border: none;
-	}
-
-
 
 /* Inspiré par knacss.com (Raphael Goetter) et donc normalize.css (Nicolas Gallagher & Jonathan Neal) */
 

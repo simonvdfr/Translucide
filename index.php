@@ -311,7 +311,13 @@ if(!$ajax)
 		<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js?<?=$GLOBALS['cache']?>"></script>
 
 
+		<?php if(@$GLOBALS['plausible']) { ?>
+		<script async defer data-domain="<?=@$GLOBALS['plausible']?>" src="https://plausible.io/js/plausible.js"></script>
+		<?php }?>
+
+
 		<script>
+			
 			<?php if(@$GLOBALS['google_analytics']) { ?>
 			// Si Analytics pas desactivé
 			if(get_cookie('analytics') != "desactiver") 
@@ -327,6 +333,7 @@ if(!$ajax)
 			}
 			<?php }
 
+
 			if(@$GLOBALS['facebook_api_id']) { ?>
 			// Facebook
 			(function(d, s, id){
@@ -338,6 +345,7 @@ if(!$ajax)
 			}(document, 'script', 'facebook-jssdk'));
 			<?php } 
 
+
 			if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
 				// Si demande l'autoload du mode édition et si admin
 				$(function(){
@@ -347,7 +355,8 @@ if(!$ajax)
 				<?php
 				// Supprime le cookie qui demande de charger automatiquement l'admin
 				@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
-			}?>			
+			}?>		
+
 
 			// Variables
 			id = "<?=$id?>";
@@ -360,7 +369,9 @@ if(!$ajax)
 			theme = "<?=$GLOBALS['theme']?>";
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)? 'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)? 'bt_top = true;':'')?>
+
 		</script>
+
 
 		<!--[if lt IE 9]>
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>

@@ -128,6 +128,9 @@ $GLOBALS['google_analytics'] = '';
 // https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
 
+// https://plausible.io
+$GLOBALS['plausible'] = '';// $GLOBALS['domain']
+
 
 // Toolbox
 $GLOBALS['toolbox'] = array(
