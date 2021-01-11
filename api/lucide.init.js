@@ -501,13 +501,11 @@ $(function()
 	}
 
 	// Au clic, afficher ou masquer le menu burger
-	document.querySelector('.burger').onclick = function() {
-		toggleBurger();
-	};
+	var burger = document.querySelector(".burger");
+	burger && (burger.onclick = function() { toggleBurger(); });
 
 	// Ferme le menu si on click sur l'overlay gris du fond
-	document.querySelector('.responsive-overlay').onclick = function() {
-		toggleBurger();
-	};
+	var responsiveOverlay = document.querySelector(".responsive-overlay");
+	responsiveOverlay && (responsiveOverlay.onclick = function() { toggleBurger(); });
 	
 });
