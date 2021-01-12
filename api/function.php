@@ -23,7 +23,7 @@ function encode($value, $separator = "-", $pass = null)
     $to = str_split("aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ");
 	
 	// Si on doit laisser certains caractères
-	if(@count($pass)) {
+	if(isset($pass) and @count($pass)) {
 		foreach($pass as $char){
 			$strpos = strpos(implode($from), $char);
 			$from[$strpos] = "";

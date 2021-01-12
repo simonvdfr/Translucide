@@ -223,7 +223,7 @@ if(!$ajax)
 	$res_nav = $sel_nav->fetch_assoc();
 
 	// Extraction du menu
-	if($res_nav['val']) $GLOBALS['nav'] = json_decode($res_nav['val'], true);
+	if(isset($res_nav['val'])) $GLOBALS['nav'] = json_decode($res_nav['val'], true);
 	else $GLOBALS['nav'] = array();
 
 
@@ -235,7 +235,7 @@ if(!$ajax)
 	$res_header = $sel_header->fetch_assoc();
 
 	// Ajout des données du header
-	if($res_header['val'])
+	if(isset($res_header['val']))
 		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
 
 
@@ -247,7 +247,7 @@ if(!$ajax)
 	$res_footer = $sel_footer->fetch_assoc();
 
 	// Ajout des données du footer
-	if($res_footer['val'])
+	if(isset($res_footer['val']))
 		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_footer['val'], true));
 
 
