@@ -102,6 +102,7 @@ get_content = function(content)
 	// Contenu des select, input hidden, href éditables // content+" input, "+
 	$(document).find(content+" .editable-select, "+content+" .editable-input, "+content+" .editable-href, "+content+" .editable-alt").each(function() {
 		if($(this).attr("type") == "checkbox") data[content_array][this.id] = $(this).prop("checked");			
+		else if($(this).attr("type") == "radio" && $(this).prop("checked")) data[content_array][this.name] = this.id;
 		else if($(this).val()) data[content_array][this.id] = $(this).val(); 
 	});
 }
@@ -2421,8 +2422,11 @@ $(function()
 		if($(this).attr("for")) var id = $(this).attr("for");
 		else var id = this.id;
 
-		if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
-		else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+		if($("#"+id).attr('type') != 'radio') 
+		{
+			if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
+			else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+		}
 	})
 
 
