@@ -5,7 +5,7 @@
 </style>
 
 
-<section class="w700p mod center mtm mbl">
+<section class="mw960p mod center mtm mbl">
 
 
 	<?php h1('title', 'mbn tc')?>
