@@ -5,23 +5,21 @@ add_translation({
 	"Save" : {"fr" : "Enregistrer"},
 	"Delete" : {"fr" : "Supprimer"},
 	"Delete the page" : {"fr" : "Supprimer la page"},
-	"Also remove media from content" : {"fr" : "Supprimer \u00e9galement les m\u00e9dias pr\u00e9sents dans le contenu"},
-	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
+	"Also remove media from content" : {"fr" : "Supprimer également les médias présents dans le contenu"},
+	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistrées"},
 	"Cancel" : {"fr" : "Annuler"},	
 
-	"Empty element" : {"fr" : "El\u00e9ment vide"},		
-	"Add to menu" : {"fr" : "Ajouter au menu"},		
+	"Empty element" : {"fr" : "Elément vide"},		
+	"Edit menu" : {"fr" : "Editer le menu"},		
 	"To remove slide here" : {"fr" : "Pour supprimer glisser ici"},		
 	"Paste something..." : {"fr" : "Collez quelque chose..."},
-	"Upload file" : {"fr" : "T\u00e9l\u00e9charger un fichier"},
+	"Upload file" : {"fr" : "Télécharger un fichier"},
 	"Change the background image" : {"fr" : "Changer l'image de fond"},
-	"Drop your files to upload" : {"fr" : "D\u00e9posez vos fichiers pour les mettre en ligne"},
 	"This file format is not supported" : {"fr" : "Ce format de fichier n'est pas pris en charge"},	
 	"Delete user" : {"fr" : "Supprimer l'utilisateur"},
-	"User deleted" : {"fr" : "Utilisateur supprim\u00e9"},
 	"Title" : {"fr" : "Titre"},	
-	"Media Library" : {"fr" : "Biblioth\u00e8que des m\u00e9dias"},		
-	"Icon Library" : {"fr" : "Biblioth\u00e8que d'ic\u00f4ne"},		
+	"Media Library" : {"fr" : "Bibliothèque des médias"},		
+	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
 	"Anchor" : {"fr" : "Ancre"},		
 	"Add Anchor" : {"fr" : "Ajouter une ancre"},		
@@ -29,11 +27,11 @@ add_translation({
 	"Link" : {"fr" : "Lien"},		
 	"Add Link" : {"fr" : "Ajouter le lien"},		
 	"Change Link" : {"fr" : "Modifier le lien"},		
-	"Open link in new window" : {"fr" : "Ouvre le lien dans une nouvelle fen\u00eatre"},		
+	"Open link in new window" : {"fr" : "Ouvre le lien dans une nouvelle fenêtre"},		
 	"Destination URL" : {"fr" : "URL de destination"},	
 
-	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la s\u00e9lection"},
-	"Image caption" : {"fr" : "L\u00e9gende de l'image"},		
+	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la sélection"},
+	"Image caption" : {"fr" : "Légende de l'image"},		
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
 	"Zoom link" : {"fr" : "Lien zoom"},
@@ -44,7 +42,7 @@ add_translation({
 	"Subtitle" : {"fr" : "Sous-titre"},
 
 	"Add a module" : {"fr" : "Ajouter un module"},
-	"Move" : {"fr" : "D\u00e9placer"},
+	"Move" : {"fr" : "Déplacer"},
 	"Remove" : {"fr" : "Supprimer"},
 
 	"Image optimization" : {"fr" : "Optimisation des images"},
@@ -104,6 +102,7 @@ get_content = function(content)
 	// Contenu des select, input hidden, href éditables // content+" input, "+
 	$(document).find(content+" .editable-select, "+content+" .editable-input, "+content+" .editable-href, "+content+" .editable-alt").each(function() {
 		if($(this).attr("type") == "checkbox") data[content_array][this.id] = $(this).prop("checked");			
+		else if($(this).attr("type") == "radio" && $(this).prop("checked")) data[content_array][this.name] = this.id;
 		else if($(this).val()) data[content_array][this.id] = $(this).val(); 
 	});
 }
@@ -887,6 +886,9 @@ get_img = function(id, link)
 
 	var domain_path = window.location.origin + path;
 
+	// Image en lazyloading dans un contenu éditable
+	var lazy = ($("#"+media_source).hasClass("lazy")?' loading="lazy"':'');
+
 
 	// Resize de l'image et insertion dans la source
 	$.ajax({
@@ -923,9 +925,9 @@ get_img = function(id, link)
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
 				if(typeof link !== 'undefined' && link)// Avec lien zoom
-					exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" class='fl'></a>");
+					exec_tool("insertHTML", '<a href="'+ $("#"+id).attr("data-media") +'"><img src="'+ domain_path + final_file +'" class="fl"'+lazy+'></a>');
 				else// Juste l'image
-					exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" class='fl'>");				
+					exec_tool("insertHTML", '<img src="'+ domain_path + final_file +'" class="fl"'+lazy+'>');				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
@@ -1032,9 +1034,13 @@ img_leave = function()
 
 // Retourne le poids d'un fichier
 filesize = function(file) {
+
     var request = new XMLHttpRequest();
+
     request.open("HEAD", file, false);
+
     request.send(null);
+
 	//request.getResponseHeader('content-length')
     /Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
     return Math.ceil(parseInt(RegExp.$1) / 1024);// Taille en Ko
@@ -1188,6 +1194,7 @@ img_check = function(file)
 		$(".dialog-optim-img").dialog({
 			autoOpen: false,
 			width: 'auto',
+			maxHeight: 500,
 			position: { my: "right-10 top", at: "left bottom+10", of: $("#admin-bar") },
 			show: function() {$(this).fadeIn(300);},
 			close: function() { $(".dialog-optim-img").remove(); }
@@ -1198,47 +1205,51 @@ img_check = function(file)
 		var num = 0;
 		$.each(imgs, function(src, img)
 		{
-			var optimize = '';
-
-			// extraction de l'Extention
-			var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
-
-			// extraction de la Taille		
-			var size = filesize(src);
-			imgs[src]['size'] = size;
-
-			// total des poids d'image
-			imgs_size = imgs_size + size;
-
-			// Image dans le contenu
-			if(img.type == 'img')
+			// Si l'image existe sa taille original est !=0
+			if(img.naturalWidth != 0)
 			{
-				// Vérifie la taille de l'image pour proposer une optimisation
-				var widthRatio = (img.width / img.naturalWidth) * 100;
-				var heightRatio = (img.height / img.naturalHeight) * 100;
+				var optimize = '';
 
-				// Image + grande que la zone afficher => Redimentionnement
-				if(widthRatio < 80 || heightRatio < 80)
-					optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+				// extraction de l'Extention
+				var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
+
+				// extraction de la Taille
+				var size = filesize(src);
+				imgs[src]['size'] = size;
+
+				// total des poids d'image
+				imgs_size = imgs_size + size;
+
+				// Image dans le contenu
+				if(img.type == 'img')
+				{
+					// Vérifie la taille de l'image pour proposer une optimisation
+					var widthRatio = (img.width / img.naturalWidth) * 100;
+					var heightRatio = (img.height / img.naturalHeight) * 100;
+
+					// Image + grande que la zone afficher => Redimentionnement
+					if(widthRatio < 80 || heightRatio < 80)
+						optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+				}
+
+				// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
+				if(ext == 'png' && size > img_green)
+					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+
+				// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
+				/*if(ext == 'jpg' && size > img_warning)
+					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
+
+				// Couleur de vigilance
+				if(size <= img_green) var imgcolor = 'green';
+				else if(size > img_green && size < img_warning) var imgcolor = 'orange';
+				else if(size >= img_warning) var imgcolor = 'red';
+
+				// Affichage
+				$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+
+				++num;
 			}
-
-			// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
-			if(ext == 'png' && size > img_green)
-				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
-
-			// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
-			/*if(ext == 'jpg' && size > img_warning)
-				optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
-
-			// Couleur de vigilance
-			if(size <= img_green) var imgcolor = 'green';
-			else if(size > img_green && size < img_warning) var imgcolor = 'orange';
-			else if(size >= img_warning) var imgcolor = 'red';
-
-			// Affichage
-			$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
-
-			++num;
 
 		});
 
@@ -1277,9 +1288,9 @@ unlucide = function()
 
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
-/*$(window).on("beforeunload", function(){
+$(window).on("beforeunload", function(){
 	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
-});*/
+});
 
 
 /************** ONLOAD **************/
@@ -1339,6 +1350,10 @@ $(function()
 	$("#admin-bar #refresh-permalink").click(function() {
 		refresh_permalink("#admin-bar");
 	});
+
+	// Dossier spécifique média pour l'image pour og:image
+	if($("#visuel").data('dir')) $("#admin-bar #og-image").data('dir', $("#visuel").data('dir'));
+	else if($("#alaune").data('dir')) $("#admin-bar #og-image").data('dir', $("#alaune").data('dir'));
 
 	// On récupère og:image des meta
 	if($("meta[property='og:image']").last().attr("content") != undefined) 
@@ -1420,25 +1435,25 @@ $(function()
 
 
 	/************** MENU NAV **************/
-
-	// Rends le menu de navigation éditable
-	// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
-	$("header nav li a").attr("contenteditable","true").addClass("editable");
-
-	// Ajout d'une zone de drag pour chaque élément
-	$("header nav li").prepend("<div class='dragger'></div>");
 	
-	// Bloc d'option pour le menu de navigation
-	addnav = "<div id='add-nav' class='black'>";
-		addnav+= "<div class='zone' title='"+ __("Add to menu") +"'><i class='fa fa-fw fa-plus bigger vam'></i></div>";
+	// Bloc d'option pour le menu de navigation  class='black'
+	addnav = "<div id='add-nav'>";
+		addnav+= "<div class='zone bt' title='"+ __("Edit menu") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></div>";
 		addnav+= "<div class='tooltip none pat'>";
+			addnav+= "<i class='fa fa-cancel grey o50'></i>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
 				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a></li>";
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
 	$("header nav > ul").after(addnav);
+
+	// Positionne le menu
+	// Barre admin + position top du menu + marge du menu - hauteur du bt edit menu
+	var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul").offset().top + parseInt($("header nav > ul").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
+	$("#add-nav").css("top", top_bt_menu + "px");
 	
+
 	// Déplace un élément du menu add vers le menu courant au click sur le +
 	hover_add_nav = false;	
 	$("#add-nav").on({
@@ -1513,14 +1528,14 @@ $(function()
 		connectToSortable: "header nav ul:first",
 		helper: "clone",
 		revert: "invalid"
-    });	
+    });
 
 
-	// Page disponible absente du menu
+	// Affichage du bouton pour ouvrir le menu d'ajout
 	on_header = false;
 	add_page_bt = false;		
 	$("header").on({
-		"mouseenter": function(event) {
+		"mouseover": function(event) {//mouseenter
 
 			on_header = true;// On est sur le header avec la souris
 
@@ -1538,21 +1553,33 @@ $(function()
 		"mouseleave": function(event) {
 			on_header = false;
 			setTimeout(function() { 
-				if(!hover_add_nav && !on_header) $("#add-nav").fadeOut("fast");
+				if(!add_page_list && !hover_add_nav && !on_header) $("#add-nav").fadeOut("fast");
 			}, 1000);			
 		}
 	});
 
 	// Ouverture de la liste des pages disponibles absente du menu au click sur le +
     add_page_list = false;
-	$("#add-nav .zone").on({
+	$("#add-nav .zone, #add-nav .fa-cancel").on({
 		"click": function(event) {
 			event.preventDefault();  
 			//event.stopPropagation();
 
+			// Ouvre le menu d'ajout
 			// Cherche dans la base les pages manquantes
 			if(!add_page_list)
 			{
+				// Rends le menu de navigation éditable
+				// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
+				$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+
+				// Pour la toolbox sur les éléments du menu
+				editable_event();
+
+				// Ajout d'une zone de drag pour chaque élément
+				$("header nav ul:first li").prepend("<div class='dragger'></div>");
+
+
 				// Liste les pages déjà dans le menu
 				var menu = {};
 				$(document).find("header nav ul a").each(function(index) { menu[index] = $(this).attr('href'); });
@@ -1575,10 +1602,10 @@ $(function()
 							connectWith: "header nav ul",
 							start: function() {
 								$(".editable").off();//$("body").off(".editable");
-								$("header nav ul:first li").attr("contenteditable","false").removeClass("editable");
+								$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable");
 							},
 							stop: function() {
-								$("header nav ul:first li").attr("contenteditable","true").addClass("editable");
+								$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
 								editable_event();
 								tosave();// A sauvegarder
 							}
@@ -1588,18 +1615,34 @@ $(function()
 						$("#add-nav ul a").click(function() { return false; });
 
 						// Affichage de la liste
-						$("#add-nav .tooltip").slideDown();
+						$("#add-nav .tooltip").show();//slideDown
+
 						// Changement de la class zone +
 						$("#add-nav").addClass("open");
+
+						// Ajoute la croix de suppression // $(this).parent().remove()
+						$("nav ul:first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
 					}
 				});
 			}
-			else {
+			else// Ferme le menu d'ajout
+			{
 				add_page_list = false;
+
 				// Affichage de la liste
-				$("#add-nav .tooltip").slideUp();
+				$("#add-nav .tooltip").hide();//slideUp
+
 				// Changement de la class zone +
 				$("#add-nav").removeClass("open");
+
+				// Supprime la croix de suppression
+				$("nav ul:first .fa-cancel").remove();
+
+				// Supprime l'edition des élément du menu
+				$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable").off();
+
+				// Supprime la zone de drag pour chaque élément
+				$("header nav ul:first li .dragger").remove();
 			}
 		}
 	});
@@ -2025,8 +2068,8 @@ $(function()
 	/************** IMAGE/FICHIER SEUL **************/
 
 	// Charge les images en lazy load pour qu'elles puissent être sauvegardé
-	$("[data-lazy]").each(function() {
-		$(this).attr("src", $(this).data("lazy"));
+	$("[loading='lazy']").each(function() {
+		$(this).attr("src", $(this).data("src"));
 	});
 
 	
@@ -2379,8 +2422,11 @@ $(function()
 		if($(this).attr("for")) var id = $(this).attr("for");
 		else var id = this.id;
 
-		if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
-		else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+		if($("#"+id).attr('type') != 'radio') 
+		{
+			if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
+			else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+		}
 	})
 
 
@@ -2559,8 +2605,9 @@ $(function()
 
 					$(".dialog-list-content").dialog({
 						autoOpen: false,
-						modal: true,
+						//modal: true,
 						width: 'auto',
+						maxWidth: '50%',
 		        		position: { my: "left+10 top", at: "left bottom+10", of: $("#admin-bar") },
 						show: function() {$(this).fadeIn(300);},
 						close: function() { $(".dialog-list-content").remove(); }

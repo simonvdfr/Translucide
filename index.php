@@ -223,7 +223,7 @@ if(!$ajax)
 	$res_nav = $sel_nav->fetch_assoc();
 
 	// Extraction du menu
-	if($res_nav['val']) $GLOBALS['nav'] = json_decode($res_nav['val'], true);
+	if(isset($res_nav['val'])) $GLOBALS['nav'] = json_decode($res_nav['val'], true);
 	else $GLOBALS['nav'] = array();
 
 
@@ -235,7 +235,7 @@ if(!$ajax)
 	$res_header = $sel_header->fetch_assoc();
 
 	// Ajout des données du header
-	if($res_header['val'])
+	if(isset($res_header['val']))
 		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
 
 
@@ -247,7 +247,7 @@ if(!$ajax)
 	$res_footer = $sel_footer->fetch_assoc();
 
 	// Ajout des données du footer
-	if($res_footer['val'])
+	if(isset($res_footer['val']))
 		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_footer['val'], true));
 
 
@@ -281,7 +281,7 @@ if(!$ajax)
 		<?php if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?php }?>
 
 
-		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
+		<?php if(!isset($GLOBALS['global.css']) or @$GLOBALS['global.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
 
@@ -310,7 +310,13 @@ if(!$ajax)
 		<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js?<?=$GLOBALS['cache']?>"></script>
 
 
+		<?php if(@$GLOBALS['plausible']) { ?>
+		<script async defer data-domain="<?=@$GLOBALS['plausible']?>" src="https://plausible.io/js/plausible.js"></script>
+		<?php }?>
+
+
 		<script>
+			
 			<?php if(@$GLOBALS['google_analytics']) { ?>
 			// Si Analytics pas desactivé
 			if(get_cookie('analytics') != "desactiver") 
@@ -326,6 +332,7 @@ if(!$ajax)
 			}
 			<?php }
 
+
 			if(@$GLOBALS['facebook_api_id']) { ?>
 			// Facebook
 			(function(d, s, id){
@@ -337,6 +344,7 @@ if(!$ajax)
 			}(document, 'script', 'facebook-jssdk'));
 			<?php } 
 
+
 			if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
 				// Si demande l'autoload du mode édition et si admin
 				$(function(){
@@ -346,7 +354,8 @@ if(!$ajax)
 				<?php
 				// Supprime le cookie qui demande de charger automatiquement l'admin
 				@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
-			}?>			
+			}?>		
+
 
 			// Variables
 			id = "<?=$id?>";
@@ -359,7 +368,9 @@ if(!$ajax)
 			theme = "<?=$GLOBALS['theme']?>";
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)? 'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)? 'bt_top = true;':'')?>
+
 		</script>
+
 
 		<!--[if lt IE 9]>
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -400,7 +411,16 @@ if(!$ajax)
 
 	</main>
 
+	<div class="responsive-overlay"></div>
+
 	<script>console.log("<?=benchmark()?>")</script>
+
+	<noscript>
+		<style>
+			/* Si pas de Javascript on affiche les contenus invisibles en attente d'animation */
+			.animation { opacity: 1 !important; transform: translate3d(0, 0, 0) !important;	}
+		</style>
+	</noscript>
 
 	</body>
 	</html>

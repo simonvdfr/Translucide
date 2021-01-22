@@ -3,22 +3,20 @@ translation = {
 	"" : {"fr" : ""},
 	"Edit the content of the page" : {"fr" : "Modifier le contenu de la page"},
 	"Add content" : {"fr" : "Ajouter un contenu"},
-	"Thank you to select a template" : {"fr" : "Merci de s\u00e9lectionner un model de page"},
+	"Thank you to select a template" : {"fr" : "Merci de sélectionner un model de page"},
 	"Back to Top" : {"fr" : "Retour en haut"},
 	"Error" : {"fr" : "Erreur"},
-	"Validate the connection in the popup" : {"fr" : "Valider la connexion dans la fen\u00eatre"},
 	"Activation status" : {"fr" : "Etat d'activation"},
 	"Active" : {"fr" : "Actif"},
-	"Deactivate" : {"fr" : "D\u00e9sactiv\u00e9"},
+	"Deactivate" : {"fr" : "Désactivé"},
 	"Visitors do not see this content" : {"fr" : "Les visiteurs ne voient pas ce contenu"},
-	"Disconnection" : {"fr" : "D\u00e9connexion"}
 }
 
 // Fonction d'ajout d'une liste de traduction
 add_translation = function(new_translation) {
-	$.each(new_translation, function(i, val) { 
-		translation[i] = val; 
-		translation[i.toLowerCase()] = val;// Lowercase les index de traduction
+	Object.keys(new_translation).forEach(function(i){
+		translation[i] = new_translation[i]; 
+		translation[i.toLowerCase()] = new_translation[i];// Lowercase les index de traduction
 	});
 }
 
@@ -63,13 +61,13 @@ __ = function(txt) {
 
 // Déconnexion
 logout = function() {
-	$.ajax({
-		url: path+"api/ajax.php?mode=logout",
-		success: function(html){ 
-			$("body").html(html);// Retour
-			reload();// Recharge la page	
-		}
-	});
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', path+'api/ajax.php?mode=logout', true);
+	xhr.onload = function() {
+		document.body.insertAdjacentHTML('beforeend', this.response);
+		reload();// Recharge la page	
+	}
+	xhr.send();
 }
 
 
@@ -169,13 +167,23 @@ before_data = [];
 // Formulaire d'ajout d'un contenu
 add_content = function()
 {	
-	$.ajax({url: path+"api/ajax.admin.php?mode=add-content&callback=add_content"})
-		.done(function(html) {			
-			$("body").append(html);// Dialog d'ajout
-		});
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', path+'api/ajax.admin.php?mode=add-content&callback=add_content', true);
+	xhr.onload = function() {
+		//document.body.innerHTML += this.response;
+		//document.body.insertAdjacentHTML('beforeend', this.responseText);
+		//$("body").append(this.response);
+
+		// Dialog d'ajout
+		// Pour bien exécuter le js injecté par l'Ajax ES6
+		const response = document.createRange().createContextualFragment(this.response);
+		document.body.append(response);
+	}
+	xhr.send();
 }
 
 
+// Déplacer dans add-content de ajax.admin.php et aussi dans edit.js (dupliquer mais pas utile en front)
 // Crée le permalink à partir du titre de la page
 refresh_permalink = function(target) {
 	// Animation de chargement
@@ -197,7 +205,7 @@ refresh_permalink = function(target) {
 	});
 }
 
-
+// @todo repasser dans edit.js car pas suffisament utiliser pour etre charger à chaque fois & supp de install.php
 // Renvoi un mot de passe
 $.fn.make_password = function() {
 	var $this = this;
@@ -244,7 +252,18 @@ $(function()
 	$root = $("html, body");
 	$body = $("body");
 	$window = $(window);
-    $animation = $(".animation, [data-lazy]");
+
+	// Détecte si le navigateur gère nativement les LAZYLOAD des images, si oui on assigne les images au src
+	if('loading' in HTMLImageElement.prototype) {
+		$.each($("img[loading='lazy']"), function() 
+    	{
+			$(this).attr("src", $(this).data("src")).removeAttr("data-src");
+		});
+	}
+
+	// Sélectionne les animations, les backgrounds et les images en lazy loading si le navigateur ne les gère pas nativement
+    $animation = $(".animation, [data-lazy='bg'], img[loading='lazy']:not([src=''])");
+
 	hover_add = false;
 	edit_on = false;
 
@@ -410,35 +429,36 @@ $(function()
     		var element_top = $element.offset().top;
     		var element_bottom = (element_top + element_height);
 
-    		// @todo: Ne pas metre en fire les lazyload
-			// Vérifier si ce conteneur actuel est dans la fenêtre
-			if ((element_bottom >= window_top) &&
+			// Vérifier si ce conteneur actuel est dans la fenêtre (!=lazy)
+			if (
+				(element_bottom >= window_top) &&
 				(element_top <= window_bottom) &&
-				!$element.data("lazy")) {
+				!$element[0].hasAttribute("loading") &&
+				!$element.data("lazy")
+			) 
 				$element.addClass("fire");
-			}
-			else $element.removeClass("fire");		
+			else 
+				$element.removeClass("fire");		
 
 
 			// LAZY LOAD DES IMAGES (avec marge pour préload avant entré dans la fenetre)
-			var marge = 300; 
-			if($element.data("lazy") == "bg") {
-				if($(this).css("background-image") == "none")
-					if(
-						(element_bottom + marge) >= window_top
-						&& (element_top - marge) <= window_bottom
-					)
-					{
-						$(this).css("background-image", function() {
-							return "url(" + $(this).attr("data-bg") + ")";
-						});
-					}
-			}
-			else if($element.data("lazy") && !$element.attr("src") && $element.parent().css("display") != "none")
-			{
-	    		// Si l'image est dans data-lazy mais n'est pas chargé et que le parent est visible
-				if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
-			}
+			var marge = 300;
+			if(
+				(element_bottom + marge) >= window_top
+				&& (element_top - marge) <= window_bottom
+				//element_top <= window_bottom
+			)
+				if($element.data("bg") && $element.css("background-image") == "none")// Si background
+				{			
+					$element.css("background-image", function() {
+						return "url(" + $element.attr("data-bg") + ")";
+					});					
+				}
+				else if($element.data("src") && !$element.attr("src") && $element.parent().css("display") != "none")// Si image
+				{
+		    		// Si l'image est dans data-src mais n'est pas chargé et que le parent est visible
+					$element.attr("src", $element.data("src"));
+				}
 		});
 
 
@@ -475,24 +495,17 @@ $(function()
 
 
 	// MENU BURGER
-	$(".burger").click(function() {
-		// Animation sur le buger
-		$(this).toggleClass("active");
+	function toggleBurger() {
+		document.body.classList.toggle('responsive-nav');
+		document.querySelector('.burger').classList.toggle('active');
+	}
 
-		// Fond gris derrière le menu
-		if(!$(".responsiv-overlay").length)
-		{
-			$("body").append("<div class='responsiv-overlay'></div>");
+	// Au clic, afficher ou masquer le menu burger
+	var burger = document.querySelector(".burger");
+	burger && (burger.onclick = function() { toggleBurger(); });
 
-			// Ferme le menu si on click sur l'overlay
-			$(".responsiv-overlay").click(function() {
-				$("body").removeClass("responsiv-nav");
-				$(".burger").removeClass("active");
-			})
-		}
-		
-		// Ouverture du menu
-		$("body").toggleClass("responsiv-nav");		
-	});
+	// Ferme le menu si on click sur l'overlay gris du fond
+	var responsiveOverlay = document.querySelector(".responsive-overlay");
+	responsiveOverlay && (responsiveOverlay.onclick = function() { toggleBurger(); });
 	
 });

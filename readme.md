@@ -47,26 +47,27 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 - Si vous saisissez un élément et que vous le glissez dans la boîte d'ajout, ça se transforme en poubelle, pour supprimer l’élément du menu.
 
 ## Fonctions pour rendre éditables des zones
-- `text("nom-de-la-zone" [, array("default" => "Texte par défaut", "global" => true, "class" => "meta number readonly", "placeholder" => "")])`
+- `text("nom-de-la-zone" [, array("default" => "Texte par défaut", "global" => true, "class" => "meta number readonly", "placeholder" => "Insérer ici le contenu de votre article", "lazy" => true)])`
 	- global : Cet argument permet d'avoir un contenu qui se retrouve à plusieurs endroits du site (il n'est pas rattaché exclusivement à la page en cours)
 	- class :
 		- L'ajout de la class `meta` fait que la donnée est ajoutée à la table `meta` dans la base de donnée. ceci afin par exemple de faire des recherches complexes (jointure entre la table `content` et `meta`)
 		- La class `number` permet de limiter la saisie à des chiffres uniquement
 		- La class `editable-hidden` permet d'afficher le contenu en mode édition et de le cacher en mode vue
 	- placeholder : permet de mettre un texte plus parlant que le nom de la zone pour l'utilisateur qui aura à ajouter des contenus
+	- lazy : les images qui seront ajoutées depuis la médiathèque dans cette zone éditable auront l'option qui permet de charger en lazyloading (chargement de l'image uniquement si elle est visible dans l'écran)
 
 - `media("nom-de-la-zone" [,'100x100'])` L'argument final est optionnel, il force une taille
-	- On peut ajouter plus d'arguments `media("nom-de-la-zone", array("dir" => "product/1/", "size" => "300", "class" => "fl mal"))`. Ici par exemple on spécifie un dossier destination pour le media (dir), une taille (size), ou encore une classe (class)
+	- On peut ajouter plus d'arguments `media("nom-de-la-zone", array("dir" => "product/1/", "size" => "300", "class" => "fl mal", "lazy" => true))`. Ici par exemple on spécifie un dossier destination pour le media (dir), une taille (size), une classe (class), ou encore que l'image se chargera en lazyloading
 	- Pour modifier la taille de la zone de téléchargement du média, allez dans le fichier `lucide.css` et modifiez les valeurs `min-width` et `max-width` des class `.lucide .editable-media`
 
-- `bg()` A placer dans un `<div>` ou autres pour rendre l'image de fond éditable
+- `bg()` A placer dans un `<div>` ou autres pour rendre l'image de fond éditable (vous pouvez également demander que l'image de fond se charge en lazyloading)
 
 - `input("nom-de-la-zone" [, array("type" => "hidden", "autocomplete" => ["variable 1", "variable 2"])])` créé un champ qui s'affiche uniquement en mode édition et qui permet de stocker des variables éditables. Ici `autocomplete` permet d'avoir une suggestion de valeur lors de la saisie
 
 - `module("nom-du-module")` 
 	- Permet la création de plusieurs blocs de contenus éditables au format identique sur une même page
 	- Avant la zone du module, mettez `<? $module = module("nom-du-module"); ?>` : le nom du module servira d'id plus loin
-	- La zone de module aura par exemple la structure suivante (attention, chaque fonction doit contenir le nom du module) :
+	- La zone de module aura par exemple la structure suivante (attention, chaque fonction doit contenir le nom du module en préfixe) :
 	
 	~~~~
 	<ul id="nom-du-module" class="module">

@@ -38,8 +38,8 @@ else setlocale(LC_ALL, 'en_US.utf8');
 
 // Serveur local ou online ? DEV || PROD
 if(
-	strpos($_SERVER['SERVER_ADDR'], '::1') !== false or
-	strpos($_SERVER['SERVER_ADDR'], '127.0') !== false)
+ $_SERVER['SERVER_ADDR'] == '127.0.0.1' or
+ strpos($_SERVER['SERVER_ADDR'], '::1') !== false)
 	$dev = true;
 else 
 	$dev = false;
@@ -128,6 +128,9 @@ $GLOBALS['google_analytics'] = '';
 // https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
 
+// https://plausible.io
+$GLOBALS['plausible'] = '';// $GLOBALS['domain']
+
 
 // Toolbox
 $GLOBALS['toolbox'] = array(
@@ -160,11 +163,13 @@ $GLOBALS['toolbox'] = array(
 $GLOBALS['pub_hash'] = '';
 $GLOBALS['priv_hash'] = '';
 
+// Nom de boucle de hashage du mdp
+$GLOBALS['pwd_hash_loop'] = '';
+
+
 // Niveau de sécurité du système de login // medium : token en session | high : ajout du token dans la base (multilog impossible)
 $GLOBALS['security'] = 'medium';
 
-// Nom de boucle de hashage du mdp
-$GLOBALS['pwd_hash_loop'] = '';
 
 // Temps d'expiration des sessions de connexion
 $GLOBALS['session_expiration'] = 60*60*24*30;
@@ -216,6 +221,13 @@ $GLOBALS['add_content'] = array(
 );
 
 
+// Type de contenu ajoutable dans le menu
+$GLOBALS['add_menu'] = array(
+	//"article",
+	"page"
+);
+
+
 // Bouton en bas en layer
 $GLOBALS['bt_edit'] = true;
 $GLOBALS['bt_top'] = false;
@@ -261,6 +273,10 @@ $GLOBALS['favicon'] = '';
 
 // Librairie d'icons spécifiques à la template
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
+
+
+// Utilisation de global.css ? à supprimer à termes (06/01/2021)
+$GLOBALS['global.css'] = false;
 
 
 // Librairie externe

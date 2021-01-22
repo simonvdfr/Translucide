@@ -561,17 +561,17 @@ switch($_GET['mode'])
 			if($connect->error)
 				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 		}
-
 		
+		
+		// Clean les tags de la fiche dans la bdd
+		$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."'");
+
 		// TAG ajout au tag
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
 			foreach($_POST['tag'] as $zone => $tags) 
 			{
 				$zone = encode($zone);
-
-				// Clean les tags de la fiche dans la bdd
-				$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."' AND zone='".$zone."'");
 
 				// split les tags en fonction du séparateur
 				$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($tags));
@@ -933,13 +933,17 @@ switch($_GET['mode'])
 			}
 		}
 
+		// Quel type de contenu on ressort
+		if(isset($GLOBALS['add_menu']))  $type = "type IN ('".implode("','", $GLOBALS['add_menu'])."')";
+		else $type = "type='page'";
+
 		// Liste les pages abs du menu
-		$sql = "SELECT * FROM ".$table_content." WHERE type='page' AND lang='".$lang."' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
+		$sql = "SELECT * FROM ".$table_content." WHERE ".$type." AND lang='".$lang."' AND url NOT IN ('".implode("','", $menu)."') ORDER BY title ASC";
 		//echo $sql."<br>";
 
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
-			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a></li>";
+			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='\"+ __(\"Remove\") +\"'></i></li>";
 		}
 
 	break;
@@ -1487,7 +1491,7 @@ switch($_GET['mode'])
 
 							// Affichage de l'image
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
-							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-lazy="'.$src.'"':'').'>';
+							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
 						}
 						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
@@ -1511,28 +1515,9 @@ switch($_GET['mode'])
 				if($("#dialog-media-width").val() || $("#dialog-media-height").val()) $(".dialog-media .resize").remove();
 
 				// Pour bien prendre en compte les images en lazyload injecté fraichement dans la dom
-				$animation = $(".animation, [data-lazy]");
-
-				/*
-				// @todo SUPP car maintenant on utilise le lazyload dans lucide.ini.js
-				// LAZY LOAD IMAGE Dialog media : Charge les medias au scroll
-				$window.on("scroll resize", function ()
-				{
-			    	$.each($(".dialog-media img"), function() 
-			    	{
-			    		var $element = $(this);
-			    		var element_top = $element.offset().top;
-
-			    		// Si l'image est dans data=lazy mais n'est pas chargé et que le li est visible
-						if($element.data("lazy") && !$element.attr("src") && $element.parent().css("display") != "none") {
-							if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
-						}
-					});
-				});
-				*/
+				$animation = $(".animation, [loading='lazy']");
 
 				$window.trigger("scroll");// Force le lancement pour les lazyload des images déjà dans l'ecran
-				
 			});
 		</script>
 		<?php 
