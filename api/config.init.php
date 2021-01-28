@@ -71,12 +71,17 @@ else {
 // Variables sites
 $GLOBALS['language'] = array('fr');
 
+$GLOBALS['theme_translation'] = false;
+
+
 $GLOBALS['theme'] = '';
+
 
 if($dev)// Dev local
 	$GLOBALS['scheme'] = '';
 else 
 	$GLOBALS['scheme'] = '';
+
 
 if($dev)// Dev local
 	$GLOBALS['domain'] = '';

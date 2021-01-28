@@ -27,6 +27,7 @@ else
 $GLOBALS['lang'] = get_lang();
 
 load_translation('api');// Chargement des traductions du système
+if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des traductions du theme
 
 
 
