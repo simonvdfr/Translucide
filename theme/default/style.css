@@ -328,6 +328,11 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .nowrap, .nw { white-space: nowrap; }
 .short { text-overflow: ellipsis; }
 
+	/* Alignement grids */
+	.jcc { justify-content: center; }
+	.jic { justify-items: center; }
+	.aic { align-items: center; }
+	.asc { align-self: center; }
 
 /*  Layout and modules */
 .mod { overflow: hidden; }
