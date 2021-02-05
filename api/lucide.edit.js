@@ -5,23 +5,21 @@ add_translation({
 	"Save" : {"fr" : "Enregistrer"},
 	"Delete" : {"fr" : "Supprimer"},
 	"Delete the page" : {"fr" : "Supprimer la page"},
-	"Also remove media from content" : {"fr" : "Supprimer \u00e9galement les m\u00e9dias pr\u00e9sents dans le contenu"},
-	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistr\u00e9es"},
+	"Also remove media from content" : {"fr" : "Supprimer également les médias présents dans le contenu"},
+	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistrées"},
 	"Cancel" : {"fr" : "Annuler"},	
 
-	"Empty element" : {"fr" : "El\u00e9ment vide"},		
+	"Empty element" : {"fr" : "Elément vide"},		
 	"Edit menu" : {"fr" : "Editer le menu"},		
 	"To remove slide here" : {"fr" : "Pour supprimer glisser ici"},		
 	"Paste something..." : {"fr" : "Collez quelque chose..."},
-	"Upload file" : {"fr" : "T\u00e9l\u00e9charger un fichier"},
+	"Upload file" : {"fr" : "Télécharger un fichier"},
 	"Change the background image" : {"fr" : "Changer l'image de fond"},
-	"Drop your files to upload" : {"fr" : "D\u00e9posez vos fichiers pour les mettre en ligne"},
 	"This file format is not supported" : {"fr" : "Ce format de fichier n'est pas pris en charge"},	
 	"Delete user" : {"fr" : "Supprimer l'utilisateur"},
-	"User deleted" : {"fr" : "Utilisateur supprim\u00e9"},
 	"Title" : {"fr" : "Titre"},	
-	"Media Library" : {"fr" : "Biblioth\u00e8que des m\u00e9dias"},		
-	"Icon Library" : {"fr" : "Biblioth\u00e8que d'ic\u00f4ne"},		
+	"Media Library" : {"fr" : "Bibliothèque des médias"},		
+	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
 	"Anchor" : {"fr" : "Ancre"},		
 	"Add Anchor" : {"fr" : "Ajouter une ancre"},		
@@ -29,11 +27,11 @@ add_translation({
 	"Link" : {"fr" : "Lien"},		
 	"Add Link" : {"fr" : "Ajouter le lien"},		
 	"Change Link" : {"fr" : "Modifier le lien"},		
-	"Open link in new window" : {"fr" : "Ouvre le lien dans une nouvelle fen\u00eatre"},		
+	"Open link in new window" : {"fr" : "Ouvre le lien dans une nouvelle fenêtre"},		
 	"Destination URL" : {"fr" : "URL de destination"},	
 
-	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la s\u00e9lection"},
-	"Image caption" : {"fr" : "L\u00e9gende de l'image"},		
+	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la sélection"},
+	"Image caption" : {"fr" : "Légende de l'image"},		
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
 	"Zoom link" : {"fr" : "Lien zoom"},
@@ -44,7 +42,7 @@ add_translation({
 	"Subtitle" : {"fr" : "Sous-titre"},
 
 	"Add a module" : {"fr" : "Ajouter un module"},
-	"Move" : {"fr" : "D\u00e9placer"},
+	"Move" : {"fr" : "Déplacer"},
 	"Remove" : {"fr" : "Supprimer"},
 
 	"Image optimization" : {"fr" : "Optimisation des images"},
@@ -104,6 +102,7 @@ get_content = function(content)
 	// Contenu des select, input hidden, href éditables // content+" input, "+
 	$(document).find(content+" .editable-select, "+content+" .editable-input, "+content+" .editable-href, "+content+" .editable-alt").each(function() {
 		if($(this).attr("type") == "checkbox") data[content_array][this.id] = $(this).prop("checked");			
+		else if($(this).attr("type") == "radio" && $(this).prop("checked")) data[content_array][this.name] = this.id;
 		else if($(this).val()) data[content_array][this.id] = $(this).val(); 
 	});
 }
@@ -887,6 +886,9 @@ get_img = function(id, link)
 
 	var domain_path = window.location.origin + path;
 
+	// Image en lazyloading dans un contenu éditable
+	var lazy = ($("#"+media_source).hasClass("lazy")?' loading="lazy"':'');
+
 
 	// Resize de l'image et insertion dans la source
 	$.ajax({
@@ -923,9 +925,9 @@ get_img = function(id, link)
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
 				if(typeof link !== 'undefined' && link)// Avec lien zoom
-					exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\"><img src=\""+ domain_path + final_file +"\" class='fl'></a>");
+					exec_tool("insertHTML", '<a href="'+ $("#"+id).attr("data-media") +'"><img src="'+ domain_path + final_file +'" class="fl"'+lazy+'></a>');
 				else// Juste l'image
-					exec_tool("insertHTML", "<img src=\""+ domain_path + final_file +"\" class='fl'>");				
+					exec_tool("insertHTML", '<img src="'+ domain_path + final_file +'" class="fl"'+lazy+'>');				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
@@ -1348,6 +1350,10 @@ $(function()
 	$("#admin-bar #refresh-permalink").click(function() {
 		refresh_permalink("#admin-bar");
 	});
+
+	// Dossier spécifique média pour l'image pour og:image
+	if($("#visuel").data('dir')) $("#admin-bar #og-image").data('dir', $("#visuel").data('dir'));
+	else if($("#alaune").data('dir')) $("#admin-bar #og-image").data('dir', $("#alaune").data('dir'));
 
 	// On récupère og:image des meta
 	if($("meta[property='og:image']").last().attr("content") != undefined) 
@@ -2062,8 +2068,8 @@ $(function()
 	/************** IMAGE/FICHIER SEUL **************/
 
 	// Charge les images en lazy load pour qu'elles puissent être sauvegardé
-	$("[data-lazy]").each(function() {
-		$(this).attr("src", $(this).data("lazy"));
+	$("[loading='lazy']").each(function() {
+		$(this).attr("src", $(this).data("src"));
 	});
 
 	
@@ -2416,8 +2422,11 @@ $(function()
 		if($(this).attr("for")) var id = $(this).attr("for");
 		else var id = this.id;
 
-		if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
-		else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+		if($("#"+id).attr('type') != 'radio') 
+		{
+			if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
+			else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+		}
 	})
 
 

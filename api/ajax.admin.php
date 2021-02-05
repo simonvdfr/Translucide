@@ -2,8 +2,11 @@
 include_once("../config.php");// Les variables
 include_once("function.php");// Fonction
 
+
 $lang = get_lang();// Sélectionne  la langue
 load_translation('api');// Chargement des traductions du système
+if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des traductions du theme
+
 
 switch($_GET['mode'])
 {
@@ -860,7 +863,7 @@ switch($_GET['mode'])
 		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE lang='".$lang."' ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
 		while($res = $sel->fetch_assoc()) 
 		{
-			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst($res['type']).'</b><ul>';
+			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
 
 			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__("Deactivate")."'></i>").'</li>';
 
@@ -1491,7 +1494,7 @@ switch($_GET['mode'])
 
 							// Affichage de l'image
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
-							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-lazy="'.$src.'"':'').'>';
+							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
 						}
 						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
@@ -1515,28 +1518,9 @@ switch($_GET['mode'])
 				if($("#dialog-media-width").val() || $("#dialog-media-height").val()) $(".dialog-media .resize").remove();
 
 				// Pour bien prendre en compte les images en lazyload injecté fraichement dans la dom
-				$animation = $(".animation, [data-lazy]");
-
-				/*
-				// @todo SUPP car maintenant on utilise le lazyload dans lucide.ini.js
-				// LAZY LOAD IMAGE Dialog media : Charge les medias au scroll
-				$window.on("scroll resize", function ()
-				{
-			    	$.each($(".dialog-media img"), function() 
-			    	{
-			    		var $element = $(this);
-			    		var element_top = $element.offset().top;
-
-			    		// Si l'image est dans data=lazy mais n'est pas chargé et que le li est visible
-						if($element.data("lazy") && !$element.attr("src") && $element.parent().css("display") != "none") {
-							if(element_top <= window_bottom) $element.attr("src", $(this).data("lazy"));
-						}
-					});
-				});
-				*/
+				$animation = $(".animation, [loading='lazy']");
 
 				$window.trigger("scroll");// Force le lancement pour les lazyload des images déjà dans l'ecran
-				
 			});
 		</script>
 		<?php 

@@ -71,12 +71,17 @@ else {
 // Variables sites
 $GLOBALS['language'] = array('fr');
 
+$GLOBALS['theme_translation'] = false;
+
+
 $GLOBALS['theme'] = '';
+
 
 if($dev)// Dev local
 	$GLOBALS['scheme'] = '';
 else 
 	$GLOBALS['scheme'] = '';
+
 
 if($dev)// Dev local
 	$GLOBALS['domain'] = '';
@@ -127,6 +132,9 @@ $GLOBALS['google_analytics'] = '';
 
 // https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
+
+// https://plausible.io
+$GLOBALS['plausible'] = '';// $GLOBALS['domain']
 
 
 // Toolbox
@@ -270,6 +278,10 @@ $GLOBALS['favicon'] = '';
 
 // Librairie d'icons spécifiques à la template
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
+
+
+// Utilisation de global.css ? à supprimer à termes (06/01/2021)
+$GLOBALS['global.css'] = false;
 
 
 // Librairie externe
