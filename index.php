@@ -380,24 +380,24 @@ if(!$ajax)
 
 	</head>
 	<body>
-
-	<main>
 	<?php
 
-	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
 
-	echo"<div class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : "")."'>";
+	include_once('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'header.php');
+
+
+	echo'<main class="content'.(isset($res['tpl'])?' tpl-'.encode($res['tpl']):'').'">';
 }
 
 
 
 if(isset($res['tpl'])) // On a une page
 {
-	include("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
+	include('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'tpl/'.$res['tpl'].'.php');// On charge la template du thème pour afficher le contenu
 }
 else // Pas de contenu a chargé
 {
-	echo"<div class='pal tc'>".$msg."</div>";
+	echo'<div class="pal tc">'.$msg.'</div>';
 }
 
 
@@ -405,17 +405,18 @@ else // Pas de contenu a chargé
 // Si pas ajax on charge toute la page
 if(!$ajax)
 {
-	echo"</div>";
+	echo'</main>';
 
 
-	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
+	include_once('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'/footer.php');
 	?>
 
-	</main>
 
 	<div class="responsive-overlay"></div>
 
+
 	<script>console.log("<?=benchmark()?>")</script>
+
 
 	<noscript>
 		<style>
@@ -423,6 +424,7 @@ if(!$ajax)
 			.animation { opacity: 1 !important; transform: translate3d(0, 0, 0) !important;	}
 		</style>
 	</noscript>
+
 
 	</body>
 	</html>
