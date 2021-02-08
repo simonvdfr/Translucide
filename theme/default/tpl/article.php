@@ -1,4 +1,7 @@
-<?php if(!$GLOBALS['domain']) exit;?>
+<?php
+if(!$GLOBALS['domain']) exit;
+if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['content']['title'];
+?>
 
 <style>
 	aside { border-left: 0.2em solid #78cfd6; }
