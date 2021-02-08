@@ -10,7 +10,7 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 
 <section class="mw960p mod center mtm mbl">
 
-	<?php h1('title', 'tc up')?>
+	<?php h1('titre', 'tc up')?>
 	<?php h2('sstitre', 'tc')?>
 
 
