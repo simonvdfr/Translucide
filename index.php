@@ -61,7 +61,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 		$res_tag_info = $sel_tag_info->fetch_assoc();
 
 		// Il n'y a pas d'infos sur le tag
-		if(!$res_tag_info['val'])
+		if(!@$res_tag_info['val'])
 		{
 			// On rapatrie simplement le nom du tag, pour le fil d'ariane par exemple
 			$sel_tag = $connect->query("SELECT * FROM ".$table_tag." WHERE zone='".$res['url']."' AND encode='".$tag."' LIMIT 1");
