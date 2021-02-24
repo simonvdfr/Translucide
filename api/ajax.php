@@ -1,15 +1,20 @@
 <?php 
 @include_once("config.init.php");// Les variables par défaut
 
+
 // Chemin de la config en fonction d'ou on appel
 if(strstr($_SERVER['SCRIPT_FILENAME'], 'theme/')) $dir_conf = explode('theme/', $_SERVER['SCRIPT_FILENAME'])[0];
 else $dir_conf = explode('api/ajax.php', $_SERVER['SCRIPT_FILENAME'])[0];
 
+
 @include($dir_conf."config.php");// Les variables ../config.php || $_SERVER['DOCUMENT_ROOT']."/config.php"
 @include_once("function.php");// Fonction
 
+
 $lang = get_lang();// Sélectionne la langue
 load_translation('api');// Chargement des traductions du système
+if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des traductions du theme
+
 
 switch($_GET['mode'])
 {		

@@ -27,6 +27,7 @@ else
 $GLOBALS['lang'] = get_lang();
 
 load_translation('api');// Chargement des traductions du système
+if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des traductions du theme
 
 
 
@@ -60,7 +61,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 		$res_tag_info = $sel_tag_info->fetch_assoc();
 
 		// Il n'y a pas d'infos sur le tag
-		if(!$res_tag_info['val'])
+		if(!@$res_tag_info['val'])
 		{
 			// On rapatrie simplement le nom du tag, pour le fil d'ariane par exemple
 			$sel_tag = $connect->query("SELECT * FROM ".$table_tag." WHERE zone='".$res['url']."' AND encode='".$tag."' LIMIT 1");
@@ -378,24 +379,24 @@ if(!$ajax)
 
 	</head>
 	<body>
-
-	<main>
 	<?php
 
-	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."header.php");
 
-	echo"<main class='content".(isset($res['tpl']) ? " tpl-".encode($res['tpl']) : "")."'>";
+	include_once('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'header.php');
+
+
+	echo'<main class="content'.(isset($res['tpl'])?' tpl-'.encode($res['tpl']):'').'">';
 }
 
 
 
 if(isset($res['tpl'])) // On a une page
 {
-	include("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/".$res['tpl'].".php");// On charge la template du thème pour afficher le contenu
+	include('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'tpl/'.$res['tpl'].'.php');// On charge la template du thème pour afficher le contenu
 }
 else // Pas de contenu a chargé
 {
-	echo"<div class='pal tc'>".$msg."</div>";
+	echo'<div class="pal tc">'.$msg.'</div>';
 }
 
 
@@ -403,17 +404,18 @@ else // Pas de contenu a chargé
 // Si pas ajax on charge toute la page
 if(!$ajax)
 {
-	echo"</main>";
+	echo'</main>';
 
 
-	include_once("theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."/footer.php");
+	include_once('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'/footer.php');
 	?>
 
-	</main>
 
 	<div class="responsive-overlay"></div>
 
+
 	<script>console.log("<?=benchmark()?>")</script>
+
 
 	<noscript>
 		<style>
@@ -421,6 +423,7 @@ if(!$ajax)
 			.animation { opacity: 1 !important; transform: translate3d(0, 0, 0) !important;	}
 		</style>
 	</noscript>
+
 
 	</body>
 	</html>

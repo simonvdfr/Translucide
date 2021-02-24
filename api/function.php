@@ -583,10 +583,10 @@ function checkbox($key = null, $filter = array())
 	$GLOBALS['editkey']++;
 }
 
-// Contenu champ radio
-function radio($key = null, $name = null)
+// Contenu champ radio / si checked = true => checked par défaut si pas de radio selectionné
+function radio($key = null, $name = null, $checked = null)
 {
-	input($key, array('type' => 'radio', 'name' => $name));
+	input($key, array('type' => 'radio', 'name' => $name, 'checked' => $checked));
 }
 
 // Contenu champ select
@@ -643,8 +643,10 @@ function input($key = null, $filter = null)
 
 	echo' class="editable-input '.@$filter['class'].'"';
 
-	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true) echo' checked="checked"';
-	elseif($filter['type'] == "radio" and @$filter['name'] and @$GLOBALS['content'][$filter['name']] == $key) echo' checked="checked"';
+	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true)
+		echo' checked="checked"';
+	elseif($filter['type'] == "radio" and @$filter['name'] and (@$GLOBALS['content'][$filter['name']] == $key or (!@$GLOBALS['content'][$filter['name']] and $filter['checked'])))
+		echo' checked="checked"';
 
 	if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
 	

@@ -1,4 +1,7 @@
-<?php if(!$GLOBALS['domain']) exit;?>
+<?php
+if(!$GLOBALS['domain']) exit;
+if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['content']['title'];
+?>
 
 <style>
 	aside { border-left: 0.2em solid #78cfd6; }
@@ -7,7 +10,7 @@
 
 <section class="mw960p mod center mtm mbl">
 
-	<?php h1('title', 'tc up')?>
+	<?php h1('titre', 'tc up')?>
 	<?php h2('sstitre', 'tc')?>
 
 
