@@ -38,8 +38,8 @@ else setlocale(LC_ALL, 'en_US.utf8');
 
 // Serveur local ou online ? DEV || PROD
 if(
- $_SERVER['SERVER_ADDR'] == '127.0.0.1' or
- strpos($_SERVER['SERVER_ADDR'], '::1') !== false)
+	$_SERVER['SERVER_ADDR'] == '127.0.0.1' or
+	strpos($_SERVER['SERVER_ADDR'], '::1') !== false)
 	$dev = true;
 else 
 	$dev = false;
