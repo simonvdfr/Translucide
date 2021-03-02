@@ -527,10 +527,12 @@ function bg($key = null, $filter = array())
 }
 
 // Bloc de contenu générique duplicable
-function module($module = "module")
+function module($module = "module", $content = null)
 {
+	if($content == null) $content = $GLOBALS['content'];
+	
 	// Extrait les données work du tableau des contenu
-	$keys = array_keys($GLOBALS['content']);
+	$keys = array_keys($content);
 	foreach($keys as $key)
 	{
 		if(preg_match("/^".$module."-/", $key) == 1)
@@ -554,12 +556,12 @@ function module($module = "module")
 			//$type_module = rtrim($type_num_module, "-".$num_module);
 
 			// Si une variable dans la zone originale duplicable (0) on la raz par sécurité
-			if($num_module == 0) $GLOBALS['content'][$key] = "";
+			if($num_module == 0) $content[$key] = "";
 
 			// Création du tableau avec les elements de modules
-			$array_module[$module][$num_module][$type_module] = $GLOBALS['content'][$key];
+			$array_module[$module][$num_module][$type_module] = $content[$key];
 
-			//echo $key." | ".$type_module."*".$num_module."*".($num_module == 0)." : ".$GLOBALS['content'][$key]."<br>";
+			//echo $key." | ".$type_module."*".$num_module."*".($num_module == 0)." : ".$content[$key]."<br>";
 		}
 	}
 
