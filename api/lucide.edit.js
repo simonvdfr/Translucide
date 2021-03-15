@@ -1442,7 +1442,7 @@ $(function()
 		addnav+= "<div class='tooltip none pat'>";
 			addnav+= "<i class='fa fa-cancel grey o50'></i>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
-				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a></li>";
+				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __('Remove') +"'></i></li>";
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
