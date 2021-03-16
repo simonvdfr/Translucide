@@ -2435,7 +2435,7 @@ $(function()
 	
 	// Ajoute un input pour ajouter l'url du href
 	$("[data-href]").append(function() {
-		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"' value='"+ $(this).attr("href") +"'>";
+		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"' value='"+ ($(this).attr("href")?$(this).attr("href"):'') +"'>";
 	});
 
 	// Rends éditables les liens
