@@ -1371,7 +1371,7 @@ $(function()
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on("click",	function() {
-		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle();			
+		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle().attr('style', function(i,s) { return (s || '') + 'display: block !important;' });		
 	});
 
 

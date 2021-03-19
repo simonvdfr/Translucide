@@ -48,7 +48,7 @@ switch($_GET['mode'])
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
 
-				<div id="meta" class="fl mat w30 no-small-screen">
+				<div id="meta" class="fl mat w30 noss">
 
 					<input type="text" id="title" value="" placeholder="<?php _e("Page title")?>" title="<?php _e("Page title")?>" maxlength="70" class="w100 bold">
 
@@ -127,9 +127,9 @@ switch($_GET['mode'])
 
 				<div id="close" class="fr mrt bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
 
-				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="no-small-screen"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
+				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="noss"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
 
-				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="no-small-screen"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="noss"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
 
 				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
