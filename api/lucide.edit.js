@@ -1442,7 +1442,7 @@ $(function()
 		addnav+= "<div class='tooltip none pat'>";
 			addnav+= "<i class='fa fa-cancel grey o50'></i>";
 			addnav+= "<ul class='block unstyled plm man tl'>";
-				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a></li>";
+				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __('Remove') +"'></i></li>";
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
@@ -2435,7 +2435,7 @@ $(function()
 	
 	// Ajoute un input pour ajouter l'url du href
 	$("[data-href]").append(function() {
-		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"' value='"+ $(this).attr("href") +"'>";
+		return "<input type='text' placeholder='"+ __("Destination URL") +"' class='editable-href' id='"+ $(this).data("href") +"' value='"+ ($(this).attr("href")?$(this).attr("href"):'') +"'>";
 	});
 
 	// Rends éditables les liens
