@@ -217,39 +217,22 @@ elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel
 // Si pas ajax on charge toute la page
 if(!$ajax)
 {
-	/********** MENU DE NAVIGATION **********/
+	/********** RÉCUPÉRATION DES DONNÉES META : NAV | HEADER |FOOTER **********/
+	
+	$sel_meta = $connect->query("SELECT * FROM ".$tm." WHERE type IN ('nav','header','footer') AND cle='".$lang."' LIMIT 3");
+	while($res_meta = $sel_meta->fetch_assoc())
+	{
+		if(isset($res_meta['val']))
+		{
+			// Si menu de navigation
+			if($res_meta['type'] == 'nav') $GLOBALS['nav'] = json_decode($res_meta['val'], true);
+			// Si contenu du header ou footer
+			else $GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_meta['val'], true));
+		}
+	}
 
-	// On récupère les données de la navigation
-	$sel_nav = $connect->query("SELECT * FROM ".$table_meta." WHERE type='nav' AND cle='".$lang."' LIMIT 1");
-	$res_nav = $sel_nav->fetch_assoc();
-
-	// Extraction du menu
-	if(isset($res_nav['val'])) $GLOBALS['nav'] = json_decode($res_nav['val'], true);
-	else $GLOBALS['nav'] = array();
-
-
-
-	/********** HEADER **********/
-
-	// On récupère les données du header
-	$sel_header = $connect->query("SELECT * FROM ".$table_meta." WHERE type='header' AND cle='".$lang."' LIMIT 1");
-	$res_header = $sel_header->fetch_assoc();
-
-	// Ajout des données du header
-	if(isset($res_header['val']))
-		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_header['val'], true));
-
-
-
-	/********** FOOTER **********/
-
-	// On récupère les données du footer
-	$sel_footer = $connect->query("SELECT * FROM ".$table_meta." WHERE type='footer' AND cle='".$lang."' LIMIT 1");
-	$res_footer = $sel_footer->fetch_assoc();
-
-	// Ajout des données du footer
-	if(isset($res_footer['val']))
-		$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_footer['val'], true));
+	// Si pas de nav
+	if(!isset($GLOBALS['nav'])) $GLOBALS['nav'] = array();
 
 
 
