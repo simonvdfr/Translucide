@@ -90,7 +90,7 @@ get_content = function(content)
 	});
 	
 	// Contenu des background images éditables
-	$(document).find(content+" [data-bg]:not([data-global]), "+content+"[data-bg]").each(function() {
+	$(document).find(content+" [data-id][data-bg]:not([data-global]), "+content+"[data-id][data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 		
@@ -179,7 +179,7 @@ save = function() //callback
 		if($(this).attr("src")) data["global"][$(this).closest(".editable-media").attr("id")] = $(this).attr("src");
 	});
 	// BG
-	$(document).find(".content [data-bg][data-global]").each(function() {
+	$(document).find(".content [data-id][data-bg][data-global]").each(function() {
 		if($(this).attr("data-bg")) data["global"][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 
@@ -1039,7 +1039,9 @@ filesize = function(file) {
 
     request.open("HEAD", file, false);
 
-    request.send(null);
+    request.send(null);//200
+
+    console.log(request);
 
 	//request.getResponseHeader('content-length')
     /Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
@@ -1150,7 +1152,7 @@ img_check = function(file)
 	host = location.protocol +'//'+ location.host + path;
 
 	// Contenu des images éditables, bg et dans les contenus textuels
-	$(document).find("main .editable-media img, main .editable img, main [data-bg]").each(function()
+	$(document).find("main .editable-media img, main .editable img, main [data-id][data-bg]").each(function()
 	{
 		if($(this).hasClass("editable-bg")) {// Image en background
 			var src = $(this).attr("data-bg").replace(host, "");
@@ -1182,7 +1184,7 @@ img_check = function(file)
 		}
 	});
 
-	console.log(imgs);
+	//console.log(imgs);
 
 	// S'il y a des images
 	if(Object.keys(imgs).length > 0)
@@ -1214,7 +1216,7 @@ img_check = function(file)
 				var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
 
 				// extraction de la Taille
-				var size = filesize(src);
+				var size = filesize(src.split("?")[0]);
 				imgs[src]['size'] = size;
 
 				// total des poids d'image
@@ -2211,19 +2213,19 @@ $(function()
 	/************** IMAGES BACKGROUND **************/
 	
 	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
-	$("[data-bg]").addClass("editable-bg");
-	$("[data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
+	$("[data-id][data-bg]").addClass("editable-bg");
+	$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
 
 	// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
 	clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
-	$("[data-bg]").each(function() {
+	$("[data-id][data-bg]").each(function() {
 		if($(this).data("bg"))
 			$(".bg-tool", this).prepend(clearbg_bt);
 	});
 
 	// Rends éditables les images en background
 	editable_bg_event = function() {
-		$("[data-bg]")
+		$("[data-id][data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
 					$("> .bg-tool", this).fadeIn("fast");
@@ -2691,7 +2693,7 @@ $(function()
 		medias = {};
 
 		// Contenu des images éditables, bg et dans les contenus textuels
-		$(document).find(".content .editable-media img, .content .editable img, .content [data-bg]").each(function() {
+		$(document).find(".content .editable-media img, .content .editable img, .content [data-id][data-bg]").each(function() {
 			if($(this).hasClass("editable-bg")) var media = $(this).attr("data-bg");
 			else var media = $(this).attr("src");
 
