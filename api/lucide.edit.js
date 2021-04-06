@@ -1932,6 +1932,7 @@ $(function()
 
 		// Récupère les contenus du presse-papier // text/html text/plain
 		var paste = 
+			(event.originalEvent || event).clipboardData.getData(getData) ||
 			(event.originalEvent || event).clipboardData.getData("text/plain") ||
 			prompt(__("Paste something..."));
 
