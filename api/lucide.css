@@ -712,6 +712,18 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		transition: opacity .5s;
 	}
 	
+	.dialog-media li .copy { 
+		position: absolute;
+		display: none;
+	    top: -20px;
+	    padding: 0 14px 0 12px;
+	    animation: fade-in .2s;
+	}	
+		.dialog-media li .copy input { 
+			background-color: #fff;
+			width: 100%;
+		}	
+
 	.dialog-media li .mime { 
 		background-color: rgb(255 255 255 / 0.8);
 		position: absolute;
@@ -748,7 +760,9 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		}
 
 
-	.dialog-media li .resize, .dialog-media li .supp { 
+	.dialog-media li .resize,
+	.dialog-media li .supp,
+	.dialog-media li .open { 
 		line-height: 18px;
 
 		position: absolute;			
@@ -757,9 +771,13 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		z-index: 1;
 	}
-		.dialog-media li .resize:hover, .dialog-media li .supp:hover { opacity: 1; }
+		.dialog-media li .resize:hover,
+		.dialog-media li .supp:hover,
+		.dialog-media li .open:hover 
+		{ opacity: 1; }
 
-	.dialog-media li .resize { 
+	.dialog-media li .resize,
+	.dialog-media li .open { 
 		bottom: -1px;
 		left: 2px;
 	}
@@ -781,12 +799,16 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 			border: 2px dashed #75df83;
 		}
 
-	.dialog-media li:hover, .dialog-media li.select { background: #fff; }
+	.dialog-media li:hover,
+	.dialog-media li.select
+	{ background: #fff; }
 	
+	.dialog-media li:hover > .copy,
 	.dialog-media li:hover > .mime,
 	.dialog-media li:hover > .infos,
 	.dialog-media li:hover > .supp,
-	.dialog-media li:hover > .resize 
+	.dialog-media li:hover > .resize,
+	.dialog-media li:hover > .open 
 	{ display: block; }
 
 

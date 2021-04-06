@@ -1036,8 +1036,11 @@ switch($_GET['mode'])
 
 					if(mime[0] == "image") 
 						container += "<img src=''>" + resize;
-					else 
-						container += "<div class='file'><i class='fa fa-fw fa-doc mega'></i><div>"+ file.name +"</div></div>"
+					else {
+						container += '<div class="file"><i class="fa fa-fw fa-doc mega"></i><div>'+ file.name +"</div></div>";
+						container += '<div class="copy"><input type="text" value="'+ path + 'media/' + $("#dialog-media-dir").val() + file.name +'"></div>';
+						
+					}
 
 					container += "<div class='infos'></div>";
 
@@ -1099,6 +1102,24 @@ switch($_GET['mode'])
 				// Switch sur l'onglet spécifique si il existe
 				if($("[data-filter='dir']").length)
 					$(".dialog-media").tabs("option", "active", $("[data-filter='dir']").index());
+
+				// Copie le chemin du fichier
+				$(".dialog-media").on("click", ".copy input", function(event)
+				{
+					event.stopPropagation();
+
+					$(this).select();
+
+					if(document.execCommand('copy')) {
+						//light("<?php _e("Copy to clipboard");?> : " + $(this).val(), 2000);
+					}
+				});
+
+				// Voir le fichier => arrete l'action de selection
+				$(".dialog-media").on("click", ".open", function(event)
+				{
+					event.stopPropagation();
+				});
 
 				// On demande une version redimensionnée de l'image
 				$(".dialog-media").on("click", ".resize", function(event)
@@ -1494,10 +1515,18 @@ switch($_GET['mode'])
 
 							// Affichage de l'image
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
+
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
+
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
 						}
-						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+						else {
+							echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+
+							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].'media/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
+
+							echo'<a href="'.$GLOBALS['path'].'media/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="fa fa-fw fa-link-ext"></i></a>';
+						}
 
 						echo"						
 						<div class='mime ".$sizecolor."'>".$val['mime']."</div>
