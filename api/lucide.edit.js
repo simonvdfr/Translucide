@@ -1932,7 +1932,6 @@ $(function()
 
 		// Récupère les contenus du presse-papier // text/html text/plain
 		var paste = 
-			(event.originalEvent || event).clipboardData.getData(getData) ||
 			(event.originalEvent || event).clipboardData.getData("text/plain") ||
 			prompt(__("Paste something..."));
 
@@ -1941,7 +1940,7 @@ $(function()
 		// + Supprime aussi les supportLists de word (Correction de Dominique)
 		paste = paste.replace(/<![\s\S]*?>/gi, "");
 
-		// Si pas en mode visionnage du code source & 
+		// Si PAS en mode visionnage du code source 
 		if(!$(this).hasClass("view-source")) 
 		{
 			// Html dans le paste
@@ -1956,6 +1955,8 @@ $(function()
 			    .replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
 
 			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+
+			    .replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
 
 			// Transforme les retours à la ligne en <br>
 			paste = paste.replace(/\n/gi, "<br>");
