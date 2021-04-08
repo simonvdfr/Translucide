@@ -1155,7 +1155,7 @@ img_check = function(file)
 	$(document).find("main .editable-media img, main .editable img, main [data-id][data-bg]").each(function()
 	{
 		if($(this).hasClass("editable-bg")) {// Image en background
-			var src = $(this).attr("data-bg").replace(host, "");
+			var src = path + $(this).attr("data-bg").replace(host, "");
 			if(src) {
 				imgs[src] = {};
 				imgs[src]['type'] = 'bg';
@@ -1168,7 +1168,7 @@ img_check = function(file)
 			imgs[src]['height'] = bg.height;*/
 		}
 		else {// Image dans contenu éditable ou fonction media
-			var src = $(this).attr("src").replace(host, "");
+			var src = path + $(this).attr("src").replace(host, "");
 			if(src) {
 				imgs[src] = {};
 				imgs[src]['type'] = 'img';
@@ -1217,40 +1217,45 @@ img_check = function(file)
 
 				// extraction de la Taille
 				var size = filesize(src.split("?")[0]);
-				imgs[src]['size'] = size;
 
-				// total des poids d'image
-				imgs_size = imgs_size + size;
-
-				// Image dans le contenu
-				if(img.type == 'img')
+				// Si Taille d'image
+				if(!isNaN(size))
 				{
-					// Vérifie la taille de l'image pour proposer une optimisation
-					var widthRatio = (img.width / img.naturalWidth) * 100;
-					var heightRatio = (img.height / img.naturalHeight) * 100;
+					imgs[src]['size'] = size;
 
-					// Image + grande que la zone afficher => Redimentionnement
-					if(widthRatio < 80 || heightRatio < 80)
-						optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+					// total des poids d'image
+					imgs_size = imgs_size + size;
+
+					// Image dans le contenu
+					if(img.type == 'img')
+					{
+						// Vérifie la taille de l'image pour proposer une optimisation
+						var widthRatio = (img.width / img.naturalWidth) * 100;
+						var heightRatio = (img.height / img.naturalHeight) * 100;
+
+						// Image + grande que la zone afficher => Redimentionnement
+						if(widthRatio < 80 || heightRatio < 80)
+							optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+					}
+
+					// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
+					if(ext == 'png' && size > img_green)
+						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+
+					// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
+					/*if(ext == 'jpg' && size > img_warning)
+						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
+
+					// Couleur de vigilance
+					if(size <= img_green) var imgcolor = 'green';
+					else if(size > img_green && size < img_warning) var imgcolor = 'orange';
+					else if(size >= img_warning) var imgcolor = 'red';
+
+					// Affichage
+					$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+
+					++num;
 				}
-
-				// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
-				if(ext == 'png' && size > img_green)
-					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
-
-				// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
-				/*if(ext == 'jpg' && size > img_warning)
-					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
-
-				// Couleur de vigilance
-				if(size <= img_green) var imgcolor = 'green';
-				else if(size > img_green && size < img_warning) var imgcolor = 'orange';
-				else if(size >= img_warning) var imgcolor = 'red';
-
-				// Affichage
-				$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
-
-				++num;
 			}
 
 		});
@@ -1270,6 +1275,8 @@ img_check = function(file)
 
 		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
 
+		// Si pas d'image on n'affiche pas la dialog
+		if(num == 0) $(".dialog-optim-img").dialog('close');
 	}
 }
 
