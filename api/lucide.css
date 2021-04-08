@@ -684,7 +684,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	float: left;
 
 	width: 130px;
-	min-height: 110px;
+	height: 110px;
 
 	line-height: 100px;
 
