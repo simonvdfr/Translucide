@@ -2357,7 +2357,7 @@ $(function()
 	$(".module-bt").parent().addClass("relative");
 
 	// Ajout de la SUPPRESION au survole d'un bloc
-	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 1;' title='"+ __("Remove") +"'></i></a>");
+	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 10;' title='"+ __("Remove") +"'></i></a>");
 
 	// Affiche les boutons de suppression
 	//$(".module li .fa-cancel").fadeIn();
