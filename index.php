@@ -356,11 +356,6 @@ if(!$ajax)
 
 		</script>
 
-
-		<!--[if lt IE 9]>
-			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
-
 	</head>
 	<body>
 	<?php
