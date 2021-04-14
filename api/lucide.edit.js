@@ -2477,8 +2477,20 @@ $(function()
 		$(this).autocomplete({
 			minLength: 0,
 			source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
-			select: function(event, ui) { 
-				$(this).val(ui.item.value);// Action au click sur la selection
+			select: function(event, ui) 
+			{ 
+				// S'il y a déjà un chemin présent ont ajouté à la suite avec juste la dernière partie | Cas tag
+				if($(this).val().indexOf("/") !== -1)
+				{
+					// Ajoute le dernier terme au contenu courant (moins la saisie de recherche)
+					$(this).val(function(index, value) {
+						return value.substring(0, value.lastIndexOf('/')) +'/'+ ui.item.value.split("/").pop();
+					});
+				}
+				else 
+					$(this).val(ui.item.value);
+	
+				return false;// Coupe l'execution automatique d'ajout du terme
 			}
 		})
 		.focus(function(){

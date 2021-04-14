@@ -892,19 +892,34 @@ switch($_GET['mode'])
 
 		login('medium');// Vérifie que l'on a le droit d'éditer une page
 
-		$term = $connect->real_escape_string($_GET["term"]);
+		// Si on a déjà un bout d'url de saisie (cas des tags) on prend le dernier bout
+		if(strstr($_GET["term"], "/")) $_GET["term"] = basename($_GET["term"]);
 
+		$term = $connect->real_escape_string(trim($_GET["term"]));
+
+		// Les contenus
 		$sql = "SELECT id, title, type, url FROM ".$GLOBALS['table_content']." WHERE title LIKE '%".$term."%' OR url LIKE '%".$term."%'";
 		if(!$term) $sql .= " ORDER BY date_update DESC"; else $sql .= " ORDER BY title ASC";
 		$sql .= " LIMIT 50";
-
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
-			$data[] = array(
+			$data[$res['url']] = array(
 				'id' => $res['id'],
 				'label' => $res['title'],
 				'type' => $res['type'],
 				'value' => make_url($res['url'], array("absolu" => true))//, array("domaine" => true)
+			);
+		}
+
+		// Les tags
+		$sql = "SELECT * FROM ".$GLOBALS['tt']." WHERE name LIKE '%".$term."%' GROUP BY encode ORDER BY encode ASC LIMIT 50";
+		$sel = $connect->query($sql);
+		while($res = $sel->fetch_assoc()) {
+			$data[$res['encode'].$res['zone']] = array(
+				'id' => 'tag',
+				'label' => $res['name'],
+				'type' => 'Tag '.$res['zone'],
+				'value' => make_url($res['zone'], array($res['encode'], "absolu" => true))//, array("domaine" => true)
 			);
 		}
 
