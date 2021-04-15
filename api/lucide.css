@@ -5,6 +5,22 @@ body { transition: margin-top .2s linear; }
 /* Légère transition sur les FontAwesome */
 /* .fa { transition: all 0.3s; } */
 
+
+/* Class de mise en page générique si pas style.css */
+/*
+.fl { float: left; }
+.fr { float: right; }
+
+
+.mat { margin: 0.5rem; }
+.pat { padding: 0.5rem; }
+
+#admin-bar .fa:before { content: '¤'; }
+#admin-bar .none { display: none; }
+*/
+
+
+/* Admin */
 #admin-bar {		
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	background-color: rgba(240, 240, 240, 0.8);	
