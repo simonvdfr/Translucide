@@ -34,6 +34,9 @@ add_translation({
 	"Image caption" : {"fr" : "Légende de l'image"},		
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
+	"Erase" : {"fr" : "Effacer"},
+	"Image dimension in pixel (width x height)" : {"fr" : "Dimension de l'image en pixel (largeur x hauteur)"},
+
 	"Zoom link" : {"fr" : "Lien zoom"},
 	"Add" : {"fr" : "Ajouter"},
 	"Width" : {"fr" : "Largeur"},
@@ -2113,9 +2116,16 @@ $(function()
 	// Icone d'upload + supp du fichier + alt éditable
 	$(".editable-media").append(function() {
 		var alt = $('img', this).attr("alt");
+
+		print_size = null;
+		if($(this).data("width")) print_size = $(this).data("width")+'';
+		if($(this).data("width") && $(this).data("height")) print_size+=" x ";
+		if($(this).data("height")) print_size+= $(this).data("height")+'';
+		
 		return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
 			"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
-			"<div class='clear-file' title=\""+ __("Delete file") +"\"><i class='fa fa-trash'></i> "+ __("Delete file") +"</div>"
+			"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
+			+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'')
 	});
 
 
@@ -2155,7 +2165,7 @@ $(function()
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
 					if($("img", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
-						$(".clear-file", this).fadeIn("fast");
+						$(".clear-file, .print-size", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
 					if($("img", this).attr("src")) {
@@ -2174,7 +2184,7 @@ $(function()
 					$(this).removeClass("drag-over");
 					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
-					$(".clear-file", this).hide();
+					$(".clear-file, .print-size", this).hide();
 
 					// Masque le alt éditable
 					$('#'+ $(this).attr("id") +'-alt').css('display','none');;

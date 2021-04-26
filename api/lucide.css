@@ -1090,13 +1090,40 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	bottom: 0;
     left: 0;    
     
+    z-index: 2;
+
+    padding: 0 0.4rem;
+
+    transition: all .3s;
+}
+	.clear-file:hover, .print-size:hover { opacity: 1; }
+
+.print-size {
+	background: #fff;
+
+	color: #000 !important;
+	font-size: 0.6em;
+	font-family: sans-serif;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1.6rem;
+    cursor: default;
+
+    border-radius: 5px 0 0 0;
+	
+	display: none;
+	opacity: .8;
+
+    position: absolute;
+	bottom: 0;
+    right: 0;    
+    
     z-index: 1;
 
     padding: 0 0.4rem;
 
     transition: all .3s;
 }
-	.clear-file:hover { opacity: 1; }
 
 
 #unlink { color: #9E1E1E; }
