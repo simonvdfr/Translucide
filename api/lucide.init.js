@@ -275,6 +275,21 @@ $(function()
 
 
 
+	// VIDEO .on("click",
+	$("a.video").on("click", function(event){
+		event.preventDefault();
+
+		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
+		if($(this).data("play") != true)
+		$(event.currentTarget)
+			.html('<iframe width="'+$("img", event.currentTarget).css('width')+'" height="'+$("img", event.currentTarget).css('height')+'" src="https://www.youtube.com/embed/'+$(event.currentTarget).data('video')+'?controls=1&rel=0&autoplay=1" frameborder="0" class="'+$("figure", event.currentTarget).attr("class")+'" style="margin:'+$("figure", event.currentTarget).css('margin')+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+
+		// Pour ne pas relancer la vidéo au clique
+		$(this).data("play", true);
+	});
+
+
+
 	// BOUTON EDITION | AJOUT
 	// Bouton ajout de page/article
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");

@@ -21,6 +21,8 @@ add_translation({
 	"Media Library" : {"fr" : "Bibliothèque des médias"},		
 	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
+	"Video" : {"fr" : "Vidéo"},		
+	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Anchor" : {"fr" : "Ancre"},		
 	"Add Anchor" : {"fr" : "Ajouter une ancre"},		
 	"Change Anchor" : {"fr" : "Modifier l'ancre"},		
@@ -369,6 +371,32 @@ exec_tool = function(command, value, ui) {
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);
 	memo_node = selected_element(memo_range);
+}
+
+
+// VIDEO
+// Ajoute une vidéo
+video = function() 
+{
+	// var lazy = ($("#"+media_source).hasClass("lazy")?' loading="lazy"':'');
+
+	var url_video = $('#txt-tool .option #video').val();
+
+	// #(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#
+
+	// var id_video = url_video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+	var match = url_video.match(/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/);
+	var id_video = (match && match[7].length==11)? match[7] : false;
+
+	// Si ajout de lien
+	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
+	{
+		exec_tool("insertHTML", '<a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><figure class="fl" style="display: table !important;"><img src="https://img.youtube.com/vi/'+ id_video +'/maxresdefault.jpg" width="320" height="180"></figure></a>');//'+lazy+'
+
+		$(".video figure").attr('style','')
+
+		tosave();
+	}
 }
 
 
@@ -1716,6 +1744,19 @@ $(function()
 
 		if(typeof toolbox_icon != 'undefined') 
 			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
+
+		if(typeof toolbox_video != 'undefined') 
+		{
+			toolbox+= "<li><button onclick=\"$('#txt-tool #video-option').show(); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='fa fa-fw fa-video'></i></button></li>";
+
+			toolbox+= "<li id='video-option' class='option'>";
+
+				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='w150p small'>";
+
+				toolbox+= "<button onclick=\"video()\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+
+			toolbox+= "</li>";
+		}
 
 		if(typeof toolbox_media != 'undefined') 
 			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture'></i></button></li>";
