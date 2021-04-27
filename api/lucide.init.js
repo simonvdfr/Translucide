@@ -454,10 +454,10 @@ $(function()
 						return "url(" + $element.attr("data-bg") + ")";
 					});					
 				}
-				else if($element.data("src") && !$element.attr("src") && $element.parent().css("display") != "none")// Si image
+				else if($element.attr("data-src") && !$element.attr("src") && $element.parent().css("display") != "none")// Si image
 				{
 		    		// Si l'image est dans data-src mais n'est pas chargé et que le parent est visible
-					$element.attr("src", $element.data("src"));
+					$element.attr("src", $element.data("src")).removeAttr("data-src loading");;
 				}
 		});
 

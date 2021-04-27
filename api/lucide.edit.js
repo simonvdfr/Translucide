@@ -1992,6 +1992,15 @@ $(function()
 
 
 
+	/************** FORCE LA DÉSACTIVATION LE LAZYLOADING SUR LES IMAGES **************/
+	$.each($("img[loading='lazy']"), function() 
+	{
+		// Assigne les images en attente au src et supprime le lazyloading
+		$(this).attr("src", $(this).data("src")).removeAttr("data-src loading");
+	});
+
+
+
 	/************** IMAGES DANS LES BLOCS TEXTE **************/
 	memo_img = null;
 
