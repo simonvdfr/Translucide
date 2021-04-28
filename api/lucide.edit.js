@@ -378,7 +378,7 @@ exec_tool = function(command, value, ui) {
 // Ajoute une vidéo
 video = function() 
 {
-	// var lazy = ($("#"+media_source).hasClass("lazy")?' loading="lazy"':'');
+	var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
 	var url_video = $('#txt-tool .option #video').val();
 
@@ -392,7 +392,7 @@ video = function()
 	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
 	{
 		// mqdefault hqdefault maxresdefault
-		exec_tool("insertHTML", '<a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><figure class="fl" style="display: table !important;"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" width="320" height="180"></figure></a>');//'+lazy+'
+		exec_tool("insertHTML", '<a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><figure class="fl" style="display: table !important;"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" width="320" height="180"'+lazy+'></figure></a>');
 
 		$(".video figure").attr('style','')
 
