@@ -383,15 +383,16 @@ video = function()
 	var url_video = $('#txt-tool .option #video').val();
 
 	// #(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#
-
 	// var id_video = url_video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+
 	var match = url_video.match(/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/);
 	var id_video = (match && match[7].length==11)? match[7] : false;
 
 	// Si ajout de lien
 	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
 	{
-		exec_tool("insertHTML", '<a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><figure class="fl" style="display: table !important;"><img src="https://img.youtube.com/vi/'+ id_video +'/maxresdefault.jpg" width="320" height="180"></figure></a>');//'+lazy+'
+		// mqdefault hqdefault maxresdefault
+		exec_tool("insertHTML", '<a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><figure class="fl" style="display: table !important;"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" width="320" height="180"></figure></a>');//'+lazy+'
 
 		$(".video figure").attr('style','')
 
