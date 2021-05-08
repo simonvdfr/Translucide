@@ -101,7 +101,7 @@ Le Javascript audite la taille de la DOM, le nombre de fichiers et leur poids. C
 Pour activer la fonction dans l'administration (mesure lors de la sauvegarde de vos modifications) il faut 
 `$GLOBALS['ecoindex'] = true;` dans le fichier `config.php`
 
-Les fonctions de calcul viennent de [GreenIT-Analysis](https://github.com/cnumr/GreenIT-Analysis/).
+Les fonctions de calcul viennent de [GreenIT-Analysis](https://github.com/cnumr/GreenIT-Analysis/). `Copyright (C) 2019 didierfred@gmail.com / GNU Affero General Public License AGPL v3`
 
 L'algorithme [EcoIndex](http://www.ecoindex.fr/quest-ce-que-ecoindex/) est sous [Licence Creative Commons CC-By-NC-ND](https://creativecommons.org/licenses/by-nc-nd/2.0/fr/)
 
