@@ -747,6 +747,7 @@ switch($_GET['mode'])
 					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
 				<?php }?>
 
+
 				
 				<?php if(@$GLOBALS['static'])// GÉNÉRATION DE LA PAGE EN STATIQUE .HTML
 				{
@@ -783,11 +784,52 @@ switch($_GET['mode'])
 				<?php }?>
 
 
+
 				<?php if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
 				{?>
 					img_check();
 				<?php }?>
+
+
+				
+				<?php if(@$GLOBALS['ecoindex'])// Affiche le ecoindex
+				{
+					// Cookie pour dire de lancer ecoindex dans l'iframe de la page en mode preview
+					setcookie("iframe_ecoindex", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
+
+					// Url de la page a auditer
+					$url = (isset($change_url)?$change_url:$res['url']);
+					?>
+					// Chargement de la page
+					$("#ecoindex span").html("<i class='fa fa-cog fa-spin'></i>");
+
+					// Inject la page dans une iframe pour l'auditer
+					$("body").append('<iframe id="iframe_ecoindex" src="<?=make_url($url, array('domaine' => true))?>" frameborder="0" class="hidden" width="100%" height="850"></iframe>');
+
+					// Récupère les données de l'iframe
+					window.document.addEventListener('ecoindex_event', function (event) 
+					{ 
+						var econote = event.detail;
+						var ecotitle = 'ecoIndex: '+econote.ecoIndex+' | GES: '+econote.ges+' gCO2e | eau: '+econote.eau+' cl | Nombre de requêtes: '+econote.req+' | Taille de la page: '+econote.size+' Ko | Taille du DOM: '+econote.dom;
+
+						// Ajout de la note dans la barre d'admin
+						if(!$("#ecoindex").length){
+							$("#admin-bar").append('<a href="http://www.ecoindex.fr/quest-ce-que-ecoindex/"  id="ecoindex" class="fr mat mrs small none" target="_blank" title="'+ecotitle+'">ecoIndex<span class="'+econote.EcoIndexGrade+'">'+econote.EcoIndexGrade+'</span></a>');
+							$("#ecoindex").fadeIn();
+						}
+						else{
+							$("#ecoindex span").html(event.detail.EcoIndexGrade).removeClass("A B C D E F").addClass(event.detail.EcoIndexGrade);
+							$("#ecoindex").attr("title", ecotitle);
+						}
+
+						// Supprime l'iframe
+						$("#iframe_ecoindex").remove();
+
+					}, false);
+
+				<?php }?>
 								
+
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte

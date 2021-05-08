@@ -522,5 +522,30 @@ $(function()
 	// Ferme le menu si on click sur l'overlay gris du fond
 	var responsiveOverlay = document.querySelector(".responsive-overlay");
 	responsiveOverlay && (responsiveOverlay.onclick = function() { toggleBurger(); });
-	
+
+
+
+	// ECOINDEX
+	// http://www.ecoindex.fr/quest-ce-que-ecoindex/
+	// Lance la mesure de ecoindex quand la page est fini de charger
+	if(get_cookie('iframe_ecoindex')) 
+		$(window).on("load", function (event) {
+			// Lancement de la mesure avec un délai pour prendre en compte les scripts en Async
+			setTimeout(function()
+			{ 
+				// Mesure de la DOM
+				var dom = $('*').length;
+
+				// Liste les ressources appeler par le navigateur
+				var resources = window.performance.getEntriesByType("resource");
+
+				// Ajoute la page courante (type navigation)
+				resources.push({name: 'Page HTML', transferSize : window.performance.getEntriesByType("navigation")[0].transferSize});
+
+				// Calcule de la note
+				parent.ecoindex(dom, resources);
+
+			}, 1000);			
+		});
+
 });

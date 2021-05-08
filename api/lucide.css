@@ -249,6 +249,27 @@ body { transition: margin-top .2s linear; }
 			}
 
 
+	/* Couleur de la note ecoindex */
+	#ecoindex span {
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		font-size: 12px;
+		line-height: 18px;
+		margin: 0.1rem 0 0 0.5rem;
+		text-align: center;
+		border-radius: 50%;
+		background-color: #f00;
+	}	
+		#ecoindex span.A { background-color: #349A47; color: #fff; }
+		#ecoindex span.B { background-color: #51B84B; color: #fff; }
+		#ecoindex span.C { background-color: #CADB2A }
+		#ecoindex span.D { background-color: #F6EB15 }
+		#ecoindex span.E { background-color: #FECD06 }
+		#ecoindex span.F { background-color: #F99839; color: #fff; }
+		#ecoindex span.G { background-color: #ED2124; color: #fff; }
+
+
 
 /* Progression de la sauvegarde */
 #progress {

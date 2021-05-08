@@ -94,6 +94,17 @@ Prérequis : dans la configuration de PHP short_open_tag doit être en On `short
 ## Gestion du multilingue
 Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/testé. Globalement les traductions de l'interface du CMS se trouvent dans le fichier `api/translation.php`
 
+## Version bêta de l'intégration de ecoIndex
+Pour permettre de prendre conscience de l'impact environnemental de l'intégration des contenus dans le CMS j'ai intégré de façon simplifier la note ecoIndex.
+L'idée est en un minimum de code Javascript (pour un minimum de dettes techniques) d'obtenir une mensure se rapprochant le plus possible de l'ecoIndex original. J'utilise la méthode de calcul original sans modification.
+Le Javascript audite la taille de la DOM, le nombre de fichiers et leur poids. Ces 2 derniers éléments étant parfois moins fiables, les résultats peuvent légèrement différer des mesures ecoIndex originales.
+Pour activer la fonction dans l'administration (mesure lors de la sauvegarde de vos modifications) il faut 
+`$GLOBALS['ecoindex'] = true;` dans le fichier `config.php`
+
+Les fonctions de calcul viennent de [GreenIT-Analysis](https://github.com/cnumr/GreenIT-Analysis/).
+
+L'algorithme [EcoIndex](http://www.ecoindex.fr/quest-ce-que-ecoindex/) est sous [Licence Creative Commons CC-By-NC-ND](https://creativecommons.org/licenses/by-nc-nd/2.0/fr/)
+
 ## Wordpress VS Translucide
 J'ai tenté de passer un site que j'avais fait sous Wordpress sous Translucide avec les mêmes fonctionnalités et aspect visuel et le résultat était plutôt édifiant.
 Pour le même site on est passé de plus de 1000 fichiers avec Wordpress à moins de 100, images comprises, pour Translucide. Et de 50 mégaoctet à 5 mégaoctet pour la version CMS Translucide. Niveau temps d'exécution en général on divise par 2 le temps de chargement d'une page et ceci sans utiliser de système de cache spécifique. Combattons l'obésiciel ensemble :)
