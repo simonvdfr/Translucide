@@ -96,7 +96,9 @@ $GLOBALS['replace_path'] = "";// "/" Pour les chemins des média sur les sites a
 
 $GLOBALS['email_contact'] = '';
 
-$GLOBALS['online'] = true;
+
+// false => noindex, nofollow | true => index, follow
+$GLOBALS['online'] = false;
 
 
 // Utilisation de librairie minifier
@@ -112,7 +114,7 @@ $GLOBALS['static_dir'] = '';
 
 
 // Vérifie l'état d'écoconception des images
-$GLOBALS['img_check'] = false;
+$GLOBALS['img_check'] = true;
 
 
 // Ecoindex
