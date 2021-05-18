@@ -1073,7 +1073,7 @@ filesize = function(file) {
 
     request.send(null);//200
 
-    console.log(request);
+    //console.log(request);
 
 	//request.getResponseHeader('content-length')
     /Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
@@ -1200,7 +1200,7 @@ img_check = function(file)
 			imgs[src]['height'] = bg.height;*/
 		}
 		else {// Image dans contenu éditable ou fonction media
-			var src = path + $(this).attr("src").replace(host, "");
+			var src = $(this).attr("src").replace(host, "");// path + => crée un bug pour les images dans les contenus
 			if(src) {
 				imgs[src] = {};
 				imgs[src]['type'] = 'img';
