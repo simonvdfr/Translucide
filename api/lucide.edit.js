@@ -1267,12 +1267,19 @@ img_check = function(file)
 
 						// Image + grande que la zone afficher => Redimentionnement
 						if(widthRatio < 80 || heightRatio < 80)
-							optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+							optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
 					}
 
 					// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
-					if(ext == 'png' && size > img_green)
-						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+					if(ext == 'png' && size > img_green) {
+						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+						
+						// Si c'est un png & lourd & option webp => Conversion en webp (alpha conservé)
+						if(typeof towebp != 'undefined') 
+							optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('towebp', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" webp</a> ";
+					}
+
+					
 
 					// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
 					/*if(ext == 'jpg' && size > img_warning)

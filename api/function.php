@@ -1254,6 +1254,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		switch ($option) {
 		  case 'tojpg': $source_ext = 'jpg'; $type = 2; $zoom = ''; break;
           case 'topng': $source_ext = 'png'; $type = 3; $zoom = ''; break;
+          case 'towebp': $source_ext = 'webp'; $type = 18; $zoom = ''; break;
 		}
 
 		

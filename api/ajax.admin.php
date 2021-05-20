@@ -148,6 +148,7 @@ switch($_GET['mode'])
 				<?=(isset($GLOBALS['imgs_green'])? 'imgs_green = '.$GLOBALS['imgs_green'].';':'')?>
 				<?=(isset($GLOBALS['imgs_warning'])? 'imgs_warning = '.$GLOBALS['imgs_warning'].';':'')?>
 				<?=(isset($GLOBALS['imgs_num'])? 'imgs_num = '.$GLOBALS['imgs_num'].';':'')?>
+				<?=(@$GLOBALS['towebp']? 'towebp = '.$GLOBALS['towebp'].';':'')?>
 
 				<?php 
 				// Outil dispo dans la toolbox pour les contenus

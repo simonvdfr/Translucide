@@ -116,6 +116,9 @@ $GLOBALS['static_dir'] = '';
 // Vérifie l'état d'écoconception des images
 $GLOBALS['img_check'] = true;
 
+// Conversion vers le webp autorisé
+$GLOBALS['towebp'] = true;
+
 
 // Ecoindex
 $GLOBALS['ecoindex'] = true;
