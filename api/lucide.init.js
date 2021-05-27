@@ -275,6 +275,21 @@ $(function()
 
 
 
+	// VIDEO .on("click",
+	$("a.video").on("click", function(event){
+		event.preventDefault();
+
+		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
+		if($(this).data("play") != true)
+		$(event.currentTarget)
+			.html('<iframe width="'+$("img", event.currentTarget).css('width')+'" height="'+$("img", event.currentTarget).css('height')+'" src="https://www.youtube.com/embed/'+$(event.currentTarget).data('video')+'?controls=1&rel=0&autoplay=1" frameborder="0" class="'+$("figure", event.currentTarget).attr("class")+'" style="margin:'+$("figure", event.currentTarget).css('margin')+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+
+		// Pour ne pas relancer la vidéo au clique
+		$(this).data("play", true);
+	});
+
+
+
 	// BOUTON EDITION | AJOUT
 	// Bouton ajout de page/article
 	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
@@ -454,10 +469,10 @@ $(function()
 						return "url(" + $element.attr("data-bg") + ")";
 					});					
 				}
-				else if($element.data("src") && !$element.attr("src") && $element.parent().css("display") != "none")// Si image
+				else if($element.attr("data-src") && !$element.attr("src") && $element.parent().css("display") != "none")// Si image
 				{
 		    		// Si l'image est dans data-src mais n'est pas chargé et que le parent est visible
-					$element.attr("src", $element.data("src"));
+					$element.attr("src", $element.data("src")).removeAttr("data-src loading");;
 				}
 		});
 
@@ -507,5 +522,30 @@ $(function()
 	// Ferme le menu si on click sur l'overlay gris du fond
 	var responsiveOverlay = document.querySelector(".responsive-overlay");
 	responsiveOverlay && (responsiveOverlay.onclick = function() { toggleBurger(); });
-	
+
+
+
+	// ECOINDEX
+	// http://www.ecoindex.fr/quest-ce-que-ecoindex/
+	// Lance la mesure de ecoindex quand la page est fini de charger
+	if(get_cookie('iframe_ecoindex')) 
+		$(window).on("load", function (event) {
+			// Lancement de la mesure avec un délai pour prendre en compte les scripts en Async
+			setTimeout(function()
+			{ 
+				// Mesure de la DOM
+				var dom = $('*').length;
+
+				// Liste les ressources appeler par le navigateur
+				var resources = window.performance.getEntriesByType("resource");
+
+				// Ajoute la page courante (type navigation)
+				resources.push({name: 'Page HTML', transferSize : window.performance.getEntriesByType("navigation")[0].transferSize});
+
+				// Calcule de la note
+				parent.ecoindex(dom, resources);
+
+			}, 1000);			
+		});
+
 });

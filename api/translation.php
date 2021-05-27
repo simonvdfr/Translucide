@@ -86,6 +86,7 @@ $add_translation = array(
 	"Videos" => array("fr" => "Vidéos"),
 	"Audios" => array("fr" => "Audios"),
 	"Get resized image" => array("fr" => "Obtenir une image redimensionnée"),
+	"Copy to clipboard" => array("fr" => "Copier dans le presse papier"),
 
 	"Size of source file unspecified" => array("fr" => "Taille du fichier source non précisée"),
 	"Unsupported file type" => array("fr" => "Type de fichier non pris en charge"),

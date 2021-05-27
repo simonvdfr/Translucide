@@ -5,6 +5,21 @@ body { transition: margin-top .2s linear; }
 /* Légère transition sur les FontAwesome */
 /* .fa { transition: all 0.3s; } */
 
+
+/* Class de mise en page générique si pas style.css */
+/*
+.fl { float: left; }
+.fr { float: right; }
+
+.mat { margin: 0.5rem; }
+.pat { padding: 0.5rem; }
+
+#admin-bar .fa:before { content: '¤'; }
+#admin-bar .none { display: none; }
+*/
+
+
+/* Admin */
 #admin-bar {		
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	background-color: rgba(240, 240, 240, 0.8);	
@@ -232,6 +247,27 @@ body { transition: margin-top .2s linear; }
 			#admin-bar .switch label:active i:before {
 				box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.3);
 			}
+
+
+	/* Couleur de la note ecoindex */
+	#ecoindex span {
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		font-size: 12px;
+		line-height: 18px;
+		margin: 0.1rem 0 0 0.5rem;
+		text-align: center;
+		border-radius: 50%;
+		background-color: #f00;
+	}	
+		#ecoindex span.A { background-color: #349A47; color: #fff; }
+		#ecoindex span.B { background-color: #51B84B; color: #fff; }
+		#ecoindex span.C { background-color: #CADB2A }
+		#ecoindex span.D { background-color: #F6EB15 }
+		#ecoindex span.E { background-color: #FECD06 }
+		#ecoindex span.F { background-color: #F99839; color: #fff; }
+		#ecoindex span.G { background-color: #ED2124; color: #fff; }
 
 
 
@@ -684,7 +720,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	float: left;
 
 	width: 130px;
-	min-height: 110px;
+	height: 110px;
 
 	line-height: 100px;
 
@@ -712,6 +748,18 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		transition: opacity .5s;
 	}
 	
+	.dialog-media li .copy { 
+		position: absolute;
+		display: none;
+	    top: -20px;
+	    padding: 0 14px 0 12px;
+	    animation: fade-in .2s;
+	}	
+		.dialog-media li .copy input { 
+			background-color: #fff;
+			width: 100%;
+		}	
+
 	.dialog-media li .mime { 
 		background-color: rgb(255 255 255 / 0.8);
 		position: absolute;
@@ -748,7 +796,9 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		}
 
 
-	.dialog-media li .resize, .dialog-media li .supp { 
+	.dialog-media li .resize,
+	.dialog-media li .supp,
+	.dialog-media li .open { 
 		line-height: 18px;
 
 		position: absolute;			
@@ -757,9 +807,13 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 
 		z-index: 1;
 	}
-		.dialog-media li .resize:hover, .dialog-media li .supp:hover { opacity: 1; }
+		.dialog-media li .resize:hover,
+		.dialog-media li .supp:hover,
+		.dialog-media li .open:hover 
+		{ opacity: 1; }
 
-	.dialog-media li .resize { 
+	.dialog-media li .resize,
+	.dialog-media li .open { 
 		bottom: -1px;
 		left: 2px;
 	}
@@ -781,12 +835,16 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 			border: 2px dashed #75df83;
 		}
 
-	.dialog-media li:hover, .dialog-media li.select { background: #fff; }
+	.dialog-media li:hover,
+	.dialog-media li.select
+	{ background: #fff; }
 	
+	.dialog-media li:hover > .copy,
 	.dialog-media li:hover > .mime,
 	.dialog-media li:hover > .infos,
 	.dialog-media li:hover > .supp,
-	.dialog-media li:hover > .resize 
+	.dialog-media li:hover > .resize,
+	.dialog-media li:hover > .open 
 	{ display: block; }
 
 
@@ -1053,13 +1111,40 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	bottom: 0;
     left: 0;    
     
+    z-index: 2;
+
+    padding: 0 0.4rem;
+
+    transition: all .3s;
+}
+	.clear-file:hover, .print-size:hover { opacity: 1; }
+
+.print-size {
+	background: #fff;
+
+	color: #000 !important;
+	font-size: 0.6em;
+	font-family: sans-serif;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1.6rem;
+    cursor: default;
+
+    border-radius: 5px 0 0 0;
+	
+	display: none;
+	opacity: .8;
+
+    position: absolute;
+	bottom: 0;
+    right: 0;    
+    
     z-index: 1;
 
     padding: 0 0.4rem;
 
     transition: all .3s;
 }
-	.clear-file:hover { opacity: 1; }
 
 
 #unlink { color: #9E1E1E; }

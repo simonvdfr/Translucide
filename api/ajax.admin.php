@@ -48,7 +48,7 @@ switch($_GET['mode'])
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
 
-				<div id="meta" class="fl mat w30 no-small-screen">
+				<div id="meta" class="fl mat w30 noss">
 
 					<input type="text" id="title" value="" placeholder="<?php _e("Page title")?>" title="<?php _e("Page title")?>" maxlength="70" class="w100 bold">
 
@@ -127,9 +127,9 @@ switch($_GET['mode'])
 
 				<div id="close" class="fr mrt bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
 
-				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="no-small-screen"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
+				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="noss"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
 
-				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="no-small-screen"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="noss"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
 
 				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
@@ -148,6 +148,7 @@ switch($_GET['mode'])
 				<?=(isset($GLOBALS['imgs_green'])? 'imgs_green = '.$GLOBALS['imgs_green'].';':'')?>
 				<?=(isset($GLOBALS['imgs_warning'])? 'imgs_warning = '.$GLOBALS['imgs_warning'].';':'')?>
 				<?=(isset($GLOBALS['imgs_num'])? 'imgs_num = '.$GLOBALS['imgs_num'].';':'')?>
+				<?=(@$GLOBALS['towebp']? 'towebp = '.$GLOBALS['towebp'].';':'')?>
 
 				<?php 
 				// Outil dispo dans la toolbox pour les contenus
@@ -747,6 +748,7 @@ switch($_GET['mode'])
 					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
 				<?php }?>
 
+
 				
 				<?php if(@$GLOBALS['static'])// GÉNÉRATION DE LA PAGE EN STATIQUE .HTML
 				{
@@ -783,11 +785,52 @@ switch($_GET['mode'])
 				<?php }?>
 
 
+
 				<?php if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
 				{?>
 					img_check();
 				<?php }?>
+
+
+				
+				<?php if(@$GLOBALS['ecoindex'])// Affiche le ecoindex
+				{
+					// Cookie pour dire de lancer ecoindex dans l'iframe de la page en mode preview
+					setcookie("iframe_ecoindex", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
+
+					// Url de la page a auditer
+					$url = (isset($change_url)?$change_url:$res['url']);
+					?>
+					// Chargement de la page
+					$("#ecoindex span").html("<i class='fa fa-cog fa-spin'></i>");
+
+					// Inject la page dans une iframe pour l'auditer
+					$("body").append('<iframe id="iframe_ecoindex" src="<?=make_url($url, array('domaine' => true))?>" frameborder="0" class="hidden" width="100%" height="850"></iframe>');
+
+					// Récupère les données de l'iframe
+					window.document.addEventListener('ecoindex_event', function (event) 
+					{ 
+						var econote = event.detail;
+						var ecotitle = 'ecoIndex: '+econote.ecoIndex+' | GES: '+econote.ges+' gCO2e | eau: '+econote.eau+' cl | Nombre de requêtes: '+econote.req+' | Taille de la page: '+econote.size+' Ko | Taille du DOM: '+econote.dom;
+
+						// Ajout de la note dans la barre d'admin
+						if(!$("#ecoindex").length){
+							$("#admin-bar").append('<a href="http://www.ecoindex.fr/quest-ce-que-ecoindex/"  id="ecoindex" class="fr mat mrs small none" target="_blank" title="'+ecotitle+'">ecoIndex<span class="'+econote.EcoIndexGrade+'">'+econote.EcoIndexGrade+'</span></a>');
+							$("#ecoindex").fadeIn();
+						}
+						else{
+							$("#ecoindex span").html(event.detail.EcoIndexGrade).removeClass("A B C D E F").addClass(event.detail.EcoIndexGrade);
+							$("#ecoindex").attr("title", ecotitle);
+						}
+
+						// Supprime l'iframe
+						$("#iframe_ecoindex").remove();
+
+					}, false);
+
+				<?php }?>
 								
+
 
 				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
@@ -892,19 +935,34 @@ switch($_GET['mode'])
 
 		login('medium');// Vérifie que l'on a le droit d'éditer une page
 
-		$term = $connect->real_escape_string($_GET["term"]);
+		// Si on a déjà un bout d'url de saisie (cas des tags) on prend le dernier bout
+		if(strstr($_GET["term"], "/")) $_GET["term"] = basename($_GET["term"]);
 
+		$term = $connect->real_escape_string(trim($_GET["term"]));
+
+		// Les contenus
 		$sql = "SELECT id, title, type, url FROM ".$GLOBALS['table_content']." WHERE title LIKE '%".$term."%' OR url LIKE '%".$term."%'";
 		if(!$term) $sql .= " ORDER BY date_update DESC"; else $sql .= " ORDER BY title ASC";
 		$sql .= " LIMIT 50";
-
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
-			$data[] = array(
+			$data[$res['url']] = array(
 				'id' => $res['id'],
 				'label' => $res['title'],
 				'type' => $res['type'],
 				'value' => make_url($res['url'], array("absolu" => true))//, array("domaine" => true)
+			);
+		}
+
+		// Les tags
+		$sql = "SELECT * FROM ".$GLOBALS['tt']." WHERE name LIKE '%".$term."%' GROUP BY encode ORDER BY encode ASC LIMIT 50";
+		$sel = $connect->query($sql);
+		while($res = $sel->fetch_assoc()) {
+			$data[$res['encode'].$res['zone']] = array(
+				'id' => 'tag',
+				'label' => $res['name'],
+				'type' => 'Tag '.$res['zone'],
+				'value' => make_url($res['zone'], array($res['encode'], "absolu" => true))//, array("domaine" => true)
 			);
 		}
 
@@ -987,11 +1045,11 @@ switch($_GET['mode'])
 
 				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?php _e("Images")?>"><i class="fa fa-picture-o"></i> <span><?php _e("Images")?></span></a></li> -->
 
-				<li data-filter="resize"><a href="api/ajax.admin.php?mode=media&filter=resize" title="<?php _e("Resized")?>"><i class="fa fa-resize-small"></i> <span><?php _e("Resized")?></span></a></li>
+				<li data-filter="resize"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=resize" title="<?php _e("Resized")?>"><i class="fa fa-resize-small"></i> <span><?php _e("Resized")?></span></a></li>
 
 
 				<?php if(isset($_REQUEST['dir']) and $_REQUEST['dir']){?>
-				<li data-filter="dir"><a href="api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?php _e("Specific")?>"><i class="fa fa-file"></i> <span><?php _e("Specific")?></span></a></li>
+				<li data-filter="dir"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?php _e("Specific")?>"><i class="fa fa-file"></i> <span><?php _e("Specific")?></span></a></li>
 				<?php }?>
 
 				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?php _e("Videos")?>"><i class="fa fa-film"></i> <span><?php _e("Videos")?></span></a></li>
@@ -1036,8 +1094,11 @@ switch($_GET['mode'])
 
 					if(mime[0] == "image") 
 						container += "<img src=''>" + resize;
-					else 
-						container += "<div class='file'><i class='fa fa-fw fa-doc mega'></i><div>"+ file.name +"</div></div>"
+					else {
+						container += '<div class="file"><i class="fa fa-fw fa-doc mega"></i><div>'+ file.name +"</div></div>";
+						container += '<div class="copy"><input type="text" value="'+ path + 'media/' + $("#dialog-media-dir").val() + file.name +'"></div>';
+						
+					}
 
 					container += "<div class='infos'></div>";
 
@@ -1099,6 +1160,24 @@ switch($_GET['mode'])
 				// Switch sur l'onglet spécifique si il existe
 				if($("[data-filter='dir']").length)
 					$(".dialog-media").tabs("option", "active", $("[data-filter='dir']").index());
+
+				// Copie le chemin du fichier
+				$(".dialog-media").on("click", ".copy input", function(event)
+				{
+					event.stopPropagation();
+
+					$(this).select();
+
+					if(document.execCommand('copy')) {
+						//light("<?php _e("Copy to clipboard");?> : " + $(this).val(), 2000);
+					}
+				});
+
+				// Voir le fichier => arrete l'action de selection
+				$(".dialog-media").on("click", ".open", function(event)
+				{
+					event.stopPropagation();
+				});
 
 				// On demande une version redimensionnée de l'image
 				$(".dialog-media").on("click", ".resize", function(event)
@@ -1494,10 +1573,18 @@ switch($_GET['mode'])
 
 							// Affichage de l'image
 							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
+
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
+
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
 						}
-						else echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+						else {
+							echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+
+							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].'media/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
+
+							echo'<a href="'.$GLOBALS['path'].'media/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="fa fa-fw fa-link-ext"></i></a>';
+						}
 
 						echo"						
 						<div class='mime ".$sizecolor."'>".$val['mime']."</div>

@@ -489,6 +489,36 @@ input[type="reset"].unstyled:focus {
 .module > li:last-child { display: none; }
 
 
+/* Vidéo */
+.video figure {
+	position: relative;
+	display: table;
+}
+	.video iframe { display: block; }
+
+	.video figure.fl { margin-right: 1rem; }
+	.video figure.fr { margin-left: 1rem; }
+	.video figure { margin-bottom: 0.5rem; }
+	.video figure.center { 
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.video figure:after {
+		content: '\f144';
+		font-family: FontAwesome;
+		font-size: 6rem;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		color: #ff0000;
+		opacity: .8;
+		transition: all 1.5s;
+	}
+		.video figure:hover:after { opacity: 1; }
+		
+
 /* Bouton */
 .bt, button {
 	/* background-color: #f5f5f5; valeur par défaut dans le theme 06/01/2021
