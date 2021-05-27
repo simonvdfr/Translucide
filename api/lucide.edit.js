@@ -1398,6 +1398,7 @@ ecoindex = function(dom, resources)
 	if(link_favicon) resources.push({name: link_favicon, transferSize: 0});
 	//else resources.push({name:$(location).attr('origin')+'/favicon.ico', transferSize: 0});
 
+
 	// Parcours les ressources pour le nombre de requette et leur poids
 	resources.forEach(function(resource) 
 	{
@@ -1437,29 +1438,6 @@ ecoindex = function(dom, resources)
 	var ges = computeGreenhouseGasesEmissionfromEcoIndex(ecoIndex)
 	var eau = computeWaterConsumptionfromEcoIndex(ecoIndex)
 
-
-	// Si demande de renvoi de l'ecoindex depuis iframe
-	if(get_cookie('iframe_ecoindex'))
-	{
-		// Envoi à l'iframe parent l'ecoindex
-		var ecoindex_event = new CustomEvent('ecoindex_event', { 
-			detail: { 
-				ecoIndex: ecoIndex.toFixed(2),// Garde que 2 décimales
-				EcoIndexGrade: EcoIndexGrade,
-				ges: ges,
-				eau: eau,
-				dom: dom,
-				req: req,
-				size: size
-			}
-		})
-		window.parent.document.dispatchEvent(ecoindex_event);
-
-		// Supprime le cookie de demande d'ecoindex
-		set_cookie("iframe_ecoindex", "", "");
-	}
-
-
 	// Log
 	console.log("ecoIndex: " + ecoIndex);
 	console.log("EcoIndexGrade: " + EcoIndexGrade);
@@ -1468,6 +1446,26 @@ ecoindex = function(dom, resources)
 	console.log("dom: " + dom);
 	console.log("req: " + req);
 	console.log("size: " + size);
+
+
+	// Affichage dans la barre d'admin
+	var ecotitle = 'ecoIndex: '+ecoIndex+' | GES: '+ges+' gCO2e | eau: '+eau+' cl | Nombre de requêtes: '+req+' | Taille de la page: '+size+' Ko | Taille du DOM: '+dom;
+
+	// Ajout de la note dans la barre d'admin
+	if(!$("#ecoindex").length)
+	{
+		$("#admin-bar").append('<a href="http://www.ecoindex.fr/quest-ce-que-ecoindex/"  id="ecoindex" class="fr mat mrs small none" target="_blank" title="'+ecotitle+'">ecoIndex<span class="'+EcoIndexGrade+'">'+EcoIndexGrade+'</span></a>');
+		$("#ecoindex").fadeIn();
+	}
+	else
+	{
+		$("#ecoindex span").html(EcoIndexGrade).removeClass("A B C D E F").addClass(EcoIndexGrade);
+		$("#ecoindex").attr("title", ecotitle);
+	}
+
+	// Supprime l'iframe
+	$("#iframe_ecoindex").remove();
+
 }
 
 
