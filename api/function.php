@@ -1141,7 +1141,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		$dir = (strpos($dir, 'media') === 0 ? '' : 'media/resize/') . $dir;
 
 		// Crée les dossiers
-		@mkdir($root_dir . $dir, 0705, true);
+		@mkdir($root_dir . $dir, 0755, true);
 
 		// On crée une image avec l'image source en fonction de son type
 		switch($type) {
@@ -1280,7 +1280,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		$dir = "media/" . $dir_clean;// @todo ajouter le dir (sans resize)
 		$file_name_ext = $file_name.".".$source_ext;
 		
-		@mkdir($root_dir . $dir, 0705, true);// Crée les dossiers
+		@mkdir($root_dir . $dir, 0755, true);// Crée les dossiers
 
 		copy($source_file, $root_dir . $dir . $file_name_ext);
 	}
