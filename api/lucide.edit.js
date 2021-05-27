@@ -21,6 +21,8 @@ add_translation({
 	"Media Library" : {"fr" : "Bibliothèque des médias"},		
 	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
+	"Video" : {"fr" : "Vidéo"},		
+	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Anchor" : {"fr" : "Ancre"},		
 	"Add Anchor" : {"fr" : "Ajouter une ancre"},		
 	"Change Anchor" : {"fr" : "Modifier l'ancre"},		
@@ -34,6 +36,9 @@ add_translation({
 	"Image caption" : {"fr" : "Légende de l'image"},		
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
+	"Erase" : {"fr" : "Effacer"},
+	"Image dimension in pixel (width x height)" : {"fr" : "Dimension de l'image en pixel (largeur x hauteur)"},
+
 	"Zoom link" : {"fr" : "Lien zoom"},
 	"Add" : {"fr" : "Ajouter"},
 	"Width" : {"fr" : "Largeur"},
@@ -90,7 +95,7 @@ get_content = function(content)
 	});
 	
 	// Contenu des background images éditables
-	$(document).find(content+" [data-bg]:not([data-global]), "+content+"[data-bg]").each(function() {
+	$(document).find(content+" [data-id][data-bg]:not([data-global]), "+content+"[data-id][data-bg]").each(function() {
 		if($(this).attr("data-bg")) data[content_array][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 		
@@ -179,7 +184,7 @@ save = function() //callback
 		if($(this).attr("src")) data["global"][$(this).closest(".editable-media").attr("id")] = $(this).attr("src");
 	});
 	// BG
-	$(document).find(".content [data-bg][data-global]").each(function() {
+	$(document).find(".content [data-id][data-bg][data-global]").each(function() {
 		if($(this).attr("data-bg")) data["global"][$(this).attr("data-id")] = $(this).attr("data-bg");
 	});
 
@@ -366,6 +371,33 @@ exec_tool = function(command, value, ui) {
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);
 	memo_node = selected_element(memo_range);
+}
+
+
+// VIDEO
+// Ajoute une vidéo
+video = function() 
+{
+	var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
+
+	var url_video = $('#txt-tool .option #video').val();
+
+	// #(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#
+	// var id_video = url_video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+
+	var match = url_video.match(/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/);
+	var id_video = (match && match[7].length==11)? match[7] : false;
+
+	// Si ajout de lien
+	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
+	{
+		// mqdefault hqdefault maxresdefault
+		exec_tool("insertHTML", '<a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><figure class="fl" style="display: table !important;"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" width="320" height="180"'+lazy+'></figure></a>');
+
+		$(".video figure").attr('style','')
+
+		tosave();
+	}
 }
 
 
@@ -853,7 +885,7 @@ get_file = function(id)
 		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
 	}
 	else// Insertion du lien vers le fichier dans bloc texte
-		exec_tool("insertHTML", "<a href=\""+ $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
+		exec_tool("insertHTML", "<a href=\""+ path + $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
 
 	// Fermeture de la dialog
 	$(".dialog-media").dialog("close");
@@ -1039,7 +1071,9 @@ filesize = function(file) {
 
     request.open("HEAD", file, false);
 
-    request.send(null);
+    request.send(null);//200
+
+    //console.log(request);
 
 	//request.getResponseHeader('content-length')
     /Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
@@ -1150,10 +1184,10 @@ img_check = function(file)
 	host = location.protocol +'//'+ location.host + path;
 
 	// Contenu des images éditables, bg et dans les contenus textuels
-	$(document).find("main .editable-media img, main .editable img, main [data-bg]").each(function()
+	$(document).find("main .editable-media img, main .editable img, main [data-id][data-bg]").each(function()
 	{
 		if($(this).hasClass("editable-bg")) {// Image en background
-			var src = $(this).attr("data-bg").replace(host, "");
+			var src = path + $(this).attr("data-bg").replace(host, "");
 			if(src) {
 				imgs[src] = {};
 				imgs[src]['type'] = 'bg';
@@ -1166,7 +1200,7 @@ img_check = function(file)
 			imgs[src]['height'] = bg.height;*/
 		}
 		else {// Image dans contenu éditable ou fonction media
-			var src = $(this).attr("src").replace(host, "");
+			var src = $(this).attr("src").replace(host, "");// path + => crée un bug pour les images dans les contenus
 			if(src) {
 				imgs[src] = {};
 				imgs[src]['type'] = 'img';
@@ -1182,7 +1216,7 @@ img_check = function(file)
 		}
 	});
 
-	console.log(imgs);
+	//console.log(imgs);
 
 	// S'il y a des images
 	if(Object.keys(imgs).length > 0)
@@ -1214,41 +1248,53 @@ img_check = function(file)
 				var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
 
 				// extraction de la Taille
-				var size = filesize(src);
-				imgs[src]['size'] = size;
+				var size = filesize(src.split("?")[0]);
 
-				// total des poids d'image
-				imgs_size = imgs_size + size;
-
-				// Image dans le contenu
-				if(img.type == 'img')
+				// Si Taille d'image
+				if(!isNaN(size))
 				{
-					// Vérifie la taille de l'image pour proposer une optimisation
-					var widthRatio = (img.width / img.naturalWidth) * 100;
-					var heightRatio = (img.height / img.naturalHeight) * 100;
+					imgs[src]['size'] = size;
 
-					// Image + grande que la zone afficher => Redimentionnement
-					if(widthRatio < 80 || heightRatio < 80)
-						optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+					// total des poids d'image
+					imgs_size = imgs_size + size;
+
+					// Image dans le contenu
+					if(img.type == 'img')
+					{
+						// Vérifie la taille de l'image pour proposer une optimisation
+						var widthRatio = (img.width / img.naturalWidth) * 100;
+						var heightRatio = (img.height / img.naturalHeight) * 100;
+
+						// Image + grande que la zone afficher => Redimentionnement
+						if(widthRatio < 80 || heightRatio < 80)
+							optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+					}
+
+					// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
+					if(ext == 'png' && size > img_green) {
+						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+						
+						// Si c'est un png & lourd & option webp => Conversion en webp (alpha conservé)
+						if(typeof towebp != 'undefined') 
+							optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('towebp', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" webp</a> ";
+					}
+
+					
+
+					// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
+					/*if(ext == 'jpg' && size > img_warning)
+						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
+
+					// Couleur de vigilance
+					if(size <= img_green) var imgcolor = 'green';
+					else if(size > img_green && size < img_warning) var imgcolor = 'orange';
+					else if(size >= img_warning) var imgcolor = 'red';
+
+					// Affichage
+					$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+
+					++num;
 				}
-
-				// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
-				if(ext == 'png' && size > img_green)
-					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
-
-				// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
-				/*if(ext == 'jpg' && size > img_warning)
-					optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
-
-				// Couleur de vigilance
-				if(size <= img_green) var imgcolor = 'green';
-				else if(size > img_green && size < img_warning) var imgcolor = 'orange';
-				else if(size >= img_warning) var imgcolor = 'red';
-
-				// Affichage
-				$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
-
-				++num;
 			}
 
 		});
@@ -1268,8 +1314,162 @@ img_check = function(file)
 
 		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
 
+		// Si pas d'image on n'affiche pas la dialog
+		if(num == 0) $(".dialog-optim-img").dialog('close');
 	}
 }
+
+
+
+/*
+* Pour plus d'informations sur ecoindex : 
+* http://www.ecoindex.fr/quest-ce-que-ecoindex/
+*
+*  Copyright (C) 2019  didierfred@gmail.com 
+*   *
+*  This program is free software: you can redistribute it and/or modify
+*   *  it under the terms of the GNU Affero General Public License as published
+*  by the Free Software Foundation, either version 3 of the License, or
+*   *  (at your option) any later version.
+*  This program is distributed in the hope that it will be useful,
+*   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   *  GNU Affero General Public License for more details.
+*  You should have received a copy of the GNU Affero General Public License
+*   *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+quantiles_dom = [0, 47, 75, 159, 233, 298, 358, 417, 476, 537, 603, 674, 753, 843, 949, 1076, 1237, 1459, 1801, 2479, 594601];
+quantiles_req = [0, 2, 15, 25, 34, 42, 49, 56, 63, 70, 78, 86, 95, 105, 117, 130, 147, 170, 205, 281, 3920];
+quantiles_size = [0, 1.37, 144.7, 319.53, 479.46, 631.97, 783.38, 937.91, 1098.62, 1265.47, 1448.32, 1648.27, 1876.08, 2142.06, 2465.37, 2866.31, 3401.59, 4155.73, 5400.08, 8037.54, 223212.26];
+
+/**
+Calcul ecoIndex based on formula from web site www.ecoindex.fr
+**/
+function computeEcoIndex(dom,req,size)
+{
+
+	const q_dom= computeQuantile(quantiles_dom,dom);
+	const q_req= computeQuantile(quantiles_req,req);
+	const q_size= computeQuantile(quantiles_size,size);
+
+
+	return 100 - 5 * (3*q_dom + 2*q_req + q_size)/6;
+}
+
+function computeQuantile(quantiles,value)
+{
+	for (i=1;i<quantiles.length;i++)
+	{
+		if (value<quantiles[i]) return (i + (value-quantiles[i-1])/(quantiles[i] -quantiles[i-1]));
+	}
+	return quantiles.length;
+}
+
+function getEcoIndexGrade(ecoIndex)
+{
+	if (ecoIndex > 75) return "A";
+	if (ecoIndex > 65) return "B";
+	if (ecoIndex > 50) return "C";
+	if (ecoIndex > 35) return "D";
+	if (ecoIndex > 20) return "E";
+	if (ecoIndex > 5) return "F";
+	return "G";
+}
+
+function computeGreenhouseGasesEmissionfromEcoIndex(ecoIndex)
+{
+	return (2 + 2 * (50 - ecoIndex) / 100).toFixed(2);
+}
+function computeWaterConsumptionfromEcoIndex(ecoIndex)
+{
+	return (3 + 3 * (50 - ecoIndex) / 100).toFixed(2);
+}
+
+
+// Donne le ecoindex
+ecoindex = function(dom, resources)
+{
+	// Mesure le nombre de REQUETTE
+	var size = 0;
+	var req = 0;
+
+	// C'est une iframe du coup regarder si favicon dans les metas
+	var link_favicon = $('link[rel~="icon"]').prop('href');
+	if(link_favicon) resources.push({name: link_favicon, transferSize: 0});
+	//else resources.push({name:$(location).attr('origin')+'/favicon.ico', transferSize: 0});
+
+	// Parcours les ressources pour le nombre de requette et leur poids
+	resources.forEach(function(resource) 
+	{
+		// Nombre de ressource
+		req++;
+
+	    // Poids du fichier en octets typeof resource.transferSize !== 'undefined' && 
+	    var size_file = 0;
+	    if(resource.transferSize == 0)// Si la boucle n'arrive pas à lire le poids du fichier
+	    {
+		    var request = new XMLHttpRequest();
+		    request.open("HEAD", resource.name, false);
+		    request.send(null);
+			//request.getResponseHeader('content-length');
+			/Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
+		    size_file = parseInt(RegExp.$1);
+
+		    // @todo : Gerer les cas ou il n'y a pas de content-length
+	    }
+	    else size_file = resource.transferSize;
+
+	    // Poids en Ko
+	    //size_file = Math.ceil(size_file / 1024);// Taille en Ko
+	    size_file = Math.round(size_file / 1000);// Taille en Ko => même calcule que GreenIT-Analysis (mais moins précis)
+
+	    // Poids total de fichier
+	    size = size + size_file;
+
+	    //console.log(resource);
+	    console.log(req+' : '+size_file+'Ko | '+resource.transferSize+' | '+resource.initiatorType+' | '+resource.name);
+	});
+
+
+	// Résultat
+	var ecoIndex = computeEcoIndex(dom, req, size);
+	var EcoIndexGrade = getEcoIndexGrade(ecoIndex)
+	var ges = computeGreenhouseGasesEmissionfromEcoIndex(ecoIndex)
+	var eau = computeWaterConsumptionfromEcoIndex(ecoIndex)
+
+
+	// Si demande de renvoi de l'ecoindex depuis iframe
+	if(get_cookie('iframe_ecoindex'))
+	{
+		// Envoi à l'iframe parent l'ecoindex
+		var ecoindex_event = new CustomEvent('ecoindex_event', { 
+			detail: { 
+				ecoIndex: ecoIndex.toFixed(2),// Garde que 2 décimales
+				EcoIndexGrade: EcoIndexGrade,
+				ges: ges,
+				eau: eau,
+				dom: dom,
+				req: req,
+				size: size
+			}
+		})
+		window.parent.document.dispatchEvent(ecoindex_event);
+
+		// Supprime le cookie de demande d'ecoindex
+		set_cookie("iframe_ecoindex", "", "");
+	}
+
+
+	// Log
+	console.log("ecoIndex: " + ecoIndex);
+	console.log("EcoIndexGrade: " + EcoIndexGrade);
+	console.log("ges: " + ges);
+	console.log("eau: " + eau);
+	console.log("dom: " + dom);
+	console.log("req: " + req);
+	console.log("size: " + size);
+}
+
 
 
 // Désactive l'edition
@@ -1371,7 +1571,7 @@ $(function()
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on("click",	function() {
-		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle();			
+		$("#meta").addClass("tooltip slide-left fire pat").css({"position": "absolute", "top": $("#admin-bar").height()}).fadeToggle().attr('style', function(i,s) { return (s || '') + 'display: block !important;' });		
 	});
 
 
@@ -1705,6 +1905,19 @@ $(function()
 		if(typeof toolbox_icon != 'undefined') 
 			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 
+		if(typeof toolbox_video != 'undefined') 
+		{
+			toolbox+= "<li><button onclick=\"$('#txt-tool #video-option').show(); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='fa fa-fw fa-video'></i></button></li>";
+
+			toolbox+= "<li id='video-option' class='option'>";
+
+				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='w150p small'>";
+
+				toolbox+= "<button onclick=\"video()\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+
+			toolbox+= "</li>";
+		}
+
 		if(typeof toolbox_media != 'undefined') 
 			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture'></i></button></li>";
 
@@ -1939,7 +2152,7 @@ $(function()
 		// + Supprime aussi les supportLists de word (Correction de Dominique)
 		paste = paste.replace(/<![\s\S]*?>/gi, "");
 
-		// Si pas en mode visionnage du code source & 
+		// Si PAS en mode visionnage du code source 
 		if(!$(this).hasClass("view-source")) 
 		{
 			// Html dans le paste
@@ -1954,6 +2167,8 @@ $(function()
 			    .replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
 
 			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+
+			    .replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
 
 			// Transforme les retours à la ligne en <br>
 			paste = paste.replace(/\n/gi, "<br>");
@@ -1975,6 +2190,15 @@ $(function()
 
 	// Action sur le input de lien si keyup Enter
 	$("#txt-tool .option #link").keyup(function(event) { if(event.keyCode == 13) link() });
+
+
+
+	/************** FORCE LA DÉSACTIVATION LE LAZYLOADING SUR LES IMAGES **************/
+	$.each($("img[loading='lazy']"), function() 
+	{
+		// Assigne les images en attente au src et supprime le lazyloading
+		$(this).attr("src", $(this).data("src")).removeAttr("data-src loading");
+	});
 
 
 
@@ -2102,9 +2326,16 @@ $(function()
 	// Icone d'upload + supp du fichier + alt éditable
 	$(".editable-media").append(function() {
 		var alt = $('img', this).attr("alt");
+
+		print_size = null;
+		if($(this).data("width")) print_size = $(this).data("width")+'';
+		if($(this).data("width") && $(this).data("height")) print_size+=" x ";
+		if($(this).data("height")) print_size+= $(this).data("height")+'';
+		
 		return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
 			"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
-			"<div class='clear-file' title=\""+ __("Delete file") +"\"><i class='fa fa-trash'></i> "+ __("Delete file") +"</div>"
+			"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
+			+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'')
 	});
 
 
@@ -2144,7 +2375,7 @@ $(function()
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
 					if($("img", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
-						$(".clear-file", this).fadeIn("fast");
+						$(".clear-file, .print-size", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
 					if($("img", this).attr("src")) {
@@ -2163,7 +2394,7 @@ $(function()
 					$(this).removeClass("drag-over");
 					$("img, i", this).removeClass("drag-elem");
 					$(".open-dialog-media", this).hide();
-					$(".clear-file", this).hide();
+					$(".clear-file, .print-size", this).hide();
 
 					// Masque le alt éditable
 					$('#'+ $(this).attr("id") +'-alt').css('display','none');;
@@ -2211,19 +2442,19 @@ $(function()
 	/************** IMAGES BACKGROUND **************/
 	
 	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
-	$("[data-bg]").addClass("editable-bg");
-	$("[data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
+	$("[data-id][data-bg]").addClass("editable-bg");
+	$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
 
 	// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
 	clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
-	$("[data-bg]").each(function() {
+	$("[data-id][data-bg]").each(function() {
 		if($(this).data("bg"))
 			$(".bg-tool", this).prepend(clearbg_bt);
 	});
 
 	// Rends éditables les images en background
 	editable_bg_event = function() {
-		$("[data-bg]")
+		$("[data-id][data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
 					$("> .bg-tool", this).fadeIn("fast");
@@ -2346,7 +2577,7 @@ $(function()
 	$(".module-bt").parent().addClass("relative");
 
 	// Ajout de la SUPPRESION au survole d'un bloc
-	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 1;' title='"+ __("Remove") +"'></i></a>");
+	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 10;' title='"+ __("Remove") +"'></i></a>");
 
 	// Affiche les boutons de suppression
 	//$(".module li .fa-cancel").fadeIn();
@@ -2466,8 +2697,20 @@ $(function()
 		$(this).autocomplete({
 			minLength: 0,
 			source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
-			select: function(event, ui) { 
-				$(this).val(ui.item.value);// Action au click sur la selection
+			select: function(event, ui) 
+			{ 
+				// S'il y a déjà un chemin présent ont ajouté à la suite avec juste la dernière partie | Cas tag
+				if($(this).val().indexOf("/") !== -1)
+				{
+					// Ajoute le dernier terme au contenu courant (moins la saisie de recherche)
+					$(this).val(function(index, value) {
+						return value.substring(0, value.lastIndexOf('/')) +'/'+ ui.item.value.split("/").pop();
+					});
+				}
+				else 
+					$(this).val(ui.item.value);
+	
+				return false;// Coupe l'execution automatique d'ajout du terme
 			}
 		})
 		.focus(function(){
@@ -2691,7 +2934,7 @@ $(function()
 		medias = {};
 
 		// Contenu des images éditables, bg et dans les contenus textuels
-		$(document).find(".content .editable-media img, .content .editable img, .content [data-bg]").each(function() {
+		$(document).find(".content .editable-media img, .content .editable img, .content [data-id][data-bg]").each(function() {
 			if($(this).hasClass("editable-bg")) var media = $(this).attr("data-bg");
 			else var media = $(this).attr("src");
 

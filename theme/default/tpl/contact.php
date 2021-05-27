@@ -31,7 +31,7 @@ if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["questi
 
 
 				// header
-				$header = "From:".$from."\r\n";
+				$header = "From:".$GLOBALS['email_contact']."\r\n";// Pour une meilleure délivrabilité des mails
 				$header.= "Reply-To: ".$from."\r\n";
 				$header.= "Content-Type: text/plain; charset=ISO-8859-1\r\n";// utf-8 ISO-8859-1
 
