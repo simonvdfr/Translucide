@@ -1487,7 +1487,7 @@ unlucide = function()
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
 $(window).on("beforeunload", function(){
-	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
+	if(typeof dev == 'undefined' && $("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
 });
 
 
