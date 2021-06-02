@@ -645,6 +645,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		z-index: 100;
 	}
 
+	.editable-tag-ordre { width: 45px; }
+
 
 /* Module */
 

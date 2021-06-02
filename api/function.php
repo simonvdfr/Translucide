@@ -709,10 +709,17 @@ function tag($key = null, $filter = array())
 
 			if($i > 1) echo (@$filter['separator']?$filter['separator']:', ');
 			echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
+
+			$ordre = $res_tag['ordre'];
+
 			$i++;
 		}
 
 	echo'</'.(isset($filter['tag']) ? $filter['tag'] : "div").'>';
+
+	// Si on veut choisir l'ordre du tag
+	if(isset($filter['ordre'])) 
+		echo'<input type="number" data-zone="'.$key.'" class="editable-tag-ordre" value="'.(is_numeric($filter['ordre'])?$filter['ordre']:$ordre).'" size="2" title="'.$filter['ordre'].'"'.(is_numeric($filter['ordre'])?' readonly':'').'>';
 }
 
 

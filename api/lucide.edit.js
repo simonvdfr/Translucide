@@ -192,7 +192,13 @@ save = function() //callback
 	// Tags de la fiche en cours
 	data["tag"] = {};
 	$(document).find(".content .editable-tag").each(function() {
+
+		// Tags
 		if($(this).text()) data["tag"][$(this).attr("id")] = $(this).text();
+
+		// Ordre forcé du tag
+		if($(this).next(".editable-tag-ordre").val() != undefined) 
+			data["tag-ordre"] = $(this).next(".editable-tag-ordre").val();
 	});	
 
 	// Séparateur de tag
@@ -1861,6 +1867,12 @@ $(function()
 		if(typeof toolbox_h4 != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('h4')\" id='h4' title=\""+__("Title")+" H4"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>4</span></button></li>";
 
+		if(typeof toolbox_h5 != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('h5')\" id='h5' title=\""+__("Title")+" H5"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>5</span></button></li>";
+
+		if(typeof toolbox_h6 != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('h6')\" id='h6' title=\""+__("Title")+" H6"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>6</span></button></li>";
+
 		if(typeof toolbox_bold != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
 
@@ -2079,6 +2091,12 @@ $(function()
 
 				if($(memo_node).closest("h4").length) $("#txt-tool #h4").addClass("checked");
 				else $("#txt-tool #h4").removeClass("checked");
+
+				if($(memo_node).closest("h5").length) $("#txt-tool #h5").addClass("checked");
+				else $("#txt-tool #h5").removeClass("checked");
+
+				if($(memo_node).closest("h6").length) $("#txt-tool #h6").addClass("checked");
+				else $("#txt-tool #h6").removeClass("checked");
 
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
