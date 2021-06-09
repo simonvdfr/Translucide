@@ -1390,8 +1390,7 @@ function computeWaterConsumptionfromEcoIndex(ecoIndex)
 ecoindex = function(dom, resources)
 {
 	// Mesure le nombre de REQUETTE
-	var size = 0;
-	var req = 0;
+	var size = req = error = 0;
 
 	// C'est une iframe du coup regarder si favicon dans les metas
 	var link_favicon = $('link[rel~="icon"]').prop('href');
@@ -1409,52 +1408,53 @@ ecoindex = function(dom, resources)
 	    var size_file = 0;
 	    if(resource.transferSize == 0)// Si la boucle n'arrive pas à lire le poids du fichier
 	    {
-		    var request = new XMLHttpRequest();
+		    /*var request = new XMLHttpRequest();
 		    request.open("HEAD", resource.name, false);
 		    request.send(null);
 			//request.getResponseHeader('content-length');
 			/Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
-		    size_file = parseInt(RegExp.$1);
-
+		    size_file = parseInt(RegExp.$1);*/
 		    // @todo : Gerer les cas ou il n'y a pas de content-length
+
+		    error++;		   
 	    }
 	    else size_file = resource.transferSize;
 
 	    // Poids en Ko
-	    //size_file = Math.ceil(size_file / 1024);// Taille en Ko
-	    size_file = Math.round(size_file / 1000);// Taille en Ko => même calcule que GreenIT-Analysis (mais moins précis)
+	    size_file = Math.round(size_file / 1000);
 
 	    // Poids total de fichier
 	    size = size + size_file;
 
 	    //console.log(resource);
-	    console.log(req+' : '+size_file+'Ko | '+resource.transferSize+' | '+resource.initiatorType+' | '+resource.name);
+	    //console.log(req+' : '+size_file+'Ko | '+resource.transferSize+' | '+resource.initiatorType+' | '+resource.name);
 	});
 
 
 	// Résultat
+	var p100error = error * 100 / req;
 	var ecoIndex = computeEcoIndex(dom, req, size);
 	var EcoIndexGrade = getEcoIndexGrade(ecoIndex)
 	var ges = computeGreenhouseGasesEmissionfromEcoIndex(ecoIndex)
 	var eau = computeWaterConsumptionfromEcoIndex(ecoIndex)
 
 	// Log
-	console.log("ecoIndex: " + ecoIndex);
-	console.log("EcoIndexGrade: " + EcoIndexGrade);
-	console.log("ges: " + ges);
-	console.log("eau: " + eau);
-	console.log("dom: " + dom);
-	console.log("req: " + req);
-	console.log("size: " + size);
+	//console.log("ecoIndex: " + ecoIndex);
+	//console.log("EcoIndexGrade: " + EcoIndexGrade);
+	//console.log("ges: " + ges);
+	//console.log("eau: " + eau);
+	//console.log("dom: " + dom);
+	//console.log("req: " + req);
+	//console.log("size: " + size);
 
 
 	// Affichage dans la barre d'admin
-	var ecotitle = 'ecoIndex: '+ecoIndex+' | GES: '+ges+' gCO2e | eau: '+eau+' cl | Nombre de requêtes: '+req+' | Taille de la page: '+size+' Ko | Taille du DOM: '+dom;
+	var ecotitle = 'ecoIndex: '+ ecoIndex.toFixed(2) + (p100error>0?' (*'+Math.round(p100error)+'% d\'erreur)':'') +' | GES: '+ges+' gCO2e | eau: '+eau+' cl | Nombre de requêtes: '+req+' | Taille de la page: '+size+' Ko | Taille du DOM: '+dom;
 
 	// Ajout de la note dans la barre d'admin
 	if(!$("#ecoindex").length)
 	{
-		$("#admin-bar").append('<a href="http://www.ecoindex.fr/quest-ce-que-ecoindex/"  id="ecoindex" class="fr mat mrs small none" target="_blank" title="'+ecotitle+'">ecoIndex<span class="'+EcoIndexGrade+'">'+EcoIndexGrade+'</span></a>');
+		$("#admin-bar").append('<a href="http://www.ecoindex.fr/quest-ce-que-ecoindex/"  id="ecoindex" class="fr mat mrs small none" target="_blank" title="'+ecotitle+'">ecoIndex<span class="'+EcoIndexGrade+'">'+EcoIndexGrade + (p100error>0?'*':'') +'</span></a>');
 		$("#ecoindex").fadeIn();
 	}
 	else
