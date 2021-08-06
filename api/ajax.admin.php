@@ -1597,6 +1597,8 @@ switch($_GET['mode'])
 
 		login('medium', 'add-media');// Vérifie que l'on est admin
 
+		// @todo Nettoyer l'URL de la request pour éviter des suppressions hors dossier médias
+
 		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		
 	break;
