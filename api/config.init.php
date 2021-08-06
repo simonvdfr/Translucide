@@ -200,7 +200,7 @@ $GLOBALS['default_state'] = 'active';// moderate / mail / active / deactivate
 $GLOBALS['mail_moderate'] = true;
 
 // Niveaux d'authentification par défaut des comptes utilisateur
-$GLOBALS['default_auth'] = 'add-media-public,edit-public';
+$GLOBALS['default_auth'] = 'edit-public';// add-media-public
 
 // Info supplémentaire sur l'utilisateur
 $GLOBALS['user_info'] = null;
@@ -265,7 +265,7 @@ $GLOBALS['mime_supported'] = array(
 	'application/pdf',
 	'application/zip',
 	'application/x-zip-compressed',
-	'text/plain'
+	//'text/plain'
 );
 
 
