@@ -1103,7 +1103,7 @@ function file_check($file)
 	if(in_array($file_infos['mime'], $GLOBALS['mime_supported'])) 
 	{
 		// Le fichier tmp ne contient pas de php ou de javascript
-		if(!preg_match("/<\?php|<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']))) 
+		if(!preg_match("/<\?php|<\? |<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']))) 
 			return true;
 		else 
 			return false;
