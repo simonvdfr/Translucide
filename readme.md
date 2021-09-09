@@ -24,7 +24,7 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 	- décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
 	- décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
 
-Prérequis : dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`
+Prérequis : dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`. Il faut installer les extensions PHP suivantes : php-mbstring php-mysql.
 
 ## Premier pas
 - Descendez tout en bas du site, sur la gauche doit apparaître un bouton avec un petit crayon pour éditer la page courante, au survol de ce dernier un autre bouton `+` apparaît pour ajouter une page. Choisissez l'onglet correspondant à votre type de contenu, choisissez la template souhaitée dans le menu déroulant et saisissez le nom de la page.
