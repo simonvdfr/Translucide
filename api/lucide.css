@@ -1022,7 +1022,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		font-size: 1.2rem;
 		font-family: inherit;
 	}
-		.toolbox button:hover {
+		.toolbox button:hover,
+		.toolbox #color-option button.checked {
 			background: #E5F6F1 linear-gradient(#e5f6f1, #6fcdd5) repeat scroll 0 0;
 			box-shadow: 0 0 0 1px #e5f6f1 inset;
 		}
@@ -1042,6 +1043,15 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 			margin-left: -2px;
 			vertical-align: top;
 		}
+		.toolbox button.color-option {
+			font-size: 12px;
+    		line-height: 9px;
+		}
+			.toolbox #color-option button[class^="color-"] {
+				font-size: 22px;
+			    padding-bottom: 8px;
+			    line-height: 13px;
+			}
 
 
 	.toolbox:hover {

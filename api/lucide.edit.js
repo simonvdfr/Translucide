@@ -23,6 +23,7 @@ add_translation({
 	"See the source code" : {"fr" : "Voir le code source"},		
 	"Video" : {"fr" : "Vidéo"},		
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
+	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
 	"Anchor" : {"fr" : "Ancre"},		
 	"Add Anchor" : {"fr" : "Ajouter une ancre"},		
 	"Change Anchor" : {"fr" : "Modifier l'ancre"},		
@@ -300,8 +301,7 @@ selected_element = function(range) {
 
 
 // Barre d'outil de mise en forme et de contenu
-exec_tool = function(command, value, ui) {
-	ui = ui || false;
+exec_tool = function(command, value) {
 	value = value || "";	
 				
 	// Sélectionne le contenu car on a perdu le focus en entrant dans les options
@@ -328,8 +328,8 @@ exec_tool = function(command, value, ui) {
 
 
 		// Exécution de la commande
-		document.execCommand(command, ui, value);
-		
+		document.execCommand(command, false, value);
+	
 
 		// A sauvegarder	
 		tosave();
@@ -570,6 +570,21 @@ html_tool = function(html){
 		$("#"+html).addClass("checked");
 		exec_tool('formatBlock', html);
 	}
+}
+
+// Colorise un texte
+color_text = function(color){
+	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
+	if($(memo_node).is("em[class^=color-]")) {
+		$("."+color).removeClass("checked");
+		$(memo_node).replaceWith($(memo_node).html());
+	}
+	else {
+		// Ajoute la balise avec la class de couleur
+		var selection = window.getSelection().toString();
+		var add_class = '<em class="'+color+'">' + selection + '</em>';
+		exec_tool('insertHTML', add_class);
+	}	
 }
 
 // Voir le code source
@@ -1888,6 +1903,19 @@ $(function()
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
+		if(typeof toolbox_color != 'undefined')
+		{
+			toolbox+= "<li><button onclick=\"$('#txt-tool #color-option').toggle();$('.toolbox #color-option button[class^=color-]').removeClass('checked');\" title=\""+__("Add Color")+"\" class='color-option'><span class='color-1'>■</span><span class='color-2'>■</span><br><span class='color-3'>■</span><span class='color-4'>■</span></button></li>";
+
+			toolbox+= "<li id='color-option' class='option'>";
+
+				for(i=1; i<=nbcolor ;i++) {
+					toolbox+= "<button onclick=\"color_text('color-"+i+"')\" class='color-"+i+"'>■</button>";
+				}
+
+			toolbox+= "</li>";
+		}
+
 		if(typeof toolbox_blockquote != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote'><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
@@ -2076,8 +2104,21 @@ $(function()
 						// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
 						if(($window.scrollTop() + toolbox_height + 12) > this_top_scroll) 
 							toolbox_position(adminbar_height, this_left, "fixed");
-						else
+						else 
+						{
 							toolbox_position(this_top_scroll, this_left, "absolute");
+
+							// On attend que l'animation soit fini pour voir si on redéplace la toolbox
+							setTimeout(function() {
+								new_toolbox_height = $("#txt-tool").outerHeight();
+
+								if(toolbox_height != new_toolbox_height){// Nouvelle taille de la toolbox ?
+									toolbox_height = new_toolbox_height;
+									this_top_scroll = this_top - toolbox_height - 12;
+									toolbox_position(this_top_scroll, this_left, "absolute");
+								}
+							}, 200);	
+						}
 					});
 				}
 
@@ -2100,6 +2141,18 @@ $(function()
 
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
+				
+				if(typeof toolbox_color != 'undefined')
+				if($(memo_node).is("em[class^=color-]")) {
+					// De-selectionne les couleurs
+					$('.toolbox #color-option button[class^=color-]').removeClass('checked');
+
+					// Ouvre le choix des couleur
+					$('#txt-tool #color-option').show();
+
+					// Check la couleur en cours
+					$("#txt-tool #color-option ."+$(memo_node).attr("class").match(/color-[\w-]+/)).addClass("checked");
+				}
 					
 
 				// Désélectionne les alignements

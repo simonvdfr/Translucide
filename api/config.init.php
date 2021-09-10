@@ -158,6 +158,7 @@ $GLOBALS['toolbox'] = array(
 	//"underline",
 	//"superscript",
 	//"fontSize",
+	//"color",
 	//"blockquote",
 	//"insertUnorderedList",
 	//"justifyLeft",
@@ -174,6 +175,9 @@ $GLOBALS['toolbox'] = array(
 	//"bt",
 	"link"
 );
+
+// Nombre de couleur custom dans la css color-x
+$GLOBALS['nbcolor'] = 0;
 
 
 // Clé hash pour les cryptages

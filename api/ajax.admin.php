@@ -154,6 +154,9 @@ switch($_GET['mode'])
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
 				foreach($GLOBALS['toolbox'] as $cle => $val) { echo'toolbox_'.$val.' = true;'; }
+
+				// Nombre de couleur custom
+				if(@$GLOBALS['nbcolor'] > 0) echo'nbcolor = '.$GLOBALS['nbcolor'].';';
 				?>
 			
 				// Chargement de Jquery UI
