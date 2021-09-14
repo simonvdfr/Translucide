@@ -1,7 +1,4 @@
 <?php
-// Vérifie la configuration de short open tag // Supp 6 mois après le 22/10/2020
-//if(!ini_get('short_open_tag')) exit('Please put "short_open_tag = On" in php.ini');
-
 @include_once("config.php");// Variables
 include_once("api/function.php");// Fonctions
 include_once("api/db.php");// Connexion à la db
