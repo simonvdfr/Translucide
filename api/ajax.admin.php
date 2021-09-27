@@ -1657,6 +1657,10 @@ switch($_GET['mode'])
 
 		$src_file = 'media/'. ($dir?$dir.'/':'') . $filename;
 		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'] . $src_file;
+
+		// Check si le fichier est déjà sur le serveur
+		if(file_exists($root_file))
+			exit('<script>error("'.__("A file with the same name already exists").'");</script>');
 		
 		// Check le type mime côté serveur
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);

@@ -90,6 +90,7 @@ $add_translation = array(
 
 	"Size of source file unspecified" => array("fr" => "Taille du fichier source non précisée"),
 	"Unsupported file type" => array("fr" => "Type de fichier non pris en charge"),
+	"A file with the same name already exists" => array("fr" => "Un fichier avec le même nom existe déjà"),
 	
 	"Icon Library" => array("fr" => "Bibliothèque d'icône"),
 
