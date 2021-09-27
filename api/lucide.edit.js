@@ -852,6 +852,7 @@ upload = function(source, file, resize)
 						if(source.attr("data-media")) {
 							source.attr("data-media", media);// Pour la manipulation (path + media)
 							$(".file div", source).html(media.split('/').pop());// Pour l'affichage 
+							$(".copy input", source).val(media);// Pour copier le nom du fichier
 						}				
 
 						// Détruis le layer de progressbar
