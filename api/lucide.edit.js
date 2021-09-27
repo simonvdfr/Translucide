@@ -2441,10 +2441,11 @@ $(function()
 					$(this).addClass("drag-over");
 					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
+					$(".print-size", this).fadeIn("fast");// Affiche la taille de l'image/zone
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
 					if($("img", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
-						$(".clear-file, .print-size", this).fadeIn("fast");
+						$(".clear-file", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
 					if($("img", this).attr("src")) {
