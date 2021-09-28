@@ -242,8 +242,9 @@ switch($_GET['mode'])
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
 						foreach($scandir as $cle => $filename)
 						{			
-							$filename = pathinfo($filename, PATHINFO_FILENAME);
-							echo"<option value=\"".$filename."\">".$filename."</option>";
+							$pathinfo = pathinfo($filename);
+							if($pathinfo['extension'])
+								echo"<option value=\"".$pathinfo['filename']."\">".$pathinfo['filename']."</option>";
 						}
 						?>					
 					</select>
