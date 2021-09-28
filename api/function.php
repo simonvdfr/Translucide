@@ -302,6 +302,8 @@ function txt($key = null, $filter = array())
 
 		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
 
+		if(isset($filter['builder'])) echo" data-builder='".$filter['builder']."'";
+
 	echo">";
 
 	if(isset($GLOBALS['content'][$key])) {

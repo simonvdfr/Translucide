@@ -1613,6 +1613,7 @@ $(function()
 			html: this.innerHTML,
 			style: style,
 			"data-dir": $(this).data("dir"),
+			"data-builder": $(this).data("builder"),
 			placeholder: $(this).attr("placeholder")
 		});
 	});
