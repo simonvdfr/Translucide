@@ -34,6 +34,9 @@ Options -Indexes
 # On exclut les fichiers des extensions suivantes. Permets de ne pas charger index.php en cas de 404
 RewriteCond %{REQUEST_FILENAME} !\.(css|js|html|htm|txt|xml|jpg|jpeg|png|gif|tif|tiff|bmp|ico|svg|svgz|pdf|exe|gz|gzip|tar|zip|mp3|ogg|wav|wma|avi|mp4|mpeg|odb|odc|odf|odg|odp|ods|odt|rtf|doc|docx|xls|xlsx|pps|ppt|pptx|swf)$ [NC]
 
+# Protège de l'exécution de fichier php dans le dossier media
+RewriteRule media/.*\.(php5|php4|php|php3|php2|phtml|pl|py|jsp|asp|htm|shtml|sh|cgi)$ - [F,NC,L]
+
 
 
 # SITE STATIQUE

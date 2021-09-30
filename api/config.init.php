@@ -151,11 +151,14 @@ $GLOBALS['toolbox'] = array(
 	//"h2",
 	//"h3",
 	//"h4",
+	//"h5",
+	//"h6",
 	"bold",
 	"italic",
 	//"underline",
 	//"superscript",
 	//"fontSize",
+	//"color",
 	//"blockquote",
 	//"insertUnorderedList",
 	//"justifyLeft",
@@ -172,6 +175,9 @@ $GLOBALS['toolbox'] = array(
 	//"bt",
 	"link"
 );
+
+// Nombre de couleur custom dans la css color-x
+$GLOBALS['nbcolor'] = 0;
 
 
 // Clé hash pour les cryptages
@@ -198,7 +204,7 @@ $GLOBALS['default_state'] = 'active';// moderate / mail / active / deactivate
 $GLOBALS['mail_moderate'] = true;
 
 // Niveaux d'authentification par défaut des comptes utilisateur
-$GLOBALS['default_auth'] = 'add-media-public,edit-public';
+$GLOBALS['default_auth'] = 'edit-public';// add-media-public
 
 // Info supplémentaire sur l'utilisateur
 $GLOBALS['user_info'] = null;
@@ -263,7 +269,7 @@ $GLOBALS['mime_supported'] = array(
 	'application/pdf',
 	'application/zip',
 	'application/x-zip-compressed',
-	'text/plain'
+	//'text/plain'
 );
 
 

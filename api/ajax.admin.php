@@ -154,6 +154,9 @@ switch($_GET['mode'])
 				// Outil dispo dans la toolbox pour les contenus
 				if($GLOBALS['toolbox'])
 				foreach($GLOBALS['toolbox'] as $cle => $val) { echo'toolbox_'.$val.' = true;'; }
+
+				// Nombre de couleur custom
+				if(@$GLOBALS['nbcolor'] > 0) echo'nbcolor = '.$GLOBALS['nbcolor'].';';
 				?>
 			
 				// Chargement de Jquery UI
@@ -582,8 +585,8 @@ switch($_GET['mode'])
 
 				$i = 1;
 				foreach($tags as $cle => $val) {
-					if(isset($val) and $val != "") {			
-						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".$i."'");
+					if(isset($val) and $val != "") {		
+						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".(isset($_POST['tag-ordre'])?(int)$_POST['tag-ordre']:$i)."'");
 						$i++;
 					}
 				}
@@ -806,28 +809,7 @@ switch($_GET['mode'])
 
 					// Inject la page dans une iframe pour l'auditer
 					$("body").append('<iframe id="iframe_ecoindex" src="<?=make_url($url, array('domaine' => true))?>" frameborder="0" class="hidden" width="100%" height="850"></iframe>');
-
-					// Récupère les données de l'iframe
-					window.document.addEventListener('ecoindex_event', function (event) 
-					{ 
-						var econote = event.detail;
-						var ecotitle = 'ecoIndex: '+econote.ecoIndex+' | GES: '+econote.ges+' gCO2e | eau: '+econote.eau+' cl | Nombre de requêtes: '+econote.req+' | Taille de la page: '+econote.size+' Ko | Taille du DOM: '+econote.dom;
-
-						// Ajout de la note dans la barre d'admin
-						if(!$("#ecoindex").length){
-							$("#admin-bar").append('<a href="http://www.ecoindex.fr/quest-ce-que-ecoindex/"  id="ecoindex" class="fr mat mrs small none" target="_blank" title="'+ecotitle+'">ecoIndex<span class="'+econote.EcoIndexGrade+'">'+econote.EcoIndexGrade+'</span></a>');
-							$("#ecoindex").fadeIn();
-						}
-						else{
-							$("#ecoindex span").html(event.detail.EcoIndexGrade).removeClass("A B C D E F").addClass(event.detail.EcoIndexGrade);
-							$("#ecoindex").attr("title", ecotitle);
-						}
-
-						// Supprime l'iframe
-						$("#iframe_ecoindex").remove();
-
-					}, false);
-
+					
 				<?php }?>
 								
 
@@ -1617,6 +1599,8 @@ switch($_GET['mode'])
 	case "del-media":// Supprime un fichier
 
 		login('medium', 'add-media');// Vérifie que l'on est admin
+
+		// @todo Nettoyer l'URL de la request pour éviter des suppressions hors dossier médias
 
 		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		

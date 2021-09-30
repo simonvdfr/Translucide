@@ -709,10 +709,17 @@ function tag($key = null, $filter = array())
 
 			if($i > 1) echo (@$filter['separator']?$filter['separator']:', ');
 			echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
+
+			$ordre = $res_tag['ordre'];
+
 			$i++;
 		}
 
 	echo'</'.(isset($filter['tag']) ? $filter['tag'] : "div").'>';
+
+	// Si on veut choisir l'ordre du tag
+	if(isset($filter['ordre'])) 
+		echo'<input type="number" data-zone="'.$key.'" class="editable-tag-ordre" value="'.(is_numeric($filter['ordre'])?$filter['ordre']:$ordre).'" size="2" title="'.$filter['ordre'].'"'.(is_numeric($filter['ordre'])?' readonly':'').'>';
 }
 
 
@@ -1096,7 +1103,7 @@ function file_check($file)
 	if(in_array($file_infos['mime'], $GLOBALS['mime_supported'])) 
 	{
 		// Le fichier tmp ne contient pas de php ou de javascript
-		if(!preg_match("/<\?php|<scr/", file_get_contents($_FILES[$file]['tmp_name']))) 
+		if(!preg_match("/<\?php|<\? |<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']))) 
 			return true;
 		else 
 			return false;
@@ -1141,7 +1148,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		$dir = (strpos($dir, 'media') === 0 ? '' : 'media/resize/') . $dir;
 
 		// Crée les dossiers
-		@mkdir($root_dir . $dir, 0705, true);
+		@mkdir($root_dir . $dir, 0755, true);
 
 		// On crée une image avec l'image source en fonction de son type
 		switch($type) {
@@ -1280,7 +1287,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		$dir = "media/" . $dir_clean;// @todo ajouter le dir (sans resize)
 		$file_name_ext = $file_name.".".$source_ext;
 		
-		@mkdir($root_dir . $dir, 0705, true);// Crée les dossiers
+		@mkdir($root_dir . $dir, 0755, true);// Crée les dossiers
 
 		copy($source_file, $root_dir . $dir . $file_name_ext);
 	}

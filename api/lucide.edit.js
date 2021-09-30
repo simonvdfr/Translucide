@@ -23,6 +23,7 @@ add_translation({
 	"See the source code" : {"fr" : "Voir le code source"},		
 	"Video" : {"fr" : "Vidéo"},		
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
+	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
 	"Anchor" : {"fr" : "Ancre"},		
 	"Add Anchor" : {"fr" : "Ajouter une ancre"},		
 	"Change Anchor" : {"fr" : "Modifier l'ancre"},		
@@ -192,7 +193,13 @@ save = function() //callback
 	// Tags de la fiche en cours
 	data["tag"] = {};
 	$(document).find(".content .editable-tag").each(function() {
+
+		// Tags
 		if($(this).text()) data["tag"][$(this).attr("id")] = $(this).text();
+
+		// Ordre forcé du tag
+		if($(this).next(".editable-tag-ordre").val() != undefined) 
+			data["tag-ordre"] = $(this).next(".editable-tag-ordre").val();
 	});	
 
 	// Séparateur de tag
@@ -294,8 +301,7 @@ selected_element = function(range) {
 
 
 // Barre d'outil de mise en forme et de contenu
-exec_tool = function(command, value, ui) {
-	ui = ui || false;
+exec_tool = function(command, value) {
 	value = value || "";	
 				
 	// Sélectionne le contenu car on a perdu le focus en entrant dans les options
@@ -322,8 +328,8 @@ exec_tool = function(command, value, ui) {
 
 
 		// Exécution de la commande
-		document.execCommand(command, ui, value);
-		
+		document.execCommand(command, false, value);
+	
 
 		// A sauvegarder	
 		tosave();
@@ -564,6 +570,21 @@ html_tool = function(html){
 		$("#"+html).addClass("checked");
 		exec_tool('formatBlock', html);
 	}
+}
+
+// Colorise un texte
+color_text = function(color){
+	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
+	if($(memo_node).is("em[class^=color-]")) {
+		$("."+color).removeClass("checked");
+		$(memo_node).replaceWith($(memo_node).html());
+	}
+	else {
+		// Ajoute la balise avec la class de couleur
+		var selection = window.getSelection().toString();
+		var add_class = '<em class="'+color+'">' + selection + '</em>';
+		exec_tool('insertHTML', add_class);
+	}	
 }
 
 // Voir le code source
@@ -1390,13 +1411,13 @@ function computeWaterConsumptionfromEcoIndex(ecoIndex)
 ecoindex = function(dom, resources)
 {
 	// Mesure le nombre de REQUETTE
-	var size = 0;
-	var req = 0;
+	var size = req = error = 0;
 
 	// C'est une iframe du coup regarder si favicon dans les metas
 	var link_favicon = $('link[rel~="icon"]').prop('href');
 	if(link_favicon) resources.push({name: link_favicon, transferSize: 0});
 	//else resources.push({name:$(location).attr('origin')+'/favicon.ico', transferSize: 0});
+
 
 	// Parcours les ressources pour le nombre de requette et leur poids
 	resources.forEach(function(resource) 
@@ -1408,66 +1429,64 @@ ecoindex = function(dom, resources)
 	    var size_file = 0;
 	    if(resource.transferSize == 0)// Si la boucle n'arrive pas à lire le poids du fichier
 	    {
-		    var request = new XMLHttpRequest();
+		    /*var request = new XMLHttpRequest();
 		    request.open("HEAD", resource.name, false);
 		    request.send(null);
 			//request.getResponseHeader('content-length');
 			/Content\-Length\s*:\s*(\d+)/i.exec(request.getAllResponseHeaders());
-		    size_file = parseInt(RegExp.$1);
-
+		    size_file = parseInt(RegExp.$1);*/
 		    // @todo : Gerer les cas ou il n'y a pas de content-length
+
+		    error++;		   
 	    }
 	    else size_file = resource.transferSize;
 
 	    // Poids en Ko
-	    //size_file = Math.ceil(size_file / 1024);// Taille en Ko
-	    size_file = Math.round(size_file / 1000);// Taille en Ko => même calcule que GreenIT-Analysis (mais moins précis)
+	    size_file = Math.round(size_file / 1000);
 
 	    // Poids total de fichier
 	    size = size + size_file;
 
 	    //console.log(resource);
-	    console.log(req+' : '+size_file+'Ko | '+resource.transferSize+' | '+resource.initiatorType+' | '+resource.name);
+	    //console.log(req+' : '+size_file+'Ko | '+resource.transferSize+' | '+resource.initiatorType+' | '+resource.name);
 	});
 
 
 	// Résultat
+	var p100error = error * 100 / req;
 	var ecoIndex = computeEcoIndex(dom, req, size);
 	var EcoIndexGrade = getEcoIndexGrade(ecoIndex)
 	var ges = computeGreenhouseGasesEmissionfromEcoIndex(ecoIndex)
 	var eau = computeWaterConsumptionfromEcoIndex(ecoIndex)
 
+	// Log
+	//console.log("ecoIndex: " + ecoIndex);
+	//console.log("EcoIndexGrade: " + EcoIndexGrade);
+	//console.log("ges: " + ges);
+	//console.log("eau: " + eau);
+	//console.log("dom: " + dom);
+	//console.log("req: " + req);
+	//console.log("size: " + size);
 
-	// Si demande de renvoi de l'ecoindex depuis iframe
-	if(get_cookie('iframe_ecoindex'))
+
+	// Affichage dans la barre d'admin
+	var ecotitle = 'ecoIndex: '+ ecoIndex.toFixed(2) + (p100error>0?' (*'+Math.round(p100error)+'% d\'erreur)':'') +' | GES: '+ges+' gCO2e | eau: '+eau+' cl | Nombre de requêtes: '+req+' | Taille de la page: '+size+' Ko | Taille du DOM: '+dom;
+
+	// Ajout de la note dans la barre d'admin
+	if(!$("#ecoindex").length)
 	{
-		// Envoi à l'iframe parent l'ecoindex
-		var ecoindex_event = new CustomEvent('ecoindex_event', { 
-			detail: { 
-				ecoIndex: ecoIndex.toFixed(2),// Garde que 2 décimales
-				EcoIndexGrade: EcoIndexGrade,
-				ges: ges,
-				eau: eau,
-				dom: dom,
-				req: req,
-				size: size
-			}
-		})
-		window.parent.document.dispatchEvent(ecoindex_event);
-
-		// Supprime le cookie de demande d'ecoindex
-		set_cookie("iframe_ecoindex", "", "");
+		$("#admin-bar").append('<a href="http://www.ecoindex.fr/quest-ce-que-ecoindex/"  id="ecoindex" class="fr mat mrs small none" target="_blank" title="'+ecotitle+'">ecoIndex<span class="'+EcoIndexGrade+'">'+EcoIndexGrade + (p100error>0?'*':'') +'</span></a>');
+		$("#ecoindex").fadeIn();
+	}
+	else
+	{
+		$("#ecoindex span").html(EcoIndexGrade).removeClass("A B C D E F").addClass(EcoIndexGrade);
+		$("#ecoindex").attr("title", ecotitle);
 	}
 
+	// Supprime l'iframe
+	$("#iframe_ecoindex").remove();
 
-	// Log
-	console.log("ecoIndex: " + ecoIndex);
-	console.log("EcoIndexGrade: " + EcoIndexGrade);
-	console.log("ges: " + ges);
-	console.log("eau: " + eau);
-	console.log("dom: " + dom);
-	console.log("req: " + req);
-	console.log("size: " + size);
 }
 
 
@@ -1489,7 +1508,7 @@ unlucide = function()
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
 $(window).on("beforeunload", function(){
-	if($("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
+	if(typeof dev == 'undefined' && $("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
 });
 
 
@@ -1863,6 +1882,12 @@ $(function()
 		if(typeof toolbox_h4 != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('h4')\" id='h4' title=\""+__("Title")+" H4"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>4</span></button></li>";
 
+		if(typeof toolbox_h5 != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('h5')\" id='h5' title=\""+__("Title")+" H5"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>5</span></button></li>";
+
+		if(typeof toolbox_h6 != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('h6')\" id='h6' title=\""+__("Title")+" H6"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>6</span></button></li>";
+
 		if(typeof toolbox_bold != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
 
@@ -1878,6 +1903,19 @@ $(function()
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
+		if(typeof toolbox_color != 'undefined')
+		{
+			toolbox+= "<li><button onclick=\"$('#txt-tool #color-option').toggle();$('.toolbox #color-option button[class^=color-]').removeClass('checked');\" title=\""+__("Add Color")+"\" class='color-option'><span class='color-1'>■</span><span class='color-2'>■</span><br><span class='color-3'>■</span><span class='color-4'>■</span></button></li>";
+
+			toolbox+= "<li id='color-option' class='option'>";
+
+				for(i=1; i<=nbcolor ;i++) {
+					toolbox+= "<button onclick=\"color_text('color-"+i+"')\" class='color-"+i+"'>■</button>";
+				}
+
+			toolbox+= "</li>";
+		}
+
 		if(typeof toolbox_blockquote != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote'><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
@@ -2066,8 +2104,21 @@ $(function()
 						// Si (Hauteur du scroll + hauteur de la bar d'admin en haut + hauteur de la toolbox + pico) > au top de la box editable = on fixe la position de la toolbox en dessou de la barre admin
 						if(($window.scrollTop() + toolbox_height + 12) > this_top_scroll) 
 							toolbox_position(adminbar_height, this_left, "fixed");
-						else
+						else 
+						{
 							toolbox_position(this_top_scroll, this_left, "absolute");
+
+							// On attend que l'animation soit fini pour voir si on redéplace la toolbox
+							setTimeout(function() {
+								new_toolbox_height = $("#txt-tool").outerHeight();
+
+								if(toolbox_height != new_toolbox_height){// Nouvelle taille de la toolbox ?
+									toolbox_height = new_toolbox_height;
+									this_top_scroll = this_top - toolbox_height - 12;
+									toolbox_position(this_top_scroll, this_left, "absolute");
+								}
+							}, 200);	
+						}
 					});
 				}
 
@@ -2082,8 +2133,26 @@ $(function()
 				if($(memo_node).closest("h4").length) $("#txt-tool #h4").addClass("checked");
 				else $("#txt-tool #h4").removeClass("checked");
 
+				if($(memo_node).closest("h5").length) $("#txt-tool #h5").addClass("checked");
+				else $("#txt-tool #h5").removeClass("checked");
+
+				if($(memo_node).closest("h6").length) $("#txt-tool #h6").addClass("checked");
+				else $("#txt-tool #h6").removeClass("checked");
+
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
+				
+				if(typeof toolbox_color != 'undefined')
+				if($(memo_node).is("em[class^=color-]")) {
+					// De-selectionne les couleurs
+					$('.toolbox #color-option button[class^=color-]').removeClass('checked');
+
+					// Ouvre le choix des couleur
+					$('#txt-tool #color-option').show();
+
+					// Check la couleur en cours
+					$("#txt-tool #color-option ."+$(memo_node).attr("class").match(/color-[\w-]+/)).addClass("checked");
+				}
 					
 
 				// Désélectionne les alignements

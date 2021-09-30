@@ -1,7 +1,4 @@
 <?php
-// Vérifie la configuration de short open tag // Supp 6 mois après le 22/10/2020
-//if(!ini_get('short_open_tag')) exit('Please put "short_open_tag = On" in php.ini');
-
 @include_once("config.php");// Variables
 include_once("api/function.php");// Fonctions
 include_once("api/db.php");// Connexion à la db
@@ -350,8 +347,9 @@ if(!$ajax)
 			tag = "<?=encode(@$tag)?>";
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
-			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)? 'bt_edit = true;':'')?>
-			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)? 'bt_top = true;':'')?>
+			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
+			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>
+			<?=(@$dev?'dev = true;':'')?>
 
 		</script>
 
