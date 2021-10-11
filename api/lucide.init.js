@@ -389,7 +389,9 @@ $(function()
 
 
 
-	// SMOOTHSCOLL SUR LES ANCRES // pas sur les onglet d'ajout de contenu
+	// SMOOTHSCOLL SUR LES ANCRES // pas sur les onglet d'ajout de contenu 
+	// mathieu : portion de code prise en charge pas la propriété CSS scroll-behavior (cf. style.css)
+	/*
 	$(document).on("click", "a[href^='#']:not(.ui-tabs-anchor)", function(event) {
 		event.preventDefault();
 
@@ -415,7 +417,7 @@ $(function()
 			}, 800, "linear");
 		}
 	});
-
+	*/
 
 
 	// ACTION SUR LES ONSCROLL
