@@ -375,7 +375,7 @@ exec_tool = function(command, value) {
 
 	// Recrée une sélection en fonction des changements de la dom
 	memo_selection = window.getSelection();
-	memo_range = memo_selection.getRangeAt(0);
+	memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
 	memo_node = selected_element(memo_range);
 }
 
