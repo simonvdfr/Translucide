@@ -67,6 +67,7 @@ html {
 	-webkit-text-size-adjust: 100%;
 	font-size: 62.5%;
 	font-size: calc(1em * .625);
+	scroll-behavior: smooth;
 }
 
 body {
