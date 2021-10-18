@@ -1600,8 +1600,8 @@ $(function()
 	// spellcheck="false" wrap="off" autofocus placeholder="Enter something ..."
 	
 	// Pour corriger le drag&drop de texte dans firefox span > div
-	$(".editable").replaceWith(function () { 
-
+	$(".editable").replaceWith(function () 
+	{ 
 		// Pour corriger les div qui ne prennent pas toutes la largeur a cause des img en float
 		var style = null;
 		if($(this).parent().is("article")) style = "width: "+$(this).parent().width()+"px;";//if($(this).parent().children().length <= 1)
@@ -1617,9 +1617,6 @@ $(function()
 			placeholder: $(this).attr("placeholder")
 		});
 	});
-
-	// Rends les textes éditables
-	$(".editable").attr("contenteditable","true");
 
 
 	// Si readonly
@@ -2011,6 +2008,9 @@ $(function()
 	// Action sur les champs éditables
 	editable_event = function()
 	{	
+		// Rends les textes éditables
+		$(".editable").attr("contenteditable","true");
+
 		// Désactive les liens qui entourent un élément éditable
 		$(".editable").closest("a").on("click", function(event) { event.preventDefault(); });
 		
@@ -2394,24 +2394,29 @@ $(function()
 
 
 
-	// Icone d'upload + supp du fichier + alt éditable
-	$(".editable-media").append(function() {
-		var alt = $('img', this).attr("alt");
-
-		print_size = null;
-		if($(this).data("width")) print_size = $(this).data("width")+'';
-		if($(this).data("width") && $(this).data("height")) print_size+=" x ";
-		if($(this).data("height")) print_size+= $(this).data("height")+'';
-		
-		return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
-			"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
-			"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
-			+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'')
-	});
-
-
 	// Rends éditables les images/fichiers
-	editable_media_event = function() {
+	editable_media_event = function()
+	{
+		// Icone d'upload + supp du fichier + alt éditable
+		$(".editable-media").append(function()
+		{
+			// Si pas d'option de suppression et d'alt éditable on l'ajoute
+			if(!$(this).hasClass("editable-alt")) 
+			{
+				var alt = $('img', this).attr("alt");
+
+				print_size = null;
+				if($(this).data("width")) print_size = $(this).data("width")+'';
+				if($(this).data("width") && $(this).data("height")) print_size+=" x ";
+				if($(this).data("height")) print_size+= $(this).data("height")+'';
+
+				return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
+				"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
+				"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
+				+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'');
+			}
+		});
+
 		$(".editable-media")
 			.on({
 				// Highlight la zone on hover
@@ -2513,19 +2518,24 @@ $(function()
 
 	/************** IMAGES BACKGROUND **************/
 	
-	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
-	$("[data-id][data-bg]").addClass("editable-bg");
-	$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
-
-	// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
-	clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
-	$("[data-id][data-bg]").each(function() {
-		if($(this).data("bg"))
-			$(".bg-tool", this).prepend(clearbg_bt);
-	});
-
 	// Rends éditables les images en background
-	editable_bg_event = function() {
+	editable_bg_event = function() 
+	{
+		// Si pas d'option de suppression on l'ajoute
+		if(!$(this).hasClass("editable-bg")) 
+		{
+			// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
+			$("[data-id][data-bg]").addClass("editable-bg");
+			$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
+
+			// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
+			clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
+			$("[data-id][data-bg]").each(function() {
+				if($(this).data("bg"))
+					$(".bg-tool", this).prepend(clearbg_bt);
+			});
+		}
+
 		$("[data-id][data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
