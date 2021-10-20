@@ -2780,7 +2780,7 @@ $(function()
 	$(document).on("keydown.autocomplete", "#txt-tool .option #link, .editable-href", function() {
 		$(this).autocomplete({
 			minLength: 0,
-			source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
+			source: path + "api/ajax.admin.php?mode=links&nonce="+ $("#nonce").val() +"&dir="+ ($(memo_node).data("dir") || ""),
 			select: function(event, ui) 
 			{ 
 				// S'il y a déjà un chemin présent ont ajouté à la suite avec juste la dernière partie | Cas tag

@@ -923,7 +923,8 @@ switch($_GET['mode'])
 
 		$term = $connect->real_escape_string(trim($_GET["term"]));
 
-		// Les contenus
+
+		// LES CONTENUS
 		$sql = "SELECT id, title, type, url FROM ".$GLOBALS['table_content']." WHERE title LIKE '%".$term."%' OR url LIKE '%".$term."%'";
 		if(!$term) $sql .= " ORDER BY date_update DESC"; else $sql .= " ORDER BY title ASC";
 		$sql .= " LIMIT 50";
@@ -937,7 +938,8 @@ switch($_GET['mode'])
 			);
 		}
 
-		// Les tags
+
+		// LES TAGS
 		$sql = "SELECT * FROM ".$GLOBALS['tt']." WHERE name LIKE '%".$term."%' GROUP BY encode ORDER BY encode ASC LIMIT 50";
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
@@ -949,9 +951,42 @@ switch($_GET['mode'])
 			);
 		}
 
+
+		// LES MÉDIAS
+		$full_path = $GLOBALS['path'].$GLOBALS['media_dir'].'/'.(@$_GET['dir']?$_GET['dir'].'/':'');
+		$dir = $_SERVER['DOCUMENT_ROOT'].$full_path;
+
+		// Le dossier existe
+		if(is_dir($dir))
+		{
+			// Nettoyage
+			$scandir = array_diff(scandir($dir), array('..', '.'));
+
+			// Crée un tableau avec les fichiers du dossier
+			foreach($scandir as $cle => $filename)
+			{				
+				// Le fichier contient les mots de la recherche, ce n'est pas un thumbs, htaccess, ou dossier
+				if(strpos($filename, encode($_GET["term"])) !== false
+					and $filename != "Thumbs.db"
+					and $filename != ".htaccess"
+					and !is_dir($dir.$filename)
+				)
+				{
+					$data[$filename] = array(
+						'id' => 'media',
+						'label' => $filename,
+						'type' => 'media',
+						'value' => $full_path.$filename//, array("domaine" => true)
+					);
+				}
+			}
+		}
+
+
 		header("Content-Type: application/json; charset=utf-8");
 
-		echo json_encode($data);
+		if(@$data)
+			echo json_encode($data);
 
 	break;
 
