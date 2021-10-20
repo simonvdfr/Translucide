@@ -348,6 +348,7 @@ if(!$ajax)
 			tag = "<?=encode(@$tag)?>";
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
+			media_dir = "<?=$GLOBALS['media_dir']?>";
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>
 			<?=(@$dev?'dev = true;':'')?>

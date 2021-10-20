@@ -849,9 +849,9 @@ switch($_GET['mode'])
 			$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
 			// On a demandé la SUPPRESSION DES FICHIERS liées au contenu
-			foreach($_POST['medias'] as $cle => $media) {
+			foreach($_POST['medias'] as $cle => $file) {
 				// strtok : Supprime les arguments après l'extension (timer...)
-				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($media, "?")));
+				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($file, "?")));
 			}
 		}
 
@@ -1073,13 +1073,13 @@ switch($_GET['mode'])
 				//@todo voir l'utilité de metre le data-media dans le li à ce niveau vu que c'est juste un bloc vide pour upload
 
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
-				var container = "<li class='pat mat tc uploading' id='"+ id +"' data-media=\"media/" + $("#dialog-media-dir").val() + file.name +"\" data-dir=\""+ $("#dialog-media-dir").val() +"\" data-type='"+ mime[0] +"'>";
+				var container = "<li class='pat mat tc uploading' id='"+ id +"' data-media=\""+ media_dir +"/" + $("#dialog-media-dir").val() + file.name +"\" data-dir=\""+ $("#dialog-media-dir").val() +"\" data-type='"+ mime[0] +"'>";
 
 					if(mime[0] == "image") 
 						container += "<img src=''>" + resize;
 					else {
 						container += '<div class="file"><i class="fa fa-fw fa-doc mega"></i><div>'+ file.name +"</div></div>";
-						container += '<div class="copy"><input type="text" value="'+ path + 'media/' + $("#dialog-media-dir").val() + file.name +'"></div>';
+						container += '<div class="copy"><input type="text" value="'+ path + media_dir +'/' + $("#dialog-media-dir").val() + file.name +'"></div>';
 						
 					}
 
@@ -1386,10 +1386,10 @@ switch($_GET['mode'])
 		//echo"_POST";print_r($_POST);echo"_GET";print_r($_GET);
 
 		$subfolder = null;
-		if(isset($_GET['filter']) and  $_GET['filter'] == "resize") $subfolder .= "resize/";
-		if(isset($_GET['filter']) and  $_GET['filter'] == "dir" and isset($_GET['dir'])) $subfolder .= $_GET['dir'].'/';
+		if(isset($_GET['filter']) and  $_GET['filter'] == 'resize') $subfolder .= 'resize/';
+		if(isset($_GET['filter']) and  $_GET['filter'] == 'dir' and isset($_GET['dir'])) $subfolder .= $_GET['dir'].'/';
 
-		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."media/". $subfolder;
+		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].$GLOBALS['media_dir'].'/'. $subfolder;
 
 		// Le dossier existe
 		if(is_dir($dir))
@@ -1463,7 +1463,7 @@ switch($_GET['mode'])
 			}
 
 			// Si il y a des dossier
-			if(isset($is_dir) and is_array($is_dir) and count($is_dir) and @$GLOBALS['media_dir'])
+			if(@$GLOBALS['list_media_dir'] and isset($is_dir) and is_array($is_dir) and count($is_dir))
 			{
 				foreach($is_dir as $cle => $val)
 				{
@@ -1471,7 +1471,7 @@ switch($_GET['mode'])
 					class="pat mat tc"
 					title="'.utf8_encode($val).'"
 					id="dialog-media-dir-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$cle.'"
-					data-media="media/'.$subfolder.utf8_encode($val).'"
+					data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val).'"
 					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
 					data-type="dir"
 					>
@@ -1534,7 +1534,7 @@ switch($_GET['mode'])
 						class="pat mat tc"
 						title="'.utf8_encode($val['filename']).' | '.date("d-m-Y H:i:s", $val['time']).' | '.$val['mime'].'"
 						id="dialog-media-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$i.'"
-						data-media="media/'.$subfolder.utf8_encode($val['filename']).'"
+						data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'"
 						data-dir="'.trim($subfolder,'/').'"
 						data-type="'.$type.'"
 					>';
@@ -1555,7 +1555,7 @@ switch($_GET['mode'])
 								$sizecolor = 'red';
 
 							// Affichage de l'image
-							$src = $GLOBALS['path'].'media/'.$subfolder.$val['filename'];
+							$src = $GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.$val['filename'];
 
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
 
@@ -1564,9 +1564,9 @@ switch($_GET['mode'])
 						else {
 							echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
-							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].'media/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
+							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
 
-							echo'<a href="'.$GLOBALS['path'].'media/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="fa fa-fw fa-link-ext"></i></a>';
+							echo'<a href="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="fa fa-fw fa-link-ext"></i></a>';
 						}
 
 						echo"						
@@ -1656,7 +1656,7 @@ switch($_GET['mode'])
 		if(@$_POST['dir']) $dir = encode($_POST['dir'], '-', array('/','_'));
 		else $dir = null;
 
-		$src_file = 'media/'. ($dir?$dir.'/':'') . $filename;
+		$src_file = $GLOBALS['media_dir'].'/'. ($dir?$dir.'/':'') . $filename;
 		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'] . $src_file;
 
 		// Check si le fichier est déjà sur le serveur

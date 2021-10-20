@@ -1129,7 +1129,9 @@ img_optim = function(option, that) {
 
 	src = src.replace(domain_path, "");// Supprime le domaine du nom de l'image
 	
-	var img_nomedia = src.replace(/media\//, "").replace(/resize\//, "");// Chemin sans media
+	var regex_media_dir = new RegExp(media_dir+"/", "g");
+
+	var img_nomedia = src.replace(regex_media_dir, "").replace(/resize\//, "");// Chemin sans media
 
 	// Si le chemin contien un dossier
 	if(img_nomedia.indexOf("/") !== -1) 
@@ -3024,7 +3026,7 @@ $(function()
 		});
 
 		// Contenu des fichiers éditables et dans les contenus textuels
-		$(document).find(".content .editable-media .fa, .content .editable a[href^='media/']").each(function() {
+		$(document).find(".content .editable-media .fa, .content .editable a[href^='"+media_dir+"/']").each(function() {
 			if($(this).closest("span").hasClass("editable-media")) var media = $(this).attr("title");
 			else var media = $(this).attr("href");
 
