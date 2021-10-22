@@ -14,7 +14,7 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 	<?php h2('sstitre', 'tc')?>
 
 
-	<article class="fl w80 prl pbm tj">
+	<article class="fl w80 prl pbm">
 
 		<?php txt('texte')?>
 

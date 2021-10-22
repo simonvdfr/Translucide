@@ -375,7 +375,7 @@ exec_tool = function(command, value) {
 
 	// Recrée une sélection en fonction des changements de la dom
 	memo_selection = window.getSelection();
-	memo_range = memo_selection.getRangeAt(0);
+	memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
 	memo_node = selected_element(memo_range);
 }
 
@@ -852,6 +852,7 @@ upload = function(source, file, resize)
 						if(source.attr("data-media")) {
 							source.attr("data-media", media);// Pour la manipulation (path + media)
 							$(".file div", source).html(media.split('/').pop());// Pour l'affichage 
+							$(".copy input", source).val(path + media);// Pour copier le nom du fichier
 						}				
 
 						// Détruis le layer de progressbar
@@ -1128,7 +1129,9 @@ img_optim = function(option, that) {
 
 	src = src.replace(domain_path, "");// Supprime le domaine du nom de l'image
 	
-	var img_nomedia = src.replace(/media\//, "").replace(/resize\//, "");// Chemin sans media
+	var regex_media_dir = new RegExp(media_dir+"/", "g");
+
+	var img_nomedia = src.replace(regex_media_dir, "").replace(/resize\//, "");// Chemin sans media
 
 	// Si le chemin contien un dossier
 	if(img_nomedia.indexOf("/") !== -1) 
@@ -1599,8 +1602,8 @@ $(function()
 	// spellcheck="false" wrap="off" autofocus placeholder="Enter something ..."
 	
 	// Pour corriger le drag&drop de texte dans firefox span > div
-	$(".editable").replaceWith(function () { 
-
+	$(".editable").replaceWith(function () 
+	{ 
 		// Pour corriger les div qui ne prennent pas toutes la largeur a cause des img en float
 		var style = null;
 		if($(this).parent().is("article")) style = "width: "+$(this).parent().width()+"px;";//if($(this).parent().children().length <= 1)
@@ -1612,12 +1615,10 @@ $(function()
 			html: this.innerHTML,
 			style: style,
 			"data-dir": $(this).data("dir"),
+			"data-builder": $(this).data("builder"),
 			placeholder: $(this).attr("placeholder")
 		});
 	});
-
-	// Rends les textes éditables
-	$(".editable").attr("contenteditable","true");
 
 
 	// Si readonly
@@ -2009,6 +2010,9 @@ $(function()
 	// Action sur les champs éditables
 	editable_event = function()
 	{	
+		// Rends les textes éditables
+		$(".editable").attr("contenteditable","true");
+
 		// Désactive les liens qui entourent un élément éditable
 		$(".editable").closest("a").on("click", function(event) { event.preventDefault(); });
 		
@@ -2392,24 +2396,29 @@ $(function()
 
 
 
-	// Icone d'upload + supp du fichier + alt éditable
-	$(".editable-media").append(function() {
-		var alt = $('img', this).attr("alt");
-
-		print_size = null;
-		if($(this).data("width")) print_size = $(this).data("width")+'';
-		if($(this).data("width") && $(this).data("height")) print_size+=" x ";
-		if($(this).data("height")) print_size+= $(this).data("height")+'';
-		
-		return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
-			"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
-			"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
-			+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'')
-	});
-
-
 	// Rends éditables les images/fichiers
-	editable_media_event = function() {
+	editable_media_event = function()
+	{
+		// Icone d'upload + supp du fichier + alt éditable
+		$(".editable-media").append(function()
+		{
+			// Si pas d'option de suppression et d'alt éditable on l'ajoute
+			if(!$(this).hasClass("editable-alt")) 
+			{
+				var alt = $('img', this).attr("alt");
+
+				print_size = null;
+				if($(this).data("width")) print_size = $(this).data("width")+'';
+				if($(this).data("width") && $(this).data("height")) print_size+=" x ";
+				if($(this).data("height")) print_size+= $(this).data("height")+'';
+
+				return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
+				"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
+				"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
+				+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'');
+			}
+		});
+
 		$(".editable-media")
 			.on({
 				// Highlight la zone on hover
@@ -2441,10 +2450,11 @@ $(function()
 					$(this).addClass("drag-over");
 					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
+					$(".print-size", this).fadeIn("fast");// Affiche la taille de l'image/zone
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
 					if($("img", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
-						$(".clear-file, .print-size", this).fadeIn("fast");
+						$(".clear-file", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
 					if($("img", this).attr("src")) {
@@ -2510,19 +2520,24 @@ $(function()
 
 	/************** IMAGES BACKGROUND **************/
 	
-	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
-	$("[data-id][data-bg]").addClass("editable-bg");
-	$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
-
-	// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
-	clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
-	$("[data-id][data-bg]").each(function() {
-		if($(this).data("bg"))
-			$(".bg-tool", this).prepend(clearbg_bt);
-	});
-
 	// Rends éditables les images en background
-	editable_bg_event = function() {
+	editable_bg_event = function() 
+	{
+		// Si pas d'option de suppression on l'ajoute
+		if(!$(this).hasClass("editable-bg")) 
+		{
+			// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
+			$("[data-id][data-bg]").addClass("editable-bg");
+			$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
+
+			// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
+			clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
+			$("[data-id][data-bg]").each(function() {
+				if($(this).data("bg"))
+					$(".bg-tool", this).prepend(clearbg_bt);
+			});
+		}
+
 		$("[data-id][data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
@@ -2645,7 +2660,7 @@ $(function()
 	// Force le parent en relatif pour bien positionner les boutons d'ajout
 	$(".module-bt").parent().addClass("relative");
 
-	// Ajout de la SUPPRESION au survole d'un bloc
+	// Ajout de la SUPPRESSION au survole d'un bloc
 	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 10;' title='"+ __("Remove") +"'></i></a>");
 
 	// Affiche les boutons de suppression
@@ -2765,7 +2780,7 @@ $(function()
 	$(document).on("keydown.autocomplete", "#txt-tool .option #link, .editable-href", function() {
 		$(this).autocomplete({
 			minLength: 0,
-			source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
+			source: path + "api/ajax.admin.php?mode=links&nonce="+ $("#nonce").val() +"&dir="+ ($(memo_node).data("dir") || ""),
 			select: function(event, ui) 
 			{ 
 				// S'il y a déjà un chemin présent ont ajouté à la suite avec juste la dernière partie | Cas tag
@@ -3011,7 +3026,7 @@ $(function()
 		});
 
 		// Contenu des fichiers éditables et dans les contenus textuels
-		$(document).find(".content .editable-media .fa, .content .editable a[href^='media/']").each(function() {
+		$(document).find(".content .editable-media .fa, .content .editable a[href^='"+media_dir+"/']").each(function() {
 			if($(this).closest("span").hasClass("editable-media")) var media = $(this).attr("title");
 			else var media = $(this).attr("href");
 

@@ -390,7 +390,9 @@ $(function()
 
 
 	// SMOOTHSCOLL SUR LES ANCRES // pas sur les onglet d'ajout de contenu
-	$(document).on("click", "a[href^='#']:not(.ui-tabs-anchor)", function(event) {
+	// Désactivé car ajout de scroll-behavior: smooth; dans le style.css
+	// /!\ Supp 6 mois après le 12/10/2021
+	/*$(document).on("click", "a[href^='#']:not(.ui-tabs-anchor)", function(event) {
 		event.preventDefault();
 
 		if(typeof lucide === 'undefined')// Si pas en mode edit
@@ -414,7 +416,7 @@ $(function()
 				scrollTop: anchor.offset().top
 			}, 800, "linear");
 		}
-	});
+	});*/
 
 
 
