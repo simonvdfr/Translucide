@@ -387,10 +387,6 @@ if(!$ajax)
 	include_once('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'/footer.php');
 	?>
 
-
-	<div class="responsive-overlay"></div>
-
-
 	<script>console.log("<?=benchmark()?>")</script>
 
 

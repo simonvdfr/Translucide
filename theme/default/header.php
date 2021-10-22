@@ -10,9 +10,7 @@
 
 		<nav id="burger-menu">
 
-			Menu
-
-			<ul class="grid up">
+			<ul>
 				<?php
 				// Extraction du menu
 				foreach($GLOBALS['nav'] as $cle => $val)
@@ -30,8 +28,8 @@
 
 		</nav>
 
-		<a href="#burger-menu" id="burger-ouvert" class="burger-bascule" title="Ouvrir le menu de navigation">≡</a>
-		<a href="#" id="burger-ferme" class="burger-bascule" title="Fermer le menu de navigation">×</a>
+		<a href="#burger-menu" id="burger-ouvert" class="burger-bouton" title="Ouvrir le menu de navigation">≡</a>
+		<a href="#" id="burger-ferme" class="burger-bouton" title="Fermer le menu de navigation">×</a>
 
 		<a href="#" id="burger-revetement" class="" title="Fermer le menu de navigation"></a>
 
