@@ -3,14 +3,14 @@
 
 <header>
 
-	<section class="mw960p mod center tc relative">
+	<section class="mw960p mod center">
 
 		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
 
 
-		<nav class="mtm mbm">
+		<nav id="burger-menu">
 
-			<a class="big burger"><span>menu</span></a>
+			Menu
 
 			<ul class="grid up">
 				<?php
@@ -30,6 +30,10 @@
 
 		</nav>
 
+		<a href="#burger-menu" id="burger-ouvert" class="burger-bascule" title="Ouvrir le menu de navigation">≡</a>
+		<a href="#" id="burger-ferme" class="burger-bascule" title="Fermer le menu de navigation">×</a>
+
+		<a href="#" id="burger-revetement" class="" title="Fermer le menu de navigation"></a>
 
 	</section>
 

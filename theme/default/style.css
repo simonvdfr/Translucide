@@ -67,7 +67,6 @@ html {
 	-webkit-text-size-adjust: 100%;
 	font-size: 62.5%;
 	font-size: calc(1em * .625);
-	scroll-behavior: smooth;
 }
 
 body {
@@ -958,7 +957,75 @@ header #logo { transition: opacity .5s; }
 
 
 /* MENU DE NAVIGATION */
-	header nav ul {
+
+	header #burger-menu {
+		
+		min-width: 230px;
+
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: -100%;
+		z-index: 8;
+	}
+
+	header .burger-bascule { /* bouton de bascule o/f */
+		font-size: 2em;
+		text-align: center;
+
+		width: 35px;
+		height: 35px;
+		line-height: 35px;
+
+		position: fixed;
+		top: .5rem;
+		right:.5rem;
+		z-index: 10;
+	}
+
+	header #burger-ouvert {
+		background: #35747f;
+		color: #fff;
+		visibility: visible;
+	}
+	header #burger-ferme {
+		background: #9f2d2d;
+		color: #fff;
+		visibility: hidden;
+	}
+
+	header #burger-menu ~ #burger-revetement {
+		background: rgba(0, 0, 0, 0);
+
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+
+		transition: all .5s .1s;
+	}
+
+	/* etat */
+	header #burger-menu:target {
+		left: -100%;
+	}
+
+	header #burger-menu:target ~ #burger-ouvert {visibility: hidden;}
+	header #burger-menu:target ~ #burger-ferme {visibility: visible;}
+	header #burger-menu:target ~ #burger-revetement {
+		background: rgba(0, 0, 0, 0.3);
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 5;
+	}
+	
+
+	/*header nav ul {
 		list-style: none;
 		display: inline-block;
 		padding: 0;
@@ -972,7 +1039,7 @@ header #logo { transition: opacity .5s; }
 
 
 	/* BOUTON BURGER & Animation */
-	header nav .burger {
+	/*header nav .burger {
 		display: none;
 		position: absolute;
 		overflow: hidden;
@@ -1024,13 +1091,13 @@ header #logo { transition: opacity .5s; }
 	.burger span::after { bottom: -6px; transition-property: bottom, transform; }
 
 	/* active state, i.e. menu open */
-	.burger.active { background-color: #cb0032; }
+	/*.burger.active { background-color: #cb0032; }
 	.burger.active span { background: none; }
 	.burger.active span::before { top: 0; transform: rotate(45deg);	}
 	.burger.active span::after { bottom: 0; transform: rotate(-45deg); }
 	.burger.active span::before,
 	.burger.active span::after { transition-delay: 0s, 0.3s; }
-
+	*/
 
 
 /* HIDING content */
