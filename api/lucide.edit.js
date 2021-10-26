@@ -21,6 +21,7 @@ add_translation({
 	"Media Library" : {"fr" : "Bibliothèque des médias"},		
 	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
+	"Paragraph" : {"fr" : "Paragraphe"},		
 	"Quote" : {"fr" : "Citation"},		
 	"Bold" : {"fr" : "Gras"},		
 	"Italic" : {"fr" : "Italique"},		
@@ -1922,8 +1923,8 @@ $(function()
 			toolbox+= "</li>";
 		}
 
-		if(typeof toolbox_blockquote != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('p')\" id='p' title=\""+__("Paragraph")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
+		if(typeof toolbox_p != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('p')\" id='p' title=\""+__("Paragraph")+"\"><i class='fa fa-fw fa-paragraph'></i></button></li>";
 
 		if(typeof toolbox_blockquote != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
@@ -2153,6 +2154,9 @@ $(function()
 
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
+				
+				if($(memo_node).closest("p").length) $("#txt-tool #p").addClass("checked");
+				else $("#txt-tool #p").removeClass("checked");
 				
 				if(typeof toolbox_color != 'undefined')
 				if($(memo_node).is("em[class^=color-]")) {

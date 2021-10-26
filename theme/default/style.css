@@ -1405,6 +1405,7 @@ header #logo { transition: opacity .5s; }
 .fa-circle-notch:before { content: '\f1ce'; } /* '' */
 .fa-paper-plane-empty:before { content: '\f1d9'; } /* '' */
 .fa-header:before { content: '\f1dc'; } /* '' */
+.fa-paragraph:before { content: '\f1dd'; } /* '' */
 .fa-share:before { content: '\f1e0'; } /* '' */
 .fa-paypal:before { content: '\f1ed'; } /* '' */
 .fa-trash:before { content: '\f1f8'; } /* '' */
