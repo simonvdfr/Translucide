@@ -21,6 +21,11 @@ add_translation({
 	"Media Library" : {"fr" : "Bibliothèque des médias"},		
 	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
+	"Quote" : {"fr" : "Citation"},		
+	"Bold" : {"fr" : "Gras"},		
+	"Italic" : {"fr" : "Italique"},		
+	"Underline" : {"fr" : "Souligner"},		
+	"Superscript" : {"fr" : "Exposant"},		
 	"Video" : {"fr" : "Vidéo"},		
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
@@ -1890,16 +1895,16 @@ $(function()
 			toolbox+= "<li><button onclick=\"html_tool('h6')\" id='h6' title=\""+__("Title")+" H6"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>6</span></button></li>";
 
 		if(typeof toolbox_bold != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('bold')\" title=\""+__("Bold")+"\"><i class='fa fa-fw fa-bold'></i></button></li>";
 
 		if(typeof toolbox_italic != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('italic')\" title=\""+__("Italic")+"\"><i class='fa fa-fw fa-italic'></i></button></li>";
 
 		if(typeof toolbox_underline != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('underline')\" title=\""+__("Underline")+"\"><i class='fa fa-fw fa-underline'></i></button></li>";
 		
 		if(typeof toolbox_superscript != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('superscript')\"><i class='fa fa-fw fa-superscript'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('superscript')\" title=\""+__("Superscript")+"\"><i class='fa fa-fw fa-superscript'></i></button></li>";
 				
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
@@ -1918,7 +1923,10 @@ $(function()
 		}
 
 		if(typeof toolbox_blockquote != 'undefined') 
-			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote'><i class='fa fa-fw fa-quote-left'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('p')\" id='p' title=\""+__("Paragraph")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
+
+		if(typeof toolbox_blockquote != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
