@@ -172,6 +172,7 @@ $GLOBALS['toolbox'] = array(
 	"media",
 	//"figure",
 	//"video",
+	//"lang",
 	//"anchor",
 	//"bt",
 	"link"

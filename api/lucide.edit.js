@@ -27,6 +27,9 @@ add_translation({
 	"Italic" : {"fr" : "Italique"},		
 	"Underline" : {"fr" : "Souligner"},		
 	"Superscript" : {"fr" : "Exposant"},		
+	"Language" : {"fr" : "Langue"},		
+	"Add Language" : {"fr" : "Ajouter une langue"},		
+	"Change Language" : {"fr" : "Change la langue"},		
 	"Video" : {"fr" : "Vidéo"},		
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
@@ -452,7 +455,7 @@ unanchor = function()
 }
 
 // Edite ou ajoute l'ancre
-anchor = function() 
+edit_anchor = function() 
 {
 	var anchor = $('#txt-tool .option #anchor').val();
 
@@ -464,6 +467,86 @@ anchor = function()
 		$(memo_node).attr("name", anchor);
 		
 		$("#txt-tool #anchor-option").hide("slide", 300);// Cache le menu d'option avec animation
+
+		tosave();// A sauvegarder
+
+		//@todo voir pour retrouver l'emplacement du focus une fois l'edition fini
+	}
+}
+
+
+// LANG
+// Menu avec les options d'ajout/modif de lang
+lang_option = function()
+{		
+	$("#unlang").remove();// Supprime le bouton de supp de lang
+	$("#txt-tool .option").hide();// Réinitialise le menu d'option
+
+	var lang = $(memo_node).closest('span').attr('lang');// On récupère la langue de la sélection en cours
+	
+	old_selection = window.getSelection().toString();// Texte selectionner en cours
+
+	// Si lien
+	if(lang) 
+	{
+		// Bouton pour supp l'ancre //exec_tool('unanchor');
+		$("#txt-tool #lang-option").prepend("<a href=\"javascript:unlang();void(0);\" id='unlang'><i class='fa fa-cancel plt prt' title='"+ __("Remove") +"'></i></a>");
+
+		$("#txt-tool #lang-option #lang").val(lang);
+		$("#txt-tool #lang-option button span").text(__("Change Language"));
+		$("#txt-tool #lang-option button i").removeClass("fa-plus").addClass("fa-floppy");
+	}
+	else 
+	{
+		$("#txt-tool #lang-option #lang").val('');
+		$("#txt-tool #lang-option button span").text(__("Add Language"));
+		$("#txt-tool #lang-option button i").removeClass("fa-floppy").addClass("fa-plus");
+	}
+	
+	$("#txt-tool #lang-option").show("slide", 300);
+}
+
+// Supprime le lien autour
+unlang = function() 
+{
+	$(memo_node).contents().unwrap();
+	$("#txt-tool #lang-option").hide("slide", 300);
+
+	$(memo_focus).focus();
+}
+
+// Edite ou ajoute la langue
+edit_lang = function() 
+{
+	var lang = $('#txt-tool .option #lang').val();
+
+	// Si ajout de lien
+	if($("#txt-tool #lang-option button i").hasClass("fa-plus")) 
+	{
+		//memo_selection = window.getSelection();
+		//memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
+		//memo_node = selected_element(memo_range);
+		//memo_focus
+
+		exec_tool('insertHTML', '<span lang="'+lang+'">'+old_selection+'</span>');
+
+		//$(memo_selection.anchorNode.parentElement).contents().unwrap().wrap('<span/>');
+
+		//console.log($(memo_selection.anchorNode.parentElement).attr("lang"));
+		//$(memo_selection.anchorNode.parentElement).replaceWith('<span lang="'+lang+'">test '+$(memo_selection.anchorNode.parentElement).html()+'</span>')
+
+		//var newElement = document.createElement('span');
+		//newElement.lang = lang;
+		//newElement.innerHTML = old_selection+' test';
+		//$(memo_selection.anchorNode.parentElement).replaceWith(newElement)
+
+		//$(memo_node).attr("lang", "lang");
+	}
+	else
+	{
+		$(memo_node).attr("lang", lang);
+		
+		$("#txt-tool #lang-option").hide("slide", 300);// Cache le menu d'option avec animation
 
 		tosave();// A sauvegarder
 
@@ -1971,13 +2054,23 @@ $(function()
 
 		//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
 
+		if(typeof toolbox_lang != 'undefined') 
+		{
+			toolbox+= "<li><button onclick=\"lang_option(); $('#txt-tool #lang-option #lang').select();\" title=\""+__("Add Language")+"\"><i class='fa fa-fw fa-language '></i></button></li>";
+
+			toolbox+= "<li id='lang-option' class='option'>";
+				toolbox+= "<input type='text' id='lang' placeholder=\""+ __("Language") +"\" title=\""+ __("Language") +"\" class='w150p small'>";
+				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+			toolbox+= "</li>";
+		}
+
 		if(typeof toolbox_anchor != 'undefined') 
 		{
 			toolbox+= "<li><button onclick=\"anchor_option(); $('#txt-tool #anchor-option #anchor').select();\" title=\""+__("Add Anchor")+"\"><i class='fa fa-fw fa-hashtag grey'></i></button></li>";
 
 			toolbox+= "<li id='anchor-option' class='option'>";
 				toolbox+= "<input type='text' id='anchor' placeholder=\""+ __("Anchor") +"\" title=\""+ __("Anchor") +"\" class='w150p small'>";
-				toolbox+= "<button onclick=\"anchor()\" class='small plt prt'><span>"+ __("Add Anchor") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+				toolbox+= "<button onclick=\"edit_anchor()\" class='small plt prt'><span>"+ __("Add Anchor") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 
@@ -2074,7 +2167,6 @@ $(function()
 					if(typeof memo_range === 'undefined') memo_range = null;
 					if(typeof memo_node === 'undefined') memo_node = null;
 				}
-
 
 				// Si la toolbox est autorisé
 				if(!$(this).hasClass("notoolbox"))
@@ -2194,6 +2286,9 @@ $(function()
 
 					// Si on est sur une ancre on ouvre le menu ancre en mode modif
 					if($(memo_node).closest("a[name]").length) anchor_option();
+
+					// Si on est sur un texte dans une langue spécifique on ouvre le menu langue en mode modif
+					if($(memo_node).closest("span[lang]").length) lang_option();
 				}
 				//else memo_selection = memo_range = memo_node = null;// RAZ Sélection		
 			}
@@ -3206,8 +3301,10 @@ $(function()
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
 	if($.browser.webkit) {
 		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
+			// Si c'est un span, sans langue, sans editable
 			if(
 				event.target.tagName == "SPAN"
+				&& event.target.lang == ""
 				&& !$(event.target).hasClass("editable")
 				&& !$(event.target).hasClass("editable-tag")
 			)

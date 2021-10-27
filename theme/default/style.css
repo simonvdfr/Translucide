@@ -1311,7 +1311,7 @@ header #logo { transition: opacity .5s; }
 
 
 /* Les icones */
-.fa-music:before { content: '\e800'; } /* '' */
+.fa-music:before { content: '\e800'; }
 .fa-search:before { content: '\e801'; } /* '' */
 .fa-mail:before { content: '\e802'; } /* '' */
 .fa-star:before { content: '\e803'; } /* '' */
@@ -1393,6 +1393,7 @@ header #logo { transition: opacity .5s; }
 .fa-instagram:before { content: '\f16d'; } /* '' */
 .fa-up:before { content: '\f176'; } /* '' */
 .fa-skype:before { content: '\f17e'; } /* '' */
+.fa-language:before { content: '\f1ab'; } /* '' */
 .fa-file-pdf:before { content: '\f1c1'; } /* '' */
 .fa-file-word:before { content: '\f1c2'; } /* '' */
 .fa-file-excel:before { content: '\f1c3'; } /* '' */
