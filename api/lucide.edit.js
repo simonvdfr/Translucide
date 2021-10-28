@@ -523,24 +523,7 @@ edit_lang = function()
 	// Si ajout de lien
 	if($("#txt-tool #lang-option button i").hasClass("fa-plus")) 
 	{
-		//memo_selection = window.getSelection();
-		//memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
-		//memo_node = selected_element(memo_range);
-		//memo_focus
-
 		exec_tool('insertHTML', '<span lang="'+lang+'">'+old_selection+'</span>');
-
-		//$(memo_selection.anchorNode.parentElement).contents().unwrap().wrap('<span/>');
-
-		//console.log($(memo_selection.anchorNode.parentElement).attr("lang"));
-		//$(memo_selection.anchorNode.parentElement).replaceWith('<span lang="'+lang+'">test '+$(memo_selection.anchorNode.parentElement).html()+'</span>')
-
-		//var newElement = document.createElement('span');
-		//newElement.lang = lang;
-		//newElement.innerHTML = old_selection+' test';
-		//$(memo_selection.anchorNode.parentElement).replaceWith(newElement)
-
-		//$(memo_node).attr("lang", "lang");
 	}
 	else
 	{
