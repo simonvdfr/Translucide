@@ -5,6 +5,10 @@
 
 	<section class="mw960p mod center tc relative">
 
+
+		<a href="#main" class="menu-rapide">Aller au contenu</a>
+
+
 		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
 
 

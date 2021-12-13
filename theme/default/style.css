@@ -953,6 +953,11 @@ div.editable {
 
 
 /* HEADER */
+header .menu-rapide { 
+	position: absolute;
+	top: -100px;
+}
+
 header #logo { transition: opacity .5s; }
 	header #logo:hover { opacity: 0.6; }
 
