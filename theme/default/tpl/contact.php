@@ -141,7 +141,7 @@ else// Affichage du formulaire
 					<!-- RGPD -->
 					<div class="fr w70 tr">
 						<input type="checkbox" name="rgpdcheckbox" id="rgpdcheckbox" required>
-						<label for="rgpdcheckbox" class="inline" style="text-transform: none;"><?php txt('rgpd')?></label>
+						<label for="rgpdcheckbox" class="inline" style="text-transform: none;"><?php span('rgpd')?></label>
 					</div>
 				</div>
 
