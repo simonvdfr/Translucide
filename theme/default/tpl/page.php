@@ -5,7 +5,7 @@
 	<?php h1('title', 'mbn tc up color')?>
 	<?php h2('sstitre', 'mbn tc big color-alt')?>
 
-	<article class="tj pal ptm">
+	<article class="pal ptm">
 
 		<?php txt('texte')?>
 
