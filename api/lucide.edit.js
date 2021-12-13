@@ -1611,8 +1611,8 @@ $(function()
 	$("#admin-bar #description").val(description);
 
 
-	if(/noindex/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #noindex").prop("checked", true);
-	if(/nofollow/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #nofollow").prop("checked", true);
+	if(/noindex/i.test($('body').data("robots"))) $("#admin-bar #noindex").prop("checked", true);
+	if(/nofollow/i.test($('body').data("robots"))) $("#admin-bar #nofollow").prop("checked", true);
 
 
 	$("#admin-bar #permalink").val(permalink);

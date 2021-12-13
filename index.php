@@ -244,7 +244,7 @@ if(!$ajax)
 		<title><?=$title;?></title>
 		<?php if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
-		<meta name="robots" content="<?=$robots;?>" data="<?=$robots_data;?>">
+		<meta name="robots" content="<?=$robots;?>">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -356,7 +356,7 @@ if(!$ajax)
 		</script>
 
 	</head>
-	<body>
+	<body<?=($robots_data?' data-robots="'.$robots_data.'"':'')?>>
 	<?php
 
 
