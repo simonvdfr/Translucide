@@ -1,10 +1,14 @@
 <?php
+
+// Si pas de dossier média définit on force la variable
+if(!@$GLOBALS['media_dir']) $GLOBALS['media_dir'] = 'media';
+
+
 /********** BENCHMARK **********/
 // Mesure le temps de traitement Php
 function benchmark() {
 	return (microtime(true) - $GLOBALS['microtime']);
 }
-
 
 
 /********** URL / NAVIGATION **********/
@@ -301,6 +305,8 @@ function txt($key = null, $filter = array())
 		if(isset($filter['itemprop'])) echo" itemprop=\"".$filter['itemprop']."\"";
 
 		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
+
+		if(isset($filter['builder'])) echo" data-builder='".$filter['builder']."'";
 
 	echo">";
 
@@ -1136,16 +1142,16 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	$dir = ($dest_dir ? $dest_dir.'/' : '');
 
 	// dir clean si media forcé
-	$dir_clean = ltrim(str_replace('media', '', $dir), '/');
+	$dir_clean = ltrim(str_replace($GLOBALS['media_dir'], '', $dir), '/');
 
 	// Si image à réduire ou à forcer
 	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
 	{
 		// Version original pour le zoom
-		$zoom = 'media/' . $dir_clean . $file_name . '.' . $source_ext;
+		$zoom = $GLOBALS['media_dir'].'/' . $dir_clean . $file_name . '.' . $source_ext;
 
-		// Si media dans dir on force ne met pas dans /resize/
-		$dir = (strpos($dir, 'media') === 0 ? '' : 'media/resize/') . $dir;
+		// Si media dans dir on force. ne met pas dans /resize/
+		$dir = (strpos($dir, $GLOBALS['media_dir']) === 0 ? '' : $GLOBALS['media_dir'].'/resize/') . $dir;
 
 		// Crée les dossiers
 		@mkdir($root_dir . $dir, 0755, true);
@@ -1284,7 +1290,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	{
 		$zoom = "";// Pas de zoom
 
-		$dir = "media/" . $dir_clean;// @todo ajouter le dir (sans resize)
+		$dir = $GLOBALS['media_dir']."/" . $dir_clean;// @todo ajouter le dir (sans resize)
 		$file_name_ext = $file_name.".".$source_ext;
 		
 		@mkdir($root_dir . $dir, 0755, true);// Crée les dossiers
@@ -1300,7 +1306,7 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 {
 	// Valeur par défaut
 	$option = null;
-	$dir = ($dest_dir ? 'media/'.$dest_dir : 'media');
+	$dir = ($dest_dir ? $GLOBALS['media_dir'].'/'.$dest_dir : $GLOBALS['media_dir']);
 	$src_file = $dir.'/'.basename($root_file).'?'.time();
 
 	// Taille de l'image uploadée

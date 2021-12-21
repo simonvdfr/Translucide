@@ -244,7 +244,7 @@ if(!$ajax)
 		<title><?=$title;?></title>
 		<?php if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
-		<meta name="robots" content="<?=$robots;?>" data="<?=$robots_data;?>">
+		<meta name="robots" content="<?=$robots;?>">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -347,6 +347,7 @@ if(!$ajax)
 			tag = "<?=encode(@$tag)?>";
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
+			media_dir = "<?=$GLOBALS['media_dir']?>";
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>
 			<?=(@$dev?'dev = true;':'')?>
@@ -354,14 +355,14 @@ if(!$ajax)
 		</script>
 
 	</head>
-	<body>
+	<body<?=($robots_data?' data-robots="'.$robots_data.'"':'')?>>
 	<?php
 
 
 	include_once('theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'').'header.php');
 
 
-	echo'<main class="content'.(isset($res['tpl'])?' tpl-'.encode($res['tpl']):'').'">';
+	echo'<main id="main" class="content'.(isset($res['tpl'])?' tpl-'.encode($res['tpl']):'').'">';
 }
 
 

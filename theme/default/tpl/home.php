@@ -150,7 +150,7 @@
 							<?php
 							$res_picto = ('article' == $res_event['type']) ? 'picto-actu.png' : 'picto-evenement.png';
 							?>
-							<img src="/media/tpl/<?=$res_picto?>" alt="picto <?=$res_event['type']?>">
+							<img src="/<?=@$GLOBALS['media_dir']?>/tpl/<?=$res_picto?>" alt="picto <?=$res_event['type']?>">
 						</div>-->
 
 						<div class="date bold bt bg-color fl up big tc">

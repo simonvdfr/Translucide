@@ -538,8 +538,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
     position: relative;
 	overflow: hidden;
 	vertical-align: middle;
-	min-width: 60px;
-	min-height: 60px;
+	min-width: 70px;
+	min-height: 70px;
 	border: 1px dotted rgba(61, 128, 179, 0.2);
 }
 	.lucide .editable-media img { 
@@ -665,7 +665,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	}
 	.module .ui-sortable-handle { 
 		box-shadow: rgba(122, 210, 217, 0.5) 0px 0px 20px 2px !important;
-		cursor:  move;
+		cursor: move;
 	}
 
 

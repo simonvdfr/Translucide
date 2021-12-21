@@ -159,6 +159,7 @@ $GLOBALS['toolbox'] = array(
 	//"superscript",
 	//"fontSize",
 	//"color",
+	//"p",
 	//"blockquote",
 	//"insertUnorderedList",
 	//"justifyLeft",
@@ -171,6 +172,7 @@ $GLOBALS['toolbox'] = array(
 	"media",
 	//"figure",
 	//"video",
+	//"lang",
 	//"anchor",
 	//"bt",
 	"link"
@@ -286,7 +288,10 @@ $GLOBALS['imgs_num'] = '15';// nombre d'image max
 
 
 // On peut voir les dossiers dans la librairie des médias
-$GLOBALS['media_dir'] = false;
+$GLOBALS['list_media_dir'] = false;
+
+// Nom du dossier média
+$GLOBALS['media_dir'] = 'media';
 
 
 // Favicon navigateur

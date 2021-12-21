@@ -67,6 +67,7 @@ html {
 	-webkit-text-size-adjust: 100%;
 	font-size: 62.5%;
 	font-size: calc(1em * .625);
+	scroll-behavior: smooth;
 }
 
 body {
@@ -952,6 +953,11 @@ div.editable {
 
 
 /* HEADER */
+header .menu-rapide { 
+	position: absolute;
+	top: -100px;
+}
+
 header #logo { transition: opacity .5s; }
 	header #logo:hover { opacity: 0.6; }
 
@@ -1310,7 +1316,7 @@ header #logo { transition: opacity .5s; }
 
 
 /* Les icones */
-.fa-music:before { content: '\e800'; } /* '' */
+.fa-music:before { content: '\e800'; }
 .fa-search:before { content: '\e801'; } /* '' */
 .fa-mail:before { content: '\e802'; } /* '' */
 .fa-star:before { content: '\e803'; } /* '' */
@@ -1392,6 +1398,7 @@ header #logo { transition: opacity .5s; }
 .fa-instagram:before { content: '\f16d'; } /* '' */
 .fa-up:before { content: '\f176'; } /* '' */
 .fa-skype:before { content: '\f17e'; } /* '' */
+.fa-language:before { content: '\f1ab'; } /* '' */
 .fa-file-pdf:before { content: '\f1c1'; } /* '' */
 .fa-file-word:before { content: '\f1c2'; } /* '' */
 .fa-file-excel:before { content: '\f1c3'; } /* '' */
@@ -1404,6 +1411,7 @@ header #logo { transition: opacity .5s; }
 .fa-circle-notch:before { content: '\f1ce'; } /* '' */
 .fa-paper-plane-empty:before { content: '\f1d9'; } /* '' */
 .fa-header:before { content: '\f1dc'; } /* '' */
+.fa-paragraph:before { content: '\f1dd'; } /* '' */
 .fa-share:before { content: '\f1e0'; } /* '' */
 .fa-paypal:before { content: '\f1ed'; } /* '' */
 .fa-trash:before { content: '\f1f8'; } /* '' */

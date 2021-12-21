@@ -21,6 +21,15 @@ add_translation({
 	"Media Library" : {"fr" : "Bibliothèque des médias"},		
 	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
+	"Paragraph" : {"fr" : "Paragraphe"},		
+	"Quote" : {"fr" : "Citation"},		
+	"Bold" : {"fr" : "Gras"},		
+	"Italic" : {"fr" : "Italique"},		
+	"Underline" : {"fr" : "Souligner"},		
+	"Superscript" : {"fr" : "Exposant"},		
+	"Language" : {"fr" : "Langue"},		
+	"Add Language" : {"fr" : "Ajouter une langue"},		
+	"Change Language" : {"fr" : "Change la langue"},		
 	"Video" : {"fr" : "Vidéo"},		
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
@@ -375,7 +384,7 @@ exec_tool = function(command, value) {
 
 	// Recrée une sélection en fonction des changements de la dom
 	memo_selection = window.getSelection();
-	memo_range = memo_selection.getRangeAt(0);
+	memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
 	memo_node = selected_element(memo_range);
 }
 
@@ -446,7 +455,7 @@ unanchor = function()
 }
 
 // Edite ou ajoute l'ancre
-anchor = function() 
+edit_anchor = function() 
 {
 	var anchor = $('#txt-tool .option #anchor').val();
 
@@ -458,6 +467,69 @@ anchor = function()
 		$(memo_node).attr("name", anchor);
 		
 		$("#txt-tool #anchor-option").hide("slide", 300);// Cache le menu d'option avec animation
+
+		tosave();// A sauvegarder
+
+		//@todo voir pour retrouver l'emplacement du focus une fois l'edition fini
+	}
+}
+
+
+// LANG
+// Menu avec les options d'ajout/modif de lang
+lang_option = function()
+{		
+	$("#unlang").remove();// Supprime le bouton de supp de lang
+	$("#txt-tool .option").hide();// Réinitialise le menu d'option
+
+	var lang = $(memo_node).closest('span').attr('lang');// On récupère la langue de la sélection en cours
+	
+	old_selection = window.getSelection().toString();// Texte selectionner en cours
+
+	// Si lien
+	if(lang) 
+	{
+		// Bouton pour supp l'ancre //exec_tool('unanchor');
+		$("#txt-tool #lang-option").prepend("<a href=\"javascript:unlang();void(0);\" id='unlang'><i class='fa fa-cancel plt prt' title='"+ __("Remove") +"'></i></a>");
+
+		$("#txt-tool #lang-option #lang").val(lang);
+		$("#txt-tool #lang-option button span").text(__("Change Language"));
+		$("#txt-tool #lang-option button i").removeClass("fa-plus").addClass("fa-floppy");
+	}
+	else 
+	{
+		$("#txt-tool #lang-option #lang").val('');
+		$("#txt-tool #lang-option button span").text(__("Add Language"));
+		$("#txt-tool #lang-option button i").removeClass("fa-floppy").addClass("fa-plus");
+	}
+	
+	$("#txt-tool #lang-option").show("slide", 300);
+}
+
+// Supprime le lien autour
+unlang = function() 
+{
+	$(memo_node).contents().unwrap();
+	$("#txt-tool #lang-option").hide("slide", 300);
+
+	$(memo_focus).focus();
+}
+
+// Edite ou ajoute la langue
+edit_lang = function() 
+{
+	var lang = $('#txt-tool .option #lang').val();
+
+	// Si ajout de lien
+	if($("#txt-tool #lang-option button i").hasClass("fa-plus")) 
+	{
+		exec_tool('insertHTML', '<span lang="'+lang+'">'+old_selection+'</span>');
+	}
+	else
+	{
+		$(memo_node).attr("lang", lang);
+		
+		$("#txt-tool #lang-option").hide("slide", 300);// Cache le menu d'option avec animation
 
 		tosave();// A sauvegarder
 
@@ -852,6 +924,7 @@ upload = function(source, file, resize)
 						if(source.attr("data-media")) {
 							source.attr("data-media", media);// Pour la manipulation (path + media)
 							$(".file div", source).html(media.split('/').pop());// Pour l'affichage 
+							$(".copy input", source).val(path + media);// Pour copier le nom du fichier
 						}				
 
 						// Détruis le layer de progressbar
@@ -1128,7 +1201,9 @@ img_optim = function(option, that) {
 
 	src = src.replace(domain_path, "");// Supprime le domaine du nom de l'image
 	
-	var img_nomedia = src.replace(/media\//, "").replace(/resize\//, "");// Chemin sans media
+	var regex_media_dir = new RegExp(media_dir+"/", "g");
+
+	var img_nomedia = src.replace(regex_media_dir, "").replace(/resize\//, "");// Chemin sans media
 
 	// Si le chemin contien un dossier
 	if(img_nomedia.indexOf("/") !== -1) 
@@ -1536,8 +1611,8 @@ $(function()
 	$("#admin-bar #description").val(description);
 
 
-	if(/noindex/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #noindex").prop("checked", true);
-	if(/nofollow/i.test($('meta[name=robots]').last().attr("data"))) $("#admin-bar #nofollow").prop("checked", true);
+	if(/noindex/i.test($('body').data("robots"))) $("#admin-bar #noindex").prop("checked", true);
+	if(/nofollow/i.test($('body').data("robots"))) $("#admin-bar #nofollow").prop("checked", true);
 
 
 	$("#admin-bar #permalink").val(permalink);
@@ -1599,8 +1674,8 @@ $(function()
 	// spellcheck="false" wrap="off" autofocus placeholder="Enter something ..."
 	
 	// Pour corriger le drag&drop de texte dans firefox span > div
-	$(".editable").replaceWith(function () { 
-
+	$(".editable").replaceWith(function () 
+	{ 
 		// Pour corriger les div qui ne prennent pas toutes la largeur a cause des img en float
 		var style = null;
 		if($(this).parent().is("article")) style = "width: "+$(this).parent().width()+"px;";//if($(this).parent().children().length <= 1)
@@ -1612,12 +1687,10 @@ $(function()
 			html: this.innerHTML,
 			style: style,
 			"data-dir": $(this).data("dir"),
+			"data-builder": $(this).data("builder"),
 			placeholder: $(this).attr("placeholder")
 		});
 	});
-
-	// Rends les textes éditables
-	$(".editable").attr("contenteditable","true");
 
 
 	// Si readonly
@@ -1889,16 +1962,16 @@ $(function()
 			toolbox+= "<li><button onclick=\"html_tool('h6')\" id='h6' title=\""+__("Title")+" H6"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>6</span></button></li>";
 
 		if(typeof toolbox_bold != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('bold')\"><i class='fa fa-fw fa-bold'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('bold')\" title=\""+__("Bold")+"\"><i class='fa fa-fw fa-bold'></i></button></li>";
 
 		if(typeof toolbox_italic != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('italic')\"><i class='fa fa-fw fa-italic'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('italic')\" title=\""+__("Italic")+"\"><i class='fa fa-fw fa-italic'></i></button></li>";
 
 		if(typeof toolbox_underline != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('underline')\"><i class='fa fa-fw fa-underline'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('underline')\" title=\""+__("Underline")+"\"><i class='fa fa-fw fa-underline'></i></button></li>";
 		
 		if(typeof toolbox_superscript != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('superscript')\"><i class='fa fa-fw fa-superscript'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('superscript')\" title=\""+__("Superscript")+"\"><i class='fa fa-fw fa-superscript'></i></button></li>";
 				
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
@@ -1916,8 +1989,11 @@ $(function()
 			toolbox+= "</li>";
 		}
 
+		if(typeof toolbox_p != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('p')\" id='p' title=\""+__("Paragraph")+"\"><i class='fa fa-fw fa-paragraph'></i></button></li>";
+
 		if(typeof toolbox_blockquote != 'undefined') 
-			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote'><i class='fa fa-fw fa-quote-left'></i></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
@@ -1961,13 +2037,23 @@ $(function()
 
 		//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
 
+		if(typeof toolbox_lang != 'undefined') 
+		{
+			toolbox+= "<li><button onclick=\"lang_option(); $('#txt-tool #lang-option #lang').select();\" title=\""+__("Add Language")+"\"><i class='fa fa-fw fa-language '></i></button></li>";
+
+			toolbox+= "<li id='lang-option' class='option'>";
+				toolbox+= "<input type='text' id='lang' placeholder=\""+ __("Language") +"\" title=\""+ __("Language") +"\" class='w150p small'>";
+				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+			toolbox+= "</li>";
+		}
+
 		if(typeof toolbox_anchor != 'undefined') 
 		{
 			toolbox+= "<li><button onclick=\"anchor_option(); $('#txt-tool #anchor-option #anchor').select();\" title=\""+__("Add Anchor")+"\"><i class='fa fa-fw fa-hashtag grey'></i></button></li>";
 
 			toolbox+= "<li id='anchor-option' class='option'>";
 				toolbox+= "<input type='text' id='anchor' placeholder=\""+ __("Anchor") +"\" title=\""+ __("Anchor") +"\" class='w150p small'>";
-				toolbox+= "<button onclick=\"anchor()\" class='small plt prt'><span>"+ __("Add Anchor") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+				toolbox+= "<button onclick=\"edit_anchor()\" class='small plt prt'><span>"+ __("Add Anchor") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 
@@ -2009,6 +2095,9 @@ $(function()
 	// Action sur les champs éditables
 	editable_event = function()
 	{	
+		// Rends les textes éditables
+		$(".editable").attr("contenteditable","true");
+
 		// Désactive les liens qui entourent un élément éditable
 		$(".editable").closest("a").on("click", function(event) { event.preventDefault(); });
 		
@@ -2061,7 +2150,6 @@ $(function()
 					if(typeof memo_range === 'undefined') memo_range = null;
 					if(typeof memo_node === 'undefined') memo_node = null;
 				}
-
 
 				// Si la toolbox est autorisé
 				if(!$(this).hasClass("notoolbox"))
@@ -2142,6 +2230,9 @@ $(function()
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
 				
+				if($(memo_node).closest("p").length) $("#txt-tool #p").addClass("checked");
+				else $("#txt-tool #p").removeClass("checked");
+				
 				if(typeof toolbox_color != 'undefined')
 				if($(memo_node).is("em[class^=color-]")) {
 					// De-selectionne les couleurs
@@ -2178,6 +2269,9 @@ $(function()
 
 					// Si on est sur une ancre on ouvre le menu ancre en mode modif
 					if($(memo_node).closest("a[name]").length) anchor_option();
+
+					// Si on est sur un texte dans une langue spécifique on ouvre le menu langue en mode modif
+					if($(memo_node).closest("span[lang]").length) lang_option();
 				}
 				//else memo_selection = memo_range = memo_node = null;// RAZ Sélection		
 			}
@@ -2392,24 +2486,29 @@ $(function()
 
 
 
-	// Icone d'upload + supp du fichier + alt éditable
-	$(".editable-media").append(function() {
-		var alt = $('img', this).attr("alt");
-
-		print_size = null;
-		if($(this).data("width")) print_size = $(this).data("width")+'';
-		if($(this).data("width") && $(this).data("height")) print_size+=" x ";
-		if($(this).data("height")) print_size+= $(this).data("height")+'';
-		
-		return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
-			"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
-			"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
-			+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'')
-	});
-
-
 	// Rends éditables les images/fichiers
-	editable_media_event = function() {
+	editable_media_event = function()
+	{
+		// Icone d'upload + supp du fichier + alt éditable
+		$(".editable-media").append(function()
+		{
+			// Si pas d'option de suppression et d'alt éditable on l'ajoute
+			if(!$(this).hasClass("editable-alt")) 
+			{
+				var alt = $('img', this).attr("alt");
+
+				print_size = null;
+				if($(this).data("width")) print_size = $(this).data("width")+'';
+				if($(this).data("width") && $(this).data("height")) print_size+=" x ";
+				if($(this).data("height")) print_size+= $(this).data("height")+'';
+
+				return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
+				"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
+				"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
+				+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'');
+			}
+		});
+
 		$(".editable-media")
 			.on({
 				// Highlight la zone on hover
@@ -2441,10 +2540,11 @@ $(function()
 					$(this).addClass("drag-over");
 					$("img, i", this).addClass("drag-elem");
 					$(".open-dialog-media", this).fadeIn("fast");
+					$(".print-size", this).fadeIn("fast");// Affiche la taille de l'image/zone
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
 					if($("img", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
-						$(".clear-file, .print-size", this).fadeIn("fast");
+						$(".clear-file", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
 					if($("img", this).attr("src")) {
@@ -2510,19 +2610,24 @@ $(function()
 
 	/************** IMAGES BACKGROUND **************/
 	
-	// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
-	$("[data-id][data-bg]").addClass("editable-bg");
-	$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
-
-	// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
-	clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
-	$("[data-id][data-bg]").each(function() {
-		if($(this).data("bg"))
-			$(".bg-tool", this).prepend(clearbg_bt);
-	});
-
 	// Rends éditables les images en background
-	editable_bg_event = function() {
+	editable_bg_event = function() 
+	{
+		// Si pas d'option de suppression on l'ajoute
+		if(!$(this).hasClass("editable-bg")) 
+		{
+			// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
+			$("[data-id][data-bg]").addClass("editable-bg");
+			$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
+
+			// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
+			clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
+			$("[data-id][data-bg]").each(function() {
+				if($(this).data("bg"))
+					$(".bg-tool", this).prepend(clearbg_bt);
+			});
+		}
+
 		$("[data-id][data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
@@ -2645,7 +2750,7 @@ $(function()
 	// Force le parent en relatif pour bien positionner les boutons d'ajout
 	$(".module-bt").parent().addClass("relative");
 
-	// Ajout de la SUPPRESION au survole d'un bloc
+	// Ajout de la SUPPRESSION au survole d'un bloc
 	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 10;' title='"+ __("Remove") +"'></i></a>");
 
 	// Affiche les boutons de suppression
@@ -2765,7 +2870,7 @@ $(function()
 	$(document).on("keydown.autocomplete", "#txt-tool .option #link, .editable-href", function() {
 		$(this).autocomplete({
 			minLength: 0,
-			source: path+"api/ajax.admin.php?mode=links&nonce="+$("#nonce").val(),
+			source: path + "api/ajax.admin.php?mode=links&nonce="+ $("#nonce").val() +"&dir="+ ($(memo_node).data("dir") || ""),
 			select: function(event, ui) 
 			{ 
 				// S'il y a déjà un chemin présent ont ajouté à la suite avec juste la dernière partie | Cas tag
@@ -3011,7 +3116,7 @@ $(function()
 		});
 
 		// Contenu des fichiers éditables et dans les contenus textuels
-		$(document).find(".content .editable-media .fa, .content .editable a[href^='media/']").each(function() {
+		$(document).find(".content .editable-media .fa, .content .editable a[href^='"+media_dir+"/']").each(function() {
 			if($(this).closest("span").hasClass("editable-media")) var media = $(this).attr("title");
 			else var media = $(this).attr("href");
 
@@ -3179,8 +3284,10 @@ $(function()
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
 	if($.browser.webkit) {
 		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
+			// Si c'est un span, sans langue, sans editable
 			if(
 				event.target.tagName == "SPAN"
+				&& event.target.lang == ""
 				&& !$(event.target).hasClass("editable")
 				&& !$(event.target).hasClass("editable-tag")
 			)
