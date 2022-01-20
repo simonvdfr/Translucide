@@ -3128,7 +3128,7 @@ $(function()
 		medias_clean = {};
 		host = location.protocol +'//'+ location.host + path;
 		$.each(medias, function(media, type) {
-			media = media.replace(host, "").split("?")[0];
+			media = path + media.replace(host, "").split("?")[0];
 			medias_clean[media] = type;			
 		});
 
