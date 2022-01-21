@@ -1,14 +1,5 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
-<style>
-	.link:hover .bt { background-color: #78cfd6; color: #fff; }
-	.link:hover .bt.bg-color { 		
-		background-color: #fff;
-		color: #78cfd6;
-		border-color: #78cfd6;
-	}
-</style>
-
 
 <section class="mw960p mod center mtm mbl">
 
@@ -17,21 +8,21 @@
 		<?php h2('sstitre', 'pbl')?>
 	</div>
 
-	<div class="link w50 fl tc animation slide-left">
+	<div class="w50 fl tc animation slide-left">
 		<article>
-			<div><?php media('media-2', '130')?></div>
-			<h3 class="mbn tdn"><a <?php href("lien-2")?>><?php span('titre-2')?></a></h3>
+			<?php media('media-2', '130')?>
+			<?php h3('titre-2', 'mbn tdn')?>
 			<?php txt('txt-2','w50 center block')?>
-			<div class="bt mts"><?php _e("Lire plus")?></div>
+			<a <?php href("lien-2")?>><span class="bt mts"><?php _e("Lire plus")?></span></a>
 		</article>
 	</div>
 
-	<div class="link w50 fl tc animation slide-right">
+	<div class="w50 fl tc animation slide-right">
 		<article>
-			<div><?php media('media-3', '130')?></div>
-			<h3 class="mbn tdn"><a <?php href("lien-3")?>><?php span('titre-3')?></a></h3>
+			<?php media('media-3', '130')?>
+			<?php h3('titre-3', 'mbn tdn')?>
 			<?php txt('txt-3','w50 center block')?>
-			<div class="bt mts"><?php _e("Lire plus")?></div>
+			<a <?php href("lien-3")?>><span class="bt mts"><?php _e("Lire plus")?></span></a>
 		</article>
 	</div>
 
@@ -141,7 +132,7 @@
 				$date = explode("-", explode(" ", $res_event['date_insert'])[0]);
 
 				?>
-				<div class="link event pts pbs mtm mbm animation slide-right">
+				<div class="event pts pbs mtm mbm animation slide-right">
 
 					<article>
 
@@ -159,9 +150,9 @@
 						</div>
 
 						<div>
-							<h2 class="bold mod up bigger man nowrap tdn"><a href="<?=make_url($res_event['url']);?>" class="tdn"><?=$res_event['title']?></a></h2>
+							<h2 class="bold mod up bigger man nowrap tdn"><?=$res_event['title']?></h2>
 
-							<div class="bold bt bg-color"><?php _e("Lire")?></div>
+							<a href="<?=make_url($res_event['url']);?>"><span class="bt bg-color"><?php _e("Lire")?></span></a>
 						</div>
 
 					</article>
@@ -175,22 +166,3 @@
 	</div>
 </section>
 <!-- Fin Event -->
-
-
-
-<script>
-$(function()
-{
-	// Met le lien sur zone la box et supprime le lien sur le h2
-	$(".link article").wrapInner(function() {
-		return "<a href='"+ $("a", this).attr("href") +"'"+ ($(this).attr("class")?" class='"+ $(this).attr("class") +"'":"")+ ($(this).attr("title") ? " title='"+ $(this).attr("title") +"'":"") +" />";
-	}).children(0).unwrap();
-	//$(".link article").contents().unwrap();
-
-	// Mode admin
-	edit.push(function() {
-		// Supprime l'action de click sur le lien
-		$(".link a").on("click", function(event) { event.preventDefault(); });
-	});
-});
-</script>
