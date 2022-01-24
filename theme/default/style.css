@@ -106,7 +106,7 @@ a {
 }
 
 a:active, a:hover, a:focus { 
-	outline: 0;/* Problème d'accessibilité ? 06/01/2021 */
+	/* outline: 0; Problème d'accessibilité ? 24/01/2022 */
 	/* color: #000; */
 }
 
@@ -953,10 +953,13 @@ div.editable {
 
 
 /* HEADER */
-header .menu-rapide { 
+
+header .acces-rapide { 
 	position: absolute;
 	top: -100px;
 }
+	header .acces-rapide:focus { top: 0; }
+
 
 header #logo { transition: opacity .5s; }
 	header #logo:hover { opacity: 0.6; }

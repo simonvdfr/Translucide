@@ -6,13 +6,13 @@
 	<section class="mw960p mod center tc relative">
 
 
-		<a href="#main" class="menu-rapide">Aller au contenu</a>
+		<nav aria-label="<?php _e("Quick access")?>"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
 
 
 		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
 
 
-		<nav class="mtm mbm">
+		<nav class="mtm mbm" aria-label="<?php _e("Browsing menu")?>">
 
 			<a class="big burger"><span>menu</span></a>
 
