@@ -2092,6 +2092,13 @@ $(function()
 		});
 	}	
 
+	// Si contenu vide on met un <p>, seulement pour les div ... pas pour les h1 ...
+	add_paragraph = function(memo_focus)
+	{
+		if(/DIV|ARTICLE|section/.test($(memo_focus).prop("tagName")) && $(memo_focus).html() == "")
+			$(memo_focus).html("<p></p>");
+	}
+
 	// Action sur les champs éditables
 	editable_event = function()
 	{	
@@ -2105,12 +2112,17 @@ $(function()
 		$(".editable").on({
 			"focus.editable": function() {// On positionne la toolbox
 				memo_focus = this;// Pour memo le focus en cours
+
+				// Ajoute un <p>
+				add_paragraph(this);
 			},
 			"blur.editable": function() {
 				if($("#txt-tool:not(:hover)").val()=="") {
 					$("#txt-tool").hide();// ferme la toolbox
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
 				}
+				
+				if($("p", this).html() == '') $("p", this).remove();// Si juste un paragraphe vide on le supp
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
 				$("body").off(".editable-media");// Désactive les events image
@@ -2125,6 +2137,10 @@ $(function()
 				img_leave();// Raz Propriétés image
 			},			
 			"keyup.editable": function() {// Mémorise la position du curseur
+
+				// Ajoute un <p>
+				add_paragraph(this);
+
 				memo_selection = window.getSelection();				
 				if(memo_selection.anchorNode) {
 					memo_range = memo_selection.getRangeAt(0);

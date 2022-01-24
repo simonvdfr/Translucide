@@ -506,6 +506,11 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		opacity: .6;
 	}
 
+	[contenteditable=true] p:empty:before { 
+		content: "Paragraphe";
+		opacity: .6;
+	}
+
 	.editable-media[placeholder]:before { 
 		content: attr(placeholder);
 		opacity: .6;
