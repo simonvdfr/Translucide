@@ -1,13 +1,14 @@
 a {
 	color: #35747f;
-	text-decoration: none;
+	text-decoration: underline;
 	transition: color .3s;
 }
-	a:hover { color: #78cfd6; }
+	a:hover { color: #35747f; }
+	.selected { text-decoration: underline; }
 
 
 h1 {
-	color: #78cfd6;
+	color: #35747f;
 	text-transform: uppercase;
 	font-weight: lighter;
 	font-size: 2em;
@@ -23,28 +24,28 @@ h2, h3 {
 /* bouton pour les liens */
 .bt, .bt.internal {
 	background-color: #fff;
-	color: #78cfd6;
+	color: #35747f;
 
-	border: 1px solid #78cfd6;
+	border: 1px solid #35747f;
 	border-radius: 0.5em;
 }
 	.bt:hover {
-		background-color: #78cfd6;
+		background-color: #35747f;
 		color: #fff;
 	}
 
 
 /* Couleur */
-.color, .selected { color: #78cfd6; }
-.color-alt { color: #35747f; }
+.color { color: #35747f; }
+.color-alt { color: #76a5af; }
 
 .bg-color {
-	background-color: #78cfd6;
+	background-color: #35747f;
 	color: #fff;
 }
 	a.bg-color:hover  {
 		background-color: #fff;
-		color: #78cfd6;
+		color: #35747f;
 	}
 
 
@@ -77,6 +78,8 @@ body {
 	color: #000;
 	font-family: Helvetica, Arial, sans-serif;
 	line-height: 1.5;
+	/* letter-spacing: 0.12em; Accessible */
+	/* word-spacing: 0.16em; Accessible */
 	font-size: 1.4rem;
 }
 
@@ -106,7 +109,7 @@ a {
 }
 
 a:active, a:hover, a:focus { 
-	/* outline: 0; Problème d'accessibilité ? 24/01/2022 */
+	/* outline: 0; Pas accessible 24/01/2022 */
 	/* color: #000; */
 }
 
@@ -171,7 +174,7 @@ button, input, optgroup, select, textarea {
 	color: inherit;
 	font: inherit;
 	margin: 0;
-	outline: none;
+	/* outline: none; Pas Accessible 24/01/2022 */
 }
 	input:focus, textarea:focus { border: 1px solid #000; }
 	
@@ -251,6 +254,8 @@ p, .p-like, ul, ol, dl, blockquote, pre, td, th, label, textarea, caption, detai
 	margin-bottom: 0;
 	line-height: 1.5;
 }
+
+/* p { margin-bottom: 2em; } marge suivante accessible */
 
 h1, .h1-like { font-size: 3.2rem; }
 h2, .h2-like { font-size: 2.8rem; }

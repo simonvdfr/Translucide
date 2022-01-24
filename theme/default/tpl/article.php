@@ -11,8 +11,6 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 <section class="mw960p mod center mtm mbl">
 
 	<?php h1('titre', 'tc up')?>
-	<?php h2('sstitre', 'tc')?>
-
 
 	<article class="fl w80 prl pbm">
 

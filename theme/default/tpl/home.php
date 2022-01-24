@@ -3,10 +3,7 @@
 
 <section class="mw960p mod center mtm mbl">
 
-	<div class="tc mbn">
-		<?php h1('titre')?>
-		<?php h2('sstitre', 'pbl')?>
-	</div>
+	<?php h1('titre', 'tc mbl')?>
 
 	<div class="w50 fl tc animation slide-left">
 		<article>
