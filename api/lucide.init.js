@@ -292,7 +292,7 @@ $(function()
 
 	// BOUTON EDITION | AJOUT
 	// Bouton ajout de page/article
-	$("body").prepend("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
+	$("body").append("<a href='javascript:void(0);' class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam'></i></a>");
 
 	// Bind le bouton d'ajout
 	$("a.bt.add").click(function(){
@@ -302,7 +302,7 @@ $(function()
 
 	// Bouton d'édition ou de connexion si la page existe dans la base
 	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "pencil"; else var icon_edit = "key";// logé ou pas ?
-	if(typeof state !== 'undefined' && state) $("body").prepend("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam'></i></a>");
+	if(typeof state !== 'undefined' && state) $("body").append("<a href='javascript:void(0);' class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam'></i></a>");
 
 	// Bind le bouton d'édition
 	$("a.bt.edit").click(function() 
@@ -378,7 +378,7 @@ $(function()
 	if(typeof bt_top !== 'undefined')
 	{
 		// Bouton pour remonter en haut au scroll
-		$("body").prepend("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-up-open bigger'></i></a>");	
+		$("body").append("<a href='javascript:void(0);' class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-up-open bigger'></i></a>");	
 
 		// Smoothscroll to top
 		$("a.bt.fixed.top").click(function() {
