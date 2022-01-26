@@ -403,6 +403,18 @@ figure img { display: inline-block !important; }
 .hidden { visibility: hidden; }
 .visible { visibility: visible !important; }
 
+.sr-only {/* pour un texte lisible qu'en mode accessible */
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap; /* added line */
+	border: 0;
+}
+
 .absolute { position: absolute; }
 .fixed { position: fixed; }
 .relative { position: relative; }
@@ -683,10 +695,10 @@ input[type="reset"].unstyled:focus {
 	border-radius: 5px;
     border: 1px solid #cd0a0a;
     background: #fef1ec;
-    color: #cd0a0a;
+    color: #9f2d2d;
     z-index: 1000;
 }
-#highlight, .light {
+#popin, #light, .light {
 	border-radius: 5px;
 	border: 1px solid #fcefa1;
     background: #fbf9ee;
