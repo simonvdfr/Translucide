@@ -6,6 +6,8 @@ translation = {
 	"Thank you to select a template" : {"fr" : "Merci de sélectionner un model de page"},
 	"Back to Top" : {"fr" : "Retour en haut"},
 	"Error" : {"fr" : "Erreur"},
+	"Close" : {"fr" : "Fermer"},
+	"Information message" : {"fr" : "Message d'information"},
 	"Activation status" : {"fr" : "Etat d'activation"},
 	"Active" : {"fr" : "Actif"},
 	"Deactivate" : {"fr" : "Désactivé"},
@@ -71,79 +73,82 @@ logout = function() {
 }
 
 
-// Affichage d'un message d'erreur
-error = function(txt, fadeout){		
-	$("#error, #under-error").remove();
+// Affichage d'une popin, avec retour de focus une fois fermer
+popin = function(txt, fadeout, mode, focus){		
 
-	// Ajout du fond gris
-	$("body").append("<div id='under-error' class='none absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 1001; top: 0; left: 0; right: 0;'></div>");
-		
-	// Donne la bonne taille au fond gris et l'affiche
-	$("#under-error")
-	.css({
-		width: $(document).width(),
-		height: $(document).height()
-	})
-	.fadeIn();
+	// Le focus en cours
+	if(focus == undefined) focus = document.activeElement;
 
-	// Box avec le message d'erreur fa-times
-	$("body").append("<div id='error' class='pointer pam absolute no tc'><i class='fa fa-attention mrs'></i>" + txt + "<i class='fa fa-cancel absolute big grey o50' style='top: -8px; right: -8px;'></i></div>");
-	var height = $("#error").outerHeight();
+	// Si pas de mode en cours
+	if(mode == undefined) var mode = 'popin';
+
+	// Supprimer les anciennes popin ouverte
+	$("#popin, #light, #error, #under-popin").remove();
+
+	// Fond gris
+	if(mode == 'popin' || mode == 'error')
+	{
+		// Ajout du fond gris
+		$("body").append("<div id='under-popin' class='none absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 1001; top: 0; left: 0; right: 0;'></div>");
+			
+		// Donne la bonne taille au fond gris et l'affiche
+		$("#under-popin")
+		.css({
+			width: $(document).width(),
+			height: $(document).height()
+		})
+		.fadeIn();
+	}
 	
-	// Affichage de la box
-	$("#error")
+	// Box avec le message d'information
+	$("body").append("<div id='"+mode+"' class='pointer pam absolute tc' tabindex='-1' role='dialog' aria-label='"+__("Information message")+"'>" + txt + "</div>");
+	var height = $("#"+mode).outerHeight();
+
+	// Ajout de la croix pour fermer
+	if(mode == 'popin' || mode == 'error')
+		$("#"+mode).prepend("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
+		
+	// Affichage
+	$("#"+mode)
 		.css({
 			zIndex: 1002,
 			opacity: 0,
 			top: -height,
-			left: (($(window).width() - $("#error").outerWidth()) / 2),
+			left: (($(window).width() - $("#"+mode).outerWidth()) / 2),
 		})
 		.animate({
-			opacity: 1,
-			top: ($(window).scrollTop() + (($(window).height() - height) / 2))
-		}, 500)
+				opacity: 1,
+				top: ($(window).scrollTop() + (($(window).height() - height) / 2))
+			}, 500, function() {
+				// Focus sur le bouton de fermeture
+				if(mode == 'popin' || mode == 'error') $("#close-popin").focus();
+		})
 		.on("click", function(){ 
-			$("#error, #under-error").fadeOut("fast", function(){ $(this).remove() });
+			$("#popin, #light, #error, #under-popin").fadeOut("fast", function(){ 
+				$(this).remove();
+
+				// Repositionne le focus sur l'ancien élément
+				focus.focus();
+			}); 
 		});
 
 	// Disparition au bout de x seconde
-	if(fadeout)
+	if($.isNumeric(fadeout))
 	{
 		window.setTimeout(function(){ 
-			$("#error, #under-error").fadeOut("400", function(){ $(this).remove(); });
+			$("#popin, #light, #error, #under-popin").fadeOut("400", function(){ 
+				$(this).remove();
+
+				// Repositionne le focus sur l'ancien élément
+				focus.focus();
+			});
 		}, fadeout);
 	}
-}
 
-// Affichage d'un message positif
-light = function(txt, fadeout){		
-	$("#highlight").remove();
 	
-	// Box avec le message d'information
-	$("body").append("<div id='highlight' class='pointer pam absolute tc'><i class='fa fa-info-circled color mrs'></i>" + txt + "</div>");
-	var height = $("#highlight").outerHeight();
-	
-	// Affichage
-	$("#highlight")
-		.css({
-			opacity: 0,
-			top: -height,
-			left: (($(window).width() - $("#highlight").outerWidth()) / 2),
-		})
-		.animate({
-			opacity: 1,
-			top: ($(window).scrollTop() + (($(window).height() - height) / 2))
-		}, 500)
-		.on("click", function(){ $(this).fadeOut("fast", function(){ $(this).remove() }); });
-
-	// Disparition au bout de x seconde
-	if(fadeout)
-	{
-		window.setTimeout(function(){ 
-			$("#highlight").fadeOut("400", function(){ $(this).remove(); });
-		}, fadeout);
-	}
 }
+error = function(txt, fadeout, focus) { popin(txt, fadeout, 'error', focus); }		
+light = function(txt, fadeout, focus) { popin(txt, fadeout, 'light', focus); }		
 
 
 // Url en cours nettoyé
