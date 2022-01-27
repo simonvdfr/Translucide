@@ -44,7 +44,7 @@ switch(@$_GET['mode'])
 						<label for="email_contact"><?php span('texte-label-email')?><span class="red">*</span></label><br>
 						<input type="email" name="email_contact" id="email_contact" autocomplete="email" placeholder="<?php _e("Email")?>" class="w40 vatt" required><span class="wrapper big white vam o50">@</span>
 
-						<label for="reponse" class="none" aria-hidden="true"><?php _e("Email")?></label>
+						<label for="reponse" class="hidden" aria-hidden="true"><?php _e("Email")?></label>
 						<input name="reponse" id="reponse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" placeholder="nom@domaine.com" aria-hidden="true">
 					</div>
 

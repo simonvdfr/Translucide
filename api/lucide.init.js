@@ -82,6 +82,10 @@ popin = function(txt, fadeout, mode, focus){
 	// Si pas de mode en cours
 	if(mode == undefined) var mode = 'popin';
 
+	// Role de la popin
+	if(mode == 'error') var role = 'alert'; else var role = 'status';
+	//var role = 'dialog';
+
 	// Supprimer les anciennes popin ouverte
 	$("#popin, #light, #error, #under-popin").remove();
 
@@ -100,13 +104,13 @@ popin = function(txt, fadeout, mode, focus){
 		.fadeIn();
 	}
 	
-	// Box avec le message d'information
-	$("body").append("<div id='"+mode+"' class='pointer pam absolute tc' tabindex='-1' role='dialog' aria-label='"+__("Information message")+"'>" + txt + "</div>");
+	// Box avec le message d'information // aria-live='assertive' aria-atomic='true' 
+	$("body").append("<div id='"+mode+"' class='pointer pam absolute tc' tabindex='-1' role='"+role+"' aria-label=\""+__("Information message")+"\">" + txt + "</div>");
 	var height = $("#"+mode).outerHeight();
 
 	// Ajout de la croix pour fermer
 	if(mode == 'popin' || mode == 'error')
-		$("#"+mode).prepend("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
+		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
 		
 	// Affichage
 	$("#"+mode)
