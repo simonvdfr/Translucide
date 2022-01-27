@@ -65,9 +65,10 @@ switch(@$_GET['mode'])
 						$nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 10); // on évite les résultats négatifs en cas de soustraction
 						eval('$question = strval('.$nb1.$operator.$nb2.');');
 						$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
+						// On change le signe "-" moins de calcul en "−"" lisible en accessibilité
 						?>
 						<div class="fl w30">
-							<label for="question"><?=($chiffre[$nb1]." ".($operator=='-'?'- <span class="sr-only">moins</span>':$operator)." ".$chiffre[$nb2]);?> = <span class="red">*</span></label>
+							<label for="question"><?=($chiffre[$nb1]." ".($operator=='-'?'−':$operator)." ".$chiffre[$nb2]);?> = <span class="red">*</span></label>
 							<input type="text" name="question" id="question" placeholder="5 ?" class="w50p tc" autocomplete="off" required>
 
 							<input type="hidden" name="question_hash" value="<?=$question_hash;?>">
