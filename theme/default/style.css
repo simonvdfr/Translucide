@@ -255,7 +255,7 @@ p, .p-like, ul, ol, dl, blockquote, pre, td, th, label, textarea, caption, detai
 	line-height: 1.5;
 }
 
-/* p { margin-bottom: 2em; } marge suivante accessible */
+p { margin-bottom: 2em; } /* marge accessible sur les paragraphes */
 
 h1, .h1-like { font-size: 3.2rem; }
 h2, .h2-like { font-size: 2.8rem; }
