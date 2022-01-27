@@ -1,7 +1,7 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
 
-<header>
+<header role="banner">
 
 	<section class="mw960p mod center tc relative">
 
@@ -12,7 +12,7 @@
 		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
 
 
-		<nav class="mtm mbm" aria-label="<?php _e("Browsing menu")?>">
+		<nav class="mtm mbm" aria-label="<?php _e("Browsing menu")?>" role="navigation">
 
 			<a class="big burger"><span>menu</span></a>
 

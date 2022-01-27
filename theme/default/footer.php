@@ -1,6 +1,6 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
-<footer>
+<footer role="contentinfo">
 
 	<section class="mw960p center grid">
 

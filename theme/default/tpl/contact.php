@@ -1,5 +1,7 @@
 <?php 
 
+// @todo accessibilité : changer le titre si le formulaire est bien soumis ou si erreur
+
 switch(@$_GET['mode'])
 {
 	// AFFICHAGE DU FORMULAIRE DE CONTACT
