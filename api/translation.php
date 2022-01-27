@@ -5,6 +5,7 @@ $add_translation = array(
 
 	"Quick access" => array("fr" => "Accès rapide"),
 	"Browsing menu" => array("fr" => "Menu de navigation"),
+	"current page" => array("fr" => "page active"),
 
 	"Search" => array("fr" => "Recherche"),
 	"Next" => array("fr" => "Suivant"),
