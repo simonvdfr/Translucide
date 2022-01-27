@@ -6,7 +6,7 @@
 	<section class="mw960p mod center tc relative">
 
 
-		<nav aria-label="<?php _e("Quick access")?>"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
+		<nav aria-label="<?php _e("Quick access")?>" role="navigation"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
 
 
 		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
