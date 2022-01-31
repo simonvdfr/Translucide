@@ -91,7 +91,7 @@ switch(@$_GET['mode'])
 
 					<!-- Bouton envoyer -->
 					<div class="fr mtm mbl">
-						<button id="send" type="submit" class="bt bold">
+						<button type="submit" id="send" class="bt bold">
 							<?php _e(array("Send" => array("fr" => "Envoyer")))?>
 							<i class="fa fa-mail-alt mlt" aria-hidden="true"></i>
 						</button>

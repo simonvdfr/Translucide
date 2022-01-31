@@ -1007,7 +1007,7 @@ header #logo { transition: opacity .5s; }
 		margin: 0 1rem;
 		padding: 0;
 		width: 30px;
-		height: 30px;
+		height: 30px !important;
 		font-size: 0;
 		text-indent: -9999px;
 		appearance: none;
@@ -1019,42 +1019,42 @@ header #logo { transition: opacity .5s; }
 
 		background-color: #35747f;
 	}
-	.burger span {
-		display: block;
-		position: absolute;
-		top: 14px;
-		left: 6px;
-		right: 6px;
-		height: 2px;
-		background: white;
+		.burger span {
+			display: block;
+			position: absolute;
+			top: 14px;
+			left: 6px;
+			right: 6px;
+			height: 2px;
+			background: white;
 
-		transition: background 0.3s;
-	}
+			transition: background 0.3s;
+		}
 
-	.burger span::before,
-	.burger span::after {
-		position: absolute;
-		display: block;
-		left: 0;
-		width: 100%;
-		height: 2px;
-		background-color: #fff;
-		content: "";
+			.burger span::before,
+			.burger span::after {
+				position: absolute;
+				display: block;
+				left: 0;
+				width: 100%;
+				height: 2px;
+				background-color: #fff;
+				content: "";
 
-		transition-duration: 0.3s, 0.3s;
-		transition-delay: 0.3s, 0s;
-	}
+				transition-duration: 0.3s, 0.3s;
+				transition-delay: 0.3s, 0s;
+			}
 
-	.burger span::before { top: -6px; transition-property: top, transform; }
-	.burger span::after { bottom: -6px; transition-property: bottom, transform; }
+			.burger span::before { top: -6px; transition-property: top, transform; }
+			.burger span::after { bottom: -6px; transition-property: bottom, transform; }
 
-	/* active state, i.e. menu open */
-	.burger.active { background-color: #cb0032; }
-	.burger.active span { background: none; }
-	.burger.active span::before { top: 0; transform: rotate(45deg);	}
-	.burger.active span::after { bottom: 0; transform: rotate(-45deg); }
-	.burger.active span::before,
-	.burger.active span::after { transition-delay: 0s, 0.3s; }
+		/* active state, i.e. menu open */
+		.burger.active { background-color: #cb0032; }
+			.burger.active span { background: none; }
+				.burger.active span::before { top: 0; transform: rotate(45deg);	}
+				.burger.active span::after { bottom: 0; transform: rotate(-45deg); }
+				.burger.active span::before,
+				.burger.active span::after { transition-delay: 0s, 0.3s; }
 
 
 
@@ -1080,7 +1080,7 @@ header #logo { transition: opacity .5s; }
 	header nav > ul {
 		background-color: #fff;
 
-		display: block !important;
+		display: none;/* animation qui rend le menu pas accessible car display: block par défaut 31/01/2022 */
 
 		position: fixed !important;
 
@@ -1100,9 +1100,10 @@ header #logo { transition: opacity .5s; }
 
 		text-align: center;
 
-		transition-duration: 0.3s;
+		/* animation qui rend le menu pas accessible car display: block par défaut 31/01/2022 */
+		/* transition-duration: 0.3s;
 		transform: translateX(-100%);
-		-webkit-transform: translateX(-100%);
+		-webkit-transform: translateX(-100%); */
 	}
 		header nav li {
 			float: none;
@@ -1121,8 +1122,11 @@ header #logo { transition: opacity .5s; }
 	.responsive-nav header { position: inherit; }
 	/* Ouvertur du menu */
 	.responsive-nav header nav ul {
-		transform: translateX(0);
-		-webkit-transform: translateX(0);
+		display: block;
+
+		/* animation qui rend le menu pas accessible car display: block par défaut 31/01/2022 */
+		/* transform: translateX(0);
+		-webkit-transform: translateX(0); */
 	}
 	/* Overlay menu */
 	.responsive-nav .responsive-overlay {

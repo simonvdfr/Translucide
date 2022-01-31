@@ -6,17 +6,20 @@
 	<section class="mw960p mod center tc relative">
 
 
-		<nav aria-label="<?php _e("Quick access")?>" role="navigation"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
+		<nav role="navigation" aria-label="<?php _e("Quick access")?>"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
 
 
 		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
 
 
-		<nav class="mtm mbm" aria-label="<?php _e("Browsing menu")?>" role="navigation">
+		<nav role="navigation" class="mtm mbm" aria-label="<?php _e("Browsing menu")?>">
 
-			<a class="big burger"><span>menu</span></a>
-
-			<ul class="grid up">
+			<button type="button" class="burger" aria-expanded="false" aria-controls="header-menu">
+				<span class="open">Menu</span>
+				<span class="close none"><?php _e("Close")?></span>
+			</button>
+			
+			<ul id="header-menu" class="grid up">
 				<?php
 				// Extraction du menu
 				foreach($GLOBALS['nav'] as $cle => $val)

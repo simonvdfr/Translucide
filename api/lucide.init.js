@@ -524,9 +524,19 @@ $(function()
 
 
 	// MENU BURGER
+	// @todo : bloquer le focus dans la nav si ouvert
 	function toggleBurger() {
 		document.body.classList.toggle('responsive-nav');
-		document.querySelector('.burger').classList.toggle('active');
+
+		// Class pour rendre le menu visible
+		burger.classList.toggle('active');
+
+		// Etat accessible du bouton
+		burger.setAttribute('aria-expanded', burger.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+
+		// Etat accessible des textes du bouton
+		document.querySelector(".burger .open").classList.toggle('none');
+		document.querySelector(".burger .close").classList.toggle('none');
 	}
 
 	// Au clic, afficher ou masquer le menu burger
