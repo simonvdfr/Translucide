@@ -89,6 +89,16 @@ popin = function(txt, fadeout, mode, focus){
 	// Supprimer les anciennes popin ouverte
 	$("#popin, #light, #error, #under-popin").remove();
 
+	
+	// Box avec le message d'information // aria-live='assertive' aria-atomic='true' 
+	$("body").append("<div id='"+mode+"' class='pointer pam absolute tc' tabindex='-1' role='"+role+"' aria-label=\""+__("Information message")+"\">" + txt + "</div>");
+	var height = $("#"+mode).outerHeight();
+
+	// Ajout de la croix pour fermer
+	if(mode == 'popin' || mode == 'error')
+		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
+		
+
 	// Fond gris
 	if(mode == 'popin' || mode == 'error')
 	{
@@ -103,15 +113,7 @@ popin = function(txt, fadeout, mode, focus){
 		})
 		.fadeIn();
 	}
-	
-	// Box avec le message d'information // aria-live='assertive' aria-atomic='true' 
-	$("body").append("<div id='"+mode+"' class='pointer pam absolute tc' tabindex='-1' role='"+role+"' aria-label=\""+__("Information message")+"\">" + txt + "</div>");
-	var height = $("#"+mode).outerHeight();
 
-	// Ajout de la croix pour fermer
-	if(mode == 'popin' || mode == 'error')
-		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
-		
 	// Affichage
 	$("#"+mode)
 		.css({
@@ -128,24 +130,20 @@ popin = function(txt, fadeout, mode, focus){
 				if(mode == 'popin' || mode == 'error') $("#close-popin").focus();
 		})
 		.on("click", function(){ 
-			$("#popin, #light, #error, #under-popin").fadeOut("fast", function(){ 
-				$(this).remove();
-
-				// Repositionne le focus sur l'ancien élément
-				focus.focus();
-			}); 
+			close_popin(focus);
 		});
+
+	// Fermeture si echap
+	$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
+
+	// Focus bloquer sur le bt de fermeture // @todo pas optimal
+	$(document).keyup(function(event) { if(event.keyCode === 9) $("#close-popin").focus() });
 
 	// Disparition au bout de x seconde
 	if($.isNumeric(fadeout))
 	{
 		window.setTimeout(function(){ 
-			$("#popin, #light, #error, #under-popin").fadeOut("400", function(){ 
-				$(this).remove();
-
-				// Repositionne le focus sur l'ancien élément
-				focus.focus();
-			});
+			close_popin(focus);
 		}, fadeout);
 	}
 
@@ -153,7 +151,12 @@ popin = function(txt, fadeout, mode, focus){
 }
 error = function(txt, fadeout, focus) { popin(txt, fadeout, 'error', focus); }		
 light = function(txt, fadeout, focus) { popin(txt, fadeout, 'light', focus); }		
-
+close_popin = function(focus){
+	$("#popin, #light, #error, #under-popin").fadeOut("fast", function(){ 
+		$(this).remove();// Supprime les éléments
+		focus.focus();// Repositionne le focus sur l'ancien élément
+	}); 
+}
 
 // Url en cours nettoyé
 clean_url = function() {

@@ -1,6 +1,10 @@
 <?php 
 
-// @todo accessibilité : changer le titre si le formulaire est bien soumis ou si erreur
+// @todo accessibilité
+// changer le titre si le formulaire est bien soumis ou si erreur
+// ------Si échape dans la popin ça ferme
+// bloquer la tabulation dans la popin => boucle à la fin de la modal pour retour au premier elem ?
+// bloquer la nav au clavier dans la popin => forcer le focus dans la modal ?
 
 switch(@$_GET['mode'])
 {
