@@ -1944,7 +1944,7 @@ $(function()
 	/************** TOOLBOX **************/
 
 	// Barre d'outils de mise en forme : toolbox
-	toolbox = "<ul id='txt-tool' class='toolbox'>";
+	toolbox = "<ul id='txt-tool' class='toolbox' role='toolbar'>";
 
 		if(typeof toolbox_h2 != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title")+" H2"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>2</span></button></li>";
