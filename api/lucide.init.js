@@ -524,7 +524,6 @@ $(function()
 
 
 	// MENU BURGER
-	// @todo : bloquer le focus dans la nav si ouvert
 	function toggleBurger() {
 		document.body.classList.toggle('responsive-nav');
 

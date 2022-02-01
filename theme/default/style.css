@@ -1020,7 +1020,6 @@ header #logo { transition: opacity .5s; }
 		background-color: #35747f;
 	}
 		.burger span {
-			display: block;
 			position: absolute;
 			top: 14px;
 			left: 6px;
@@ -1080,7 +1079,8 @@ header #logo { transition: opacity .5s; }
 	header nav > ul {
 		background-color: #fff;
 
-		display: none;/* animation qui rend le menu pas accessible car display: block par défaut 31/01/2022 */
+		display: block;
+		visibility: hidden;
 
 		position: fixed !important;
 
@@ -1100,10 +1100,9 @@ header #logo { transition: opacity .5s; }
 
 		text-align: center;
 
-		/* animation qui rend le menu pas accessible car display: block par défaut 31/01/2022 */
-		/* transition-duration: 0.3s;
+		transition-duration: 0.3s;
 		transform: translateX(-100%);
-		-webkit-transform: translateX(-100%); */
+		-webkit-transform: translateX(-100%);
 	}
 		header nav li {
 			float: none;
@@ -1122,11 +1121,9 @@ header #logo { transition: opacity .5s; }
 	.responsive-nav header { position: inherit; }
 	/* Ouvertur du menu */
 	.responsive-nav header nav ul {
-		display: block;
-
-		/* animation qui rend le menu pas accessible car display: block par défaut 31/01/2022 */
-		/* transform: translateX(0);
-		-webkit-transform: translateX(0); */
+		visibility: visible;
+		transform: translateX(0);
+		-webkit-transform: translateX(0);
 	}
 	/* Overlay menu */
 	.responsive-nav .responsive-overlay {
