@@ -524,6 +524,7 @@ $(function()
 
 
 	// MENU BURGER
+	// @todo: bloquer le focus dans le layer du menu ?
 	function toggleBurger() {
 		document.body.classList.toggle('responsive-nav');
 
