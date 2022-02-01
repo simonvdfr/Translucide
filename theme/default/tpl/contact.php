@@ -27,8 +27,7 @@ switch(@$_GET['mode'])
 
 		<style>
 			#email_contact, #message, #question {
-				border: 0px;
-				border-bottom: 0.2em solid #78cfd6;
+				border: 0.1em solid #35747f;
 				background-color: #f7f7f7;
 			}
 		</style>
