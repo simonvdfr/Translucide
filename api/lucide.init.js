@@ -531,12 +531,21 @@ $(function()
 		// Class pour rendre le menu visible
 		burger.classList.toggle('active');
 
-		// Etat accessible du bouton
-		burger.setAttribute('aria-expanded', burger.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+		// Etat accessible	 du bouton
+		burgerExpand = burger.getAttribute('aria-expanded') === 'true' ? 'false' : 'true';
+		burger.setAttribute('aria-expanded', burgerExpand);
 
 		// Etat accessible des textes du bouton
 		document.querySelector(".burger .open").classList.toggle('none');
 		document.querySelector(".burger .close").classList.toggle('none');
+
+		// Focus a la fermeture sur le bouton d'ouverture
+		if(burgerExpand == 'false') $(".burger").focus();
+		
+		// Fermeture si echap
+		$(document).keydown(function(event) { 
+			if(burgerExpand == 'true' && event.keyCode === 27) toggleBurger();
+		});
 	}
 
 	// Au clic, afficher ou masquer le menu burger
