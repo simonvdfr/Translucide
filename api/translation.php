@@ -4,6 +4,7 @@ $add_translation = array(
 	"Under Construction" => array("fr" => "En construction"),
 
 	"Quick access" => array("fr" => "Accès rapide"),
+	"Skip to content" => array("fr" => "Aller au contenu"),
 	"Enhanced contrast" => array("fr" => "Contraste renforcé"),
 	"Browsing menu" => array("fr" => "Menu de navigation"),
 	"current page" => array("fr" => "page active"),
