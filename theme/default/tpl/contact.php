@@ -19,6 +19,7 @@ switch(@$_GET['mode'])
 		add_translation({
 			"Thank you for completing all the required fields!" : {"fr" : "Merci de remplir tous les champs obligatoires !"},
 			"Wrong answer to the verification question!" : {"fr" : "R\u00e9ponse erron\u00e9e \u00e0 la question de vérification !"},
+			"Error sending email" : {"fr" : "Erreur lors de l'envoi du mail"},
 			"Invalid email!" : {"fr" : "Mail invalide !"},
 			"Message sent" : {"fr" : "Message envoy\u00e9"},
 		});
@@ -114,6 +115,9 @@ switch(@$_GET['mode'])
 
 
 		<script>
+			// Titre de la page en cours
+			title = document.title;
+
 			// Pour rétablir le fonctionnement du formulaire
 			function activation_form(){
 				desactive = false;
@@ -217,6 +221,7 @@ switch(@$_GET['mode'])
 							?>
 							<script>
 								popin(__("Message sent"));
+								document.title = title +' - '+ __("Message sent");
 
 								// Icone envoyer
 								$("#contact #send .fa-spin").removeClass("fa-spin fa-cog").addClass("fa-ok");
@@ -226,7 +231,8 @@ switch(@$_GET['mode'])
 						else {
 							?>
 							<script>
-								error("Erreur lors de l'envoi du mail", 'nofade', $("#send"));
+								error(__("Error sending email"), 'nofade', $("#send"));
+								document.title = title +' - '+ __("Error sending email");
 								
 								activation_form();// On rétablie le formulaire
 							</script>
@@ -239,6 +245,7 @@ switch(@$_GET['mode'])
 						?>
 						<script>
 							error(__("Wrong answer to the verification question!"), 'nofade', $("#question"));
+							document.title = title +' - '+ __("Wrong answer to the verification question!");
 							
 							activation_form();// On rétablie le formulaire
 						</script>
@@ -250,6 +257,7 @@ switch(@$_GET['mode'])
 					?>
 					<script>
 						error(__("Invalid email!"), 'nofade', $("#email_contact"));
+						document.title = title +' - '+ __("Invalid email!");
 						
 						activation_form();// On rétablie le formulaire
 					</script>
