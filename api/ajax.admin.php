@@ -1808,7 +1808,7 @@ switch($_GET['mode'])
 					}
 				});
 
-				// On selectionne une image
+				// On selectionne une icon
 				$("#icon").on("click", "li", function(event)
 				{
 					var id = $("i", this).attr("id");
