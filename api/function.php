@@ -701,11 +701,12 @@ function tag($key = null, $filter = array())
 	$key = encode($key ? $key : "tag");
 
 	echo'<'
-	.(isset($filter['tag'])?$filter['tag']:"div")
+	.(isset($filter['tag'])?$filter['tag']:"nav")
 	.' id="'.$key.'" class="editable-tag'.(isset($filter['class'])?" ".$filter['class'] : '').'"'
 	.(isset($filter['placeholder'])?' placeholder="'.$filter['placeholder'].'"' : '')
 	.(isset($filter['separator'])?' data-separator="'.$filter['separator'].'"' : '')
 	.(isset($filter['itemprop'])?' itemprop="'.$filter['itemprop'].'"' : '')
+	.' role="navigation"'
 	.'>';
 
 		$i = 1;

@@ -11,7 +11,7 @@
 	<?php h1('title', 'mbn tc')?>
 
 
-	<div class="mts tc italic">
+	<nav role="navigation" class="mts tc italic">
 		<?php 
 		// Liste les tags pour filtrer la page
 		$i = 1;
@@ -26,7 +26,7 @@
 			$i++;
 		}
 		?>
-	</div>
+	</nav>
 
 	<div class="mod">
 		<div class="fl"><?php media('img', '130')?></div>
