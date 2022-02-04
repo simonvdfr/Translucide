@@ -971,11 +971,11 @@ div.editable {
 
 /* HEADER */
 
-header .acces-rapide { 
+/* header .acces-rapide { 
 	position: absolute;
 	top: -100px;
 }
-	header .acces-rapide:focus { top: 0; left: 0; }
+	header .acces-rapide:focus { top: 0; left: 0; } */
 
 
 header #logo { transition: opacity .5s; }
