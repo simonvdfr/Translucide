@@ -1445,3 +1445,161 @@ header #logo { transition: opacity .5s; }
 .fa-snowflake-o:before { content: '\f2dc'; } /* '' */
 .fa-twitter-squared:before { content: '\f304'; } /* '' */
 .fa-facebook-squared:before { content: '\f308'; } /* '' */
+
+
+/*! AccessConfig | Access42 | accessconfig.a11y.fr */
+
+/**
+ ******************************************
+ * AccessConfig accessibility user settings
+ ******************************************
+ */
+
+/**
+ * Common styles to enforced and inverted contrasts
+ */
+
+/* Cancel background images and image borders which may cause contrast problems */
+.hc *,
+.hc *::after,
+.hc *::before {
+	border-image: none !important;
+	text-shadow: none !important;
+}
+
+/* Let SVG elements adapt to the chosen color scheme */
+.hc path,
+.hc polygon,
+.hc svg,
+.hc svg * {
+	fill: currentColor;
+}
+
+/* Add a border on form elements when custom contrasts are on */
+.hc input,
+.hc textarea,
+.hc select,
+.hc form button {
+	border-width: 1px !important;
+	border-style: solid !important;
+}
+
+/* Change color of ::first-letter pseudo-elements if needed */
+.hc *::first-letter {
+	color: inherit !important;
+}
+
+/* input[type="range"] */
+.hc input[type="range"] {
+	border: 0 !important;
+}
+
+.hc input[type="range"]::-webkit-slider-thumb {
+	margin-top: -.25em; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
+
+	@supports (-ms-ime-align: auto) { /* Dirty hack to target Edge only */
+		.hc input[type="range"]::-webkit-slider-thumb {
+			margin-top: 0;
+		}
+	}
+
+.hc input[type="range"]::-webkit-slider-runnable-track {
+	height: 0.313em;
+}
+
+
+/**
+ * Enforced contrast (.hc)
+ */
+.hc,
+.hc *{
+	background-color: #343643 !important;
+	color: white !important;
+}
+
+.hc,
+.hc *,
+.hc *::before,
+.hc *::after{
+	border-color: white !important;
+}
+
+/* Add a border on form elements when high contrast is on */
+.hc input,
+.hc textarea,
+.hc select{
+	border-color: #f9fcff !important;
+	color: inherit !important;
+}
+
+/* High contrast placeholder */
+.hc *::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	color: white !important;
+}
+
+.hc *::-moz-placeholder { /* Firefox 19+ */
+	color: white !important;
+	opacity: 1 !important;
+}
+
+.hc *:-ms-input-placeholder { /* IE 10+ */
+	color: white !important;
+}
+
+.hc *:-moz-placeholder { /* Firefox 18- */
+	color: white !important;
+	opacity: 1 !important;
+}
+
+/* High contrast for input[type="date"] */
+.hc *::-webkit-datetime-edit-text { 
+	color: white !important;
+}
+
+.hc *::-webkit-datetime-edit-month-field { 
+	color: white !important;
+}
+
+.hc *::-webkit-datetime-edit-day-field { 
+	color: white !important;
+}
+
+.hc *::-webkit-datetime-edit-year-field { 
+	color: white !important;
+}
+
+.hc ::-webkit-calendar-picker-indicator { 
+	background: #343643 !important;
+}
+
+/* High contrast for input[type="range"] */
+.hc input[type="range"]::-webkit-slider-runnable-track { /* Webkit */
+	background: white !important;
+}
+
+.hc input[type="range"]::-moz-range-track {  /* Firefox */
+	background: white !important;
+}
+.hc input[type="range"]::-moz-range-thumb {
+	background: black !important;
+	border: .15em solid white !important;
+}
+
+.hc input[type="range"]::-ms-fill-lower {  /* IE/Edge */
+	background: white !important;
+}
+.hc input[type="range"]::-ms-fill-upper {
+	background: white !important;
+}
+.hc input[type="range"]:focus::-ms-fill-lower {
+	background: white !important;
+}
+.hc input[type="range"]:focus::-ms-fill-upper {
+	background: white !important;
+}
+
+.hc input[type="range"]::-ms-thumb {
+	background: black !important;
+	border: .15em solid white !important;
+}

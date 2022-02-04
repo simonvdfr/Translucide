@@ -356,7 +356,7 @@ if(!$ajax)
 		</script>
 
 	</head>
-	<body<?=($robots_data?' data-robots="'.$robots_data.'"':'')?>>
+	<body<?=($robots_data?' data-robots="'.$robots_data.'"':'').(@$_COOKIE['high-contrast']?' class="hc"':'')?>>
 	<?php
 
 

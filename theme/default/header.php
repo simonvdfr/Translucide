@@ -8,7 +8,7 @@
 		<div>
 			<nav role="navigation" aria-label="<?php _e("Quick access")?>" class="inline"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
 			|
-			<input type="checkbox" name="contrast" id="contrast"> <label for="contrast"><?php _e("Enhanced contrast")?></label>
+			<input type="checkbox" name="high-contrast" id="high-contrast"<?=(@$_COOKIE['high-contrast']?'checked="checked"':'')?>> <label for="high-contrast"><?php _e("Enhanced contrast")?></label>
 		</div>
 
 		<div class="center ptm tc"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>

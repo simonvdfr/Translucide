@@ -523,9 +523,21 @@ $(function()
 
 
 
+	// CONTRASTE RENFORCE
+	document.querySelector("#high-contrast").onclick = function() 
+	{ 
+		document.body.classList.toggle('hc');// Ajoute/supprime la class de contraste renforcé au body
+
+		if(document.body.classList.contains('hc')) set_cookie("high-contrast", true, "365");// On mémorise dans un cookie
+		else set_cookie("high-contrast", "", "");// On supprime le cookie
+	}
+
+
+
 	// MENU BURGER
 	// @todo: bloquer le focus dans le layer du menu ?
-	function toggleBurger() {
+	function toggleBurger() 
+	{
 		document.body.classList.toggle('responsive-nav');
 
 		// Class pour rendre le menu visible
