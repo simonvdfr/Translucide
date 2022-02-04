@@ -83,15 +83,15 @@ popin = function(txt, fadeout, mode, focus){
 	if(mode == undefined) var mode = 'popin';
 
 	// Role de la popin
-	if(mode == 'error') var role = 'alert'; else var role = 'status';
+	if(mode == 'light') var role = 'status'; else var role = 'alert';
 	//var role = 'dialog';
 
 	// Supprimer les anciennes popin ouverte
 	$("#popin, #light, #error, #under-popin").remove();
 
 	
-	// Box avec le message d'information // aria-live='assertive' aria-atomic='true' 
-	$("body").append("<div id='"+mode+"' class='pointer pam absolute tc' tabindex='-1' role='"+role+"' aria-label=\""+__("Information message")+"\">" + txt + "</div>");
+	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' 
+	$("body").append("<div id='"+mode+"' role='"+role+"' tabindex='-1' class='pointer pam absolute tc' aria-label=\""+__("Information message")+"\">" + txt + "</div>");
 	var height = $("#"+mode).outerHeight();
 
 	// Ajout de la croix pour fermer

@@ -72,15 +72,18 @@ switch(@$_GET['mode'])
 						$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
 						// On change le signe "-" moins de calcul en "−" lisible en accessibilité
 						?>
-						<div class="fl w30">
-							<label for="question"><?=($chiffre[$nb1]." ".($operator=='-'?'−':$operator)." ".$chiffre[$nb2]);?> = <span class="red">*</span></label>
-							<input type="text" name="question" id="question" placeholder="5 ?" class="w50p tc" autocomplete="off" required>
+						<div>
+							<label for="question">
+								<?php span('texte-label-question')?><span class="red">*</span> :
+								<?=($chiffre[$nb1]." ".($operator=='-'?'−':$operator)." ".$chiffre[$nb2]);?> = 
+							</label>
+							<input type="text" name="question" id="question" placeholder="?" class="w50p tc" autocomplete="off" required>
 
 							<input type="hidden" name="question_hash" value="<?=$question_hash;?>">
 						</div>
 
 						<!-- RGPD -->
-						<div class="fr w70 tr">
+						<div class="mtm">
 							<label for="rgpdcheckbox" class="inline" style="text-transform: none;"><?php span('rgpd')?><span class="red">*</span></label>
 							<input type="checkbox" name="rgpdcheckbox" id="rgpdcheckbox" required>
 						</div>
@@ -115,17 +118,14 @@ switch(@$_GET['mode'])
 			function activation_form(){
 				desactive = false;
 
-				$("#contact a .fa-cog").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
+				$("#contact #send .fa-cog").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
 
 				// Activation des champs du formulaire
 				$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
 
 				// On peut soumettre le formulaire avec la touche entrée
-				$("#contact").submit(function(event){ send_mail(event) });
+				//$("#contact").on("submit", function(event) { send_mail(event) });
 				$("#contact button").attr("disabled", false);
-
-				// Active le lien submit
-				$("#contact a").on("click", function(event) { send_mail(event) });
 			}
 
 			desactive = false;
@@ -140,19 +140,14 @@ switch(@$_GET['mode'])
 					desactive = true;
 
 					// Icone envoi en cours
-					$("#contact a .fa-mail-alt").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
+					$("#contact #send .fa-mail-alt").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
 
 					// Désactive le formulaire
 					$("#contact input, #contact textarea, #contact button").attr("readonly", true).addClass("disabled");
 
-					// Désactive la soumission du formulaire
-					$("#contact").off("submit");
-
-					// Désactive le bouton submit caché (pour les soumissions avec la touche entrée)
+					// Désactive le bouton submit (pour les soumissions avec la touche entrée)
+					//$("#contact").off("submit");
 					$("#contact button").attr("disabled", true);
-
-					// Désactive le lien submit
-					$("#contact a").on("click", function(event) { event.preventDefault(); });
 
 					$.ajax(
 						{
@@ -177,6 +172,8 @@ switch(@$_GET['mode'])
 
 	// SCRIPT D'ENVOIE DE L'EMAIL
 	case 'send-mail':
+
+	print_r($_REQUEST);
 
 		// Si on a posté le formulaire
 		if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
@@ -212,7 +209,7 @@ switch(@$_GET['mode'])
 						// header
 						$header = "From:".$GLOBALS['email_contact']."\r\n";// Pour une meilleure délivrabilité des mails
 						$header.= "Reply-To: ".$from."\r\n";
-						$header.= "Content-Type: text/plain; charset=ISO-8859-1\r\n";// utf-8 ISO-8859-1
+						$header.= "Content-Type: text/plain; charset=utf-8\r\n";// utf-8 ISO-8859-1
 
 
 						if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))
@@ -222,7 +219,7 @@ switch(@$_GET['mode'])
 								popin(__("Message sent"));
 
 								// Icone envoyer
-								$("#contact a .fa-spin").removeClass("fa-spin fa-cog").addClass("fa-ok");
+								$("#contact #send .fa-spin").removeClass("fa-spin fa-cog").addClass("fa-ok");
 							</script>
 							<?php 
 						}
