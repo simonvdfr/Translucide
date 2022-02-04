@@ -1447,13 +1447,7 @@ header #logo { transition: opacity .5s; }
 .fa-facebook-squared:before { content: '\f308'; } /* '' */
 
 
-/*! AccessConfig | Access42 | accessconfig.a11y.fr */
-
-/**
- ******************************************
- * AccessConfig accessibility user settings
- ******************************************
- */
+/* AccessConfig | Access42 | accessconfig.a11y.fr */
 
 /**
  * Common styles to enforced and inverted contrasts
