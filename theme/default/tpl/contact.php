@@ -66,11 +66,11 @@ switch(@$_GET['mode'])
 						$chiffre = array('zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix');
 						$operators = array("+", "-");
 						$operator = $operators[array_rand($operators)];
-						$nb1 = rand(1, 10);
-						$nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 10); // on évite les résultats négatifs en cas de soustraction
+						$nb1 = rand(1, 5);//10
+						$nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 5);// on évite les résultats négatifs en cas de soustraction
 						eval('$question = strval('.$nb1.$operator.$nb2.');');
 						$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
-						// On change le signe "-" moins de calcul en "−"" lisible en accessibilité
+						// On change le signe "-" moins de calcul en "−" lisible en accessibilité
 						?>
 						<div class="fl w30">
 							<label for="question"><?=($chiffre[$nb1]." ".($operator=='-'?'−':$operator)." ".$chiffre[$nb2]);?> = <span class="red">*</span></label>
