@@ -3,16 +3,18 @@
 
 <header role="banner">
 
-	<section class="mw960p mod center tc relative">
+	<section class="mw960p mod center relative">
+
+		<div>
+			<nav role="navigation" aria-label="<?php _e("Quick access")?>" class="inline"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
+			|
+			<input type="checkbox" name="contrast" id="contrast"> <label for="contrast"><?php _e("Enhanced contrast")?></label>
+		</div>
+
+		<div class="center ptm tc"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
 
 
-		<nav role="navigation" aria-label="<?php _e("Quick access")?>"><a href="#main" class="acces-rapide">Aller au contenu</a></nav>
-
-
-		<div class="center ptm"><a href="<?=$GLOBALS['home']?>"><?php media('logo', '320')?></a></div>
-
-
-		<nav role="navigation" class="mtm mbm" aria-label="<?php _e("Browsing menu")?>">
+		<nav role="navigation" class="mtm mbm tc" aria-label="<?php _e("Browsing menu")?>">
 
 			<button type="button" class="burger" aria-expanded="false" aria-controls="header-menu">
 				<span class="open">Menu</span>
