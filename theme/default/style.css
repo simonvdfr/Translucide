@@ -29,10 +29,11 @@ h2, h3 {
 	border: 1px solid #35747f;
 	border-radius: 0.5em;
 }
-	.bt:hover {
+	.bt:hover, .bt.selected {
 		background-color: #35747f;
 		color: #fff;
 	}
+
 
 
 /* Couleur */

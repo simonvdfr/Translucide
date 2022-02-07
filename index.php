@@ -185,9 +185,12 @@ elseif(isset($res_tag['name']))// Si il y a juste le nom du tag
 	$res['description'] = $GLOBALS['content']['description'] = "";
 }
 elseif(in_array($get_url, $GLOBALS['filter_auth']) and isset($GLOBALS['filter'])) {// Si url dans filtre autorisé on ajoute le mot cle dans le title
-	$res['title'] = $res['title'] ." " . str_replace("-", " " , @array_keys($GLOBALS['filter'])[0]);
+	$res['title'] = $res['title']." ".str_replace("-", " " , @array_keys($GLOBALS['filter'])[0]);
 }
 
+
+// Si filtre dans l'url on enrichie le title
+if(isset($GLOBALS['filter']['page'])) $res['title'] = $res['title'].' - '.__('Page').' '.(int)$GLOBALS['filter']['page'];
 
 
 // SI CONTENU
