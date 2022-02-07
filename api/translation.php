@@ -4,8 +4,6 @@ $add_translation = array(
 	"Under Construction" => array("fr" => "En construction"),
 
 	"Quick access" => array("fr" => "Accès rapide"),
-	"Skip to content" => array("fr" => "Aller au contenu"),
-	"Enhanced contrast" => array("fr" => "Contraste renforcé"),
 	"Browsing menu" => array("fr" => "Menu de navigation"),
 	"current page" => array("fr" => "page active"),
 	"Close" => array("fr" => "Fermer"),
@@ -53,6 +51,8 @@ $add_translation = array(
 	"Add media" => array("fr" => "Ajouter un média"),
 	"Add video" => array("fr" => "Ajouter une vidéo"),
 	"Add product" => array("fr" => "Ajouter un produit"),
+	"Add langage" => array("fr" => "Ajouter une langue"),
+
 
 	"Add Item" => array("fr" => "Ajouter un élément"),
 
@@ -63,6 +63,9 @@ $add_translation = array(
 	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
 	"Permanent link: 'index' if homepage" => array("fr" => "Lien permanent: 'index' si c'est la page d'accueil"),
 	"No permanent link for content" => array("fr" => "Pas de lien permanent pour le contenu"),
+	"No prefix for content" => array("fr" => "Pas de préfixe pour le contenu"),
+	"Please indicate the language prefix" => array("fr" => "Veuillez indiquer le préfixe de la langue"),
+	"This language is already present" => array("fr" => "Cette langue est déjà présente"),
 
 
 	"Page title" => array("fr" => "Titre de la page"),

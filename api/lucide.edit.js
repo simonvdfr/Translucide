@@ -1822,6 +1822,12 @@ $(function()
 		revert: "invalid"
     });
 
+	// Affichage des icones de suppression du multilingue
+	$('#list-multilingue ul li form input').each(function( index ) {
+		if (index == 0) return; // Pas d'icone de suppression pour la langue d'origine
+		$( '<i onclick="deleteMultilingue($(this).prev().val());" class="fa fa-cancel red pointer" title=\''+__("Remove")+'\'></i>' ).insertAfter( this );
+	});	
+	
 
 	// Affichage du bouton pour ouvrir le menu d'ajout
 	on_header = false;
@@ -3047,6 +3053,7 @@ $(function()
 					});
 
 					$(".dialog-list-content").dialog("open");
+					$(".lang-list-content").remove();
 				}
 		    });
 		}

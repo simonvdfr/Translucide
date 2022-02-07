@@ -11,6 +11,8 @@ if(stristr($_SERVER['REQUEST_URI'], 'index.php')){
 	exit;
 }
 
+// Enregistre la page visité pour redirection
+$_SESSION['currentUrl'] = $_SERVER['REQUEST_URI'];
 
 // On ajax une page ?
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) and strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
@@ -151,7 +153,9 @@ else/********** PAS DE PAGE EXISTANTE **********/
 	$robots = "noindex, follow";
 }
 
-
+/********** GESTION DU LANGAGE SITE MULTILINGUE **********/
+if (!isset($_SESSION['langage'])) $_SESSION['langage'] = "";
+$prefixe = $_SESSION['langage'] != "" ? "_".$_SESSION['langage'] : "";
 
 /********** ID DE LA PAGE **********/
 if(isset($res['id'])) $GLOBALS['id'] = $res['id']; else $GLOBALS['id'] = null;
@@ -161,9 +165,14 @@ if(isset($res['id'])) $GLOBALS['id'] = $res['id']; else $GLOBALS['id'] = null;
 if(isset($res['content']) and $res['content'] != '')  $GLOBALS['content'] = json_decode($res['content'], true);
 else $GLOBALS['content'] = array();
 
+// contenus de la page si autre langage sélectionné
+if (isset($_SESSION['langage']) && $_SESSION['langage'] != '') {
+	if(isset($res['content'.$prefixe]) and $res['content'.$prefixe] != '')  $GLOBALS['content'] = json_decode($res['content'.$prefixe], true);
+	else $GLOBALS['content'] = array();
+}
+
 // Si pas de titre/title H1 on met le title de la page/produit
 if(!isset($GLOBALS['content']['title'])) $GLOBALS['content']['title'] = $res['title'];
-
 
 
 /********** METAS HEAD **********/
@@ -192,8 +201,8 @@ elseif(in_array($get_url, $GLOBALS['filter_auth']) and isset($GLOBALS['filter'])
 
 // SI CONTENU
 // Information pour les metas du head
-$title = strip_tags($res['title']);
-$description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['description']), ENT_COMPAT) : "");
+$title = strip_tags($res['title'.$prefixe]);
+$description = (isset($res['description'.$prefixe]) ? htmlspecialchars(strip_tags($res['description'.$prefixe]), ENT_COMPAT) : "");
 
 // Image pour les réseaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
@@ -207,8 +216,7 @@ elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel
 	$parse_url = parse_url($image);
 	parse_str($parse_url['query'], $get);
 	if(isset($get['zoom'])) $image = $get['zoom'];
-} 
-
+}
 
 
 // Si pas ajax on charge toute la page
@@ -216,22 +224,28 @@ if(!$ajax)
 {
 	/********** RÉCUPÉRATION DES DONNÉES META : NAV | HEADER |FOOTER **********/
 	
-	$sel_meta = $connect->query("SELECT * FROM ".$tm." WHERE type IN ('nav','header','footer') AND cle='".$lang."' LIMIT 3");
+	$sel_meta = $connect->query("SELECT * FROM ".$tm." WHERE type IN ('nav','header','footer', 'nav_multilingue') AND cle='".$lang."' LIMIT 4");
 	while($res_meta = $sel_meta->fetch_assoc())
 	{
 		if(isset($res_meta['val']))
 		{
+			// Si menu multilingue
+			if($res_meta['type'] == 'nav_multilingue') $GLOBALS['nav_multi'] = json_decode($res_meta['val'], true);
+		}
+		if(isset($res_meta['val'.$prefixe]))
+		{
+
 			// Si menu de navigation
-			if($res_meta['type'] == 'nav') $GLOBALS['nav'] = json_decode($res_meta['val'], true);
+			if($res_meta['type'] == 'nav') $GLOBALS['nav'] = json_decode($res_meta['val'.$prefixe], true);
 			// Si contenu du header ou footer
-			else $GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_meta['val'], true));
+			else $GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_meta['val'.$prefixe], true));
 		}
 	}
 
 	// Si pas de nav
 	if(!isset($GLOBALS['nav'])) $GLOBALS['nav'] = array();
-
-
+	// Si pas de nav
+	if(!isset($GLOBALS['nav_multi'])) $GLOBALS['nav_multi'] = array();
 
 	header('Content-type: text/html; charset=UTF-8');
 

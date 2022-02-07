@@ -3,6 +3,19 @@
 
 <header role="banner">
 
+	<?php if(count($GLOBALS['nav_multi']) > 1) {?>
+		<div id="list-multilingue">
+			<ul>
+				<?php
+				foreach($GLOBALS['nav_multi'] as $cle => $val)
+				{
+					$active = ($_SESSION['langage'] == $val['value'] || $_SESSION['langage'] == "" && $val['value'] == $lang) ? 'active' : '';
+					echo"<li class='lang_".$val['value']."'><form method='post' action='api/ajax.php?mode=onChangeLang'><input class='".$active."' type='submit' value='".$val['value']."' name='lang' /></form></li>";
+				}
+				?>
+			</ul>
+		</div>
+	<?php } ?>
 	<section class="mw960p mod center relative">
 
 		<div>

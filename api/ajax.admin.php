@@ -83,7 +83,7 @@ switch($_GET['mode'])
 											<?php 
 											foreach($GLOBALS['add_content'] as $cle => $array)
 											{
-												if(isset($_SESSION['auth']['add-'.$cle]))
+												if(isset($_SESSION['auth']['add-'.$cle]) && $cle != 'langage')
 													echo'<option value="'.$cle.'">'.__($cle).'</option>';
 											}
 											?>
@@ -135,6 +135,7 @@ switch($_GET['mode'])
 
 			</div>
 			<div id="progress"></div>
+
 
 
 
@@ -230,9 +231,7 @@ switch($_GET['mode'])
 				?>
 			</div>
 			
-
-			<div>
-
+			<div class="formAddPageOrArticle">
 				<div class="mas">
 					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 bold">
 					
@@ -255,19 +254,38 @@ switch($_GET['mode'])
 					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
 					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
 				</div>
-
 			</div>
 
+			<div class="formAddLangage">
+				<div class="mas">
+						<input type="text" id="prefixe-lang" placeholder="<?php _e("Please indicate the language prefix")?>" maxlength="10" class="w60 bold">
+				</div>
+			</div>
+
+			
 
 			<script>
 			$(function()
 			{
+				// On masque le formulaire d'ajout du langage
+				$(".formAddLangage").hide();
+
 				// Update les nonces dans la page courante pour éviter de perdre le nonce
 				$("#nonce").val('<?=$_SESSION['nonce']?>');			
-
+				
 				// Au click sur un onglet
 				$(".dialog-add ul li").click(function(event) {
+
 					var filter = $(this).data("filter");
+
+					// Affiche ou masque le formulaire d'ajout du langage
+					if(filter == "langage") {
+						$(".formAddLangage").show();
+						$(".formAddPageOrArticle").hide();
+					} else {
+						$(".formAddLangage").hide();
+						$(".formAddPageOrArticle").show();
+					}
 
 					// Affiche ou masque le bt permalink home
 					if(filter == "page") $("label[for='homepage']").show();
@@ -323,24 +341,41 @@ switch($_GET['mode'])
 								{								
 									// Dans quel onglet on se situe
 									type = $(".ui-tabs-nav .ui-state-active").data("filter");
-
-									if(!$(".dialog-add #tpl").val()) error(__("Thank you to select a template"));
-									else {
+									if(type == 'langage'){
+										// TODO VERIFIER SI DATA
+										// TODO VERIFIER SI PREFIXE EXISTE PAS DEJA
 										$.ajax({
-											type: "POST",
-											url: path + "api/ajax.admin.php?mode=insert",
-											data: {
-												"title": $(".dialog-add #title").val(),
-												"tpl": $(".dialog-add #tpl").val(),
-												"permalink": $(".dialog-add #permalink").val(),
-												"type": type,
-												"nonce": $("#nonce").val()// Pour la signature du formulaire
-											}
-										})
-										.done(function(html) {		
-											$(".dialog-add").dialog("close");
-											$("body").append(html);
-										});
+												type: "POST",
+												url: path + "api/ajax.admin.php?mode=create-langage",
+												data: {
+													"prefixe": $(".dialog-add #prefixe-lang").val(),
+													"type": type,
+													"nonce": $("#nonce").val()// Pour la signature du formulaire
+												}
+											})
+											.done(function(html) {		
+												$(".dialog-add").dialog("close");
+												$("body").append(html);
+											});
+									} else {
+										if(!$(".dialog-add #tpl").val()) error(__("Thank you to select a template"));
+										else {
+											$.ajax({
+												type: "POST",
+												url: path + "api/ajax.admin.php?mode=insert",
+												data: {
+													"title": $(".dialog-add #title").val(),
+													"tpl": $(".dialog-add #tpl").val(),
+													"permalink": $(".dialog-add #permalink").val(),
+													"type": type,
+													"nonce": $("#nonce").val()// Pour la signature du formulaire
+												}
+											})
+											.done(function(html) {		
+												$(".dialog-add").dialog("close");
+												$("body").append(html);
+											});
+										}
 									}
 								}
 							},
@@ -420,6 +455,103 @@ switch($_GET['mode'])
 
 	break;
 
+	// Ajout du langage pour le multilingue
+	case "create-langage":// Créer les colonnes dans la table pour la langue
+
+		include_once("db.php");// Connexion à la db
+
+		$type = encode($_POST['type']);
+
+		login('high', 'add-'.$type);// Vérifie que l'on a le droit d'ajouter une langue
+
+		// On regarde s'il y a déjà des données
+		$sel_nav_multi = $connect->query("SELECT * FROM ".$table_meta." WHERE type='nav_multilingue' AND cle='".$lang."' LIMIT 1");
+		$res_nav_multi = $sel_nav_multi->fetch_assoc();	
+
+		$nav = json_decode($res_nav_multi['val']);
+		// on vérifie si la langue existe pas déjà
+		foreach($nav as $elementKey => $element) {
+			foreach($element as $valueKey => $value) {
+				if($value == $_POST['prefixe']){
+					echo"<script>error(\"".__("Cette langue est déjà présente")."\");</script>";	
+					return;
+				} 
+			}
+		}
+		
+		if($_POST['prefixe'] && $_POST['prefixe'] != "") 
+		{
+			$nav = array();
+			// Ajout de la nouvelle langue
+			$newLang = ['value' => $_POST['prefixe']];
+			// Si pas de nav
+			if ($res_nav_multi['val'] == null) {
+				// j'ajoute la langue d'origine
+				$origine = ['value' => $lang];
+				array_push($nav, $origine);
+				array_push($nav, $newLang);
+			} else {
+				// sinon j'ajoute a la nav existante
+				$nav = json_decode($res_nav_multi['val']);
+				array_push($nav, $newLang);
+			}
+			
+			//On  encode les données
+			$json_nav = json_encode($nav, JSON_UNESCAPED_UNICODE);
+				
+			// Insert ou update ?
+			if($res_nav_multi['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
+			$sql .= " ".$table_meta." SET ";
+			$sql .= "id = '0', ";
+			$sql .= "type = 'nav_multilingue', ";
+			$sql .= "cle = '".$lang."', ";
+			$sql .= "val = '".addslashes($json_nav)."' ";
+			if($res_nav_multi['type']) $sql .= "WHERE type='nav_multilingue' AND cle='".$lang."' LIMIT 1";
+			
+			$connect->query($sql);
+	
+			// Si il y a une erreur
+			if($connect->error)
+				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+
+			// Ajoute les colonnes dans la table content
+			$sql = "ALTER TABLE ".$table_content. " ";
+			$sql .= "ADD title_".addslashes($_POST['prefixe']). " VARCHAR(70), ";
+			$sql .= "ADD description_".addslashes($_POST['prefixe']). " VARCHAR(160), ";
+			$sql .= "ADD content_".addslashes($_POST['prefixe']). " LONGTEXT ";
+			// Ajoute les colonnes dans la table meta
+			$sql2 = "ALTER TABLE ".$table_meta. " ";
+			$sql2 .= "ADD val_".addslashes($_POST['prefixe']). " TEXT";
+			
+			$connect->query($sql);
+			$connect->query($sql2);
+			
+			if($connect->error)// Si il y a une erreur
+				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+
+			else // Sauvegarde réussit
+			{
+				// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
+				setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
+				?>
+				<script>
+					// Ajout de la langue coté front
+					if($('#list-multilingue ul li').length == 0) {
+						$('header').append('<div id="list-multilingue"><ul></ul></div>');
+						$('#list-multilingue ul').append("<li class='lang_<?php echo $lang ?>'><form method='post' action='api/ajax.php?mode=onChangeLang'><input type='submit' value='<?php echo $lang ?>' name='lang' /></form></li>");
+						$('#list-multilingue ul').append("<li class='lang_<?php echo $_POST['prefixe'] ?>'><form method='post' action='api/ajax.php?mode=onChangeLang'><input type='submit' value='<?php echo $_POST['prefixe'] ?>' name='lang' /></form></li>");
+					} else {
+						$('#list-multilingue ul').append("<li class='lang_<?php echo $_POST['prefixe'] ?>'><form method='post' action='api/ajax.php?mode=onChangeLang'><input type='submit' value='<?php echo $_POST['prefixe'] ?>' name='lang' /></form></li>");
+					}
+				</script>
+				<?php
+			}
+		}
+		else 
+			echo"<script>error(\"".__("No prefix for content")."\");</script>";	
+
+	break;	
+
 
 	case "update":// Sauvegarde du contenu éditable de la page
 
@@ -493,14 +625,15 @@ switch($_GET['mode'])
 
 			// On  encode les données
 			$json_nav = json_encode($_POST['nav'], JSON_UNESCAPED_UNICODE);
-			
+
 			// Insert ou update ?
 			if($res_nav['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
+			$prefixe = $_SESSION['langage'] != "" ? "_".$_SESSION['langage'] : "";
 			$sql .= " ".$table_meta." SET ";
 			$sql .= "id = '0', ";
 			$sql .= "type = 'nav', ";
 			$sql .= "cle = '".$lang."', ";
-			$sql .= "val = '".addslashes($json_nav)."' ";
+			$sql .= "val".$prefixe." = '".addslashes($json_nav)."' ";
 			if($res_nav['type']) $sql .= "WHERE type='nav' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
@@ -526,11 +659,12 @@ switch($_GET['mode'])
 			
 			// Insert ou update ?
 			if($res_header['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
+			$prefixe = $_SESSION['langage'] != "" ? "_".$_SESSION['langage'] : "";
 			$sql .= " ".$table_meta." SET ";
 			$sql .= "id = '0', ";
 			$sql .= "type = 'header', ";
 			$sql .= "cle = '".$lang."', ";
-			$sql .= "val = '".addslashes($json_header)."' ";
+			$sql .= "val".$prefixe." = '".addslashes($json_header)."' ";
 			if($res_header['type']) $sql .= "WHERE type='header' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
@@ -556,11 +690,12 @@ switch($_GET['mode'])
 			
 			// Insert ou update ?
 			if($res_footer['type']) $sql = "UPDATE"; else $sql = "INSERT INTO";
+			$prefixe = $_SESSION['langage'] != "" ? "_".$_SESSION['langage'] : "";
 			$sql .= " ".$table_meta." SET ";
 			$sql .= "id = '0', ";
 			$sql .= "type = 'footer', ";
 			$sql .= "cle = '".$lang."', ";
-			$sql .= "val = '".addslashes($json_footer)."' ";
+			$sql .= "val".$prefixe." = '".addslashes($json_footer)."' ";
 			if($res_footer['type']) $sql .= "WHERE type='footer' AND cle='".$lang."' LIMIT 1";
 			
 			$connect->query($sql);
@@ -719,10 +854,11 @@ switch($_GET['mode'])
 
 			//@todo ajouter un check si un content n'existe pas déjà avec ce nom. si existe on incremente (check en boucle)
 			if(isset($change_url)) $sql .= "url = '".$change_url."', ";
-
-			$sql .= "title = '".addslashes($_POST['title'])."', ";
-			$sql .= "description = '".addslashes($_POST['description'])."', ";
-			$sql .= "content = '".addslashes($json_content)."', ";
+			// préfixe pour le contenu de la langue sélectionné
+			$prefixe = $_SESSION['langage'] != "" ? "_".$_SESSION['langage'] : "";
+			$sql .= "title".$prefixe." = '".addslashes($_POST['title'])."', ";
+			$sql .= "description".$prefixe." = '".addslashes($_POST['description'])."', ";
+			$sql .= "content".$prefixe." = '".addslashes($json_content)."', ";
 			$sql .= "robots = '".addslashes(@$_POST['robots'])."', ";
 			$sql .= "state = '".addslashes($_POST['state'])."', ";
 			$sql .= "type = '".$type."', ";

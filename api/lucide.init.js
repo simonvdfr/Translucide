@@ -12,6 +12,7 @@ translation = {
 	"Active" : {"fr" : "Actif"},
 	"Deactivate" : {"fr" : "Désactivé"},
 	"Visitors do not see this content" : {"fr" : "Les visiteurs ne voient pas ce contenu"},
+	"Are you sure you want to delete this language" : {"fr" : "Etes-vous sûr de vouloir supprimer cette langue"},
 }
 
 // Fonction d'ajout d'une liste de traduction
@@ -235,6 +236,25 @@ $.fn.make_password = function() {
 			$this.attr("type","text").val(password);
 		}
 	});
+}
+
+// Supprime une langue du multilingue depuis le mode édition
+deleteMultilingue = function(lang){
+	if ( confirm( __("Are you sure you want to delete this language")+ " : '" +lang+ "'" ) ) {
+		$.ajax({
+			type: "POST",
+			url: path+"api/ajax.php?mode=delete-multilingue",
+			data: {"lang": lang},
+			success: function(){ 
+				var nbLangues = $('#list-multilingue ul li').length;
+				if (nbLangues < 3) {
+					$('#list-multilingue').remove();
+				} else {
+					$('#list-multilingue ul .lang_'+lang).remove();
+				}
+			}
+		});
+	} 
 }
 
 // Recharge la page et lance le mode édition

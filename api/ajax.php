@@ -1023,5 +1023,73 @@ switch($_GET['mode'])
 	case "logout":
 		logout();
 	break;
+
+	
+	case "onChangeLang":
+		$_POST['lang'] == $lang ? $_SESSION['langage'] = "" : $_SESSION['langage'] = $_POST['lang'];
+		$location = isset($_SESSION['currentUrl']) ? $_SESSION['currentUrl'] : "index.php";
+		header("location: $location");	
+	break;
+
+
+	case "delete-multilingue":
+		include_once("db.php");// Connexion à la db
+
+		if($_POST['lang'] && $_POST['lang'] != "") 
+		{
+
+			// On recupère les données
+			$sel_nav_multi = $connect->query("SELECT * FROM ".$table_meta." WHERE type='nav_multilingue' LIMIT 1");
+			$res_nav_multi = $sel_nav_multi->fetch_assoc();	
+			
+			$nav = json_decode($res_nav_multi['val']);
+
+			// on supprimer la langue dans le tableau
+			foreach($nav as $elementKey => $element) {
+				foreach($element as $valueKey => $value) {
+					if($value == $_POST['lang']){
+						unset($nav[$elementKey]);
+					} 
+				}
+			}
+			
+			//On  encode les données
+			$json_nav = json_encode($nav, JSON_UNESCAPED_UNICODE);
+				
+			// update la nav multilingue
+			$sql = "UPDATE";
+			$sql .= " ".$table_meta." SET ";
+			$sql .= "val = '".addslashes($json_nav)."' ";
+			if($res_nav_multi['type']) $sql .= "WHERE type='nav_multilingue' LIMIT 1";
+			
+			$connect->query($sql);
+	
+			// Si il y a une erreur
+			if($connect->error)
+				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
+
+				// Supprime les colonnes dans la table content
+			$sql = "ALTER TABLE ".$table_content. " ";
+			$sql .= "DROP COLUMN title_".addslashes($_POST['lang']). " ,";
+			$sql .= "DROP COLUMN description_".addslashes($_POST['lang']). " ,";
+			$sql .= "DROP COLUMN content_".addslashes($_POST['lang']);
+			// Supprime les colonnes dans la table meta
+			$sql2 = "ALTER TABLE ".$table_meta. " ";
+			$sql2 .= "DROP COLUMN val_".addslashes($_POST['lang']);
+			
+			$connect->query($sql);
+			$connect->query($sql2);
+			
+			if($connect->error)// Si il y a une erreur
+				$msg = $connect->error;
+			else
+				$msg = __("Lang deleted");
+				$_SESSION['langage'] = "";
+				$location = isset($_SESSION['currentUrl']) ? $_SESSION['currentUrl'] : "index.php";
+				header("location: $location");	
+		}
+
+	break;
+
 }
 ?>

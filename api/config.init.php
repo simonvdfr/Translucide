@@ -240,7 +240,9 @@ $GLOBALS['add_content'] = array(
 	//"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],
 	//"video" => ["fa" => "fa-video", "tpl" => "video"],
 	//"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
-	"page" => ["fa" => "fa-doc-text", "tpl" => "page"]
+	"page" => ["fa" => "fa-doc-text", "tpl" => "page"],
+	"langage" => ["fa" => "fa-doc-text", "tpl" => "langage"]
+
 );
 
 

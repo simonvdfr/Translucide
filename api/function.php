@@ -1369,7 +1369,6 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 }
 
 
-
 /********** TEXTE **********/
 
 // Coupe une phrase proprement

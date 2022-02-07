@@ -1140,6 +1140,9 @@ header #logo { transition: opacity .5s; }
 	/* mode edition : menu d'ajout invisible */
 	.dragger { display: none !important; }
 	#add-nav { display: none !important; }
+
+	#list-multilingue { position: absolute; left: 20px !important; top: 30px !important;}
+
 }
 
 /* RESPONSIVE medium */
@@ -1597,3 +1600,9 @@ header #logo { transition: opacity .5s; }
 	background: black !important;
 	border: .15em solid white !important;
 }
+
+
+#list-multilingue { position: absolute; right: 30px; top: 20px;}
+#list-multilingue ul { list-style: none;  display: flex; padding: 0; }
+#list-multilingue form input { border: none !important; text-transform: uppercase; color: #35747f; }
+#list-multilingue form input.active { font-weight: bold; }
