@@ -44,7 +44,7 @@ h2, h3 {
 	background-color: #35747f;
 	color: #fff;
 }
-	a.bg-color:hover  {
+	a.bg-color:hover, a .bg-color:hover  {
 		background-color: #fff;
 		color: #35747f;
 	}
