@@ -493,8 +493,15 @@ function media($key = null, $filter = array())
 			if(isset($filter['zoom'])) echo'</a>';
 		}
 		elseif($filename) // C'est un fichier
-			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="fa fa-fw fa-'.$fa.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
-
+			{
+				if(pathinfo(explode("?", $filename)[0], PATHINFO_EXTENSION) == "mp4")	// C'est une video
+					{
+						echo"<video width='320' height='240' controls><source src=\"".$filename."\" type='video/mp4' title=\"".$GLOBALS['content'][$key]."\"></video>";
+				}
+				else {
+					echo"<a href=\"".$GLOBALS['content'][$key]."\" target='_blank'><i class='fa fa-fw fa-".$fa." mega' title=\"".$GLOBALS['content'][$key]."\"></i></a>";
+				}
+			}
 	echo'</span>';
 
 	$GLOBALS['editkey']++;
