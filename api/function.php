@@ -392,7 +392,13 @@ function media($key = null, $filter = array())
 
 	// Nom du fichier
 	if(isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key]!="") 
-		$filename = $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @$GLOBALS['replace_path']);
+	{
+		// Si c'est une url externe on pointe vers, sinon on clean et ajoute le nom du site courant
+		if(isset(parse_url($GLOBALS['content'][$key])['scheme']))
+			$filename = $GLOBALS['content'][$key];
+		else
+			$filename = $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @$GLOBALS['replace_path']);
+	}
 	else
 		$filename = "";
 

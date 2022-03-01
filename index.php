@@ -208,9 +208,13 @@ elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel
 
 	// Si image plus grande (zoom)
 	$parse_url = parse_url($image);
-	parse_str($parse_url['query'], $get);
-	if(isset($get['zoom'])) $image = $get['zoom'];
+	if(isset($parse_url['query'])) {
+		parse_str($parse_url['query'], $get);
+		if(isset($get['zoom'])) $image = $get['zoom'];
+	}
 } 
+// Si l'image n'est pas une url mais un fichier local on ajoute le domaine du site
+if(isset($image) and !@parse_url($image)['scheme']) $image = $GLOBALS['home'].$image;
 
 
 
@@ -258,7 +262,7 @@ if(!$ajax)
 		<link rel="canonical" href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
 		<?php }?>
 		<?php if($description){?><meta property="og:description" content="<?=$description;?>"><?php }?>
-		<?php if($image){?><meta property="og:image" content="<?=$GLOBALS['home'].$image;?>"><?php }?>
+		<?php if($image){?><meta property="og:image" content="<?=$image;?>"><?php }?>
 		<meta property="article:published_time" content="<?=date(DATE_ISO8601, strtotime(@$res['date_insert']));?>">
 
 		<?php if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?php }?>
