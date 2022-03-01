@@ -368,7 +368,7 @@ switch(@$_GET['mode'])
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_content']."` (
-								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+								`id` bigint(20) NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'deactivate',
 								`lang` varchar(8) NOT NULL,
 								`robots` varchar(18) DEFAULT NULL,
@@ -408,7 +408,7 @@ switch(@$_GET['mode'])
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_meta']."` (
-								`id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+								`id` bigint(20) NOT NULL DEFAULT '0',
 								`type` varchar(32) NOT NULL,
 								`cle` varchar(255) NOT NULL DEFAULT '',
 								`val` text,
@@ -437,7 +437,7 @@ switch(@$_GET['mode'])
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_tag']."` (
-								`id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+								`id` bigint(20) NOT NULL DEFAULT '0',
 								`zone` varchar(32) NOT NULL,
 								`encode` varchar(255) NOT NULL DEFAULT '',
 								`name` text NOT NULL,
@@ -466,7 +466,7 @@ switch(@$_GET['mode'])
 					else {// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_user']."` (
-								`id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+								`id` bigint(20) NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'active',
 								`auth` varchar(255) NOT NULL,
 								`name` varchar(60) DEFAULT NULL,
