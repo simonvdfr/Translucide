@@ -712,11 +712,10 @@ function tag($key = null, $filter = array())
 	.(isset($filter['placeholder'])?' placeholder="'.$filter['placeholder'].'"' : '')
 	.(isset($filter['separator'])?' data-separator="'.$filter['separator'].'"' : '')
 	.(isset($filter['itemprop'])?' itemprop="'.$filter['itemprop'].'"' : '')
-	.' role="navigation"'
+	.((!isset($filter['tag']) or @$filter['tag']=='nav')?' role="navigation"' : '')
 	.'>';
 
 		$i = 1;
-		//$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_meta']." WHERE id='".(int)$GLOBALS['id']."' AND type='tag' ORDER BY ordre ASC LIMIT 10");// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
 		$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_tag']." WHERE id='".(int)$GLOBALS['id']."' AND zone='".$key."' ORDER BY ordre ASC LIMIT 10");
 		while($res_tag = $sel_tag->fetch_assoc()) 
 		{ 
