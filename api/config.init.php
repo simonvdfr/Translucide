@@ -268,6 +268,8 @@ $GLOBALS['mime_supported'] = array(
 	'image/x-icon',
 	'image/svg',
 	'image/svg+xml',
+	'video/webm',
+	'video/mp4',
 	'application/pdf',
 	'application/zip',
 	'application/x-zip-compressed',
