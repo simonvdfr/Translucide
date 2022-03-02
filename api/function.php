@@ -419,6 +419,11 @@ function media($key = null, $filter = array())
 				$img = true; 
 			break;
 
+			case"webm":
+			case"mp4":
+				$video = true; 
+			break;
+
 			default: $fa = "doc"; break;
 
 			case"zip": $fa = "file-archive"; break;
@@ -498,16 +503,12 @@ function media($key = null, $filter = array())
 			// Fin lien zoom
 			if(isset($filter['zoom'])) echo'</a>';
 		}
-		elseif($filename) // C'est un fichier
-			{
-				if(pathinfo(explode("?", $filename)[0], PATHINFO_EXTENSION) == "mp4")	// C'est une video
-					{
-						echo"<video width='320' height='240' controls><source src=\"".$filename."\" type='video/mp4' title=\"".$GLOBALS['content'][$key]."\"></video>";
-				}
-				else {
-					echo"<a href=\"".$GLOBALS['content'][$key]."\" target='_blank'><i class='fa fa-fw fa-".$fa." mega' title=\"".$GLOBALS['content'][$key]."\"></i></a>";
-				}
-			}
+		elseif(isset($video))// C'est une video
+			echo'<video src="'.$filename.'" title="'.$GLOBALS['content'][$key].'" controls></video>';
+		elseif($filename)// C'est un fichier		
+			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="fa fa-fw fa-'.$fa.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
+			
+
 	echo'</span>';
 
 	$GLOBALS['editkey']++;
@@ -1124,10 +1125,11 @@ function file_check($file)
 	if(in_array($file_infos['mime'], $GLOBALS['mime_supported'])) 
 	{
 		// Le fichier tmp ne contient pas de php ou de javascript
-		if(!preg_match("/<\?php|<\? |<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']))) 
+		if(!preg_match("/<\?php|<\? |<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']), $matches)) 
 			return true;
 		else 
 			return false;
+			//print_r($matches);
 	}
 	else return false;
 }

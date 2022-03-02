@@ -94,8 +94,8 @@ get_content = function(content)
 		if($(this).html()) data[content_array][this.id] = content_editable;
 	});
 	
-	// Contenu des images éditables
-	$(document).find(content+" .editable-media:not(.global) img").each(function() {
+	// Contenu des images/vidéos éditables
+	$(document).find(content+" .editable-media:not(.global) img, "+content+" .editable-media:not(.global) video").each(function() {
 		if($(this).attr("src")) data[content_array][$(this).closest(".editable-media").attr("id")] = $(this).attr("src");
 	});
 
@@ -972,11 +972,18 @@ get_file = function(id)
 		// Supprime les images
 		$("#"+$("#dialog-media-source").val()+" img").remove();
 
+		// Supprime les vidéos
+		$("#"+$("#dialog-media-source").val()+" video").remove();
+
 		// Supprime les fichiers
 		$("#"+$("#dialog-media-source").val()+" > .fa").remove();
 
-		// Ajoute le fichier
-		$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
+		if($("#"+id).attr("data-type") == 'video')
+			// Ajoute le fichier
+			$("#"+$("#dialog-media-source").val()).append('<video src="'+ $("#"+id).attr("data-media") +'" controls></video>');	
+		else
+			// Ajoute le fichier
+			$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
 	}
 	else// Insertion du lien vers le fichier dans bloc texte
 		exec_tool("insertHTML", "<a href=\""+ path + $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
@@ -2559,7 +2566,7 @@ $(function()
 					$(".print-size", this).fadeIn("fast");// Affiche la taille de l'image/zone
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
-					if($("img", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
+					if($("img", this).attr("src") || $("video", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
 						$(".clear-file", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
@@ -2589,6 +2596,7 @@ $(function()
 					// Suppression
 					if($(event.target).hasClass("clear-file")){
 						if($("img", this).attr("src")) $("img", this).attr("src","");// Supp img src
+						else if($("video", this).attr("src")) $("video", this).remove();// Supp la vidéo
 						else {
 							$(".fa-doc", this).remove();// Supp le fichier qui vien d'etre ajouté <i>
 							$("a", this).remove();// Supp le fichier déjà présent avec lien <a><i>
