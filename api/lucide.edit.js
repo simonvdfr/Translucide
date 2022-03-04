@@ -201,7 +201,11 @@ save = function() //callback
 
 	// Tags de la fiche en cours
 	data["tag"] = {};
-	$(document).find(".content .editable-tag").each(function() {
+	data["tag-separator"] = {};
+	$(document).find(".content .editable-tag").each(function() 
+	{
+		// Séparateur de tag
+		data["tag-separator"][$(this).attr("id")] = $(this).data("separator");
 
 		// Tags
 		if($(this).text()) data["tag"][$(this).attr("id")] = $(this).text();
@@ -211,8 +215,7 @@ save = function() //callback
 			data["tag-ordre"] = $(this).next(".editable-tag-ordre").val();
 	});	
 
-	// Séparateur de tag
-	data["tag-separator"] = $(".editable-tag").data("separator");
+	
 
 
 	// Si sur page tag
@@ -2934,13 +2937,6 @@ $(function()
 		autocomplete_keydown = false;
 		var samezone = false;
 
-		// Séparateur
-		var separator = $(".editable-tag").data('separator');// Si on en force un
-		if(!separator) separator = ', ';// Sinon celui par défaut
-		var regex = separator.replace(" ", "\\s*");// Replace les espaces par des espaces optionnels
-		regex = new RegExp(regex, "g");// Crée une regex avec la string
-
-
 		$(".editable-tag").on("keydown", function(event) {				
 			// Ne quitte pas le champ lorsque l'on utilise TAB pour sélectionner un élément
 			if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active)
@@ -3018,14 +3014,22 @@ $(function()
 				return false;
 			}
 		})
-		.focus(function(){// Chargement au focus de la liste des tags dispo
-			// Si on selection la meme zone de tag
+		.focus(function()// Chargement au focus de la liste des tags dispo & récupération des variables
+		{
+			// Séparateur
+			separator = $(this).data('separator');// Si on en force un
+			if(!separator) separator = ', ';// Sinon celui par défaut
+			regex = separator.replace(" ", "\\s*");// Replace les espaces par des espaces optionnels
+			regex = new RegExp(regex, "g");// Crée une regex avec la string
+
+			// Si on sélectionne la même zone de tag
 			if(tag_zone == $(this).attr('id')) {
 				samezone = true;
 			} else {
 				tag_zone = $(this).attr('id');
 				samezone = false;
 			}
+
 			$(this).autocomplete("search", "");
 		});
 	}
@@ -3098,7 +3102,7 @@ $(function()
 					}
 				});
 			}
-			else if($("#user .absolute").length && !$("#user .absolute").is(":visible")&& close == true)// Si on click et que l'ajax a déjà été fait
+			else if($("#user .absolute").length && !$("#user .absolute").is(":visible") && close == true)// Si on click et que l'ajax a déjà été fait
 			{
 				close = true;
 				$("#user .absolute").fadeIn("fast", function(){ close = false; });

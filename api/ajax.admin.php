@@ -582,7 +582,7 @@ switch($_GET['mode'])
 				$zone = encode($zone);
 
 				// split les tags en fonction du séparateur
-				$tags = explode((@$_POST['tag-separator']?trim($_POST['tag-separator']):","), trim($tags));
+				$tags = explode((@$_POST['tag-separator'][$zone]?trim($_POST['tag-separator'][$zone]):","), trim($tags));
 
 				$i = 1;
 				foreach($tags as $cle => $val) {

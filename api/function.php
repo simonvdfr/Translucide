@@ -96,7 +96,7 @@ function make_url($url, $filter = array())
 
 	if(is_array($filter))
 	{
-		// Force le domaine
+		// Force le domaine sur la variable défini
 		if(isset($filter['domaine'])) $domaine = $filter['domaine'];
 		unset($filter['domaine']);	
 
@@ -118,7 +118,7 @@ function make_url($url, $filter = array())
 	{
 		$url = $GLOBALS['path'];
 
-		if(isset($domaine)) $url = $GLOBALS['home'];
+		if(isset($domaine)) $url = ($domaine===true?$GLOBALS['home']:$domaine);
 	}
 	elseif(preg_match("/(http|https):\/\//", $url))// Si url externe on retourne l'url directement
 	{
@@ -128,7 +128,7 @@ function make_url($url, $filter = array())
 	{
 		$url = encode($url, "-", array("#","/"));
 
-		if(isset($domaine)) $url = $GLOBALS['home'] . ltrim($url, "/");
+		if(isset($domaine)) $url = ($domaine===true?$GLOBALS['home']:$domaine) . ltrim($url, "/");
 	}	
 
 	// Si filtre ou page
@@ -737,7 +737,7 @@ function tag($key = null, $filter = array())
 			$i++;
 		}
 
-	echo'</'.(isset($filter['tag']) ? $filter['tag'] : "div").'>';
+	echo'</'.(isset($filter['tag']) ? $filter['tag'] : "nav").'>';
 
 	// Si on veut choisir l'ordre du tag
 	if(isset($filter['ordre'])) 

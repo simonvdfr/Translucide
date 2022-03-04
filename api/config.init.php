@@ -68,9 +68,10 @@ else {
 }
 
 
-// Variables sites
+// VARIABLES SITES
 $GLOBALS['language'] = array('fr');
 
+// charge le fichier translation.php dans le dossier du theme
 $GLOBALS['theme_translation'] = false;
 
 
