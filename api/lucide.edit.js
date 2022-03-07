@@ -3199,10 +3199,13 @@ $(function()
            		click: function() { $(".dialog-del").remove(); }
 			},{
 				text: "Ok",
-				click: function() {
-					medias_post = [];
+				click: function() 
+				{
+					// Fonction à exécuter avant la suppression de la page
+					$(before_del).each(function(key, funct){ funct(); });
 
 					// Récupère tous les médias sélectionnés
+					medias_post = [];
 					$(".dialog-del ul input:checked").each(function() {
 					    medias_post.push($(this).attr("id"));
 					});
