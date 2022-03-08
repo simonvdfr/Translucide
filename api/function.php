@@ -154,27 +154,27 @@ function page($num_total, $page, $full = false)
 			$num_page = ceil($num_total/$num_pp);
 			
 			// Page 1
-			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?=($page == 1?' selected':'');?>">1</a></li><?php
+			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?=($page == 1?' selected':'');?>"<?=($page == 1?' aria-current="page"':'')?>>1</a></li><?php
 
 			if($num_page > 10 and $page >= 10 and !$full)// + de 10 page
 			{
 				?><li class="fl mrs mtt">...</li><?php
 				
 				for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
-					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"><?=$i?></a></li>
+					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
 				<?php }
 			}
 			else// - de 10 page
 			{
 				for($i = 2; $i <= ($full?$num_page:10) and $i < $num_page; $i++){?>
-					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"><?=$i?></a></li>
+					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
 				<?php }
 			}
 
 			if($num_page > 10 and $page < ($num_page - 2) and !$full) {?><li class="fl mrs">...</li><?php }
 
 			// Page final
-			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?=($page == $num_page?' selected':'');?>"><?=$num_page?></a></li><?php
+			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?=($page == $num_page?' selected':'');?>"<?=($page == $num_page?' aria-current="page"':'')?>><?=$num_page?></a></li><?php
 
 		}?>
 		</ul>
@@ -1392,6 +1392,40 @@ function word_cut($texte, $limit, $end = '', $tags = '') {//$tags = '<br><div>' 
 	$word_cut = preg_replace('/\s+?(\S+)?$/', '', substr($texte, 0, $limit));// /\s+?(\S+)?$/u => /u => pour l'utf8
 	if(strlen($word_cut) < strlen(trim($texte))) $word_cut .= $end;// Si coupure on ajoute une ponctuation à la fin
 	return $word_cut;
+}
+
+// Format de date lisible
+function date_lang($date) {
+
+	$date = date_create($date);
+
+	$jour = date_format($date, 'j');
+	$mois = date_format($date, 'n');
+	$annee = date_format($date, 'Y');
+
+	$nom_mois = array(
+		1 => 'january',
+		2 => 'february',
+		3 => 'march',
+		4 => 'april',
+		5 => 'may',
+		6 => 'june',
+		7 => 'july ',
+		8 => 'august',
+		9 => 'september',
+		10 => 'october',
+		11 => 'november',
+		12 => 'december',
+	);
+
+	// si 1 on écrit 1er
+	if($jour == 1) $jour = '1'.__('st');
+
+	// Phrase avec nom du mois traduit
+	$date  = $jour.' '.__($nom_mois[$mois]).' '.$annee;
+
+	// Convertir en utf8 si besoin en fonction du serveur
+	return iconv(mb_detect_encoding($date, mb_detect_order(), true), 'UTF-8', $date);
 }
 
 

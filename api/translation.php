@@ -82,6 +82,21 @@ $add_translation = array(
 	"Home page" => array("fr" => "Page d'accueil"),
 
 
+	"january" => array("fr" => "janvier"),
+	"february" => array("fr" => "février"),
+	"march" => array("fr" => "mars"),
+	"april" => array("fr" => "avril"),
+	"may" => array("fr" => "mai"),
+	"june" => array("fr" => "juin"),
+	"july" => array("fr" => "juillet"),
+	"august" => array("fr" => "août"),
+	"september" => array("fr" => "septembre"),
+	"october" => array("fr" => "octobre"),
+	"november" => array("fr" => "novembre"),
+	"december" => array("fr" => "décembre"),
+	"st" => array("fr" => "er"),
+
+
 	"Media Library" => array("fr" => "Bibliothèque des médias"),
 	"Drag and drop a file here or click me" => array("fr" => "Glisser-déplacer un fichier ici ou cliquez-moi"),
 	"Delete file" => array("fr" => "Supprimer le fichier"),
