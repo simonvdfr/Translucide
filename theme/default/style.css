@@ -370,9 +370,11 @@ em, .italic, address, cite, i, var { font-style: italic; }
 .fl { float: left; }
 .fr { float: right; }
 
-img.fl { margin-right: 1rem; }
-img.fr { margin-left: 1rem; }
+img.fl, figure.fl { margin-right: 1rem; }
+img.fr, figure.fr { margin-left: 1rem; }
 img.fl, img.fr { margin-bottom: 0.5rem; }
+
+figure.center {	text-align: center; }
 
 article img { max-width: 100%; } /* Pour que les images ne dépassent pas la taille du contener */
 
