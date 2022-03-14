@@ -586,7 +586,7 @@ switch($_GET['mode'])
 
 				$i = 1;
 				foreach($tags as $cle => $val) {
-					if(isset($val) and $val != "") {		
+					if(isset($val) and trimer($val) != "") {		
 						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".(isset($_POST['tag-ordre'])?(int)$_POST['tag-ordre']:$i)."'");
 						$i++;
 					}
