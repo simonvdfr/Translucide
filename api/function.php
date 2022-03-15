@@ -673,13 +673,14 @@ function input($key = null, $filter = null)
 		echo' checked="checked"';
 
 	if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
+	if(@$filter['autocomplete'] == 'off') echo' autocomplete="off"';
 	
 	if(@$filter['readonly']) echo' readonly';
 
 	echo'>';
 
 	// Si autocomplete
-	if(isset($filter['autocomplete'])) {?>
+	if(isset($filter['autocomplete']) and $filter['autocomplete'] != 'off') {?>
 		<script>
 			edit.push(function() {	
 				$("#<?=encode($key)?>").autocomplete({
