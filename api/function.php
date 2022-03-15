@@ -504,7 +504,7 @@ function media($key = null, $filter = array())
 			if(isset($filter['zoom'])) echo'</a>';
 		}
 		elseif(isset($video))// C'est une video
-			echo'<video src="'.$filename.'" title="'.$GLOBALS['content'][$key].'" controls></video>';
+			echo'<video width="'$size[0].'" src="'.$filename.'" title="'.$GLOBALS['content'][$key].'" controls></video>';
 		elseif($filename)// C'est un fichier		
 			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="fa fa-fw fa-'.$fa.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
 			
