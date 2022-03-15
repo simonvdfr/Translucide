@@ -308,6 +308,10 @@ $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']
 $GLOBALS['global.css'] = false;
 
 
+// Url de la css du thème
+$GLOBALS['style.css'] = false;
+
+
 // Librairie externe
 $GLOBALS['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';
 

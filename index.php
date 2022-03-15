@@ -271,7 +271,7 @@ if(!$ajax)
 
 		<?php if(!isset($GLOBALS['global.css']) or @$GLOBALS['global.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
 
-		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">	
+		<link rel="stylesheet" href="<?=(isset($GLOBALS['style.css']) ? $GLOBALS['style.css'] : $GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?"/":"").'style'.$GLOBALS['min'].'.css?'.$GLOBALS['cache'])?>">	
 
 		<?php if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?php }
 		else{?>
