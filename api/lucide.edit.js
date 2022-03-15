@@ -176,7 +176,7 @@ save = function() //callback
 
 	// Donnée Méta
 	data["meta"] = {};
-	$(document).find(".content .editable-input.meta").each(function() {
+	$(document).find(".content .editable-input.meta, .content .editable-select.meta").each(function() {
 		data["meta"][this.id] = $(this).val();// if($(this).val()) 		
 	});
 	$(document).find(".content .editable.meta").each(function() {
