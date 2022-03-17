@@ -1721,7 +1721,7 @@ $(function()
 
 
 	// Place les contenus au-dessus pour les rendre éditables à coup sur
-	$(".editable").parent().css("z-index", "10");
+	$(".editable").parent().css("z-index", "1");//10 avant => bug avec datepicker
 
 	// Pour pouvoir éditer un contenu dans un label
 	$(".editable").parent("label").attr("for","");
