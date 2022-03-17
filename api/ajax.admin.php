@@ -617,8 +617,6 @@ switch($_GET['mode'])
 
 
 			// Update les tags des contenus
-			// SUPP APRES TEST SUR LA NOUVELLE TABLE TAG
-			//$connect->query("UPDATE ".$table_meta." SET cle='".encode($tag)."', val='".addslashes($tag)."' WHERE type='tag' AND cle='".$tag_url."'");
 			$connect->query("UPDATE ".$table_tag." SET encode='".encode($tag)."', name='".addslashes($tag)."' WHERE zone='".encode($_POST['permalink'])."' AND encode='".$tag_url."'");
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 
@@ -663,18 +661,23 @@ switch($_GET['mode'])
 		// Ajout des données aux meta liée à un contenu
 		if(isset($_POST['meta']) and $_POST['meta'] != "") 
 		{
-			$i = 1;
 			foreach($_POST['meta'] as $cle => $val) 
 			{
-				// Supprime la meta
-				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."'");
-
-				// Ajoute la meta si elle contient une variable
-				if(isset($val) and $val != "")
+				// Ajoute la meta si elle contient une variable		
+				if(isset($val) and $val != "")		
 				{
-					$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='".encode($cle)."', cle='".addslashes(trim($val))."', val='', ordre='".$i."'");
-					$i++;
+					// On regarde s'il y a déjà des données
+					$sel_meta = $connect->query("SELECT id FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."' LIMIT 1");
+					$res_meta  = $sel_meta ->fetch_assoc();	
+
+					if($res_meta['id'])
+						$connect->query("UPDATE ".$table_meta." SET id='".(int)$_POST['id']."', type='".encode($cle)."', cle='".addslashes(trim($val))."' WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."' LIMIT 1");
+					else
+						$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='".encode($cle)."', cle='".addslashes(trim($val))."'");
 				}
+				// Supprime la meta
+				else
+					$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."'");
 			}		
 			
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
