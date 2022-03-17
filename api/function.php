@@ -637,7 +637,7 @@ function select($key = null, $filter = array())
 		if($selected_key) $selected_option = $option_decode[$selected_key];
 	}
 
-	echo"<span id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select") . (isset($filter['class'])?" ".$filter['class']:"")."' data-option='".str_ireplace("'",  "&apos;", $filter['option'])."' data-selected=\"".$selected_key."\">".@$selected_option."</span>";
+	echo"<".(isset($filter['tag'])?$filter['tag']:"span").(isset($filter['href'])?' href="'.$filter['href'].'"':'')." id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select") . (isset($filter['class'])?" ".$filter['class']:"")."' data-option='".str_ireplace("'",  "&apos;", $filter['option'])."' data-selected=\"".$selected_key."\">".@$selected_option."</".(isset($filter['tag'])?$filter['tag']:"span").">";
 	
 	$GLOBALS['editkey']++;
 }
