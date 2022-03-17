@@ -676,6 +676,7 @@ function input($key = null, $filter = null)
 	if(@$filter['autocomplete'] == 'off') echo' autocomplete="off"';
 	
 	if(@$filter['readonly']) echo' readonly';
+	if(@$filter['required']) echo' required';
 
 	echo'>';
 
@@ -1411,7 +1412,7 @@ function date_lang($date) {
 		4 => 'april',
 		5 => 'may',
 		6 => 'june',
-		7 => 'july ',
+		7 => 'july',
 		8 => 'august',
 		9 => 'september',
 		10 => 'october',
