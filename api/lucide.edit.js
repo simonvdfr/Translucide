@@ -3264,7 +3264,7 @@ $(function()
 	$(document).on("keydown", function(event) 
 	{
 		// Si on appuie sur ctrl + s = sauvegarde
-		if((event.ctrlKey || event.metaKey)) 
+		if(typeof shortcut !== 'undefined' && (event.ctrlKey || event.metaKey)) 
 		{
 			// Sauvegarde
 			if(String.fromCharCode(event.which).toLowerCase() == 's') {

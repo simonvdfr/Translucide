@@ -358,6 +358,7 @@ if(!$ajax)
 			media_dir = "<?=(isset($GLOBALS['media_dir'])?$GLOBALS['media_dir']:'media')?>";
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>
+			<?=((!isset($GLOBALS['shortcut']) or $GLOBALS['shortcut'] == true)?'shortcut = true;':'')?>
 			<?=(@$dev?'dev = true;':'')?>
 
 		</script>

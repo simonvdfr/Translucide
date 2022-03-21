@@ -332,17 +332,20 @@ $(function()
 
 
 	// Mode édition au ctrl+e
-	$(document).keydown(function(event) 
+	if(typeof shortcut !== 'undefined')
 	{
-		if(!$("#admin-bar").length)// Admin pas lancé
+		$(document).keydown(function(event) 
 		{
-			if(event.ctrlKey || event.metaKey)
-			if(String.fromCharCode(event.which).toLowerCase() == 'e') {
-				event.preventDefault();
-				$("a.bt.edit").click();
+			if(!$("#admin-bar").length)// Admin pas lancé
+			{
+				if(event.ctrlKey || event.metaKey)
+				if(String.fromCharCode(event.which).toLowerCase() == 'e') {
+					event.preventDefault();
+					$("a.bt.edit").click();
+				}
 			}
-		}
-	});
+		});
+	}
 
 
 	// Affichage du bouton add au survole du bt edition
