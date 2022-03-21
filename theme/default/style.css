@@ -382,6 +382,13 @@ article img { max-width: 100%; } /* Pour que les images ne dépassent pas la tai
 figure img { display: inline-block !important; }
 
 
+/* Mise en avant contenu */
+.highlight {
+	background-color: #808080;
+	padding: 2rem;
+}
+
+
 /* Table layout */
 /* .row { Pas utilisé 06/01/2021
 	display: table;

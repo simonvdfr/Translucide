@@ -23,6 +23,7 @@ add_translation({
 	"See the source code" : {"fr" : "Voir le code source"},		
 	"Paragraph" : {"fr" : "Paragraphe"},		
 	"Quote" : {"fr" : "Citation"},		
+	"Highlight" : {"fr" : "Mise en avant"},		
 	"Bold" : {"fr" : "Gras"},		
 	"Italic" : {"fr" : "Italique"},		
 	"Underline" : {"fr" : "Souligner"},		
@@ -632,6 +633,19 @@ target_blank = function(mode) {
 class_bt = function(mode) {
 	if(mode == true || !$("#class-bt").hasClass("checked")) $("#class-bt").addClass("checked");
 	else $("#class-bt").removeClass("checked");
+}
+
+// Ajout/Suppression d'une class
+class_tool = function(theClass){
+	// Si on est déjà dans un élément avec la class demandé : on supp la class
+	if($(memo_node).closest("p, div").hasClass(theClass)){
+		$(memo_node).closest("p, div").removeClass(theClass);
+		$("#highlight").removeClass("checked");
+	}
+	else {
+		$(memo_node).closest("p, div").addClass(theClass);
+		$("#highlight").addClass("checked");
+	}
 }
 
 // Ajout/Suppression d'un element html
@@ -2005,6 +2019,9 @@ $(function()
 		if(typeof toolbox_blockquote != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
+		if(typeof toolbox_highlight != 'undefined') 
+			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
+
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
@@ -2253,11 +2270,14 @@ $(function()
 				if($(memo_node).closest("h6").length) $("#txt-tool #h6").addClass("checked");
 				else $("#txt-tool #h6").removeClass("checked");
 
-				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
-				else $("#txt-tool #blockquote").removeClass("checked");
-				
 				if($(memo_node).closest("p").length) $("#txt-tool #p").addClass("checked");
 				else $("#txt-tool #p").removeClass("checked");
+
+				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
+				else $("#txt-tool #blockquote").removeClass("checked");
+
+				if($(memo_node).closest("p, div").hasClass("highlight")) $("#txt-tool #highlight").addClass("checked");
+				else $("#txt-tool #highlight").removeClass("checked");
 				
 				if(typeof toolbox_color != 'undefined')
 				if($(memo_node).is("em[class^=color-]")) {
