@@ -1359,8 +1359,8 @@ img_check = function(file)
 		var num = 0;
 		$.each(imgs, function(src, img)
 		{
-			// Si l'image existe sa taille original est !=0
-			if(img.naturalWidth != 0)
+			// Si l'image est en local && existe (sa taille original est !=0)
+			if(src.match(/(http(s)?:\/\/)?/)[0] == '' && img.naturalWidth != 0)
 			{
 				var optimize = '';
 
