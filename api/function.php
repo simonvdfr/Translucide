@@ -471,8 +471,9 @@ function media($key = null, $filter = array())
 
 				echo'<img ';
 
+				// Si lazyloading on met une image transparente dans le src
 				if(isset($filter['lazy']))
-					echo'data-src="'.$filename.'" loading="lazy"';
+					echo'src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'.$filename.'" loading="lazy"';
 				else 
 					echo'src="'.$filename.'"';
 
