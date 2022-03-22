@@ -372,7 +372,7 @@ em, .italic, address, cite, i, var { font-style: italic; }
 
 img.fl, figure.fl { margin-right: 1rem; }
 img.fr, figure.fr { margin-left: 1rem; }
-img.fl, img.fr { margin-bottom: 0.5rem; }
+img.fl, img.fr, figure.fl, figure.fr { margin-bottom: 0.5rem; }
 
 figure.center {	text-align: center; }
 
@@ -518,21 +518,11 @@ input[type="reset"].unstyled:focus {
 
 
 /* Vidéo */
-.video figure {
+.video {
 	position: relative;
-	display: table;
+	display: inline-block;
 }
-	.video iframe { display: block; }
-
-	.video figure.fl { margin-right: 1rem; }
-	.video figure.fr { margin-left: 1rem; }
-	.video figure { margin-bottom: 0.5rem; }
-	.video figure.center { 
-		margin-top: 1rem;
-		margin-bottom: 1rem;
-	}
-
-	.video figure:after {
+	.video:after {
 		content: '\f144';
 		font-family: FontAwesome;
 		font-size: 6rem;
@@ -544,7 +534,10 @@ input[type="reset"].unstyled:focus {
 		opacity: .8;
 		transition: all 1.5s;
 	}
-		.video figure:hover:after { opacity: 1; }
+		.video:hover:after { opacity: 1; }
+		.video.play:after { content: ''; }
+
+	.video iframe { display: block; }
 		
 
 /* Bouton */

@@ -411,9 +411,9 @@ video = function()
 	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
 	{
 		// mqdefault hqdefault maxresdefault
-		exec_tool("insertHTML", '<a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><figure class="fl" style="display: table !important;"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" width="320" height="180"'+lazy+'></figure></a>');
+		exec_tool("insertHTML", '<figure class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
 
-		$(".video figure").attr('style','')
+		$("figure .video").parent().attr('style','')
 
 		tosave();
 	}

@@ -298,7 +298,7 @@ $(function()
 			.html('<iframe width="'+$("img", event.currentTarget).css('width')+'" height="'+$("img", event.currentTarget).css('height')+'" src="https://www.youtube.com/embed/'+$(event.currentTarget).data('video')+'?controls=1&rel=0&autoplay=1" frameborder="0" class="'+$("figure", event.currentTarget).attr("class")+'" style="margin:'+$("figure", event.currentTarget).css('margin')+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 
 		// Pour ne pas relancer la vidéo au clique
-		$(this).data("play", true);
+		$(this).data("play", true).addClass("play");
 	});
 
 
