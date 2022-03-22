@@ -403,14 +403,6 @@ if(!$ajax)
 	<script>console.log("<?=benchmark()?>")</script>
 
 
-	<noscript>
-		<style>
-			/* Si pas de Javascript on affiche les contenus invisibles en attente d'animation */
-			.animation { opacity: 1 !important; transform: translate3d(0, 0, 0) !important;	}
-		</style>
-	</noscript>
-
-
 	</body>
 	</html>
 	<?php
