@@ -295,7 +295,7 @@ $(function()
 		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
 		if($(this).data("play") != true)
 		$(event.currentTarget)
-			.html('<iframe width="'+$("img", event.currentTarget).css('width')+'" height="'+$("img", event.currentTarget).css('height')+'" src="https://www.youtube.com/embed/'+$(event.currentTarget).data('video')+'?controls=1&rel=0&autoplay=1" frameborder="0" class="'+$("figure", event.currentTarget).attr("class")+'" style="margin:'+$("figure", event.currentTarget).css('margin')+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+			.html('<iframe width="'+$("img", event.currentTarget).attr('width')+'" height="'+$("img", event.currentTarget).attr('height')+'" src="https://www.youtube.com/embed/'+$(event.currentTarget).data('video')+'?controls=1&rel=0&autoplay=1" frameborder="0" class="player-youtube" data-preview="'+$("img", event.currentTarget).attr('src')+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 
 		// Pour ne pas relancer la vidéo au clique
 		$(this).data("play", true).addClass("play");

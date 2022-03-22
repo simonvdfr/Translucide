@@ -2402,6 +2402,18 @@ $(function()
 
 
 
+	/************** FORCE LES IMAGES À LA PLACE DES VIDÉOS YOUTUBE **************/
+	$.each($(".video .player-youtube"), function() 
+	{
+		var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
+
+		$(this).replaceWith('<img src="'+ $(this).data('preview') +'" width="'+$(this).attr('width')+'" height="'+$(this).attr('height')+'"'+lazy+'>');
+
+		$(".video.play").removeClass("play");
+	});
+
+
+
 	/************** FORCE LA DÉSACTIVATION LE LAZYLOADING SUR LES IMAGES **************/
 	$.each($("img[loading='lazy']"), function() 
 	{
