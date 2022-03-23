@@ -87,7 +87,7 @@ get_content = function(content)
 	data[content_array] = {};
 
 	// Contenu des champs éditables
-	$(document).find(content+" .editable:not(.global)").not("header nav .editable").each(function() {
+	$(document).find(content+" .editable:not(.global)").not("#main-navigation .editable").each(function() {
 		// Si on est en mode pour voir le code source
 		if($(this).hasClass("view-source")) var content_editable = $(this).text();
 		else var content_editable = $(this).html();
@@ -238,7 +238,10 @@ save = function() //callback
 	// Contenu du menu de navigation
 	data["nav"] = {};
 	//$(document).find("header nav ul li").not("#add-nav ul li, .exclude").each(function(i) {
-	$(document).find("header nav ul li a").not("#add-nav ul li a, .exclude").each(function(index, element) {
+	//$(document).find("header nav ul li a").not("#add-nav ul li a, .exclude").each(function(index, element) {
+	// Ciblage plus précis pour moins de problèmes avec les autres nav dans le header
+	// @todo: A modifier dans le future pour ne cibler que le #main-navigation 20/03/2022
+	$(document).find("header nav ul#main-navigation li a, header nav ul li a").not("#add-nav ul li a, .exclude li a, .exclude").each(function(index, element) {
 		//$("a", this).each(function(index, element) {
 			//data["nav"][i+'-'+index] = {
 			data["nav"][index] = {

@@ -16,12 +16,12 @@
 
 		<nav role="navigation" class="mtm mbm tc" aria-label="<?php _e("Browsing menu")?>">
 
-			<button type="button" class="burger" aria-expanded="false" aria-controls="header-menu">
+			<button type="button" class="burger" aria-expanded="false" aria-controls="main-navigation">
 				<span class="open">Menu</span>
 				<span class="close none"><?php _e("Close")?></span>
 			</button>
 			
-			<ul id="header-menu" class="grid up">
+			<ul id="main-navigation" class="grid up">
 				<?php
 				// Extraction du menu
 				foreach($GLOBALS['nav'] as $cle => $val)
