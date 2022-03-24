@@ -3258,6 +3258,9 @@ $(function()
 						}
 					})
 					.done(function(html) {		
+						// Fonction à exécuter après la suppression de la page
+						$(after_del).each(function(key, funct){ funct(); });
+
 						$(".dialog-del").dialog("close");
 						$("body").append(html);
 					});					

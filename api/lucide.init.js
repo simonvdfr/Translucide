@@ -175,6 +175,7 @@ after_save = [];
 before_save = [];
 before_data = [];
 before_del = [];
+after_del = [];
 
 
 // Formulaire d'ajout d'un contenu
