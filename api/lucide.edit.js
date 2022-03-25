@@ -2122,11 +2122,34 @@ $(function()
 		});
 	}	
 
+	// Nétoie un champ éditable des <br> <p> <div> vide
+	clean_editable = function(memo_focus) {
+		var clean = ['<br>', '<p><br></p>', '<div><br></div>'];
+		if($.inArray($(memo_focus).html(), clean) != -1) $(memo_focus).html('');
+	}
+
 	// Si contenu vide on met un <p>, seulement pour les div ... pas pour les h1 ...
 	add_paragraph = function(memo_focus)
 	{
+		// Nétoie le champ
+		clean_editable(memo_focus);
+
 		if(/DIV|ARTICLE|section/.test($(memo_focus).prop("tagName")) && $(memo_focus).html() == "")
-			$(memo_focus).html("<p></p>");
+		{
+			// Ajout du pragraphe
+			$(memo_focus).html("<p></p>");// append html
+
+			// Pour bug Firefox on positionne le curseur bien à la fin dans le <p>
+			range = document.createRange();
+			range.selectNodeContents($('p', memo_focus)[0]);
+			range.collapse(false);
+			selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
+
+			// Ajout du placeholder|id sur le <p> vide
+			$("style:first").append('#'+$(memo_focus).attr("id")+' p:empty:before {content: "'+($(memo_focus).attr("placeholder") || $(memo_focus).attr("id"))+'";}');
+		}
 	}
 
 	// Action sur les champs éditables
@@ -2137,6 +2160,12 @@ $(function()
 
 		// Désactive les liens qui entourent un élément éditable
 		$(".editable").closest("a").on("click", function(event) { event.preventDefault(); });
+
+		//@todo supp ? car finalement on ajoute le <p> au focus et keyup
+		// Ajoute un paragraphe si champs vide au lancement de l'edition
+		/*$(".editable").each(function() {
+			if($(this).html().length == 0) add_paragraph(this);
+		});*/
 		
 		// Action sur les zone éditable
 		$(".editable").on({
@@ -2151,7 +2180,9 @@ $(function()
 					$("#txt-tool").hide();// ferme la toolbox
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
 				}
-				
+
+				clean_editable(this);// Nétoie le champ
+
 				if($("p", this).html() == '') $("p", this).remove();// Si juste un paragraphe vide on le supp
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
