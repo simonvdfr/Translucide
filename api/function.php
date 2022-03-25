@@ -141,12 +141,15 @@ function make_url($url, $filter = array())
 }
 
 // Navigation par page
-function page($num_total, $page, $full = false)
+function page($num_total, $page, $filter = array())
 {
 	global $num_pp, $res;
 
+	// S'il y a une valeur pour le filter mais que != tableau => c'est que l'on veut afficher toutes les pages
+	if(!is_array($filter)) $filter = array("full" => $filter);
+
 	?>
-	<nav role="navigation">
+	<nav role="navigation"<?=(isset($filter['aria-label'])?' aria-label="'.htmlspecialchars($filter['aria-label']).'"':'')?>>
 		<ul class="page unstyled inbl man pan">		
 		<?php
 		if($num_total > $num_pp)
@@ -156,7 +159,7 @@ function page($num_total, $page, $full = false)
 			// Page 1
 			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?=($page == 1?' selected':'');?>"<?=($page == 1?' aria-current="page"':'')?>>1</a></li><?php
 
-			if($num_page > 10 and $page >= 10 and !$full)// + de 10 page
+			if($num_page > 10 and $page >= 10 and !isset($filter['full']))// + de 10 page
 			{
 				?><li class="fl mrs mtt">...</li><?php
 				
@@ -166,12 +169,12 @@ function page($num_total, $page, $full = false)
 			}
 			else// - de 10 page
 			{
-				for($i = 2; $i <= ($full?$num_page:10) and $i < $num_page; $i++){?>
+				for($i = 2; $i <= (isset($filter['full'])?$num_page:10) and $i < $num_page; $i++){?>
 					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
 				<?php }
 			}
 
-			if($num_page > 10 and $page < ($num_page - 2) and !$full) {?><li class="fl mrs">...</li><?php }
+			if($num_page > 10 and $page < ($num_page - 2) and !isset($filter['full'])) {?><li class="fl mrs">...</li><?php }
 
 			// Page final
 			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?=($page == $num_page?' selected':'');?>"<?=($page == $num_page?' aria-current="page"':'')?>><?=$num_page?></a></li><?php
