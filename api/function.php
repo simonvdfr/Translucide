@@ -724,6 +724,7 @@ function tag($key = null, $filter = array())
 	.(isset($filter['tag'])?$filter['tag']:"nav")
 	.' id="'.$key.'" class="editable-tag'.(isset($filter['class'])?" ".$filter['class'] : '').'"'
 	.(isset($filter['placeholder'])?' placeholder="'.$filter['placeholder'].'"' : '')
+	.(isset($filter['aria-label'])?' aria-label="'.$filter['aria-label'].'"' : '')
 	.(isset($filter['separator'])?' data-separator="'.$filter['separator'].'"' : '')
 	.(isset($filter['itemprop'])?' itemprop="'.$filter['itemprop'].'"' : '')
 	.((!isset($filter['tag']) or @$filter['tag']=='nav')?' role="navigation"' : '')
