@@ -508,7 +508,7 @@ function media($key = null, $filter = array())
 			if(isset($filter['zoom'])) echo'</a>';
 		}
 		elseif(isset($video))// C'est une video
-			echo'<video width="'.$size[0].'" src="'.$filename.'" title="'.$GLOBALS['content'][$key].'" controls></video>';
+			echo'<video'.(isset($size[0])?' width="'.$size[0].'"':'').' src="'.$filename.'" title="'.$GLOBALS['content'][$key].'" controls></video>';
 		elseif($filename)// C'est un fichier		
 			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="fa fa-fw fa-'.$fa.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
 			
@@ -737,10 +737,11 @@ function tag($key = null, $filter = array())
 			$GLOBALS['tags'][$res_tag['encode']] = $res_tag['name'];
 
 			if($i > 1) echo (@$filter['separator']?$filter['separator']:', ');
+
 			if(@$filter['href']===false)
-			echo'<span class="tdn">'.$res_tag['name'].'</span>';
+				echo'<span>'.$res_tag['name'].'</span>';
 			else
-			echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
+				echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
 
 
 			$ordre = $res_tag['ordre'];
