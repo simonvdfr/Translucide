@@ -424,6 +424,7 @@ function media($key = null, $filter = array())
 
 			case"webm":
 			case"mp4":
+			case"ogg":
 				$video = true; 
 			break;
 
