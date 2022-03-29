@@ -749,9 +749,11 @@ switch($_GET['mode'])
 			<script>
 			$(function()
 			{
+				// Change le titre de la page
 				document.title = "<?=addslashes($_POST['title']);?>";
 
-				<?php if(isset($change_url)){?>					
+				<?php if(isset($change_url)){?>		
+					// Change l'url de la page			
 					window.history.replaceState({}, document.title, "<?=make_url($change_url);?>");//history.state	
 				<?php }?>
 
