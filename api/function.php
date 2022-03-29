@@ -743,7 +743,6 @@ function tag($key = null, $filter = array())
 			else
 				echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
 
-
 			$ordre = $res_tag['ordre'];
 
 			$i++;
