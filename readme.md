@@ -29,8 +29,8 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 Dans le fichier `config.php`, vous pouvez activer les couleurs dans les outils d'édition (variable `$GLOBALS['toolbox']`), après il faut dire combien de class vous avez dans votre `style.css` dans la variable `$GLOBALS['Nbcolor'] = 2;`
 Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 ~~~~
-.coloc-1 { color: red; }
-.coloc-2 { color: blue; }
+.color-1 { color: red; }
+.color-2 { color: blue; }
 ~~~~
 
 ### Prérequis
