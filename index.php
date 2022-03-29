@@ -168,6 +168,10 @@ if(!isset($GLOBALS['content']['title'])) $GLOBALS['content']['title'] = $res['ti
 
 /********** METAS HEAD **********/
 
+// Title de la page
+$title = $res['title'];
+
+
 // SI TAG ajout au meta
 if(isset($res_tag_info['val']))// Il y a des infos sur le tag
 {
@@ -175,27 +179,33 @@ if(isset($res_tag_info['val']))// Il y a des infos sur le tag
 	$GLOBALS['content'] = @array_merge($GLOBALS['content'], json_decode($res_tag_info['val'], true));
 
 	// Ecrase les données meta
-	if(isset($GLOBALS['content']['title'])) $res['title'] = $GLOBALS['content']['title'];
+	if(isset($GLOBALS['content']['title'])) $title.= ' - '.$GLOBALS['content']['title'];
 	if(isset($GLOBALS['content']['description'])) $res['description'] = htmlspecialchars(strip_tags($GLOBALS['content']['description'], ENT_COMPAT));
 	if(isset($GLOBALS['content']['img'])) $GLOBALS['content']['og-image'] = $GLOBALS['content']['img'];
 }
 elseif(isset($res_tag['name']))// Si il y a juste le nom du tag
 {
-	$res['title'] = $GLOBALS['content']['title'] = $res_tag['name'];
+	$GLOBALS['content']['title'] = $res_tag['name'];
+	$title.= ' - '.$res_tag['name'];
 	$res['description'] = $GLOBALS['content']['description'] = "";
 }
 elseif(in_array($get_url, $GLOBALS['filter_auth']) and isset($GLOBALS['filter'])) {// Si url dans filtre autorisé on ajoute le mot cle dans le title
-	$res['title'] = $res['title']." ".str_replace("-", " " , @array_keys($GLOBALS['filter'])[0]);
+	$title.= ' '.str_replace('-', ' ' , @array_keys($GLOBALS['filter'])[0]);
 }
 
 
 // Si filtre dans l'url on enrichie le title
-if(isset($GLOBALS['filter']['page'])) $res['title'] = $res['title'].' - '.__('Page').' '.(int)$GLOBALS['filter']['page'];
+if(isset($GLOBALS['filter']['page'])) $title.= ' - '.__('Page').' '.(int)$GLOBALS['filter']['page'];
+
 
 
 // SI CONTENU
-// Information pour les metas du head
-$title = strip_tags($res['title']);
+
+// Si un NOM DE SITE est défini et pas déjà dans le title
+if(isset($GLOBALS['sitename']) and substr($title, -strlen($GLOBALS['sitename'])) !== $GLOBALS['sitename'])
+	$title .= ' - '.$GLOBALS['sitename'];
+
+// Description
 $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['description']), ENT_COMPAT) : "");
 
 // Image pour les réseaux sociaux
@@ -248,7 +258,7 @@ if(!$ajax)
 		
 		<meta charset="utf-8">
 
-		<title><?=$title;?></title>
+		<title><?=strip_tags($title);?></title>
 		<?php if($description){?><meta name="description" content="<?=$description;?>"><?php }?>
 
 		<meta name="robots" content="<?=$robots;?>">
@@ -349,6 +359,7 @@ if(!$ajax)
 			// Variables
 			id = "<?=$id?>";
 			state = "<?=@$res['state']?>";
+			title = "<?=addslashes(@$GLOBALS['content']['title']);?>";
 			permalink = "<?=@$res['url']?>";
 			type = "<?=@$res['type']?>";
 			tpl = "<?=@$res['tpl']?>";
@@ -356,6 +367,7 @@ if(!$ajax)
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
 			media_dir = "<?=(isset($GLOBALS['media_dir'])?$GLOBALS['media_dir']:'media')?>";
+			<?=(isset($GLOBALS['sitename'])?'sitename = "'.addslashes($GLOBALS['sitename']).'";':'')?>
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>
 			<?=((!isset($GLOBALS['shortcut']) or $GLOBALS['shortcut'] == true)?'shortcut = true;':'')?>

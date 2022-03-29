@@ -78,6 +78,9 @@ $GLOBALS['theme_translation'] = false;
 $GLOBALS['theme'] = '';
 
 
+$GLOBALS['sitename'] = null;
+
+
 if($dev)// Dev local
 	$GLOBALS['scheme'] = '';
 else 

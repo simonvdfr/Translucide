@@ -1628,7 +1628,7 @@ $(function()
 	/************** ADMINBAR **************/
 
 	// Ajout des variables dans les inputs (pour le problème de double cote ")
-	$("#admin-bar #title").val(document.title);
+	$("#admin-bar #title").val(title);
 
 	if($("meta[name=description]").last().attr("content") != undefined) 
 		description = $('meta[name=description]').last().attr("content");
