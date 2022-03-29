@@ -317,7 +317,7 @@ $GLOBALS['global.css'] = false;
 
 
 // Url de la css du thème
-$GLOBALS['style.css'] = false;
+$GLOBALS['style.css'] = null;
 
 
 // Librairie externe
