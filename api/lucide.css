@@ -1022,7 +1022,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		margin: 0 0 0 -1px;			    
 		padding: 0.3rem 0.4rem;
 
-		color: #545454;
+		/* Pour ne pas prendre le dessus sur les couleurs spécifier pour la fonction color SUPP ? 29/03/2022 */
+		/* color: #545454; */
 
 		font-size: 1.2rem;
 		font-family: inherit;

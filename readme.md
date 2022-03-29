@@ -18,13 +18,23 @@ En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement
 - Copiez-collez le dossier theme 'default' et renommez-le
 
 Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, généré à la suite de l'installation. Il contient les informations uniques et cruciales au bon fonctionnement du CMS :
-	- modifiez la valeur de `$GLOBALS['theme']` avec le nom de votre thème
-	- modifiez les valeurs de `$GLOBALS['domain']` avec les noms de votre site local et de votre site en ligne
-	- modifier les valeurs de `$GLOBALS['db*']` hors dev local aves les infos de connexion de la BDD de votre hébergeur.
-	- décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
-	- décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
+- modifiez la valeur de `$GLOBALS['theme']` avec le nom de votre thème
+- modifiez les valeurs de `$GLOBALS['domain']` avec les noms de votre site local et de votre site en ligne
+- modifier les valeurs de `$GLOBALS['db*']` hors dev local aves les infos de connexion de la BDD de votre hébergeur.
+- décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
+- décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
 
-Prérequis : dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`. Il faut que les extensions PHP suivantes soient installées : php-mbstring, php-mysql, php-curl et php-gd.
+### Configuration
+### Couleurs sur les textes
+Dans le fichier `config.php`, vous pouvez activer les couleurs dans les outils d'édition (variable `$GLOBALS['toolbox']`), après il faut dire combien de class vous avez dans votre `style.css` dans la variable `$GLOBALS['Nbcolor'] = 2;`
+Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
+~~~~
+.coloc-1 { color: red; }
+.coloc-2 { color: blue; }
+~~~~
+
+### Prérequis
+Dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`. Il faut que les extensions PHP suivantes soient installées : php-mbstring, php-mysql, php-curl et php-gd.
 
 ## Premier pas
 - Descendez tout en bas du site, sur la gauche doit apparaître un bouton avec un petit crayon pour éditer la page courante, au survol de ce dernier un autre bouton `+` apparaît pour ajouter une page. Choisissez l'onglet correspondant à votre type de contenu, choisissez la template souhaitée dans le menu déroulant et saisissez le nom de la page.
@@ -143,4 +153,4 @@ Le dossier `plugin` est plus fait pour des fonctions génériques pas forcément
 Le processus est plus fait pour qu'un graphiste|intégrateur ou/et un développeur web construisent une template simple en HTML et y intégrent les 4/5 balises de contenu type là où ils veulent que ça soit éditable. Le CMS fait le reste pour que l'utilisateur final puisse modifier en live son site avec le moins de clic possible.
 
 ### Est-il multiplate-forme et responsive ?
-Autant que possible ! J'utilise <a href="https://www.browserstack.com"><img src="http://img4.hostingpics.net/pics/659921browserstacklogo.png" alt="browserstack"></a> pour faire mes tests.
+Autant que possible ! Nous utilisons <a href="https://www.browserstack.com">BrowserStack</a> pour faire nos tests.

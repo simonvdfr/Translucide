@@ -2003,7 +2003,7 @@ $(function()
 		if(typeof toolbox_fontSize != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 		
-		if(typeof toolbox_color != 'undefined')
+		if(typeof toolbox_color != 'undefined' && nbcolor >= 1)
 		{
 			toolbox+= "<li><button onclick=\"$('#txt-tool #color-option').toggle();$('.toolbox #color-option button[class^=color-]').removeClass('checked');\" title=\""+__("Add Color")+"\" class='color-option'><span class='color-1'>■</span><span class='color-2'>■</span><br><span class='color-3'>■</span><span class='color-4'>■</span></button></li>";
 
