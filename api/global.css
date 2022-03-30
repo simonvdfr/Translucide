@@ -588,7 +588,7 @@ input[type="reset"].unstyled:focus {
     color: #cd0a0a;
     z-index: 1000;
 }
-#highlight, .light {
+#highlight, #light, .light {
 	border-radius: 5px;
 	border: 1px solid #fcefa1;
     background: #fbf9ee;

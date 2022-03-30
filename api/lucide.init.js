@@ -529,6 +529,7 @@ $(function()
 
 
 	// CONTRASTE RENFORCE
+	if(document.querySelector("#high-contrast"))
 	document.querySelector("#high-contrast").onclick = function() 
 	{ 
 		document.body.classList.toggle('hc');// Ajoute/supprime la class de contraste renforcé au body
