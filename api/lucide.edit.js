@@ -414,7 +414,7 @@ video = function()
 	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
 	{
 		// mqdefault hqdefault maxresdefault
-		exec_tool("insertHTML", '<figure class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
+		exec_tool("insertHTML", '<figure class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
 
 		$("figure .video").parent().attr('style','')
 
@@ -858,7 +858,7 @@ upload = function(source, file, resize)
 					else 
 						var style = null;	
 
-					$(source).append("<img"+(style)+(data_class?" class='"+data_class+"'":"")+">");
+					$(source).append('<img'+(style)+(data_class?' class="'+data_class+'"':'')+'>');
 				}
 
 				// On fade à moitié (50%)
@@ -1066,11 +1066,11 @@ get_img = function(id, link)
 					$("#"+media_source+" > .fa").remove();
 
 					// Ajoute l'image
-					$("#"+media_source).append('<img src="'+ domain_path + final_file +'"'+
+					$("#"+media_source).append('<img src="'+ domain_path + final_file +'" alt=""'+
 						(width || height?' style="'+
 								(width?'max-width: '+width+'px;':'') + (height?'max-height: '+height+'px;':'')
 							+'"':'')+
-						(data_class?" class=\'"+data_class+"\'":"")+'>');
+						(data_class?' class="'+data_class+'"':'')+'>');
 				}
 				else
 					$("#"+media_source+" img").attr("src", domain_path + final_file);
@@ -1078,9 +1078,9 @@ get_img = function(id, link)
 			else if($("#dialog-media-target").val() == "intext")// Ajout dans un contenu texte
 			{
 				if(typeof link !== 'undefined' && link)// Avec lien zoom
-					exec_tool("insertHTML", '<a href="'+ $("#"+id).attr("data-media") +'"><img src="'+ domain_path + final_file +'" class="fl"'+lazy+'></a>');
+					exec_tool("insertHTML", '<a href="'+ $("#"+id).attr("data-media") +'"><img src="'+ domain_path + final_file +'" alt="" class="fl"'+lazy+'></a>');
 				else// Juste l'image
-					exec_tool("insertHTML", '<img src="'+ domain_path + final_file +'" class="fl"'+lazy+'>');				
+					exec_tool("insertHTML", '<img src="'+ domain_path + final_file +'" alt="" class="fl"'+lazy+'>');				
 			}
 			else if($("#dialog-media-target").val() == "bg")// Modification d'un fond
 			{
@@ -2441,7 +2441,7 @@ $(function()
 	{
 		var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
-		$(this).replaceWith('<img src="'+ $(this).data('preview') +'" width="'+$(this).attr('width')+'" height="'+$(this).attr('height')+'"'+lazy+'>');
+		$(this).replaceWith('<img src="'+ $(this).data('preview') +'" alt="'+($(this).attr('alt')?$(this).attr('alt'):'')+'" width="'+$(this).attr('width')+'" height="'+$(this).attr('height')+'"'+lazy+'>');
 
 		$(".video.play").removeClass("play");
 	});
@@ -3238,8 +3238,8 @@ $(function()
 
 			// Affiche la liste des medias
 			$.each(medias_clean, function(media, type) {
-				if(type == "img") $(".dialog-del ul").append("<li><label for=\""+ media +"\"><img src=\""+ media +"\" title=\""+ media +"\"></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
-				else $(".dialog-del ul").append("<li><label for=\""+ media +"\"><i class='fa fa-fw fa-doc biggest' title=\""+ media +"\"></i></label> <input type='checkbox' class='del-media' id=\""+ media +"\"></li>");
+				if(type == "img") $(".dialog-del ul").append('<li><label for="'+ media +'"><img src="'+ media +'" title="'+ media +'"></label> <input type="checkbox" class="del-media" id="'+ media +'"></li>');
+				else $(".dialog-del ul").append('<li><label for="'+ media +'"><i class="fa fa-fw fa-doc biggest" title="'+ media +'"></i></label> <input type="checkbox" class="del-media" id="'+ media +'"></li>');
 			});
 
 			// Au click sur la checkbox générale on coche tous les médias ont supprimé
