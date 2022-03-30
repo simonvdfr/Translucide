@@ -541,7 +541,7 @@ $(function()
 
 
 	// MENU BURGER
-	// @todo: bloquer le focus dans le layer du menu ?
+	navigation_keydown = false;
 	function toggleBurger() 
 	{
 		document.body.classList.toggle('responsive-nav');
@@ -559,9 +559,29 @@ $(function()
 
 		// Focus a la fermeture sur le bouton d'ouverture
 		if(burgerExpand == 'false') $(".burger").focus();
+		else if(!navigation_keydown)
+		{
+			navigation_keydown = true;
+
+			// On est sur le burger et shift+tab pour remonter => on va sur le dernier élément de la nav
+			document.querySelector(".burger.active").addEventListener("keydown", function(event) {
+				if(burgerExpand == 'true' && event.keyCode === 9 && event.shiftKey) {
+					event.preventDefault();
+					document.querySelector("#main-navigation li:last-child a").focus();
+				}
+			}, false);
+
+			// On est le dernier élément de la nav et tab => on focus sur le bouton pour fermer
+			document.querySelector("#main-navigation li:last-child > a").addEventListener("keydown", function(event) {
+				if(burgerExpand == 'true' && event.keyCode === 9 && !event.shiftKey) {
+					event.preventDefault();
+					document.querySelector(".burger.active").focus();
+				}
+			}, false);
+		}
 		
 		// Fermeture si echap
-		$(document).keydown(function(event) { 
+		document.addEventListener("keydown", function(event) { 
 			if(burgerExpand == 'true' && event.keyCode === 27) toggleBurger();
 		});
 	}
