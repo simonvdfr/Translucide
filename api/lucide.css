@@ -511,6 +511,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	    font-family: FontAwesome;
 	    content: "\f1dd";
 		opacity: .6;
+		padding-left: 0.2rem;
 	}
 
 	.editable-media[placeholder]:before { 
