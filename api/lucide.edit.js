@@ -1328,6 +1328,7 @@ img_check = function(file)
 				imgs[src] = {};
 				imgs[src]['type'] = 'img';
 
+
 				// Taille dans la dom
 				imgs[src]['width'] = $(this)[0].width;//clientWidth
 				imgs[src]['height'] = $(this)[0].height;
@@ -1370,53 +1371,57 @@ img_check = function(file)
 				// extraction de l'Extention
 				var ext = /(?:\.([^.]+))?$/.exec(src.split("?")[0])[1];
 
-				// extraction de la Taille
-				var size = filesize(src.split("?")[0]);
-
-				// Si Taille d'image
-				if(!isNaN(size))
+				// c'est bien une image et pas un svg
+				if(ext != "svg")
 				{
-					imgs[src]['size'] = size;
+					// extraction de la Taille
+					var size = filesize(src.split("?")[0]);
 
-					// total des poids d'image
-					imgs_size = imgs_size + size;
-
-					// Image dans le contenu
-					if(img.type == 'img')
+					// Si Taille d'image
+					if(!isNaN(size))
 					{
-						// Vérifie la taille de l'image pour proposer une optimisation
-						var widthRatio = (img.width / img.naturalWidth) * 100;
-						var heightRatio = (img.height / img.naturalHeight) * 100;
+						imgs[src]['size'] = size;
 
-						// Image + grande que la zone afficher => Redimentionnement
-						if(widthRatio < 80 || heightRatio < 80)
-							optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
-					}
+						// total des poids d'image
+						imgs_size = imgs_size + size;
 
-					// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
-					if(ext == 'png' && size > img_green) {
-						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+						// Image dans le contenu
+						if(img.type == 'img')
+						{
+							// Vérifie la taille de l'image pour proposer une optimisation
+							var widthRatio = (img.width / img.naturalWidth) * 100;
+							var heightRatio = (img.height / img.naturalHeight) * 100;
+
+							// Image + grande que la zone afficher => Redimentionnement
+							if(widthRatio < 80 || heightRatio < 80)
+								optimize = "<a href='javascript:void(0)' onclick=\"img_optim('resize', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Resize")+"</a> ";
+						}
+
+						// Si c'est un png & lourd => Conversion en jpg (alpha => blanc)
+						if(ext == 'png' && size > img_green) {
+							optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('tojpg', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" jpg</a> ";
+							
+							// Si c'est un png & lourd & option webp => Conversion en webp (alpha conservé)
+							if(typeof towebp != 'undefined') 
+								optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('towebp', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" webp</a> ";
+						}
+
 						
-						// Si c'est un png & lourd & option webp => Conversion en webp (alpha conservé)
-						if(typeof towebp != 'undefined') 
-							optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('towebp', this)\" class='bt vam' style='padding: 0 .5rem'>"+__("Convert to")+" webp</a> ";
+
+						// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
+						/*if(ext == 'jpg' && size > img_warning)
+							optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
+
+						// Couleur de vigilance
+						if(size <= img_green) var imgcolor = 'green';
+						else if(size > img_green && size < img_warning) var imgcolor = 'orange';
+						else if(size >= img_warning) var imgcolor = 'red';
+
+						// Affichage
+						$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+
+						++num;
 					}
-
-					
-
-					// Si jpg & lourd => compression //@todo preview avec choix du taux de compression
-					/*if(ext == 'jpg' && size > img_warning)
-						optimize+= "<a href='javascript:void(0)' onclick=\"img_optim('compress', this)\" class='bt small vam' style='padding: 0 .5rem'>"+__("Compress")+"</a> ";*/
-
-					// Couleur de vigilance
-					if(size <= img_green) var imgcolor = 'green';
-					else if(size > img_green && size < img_warning) var imgcolor = 'orange';
-					else if(size >= img_warning) var imgcolor = 'red';
-
-					// Affichage
-					$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
-
-					++num;
 				}
 			}
 
@@ -2122,14 +2127,84 @@ $(function()
 		});
 	}	
 
+	// Focus dans un élément vide
+	empty_focus = function(selector) {
+		range = document.createRange();
+		range.selectNodeContents(selector);
+		range.collapse(false);
+		selection = window.getSelection();
+		selection.removeAllRanges();
+		selection.addRange(range);
+	}
+
 	// Nétoie un champ éditable des <br> <p> <div> vide
 	clean_editable = function(memo_focus) {
 		var clean = ['<br>', '<p><br></p>', '<div><br></div>'];
 		if($.inArray($(memo_focus).html(), clean) != -1) $(memo_focus).html('');
 	}
 
+	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
+	clean_highlight = function(selector) {
+		if(selector.prev().hasClass("highlight")) {
+			console.log("Clean highlight")
+			selector.removeAttr("class");
+		}
+	}
+
+	// Si juste un <p> ou <div> avec un <br> => on remplace par un <div> vide avec une marge basse, non vocalisé
+	clean_br = function(selector) {
+		if(selector.html() == "<br>" || selector.html() == "") {
+			console.log("Change BR")
+			selector.replaceWith($('<div class="pbm"></div>'));
+		}
+	}
+
+	// Transforme les <div> en <p>
+	clean_div = function(selector) {
+		if(selector.prop("tagName") == "DIV"){
+			console.log("Change DIV");
+
+			var sel = window.getSelection();// Position du curseur (caret)
+			var memo_offset = sel.focusOffset;// Numéro de la position
+
+			// Si on est sur une ligne sans HTML autour on ajoute un <p>
+			if(selector.hasClass("editable"))
+			{
+				if(sel.anchorNode.nodeValue)
+				{
+					var p = document.createElement("p");// créer un <p>
+					p.innerHTML = sel.anchorNode.nodeValue;// ajoute le contenu au nouveau <p>
+					sel.anchorNode.parentNode.insertBefore(p, sel.anchorNode.nextSibling);// ajoute le nouveau p après le contenu en cours
+					sel.anchorNode.nodeValue = '';// supp le contenu en cours
+				}
+			}
+			else
+			{
+				// Replace par un <p>
+				selector.replaceWith(p = $('<p>' + selector.html() + '</p>'));
+				p = p[0];
+			}
+
+			// Repositionne le curseur
+			setTimeout(function () { 
+				if(p)
+				{
+					if(memo_offset == 0) {
+						console.log("empty_focus");
+						empty_focus(p);
+					}
+					else {
+						console.log("collapse");
+						window.getSelection().collapse(p.firstChild, memo_offset);
+					}
+				}
+			}, 0);
+			
+		}
+	}
+
 	// Si contenu vide on met un <p>, seulement pour les div ... pas pour les h1 ...
-	add_paragraph = function(memo_focus)
+	init_paragraph = function(memo_focus)
 	{
 		// Nétoie le champ
 		clean_editable(memo_focus);
@@ -2140,12 +2215,7 @@ $(function()
 			$(memo_focus).html("<p></p>");// append html
 
 			// Pour bug Firefox on positionne le curseur bien à la fin dans le <p>
-			range = document.createRange();
-			range.selectNodeContents($('p', memo_focus)[0]);
-			range.collapse(false);
-			selection = window.getSelection();
-			selection.removeAllRanges();
-			selection.addRange(range);
+			empty_focus($('p', memo_focus)[0]);
 
 			// Ajout du placeholder|id sur le <p> vide
 			$("style:first").append('#'+$(memo_focus).attr("id")+' p:empty:before {content: "'+($(memo_focus).attr("placeholder") || $(memo_focus).attr("id"))+'";}');
@@ -2164,7 +2234,7 @@ $(function()
 		//@todo supp ? car finalement on ajoute le <p> au focus et keyup
 		// Ajoute un paragraphe si champs vide au lancement de l'edition
 		/*$(".editable").each(function() {
-			if($(this).html().length == 0) add_paragraph(this);
+			if($(this).html().length == 0) init_paragraph(this);
 		});*/
 		
 		// Action sur les zone éditable
@@ -2172,8 +2242,8 @@ $(function()
 			"focus.editable": function() {// On positionne la toolbox
 				memo_focus = this;// Pour memo le focus en cours
 
-				// Ajoute un <p>
-				add_paragraph(this);
+				// Ajoute un <p> si vide
+				init_paragraph(this);
 			},
 			"blur.editable": function() {
 				if($("#txt-tool:not(:hover)").val()=="") {
@@ -2197,15 +2267,28 @@ $(function()
 				memo_img = null;
 				img_leave();// Raz Propriétés image
 			},			
-			"keyup.editable": function() {// Mémorise la position du curseur
+			"keyup.editable": function(event) {// Mémorise la position du curseur
 
-				// Ajoute un <p>
-				add_paragraph(this);
+				// Ajoute un <p> si vide
+				init_paragraph(this);
 
 				memo_selection = window.getSelection();				
 				if(memo_selection.anchorNode) {
 					memo_range = memo_selection.getRangeAt(0);
 					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
+				}
+
+				if(!$(this).hasClass("view-source"))
+				{					
+					// Constrole les saut de ligne vide // enter = 13 | up = 38 | down : 40
+					if(event.keyCode == 13 || event.keyCode == 40) clean_br($(memo_node).prev());
+					if(event.keyCode == 38) clean_br($(memo_node).next());
+
+					// Clean les highlight
+					if(event.keyCode == 13) clean_highlight($(memo_node));
+
+					// Replace les <div> par des <p>
+					if($(memo_node).prop("tagName") == "DIV") clean_div($(memo_node));						
 				}
 			},
 			"click.editable": function(event){// Désactive les ouvertures de liens sous ie

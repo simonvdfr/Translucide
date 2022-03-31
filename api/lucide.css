@@ -507,7 +507,9 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	}
 
 	[contenteditable=true] p:empty:before { 
-		content: "Paragraphe";
+		/* content: "Paragraphe"; */
+	    font-family: FontAwesome;
+	    content: "\f1dd";
 		opacity: .6;
 	}
 
