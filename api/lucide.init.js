@@ -559,8 +559,9 @@ $(function()
 
 		// Focus a la fermeture sur le bouton d'ouverture
 		if(burgerExpand == 'false') $(".burger").focus();
-		else if(!navigation_keydown)
+		/*else if(!navigation_keydown)
 		{
+			// up = 38 | down : 40 | tab : 9
 			navigation_keydown = true;
 
 			// On est sur le burger et shift+tab pour remonter => on va sur le dernier élément de la nav
@@ -578,7 +579,7 @@ $(function()
 					document.querySelector(".burger.active").focus();
 				}
 			}, false);
-		}
+		}*/
 		
 		// Fermeture si echap
 		document.addEventListener("keydown", function(event) { 
@@ -591,8 +592,8 @@ $(function()
 	burger && (burger.onclick = function() { toggleBurger(); });
 
 	// Ferme le menu si on click sur l'overlay gris du fond
-	var responsiveOverlay = document.querySelector(".responsive-overlay");
-	responsiveOverlay && (responsiveOverlay.onclick = function() { toggleBurger(); });
+	//var responsiveOverlay = document.querySelector(".responsive-overlay");
+	//responsiveOverlay && (responsiveOverlay.onclick = function() { toggleBurger(); });
 });
 
 
