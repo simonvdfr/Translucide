@@ -1006,7 +1006,7 @@ get_file = function(id)
 			$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
 	}
 	else// Insertion du lien vers le fichier dans bloc texte
-		exec_tool("insertHTML", "<a href=\""+ path + $("#"+id).attr("data-media") +"\">"+ $("#"+id).attr("data-media").split('/').pop() +"</a>");
+		exec_tool("insertHTML", '<a href="'+ path + $("#"+id).attr("data-media") +'">'+ $("#"+id).attr("data-media").split('/').pop() +' ('+ $("#"+id+" .infos").text() +')</a>');
 
 	// Fermeture de la dialog
 	$(".dialog-media").dialog("close");
