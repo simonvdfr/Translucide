@@ -199,6 +199,10 @@ $GLOBALS['pwd_hash_loop'] = '';
 $GLOBALS['security'] = 'medium';
 
 
+// Vérifie que les fichiers uploadés ne contiennent pas des caractères susceptibles d'être des codes exécutables pour des hacks => A utiliser si compte public actif
+$GLOBALS['file_check_hack'] = false;
+
+
 // Temps d'expiration des sessions de connexion
 $GLOBALS['session_expiration'] = 60*60*24*30;
 

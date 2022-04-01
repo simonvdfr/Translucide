@@ -1136,12 +1136,16 @@ function file_check($file)
 	// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
 	if(in_array($file_infos['mime'], $GLOBALS['mime_supported'])) 
 	{
-		// Le fichier tmp ne contient pas de php ou de javascript
-		if(!preg_match("/<\?php|<\? |<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']), $matches)) 
-			return true;
-		else 
-			return false;
-			//print_r($matches);
+		if(@$GLOBALS['file_check_hack'])
+		{
+			// Le fichier tmp ne contient pas de php ou de javascript
+			if(!preg_match("/<\?php|<\? |<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']), $matches)) 
+				return true;
+			else 
+				return false;
+				//print_r($matches);
+		}
+		else return true;
 	}
 	else return false;
 }
