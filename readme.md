@@ -25,7 +25,10 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 - décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
 - décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
 
-### Configuration
+### Prérequis
+Dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`. Il faut que les extensions PHP suivantes soient installées : php-mbstring, php-mysql, php-curl et php-gd.
+
+### Configurations spécifiques
 #### Couleurs sur les textes
 Dans le fichier `config.php`, vous pouvez activer les couleurs dans les outils d'édition (variable `$GLOBALS['toolbox']`), après il faut dire combien de class vous avez dans votre `style.css` dans la variable `$GLOBALS['Nbcolor'] = 2;`
 Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
@@ -33,9 +36,6 @@ Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 .color-1 { color: red; }
 .color-2 { color: blue; }
 ~~~~
-
-### Prérequis
-Dans la configuration de PHP short_open_tag doit être en On `short_open_tag = On`. Il faut que les extensions PHP suivantes soient installées : php-mbstring, php-mysql, php-curl et php-gd.
 
 ## Premier pas
 - Descendez tout en bas du site, sur la gauche doit apparaître un bouton avec un petit crayon pour éditer la page courante, au survol de ce dernier un autre bouton `+` apparaît pour ajouter une page. Choisissez l'onglet correspondant à votre type de contenu, choisissez la template souhaitée dans le menu déroulant et saisissez le nom de la page.
