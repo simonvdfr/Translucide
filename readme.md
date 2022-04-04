@@ -26,7 +26,7 @@ Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, gé
 - décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
 
 ### Configuration
-### Couleurs sur les textes
+#### Couleurs sur les textes
 Dans le fichier `config.php`, vous pouvez activer les couleurs dans les outils d'édition (variable `$GLOBALS['toolbox']`), après il faut dire combien de class vous avez dans votre `style.css` dans la variable `$GLOBALS['Nbcolor'] = 2;`
 Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 ~~~~
