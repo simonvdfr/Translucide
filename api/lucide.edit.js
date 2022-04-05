@@ -2500,7 +2500,7 @@ $(function()
 			paste = paste.replace(/\n/gi, "<br>");
 
 			// Clean les tags en gardant certain élément de mise en page //@todo voir le cas des <p></p>
-			paste = strip_tags(paste, "<a></a><b><b/><i></i><h1></h1><h2></h2><h3></h3><h4></h4><br>");
+			paste = strip_tags(paste, "<a></a><b><b/><i></i><h1></h1><h2></h2><h3></h3><h4></h4><ul></ul><li></li><br>");
 		}
 
 		// Insertion dans le contenu insertHTML insertText
