@@ -265,8 +265,8 @@ $GLOBALS['bt_edit'] = true;
 $GLOBALS['bt_top'] = false;
 
 
-// Raccourci clavier
-$GLOBALS['shortcut'] = true;
+// Raccourci clavier pour une administration rapide
+$GLOBALS['shortcut'] = false;
 
 
 // Type mime supporté pour l'upload
