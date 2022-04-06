@@ -46,6 +46,8 @@ Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 - <kbd>ctrl + e</kbd>Lance le mode édition
 
 ### Raccourcis en mode édition
+Pour qu'il soit fonctionnel vous devez modifier dans `config.php` la variable `$GLOBALS['shortcut'] = true;`
+
 - <kbd>ctrl + s</kbd> Sauvegarde les changements
 - <kbd>ctrl + q</kbd> Change le niveau d'activation de la page
 - <kbd>ctrl + z</kbd> Annule la dernière action dans les blocs textes
@@ -66,6 +68,7 @@ Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 		- La class `editable-hidden` permet d'afficher le contenu en mode édition et de le cacher en mode vue
 	- placeholder : permet de mettre un texte plus parlant que le nom de la zone pour l'utilisateur qui aura à ajouter des contenus
 	- lazy : les images qui seront ajoutées depuis la médiathèque dans cette zone éditable auront l'option qui permet de charger en lazyloading (chargement de l'image uniquement si elle est visible dans l'écran)
+	- A noter qu'il existe des alias à cette fonction qui permettent de créer rapidement des blocs editable avec un tag spécifique comme `h1("nom-de-la-zone", "class")`, `h2()`, `h3()`, `span()`
 
 - `media("nom-de-la-zone" [,'100x100'])` L'argument final est optionnel, il force une taille
 	- On peut ajouter plus d'arguments `media("nom-de-la-zone", array("dir" => "product/1/", "size" => "300", "class" => "fl mal", "lazy" => true))`. Ici par exemple on spécifie un dossier destination pour le media (dir), une taille (size), une classe (class), ou encore que l'image se chargera en lazyloading
