@@ -1130,7 +1130,7 @@ function logout($redirect = null)
 /********** IMAGE **********/
 
 // Verifie que le fichier et supporter et pas de hack
-function file_check($file)
+function file_check($file, $force_file_check_hack = false)
 {
 	$finfo = finfo_open(FILEINFO_MIME_TYPE);
 	$file_infos['mime'] = finfo_file($finfo, $_FILES[$file]['tmp_name']);
@@ -1139,7 +1139,7 @@ function file_check($file)
 	// Vérifie que le type mime est supporté (Hack protection : contre les mauvais mimes types) 
 	if(in_array($file_infos['mime'], $GLOBALS['mime_supported'])) 
 	{
-		if(@$GLOBALS['file_check_hack'])
+		if(@$GLOBALS['file_check_hack'] or $force_file_check_hack)
 		{
 			// Le fichier tmp ne contient pas de php ou de javascript
 			if(!preg_match("/<\?php|<\? |<\?=|<scr/", file_get_contents($_FILES[$file]['tmp_name']), $matches)) 
