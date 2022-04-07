@@ -23,9 +23,12 @@ if(!isset($_SESSION))
 
 // Fixe la langue
 if(strstr($_SERVER['SERVER_NAME'], 'domaine.com')) 
-	$lang = $_SESSION['lang'] = "en";
+	$lang = $_SESSION['lang'] = 'en';
 else
-	$lang = $_SESSION['lang'] = "fr";
+	$lang = $_SESSION['lang'] = 'fr';
+
+// Langue alternative si une traduction n'existe pas
+$GLOBALS['lang_alt'] = 'en';
 
 
 // Définition de la zone horaire

@@ -262,6 +262,9 @@ function __($singulier, $pluriel = "", $num = 0)
 		// Si une traduction existe
 		if(isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']]))
 			return $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang']];
+		// Si une langue alternative est définie et qu'une traduction existe
+		elseif(isset($GLOBALS['lang_alt']) and isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang_alt']]))
+			return $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang_alt']];
 		else
 			return $txt;//utf8_encode
 	}
