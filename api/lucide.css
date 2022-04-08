@@ -377,7 +377,11 @@ nav ul li i.fa-cancel {
 }
 	#add-nav:hover { opacity: 1 !important; }
 
-	#add-nav .tooltip { min-width: 210px; }
+	#add-nav .tooltip { 
+		min-width: 210px;
+		max-height: 300px;
+		overflow-y: auto;
+	}
 
 	#add-nav ul { 
 		border: none;
