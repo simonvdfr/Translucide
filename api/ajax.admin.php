@@ -96,7 +96,7 @@ switch($_GET['mode'])
 									<div>
 										<select id="tpl">
 											<?php 
-											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
+											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
 											foreach($scandir as $cle => $filename)
 											{			
 												$filename = pathinfo($filename, PATHINFO_FILENAME);
@@ -177,7 +177,7 @@ switch($_GET['mode'])
 
 						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable		
 						var script = document.createElement('script');
-						script.src = path+"api/lucide.edit.js?<?=$GLOBALS['cache']?>";
+						script.src = "<?=$GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'].'api/lucide.edit.js?'.$GLOBALS['cache']?>";
 						document.body.appendChild(script);		
 
 					},
@@ -239,7 +239,7 @@ switch($_GET['mode'])
 					<select id="tpl" required class="w30">
 						<option value=""><?php _e("Select template")?></option>
 						<?php 
-						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
+						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
 						foreach($scandir as $cle => $filename)
 						{			
 							$pathinfo = pathinfo($filename);
@@ -856,7 +856,7 @@ switch($_GET['mode'])
 			// On a demandé la SUPPRESSION DES FICHIERS liées au contenu
 			foreach($_POST['medias'] as $cle => $file) {
 				// strtok : Supprime les arguments après l'extension (timer...)
-				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($file, "?")));
+				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier'].utf8_decode(strtok($file, "?")));
 			}
 		}
 
@@ -958,7 +958,7 @@ switch($_GET['mode'])
 
 
 		// LES MÉDIAS
-		$full_path = $GLOBALS['path'].$GLOBALS['media_dir'].'/'.(@$_GET['dir']?$_GET['dir'].'/':'');
+		$full_path = $GLOBALS['sous-dossier'].$GLOBALS['media_dir'].'/'.(@$_GET['dir']?$_GET['dir'].'/':'');
 		$dir = $_SERVER['DOCUMENT_ROOT'].$full_path;
 
 		// Le dossier existe
@@ -1429,7 +1429,7 @@ switch($_GET['mode'])
 		if(isset($_GET['filter']) and  $_GET['filter'] == 'resize') $subfolder .= 'resize/';
 		if(isset($_GET['filter']) and  $_GET['filter'] == 'dir' and isset($_GET['dir'])) $subfolder .= $_GET['dir'].'/';
 
-		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].$GLOBALS['media_dir'].'/'. $subfolder;
+		$dir = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier'].$GLOBALS['media_dir'].'/'. $subfolder;
 
 		// Le dossier existe
 		if(is_dir($dir))
@@ -1643,7 +1643,7 @@ switch($_GET['mode'])
 
 		// @todo Nettoyer l'URL de la request pour éviter des suppressions hors dossier médias
 
-		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
+		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier'].utf8_decode(strtok($_REQUEST['file'], "?")));
 		
 	break;
 
@@ -1656,7 +1656,7 @@ switch($_GET['mode'])
 		else $dir = null;
 		
 		// On supprime les ? qui pourrait gêner à la récupération de l'image
-		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].strtok($_POST['img'], "?");
+		$file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier'].strtok($_POST['img'], "?");
 
 		// Option crop, convert, compress
 		if(@$_POST['crop'] == 'true') $option = 'crop';
@@ -1697,7 +1697,7 @@ switch($_GET['mode'])
 		else $dir = null;
 
 		$src_file = $GLOBALS['media_dir'].'/'. ($dir?$dir.'/':'') . $filename;
-		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'] . $src_file;
+		$root_file = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['sous-dossier'] . $src_file;
 
 		// Check si le fichier est déjà sur le serveur
 		if(file_exists($root_file))

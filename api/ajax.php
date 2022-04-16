@@ -123,7 +123,7 @@ switch($_GET['mode'])
 			<script src="lucide.init<?=$GLOBALS['min']?>.js"></script>
 			
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
-			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
+			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
 					<script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>admin.init.js"></script>
 			<?php }?>
 
