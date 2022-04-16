@@ -166,7 +166,7 @@ server {
         listen 80 ;
         listen [: :]:80 ;
 
-        root /var/www/html/ ;
+        root /var/www/ ;
 
         # Default index
         index index.php  ;
@@ -212,6 +212,7 @@ server {
         listen 80 ;
         listen [: :]:80 ;
 
+	root /var/wwww/;
 	server_name nomededomaine.com ;
 
     # N'autorisez pas l'accès aux fichiers point (comme .htaccess)
