@@ -158,3 +158,101 @@ Le processus est plus fait pour qu'un graphiste|intégrateur ou/et un développe
 
 ### Est-il multiplate-forme et responsive ?
 Autant que possible ! Nous utilisons <a href="https://www.browserstack.com">BrowserStack</a> pour faire nos tests.
+
+### Comment utiliser Translucide avec Nginx
+Voici un fichier de configuration nginx dont vous pouvez vous inspirer si vous souhaitez utiliser Translucide à la racine de votre nom de domaine:
+```
+server {
+        listen 80 ;
+        listen [: :]:80 ;
+
+        root /var/www/html/ ;
+
+        # Default index
+        index index.php  ;
+
+        server_name nomededomaine.com ;
+
+        # N'autorisez pas l'accès aux fichiers point (comme .htaccess)
+        location ~ /\. {
+                deny all ;
+        }
+	
+	# Prevent useless logs
+	location = /favicon.ico {
+		log_not_found off;
+		access_log off;
+	}
+	location = /robots.txt {
+		allow all;
+		log_not_found off;
+		access_log off;
+	}
+
+        location / {
+                try_files $uri $uri/ /index.php?$args ;
+        }
+
+        # Passer les scripts PHP au serveur FastCGI
+        location ~ \.php$ {
+         include snippets/fastcgi-php.conf ;
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        fastcgi_pass unix:/var/run/php/php7.3-fpm-my_webapp.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param REMOTE_USER $remote_user;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $request_filename;
+        }
+}
+```
+Voici un fichier de configuration nginx dont vous pouvez vous inspirer si vous ne souhaitez pas utiliser Translucide à la racine de votre nom de domaine mais dans nomededomaine/site/  : 
+```
+server {
+        listen 80 ;
+        listen [: :]:80 ;
+
+	server_name nomededomaine.com ;
+
+    # N'autorisez pas l'accès aux fichiers point (comme .htaccess)
+    location ~ /\. {
+        deny all ;
+    }
+	
+location @handler {
+  rewrite ^/(.*)$ /site/index.php?^$1 last;
+}
+
+location /site/ {
+
+    # Path to source
+    alias /var/www/html/;
+
+    # Default index and catch-all
+    index index.php;
+    try_files $uri $uri/ @handler;
+
+    # Prevent useless logs
+    location = /site/favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+    location = /site/robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    # Execute and serve PHP files
+    location ~ [^/]\.php(/|$) {
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        fastcgi_pass unix:/var/run/php/php7.3-fpm-my_webapp.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param REMOTE_USER $remote_user;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $request_filename;
+    }
+}
+}
+```
