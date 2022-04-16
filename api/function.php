@@ -224,7 +224,7 @@ function load_translation($id)
 	}
 
 	// On récupère le fichier de traduction
-	@include($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].$translation_file);
+	@include($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier'].$translation_file);
 
 	// Ajoute la traduction au tableau des traductions
 	if(isset($add_translation)) add_translation($add_translation);
@@ -1171,7 +1171,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	$source_ext = pathinfo($source_file, PATHINFO_EXTENSION);
 
 	// file_name : on récup le nom du fichier, on lui supp l'extension (qui ne passe pas l'encode), on l'encode
-	$root_dir = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['path'];
+	$root_dir = $_SERVER['DOCUMENT_ROOT'] . $GLOBALS['sous-dossier'];
 	$file_name = encode(basename(basename($source_file), "." . $source_ext));
 
 	// Dossier final d'image redimensionnée
@@ -1371,7 +1371,7 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 		unlink($root_file);
 
 		// La maxsize devient l'image root (explode: supp le timer)
-		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];
+		$root_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier'].explode("?", $src_file)[0];
 	}
 	
 
@@ -1384,7 +1384,7 @@ function img_process($root_file, $dest_dir = null, $new_width = null, $new_heigh
 	}
 	else// Pas de redimensionnement
 	{
-		$dest_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].explode("?", $src_file)[0];
+		$dest_file = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier'].explode("?", $src_file)[0];
 
 		// Le fichier destination est demandé dans un endroit different du fichier source
 		if($root_file != $dest_file)
