@@ -206,7 +206,7 @@ server {
         }
 }
 ```
-Voici un fichier de configuration nginx dont vous pouvez vous inspirer si vous ne souhaitez pas utiliser Translucide à la racine de votre nom de domaine mais dans nomededomaine/site/  : 
+Voici un fichier de configuration nginx dont vous pouvez vous inspirer si vous ne souhaitez pas utiliser Translucide à la racine de votre nom de domaine mais accessible par nomededomaine/site/  : 
 ```
 server {
         listen 80 ;
@@ -220,9 +220,8 @@ server {
         deny all ;
     }
 	
-location @handler {
-  rewrite ^/(.*)$ /site/index.php?^$1 last;
-}
+ rewrite ^/site$ /site/ permanent;
+
 
 location /site/ {
 
@@ -231,7 +230,17 @@ location /site/ {
 
     # Default index and catch-all
     index index.php;
-    try_files $uri $uri/ @handler;
+    
+    if (!-e $request_filename)
+    {
+           rewrite ^(.+)$ /site/index.php?q=$1 last;
+    }
+
+    # Force usage of https
+    if ($scheme = http) {
+          rewrite ^ https://$server_name$request_uri? permanent;
+    }
+
 
     # Prevent useless logs
     location = /site/favicon.ico {
