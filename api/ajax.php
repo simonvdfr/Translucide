@@ -47,13 +47,20 @@ switch($_GET['mode'])
 
 				<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-				<div class="mbs"><input type="email" id="email" placeholder="<?php _e("My email");?>" required class="w100"><span class="wrapper big bold">@</span></div>
+				<p class="mbm"><?_e("All fields are mandatory")?></p>
 
-				<input type="password" id="password" placeholder="<?php _e("My password");?>" required class="w100"><i class="fa fa-lock wrapper bigger"></i>
+				<label for="email">
+					<?php _e("My email");?>
+					(<?_e("Expected format" )?> : sophie.dupont@exemple.com)
+				</label>
+				<div class="mbm"><input type="email" id="email" autocomplete="email" required class="w100"><span class="wrapper big bold" aria-hidden="true">@</span></div>
+
+				<label for="password"><?php _e("My password");?></label>
+				<input type="password" id="password" autocomplete="current-password" required class="w100"><i class="fa fa-lock wrapper bigger" aria-hidden="true"></i>
 
 				<button class="bt internal fr mrn mtm pat">
 					<?php _e("Log in")?>
-					<i class="fa fa-key"></i>
+					<i class="fa fa-key" aria-hidden="true"></i>
 				</button>
 
 			</form>		
@@ -67,6 +74,9 @@ switch($_GET['mode'])
 		{
 			// Update les nonces dans la page courante pour éviter de perdre le nonce
 			$("#nonce").val('<?=$_SESSION['nonce']?>');
+
+			// Erreur en cas de mauvaise saisie du mail. Pour l'accessibilité
+			$('#email')[0].setCustomValidity("<?_e("Expected format" )?> : sophie.dupont@exemple.com");
 
 			// Login
 			$("#internal-login").submit(function(event) 

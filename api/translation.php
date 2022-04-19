@@ -41,6 +41,8 @@ $add_translation = array(
 	"See password" => array("fr" => "Voir le mot de passe"),
 	"Not a member yet ?" => array("fr" => "Pas encore membre ?"),
 	"Sign up" => array("fr" => "Inscrivez-vous"),
+	"All fields are mandatory" => array("fr" => "Tous les champs sont obligatoires"),
+	"Expected format" => array("fr" => "Format attendu"),
 
 
 	"List of contents" => array("fr" => "Liste des contenus"),

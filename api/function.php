@@ -1082,9 +1082,16 @@ function login($level = 'low', $auth = null, $quiet = null)
 							// Effet sur la dialog
 							$("#dialog-connect").dialog({
 								//modal: true, // Fond gris lors du login
+								width: 'auto',
 								minHeight: 0,
 								show: {effect: "fadeIn"},
 								//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
+								create: function() 
+								{	
+									// Change le title en H1 pour l'accessibilitée
+									$(".ui-dialog-title").attr("role","heading").attr("aria-level","1");
+								},
+								closeText: __("Close"),
 								close: function() {
 									$("#dialog-connect").remove();
 								}
