@@ -76,7 +76,7 @@ switch($_GET['mode'])
 			$("#nonce").val('<?=$_SESSION['nonce']?>');
 
 			// Erreur en cas de mauvaise saisie du mail. Pour l'accessibilité
-			$('#email')[0].setCustomValidity("<?_e("Expected format" )?> : sophie.dupont@exemple.com");
+			//$('#email')[0].setCustomValidity("<?_e("Expected format" )?> : sophie.dupont@exemple.com");
 
 			// Login
 			$("#internal-login").submit(function(event) 
