@@ -88,6 +88,18 @@ get_content = function(content)
 
 	// Contenu des champs éditables
 	$(document).find(content+" .editable:not(.global)").not("#main-navigation .editable").each(function() {
+
+		// Nettoie les <p> vides ou avec juste un <br>
+		$("p", this).each(function() {
+			if($(this).html() == "<br>" || $(this).html() == "")
+				$(this).replaceWith($('<div class="pbp"></div>'));			
+		});
+
+		// Duplique les figcaption dans un aria-label dans la figure
+		$("figcaption", this).each(function() {
+			$(this).closest("figure").attr("aria-label", $(this).text());
+		});
+
 		// Si on est en mode pour voir le code source
 		if($(this).hasClass("view-source")) var content_editable = $(this).text();
 		else var content_editable = $(this).html();
@@ -414,7 +426,7 @@ video = function()
 	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
 	{
 		// mqdefault hqdefault maxresdefault
-		exec_tool("insertHTML", '<figure class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
+		exec_tool("insertHTML", '<figure role="group" class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
 
 		$("figure .video").parent().attr('style','')
 
@@ -1139,7 +1151,7 @@ img_figure = function() {
 		// Ajoute la figure et le figcaption
 		$(memo_img).parent(".editable .ui-wrapper")
 	   		.after("<br>")// Pour pouvoir ajouter des contenus à la suite de la figure
-	    	.wrap("<figure class='"+img_class+"' />")
+	    	.wrap('<figure role="group" class="'+img_class+'" aria-label="'+ __("Subtitle") +'" />')
 	    	.after("<figcaption>"+ __("Subtitle") +"</figcaption>");
 	}
 }
@@ -2146,7 +2158,7 @@ $(function()
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
 	clean_highlight = function(selector) {
 		if(selector.prev().hasClass("highlight")) {
-			console.log("Clean highlight")
+			//console.log("Clean highlight")
 			selector.removeAttr("class");
 		}
 	}
@@ -2154,15 +2166,15 @@ $(function()
 	// Si juste un <p> ou <div> avec un <br> => on remplace par un <div> vide avec une marge basse, non vocalisé
 	clean_br = function(selector) {
 		if(selector.html() == "<br>" || selector.html() == "") {
-			console.log("Change BR")
-			selector.replaceWith($('<div class="pbm"></div>'));
+			//console.log("Change BR")
+			selector.replaceWith($('<div class="pbp"></div>'));
 		}
 	}
 
 	// Transforme les <div> en <p>
 	clean_div = function(selector) {
 		if(selector.prop("tagName") == "DIV"){
-			console.log("Change DIV");
+			//console.log("Change DIV");
 
 			var sel = window.getSelection();// Position du curseur (caret)
 			var memo_offset = sel.focusOffset;// Numéro de la position
@@ -2190,11 +2202,11 @@ $(function()
 				if(p)
 				{
 					if(memo_offset == 0) {
-						console.log("empty_focus");
+						//console.log("empty_focus");
 						empty_focus(p);
 					}
 					else {
-						console.log("collapse");
+						//console.log("collapse");
 						window.getSelection().collapse(p.firstChild, memo_offset);
 					}
 				}
@@ -2245,7 +2257,7 @@ $(function()
 				// Ajoute un <p> si vide
 				init_paragraph(this);
 			},
-			"blur.editable": function() {
+			"blur.editable": function() {// On clique hors du champ éditable
 				if($("#txt-tool:not(:hover)").val()=="") {
 					$("#txt-tool").hide();// ferme la toolbox
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
@@ -2281,8 +2293,9 @@ $(function()
 				if(!$(this).hasClass("view-source"))
 				{					
 					// Constrole les saut de ligne vide // enter = 13 | up = 38 | down : 40
-					if(event.keyCode == 13 || event.keyCode == 40) clean_br($(memo_node).prev());
-					if(event.keyCode == 38) clean_br($(memo_node).next());
+					// || event.keyCode == 40
+					if(event.keyCode == 13) clean_br($(memo_node).prev());
+					//if(event.keyCode == 38) clean_br($(memo_node).next());
 
 					// Clean les highlight
 					if(event.keyCode == 13) clean_highlight($(memo_node));
