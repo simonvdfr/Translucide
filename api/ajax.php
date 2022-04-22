@@ -75,8 +75,16 @@ switch($_GET['mode'])
 			// Update les nonces dans la page courante pour éviter de perdre le nonce
 			$("#nonce").val('<?=$_SESSION['nonce']?>');
 
-			// Erreur en cas de mauvaise saisie du mail. Pour l'accessibilité
-			//$('#email')[0].setCustomValidity("<?_e("Expected format" )?> : sophie.dupont@exemple.com");
+
+			// Message d'erreur en cas de mauvaise saisie du mail. Pour l'accessibilité
+			var email = document.getElementById("email");
+			email.addEventListener("invalid", function() {
+				email.setCustomValidity("<?_e("Expected format" )?> : dupont@exemple.com")
+			}, false);
+			email.addEventListener("input", function() {
+				email.setCustomValidity("");
+			}, false);
+
 
 			// Login
 			$("#internal-login").submit(function(event) 
