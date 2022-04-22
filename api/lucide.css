@@ -964,6 +964,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		background: rgba(241, 244, 247, 0.9) none repeat scroll 0 0;
 	} */
 
+.ui-dialog-content { border: none !important; }
+
 .ui-effects-transfer {
     border: 4px dashed #7AD2D9;
 	background: rgba(122, 210, 217, 0.2);
