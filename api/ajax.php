@@ -51,7 +51,7 @@ switch($_GET['mode'])
 
 				<label for="email">
 					<?php _e("My email");?>
-					(<?_e("Expected format" )?> : sophie.dupont@exemple.com)
+					(<?_e("Expected format" )?> : dupont@exemple.com)
 				</label>
 				<div class="mbm"><input type="email" id="email" autocomplete="email" required class="w100"><span class="wrapper big bold" aria-hidden="true">@</span></div>
 
@@ -79,7 +79,7 @@ switch($_GET['mode'])
 			// Message d'erreur en cas de mauvaise saisie du mail. Pour l'accessibilité
 			var email = document.getElementById("email");
 			email.addEventListener("invalid", function() {
-				email.setCustomValidity("<?_e("Expected format" )?> : dupont@exemple.com")
+				email.setCustomValidity("<?_e("Invalid email")?>. <?_e("Expected format")?> : dupont@exemple.com")
 			}, false);
 			email.addEventListener("input", function() {
 				email.setCustomValidity("");

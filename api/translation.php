@@ -43,6 +43,7 @@ $add_translation = array(
 	"Sign up" => array("fr" => "Inscrivez-vous"),
 	"All fields are mandatory" => array("fr" => "Tous les champs sont obligatoires"),
 	"Expected format" => array("fr" => "Format attendu"),
+	"Invalid email" => array("fr" => "E-mail invalide"),
 
 
 	"List of contents" => array("fr" => "Liste des contenus"),
