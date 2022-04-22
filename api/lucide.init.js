@@ -96,7 +96,7 @@ popin = function(txt, fadeout, mode, focus){
 
 	// Ajout de la croix pour fermer
 	if(mode == 'popin' || mode == 'error')
-		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
+		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"' aria-label='"+ __("Close") +"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
 		
 
 	// Fond gris
@@ -308,7 +308,7 @@ $(function()
 
 	// BOUTON D'ÉDITION ou de connexion si la page existe dans la base
 	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "pencil"; else var icon_edit = "key";// logé ou pas ?
-	if(typeof state !== 'undefined' && state) $("body").append("<button class='bt fixed edit' title='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam' aria-hidden='true'></i></button>");
+	if(typeof state !== 'undefined' && state) $("body").append("<button class='bt fixed edit' title='"+ __("Edit the content of the page") +"' aria-label='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam' aria-hidden='true'></i></button>");
 
 	// Bind le bouton d'édition
 	$(".bt.edit").click(function() 
@@ -325,7 +325,7 @@ $(function()
 
 
 	// BOUTON AJOUT de page/article
-	$("body").append("<button class='bt fixed add' title='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam' aria-hidden='true'></i></button>");
+	$("body").append("<button class='bt fixed add' title='"+ __("Add content") +"' aria-label='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam' aria-hidden='true'></i></button>");
 
 	// Bind le bouton d'ajout
 	$(".bt.add").click(function(){
@@ -391,7 +391,7 @@ $(function()
 
 	// PAGE DÉSACTIVÉ => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page") > 0) {
-		$("body").append("<button class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-attention vam no' aria-hidden='true'></i> "+ __("Activation status") +" : "+ __(state) +"</button>");
+		$("body").append("<button class='bt fixed construction bold' title=\""+ __("Visitors do not see this content") +"\" aria-label=\""+ __("Visitors do not see this content") +"\"><i class='fa fa-fw fa-attention vam no' aria-hidden='true'></i> "+ __("Activation status") +" : "+ __(state) +"</button>");
 		$(".bt.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 
@@ -401,7 +401,7 @@ $(function()
 	if(typeof bt_top !== 'undefined')
 	{
 		// Bouton pour remonter en haut au scroll
-		$("body").append("<button class='bt fixed top' title='"+ __("Back to Top") +"'><i class='fa fa-fw fa-up-open bigger' aria-hidden='true'></i></button>");	
+		$("body").append("<button class='bt fixed top' title='"+ __("Back to Top") +"' aria-label='"+ __("Back to Top") +"'><i class='fa fa-fw fa-up-open bigger' aria-hidden='true'></i></button>");	
 
 		// Smoothscroll to top
 		$(".bt.fixed.top").click(function() {
