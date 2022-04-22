@@ -346,10 +346,10 @@ exec_tool = function(command, value) {
 			value = "<i class='fa' aria-hidden='true'>&#x"+ value +";</i>";
 		}
 		
-		// Si alignement
-		if(/justify/.test(command)) {
+		// Si alignement // Ancienne méthode d'alignement 22-04-2022
+		if(/justify/.test(command))
 			$(memo_node).removeAttr("align").css("text-align","");
-		}
+
 
 		// Si Ajout d'une ancre
 		if(command == "CreateAnchor") { var command_source = command; command = "CreateLink"; }
@@ -362,7 +362,7 @@ exec_tool = function(command, value) {
 		// A sauvegarder	
 		tosave();
 
-		// Si on justify on supprime l'éventuel span intérieur
+		// Si on justify on supprime l'éventuel span intérieur // Ancienne méthode d'alignement 22-04-2022
 		if(/justify/.test(command))
 		{
 			// Désélectionne les alignements
@@ -653,13 +653,25 @@ class_bt = function(mode) {
 // Ajout/Suppression d'une class
 class_tool = function(theClass){
 	// Si on est déjà dans un élément avec la class demandé : on supp la class
-	if($(memo_node).closest("p, div").hasClass(theClass)){
-		$(memo_node).closest("p, div").removeClass(theClass);
-		$("#highlight").removeClass("checked");
+	if($(memo_node).closest("p, div, h2, h3, h4").hasClass(theClass))
+	{
+		$(memo_node).closest("p, div, h2, h3, h4").removeClass(theClass);
+		$("#tool-"+theClass).removeClass("checked");
 	}
-	else {
-		$(memo_node).closest("p, div").addClass(theClass);
-		$("#highlight").addClass("checked");
+	else 
+	{
+		// Si alignement => Supprime les alignement avant l'ajout du nouveau
+		if(["tl", "tc", "tr"].indexOf(theClass) > -1) 
+		{
+			$(memo_node).closest("p, div, h2, h3, h4").removeClass("tl tc tr");
+			$(memo_node).closest("p, div, h2, h3, h4").removeAttr("align").css("text-align","");// Ancien alignement
+
+			// Désélectionne les alignements
+			$("[class*='fa-align']").parent().removeClass("checked");	
+		}
+
+		$(memo_node).closest("p, div, h2, h3, h4").addClass(theClass);
+		$("#tool-"+theClass).addClass("checked");
 	}
 }
 
@@ -2040,19 +2052,19 @@ $(function()
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
 		if(typeof toolbox_highlight != 'undefined') 
-			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
-		if(typeof toolbox_justifyLeft != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyLeft')\" id='align-left'><i class='fa fa-fw fa-align-left'></i></button></li>";
+		if(typeof toolbox_justifyLeft != 'undefined')// justifyLeft
+			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl'><i class='fa fa-fw fa-align-left'></i></button></li>";
 
-		if(typeof toolbox_justifyCenter != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyCenter')\" id='align-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
+		if(typeof toolbox_justifyCenter != 'undefined')// justifyCenter
+			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc'><i class='fa fa-fw fa-align-center'></i></button></li>";
 
-		if(typeof toolbox_justifyRight != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyRight')\" id='align-right'><i class='fa fa-fw fa-align-right'></i></button></li>";
+		if(typeof toolbox_justifyRight != 'undefined')// justifyRight
+			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 		if(typeof toolbox_justifyFull != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
@@ -2406,8 +2418,8 @@ $(function()
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
 
-				if($(memo_node).closest("p, div").hasClass("highlight")) $("#txt-tool #highlight").addClass("checked");
-				else $("#txt-tool #highlight").removeClass("checked");
+				if($(memo_node).closest("p, div").hasClass("highlight")) $("#txt-tool #tool-highlight").addClass("checked");
+				else $("#txt-tool #tool-highlight").removeClass("checked");
 				
 				if(typeof toolbox_color != 'undefined')
 				if($(memo_node).is("em[class^=color-]")) {
@@ -2427,14 +2439,27 @@ $(function()
 				
 				var align = null;
 
-				// On cherche le type d'alignement si on est dans un bloc aligné avec les style
-				if($(memo_node).closest("div [style*='text-align']")[0]) var align = $(memo_node).closest("div [style*='text-align']").css("text-align");
+				// On cherche le type d'alignement si on est dans un bloc aligné avec les style // Ancienne méthode d'alignement 22-04-2022
+				if($(memo_node).closest("div [style*='text-align']")[0]) 
+					var align = $(memo_node).closest("div [style*='text-align']").css("text-align");
 				
-				// On cherche le type d'alignement si on est dans un bloc aligné avec align=
-				if($(memo_node).closest("div [align]")[0]) var align = $(memo_node).closest("div [align]").attr("align");
-								
+				// On cherche le type d'alignement si on est dans un bloc aligné avec align= // Ancienne méthode d'alignement 22-04-2022
+				if($(memo_node).closest("div [align]")[0]) 
+					var align = $(memo_node).closest("div [align]").attr("align");
+
+				// On cherche les aligements par class
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tl")) var align = "tl";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tc")) var align = "tc";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tr")) var align = "tr";
+
+				switch (align) {
+					case 'left': align = 'tl'; break;
+					case 'center': align = 'tc'; break;
+					case 'right': align = 'tr'; break;
+				}
+
 				// On check le bon alignement
-				if(align) $("#align-"+align).addClass("checked");
+				if(align) $("#tool-"+align).addClass("checked");
 
 
 				// Si on sélectionne un contenu
