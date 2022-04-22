@@ -91,7 +91,7 @@ popin = function(txt, fadeout, mode, focus){
 
 	
 	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' 
-	$("body").append("<div id='"+mode+"' role='"+role+"' tabindex='-1' class='pointer pam absolute tc' aria-label=\""+__("Information message")+"\">" + txt + "</div>");
+	$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-label=\""+__("Information message")+"\"><span role='"+role+"'>" + txt + "</span></div>");
 	var height = $("#"+mode).outerHeight();
 
 	// Ajout de la croix pour fermer
@@ -289,8 +289,8 @@ $(function()
 
 
 
-	// VIDEO .on("click",
-	$("a.video").on("click", function(event){
+	// VIDEO // Ancienne version non accessible 22/04/2022
+	/*$("a.video").on("click", function(event){
 		event.preventDefault();
 
 		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
@@ -300,6 +300,23 @@ $(function()
 
 		// Pour ne pas relancer la vidéo au clique
 		$(this).data("play", true).addClass("play");
+	});*/
+
+	$(".video input").on("click", function(event){
+		event.preventDefault();
+
+		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
+		if($(this).closest(".video").data("play") != true)
+		{
+			// Pour ne pas relancer la vidéo au clique
+			$(this).closest(".video").data("play", true).addClass("play");
+
+			var id_video = $(event.currentTarget).closest(".video").data("video");
+
+			$(event.currentTarget)
+				.replaceWith('<iframe src="https://www.youtube.com/embed/'+id_video+'?controls=1&rel=0&autoplay=1" title="'+$(event.currentTarget)[0].alt+'" data-preview="'+$(event.currentTarget).attr("src")+'" class="player-youtube" aria-describedby="desc-'+id_video+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+		}
+
 	});
 
 
