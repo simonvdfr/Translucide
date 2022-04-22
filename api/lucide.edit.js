@@ -87,15 +87,15 @@ get_content = function(content)
 	data[content_array] = {};
 
 	// Contenu des champs éditables
-	$(document).find(content+" .editable:not(.global)").not("#main-navigation .editable").each(function() {
-
-		// Nettoie les <p> vides ou avec juste un <br>
+	$(document).find(content+" .editable:not(.global)").not("#main-navigation .editable").each(function() 
+	{
+		// Nettoie les <p> vides ou avec juste un <br> // Accessibilité
 		$("p", this).each(function() {
 			if($(this).html() == "<br>" || $(this).html() == "")
 				$(this).replaceWith($('<div class="pbp"></div>'));			
 		});
 
-		// Duplique les figcaption dans un aria-label dans la figure
+		// Duplique les figcaption dans un aria-label dans la figure // Accessibilité
 		$("figcaption", this).each(function() {
 			$(this).closest("figure").attr("aria-label", $(this).text());
 		});
@@ -3091,6 +3091,29 @@ $(function()
 	// Si champs tag
 	if($(".editable-tag").length) 
 	{
+		// Si la liste de tag est dans un ul on l'aplatie
+		$(".editable-tag").each(function()
+		{
+			if($(this).prop("tagName") == "UL")
+			{
+				// Séparateur
+				separator = $(this).data("separator");// Si on en force un
+				if(!separator) separator = ", ";// Sinon celui par défaut
+
+				// Ajoute le séparateur
+				$("li:not(:last-child)", this).append(", ");
+
+				// Liste le contenu des li
+				var li_list = '';
+				$("li", this).each(function() {
+					li_list+= $(this).html();
+				});
+
+				// Remplace le contenu du ul par une liste textuelle
+				$(this).html(li_list);
+			}
+		});
+
 		// Transforme le champs tag en editable
 		$(".editable-tag").attr("contenteditable", "true");
 
