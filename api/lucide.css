@@ -316,10 +316,7 @@ header nav ul { position: relative; }
 		background-color: transparent;
 		box-shadow: none;
 	}
-	header nav li { 
-		position: relative;
-		white-space: nowrap;
-	}
+	header nav li { position: relative; }
 
 	header nav .burger.active + ul {
 		padding-top: 4.5rem;/* Pour que le menu en responsive soit bien en dessous de l'admin bar */
@@ -957,14 +954,18 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	border: none;
 	font-weight: normal;	
 }
+/* Pas accessible. A SUPP 19/04/22
 .ui-widget-content {
 	background: rgba(241, 244, 247, 0.8) none repeat scroll 0 0;
-    border: none !important; /* 1px solid rgba(220, 220, 220, 0.8) */
+    border: none !important;
 	transition: background .2s;
 }
 	.ui-widget-content:hover {
 		background: rgba(241, 244, 247, 0.9) none repeat scroll 0 0;
-	}
+	} */
+
+.ui-dialog-content { border: none !important; }
+
 .ui-effects-transfer {
     border: 4px dashed #7AD2D9;
 	background: rgba(122, 210, 217, 0.2);

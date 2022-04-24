@@ -32,6 +32,7 @@ add_translation({
 	"Add Language" : {"fr" : "Ajouter une langue"},		
 	"Change Language" : {"fr" : "Change la langue"},		
 	"Video" : {"fr" : "Vidéo"},		
+	"Show video" : {"fr" : "Afficher la vidéo"},	
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
 	"Anchor" : {"fr" : "Ancre"},		
@@ -87,7 +88,19 @@ get_content = function(content)
 	data[content_array] = {};
 
 	// Contenu des champs éditables
-	$(document).find(content+" .editable:not(.global)").not("#main-navigation .editable").each(function() {
+	$(document).find(content+" .editable:not(.global)").not("#main-navigation .editable").each(function() 
+	{
+		// Nettoie les <p> vides ou avec juste un <br> // Accessibilité
+		$("p", this).each(function() {
+			if($(this).html() == "<br>" || $(this).html() == "")
+				$(this).replaceWith($('<div class="pbp"></div>'));			
+		});
+
+		// Duplique les figcaption dans un aria-label dans la figure // Accessibilité
+		$("figcaption", this).each(function() {
+			$(this).closest("figure").attr("aria-label", $(this).text());
+		});
+
 		// Si on est en mode pour voir le code source
 		if($(this).hasClass("view-source")) var content_editable = $(this).text();
 		else var content_editable = $(this).html();
@@ -334,10 +347,10 @@ exec_tool = function(command, value) {
 			value = "<i class='fa' aria-hidden='true'>&#x"+ value +";</i>";
 		}
 		
-		// Si alignement
-		if(/justify/.test(command)) {
+		// Si alignement // Ancienne méthode d'alignement 22-04-2022
+		if(/justify/.test(command))
 			$(memo_node).removeAttr("align").css("text-align","");
-		}
+
 
 		// Si Ajout d'une ancre
 		if(command == "CreateAnchor") { var command_source = command; command = "CreateLink"; }
@@ -350,7 +363,7 @@ exec_tool = function(command, value) {
 		// A sauvegarder	
 		tosave();
 
-		// Si on justify on supprime l'éventuel span intérieur
+		// Si on justify on supprime l'éventuel span intérieur // Ancienne méthode d'alignement 22-04-2022
 		if(/justify/.test(command))
 		{
 			// Désélectionne les alignements
@@ -397,12 +410,12 @@ exec_tool = function(command, value) {
 
 
 // VIDEO
-// Ajoute une vidéo
+// Ajoute une vidéo (mqdefault hqdefault maxresdefault)
 video = function() 
 {
-	var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
-
 	var url_video = $('#txt-tool .option #video').val();
+
+	//var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
 	// #(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#
 	// var id_video = url_video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
@@ -413,10 +426,12 @@ video = function()
 	// Si ajout de lien
 	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
 	{
-		// mqdefault hqdefault maxresdefault
-		exec_tool("insertHTML", '<figure class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
+		// Ancienne version non accessible 22/04/2022
+		//exec_tool("insertHTML", '<figure role="group" class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
 
-		$("figure .video").parent().attr('style','')
+		exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><input type="image" src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" title="'+__("Show video")+'"><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+
+		//$("figure .video").parent().attr('style','');
 
 		tosave();
 	}
@@ -641,13 +656,25 @@ class_bt = function(mode) {
 // Ajout/Suppression d'une class
 class_tool = function(theClass){
 	// Si on est déjà dans un élément avec la class demandé : on supp la class
-	if($(memo_node).closest("p, div").hasClass(theClass)){
-		$(memo_node).closest("p, div").removeClass(theClass);
-		$("#highlight").removeClass("checked");
+	if($(memo_node).closest("p, div, h2, h3, h4").hasClass(theClass))
+	{
+		$(memo_node).closest("p, div, h2, h3, h4").removeClass(theClass);
+		$("#tool-"+theClass).removeClass("checked");
 	}
-	else {
-		$(memo_node).closest("p, div").addClass(theClass);
-		$("#highlight").addClass("checked");
+	else 
+	{
+		// Si alignement => Supprime les alignement avant l'ajout du nouveau
+		if(["tl", "tc", "tr"].indexOf(theClass) > -1) 
+		{
+			$(memo_node).closest("p, div, h2, h3, h4").removeClass("tl tc tr");
+			$(memo_node).closest("p, div, h2, h3, h4").removeAttr("align").css("text-align","");// Ancien alignement
+
+			// Désélectionne les alignements
+			$("[class*='fa-align']").parent().removeClass("checked");	
+		}
+
+		$(memo_node).closest("p, div, h2, h3, h4").addClass(theClass);
+		$("#tool-"+theClass).addClass("checked");
 	}
 }
 
@@ -1139,7 +1166,7 @@ img_figure = function() {
 		// Ajoute la figure et le figcaption
 		$(memo_img).parent(".editable .ui-wrapper")
 	   		.after("<br>")// Pour pouvoir ajouter des contenus à la suite de la figure
-	    	.wrap("<figure class='"+img_class+"' />")
+	    	.wrap('<figure role="group" class="'+img_class+'" aria-label="'+ __("Subtitle") +'" />')
 	    	.after("<figcaption>"+ __("Subtitle") +"</figcaption>");
 	}
 }
@@ -2028,19 +2055,19 @@ $(function()
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
 		if(typeof toolbox_highlight != 'undefined') 
-			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
-		if(typeof toolbox_justifyLeft != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyLeft')\" id='align-left'><i class='fa fa-fw fa-align-left'></i></button></li>";
+		if(typeof toolbox_justifyLeft != 'undefined')// justifyLeft
+			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl'><i class='fa fa-fw fa-align-left'></i></button></li>";
 
-		if(typeof toolbox_justifyCenter != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyCenter')\" id='align-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
+		if(typeof toolbox_justifyCenter != 'undefined')// justifyCenter
+			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc'><i class='fa fa-fw fa-align-center'></i></button></li>";
 
-		if(typeof toolbox_justifyRight != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyRight')\" id='align-right'><i class='fa fa-fw fa-align-right'></i></button></li>";
+		if(typeof toolbox_justifyRight != 'undefined')// justifyRight
+			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 		if(typeof toolbox_justifyFull != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
@@ -2146,7 +2173,7 @@ $(function()
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
 	clean_highlight = function(selector) {
 		if(selector.prev().hasClass("highlight")) {
-			console.log("Clean highlight")
+			//console.log("Clean highlight")
 			selector.removeAttr("class");
 		}
 	}
@@ -2154,15 +2181,15 @@ $(function()
 	// Si juste un <p> ou <div> avec un <br> => on remplace par un <div> vide avec une marge basse, non vocalisé
 	clean_br = function(selector) {
 		if(selector.html() == "<br>" || selector.html() == "") {
-			console.log("Change BR")
-			selector.replaceWith($('<div class="pbm"></div>'));
+			//console.log("Change BR")
+			selector.replaceWith($('<div class="pbp"></div>'));
 		}
 	}
 
 	// Transforme les <div> en <p>
 	clean_div = function(selector) {
 		if(selector.prop("tagName") == "DIV"){
-			console.log("Change DIV");
+			//console.log("Change DIV");
 
 			var sel = window.getSelection();// Position du curseur (caret)
 			var memo_offset = sel.focusOffset;// Numéro de la position
@@ -2190,11 +2217,11 @@ $(function()
 				if(p)
 				{
 					if(memo_offset == 0) {
-						console.log("empty_focus");
+						//console.log("empty_focus");
 						empty_focus(p);
 					}
 					else {
-						console.log("collapse");
+						//console.log("collapse");
 						window.getSelection().collapse(p.firstChild, memo_offset);
 					}
 				}
@@ -2245,7 +2272,7 @@ $(function()
 				// Ajoute un <p> si vide
 				init_paragraph(this);
 			},
-			"blur.editable": function() {
+			"blur.editable": function() {// On clique hors du champ éditable
 				if($("#txt-tool:not(:hover)").val()=="") {
 					$("#txt-tool").hide();// ferme la toolbox
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
@@ -2281,8 +2308,9 @@ $(function()
 				if(!$(this).hasClass("view-source"))
 				{					
 					// Constrole les saut de ligne vide // enter = 13 | up = 38 | down : 40
-					if(event.keyCode == 13 || event.keyCode == 40) clean_br($(memo_node).prev());
-					if(event.keyCode == 38) clean_br($(memo_node).next());
+					// || event.keyCode == 40
+					if(event.keyCode == 13) clean_br($(memo_node).prev());
+					//if(event.keyCode == 38) clean_br($(memo_node).next());
 
 					// Clean les highlight
 					if(event.keyCode == 13) clean_highlight($(memo_node));
@@ -2393,8 +2421,8 @@ $(function()
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
 
-				if($(memo_node).closest("p, div").hasClass("highlight")) $("#txt-tool #highlight").addClass("checked");
-				else $("#txt-tool #highlight").removeClass("checked");
+				if($(memo_node).closest("p, div").hasClass("highlight")) $("#txt-tool #tool-highlight").addClass("checked");
+				else $("#txt-tool #tool-highlight").removeClass("checked");
 				
 				if(typeof toolbox_color != 'undefined')
 				if($(memo_node).is("em[class^=color-]")) {
@@ -2414,14 +2442,27 @@ $(function()
 				
 				var align = null;
 
-				// On cherche le type d'alignement si on est dans un bloc aligné avec les style
-				if($(memo_node).closest("div [style*='text-align']")[0]) var align = $(memo_node).closest("div [style*='text-align']").css("text-align");
+				// On cherche le type d'alignement si on est dans un bloc aligné avec les style // Ancienne méthode d'alignement 22-04-2022
+				if($(memo_node).closest("div [style*='text-align']")[0]) 
+					var align = $(memo_node).closest("div [style*='text-align']").css("text-align");
 				
-				// On cherche le type d'alignement si on est dans un bloc aligné avec align=
-				if($(memo_node).closest("div [align]")[0]) var align = $(memo_node).closest("div [align]").attr("align");
-								
+				// On cherche le type d'alignement si on est dans un bloc aligné avec align= // Ancienne méthode d'alignement 22-04-2022
+				if($(memo_node).closest("div [align]")[0]) 
+					var align = $(memo_node).closest("div [align]").attr("align");
+
+				// On cherche les aligements par class
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tl")) var align = "tl";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tc")) var align = "tc";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tr")) var align = "tr";
+
+				switch (align) {
+					case 'left': align = 'tl'; break;
+					case 'center': align = 'tc'; break;
+					case 'right': align = 'tr'; break;
+				}
+
 				// On check le bon alignement
-				if(align) $("#align-"+align).addClass("checked");
+				if(align) $("#tool-"+align).addClass("checked");
 
 
 				// Si on sélectionne un contenu
@@ -2522,9 +2563,12 @@ $(function()
 	/************** FORCE LES IMAGES À LA PLACE DES VIDÉOS YOUTUBE **************/
 	$.each($(".video .player-youtube"), function() 
 	{
-		var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
+		// Ancienne version non accessible 22/04/2022
+		//var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
-		$(this).replaceWith('<img src="'+ $(this).data('preview') +'" alt="'+($(this).attr('alt')?$(this).attr('alt'):'')+'" width="'+$(this).attr('width')+'" height="'+$(this).attr('height')+'"'+lazy+'>');
+		//$(this).replaceWith('<img src="'+ $(this).data('preview') +'" alt="'+($(this).attr('alt')?$(this).attr('alt'):'')+'" width="'+$(this).attr('width')+'" height="'+$(this).attr('height')+'"'+lazy+'>');
+
+		$(this).replaceWith('<input type="image" src="'+ $(this).data('preview') +'" title="'+__("Show video")+'" alt="'+$(this).attr('title')+'">');
 
 		$(".video.play").removeClass("play");
 	});
@@ -2556,9 +2600,13 @@ $(function()
 	});
 
 	// Affiche les options de gestion d'alignement sur les images ajouter
-	$(".editable").on("click", "img", function(event) {
-		
+	$(".editable").on("click", "img, [type='image']", function(event) {
+
 		event.stopPropagation();
+
+		// Si c'est un input type=image
+		var input = false;
+		if($(this).attr("type") == "image") input = true;
 
 		// Supprimer le précédent bloc d'outils
 		$("#img-tool").remove();
@@ -2571,6 +2619,7 @@ $(function()
 		
 		// On ajoute le resizer jquery 
 		//if($.browser.webkit)// Si Chrome // Visiblement Firefox n'a plus d'outil de resize...
+		if(!input)
 		{
 			// Rend l'image resizeable
 			$(this).resizable({aspectRatio: true});
@@ -2583,14 +2632,18 @@ $(function()
 		// Boîte à outils image
 		option = "<ul id='img-tool' class='toolbox'>";
 
+		if(!input)
+		{
 			option+= "<li><button onclick=\"img_position('fl')\" class='img-position' id='img-fl'><i class='fa fa-fw fa-align-left'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('center')\" class='img-position' id='img-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
+		}
 
 			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='w150p small'></li>";
 
+		if(!input)
 			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-trash'></i></button></li>";
 
 		option+= "</ul>";
@@ -3078,6 +3131,29 @@ $(function()
 	// Si champs tag
 	if($(".editable-tag").length) 
 	{
+		// Si la liste de tag est dans un ul on l'aplatie
+		$(".editable-tag").each(function()
+		{
+			if($(this).prop("tagName") == "UL")
+			{
+				// Séparateur
+				separator = $(this).data("separator");// Si on en force un
+				if(!separator) separator = ", ";// Sinon celui par défaut
+
+				// Ajoute le séparateur
+				$("li:not(:last-child)", this).append(", ");
+
+				// Liste le contenu des li
+				var li_list = '';
+				$("li", this).each(function() {
+					li_list+= $(this).html();
+				});
+
+				// Remplace le contenu du ul par une liste textuelle
+				$(this).html(li_list);
+			}
+		});
+
 		// Transforme le champs tag en editable
 		$(".editable-tag").attr("contenteditable", "true");
 

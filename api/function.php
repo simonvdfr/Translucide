@@ -740,12 +740,20 @@ function tag($key = null, $filter = array())
 		{ 
 			$GLOBALS['tags'][$res_tag['encode']] = $res_tag['name'];
 
-			if($i > 1) echo (@$filter['separator']?$filter['separator']:', ');
+			// Ajout de séparateur
+			if(@$filter['tag']!='ul' and $i > 1) echo (@$filter['separator']?$filter['separator']:', ');
 
+			// Si ul
+			if(@$filter['tag']=='ul') echo '<li>';
+
+			// Pas de lien ?
 			if(@$filter['href']===false)
 				echo'<span>'.$res_tag['name'].'</span>';
 			else
 				echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
+
+			// Si ul
+			if(@$filter['tag']=='ul') echo '</li>';
 
 			$ordre = $res_tag['ordre'];
 
@@ -1082,9 +1090,16 @@ function login($level = 'low', $auth = null, $quiet = null)
 							// Effet sur la dialog
 							$("#dialog-connect").dialog({
 								//modal: true, // Fond gris lors du login
+								width: 'auto',
 								minHeight: 0,
 								show: {effect: "fadeIn"},
 								//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
+								create: function() 
+								{	
+									// Change le title en H1 pour l'accessibilitée
+									$(".ui-dialog-title").attr("role","heading").attr("aria-level","1");
+								},
+								closeText: __("Close"),
 								close: function() {
 									$("#dialog-connect").remove();
 								}
