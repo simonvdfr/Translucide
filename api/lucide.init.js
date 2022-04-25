@@ -313,8 +313,9 @@ $(function()
 
 			var id_video = $(event.currentTarget).closest(".video").data("video");
 
+			// www.youtube-nocookie.com www.youtube.com
 			$(event.currentTarget)
-				.replaceWith('<iframe src="https://www.youtube.com/embed/'+id_video+'?controls=1&rel=0&autoplay=1" title="'+$(event.currentTarget)[0].alt+'" data-preview="'+$(event.currentTarget).attr("src")+'" class="player-youtube" aria-describedby="desc-'+id_video+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+				.replaceWith('<iframe src="https://www.youtube-nocookie.com/embed/'+id_video+'?controls=1&rel=0&autoplay=1" title="'+$(event.currentTarget)[0].alt+'" data-preview="'+$(event.currentTarget).attr("src")+'" class="player-youtube" aria-describedby="desc-'+id_video+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 		}
 
 	});
