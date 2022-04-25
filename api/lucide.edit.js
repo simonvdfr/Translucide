@@ -1797,11 +1797,11 @@ $(function()
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
-	$("header nav > ul").after(addnav);
+	$("header nav > ul:not(.exclude)").after(addnav);
 
 	// Positionne le menu
 	// Barre admin + position top du menu + marge du menu - hauteur du bt edit menu
-	var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul").offset().top + parseInt($("header nav > ul").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
+	var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul:not(.exclude)").offset().top + parseInt($("header nav > ul:not(.exclude)").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
 	$("#add-nav").css("top", top_bt_menu + "px");
 	
 
@@ -1816,18 +1816,18 @@ $(function()
 			if(event.target.className == "dragger")
 			{
 				if($(event.target).parent().hasClass("add-empty"))
-					$("header nav ul:first").append($(event.target).parent().clone());// Copie
+					$("header nav ul:not(.exclude):first").append($(event.target).parent().clone());// Copie
 				else
-					$($(event.target).parent()).appendTo("header nav ul:first");// Déplace
+					$($(event.target).parent()).appendTo("header nav ul:not(.exclude):first");// Déplace
 				
 				// Rends editable les éléments du menu (pointage sur A)
-				$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+				$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 				editable_event();
 
 				tosave();// A sauvegarder
 					
 				// Désactive les liens dans le menu d'ajout
-				$("#add-nav ul a").click(function() { return false; });
+				$("#add-nav ul:not(.exclude) a").click(function() { return false; });
 			}
 		},
 		// On check si on est sur le menu d'ajout de page au menu
@@ -1836,8 +1836,8 @@ $(function()
 	});
 	
 	// Drag & Drop des éléments du menu principal
-	$("header nav ul:first").sortable({
-		connectWith: "header nav ul, #add-nav .zone",
+	$("header nav ul:not(.exclude):first").sortable({
+		connectWith: "header nav ul:not(.exclude), #add-nav .zone",
 		handle: ".dragger",
 		axis: "x",
 		start: function(event) {
@@ -1845,7 +1845,7 @@ $(function()
 			$("#add-nav .zone i").removeClass("fa-plus").addClass("fa-trash");
 
 			$(".editable").off();//$("body").off(".editable");		
-			$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable");
+			$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
 		},
 		stop: function(event, ui) {
 			// Si on drop l'element dans la zone de suppression mais pas dans le ul liste autre page
@@ -1856,27 +1856,27 @@ $(function()
 			$("#add-nav .zone i").removeClass("fa-trash").addClass("fa-plus");
 			
 			// Rends editable les éléments du menu
-			$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+			$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 			editable_event();
 
 			tosave();// A sauvegarder
 			
 			// désactive les liens dans le menu d'ajout
-			$("#add-nav ul a").click(function() { return false; });
+			$("#add-nav ul:not(.exclude) a").click(function() { return false; });
 		}
 	});
 
 	// Si on est en mode burger on active le tri verticalement
 	$(".burger, .sortable-y").click(function() {
-		$("header nav ul:first").sortable("option", "axis", "y");
+		$("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
 	});
 
 	// Si on demande à ce que le menu soit triable verticalement
-	if($(".sortable-y").length) $("header nav ul:first").sortable("option", "axis", "y");
+	if($(".sortable-y").length) $("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
 	
 	// Rend clonable uniquement le bloc vide
 	$(".add-empty").draggable({
-		connectToSortable: "header nav ul:first",
+		connectToSortable: "header nav ul:not(.exclude):first",
 		helper: "clone",
 		revert: "invalid"
     });
@@ -1922,18 +1922,18 @@ $(function()
 			{
 				// Rends le menu de navigation éditable
 				// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
-				$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+				$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 
 				// Pour la toolbox sur les éléments du menu
 				editable_event();
 
 				// Ajout d'une zone de drag pour chaque élément
-				$("header nav ul:first li").prepend("<div class='dragger'></div>");
+				$("header nav ul:not(.exclude):first li").prepend("<div class='dragger'></div>");
 
 
 				// Liste les pages déjà dans le menu
 				var menu = {};
-				$(document).find("header nav ul a").each(function(index) { menu[index] = $(this).attr('href'); });
+				$(document).find("header nav ul:not(.exclude) a").each(function(index) { menu[index] = $(this).attr('href'); });
 
 				$.ajax({
 					type: "POST",
@@ -1950,13 +1950,13 @@ $(function()
 
 						// Rends draggable les pages manquantes du menu
 						$("#add-nav .tooltip ul").sortable({
-							connectWith: "header nav ul",
+							connectWith: "header nav ul:not(.exclude)",
 							start: function() {
 								$(".editable").off();//$("body").off(".editable");
-								$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable");
+								$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
 							},
 							stop: function() {
-								$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+								$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 								editable_event();
 								tosave();// A sauvegarder
 							}
@@ -1972,7 +1972,7 @@ $(function()
 						$("#add-nav").addClass("open");
 
 						// Ajoute la croix de suppression // $(this).parent().remove()
-						$("nav ul:first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
+						$("nav ul:not(.exclude):first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
 					}
 				});
 			}
@@ -1987,13 +1987,13 @@ $(function()
 				$("#add-nav").removeClass("open");
 
 				// Supprime la croix de suppression
-				$("nav ul:first .fa-cancel").remove();
+				$("nav ul:not(.exclude):first .fa-cancel").remove();
 
 				// Supprime l'edition des élément du menu
-				$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable").off();
+				$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable").off();
 
 				// Supprime la zone de drag pour chaque élément
-				$("header nav ul:first li .dragger").remove();
+				$("header nav ul:not(.exclude):first li .dragger").remove();
 			}
 		}
 	});
