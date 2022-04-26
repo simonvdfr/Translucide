@@ -74,6 +74,7 @@ logout = function() {
 
 
 // Affichage d'une popin, avec retour de focus une fois fermer
+popin_keydown = true;
 popin = function(txt, fadeout, mode, focus){		
 
 	// Le focus en cours
@@ -91,7 +92,7 @@ popin = function(txt, fadeout, mode, focus){
 
 	
 	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' // __("Information message")
-	$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-label=\""+txt+"\">" + txt + "</div>");
+	$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></div>");
 	var height = $("#"+mode).outerHeight();
 
 	// Ajout de la croix pour fermer
@@ -134,10 +135,23 @@ popin = function(txt, fadeout, mode, focus){
 		});
 
 	// Fermeture si echap
-	$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
+	//$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
 
 	// Focus bloquer sur le bt de fermeture // @todo pas optimal
-	$(document).keyup(function(event) { if(event.keyCode === 9) $("#close-popin").focus() });
+	//$(document).keydown(function(event) { if(event.keyCode === 9) $("#close-popin").focus();	});
+
+	// Action au clavier // up = 38 | down : 40 | tab : 9 | echap : 27
+	document.querySelector("#"+mode).addEventListener("keydown", function(event)
+	{			
+		// Fermeture si echap
+		if(event.keyCode === 27) close_popin(focus);
+
+		// Focus bloquer sur le bt de fermeture 
+		if(event.keyCode === 9) { 
+			event.preventDefault();
+			$("#close-popin").focus();
+		}
+	}, false);
 
 	// Disparition au bout de x seconde
 	if($.isNumeric(fadeout))
