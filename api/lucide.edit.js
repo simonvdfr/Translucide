@@ -33,6 +33,7 @@ add_translation({
 	"Change Language" : {"fr" : "Change la langue"},		
 	"Video" : {"fr" : "Vidéo"},		
 	"Show video" : {"fr" : "Afficher la vidéo"},	
+	"Show video in new window" : {"fr" : "Afficher la vidéo dans une nouvelle fenêtre"},	
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
 	"Anchor" : {"fr" : "Ancre"},		
@@ -410,12 +411,12 @@ exec_tool = function(command, value) {
 
 
 // VIDEO
-// Ajoute une vidéo (mqdefault hqdefault maxresdefault)
-video = function() 
+// Ajoute une vidéo (mqdefault hqdefault maxresdefault) link => mode d'insertion de la vidéo
+video = function(link) 
 {
 	var url_video = $('#txt-tool .option #video').val();
 
-	//var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
+	var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
 	// #(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#
 	// var id_video = url_video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
@@ -429,7 +430,17 @@ video = function()
 		// Ancienne version non accessible 22/04/2022
 		//exec_tool("insertHTML", '<figure role="group" class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
 
-		exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><input type="image" src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" title="'+__("Show video")+'"><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+		// Version input image
+		//exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><input type="image" src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" title="'+__("Show video")+'"><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+
+
+		if(link)
+			// Version lien vers Youtube dans un nouvel onglet
+			exec_tool("insertHTML", '<figure role="group" class="center"><a href="'+ url_video +'" aria-label="'+__("Show video in new window")+'" target="_blank"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
+		else
+			// Version button lecture dans le site
+			exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><button title="'+__("Show video")+'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></button><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+
 
 		//$("figure .video").parent().attr('style','');
 
@@ -2081,6 +2092,7 @@ $(function()
 		if(typeof toolbox_icon != 'undefined') 
 			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 
+		if(typeof toolbox_videoLink != 'undefined') { videoLink = true; toolbox_video = true; } else videoLink = false;
 		if(typeof toolbox_video != 'undefined') 
 		{
 			toolbox+= "<li><button onclick=\"$('#txt-tool #video-option').show(); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='fa fa-fw fa-video'></i></button></li>";
@@ -2089,7 +2101,7 @@ $(function()
 
 				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='w150p small'>";
 
-				toolbox+= "<button onclick=\"video()\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+				toolbox+= "<button onclick=\"video("+videoLink+")\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 
 			toolbox+= "</li>";
 		}
@@ -2564,11 +2576,13 @@ $(function()
 	$.each($(".video .player-youtube"), function() 
 	{
 		// Ancienne version non accessible 22/04/2022
-		//var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
+		var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
 		//$(this).replaceWith('<img src="'+ $(this).data('preview') +'" alt="'+($(this).attr('alt')?$(this).attr('alt'):'')+'" width="'+$(this).attr('width')+'" height="'+$(this).attr('height')+'"'+lazy+'>');
 
-		$(this).replaceWith('<input type="image" src="'+ $(this).data('preview') +'" title="'+__("Show video")+'" alt="'+$(this).attr('title')+'">');
+		//$(this).replaceWith('<input type="image" src="'+ $(this).data('preview') +'" title="'+__("Show video")+'" alt="'+$(this).attr('title')+'">');
+
+		$(this).replaceWith('<button title="'+__("Show video")+'"><img src="'+ $(this).data('preview') +'" alt="'+$(this).attr('title')+'" width="320" height="180"'+lazy+'></button>');
 
 		$(".video.play").removeClass("play");
 	});
@@ -2607,6 +2621,7 @@ $(function()
 		// Si c'est un input type=image
 		var input = false;
 		if($(this).attr("type") == "image") input = true;
+		else if($(this).parent().prop("tagName") == "BUTTON") input = true;
 
 		// Supprimer le précédent bloc d'outils
 		$("#img-tool").remove();

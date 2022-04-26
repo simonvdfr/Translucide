@@ -302,7 +302,8 @@ $(function()
 		$(this).data("play", true).addClass("play");
 	});*/
 
-	$(".video input").on("click", function(event){
+	$(".video button").on("click", function(event){/*.video input, */
+		console.log(event);
 		event.preventDefault();
 
 		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
@@ -315,7 +316,7 @@ $(function()
 
 			// www.youtube-nocookie.com www.youtube.com
 			$(event.currentTarget)
-				.replaceWith('<iframe src="https://www.youtube-nocookie.com/embed/'+id_video+'?controls=1&rel=0&autoplay=1" title="'+$(event.currentTarget)[0].alt+'" data-preview="'+$(event.currentTarget).attr("src")+'" class="player-youtube" aria-describedby="desc-'+id_video+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+				.replaceWith('<iframe src="https://www.youtube-nocookie.com/embed/'+id_video+'?controls=1&rel=0&autoplay=1" title="'+$("img", event.currentTarget)[0].alt+'" data-preview="'+$("img", event.currentTarget).attr("src")+'" class="player-youtube" aria-describedby="desc-'+id_video+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 		}
 
 	});
