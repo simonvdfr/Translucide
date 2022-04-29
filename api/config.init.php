@@ -131,7 +131,7 @@ $GLOBALS['towebp'] = true;
 $GLOBALS['ecoindex'] = true;
 
 
-// Cache sur les styles
+// Cache sur les fichiers du CMS
 $GLOBALS['cache'] = "";
 
 
