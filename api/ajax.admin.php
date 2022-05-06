@@ -209,7 +209,7 @@ switch($_GET['mode'])
 			
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<ul class="small">
+			<ul class="smaller">
 				<?php 
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
