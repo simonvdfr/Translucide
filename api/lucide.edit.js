@@ -591,9 +591,6 @@ link_option = function()
 		// Si class bt
 		if($(memo_node).hasClass("bt")) $("#class-bt").addClass("checked");
 
-		// Bouton pour supp le lien //exec_tool('unlink');
-		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-cancel plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
-
 		$("#txt-tool #link-option #link").val(href);
 		$("#txt-tool #link-option button span").text(__("Change Link"));
 		$("#txt-tool #link-option button i").removeClass("fa-plus").addClass("fa-floppy");
@@ -605,6 +602,9 @@ link_option = function()
 		$("#txt-tool #link-option button i").removeClass("fa-floppy").addClass("fa-plus");
 	}
 	
+	// Bouton pour supp le lien //exec_tool('unlink');	
+	$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-cancel plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
+
 	// Affichage des options pour le lien
 	// 300, car "slide" Crée un bug du chargement de l'autocomplete
 	$("#txt-tool #link-option").show(300, function() {
@@ -2499,11 +2499,10 @@ $(function()
 				// Si on sélectionne un contenu
 				//if(memo_selection.toString().length > 0)
 				{
-					// Si on est sur un lien on ouvre le menu lien en mode modif
-					if($(memo_node).closest("a[href]").length) link_option();
-
 					// Si on est sur une ancre on ouvre le menu ancre en mode modif
 					if($(memo_node).closest("a[name]").length) anchor_option();
+					// Si on est sur un lien on ouvre le menu lien en mode modif
+					else if($(memo_node).closest("a").length) link_option();
 
 					// Si on est sur un texte dans une langue spécifique on ouvre le menu langue en mode modif
 					if($(memo_node).closest("span[lang]").length) lang_option();
@@ -2556,23 +2555,27 @@ $(function()
 			// Html dans le paste
 			if(/<[a-z][\s\S]*>/i.test(paste))
 			paste = paste
-				.replace(/\n|\r/gi, "")// Clean les retours à la ligne
+				.replace(/\n/gi, "")// Clean les retours à la ligne |\r
 
 			    .replace(/<p[^>]*><br><\/p><\/div>/gi, "\n")// <br> dans des </p></div>
 			    .replace(/<p[^>]*><span><\/span><br><\/p>/gi, "\n")// <br> dans des <p> => \n
 
-			    .replace(/<p[^>]*>/gi, "")// Supp les <p> 
-			    .replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
+			    //.replace(/<p[^>]*>/gi, "")// Supp les <p> 
+			    //.replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
 
 			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
 
 			    .replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
 
+	    		//.replace(/\<head[^>]*\>([^]*)\<\/head\>/g, '')// Supprime l'entête
+			    .replace(/\<style[^>]*\>([^]*)\<\/style\>/g, '')// Supprime les styles
+				.replace(/\<script[^>]*\>([^]*)\<\/script\>/g, '')// Supprime le js
+
 			// Transforme les retours à la ligne en <br>
 			paste = paste.replace(/\n/gi, "<br>");
 
 			// Clean les tags en gardant certain élément de mise en page //@todo voir le cas des <p></p>
-			paste = strip_tags(paste, "<a></a><b><b/><i></i><h1></h1><h2></h2><h3></h3><h4></h4><ul></ul><li></li><br>");
+			paste = strip_tags(paste, "<p></p><a></a><b><b/><i></i><h1></h1><h2></h2><h3></h3><h4></h4><ul></ul><li></li><br>");
 		}
 
 		// Insertion dans le contenu insertHTML insertText
