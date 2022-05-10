@@ -1038,7 +1038,7 @@ get_file = function(id)
 
 		if($("#"+id).attr("data-type") == 'video')
 			// Ajoute le fichier
-			$("#"+$("#dialog-media-source").val()).append('<video src="'+ $("#"+id).attr("data-media") +'" controls></video>');	
+			$("#"+$("#dialog-media-source").val()).append('<video src="'+ $("#"+id).attr("data-media") +'" preload="none" controls></video>');	
 		else
 			// Ajoute le fichier
 			$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
