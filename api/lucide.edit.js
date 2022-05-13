@@ -1,4 +1,5 @@
 // @todo: mettre une barre loading et readonly qd save
+if(typeof dev == 'undefined') dev = false;
 
 // Traduction
 add_translation({
@@ -404,6 +405,7 @@ exec_tool = function(command, value) {
 	$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
 
 	// Recrée une sélection en fonction des changements de la dom
+	//@todo voir bug FF qd on veut supp un H2 avec html_tool => le focus va sur le <p> précédent créer lors de l'ajout du h2
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
 	memo_node = selected_element(memo_range);
@@ -692,11 +694,21 @@ class_tool = function(theClass){
 // Ajout/Suppression d'un element html
 html_tool = function(html){
 	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
-	if($(memo_node).closest(html).length){
+	if($(memo_node).closest(html).length)
+	{
 		$("#"+html).removeClass("checked");
-		$(memo_node).replaceWith($(memo_node).html());
+
+		if($(memo_node).html()) {
+			if(dev) console.log("replaceWith html");
+		 	$(memo_node).replaceWith($(memo_node).html());// Chrome
+		}
+		else {
+			if(dev) console.log("replaceWith closest text");
+			$(memo_node).closest(html).replaceWith($(memo_node).text());// FF
+		}
 	}
 	else {
+		if(dev) console.log("formatBlock");
 		$("#"+html).addClass("checked");
 		exec_tool('formatBlock', html);
 	}
@@ -2168,7 +2180,7 @@ $(function()
 
 	// Focus dans un élément vide
 	empty_focus = function(selector) {
-		if(typeof dev !== 'undefined') console.log("empty_focus");
+		if(dev) console.log("empty_focus");
 		range = document.createRange();
 		range.selectNodeContents(selector);
 		range.collapse(false);
@@ -2181,7 +2193,7 @@ $(function()
 	clean_editable = function(memo_focus) {
 		var clean = ['<br>', '<p><br></p>', '<div><br></div>'];
 		if($.inArray($(memo_focus).html(), clean) != -1) {		
-			if(typeof dev !== 'undefined') console.log("clean_editable");	
+			if(dev) console.log("clean_editable");	
 			$(memo_focus).html('');
 		}
 	}
@@ -2189,7 +2201,7 @@ $(function()
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
 	clean_highlight = function(selector) {
 		if(selector.prev().hasClass("highlight")) {
-			if(typeof dev !== 'undefined') console.log("clean_highlight");
+			if(dev) console.log("clean_highlight");
 			selector.removeAttr("class");
 		}
 	}
@@ -2198,7 +2210,7 @@ $(function()
 	// Si juste un <p> ou <div> avec un <br> => on remplace par un <div> vide avec une marge basse, non vocalisé
 	clean_br = function(selector) {
 		if(selector.html() == "<br>" || selector.html() == "") {
-			if(typeof dev !== 'undefined') console.log("clean_br");
+			if(dev) console.log("clean_br");
 			selector.replaceWith($('<div class="pbp"></div>'));
 		}
 	}
@@ -2206,7 +2218,7 @@ $(function()
 	// Supprime les <br> en fin de <p> => pour éviter que le sigle du paragraphe ne soit après la ligne courante
 	clean_last_br = function(selector) {
 		if(selector.html() == "<br>") {
-			if(typeof dev !== 'undefined') console.log("clean_last_br");
+			if(dev) console.log("clean_last_br");
 			selector.html("");
 		}
 	}
@@ -2215,7 +2227,7 @@ $(function()
 	clean_div = function(selector) {
 		if(selector.prop("tagName") == "DIV")
 		{
-			if(typeof dev !== 'undefined') console.log("clean_div");
+			if(dev) console.log("clean_div");
 
 			var sel = window.getSelection();// Position du curseur (caret)
 			var memo_offset = sel.focusOffset;// Numéro de la position
@@ -2243,11 +2255,11 @@ $(function()
 				if(p)
 				{
 					if(memo_offset == 0) {
-						if(typeof dev !== 'undefined') console.log("empty_focus");
+						if(dev) console.log("empty_focus");
 						empty_focus(p);
 					}
 					else {
-						if(typeof dev !== 'undefined') console.log("collapse");
+						if(dev) console.log("collapse");
 						window.getSelection().collapse(p.firstChild, memo_offset);
 					}
 				}
@@ -2264,7 +2276,7 @@ $(function()
 
 		if(/DIV|ARTICLE|section/.test($(memo_focus).prop("tagName")) && $(memo_focus).html() == "")
 		{
-			if(typeof dev !== 'undefined') console.log("init_paragraph");
+			if(dev) console.log("init_paragraph");
 
 			// Ajout du pragraphe
 			$(memo_focus).html("<p></p>");// append html
@@ -2310,7 +2322,7 @@ $(function()
 
 				// Si juste un paragraphe vide on le supp
 				if(("p", this).length == 1 && $("p", this).html() == '') {
-					if(typeof dev !== 'undefined') console.log("p remove");
+					if(dev) console.log("p remove");
 					$("p", this).remove();
 				}
 			},
