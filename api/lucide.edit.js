@@ -33,6 +33,7 @@ add_translation({
 	"Change Language" : {"fr" : "Change la langue"},		
 	"Video" : {"fr" : "Vidéo"},		
 	"Show video" : {"fr" : "Afficher la vidéo"},	
+	"Show video in new window" : {"fr" : "Afficher la vidéo dans une nouvelle fenêtre"},	
 	"Add Video" : {"fr" : "Ajouter une vidéo"},		
 	"Add Color" : {"fr" : "Ajouter une couleur au texte"},		
 	"Anchor" : {"fr" : "Ancre"},		
@@ -410,12 +411,12 @@ exec_tool = function(command, value) {
 
 
 // VIDEO
-// Ajoute une vidéo (mqdefault hqdefault maxresdefault)
-video = function() 
+// Ajoute une vidéo (mqdefault hqdefault maxresdefault) link => mode d'insertion de la vidéo
+video = function(link) 
 {
 	var url_video = $('#txt-tool .option #video').val();
 
-	//var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
+	var lazy = ($(memo_node).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
 	// #(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#
 	// var id_video = url_video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
@@ -429,7 +430,17 @@ video = function()
 		// Ancienne version non accessible 22/04/2022
 		//exec_tool("insertHTML", '<figure role="group" class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
 
-		exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><input type="image" src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" title="'+__("Show video")+'"><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+		// Version input image
+		//exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><input type="image" src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" title="'+__("Show video")+'"><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+
+
+		if(link)
+			// Version lien vers Youtube dans un nouvel onglet
+			exec_tool("insertHTML", '<figure role="group" class="center"><a href="'+ url_video +'" aria-label="'+__("Show video in new window")+'" target="_blank"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
+		else
+			// Version button lecture dans le site
+			exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><button title="'+__("Show video")+'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></button><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+
 
 		//$("figure .video").parent().attr('style','');
 
@@ -580,9 +591,6 @@ link_option = function()
 		// Si class bt
 		if($(memo_node).hasClass("bt")) $("#class-bt").addClass("checked");
 
-		// Bouton pour supp le lien //exec_tool('unlink');
-		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-cancel plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
-
 		$("#txt-tool #link-option #link").val(href);
 		$("#txt-tool #link-option button span").text(__("Change Link"));
 		$("#txt-tool #link-option button i").removeClass("fa-plus").addClass("fa-floppy");
@@ -594,6 +602,9 @@ link_option = function()
 		$("#txt-tool #link-option button i").removeClass("fa-floppy").addClass("fa-plus");
 	}
 	
+	// Bouton pour supp le lien //exec_tool('unlink');	
+	$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-cancel plt prt' title='"+ __("Remove the link from the selection") +"'></i></a>");
+
 	// Affichage des options pour le lien
 	// 300, car "slide" Crée un bug du chargement de l'autocomplete
 	$("#txt-tool #link-option").show(300, function() {
@@ -1027,7 +1038,7 @@ get_file = function(id)
 
 		if($("#"+id).attr("data-type") == 'video')
 			// Ajoute le fichier
-			$("#"+$("#dialog-media-source").val()).append('<video src="'+ $("#"+id).attr("data-media") +'" controls></video>');	
+			$("#"+$("#dialog-media-source").val()).append('<video src="'+ $("#"+id).attr("data-media") +'" preload="none" controls></video>');	
 		else
 			// Ajoute le fichier
 			$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc mega" title="'+ $("#"+id).attr("data-media") +'"></i>');	
@@ -1797,11 +1808,11 @@ $(function()
 			addnav+= "</ul>";
 		addnav+= "</div>";	
 	addnav+= "</div>";	
-	$("header nav > ul").after(addnav);
+	$("header nav > ul:not(.exclude)").after(addnav);
 
 	// Positionne le menu
 	// Barre admin + position top du menu + marge du menu - hauteur du bt edit menu
-	var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul").offset().top + parseInt($("header nav > ul").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
+	var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul:not(.exclude)").offset().top + parseInt($("header nav > ul:not(.exclude)").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
 	$("#add-nav").css("top", top_bt_menu + "px");
 	
 
@@ -1816,18 +1827,18 @@ $(function()
 			if(event.target.className == "dragger")
 			{
 				if($(event.target).parent().hasClass("add-empty"))
-					$("header nav ul:first").append($(event.target).parent().clone());// Copie
+					$("header nav ul:not(.exclude):first").append($(event.target).parent().clone());// Copie
 				else
-					$($(event.target).parent()).appendTo("header nav ul:first");// Déplace
+					$($(event.target).parent()).appendTo("header nav ul:not(.exclude):first");// Déplace
 				
 				// Rends editable les éléments du menu (pointage sur A)
-				$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+				$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 				editable_event();
 
 				tosave();// A sauvegarder
 					
 				// Désactive les liens dans le menu d'ajout
-				$("#add-nav ul a").click(function() { return false; });
+				$("#add-nav ul:not(.exclude) a").click(function() { return false; });
 			}
 		},
 		// On check si on est sur le menu d'ajout de page au menu
@@ -1836,8 +1847,8 @@ $(function()
 	});
 	
 	// Drag & Drop des éléments du menu principal
-	$("header nav ul:first").sortable({
-		connectWith: "header nav ul, #add-nav .zone",
+	$("header nav ul:not(.exclude):first").sortable({
+		connectWith: "header nav ul:not(.exclude), #add-nav .zone",
 		handle: ".dragger",
 		axis: "x",
 		start: function(event) {
@@ -1845,7 +1856,7 @@ $(function()
 			$("#add-nav .zone i").removeClass("fa-plus").addClass("fa-trash");
 
 			$(".editable").off();//$("body").off(".editable");		
-			$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable");
+			$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
 		},
 		stop: function(event, ui) {
 			// Si on drop l'element dans la zone de suppression mais pas dans le ul liste autre page
@@ -1856,27 +1867,27 @@ $(function()
 			$("#add-nav .zone i").removeClass("fa-trash").addClass("fa-plus");
 			
 			// Rends editable les éléments du menu
-			$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+			$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 			editable_event();
 
 			tosave();// A sauvegarder
 			
 			// désactive les liens dans le menu d'ajout
-			$("#add-nav ul a").click(function() { return false; });
+			$("#add-nav ul:not(.exclude) a").click(function() { return false; });
 		}
 	});
 
 	// Si on est en mode burger on active le tri verticalement
 	$(".burger, .sortable-y").click(function() {
-		$("header nav ul:first").sortable("option", "axis", "y");
+		$("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
 	});
 
 	// Si on demande à ce que le menu soit triable verticalement
-	if($(".sortable-y").length) $("header nav ul:first").sortable("option", "axis", "y");
+	if($(".sortable-y").length) $("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
 	
 	// Rend clonable uniquement le bloc vide
 	$(".add-empty").draggable({
-		connectToSortable: "header nav ul:first",
+		connectToSortable: "header nav ul:not(.exclude):first",
 		helper: "clone",
 		revert: "invalid"
     });
@@ -1922,18 +1933,18 @@ $(function()
 			{
 				// Rends le menu de navigation éditable
 				// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
-				$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+				$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 
 				// Pour la toolbox sur les éléments du menu
 				editable_event();
 
 				// Ajout d'une zone de drag pour chaque élément
-				$("header nav ul:first li").prepend("<div class='dragger'></div>");
+				$("header nav ul:not(.exclude):first li").prepend("<div class='dragger'></div>");
 
 
 				// Liste les pages déjà dans le menu
 				var menu = {};
-				$(document).find("header nav ul a").each(function(index) { menu[index] = $(this).attr('href'); });
+				$(document).find("header nav ul:not(.exclude) a").each(function(index) { menu[index] = $(this).attr('href'); });
 
 				$.ajax({
 					type: "POST",
@@ -1950,13 +1961,13 @@ $(function()
 
 						// Rends draggable les pages manquantes du menu
 						$("#add-nav .tooltip ul").sortable({
-							connectWith: "header nav ul",
+							connectWith: "header nav ul:not(.exclude)",
 							start: function() {
 								$(".editable").off();//$("body").off(".editable");
-								$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable");
+								$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
 							},
 							stop: function() {
-								$("header nav ul:first li a").attr("contenteditable","true").addClass("editable");
+								$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 								editable_event();
 								tosave();// A sauvegarder
 							}
@@ -1972,7 +1983,7 @@ $(function()
 						$("#add-nav").addClass("open");
 
 						// Ajoute la croix de suppression // $(this).parent().remove()
-						$("nav ul:first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
+						$("nav ul:not(.exclude):first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
 					}
 				});
 			}
@@ -1987,13 +1998,13 @@ $(function()
 				$("#add-nav").removeClass("open");
 
 				// Supprime la croix de suppression
-				$("nav ul:first .fa-cancel").remove();
+				$("nav ul:not(.exclude):first .fa-cancel").remove();
 
 				// Supprime l'edition des élément du menu
-				$("header nav ul:first li a").attr("contenteditable","false").removeClass("editable").off();
+				$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable").off();
 
 				// Supprime la zone de drag pour chaque élément
-				$("header nav ul:first li .dragger").remove();
+				$("header nav ul:not(.exclude):first li .dragger").remove();
 			}
 		}
 	});
@@ -2081,6 +2092,7 @@ $(function()
 		if(typeof toolbox_icon != 'undefined') 
 			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 
+		if(typeof toolbox_videoLink != 'undefined') { videoLink = true; toolbox_video = true; } else videoLink = false;
 		if(typeof toolbox_video != 'undefined') 
 		{
 			toolbox+= "<li><button onclick=\"$('#txt-tool #video-option').show(); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='fa fa-fw fa-video'></i></button></li>";
@@ -2089,7 +2101,7 @@ $(function()
 
 				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='w150p small'>";
 
-				toolbox+= "<button onclick=\"video()\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='fa fa-fw fa-plus'></i></button>";
+				toolbox+= "<button onclick=\"video("+videoLink+")\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 
 			toolbox+= "</li>";
 		}
@@ -2156,40 +2168,54 @@ $(function()
 
 	// Focus dans un élément vide
 	empty_focus = function(selector) {
+		if(typeof dev !== 'undefined') console.log("empty_focus");
 		range = document.createRange();
 		range.selectNodeContents(selector);
 		range.collapse(false);
 		selection = window.getSelection();
 		selection.removeAllRanges();
-		selection.addRange(range);
+		selection.addRange(range);		
 	}
 
 	// Nétoie un champ éditable des <br> <p> <div> vide
 	clean_editable = function(memo_focus) {
 		var clean = ['<br>', '<p><br></p>', '<div><br></div>'];
-		if($.inArray($(memo_focus).html(), clean) != -1) $(memo_focus).html('');
+		if($.inArray($(memo_focus).html(), clean) != -1) {		
+			if(typeof dev !== 'undefined') console.log("clean_editable");	
+			$(memo_focus).html('');
+		}
 	}
 
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
 	clean_highlight = function(selector) {
 		if(selector.prev().hasClass("highlight")) {
-			//console.log("Clean highlight")
+			if(typeof dev !== 'undefined') console.log("clean_highlight");
 			selector.removeAttr("class");
 		}
 	}
 
+	// @todo supp => plus utiliser car fait lors du save pour plus de stabilité
 	// Si juste un <p> ou <div> avec un <br> => on remplace par un <div> vide avec une marge basse, non vocalisé
 	clean_br = function(selector) {
 		if(selector.html() == "<br>" || selector.html() == "") {
-			//console.log("Change BR")
+			if(typeof dev !== 'undefined') console.log("clean_br");
 			selector.replaceWith($('<div class="pbp"></div>'));
+		}
+	}
+
+	// Supprime les <br> en fin de <p> => pour éviter que le sigle du paragraphe ne soit après la ligne courante
+	clean_last_br = function(selector) {
+		if(selector.html() == "<br>") {
+			if(typeof dev !== 'undefined') console.log("clean_last_br");
+			selector.html("");
 		}
 	}
 
 	// Transforme les <div> en <p>
 	clean_div = function(selector) {
-		if(selector.prop("tagName") == "DIV"){
-			//console.log("Change DIV");
+		if(selector.prop("tagName") == "DIV")
+		{
+			if(typeof dev !== 'undefined') console.log("clean_div");
 
 			var sel = window.getSelection();// Position du curseur (caret)
 			var memo_offset = sel.focusOffset;// Numéro de la position
@@ -2217,11 +2243,11 @@ $(function()
 				if(p)
 				{
 					if(memo_offset == 0) {
-						//console.log("empty_focus");
+						if(typeof dev !== 'undefined') console.log("empty_focus");
 						empty_focus(p);
 					}
 					else {
-						//console.log("collapse");
+						if(typeof dev !== 'undefined') console.log("collapse");
 						window.getSelection().collapse(p.firstChild, memo_offset);
 					}
 				}
@@ -2238,6 +2264,8 @@ $(function()
 
 		if(/DIV|ARTICLE|section/.test($(memo_focus).prop("tagName")) && $(memo_focus).html() == "")
 		{
+			if(typeof dev !== 'undefined') console.log("init_paragraph");
+
 			// Ajout du pragraphe
 			$(memo_focus).html("<p></p>");// append html
 
@@ -2280,7 +2308,11 @@ $(function()
 
 				clean_editable(this);// Nétoie le champ
 
-				if($("p", this).html() == '') $("p", this).remove();// Si juste un paragraphe vide on le supp
+				// Si juste un paragraphe vide on le supp
+				if(("p", this).length == 1 && $("p", this).html() == '') {
+					if(typeof dev !== 'undefined') console.log("p remove");
+					$("p", this).remove();
+				}
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
 				$("body").off(".editable-media");// Désactive les events image
@@ -2306,10 +2338,13 @@ $(function()
 				}
 
 				if(!$(this).hasClass("view-source"))
-				{					
+				{			
+					// Supprime les <br> en fin de <p>		
+					clean_last_br($(memo_node));
+
 					// Constrole les saut de ligne vide // enter = 13 | up = 38 | down : 40
 					// || event.keyCode == 40
-					if(event.keyCode == 13) clean_br($(memo_node).prev());
+					//if(event.keyCode == 13) clean_br($(memo_node).prev());
 					//if(event.keyCode == 38) clean_br($(memo_node).next());
 
 					// Clean les highlight
@@ -2468,11 +2503,10 @@ $(function()
 				// Si on sélectionne un contenu
 				//if(memo_selection.toString().length > 0)
 				{
-					// Si on est sur un lien on ouvre le menu lien en mode modif
-					if($(memo_node).closest("a[href]").length) link_option();
-
 					// Si on est sur une ancre on ouvre le menu ancre en mode modif
 					if($(memo_node).closest("a[name]").length) anchor_option();
+					// Si on est sur un lien on ouvre le menu lien en mode modif
+					else if($(memo_node).closest("a").length) link_option();
 
 					// Si on est sur un texte dans une langue spécifique on ouvre le menu langue en mode modif
 					if($(memo_node).closest("span[lang]").length) lang_option();
@@ -2525,23 +2559,27 @@ $(function()
 			// Html dans le paste
 			if(/<[a-z][\s\S]*>/i.test(paste))
 			paste = paste
-				.replace(/\n|\r/gi, "")// Clean les retours à la ligne
+				.replace(/\n/gi, "")// Clean les retours à la ligne |\r
 
 			    .replace(/<p[^>]*><br><\/p><\/div>/gi, "\n")// <br> dans des </p></div>
 			    .replace(/<p[^>]*><span><\/span><br><\/p>/gi, "\n")// <br> dans des <p> => \n
 
-			    .replace(/<p[^>]*>/gi, "")// Supp les <p> 
-			    .replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
+			    //.replace(/<p[^>]*>/gi, "")// Supp les <p> 
+			    //.replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
 
 			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
 
 			    .replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
 
+	    		//.replace(/\<head[^>]*\>([^]*)\<\/head\>/g, '')// Supprime l'entête
+			    .replace(/\<style[^>]*\>([^]*)\<\/style\>/g, '')// Supprime les styles
+				.replace(/\<script[^>]*\>([^]*)\<\/script\>/g, '')// Supprime le js
+
 			// Transforme les retours à la ligne en <br>
 			paste = paste.replace(/\n/gi, "<br>");
 
 			// Clean les tags en gardant certain élément de mise en page //@todo voir le cas des <p></p>
-			paste = strip_tags(paste, "<a></a><b><b/><i></i><h1></h1><h2></h2><h3></h3><h4></h4><ul></ul><li></li><br>");
+			paste = strip_tags(paste, "<p></p><a></a><b><b/><i></i><h1></h1><h2></h2><h3></h3><h4></h4><ul></ul><li></li><br>");
 		}
 
 		// Insertion dans le contenu insertHTML insertText
@@ -2564,11 +2602,13 @@ $(function()
 	$.each($(".video .player-youtube"), function() 
 	{
 		// Ancienne version non accessible 22/04/2022
-		//var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
+		var lazy = ($(this).closest(".editable").hasClass("lazy")?' loading="lazy"':'');
 
 		//$(this).replaceWith('<img src="'+ $(this).data('preview') +'" alt="'+($(this).attr('alt')?$(this).attr('alt'):'')+'" width="'+$(this).attr('width')+'" height="'+$(this).attr('height')+'"'+lazy+'>');
 
-		$(this).replaceWith('<input type="image" src="'+ $(this).data('preview') +'" title="'+__("Show video")+'" alt="'+$(this).attr('title')+'">');
+		//$(this).replaceWith('<input type="image" src="'+ $(this).data('preview') +'" title="'+__("Show video")+'" alt="'+$(this).attr('title')+'">');
+
+		$(this).replaceWith('<button title="'+__("Show video")+'"><img src="'+ $(this).data('preview') +'" alt="'+$(this).attr('title')+'" width="320" height="180"'+lazy+'></button>');
 
 		$(".video.play").removeClass("play");
 	});
@@ -2607,6 +2647,7 @@ $(function()
 		// Si c'est un input type=image
 		var input = false;
 		if($(this).attr("type") == "image") input = true;
+		else if($(this).parent().prop("tagName") == "BUTTON") input = true;
 
 		// Supprimer le précédent bloc d'outils
 		$("#img-tool").remove();

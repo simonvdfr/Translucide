@@ -114,7 +114,7 @@ if($res)
 			// On regarde si une template 503 est définie
 			$sel_503 = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
 			$res_503 = $sel_503->fetch_assoc();
-			if($res_503['id']) $res = $res_503;
+			if(isset($res_503['id'])) $res = $res_503;
 			else {
 				$res = null;
 				$res['title'] = $msg = __("Under Construction");
@@ -372,6 +372,7 @@ if(!$ajax)
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
 			media_dir = "<?=(isset($GLOBALS['media_dir'])?$GLOBALS['media_dir']:'media')?>";
+			<?=(isset($GLOBALS['lang_alt'])?'lang_alt = "'.addslashes($GLOBALS['lang_alt']).'";':'')?>
 			<?=(isset($GLOBALS['sitename'])?'sitename = "'.addslashes($GLOBALS['sitename']).'";':'')?>
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>

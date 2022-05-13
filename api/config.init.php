@@ -132,7 +132,7 @@ $GLOBALS['towebp'] = true;
 $GLOBALS['ecoindex'] = true;
 
 
-// Cache sur les styles
+// Cache sur les fichiers du CMS
 $GLOBALS['cache'] = "";
 
 
@@ -180,7 +180,8 @@ $GLOBALS['toolbox'] = array(
 	//"icon",
 	"media",
 	//"figure",
-	//"video",
+	//"video",// Lecture dans le site
+	//"videoLink",// Lien vers youtube
 	//"lang",
 	//"anchor",
 	//"bt",

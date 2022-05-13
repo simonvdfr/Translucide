@@ -54,8 +54,12 @@ __ = function(txt) {
 		var txt = Object.keys(txt)[0];// On met la clé dans la variable
 	}
 
+	// Si une traduction existe
 	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) 
 		return translation[txt][get_cookie('lang')];	
+	// Si une langue alternative est définie et qu'une traduction existe
+	else if(typeof lang_alt !== 'undefined' && typeof translation[txt] !== 'undefined' && translation[txt][lang_alt]) 
+		return translation[txt][lang_alt];	
 	else 
 		return txt;
 }
@@ -74,6 +78,7 @@ logout = function() {
 
 
 // Affichage d'une popin, avec retour de focus une fois fermer
+popin_keydown = true;
 popin = function(txt, fadeout, mode, focus){		
 
 	// Le focus en cours
@@ -91,7 +96,7 @@ popin = function(txt, fadeout, mode, focus){
 
 	
 	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' // __("Information message")
-	$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-label=\""+txt+"\">" + txt + "</div>");
+	$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></div>");
 	var height = $("#"+mode).outerHeight();
 
 	// Ajout de la croix pour fermer
@@ -134,10 +139,23 @@ popin = function(txt, fadeout, mode, focus){
 		});
 
 	// Fermeture si echap
-	$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
+	//$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
 
 	// Focus bloquer sur le bt de fermeture // @todo pas optimal
-	$(document).keyup(function(event) { if(event.keyCode === 9) $("#close-popin").focus() });
+	//$(document).keydown(function(event) { if(event.keyCode === 9) $("#close-popin").focus();	});
+
+	// Action au clavier // up = 38 | down : 40 | tab : 9 | echap : 27
+	document.querySelector("#"+mode).addEventListener("keydown", function(event)
+	{			
+		// Fermeture si echap
+		if(event.keyCode === 27) close_popin(focus);
+
+		// Focus bloquer sur le bt de fermeture 
+		if(event.keyCode === 9) { 
+			event.preventDefault();
+			$("#close-popin").focus();
+		}
+	}, false);
 
 	// Disparition au bout de x seconde
 	if($.isNumeric(fadeout))
@@ -302,7 +320,8 @@ $(function()
 		$(this).data("play", true).addClass("play");
 	});*/
 
-	$(".video input").on("click", function(event){
+	$(".video button").on("click", function(event){/*.video input, */
+		console.log(event);
 		event.preventDefault();
 
 		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
@@ -313,8 +332,9 @@ $(function()
 
 			var id_video = $(event.currentTarget).closest(".video").data("video");
 
+			// www.youtube-nocookie.com www.youtube.com
 			$(event.currentTarget)
-				.replaceWith('<iframe src="https://www.youtube.com/embed/'+id_video+'?controls=1&rel=0&autoplay=1" title="'+$(event.currentTarget)[0].alt+'" data-preview="'+$(event.currentTarget).attr("src")+'" class="player-youtube" aria-describedby="desc-'+id_video+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+				.replaceWith('<iframe src="https://www.youtube-nocookie.com/embed/'+id_video+'?controls=1&rel=0&autoplay=1" title="'+$("img", event.currentTarget)[0].alt+'" data-preview="'+$("img", event.currentTarget).attr("src")+'" class="player-youtube" aria-describedby="desc-'+id_video+'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 		}
 
 	});

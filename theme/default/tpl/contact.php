@@ -1,11 +1,5 @@
 <?php 
 
-// @todo accessibilité
-// changer le titre si le formulaire est bien soumis ou si erreur
-// ------Si échape dans la popin ça ferme
-// bloquer la tabulation dans la popin => boucle à la fin de la modal pour retour au premier elem ?
-// bloquer la nav au clavier dans la popin => forcer le focus dans la modal ?
-
 switch(@$_GET['mode'])
 {
 	// AFFICHAGE DU FORMULAIRE DE CONTACT
@@ -26,14 +20,6 @@ switch(@$_GET['mode'])
 		</script>
 		
 
-		<style>
-			#email_contact, #message, #question {
-				border: 0.1em solid #35747f;
-				background-color: #f7f7f7;
-			}
-		</style>
-
-
 		<section class="mw960p mod center mtm">
 
 			<article class="w80 center">
@@ -47,8 +33,8 @@ switch(@$_GET['mode'])
 					<?php txt('texte-champs-obligatoires', 'mbm')?>
 
 					<div class="mbm">
-						<label for="email_contact"><?php span('texte-label-email')?><span class="red">*</span></label><br>
-						<input type="email" name="email_contact" id="email_contact" autocomplete="email" placeholder="<?php _e("Email")?>" class="w40 vatt" required><span class="wrapper big white vam o50">@</span>
+						<label for="email-from"><?php span('texte-label-email')?><span class="red">*</span></label><br>
+						<input type="email" name="email-from" id="email-from" autocomplete="email" placeholder="<?php _e("Email")?>" class="w40 vatt" required>
 
 						<label for="reponse" class="hidden" aria-hidden="true"><?php _e("Email")?></label>
 						<input name="reponse" id="reponse" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" placeholder="nom@domaine.com" aria-hidden="true">
@@ -64,7 +50,7 @@ switch(@$_GET['mode'])
 
 						<!-- Question -->
 						<?
-						$chiffre = array('zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix');
+						$chiffre = array('zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten');
 						$operators = array("+", "-");
 						$operator = $operators[array_rand($operators)];
 						$nb1 = rand(1, 5);//10
@@ -76,7 +62,7 @@ switch(@$_GET['mode'])
 						<div>
 							<label for="question">
 								<?php span('texte-label-question')?><span class="red">*</span> :
-								<?=($chiffre[$nb1]." ".($operator=='-'?'−':$operator)." ".$chiffre[$nb2]);?> = 
+								<?=(__($chiffre[$nb1])." ".($operator=='-'?'−':$operator)." ".__($chiffre[$nb2]));?> = 
 							</label>
 							<input type="text" name="question" id="question" placeholder="?" class="w50p tc" autocomplete="off" required>
 
@@ -137,9 +123,9 @@ switch(@$_GET['mode'])
 			{
 				event.preventDefault();
 
-				if($("#question").val()=="" || $("#message").val()=="" || $("#email_contact").val()=="" || $("#rgpdcheckbox").prop("checked") == false)
+				if($("#question").val()=="" || $("#message").val()=="" || $("#email-from").val()=="" || $("#rgpdcheckbox").prop("checked") == false)
 				error(__("Thank you for completing all the required fields!"));
-				else
+				else if(!desactive)
 				{
 					desactive = true;
 
@@ -151,7 +137,7 @@ switch(@$_GET['mode'])
 
 					// Désactive le bouton submit (pour les soumissions avec la touche entrée)
 					//$("#contact").off("submit");
-					$("#contact button").attr("disabled", true);
+					//$("#contact button").attr("disabled", true);// => ne permet pas le focus sur le bt une fois envoyer
 
 					$.ajax(
 						{
@@ -163,9 +149,22 @@ switch(@$_GET['mode'])
 				}
 			}
 
-			$("#contact").submit(function(event)
+			$(function()
 			{
-				send_mail(event)
+				// Message d'erreur en cas de mauvaise saisie du mail. Pour l'accessibilité
+				var email_from = document.getElementById("email-from");
+				email_from.addEventListener("invalid", function() {
+					email_from.setCustomValidity("<?_e("Invalid email")?>. <?_e("Expected format")?> : dupont@exemple.com")
+				}, false);
+				email_from.addEventListener("input", function() {
+					email_from.setCustomValidity("");
+				}, false);
+				
+				// Soumettre le formulaire
+				$("#contact").submit(function(event)
+				{
+					send_mail(event)
+				});
 			});
 		</script>
 		<?php 
@@ -177,23 +176,23 @@ switch(@$_GET['mode'])
 	// SCRIPT D'ENVOIE DE L'EMAIL
 	case 'send-mail':
 
-	print_r($_REQUEST);
+		//print_r($_REQUEST);
 
 		// Si on a posté le formulaire
-		if(isset($_POST["email_contact"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
+		if(isset($_POST["email-from"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
 		{
 			include_once("../../../config.php");// Les variables
 
 			if($_SESSION["nonce_contact"] and $_SESSION["nonce_contact"] == $_POST["nonce_contact"])// Protection CSRF
 			{
-				if(filter_var($_POST["email_contact"], FILTER_VALIDATE_EMAIL))// Email valide
+				if(filter_var($_POST["email-from"], FILTER_VALIDATE_EMAIL))// Email valide
 				{
 					if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
 					{
-						$from = ($_POST["email_contact"] ? htmlspecialchars($_POST["email_contact"]) : $GLOBALS['email_contact']);
+						$from = ($_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $GLOBALS['email_contact']);
 
 
-						$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email_contact"]);
+						$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email-from"]);
 
 
 						// Message
@@ -220,7 +219,7 @@ switch(@$_GET['mode'])
 						{
 							?>
 							<script>
-								popin(__("Message sent"));
+								popin(__("Message sent"), 'nofade', 'popin', $("#send"));
 								document.title = title +' - '+ __("Message sent");
 
 								// Icone envoyer
@@ -256,7 +255,7 @@ switch(@$_GET['mode'])
 				{
 					?>
 					<script>
-						error(__("Invalid email!"), 'nofade', $("#email_contact"));
+						error(__("Invalid email!"), 'nofade', $("#email-from"));
 						document.title = title +' - '+ __("Invalid email!");
 						
 						activation_form();// On rétablie le formulaire

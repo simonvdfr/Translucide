@@ -99,6 +99,18 @@ $add_translation = array(
 	"december" => array("fr" => "décembre"),
 	"st" => array("fr" => "er"),
 
+	"zero" => array("fr" => "zéro"),
+	"one" => array("fr" => "un"),
+	"two" => array("fr" => "deux"),
+	"three" => array("fr" => "trois"),
+	"four" => array("fr" => "quatre"),
+	"five" => array("fr" => "cinq"),
+	"six" => array("fr" => "six"),
+	"seven" => array("fr" => "sept"),
+	"eight" => array("fr" => "huit"),
+	"nine" => array("fr" => "neuf"),
+	"ten" => array("fr" => "dix"),
+
 
 	"Media Library" => array("fr" => "Bibliothèque des médias"),
 	"Drag and drop a file here or click me" => array("fr" => "Glisser-déplacer un fichier ici ou cliquez-moi"),
