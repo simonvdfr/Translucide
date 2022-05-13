@@ -2168,7 +2168,7 @@ $(function()
 
 	// Focus dans un élément vide
 	empty_focus = function(selector) {
-		//console.log("empty_focus");
+		if(typeof dev !== 'undefined') console.log("empty_focus");
 		range = document.createRange();
 		range.selectNodeContents(selector);
 		range.collapse(false);
@@ -2180,8 +2180,8 @@ $(function()
 	// Nétoie un champ éditable des <br> <p> <div> vide
 	clean_editable = function(memo_focus) {
 		var clean = ['<br>', '<p><br></p>', '<div><br></div>'];
-		if($.inArray($(memo_focus).html(), clean) != -1) {
-			//console.log("clean_editable");
+		if($.inArray($(memo_focus).html(), clean) != -1) {		
+			if(typeof dev !== 'undefined') console.log("clean_editable");	
 			$(memo_focus).html('');
 		}
 	}
@@ -2189,7 +2189,7 @@ $(function()
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
 	clean_highlight = function(selector) {
 		if(selector.prev().hasClass("highlight")) {
-			//console.log("clean_highlight");
+			if(typeof dev !== 'undefined') console.log("clean_highlight");
 			selector.removeAttr("class");
 		}
 	}
@@ -2198,7 +2198,7 @@ $(function()
 	// Si juste un <p> ou <div> avec un <br> => on remplace par un <div> vide avec une marge basse, non vocalisé
 	clean_br = function(selector) {
 		if(selector.html() == "<br>" || selector.html() == "") {
-			//console.log("clean_br");
+			if(typeof dev !== 'undefined') console.log("clean_br");
 			selector.replaceWith($('<div class="pbp"></div>'));
 		}
 	}
@@ -2206,7 +2206,7 @@ $(function()
 	// Supprime les <br> en fin de <p> => pour éviter que le sigle du paragraphe ne soit après la ligne courante
 	clean_last_br = function(selector) {
 		if(selector.html() == "<br>") {
-			//console.log("clean_last_br");
+			if(typeof dev !== 'undefined') console.log("clean_last_br");
 			selector.html("");
 		}
 	}
@@ -2215,7 +2215,7 @@ $(function()
 	clean_div = function(selector) {
 		if(selector.prop("tagName") == "DIV")
 		{
-			//console.log("clean_div");
+			if(typeof dev !== 'undefined') console.log("clean_div");
 
 			var sel = window.getSelection();// Position du curseur (caret)
 			var memo_offset = sel.focusOffset;// Numéro de la position
@@ -2243,11 +2243,11 @@ $(function()
 				if(p)
 				{
 					if(memo_offset == 0) {
-						//console.log("empty_focus");
+						if(typeof dev !== 'undefined') console.log("empty_focus");
 						empty_focus(p);
 					}
 					else {
-						//console.log("collapse");
+						if(typeof dev !== 'undefined') console.log("collapse");
 						window.getSelection().collapse(p.firstChild, memo_offset);
 					}
 				}
@@ -2264,7 +2264,7 @@ $(function()
 
 		if(/DIV|ARTICLE|section/.test($(memo_focus).prop("tagName")) && $(memo_focus).html() == "")
 		{
-			//console.log("init_paragraph");
+			if(typeof dev !== 'undefined') console.log("init_paragraph");
 
 			// Ajout du pragraphe
 			$(memo_focus).html("<p></p>");// append html
@@ -2308,7 +2308,11 @@ $(function()
 
 				clean_editable(this);// Nétoie le champ
 
-				if($("p", this).html() == '') $("p", this).remove();// Si juste un paragraphe vide on le supp
+				// Si juste un paragraphe vide on le supp
+				if(("p", this).length == 1 && $("p", this).html() == '') {
+					if(typeof dev !== 'undefined') console.log("p remove");
+					$("p", this).remove();
+				}
 			},
 			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
 				$("body").off(".editable-media");// Désactive les events image
