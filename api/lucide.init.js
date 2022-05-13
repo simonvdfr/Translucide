@@ -54,8 +54,12 @@ __ = function(txt) {
 		var txt = Object.keys(txt)[0];// On met la clé dans la variable
 	}
 
+	// Si une traduction existe
 	if(typeof translation[txt] !== 'undefined' && translation[txt][get_cookie('lang')]) 
 		return translation[txt][get_cookie('lang')];	
+	// Si une langue alternative est définie et qu'une traduction existe
+	else if(typeof lang_alt !== 'undefined' && typeof translation[txt] !== 'undefined' && translation[txt][lang_alt]) 
+		return translation[txt][lang_alt];	
 	else 
 		return txt;
 }
