@@ -22,7 +22,7 @@ if(!isset($_SESSION))
 
 
 // Fixe la langue
-if(strstr($_SERVER['SERVER_NAME'], 'domaine.com')) 
+if(strstr($_SERVER['SERVER_NAME'], 'domaine.com'))
 	$lang = $_SESSION['lang'] = 'en';
 else
 	$lang = $_SESSION['lang'] = 'fr';
@@ -44,7 +44,7 @@ if(
 	$_SERVER['SERVER_ADDR'] == '127.0.0.1' or
 	strpos($_SERVER['SERVER_ADDR'], '::1') !== false)
 	$dev = true;
-else 
+else
 	$dev = false;
 
 
@@ -86,13 +86,13 @@ $GLOBALS['sitename'] = null;
 
 if($dev)// Dev local
 	$GLOBALS['scheme'] = '';
-else 
+else
 	$GLOBALS['scheme'] = '';
 
 
 if($dev)// Dev local
 	$GLOBALS['domain'] = '';
-else 
+else
 	$GLOBALS['domain'] = '';
 
 
@@ -112,7 +112,7 @@ $GLOBALS['online'] = false;
 // Utilisation de librairie minifier
 if($dev)// Dev local
 	$GLOBALS['min'] = '';
-else 
+else
 	$GLOBALS['min'] = '';//.min
 
 
@@ -330,11 +330,11 @@ $GLOBALS['style.css'] = null;
 
 
 // Librairie externe
-$GLOBALS['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';
+$GLOBALS['jquery'] = '/api/assets/js/jquery.min.js';
 
-$GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
+$GLOBALS['jquery_ui'] = '/api/assets/js/jquery-ui.min.js';
 
-$GLOBALS['jquery_ui_css'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css';// cupertino flick smoothness base 
+$GLOBALS['jquery_ui_css'] = '/api/assets/js/jquery-ui.min.css';// cupertino flick smoothness base
 
 
 // Filtre url autorisé
