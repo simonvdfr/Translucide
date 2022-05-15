@@ -269,7 +269,7 @@ switch($_GET['mode'])
 				$(".dialog-add ul li").click(function(event) {
 					var filter = $(this).data("filter");
 
-					// Affiche ou masque le bt permalink home
+					// Affiche ou masque le btn permalink home
 					if(filter == "page") $("label[for='homepage']").show();
 					else $("label[for='homepage']").hide();
 
@@ -820,7 +820,7 @@ switch($_GET['mode'])
 
 
 
-				$("#save i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du bt
+				$("#save i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du btn
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
 			</script>
