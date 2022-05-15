@@ -39,45 +39,45 @@ switch($_GET['mode'])
 
 
 			<!-- Barre du haut avec bouton sauvegarder et option -->
-			<div id="admin-bar" class="none">
+			<div id="admin-bar" class="hidden">
 
-				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?php _e("Show user info")?>"></i></div>
+				<div id="user" class="float-left p-8"><i class="fa fa-fw fa-user-circle bigger" title="<?php _e("Show user info")?>"></i></div>
 
 				<!-- list/bars -->
-				<div id="list-content" class="fl pat"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
+				<div id="list-content" class="float-left p-8"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
 
-				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
+				<div id="meta-responsive" class="float-left m-8 hidden"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
 
-				<div id="meta" class="fl mat w30 noss">
+				<div id="meta" class="float-left m-8 mobile-hidden">
 
 					<input type="text" id="title" value="" placeholder="<?php _e("Page title")?>" title="<?php _e("Page title")?>" maxlength="70" class="w100 bold">
 
-					<div class="w50">
-						<div class="tooltip slide-left fire pas mas mlt">
+					<div>
+						<div class="tooltip slide-left p-16 m-16 ml-8">
 
-							<div class="small">
+							<div class="text-smaller">
 								<?php _e("Description for search engines")?>
 
-								<div class="fr">
-									<input type="checkbox" id="noindex"> <label for="noindex" class="mrs" title="<?php _e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
+								<div class="float-right">
+									<input type="checkbox" id="noindex"> <label for="noindex" class="mr-16" title="<?php _e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
 									<input type="checkbox" id="nofollow"> <label for="nofollow" title="<?php _e("Empêche les liens d'être suivis par les robots et de transmettre de la popularité")?>">nofollow</label>
 								</div>
 							</div>
 							<input type="text" id="description" value="" maxlength="160" class="w100">
 
-							<div class="small mtm"><?php _e("Formatted web address")?></div>
-							<div class="grid">
-								<input type="text" id="permalink" value="" placeholder="<?php _e("Permanent link: 'index' if homepage")?>" maxlength="70" class="w50 mrm">
+							<div class="text-smaller mt-24"><?php _e("Formatted web address")?></div>
+							<div class="flex-wrap">
+								<input type="text" id="permalink" value="" placeholder="<?php _e("Permanent link: 'index' if homepage")?>" maxlength="70" class="mr-24">
 
-								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?php _e("Home page")?></label></span>
+								<span id="ispage" class="hidden"><input type="checkbox" id="homepage"> <label for="homepage" class="mr-16"><?php _e("Home page")?></label></span>
 
 								<label id="refresh-permalink"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
 							</div>
 
-							<div class="mod mtm">
+							<div class="flex flex-wrap mt-24">
 
-								<div class="fl mrl">
-									<div class="small"><?php _e("Type of page")?></div>
+								<div class="float-left mr-36">
+									<div class="text-smaller"><?php _e("Type of page")?></div>
 									<div>
 										<select id="type">
 											<?php
@@ -91,8 +91,8 @@ switch($_GET['mode'])
 									</div>
 								</div>
 
-								<div class="fl mrl">
-									<div class="small"><?php _e("Template")?></div>
+								<div class="float-left mr-36">
+									<div class="text-smaller"><?php _e("Template")?></div>
 									<div>
 										<select id="tpl">
 											<?php
@@ -107,8 +107,8 @@ switch($_GET['mode'])
 									</div>
 								</div>
 
-								<div class="fl">
-									<div class="small"><?php _e("Creation date")?></div>
+								<div class="float-left">
+									<div class="text-smaller"><?php _e("Creation date")?></div>
 									<div>
 										<input type="text" id="date-insert" class="w150p">
 									</div>
@@ -117,7 +117,7 @@ switch($_GET['mode'])
 							</div>
 
 
-							<div class="small mtm"><?php _e("Image on social networks")?></div>
+							<div class="text-smaller mt-24"><?php _e("Image on social networks")?></div>
 							<div class=""><span class="editable-media" id="og-image"><img src=""></span></div>
 
 						</div>
@@ -125,13 +125,13 @@ switch($_GET['mode'])
 
 				</div>
 
-				<div id="close" class="fr mrt bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
+				<div id="close" class="float-right mr-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
 
-				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="noss"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
+				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
 
-				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="noss"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+				<button id="del" class="float-right m-8 text-smaller o50 ho1" title="<?php _e("Delete")?>"><span class="mobile-hidden"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
 
-				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
+				<div class="float-right m-8 mr-16 switch o50 ho1"><input type="checkbox" id="state-content" class="hidden"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
 			</div>
 			<div id="progress"></div>
@@ -209,7 +209,7 @@ switch($_GET['mode'])
 
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<ul class="smaller">
+			<ul class="text-smaller">
 				<?php
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
@@ -220,7 +220,7 @@ switch($_GET['mode'])
 				?>
 			</ul>
 
-			<div class="none">
+			<div class="hidden">
 				<?php
 				reset($GLOBALS['add_content']);
 				foreach($GLOBALS['add_content'] as $cle => $array)
@@ -233,8 +233,8 @@ switch($_GET['mode'])
 
 			<div>
 
-				<div class="mas">
-					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 bold">
+				<div class="m-16">
+					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 text-bold">
 
 					<select id="tpl" required class="w30">
 						<option value=""><?php _e("Select template")?></option>
@@ -250,10 +250,10 @@ switch($_GET['mode'])
 					</select>
 				</div>
 
-				<div class="mas mtm">
-					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70" class="w50 mrm">
-					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
-					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
+				<div class="m-16 mt-24">
+					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70">
+					<label for="homepage" class="mr-16 mt-0 hidden"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
+					<label id="refresh-permalink" class="mt-0"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
 				</div>
 
 			</div>
@@ -811,7 +811,7 @@ switch($_GET['mode'])
 					$url = (isset($change_url)?$change_url:$res['url']);
 					?>
 					// Chargement de la page
-					$("#ecoindex span").html("<i class='fa fa-cog fa-spin'></i>");
+					$("#ecoindex span").html("<i class='icon feather-settings icon-spin'></i>");
 
 					// Inject la page dans une iframe pour l'auditer
 					$("body").append('<iframe id="iframe_ecoindex" src="<?=make_url($url, array('domaine' => true))?>" frameborder="0" class="hidden" width="100%" height="850"></iframe>');
@@ -869,7 +869,7 @@ switch($_GET['mode'])
 			$(function()
 			{
 				// Message page supprimé
-				light("<?php _e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
+				light("<?php _e("Page deleted, redirecting")?> <i class='icon icon-spin feather-settings ml-8'></i>");
 
 				// Redirection vers la page d'accueil
 				setTimeout(function(){ document.location.href = "<?=$GLOBALS['home'];?>"; }, 2000);
@@ -889,14 +889,14 @@ switch($_GET['mode'])
 
 		$type = null;
 
-		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mtn mbs pls">';
+		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mt-0 mb-16 pl-16">';
 
 		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE lang='".$lang."' ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
 		while($res = $sel->fetch_assoc())
 		{
-			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
+			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mt-24"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__("Deactivate")."'></i>").'</li>';
+			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='icon feather-eye-off' title='".__("Deactivate")."'></i>").'</li>';
 
 			$type = $res['type'];
 		}
