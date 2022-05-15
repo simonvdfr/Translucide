@@ -41,12 +41,12 @@ switch($_GET['mode'])
 			<!-- Barre du haut avec bouton sauvegarder et option -->
 			<div id="admin-bar" class="hidden">
 
-				<div id="user" class="float-left p-8"><i class="fa fa-fw fa-user-circle bigger" title="<?php _e("Show user info")?>"></i></div>
+				<div id="user" class="float-left p-8"><i class="icon feather-user" title="<?php _e("Show user info")?>"></i></div>
 
 				<!-- list/bars -->
-				<div id="list-content" class="float-left p-8"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
+				<div id="list-content" class="float-left p-8"><i class="icon feather-menu align-middle" title="<?php _e("List of contents")?>"></i></div>
 
-				<div id="meta-responsive" class="float-left m-8 hidden"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
+				<div id="meta-responsive" class="float-left m-8 hidden"><i class="icon feather-edit-3" title="<?php _e("Page title")?>"></i></div>
 
 				<div id="meta" class="float-left m-8 mobile-hidden">
 
@@ -71,7 +71,7 @@ switch($_GET['mode'])
 
 								<span id="ispage" class="hidden"><input type="checkbox" id="homepage"> <label for="homepage" class="mr-16"><?php _e("Home page")?></label></span>
 
-								<label id="refresh-permalink"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
+								<label id="refresh-permalink"><i class="icon feather-refresh-cw"></i><?php _e("Regenerate address")?></label>
 							</div>
 
 							<div class="flex flex-wrap mt-24">
@@ -125,11 +125,11 @@ switch($_GET['mode'])
 
 				</div>
 
-				<div id="close" class="float-right mr-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
+				<div id="close" class="float-right mr-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon feather-x vatt"></i></div>
 
-				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
+				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="icon feather-save"></i></button>
 
-				<button id="del" class="float-right m-8 text-smaller o50 ho1" title="<?php _e("Delete")?>"><span class="mobile-hidden"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+				<button id="del" class="float-right m-8 text-smaller o50 ho1" title="<?php _e("Delete")?>"><span class="mobile-hidden"><?php _e("Delete")?></span> <i class="icon feather-trash"></i></button>
 
 				<div class="float-right m-8 mr-16 switch o50 ho1"><input type="checkbox" id="state-content" class="hidden"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
@@ -214,7 +214,7 @@ switch($_GET['mode'])
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
-						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
+						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="icon '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
 					}
 				}
 				?>
@@ -253,7 +253,7 @@ switch($_GET['mode'])
 				<div class="m-16 mt-24">
 					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70">
 					<label for="homepage" class="mr-16 mt-0 hidden"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
-					<label id="refresh-permalink" class="mt-0"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
+					<label id="refresh-permalink" class="mt-0"><i class="icon feather-refresh-cw"></i><?php _e("Regenerate address")?></label>
 				</div>
 
 			</div>
@@ -820,7 +820,7 @@ switch($_GET['mode'])
 
 
 
-				$("#save i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
+				$("#save i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du bt
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
 			</script>
@@ -1027,7 +1027,7 @@ switch($_GET['mode'])
 
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
-			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel color-red' title='\"+ __(\"Remove\") +\"'></i></li>";
+			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='icon feather-x color-red' title='\"+ __(\"Remove\") +\"'></i></li>";
 		}
 
 	break;
@@ -1062,22 +1062,22 @@ switch($_GET['mode'])
 
 			<ul class="text-smaller">
 
-				<li data-filter="all"><a href="#media" title="<?php _e("Media")?>"><i class="fa fa-doc"></i> <span><?php _e("Media")?></span></a></li>
+				<li data-filter="all"><a href="#media" title="<?php _e("Media")?>"><i class="icon feather-file"></i> <span><?php _e("Media")?></span></a></li>
 
-				<!-- <li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?php _e("Files")?>"><i class="fa fa-file-text-o"></i> <span><?php _e("Files")?></span></a></li> -->
+				<!-- <li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?php _e("Files")?>"><i class="icon feather-file-text"></i> <span><?php _e("Files")?></span></a></li> -->
 
-				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?php _e("Images")?>"><i class="fa fa-picture-o"></i> <span><?php _e("Images")?></span></a></li> -->
+				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?php _e("Images")?>"><i class="icon feather-image"></i> <span><?php _e("Images")?></span></a></li> -->
 
-				<li data-filter="resize"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=resize" title="<?php _e("Resized")?>"><i class="fa fa-resize-small"></i> <span><?php _e("Resized")?></span></a></li>
+				<li data-filter="resize"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=resize" title="<?php _e("Resized")?>"><i class="icon feather-minimize-2"></i> <span><?php _e("Resized")?></span></a></li>
 
 
 				<?php if(isset($_REQUEST['dir']) and $_REQUEST['dir']){?>
-				<li data-filter="dir"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?php _e("Specific")?>"><i class="fa fa-file"></i> <span><?php _e("Specific")?></span></a></li>
+				<li data-filter="dir"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?php _e("Specific")?>"><i class="icon feather-file"></i> <span><?php _e("Specific")?></span></a></li>
 				<?php }?>
 
-				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?php _e("Videos")?>"><i class="fa fa-film"></i> <span><?php _e("Videos")?></span></a></li>
+				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?php _e("Videos")?>"><i class="icon feather-film"></i> <span><?php _e("Videos")?></span></a></li>
 
-				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?php _e("Audios")?>"><i class="fa fa-volume-up"></i> <span><?php _e("Audios")?></span></a></li> -->
+				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?php _e("Audios")?>"><i class="icon feather-volume-2"></i> <span><?php _e("Audios")?></span></a></li> -->
 
 			</ul>
 
@@ -1106,7 +1106,7 @@ switch($_GET['mode'])
 
 				// Option de resize à afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
-					var resize = "<a class='resize' title=\"<?php _e("Get resized image");?>\"><i class='fa fa-fw fa-resize-small'></i></a>";
+					var resize = "<a class='resize' title=\"<?php _e("Get resized image");?>\"><i class='icon feather-minimize-2'></i></a>";
 				else
 					var resize = "";
 
@@ -1118,14 +1118,14 @@ switch($_GET['mode'])
 					if(mime[0] == "image")
 						container += "<img src=''>" + resize;
 					else {
-						container += '<div class="file"><i class="fa fa-fw fa-doc"></i><div>'+ file.name +"</div></div>";
+						container += '<div class="file"><i class="icon feather-file"></i><div>'+ file.name +"</div></div>";
 						container += '<div class="copy"><input type="text" value="'+ path + media_dir +'/' + $("#dialog-media-dir").val() + file.name +'"></div>';
 
 					}
 
 					container += "<div class='infos'></div>";
 
-					container += "<a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash'></i></a>";
+					container += "<a class='supp hidden' title=\""+__("Delete file")+"\"><i class='icon feather-trash'></i></a>";
 
 				container += "</li>";
 
@@ -1170,7 +1170,7 @@ switch($_GET['mode'])
 				{
 					$("#dialog-media-width").val($("#resize-width").val());
 					$("#dialog-media-height").val($("#resize-height").val());
-					get_img(id, $('#resize-tool .fa-resize-full').hasClass('checked'));
+					get_img(id, $('#resize-tool .feather-maximize-2').hasClass('checked'));
 				}
 			}
 
@@ -1218,8 +1218,8 @@ switch($_GET['mode'])
 					resize_tool = "<div id='resize-tool' class='toolbox'>";
 						resize_tool+= __("Width") +": <input type='text' id='resize-width' class='w50p'> ";
 						resize_tool+= __("Height") +": <input type='text' id='resize-height' class='w50p'>";
-						resize_tool+= "<a href=\"javascript:$('#resize-tool .fa-resize-full').toggleClass('checked');void(0);\"><i class='fa fa-fw fa-resize-full'></i>"+ __("Zoom link") +"</a> ";
-						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='fa fa-fw fa-cog'></i> "+ __("Add") +"</button>";
+						resize_tool+= "<a href=\"javascript:$('#resize-tool .feather-maximize-2').toggleClass('checked');void(0);\"><i class='icon feather-maximize-2'></i>"+ __("Zoom link") +"</a> ";
+						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='icon feather-settings'></i> "+ __("Add") +"</button>";
 					resize_tool+= "</div>";
 
 					$(".ui-dialog").append(resize_tool);
@@ -1495,7 +1495,7 @@ switch($_GET['mode'])
 			{
 			?>
 			<li class="add-media p-16 m-8 text-center text-smaller" onclick="document.getElementById('add-media').click();">
-				<i class="fa fa-upload pb-16"></i><br>
+				<i class="icon feather-upload pb-16"></i><br>
 				<?php _e("Drag and drop a file here or click me");?>
 				<input type="file" id="add-media" style="display: none" multiple>
 			</li>
@@ -1515,7 +1515,7 @@ switch($_GET['mode'])
 					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
 					data-type="dir"
 					>
-						<div class="file"><i class="fa fa-fw fa-folder-empty"></i><div>'.utf8_encode($val).'</div></div>
+						<div class="file"><i class="icon feather-folder"></i><div>'.utf8_encode($val).'</div></div>
 					</li>';
 				}
 			}
@@ -1599,20 +1599,20 @@ switch($_GET['mode'])
 
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
 
-							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small"></i></a>';
+							echo'<a class="resize" title="'.__("Get resized image").'"><i class="icon feather-minimize-2"></i></a>';
 						}
 						else {
-							echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+							echo'<div class="file"><i class="icon feather-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
 							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
 
-							echo'<a href="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="fa fa-fw fa-link-ext"></i></a>';
+							echo'<a href="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="icon feather-external-link"></i></a>';
 						}
 
 						echo"
 						<div class='mime ".$sizecolor."'>".$val['mime']."</div>
 						<div class='infos'>".$info." - ".$size."</div>
-						<a class='supp' title=\"".__("Delete file")."\"><i class='fa fa-fw fa-trash'></i></a>
+						<a class='supp' title=\"".__("Delete file")."\"><i class='icon feather-trash'></i></a>
 					</li>";
 
 					$i++;
@@ -1758,11 +1758,11 @@ switch($_GET['mode'])
 
 			<?php
 			//$pattern = '/\.([\w-]+):before\s*{\s*content:\s*(["\']\\\w+["\']);?\s*}/';
-			//$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
-			//$pattern = '/\\.(fa-\\w+):before{content:"(\\\\\w+)"}/';
-			//$pattern = '/\\.(fa-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';
-			//$pattern = '/\\.(fa-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';
-			$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";
+			//$pattern = '/\.(feather-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
+			//$pattern = '/\\.(feather-\\w+):before{content:"(\\\\\w+)"}/';
+			//$pattern = '/\\.(feather-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';
+			//$pattern = '/\\.(feather-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';
+			$pattern = "/\\.(feather-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";
 
 			// Url du fichier qui contient les icônes
 			if($GLOBALS['icons']) $file = $GLOBALS['icons'];
