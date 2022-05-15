@@ -334,7 +334,7 @@ $GLOBALS['jquery'] = '/api/assets/js/jquery.min.js';
 
 $GLOBALS['jquery_ui'] = '/api/assets/js/jquery-ui.min.js';
 
-$GLOBALS['jquery_ui_css'] = '/api/assets/js/jquery-ui.min.css';// cupertino flick smoothness base
+$GLOBALS['jquery_ui_css'] = '/api/assets/css/jquery-ui.min.css';// cupertino flick smoothness base
 
 
 // Filtre url autorisé
