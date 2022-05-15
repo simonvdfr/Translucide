@@ -145,7 +145,7 @@ switch(@$_GET['mode'])
 
 				submittable = function() {
 					// Icône de chargement
-					$("#setup button i").removeClass("fa-spin");
+					$("#setup button i").removeClass("icon-spin");
 
 					// Active le submit
 					$("#setup button").attr("disabled", false);
@@ -159,7 +159,7 @@ switch(@$_GET['mode'])
 						event.preventDefault();
 
 						// Icône de chargement
-						$("#setup button i").addClass("fa-spin");
+						$("#setup button i").addClass("icon-spin");
 
 						// Désactive le submit
 						$("#setup button").attr("disabled", true);
@@ -232,7 +232,7 @@ switch(@$_GET['mode'])
 						</div>
 						<div>
 							<input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="bg-light px-8">
-							<a href="javascript:void(0);" onclick="if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye align-middle"></i></a>
+							<a href="javascript:void(0);" onclick="if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password');" tabindex="-1"><i class="icon feather-eye align-middle"></i></a>
 						</div>
 
 						<div class="text-right p-x8">
@@ -283,26 +283,26 @@ switch(@$_GET['mode'])
 					<div class="grid grid-cols-2 gap-10 my-36">
 
 						<div class="text-right px-8">
-							<label><i class="fa fa-fw fa-mail-alt"></i> <?php _e("Administrator email");?></label>
+							<label><i class="icon feather-mail"></i> <?php _e("Administrator email");?></label>
 						</div>
 						<div>
 							<input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="bg-light px-8">
 						</div>
 
 						<div class="text-right px-8">
-							<label><i class="fa fa-fw fa-lock"></i> <?php _e("Administrator password");?></label>
+							<label><i class="icon feather-lock"></i> <?php _e("Administrator password");?></label>
 						</div>
 						<div>
 							<input type="password" id="password" required class="bg-light px-8">
-							<a href="javascript:$('#setup #password').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="fa fa-fw fa-arrows-cw align-middle"></i></a>
-							<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye align-middle"></i></a>
+							<a href="javascript:$('#setup #password').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="icon feather-refresh-cw align-middle"></i></a>
+							<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="icon feather-eye align-middle"></i></a>
 						</div>
 
 					</div>
 
 					<div class="float-right">
 
-						<button class="button bg-glaz color-light border-gray text-bold"><?php _e("Start installation");?> <i class="fa fa-fw fa-cog ml-8"></i></button>
+						<button class="button bg-glaz color-light border-gray text-bold"><?php _e("Start installation");?> <i class="icon feather-settings ml-8"></i></button>
 
 					</div>
 
