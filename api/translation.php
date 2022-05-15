@@ -48,7 +48,7 @@ $add_translation = array(
 
 	"List of contents" => array("fr" => "Liste des contenus"),
 
-	
+
 	"Add content" => array("fr" => "Ajouter un contenu"),
 	"Add page" => array("fr" => "Ajouter une page"),
 	"Add article" => array("fr" => "Ajouter un article"),
@@ -62,24 +62,24 @@ $add_translation = array(
 
 	"Title" => array("fr" => "Titre"),
 	"Select template" => array("fr" => "Sélectionner un modèle"),
-	"Permanent link" => array("fr" => "Lien Permanent"),
-	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
+	"Permanent link" => array("fr" => "Lien permanent"),
+	"Regenerate address" => array("fr" => "Régénérer l'adresse"),
 	"Permanent link: 'index' if homepage" => array("fr" => "Lien permanent: 'index' si c'est la page d'accueil"),
 	"No permanent link for content" => array("fr" => "Pas de lien permanent pour le contenu"),
 
 
 	"Page title" => array("fr" => "Titre de la page"),
 	"Description for search engines" => array("fr" => "Description pour les moteurs de recherche"),
-	"Formatted web address" => array("fr" => "Adresse web formaté"),
-	
+	"Formatted web address" => array("fr" => "Adresse web formatée"),
+
 	"Template" => array("fr" => "Modèle de page"),
 	"Type of page" => array("fr" => "Type de page"),
 	"Creation date" => array("fr" => "Date de création"),
-	
+
 	"Image on social networks" => array("fr" => "Image sur les réseaux sociaux"),
-	
+
 	"Close the edit mode" => array("fr" => "Fermer le mode d'édition"),
-	"Activation status" => array("fr" => "Etat d'activation"),
+	"Activation status" => array("fr" => "État d'activation"),
 
 
 	"Home page" => array("fr" => "Page d'accueil"),
@@ -113,7 +113,7 @@ $add_translation = array(
 
 
 	"Media Library" => array("fr" => "Bibliothèque des médias"),
-	"Drag and drop a file here or click me" => array("fr" => "Glisser-déplacer un fichier ici ou cliquez-moi"),
+	"Drag and drop a file here or click" => array("fr" => "Glisser-déplacer un fichier ici ou cliquer"),
 	"Delete file" => array("fr" => "Supprimer le fichier"),
 	"Media" => array("fr" => "Médias"),
 	"Images" => array("fr" => "Images"),
@@ -123,12 +123,12 @@ $add_translation = array(
 	"Videos" => array("fr" => "Vidéos"),
 	"Audios" => array("fr" => "Audios"),
 	"Get resized image" => array("fr" => "Obtenir une image redimensionnée"),
-	"Copy to clipboard" => array("fr" => "Copier dans le presse papier"),
+	"Copy to clipboard" => array("fr" => "Copier dans le presse-papier"),
 
 	"Size of source file unspecified" => array("fr" => "Taille du fichier source non précisée"),
 	"Unsupported file type" => array("fr" => "Type de fichier non pris en charge"),
 	"A file with the same name already exists" => array("fr" => "Un fichier avec le même nom existe déjà"),
-	
+
 	"Icon Library" => array("fr" => "Bibliothèque d'icône"),
 
 
@@ -166,7 +166,7 @@ $add_translation = array(
 	"Blacklist" => array("fr" => "Liste noire"),
 	"Deactivate" => array("fr" => "Désactivé"),
 
-	"New user to activate" => array("fr" => "Nouvel utilisateur a activé"),
+	"New user to activate" => array("fr" => "Nouvel utilisateur à activer"),
 	"User profile" => array("fr" => "Profil de l'utilisateur"),
 
 
@@ -174,8 +174,8 @@ $add_translation = array(
 	"Managing users" => array("fr" => "Gestion des utilisateurs"),
 
 	"Edit Config" => array("fr" => "Modifier la config"),
-	
-	"Edit menu" => array("fr" => "Edition du menu"),
+
+	"Edit menu" => array("fr" => "Modifier le menu"),
 	"Edit header" => array("fr" => "Modifier l'en-tête"),
 	"Edit footer" => array("fr" => "Modifier le pied de page"),
 
