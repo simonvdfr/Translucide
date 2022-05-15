@@ -97,9 +97,9 @@ else
 
 
 $GLOBALS['path'] = '';//Pour un site accessible dans une sous rubrique, pas à la racine du nom de domaine
-$GLOBALS['sous-dossier'] = '';//Pour un site hébergé dans un sous dossier d'un serveur
+$GLOBALS['sous-dossier'] = '/';//Pour un site hébergé dans un sous dossier d'un serveur
 
-$GLOBALS['replace_path'] = "";// "/" Pour les chemins des média sur les sites avec dossier dans les url (filtre)
+$GLOBALS['replace_path'] = '';// "/" Pour les chemins des média sur les sites avec dossier dans les url (filtre)
 
 
 $GLOBALS['email_contact'] = '';
@@ -156,40 +156,40 @@ $GLOBALS['plausible'] = '';// $GLOBALS['domain']
 
 // Toolbox
 $GLOBALS['toolbox'] = array(
-	//"h2",
-	//"h3",
-	//"h4",
-	//"h5",
-	//"h6",
+	"h2",
+	"h3",
+	"h4",
+	"h5",
+	"h6",
 	"bold",
 	"italic",
-	//"underline",
-	//"superscript",
-	//"fontSize",
-	//"color",
-	//"p",
-	//"blockquote",
-	//"highlight",
-	//"insertUnorderedList",
-	//"justifyLeft",
-	//"justifyCenter",
-	//"justifyRight",
-	//"justifyFull",
-	//"InsertHorizontalRule",
-	//"viewsource",
-	//"icon",
+	"underline",
+	"superscript",
+	"fontSize",
+	"color",
+	"p",
+	"blockquote",
+	"highlight",
+	"insertUnorderedList",
+	"justifyLeft",
+	"justifyCenter",
+	"justifyRight",
+	"justifyFull",
+	"InsertHorizontalRule",
+	"viewsource",
+	"icon",
 	"media",
-	//"figure",
-	//"video",// Lecture dans le site
-	//"videoLink",// Lien vers youtube
-	//"lang",
-	//"anchor",
-	//"bt",
+	"figure",
+	"video",// Lecture dans le site
+	"videoLink",// Lien vers youtube
+	"lang",
+	"anchor",
+	"bt",
 	"link"
 );
 
 // Nombre de couleur custom dans la css color-x
-$GLOBALS['nbcolor'] = 0;
+$GLOBALS['nbcolor'] = 4;
 
 
 // Clé hash pour les cryptages
@@ -249,11 +249,11 @@ $GLOBALS['auth_level'] = array(
 
 // Type de contenu ajoutable
 $GLOBALS['add_content'] = array(
-	//"product" => ["icon" => "feather-shopping-cart", "tpl" => "product"],
+	"product" => ["icon" => "feather-shopping-cart", "tpl" => "product"],
 	"article" => ["icon" => "feather-rss", "tpl" => "article"],
-	//"event" => ["icon" => "feather-calendar", "tpl" => "event"],
-	//"video" => ["icon" => "feather-film", "tpl" => "video"],
-	//"media" => ["icon" => "feather-paperclip", "tpl" => "fichier"],
+	"event" => ["icon" => "feather-calendar", "tpl" => "event"],
+	"video" => ["icon" => "feather-film", "tpl" => "video"],
+	"media" => ["icon" => "feather-paperclip", "tpl" => "fichier"],
 	"page" => ["icon" => "feather-file", "tpl" => "page"]
 );
 
@@ -286,8 +286,8 @@ $GLOBALS['mime_supported'] = array(
 	'image/x-icon',
 	'image/svg',
 	'image/svg+xml',
-	//'video/webm',
-	//'video/mp4',
+	'video/webm',
+	'video/mp4',
 	'application/pdf',
 	'application/zip',
 	'application/x-zip-compressed',
