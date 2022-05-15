@@ -40,27 +40,27 @@ switch($_GET['mode'])
 		<div id="dialog-connect" title="<?php _e("Log in");?>">
 
 			<?php if($_REQUEST['msg']){?>
-			<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
+			<div class="m-16 mt-0 p-8 ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
 			<?php }?>
 
-			<form id="internal-login" class="mts small">
+			<form id="internal-login" class="mt-16 text-smaller">
 
 				<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-				<p class="mbm"><?_e("All fields are mandatory")?></p>
+				<p class="mb-24"><?_e("All fields are mandatory")?></p>
 
 				<label for="email">
 					<?php _e("My email");?>
-					(<?_e("Expected format" )?> : dupont@exemple.com)
+					<i><?_e("Expected format" )?> : myname@domain.com</i>
 				</label>
-				<div class="mbm"><input type="email" id="email" autocomplete="email" required class="w100"><span class="wrapper big bold" aria-hidden="true">@</span></div>
+				<div class="mb-24"><input type="email" id="login-email" autocomplete="email" required><span class="wrapper text-bold" aria-hidden="true">@</span></div>
 
 				<label for="password"><?php _e("My password");?></label>
-				<input type="password" id="password" autocomplete="current-password" required class="w100"><i class="fa fa-lock wrapper bigger" aria-hidden="true"></i>
+				<div class="mb-24"><input type="password" id="login-password" autocomplete="current-password" required><i class="icon feather-lock wrapper" aria-hidden="true"></i></div>
 
-				<button class="bt internal fr mrn mtm pat">
+				<button class="bg-light float-right mr-0 mt-24 p-8">
 					<?php _e("Log in")?>
-					<i class="fa fa-key" aria-hidden="true"></i>
+					<i class="icon feather-log-in" aria-hidden="true"></i>
 				</button>
 
 			</form>
@@ -92,7 +92,7 @@ switch($_GET['mode'])
 				event.preventDefault();
 
 				// Icône de chargement
-				$("#dialog-connect .bt .fa").removeClass("fa-key").addClass("fa-spin fa-cog");
+				$("#dialog-connect .btn .icon").removeClass("feather-key").addClass("icon-spin feather-settings");
 
 				// Désactive le submit
 				$("#internal-login input[type='submit']").attr("disabled", true);
@@ -134,34 +134,25 @@ switch($_GET['mode'])
 			<meta name="robots" content="noindex, nofollow">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="assets/css/style<?=$GLOBALS['min']?>.css?">
-			<link rel="stylesheet" href="assets/css/custom<?=$GLOBALS['min']?>.css?">
+			<link rel="stylesheet" href="/assets/css/style<?=$GLOBALS['min']?>.css?">
+			<link rel="stylesheet" href="/assets/css/custom<?=$GLOBALS['min']?>.css?">
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
-			<script src="assets/js/custom.init<?=$GLOBALS['min']?>.js"></script>
+			<script src="/assets/js/custom.init<?=$GLOBALS['min']?>.js"></script>
 
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
-			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
+			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
 					<script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>admin.init.js"></script>
 			<?php }?>
-
-			<style>
-				#user .absolute { width: 100%; }
-				#user .tooltip {
-					max-width: 420px;
-					margin: auto;
-				}
-				.fa-arrows-cw { display: none; }
-				.fa-logout { display: none; }
-			</style>
 		</head>
+
 		<body>
 
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<div id="admin-bar" class="mtm">
+			<div id="admin-bar" class="mt-24">
 				<div id="user">
-					<center><i class="fa fa-spin fa-cog biggest mtl" style="position: absolute"></i></center>
+					<center><i class="icon icon-spin feather-settings mt-36"></i></center>
 				</div>
 			</div>
 
@@ -202,14 +193,14 @@ switch($_GET['mode'])
 
 		?>
 		<div class="absolute">
-			<div class="tooltip slide-left fire pas mas mlt mod">
+			<div class="tooltip slide-left p-16 m-16 ml-8">
 
-				<div id="logout" class="fr" title="<?php _e("Log out")?>"><i class="fa fa-fw fa-logout big"></i></div>
+				<div id="logout" class="float-right" title="<?php _e("Log out")?>"><i class="icon feather-log-out"></i></div>
 
 				<?php if(@$_SESSION['auth']['edit-user']) {?>
-				<div id="add-user" class="fr prs" title="<?php _e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
-				<div id="list-user" class="fr prs" title="<?php _e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
-				<div id="profil" class="fr prs" title="<?php _e("My profil")?>"><i class="fa fa-fw fa-user big vam"></i></div>
+				<div id="add-user" class="float-right pr-16" title="<?php _e("Add user")?>"><i class="icon feather-user-plus"></i></div>
+				<div id="list-user" class="float-right pr-16" title="<?php _e("List of user")?>"><i class="icon feather-users"></i></div>
+				<div id="profil" class="float-right pr-16" title="<?php _e("My profil")?>"><i class="icon feather-user align-middle"></i></div>
 				<?php }?>
 
 				<div class="load">
@@ -278,11 +269,11 @@ switch($_GET['mode'])
 		if(!isset($_POST['search']) and !isset($_POST['page']))
 		{
 			?>
-			<h3 class="medium man mbs"><?php _e("List of user")?></h3>
+			<h3 class="medium m-0 mb-16"><?php _e("List of user")?></h3>
 
-			<div class="mbs"><input type="text" class="search w70" placeholder="<?php _e("Search")?>" value=""></div>
+			<div class="mb-16"><input type="text" class="search w70" placeholder="<?php _e("Search")?>" value=""></div>
 
-			<ul class="unstyled pan man">
+			<ul class="is-unstyled p-0 m-0">
 			<?php
 		}
 
@@ -333,15 +324,15 @@ switch($_GET['mode'])
 			elseif($res['state'] == "deactivate") $state = "cancel";
 
 			echo"
-			<li class='plt prt' onclick=\"select_user('".$res['id']."');\">
-				<label><i class='fa fa-fw fa-".$state."' title=\"".__($res['state'])."\"></i></label>
-				<label class='bold pat'>".$res['name']."</label>
-				<label class='small'>".$res['email']."</label>
+			<li class='pl-8 pr-8' onclick=\"select_user('".$res['id']."');\">
+				<label><i class='icon feather-".$state."' title=\"".__($res['state'])."\"></i></label>
+				<label class='text-bold p-8'>".$res['name']."</label>
+				<label class='text-smaller'>".$res['email']."</label>
 			</li>";
 		}
 
 		// Si on n'a pas affiché tous les résultats on affiche la navigation par page
-		if($num_total > ($page * $num_pp)) echo"<li class='next small' onclick=\"next_users('".($page + 1)."');\">".__("Next")."</li>";
+		if($num_total > ($page * $num_pp)) echo"<li class='next text-smaller' onclick=\"next_users('".($page + 1)."');\">".__("Next")."</li>";
 
 		if(!isset($_POST['search']) and !isset($_POST['page']))
 		{
@@ -383,7 +374,7 @@ switch($_GET['mode'])
 				timer = null;
 
 				// loading
-				$("#user .search").after("<i class='fa fa-spin fa-cog' style='position: relative; left: -15px; color: rgba(117, 137, 140, 0.5);'></i>");
+				$("#user .search").after("<i class='icon icon-spin feather-settings' style='position: relative; left: -15px; color: rgba(117, 137, 140, 0.5);'></i>");
 
 				$.ajax({
 						type: "POST",
@@ -432,7 +423,7 @@ switch($_GET['mode'])
 
 	case "profil":// AFFICHAGE DU FORMULAIRE UTILISATEUR
 
-		// @todo ajouter une icône a coté du picto de state pour re-envoyer le mail d'activation à l'utilisateur / bt pour passer l'utilisateur en 'active' si en mode 'moderate'
+		// @todo ajouter une icône a coté du picto de state pour re-envoyer le mail d'activation à l'utilisateur / btn pour passer l'utilisateur en 'active' si en mode 'moderate'
 		// @todo: autocomplet sur les champs de connexion d'api tiers (fb, g+...)
 
 		include_once("db.php");// Connexion à la db
@@ -473,14 +464,16 @@ switch($_GET['mode'])
 		?>
 		<form id="user-profil">
 
-			<h3 class="medium man mbs"><?=$h3?></h3>
+			<h3 class="medium m-0 mb-16"><?=$h3?></h3>
 
 			<input type="hidden" id="uid" value="<?=@$res['id']?>">
 
-			<div class="scroll">
+			<div class="grid grid-cols-3 gap-8 scroll">
 
-				<div class="mbt">
-					<label class="w100p tr mrt" for="state"><?php _e("State")?></label>
+				<div class="text-right mb-8">
+					<label class="mr-8" for="state"><?php _e("State")?></label>
+				</div>
+				<div class="col-span-2 text-left">
 					<?php if(@$_SESSION['auth']['edit-user']){?>
 						<select id="state">
 							<option value="active"><?php _e("Active")?></option>
@@ -495,8 +488,11 @@ switch($_GET['mode'])
 					<?php }?>
 				</div>
 
-				<div class="mbs" style="max-height: 100px;">
-					<label class="w100p tr mrt" for="auth"><?php _e("Authorization")?></label>
+				<div class="text-right mb-16">
+					<label class="mr-8" for="auth"><?php _e("Authorization")?></label>
+				</div>
+
+				<div class="col-span-2 text-left">
 					<select id="auth" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
 						<?php
 						// Droit de base
@@ -520,51 +516,67 @@ switch($_GET['mode'])
 				</div>
 
 				<!-- Désactive l'autocomplet du navigateur -->
-				<input type="text" id="email-fake" class="none">
-				<input type="password" id="password-fake" class="none">
+				<input type="text" id="email-fake" class="hidden">
+				<input type="password" id="password-fake" class="hidden">
 
-				<div class="mbt"><label class="w100p tr mrt bold" for="name"><?php _e("Name")?></label> <input type="text" id="name" value="<?=@$res['name']?>" maxlength="60" class="w60 bold"></div>
-
-				<div class="mbt"><label class="w100p tr mrt" for="email"><?php _e("Mail")?></label> <input type="email" id="email" value="<?=@$res['email']?>" maxlength="100" class="w60"></div>
-
-				<div class="mbs nowrap">
-					<label class="w100p tr mrt" for="password_new"><?php _e("Password")?></label>
-					<input type="password" id="password_new" class="w40" autocomplete="new-password">
-
-					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?php _e("See password");?>" class="tdn"><i class="fa fa-fw fa-eye vam"></i></a>
-
-					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?php _e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw vam"></i></a>
-
-					<a href="javascript:send_password();" title="<?php _e("Send password by mail");?>" class="tdn" id="send-password"><i class="fa fa-fw fa-mail-alt vam"></i></a>
+				<div class="text-right mb-16">
+					<label class="mr-8 text-bold" for="name"><?php _e("Name")?></label>
 				</div>
 
+				<div class="col-span-2 text-left">
+					<input type="text" id="name" value="<?=@$res['name']?>" maxlength="100">
+				</div>
+
+				<div class="text-right mb-16">
+					<label class="mr-8" for="email"><?php _e("Mail")?></label>
+				</div>
+
+				<div class="col-span-2 text-left">
+					<input type="email" id="email" value="<?=@$res['email']?>" maxlength="100">
+				</div>
+
+				<div class="text-right mb-16">
+					<label class="mr-8" for="password_new"><?php _e("Password")?></label>
+				</div>
+
+				<div class="col-span-2 text-left">
+					<input type="password" id="password_new" class="float left" autocomplete="new-password">
+					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?php _e("See password");?>" class="no-decoration"><i class="icon feather-eye align-middle"></i></a>
+					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="icon feather-refresh-cw align-middle"></i></a>
+					<a href="javascript:send_password();" title="<?php _e("Send password by mail");?>" class="no-decoration" id="send-password"><i class="icon feather-mail align-middle"></i></a>
+				</div>
+
+			</div>
+
+			<div class="grid grid-cols-2">
 
 				<?php
 				// Si il y a des méta/infos complementaire pour cette utilisateur
 				if(is_array(@$GLOBALS['user_info']))
 				{
 					?>
-					<div class="info mbs"><?php
+					<div class="info text-center mb-16"><?php
 
 						$info = json_decode($res['info'], true);
 
 						foreach($GLOBALS['user_info'] as $cle => $val)
 						{
-							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?php _e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?php
+							?><div class="mb-8"><label class="text-right mr-8" for="<?=$cle?>"><?php _e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>"></div><?php
 						}
 
 					?></div><?php
 				}
 				?>
 
-				<?php if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
-				<?php if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>
+				<?php if(isset($res['date_insert'])){?><div class="mb-8 text-smaller"><label class="text-left"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>
+				<?php if(isset($res['date_update'])){?><div class="mb-8 text-smaller"><label class="text-left"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
 
-				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?php }?>
+				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="float-left"><i class="icon feather-trash vab"></i></a><?php }?>
 
-				<button id="save-user" class="fr mat small">
+				<div class="col-span-full text-right ma-8">
+				<button id="save-user" class="text-smaller">
 					<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
-					<i class="fa fa-fw fa-<?=($uid?"floppy":"plus")?> big white"></i>
+					<i class="icon feather-<?=($uid?"save":"plus")?>"></i>
 				</button>
 
 			</div>
@@ -573,14 +585,14 @@ switch($_GET['mode'])
 
 		<script>
 			user_tosave = function() {
-				$("#save-user i").removeClass("fa-spin fa-cog").addClass("fa-floppy"); // Affiche l'icône disant qu'il faut sauvegarder sur le bt save
+				$("#save-user i").removeClass("icon-spin feather-settings").addClass("feather-save"); // Affiche l'icône disant qu'il faut sauvegarder sur le btn save
 				$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 			}
 
 			send_password = function(){
 				if(confirm("Envoyer un nouveau mot de passe à "+ $("#user-profil #email").val() +" ?"))
 				{
-					$("#send-password .fa").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
+					$("#send-password .icon").removeClass("feather-mail").addClass("icon-spin feather-settings");
 
 					// Envoi du mail
 					$.ajax({
@@ -593,7 +605,7 @@ switch($_GET['mode'])
 						}
 					})
 					.done(function(html) {
-						$("#send-password .fa").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
+						$("#send-password .icon").removeClass("icon-spin feather-settings").addClass("feather-mail");
 
 						// On exécute le retour
 						$("body").append(html);
@@ -614,7 +626,7 @@ switch($_GET['mode'])
 
 						var selector = this.element.attr('id');
 
-						$("#user #"+selector).after("<i class='fa fa-spin fa-cog' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
+						$("#user #"+selector).after("<i class='icon icon-spin feather-settings' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
 
 						// Chargement des résultats
 						$.ajax({
@@ -665,7 +677,7 @@ switch($_GET['mode'])
 					event.preventDefault();
 
 					// Animation sauvegarde en cours (loading)
-					$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
+					$("#save-user i").removeClass("feather-save").removeClass("feather-plus").addClass("icon-spin feather-settings");
 
 					data = {};
 
@@ -877,7 +889,7 @@ switch($_GET['mode'])
 					if(!$connect->error){
 						if(@$_REQUEST['uid']){?>// Update réussit
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du btn
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
 						<?php }
@@ -885,7 +897,7 @@ switch($_GET['mode'])
 
 							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
 
-							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
+							$("#save-user i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du btn
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
 							<?php if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users

@@ -214,7 +214,7 @@ switch($_GET['mode'])
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
-						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="icon '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
+						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="icon '.$array['feather'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
 					}
 				}
 				?>
