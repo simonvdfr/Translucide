@@ -39,45 +39,45 @@ switch($_GET['mode'])
 
 
 			<!-- Barre du haut avec bouton sauvegarder et option -->
-			<div id="admin-bar" class="none">
+			<div id="admin-bar" class="hidden">
 
-				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?php _e("Show user info")?>"></i></div>
+				<div id="user" class="float-left p-8"><i class="fa fa-fw fa-user-circle bigger" title="<?php _e("Show user info")?>"></i></div>
 
 				<!-- list/bars -->
-				<div id="list-content" class="fl pat"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
+				<div id="list-content" class="float-left p-8"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
 
-				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
+				<div id="meta-responsive" class="float-left m-8 hidden"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
 
-				<div id="meta" class="fl mat w30 noss">
+				<div id="meta" class="float-left m-8 mobile-hidden">
 
 					<input type="text" id="title" value="" placeholder="<?php _e("Page title")?>" title="<?php _e("Page title")?>" maxlength="70" class="w100 bold">
 
-					<div class="w50">
-						<div class="tooltip slide-left fire pas mas mlt">
+					<div>
+						<div class="tooltip slide-left p-16 m-16 ml-8">
 
-							<div class="small">
+							<div class="text-smaller">
 								<?php _e("Description for search engines")?>
 
-								<div class="fr">
-									<input type="checkbox" id="noindex"> <label for="noindex" class="mrs" title="<?php _e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
+								<div class="float-right">
+									<input type="checkbox" id="noindex"> <label for="noindex" class="mr-16" title="<?php _e("Les moteurs de recherche ne référencent pas cette page")?>">noindex</label>
 									<input type="checkbox" id="nofollow"> <label for="nofollow" title="<?php _e("Empêche les liens d'être suivis par les robots et de transmettre de la popularité")?>">nofollow</label>
 								</div>
 							</div>
 							<input type="text" id="description" value="" maxlength="160" class="w100">
 
-							<div class="small mtm"><?php _e("Formatted web address")?></div>
-							<div class="grid">
-								<input type="text" id="permalink" value="" placeholder="<?php _e("Permanent link: 'index' if homepage")?>" maxlength="70" class="w50 mrm">
+							<div class="text-smaller mt-24"><?php _e("Formatted web address")?></div>
+							<div class="flex-wrap">
+								<input type="text" id="permalink" value="" placeholder="<?php _e("Permanent link: 'index' if homepage")?>" maxlength="70" class="mr-24">
 
-								<span id="ispage" class="none"><input type="checkbox" id="homepage"> <label for="homepage" class="mrs"><?php _e("Home page")?></label></span>
+								<span id="ispage" class="hidden"><input type="checkbox" id="homepage"> <label for="homepage" class="mr-16"><?php _e("Home page")?></label></span>
 
 								<label id="refresh-permalink"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
 							</div>
 
-							<div class="mod mtm">
+							<div class="flex flex-wrap mt-24">
 
-								<div class="fl mrl">
-									<div class="small"><?php _e("Type of page")?></div>
+								<div class="float-left mr-36">
+									<div class="text-smaller"><?php _e("Type of page")?></div>
 									<div>
 										<select id="type">
 											<?php
@@ -91,8 +91,8 @@ switch($_GET['mode'])
 									</div>
 								</div>
 
-								<div class="fl mrl">
-									<div class="small"><?php _e("Template")?></div>
+								<div class="float-left mr-36">
+									<div class="text-smaller"><?php _e("Template")?></div>
 									<div>
 										<select id="tpl">
 											<?php
@@ -107,8 +107,8 @@ switch($_GET['mode'])
 									</div>
 								</div>
 
-								<div class="fl">
-									<div class="small"><?php _e("Creation date")?></div>
+								<div class="float-left">
+									<div class="text-smaller"><?php _e("Creation date")?></div>
 									<div>
 										<input type="text" id="date-insert" class="w150p">
 									</div>
@@ -117,7 +117,7 @@ switch($_GET['mode'])
 							</div>
 
 
-							<div class="small mtm"><?php _e("Image on social networks")?></div>
+							<div class="text-smaller mt-24"><?php _e("Image on social networks")?></div>
 							<div class=""><span class="editable-media" id="og-image"><img src=""></span></div>
 
 						</div>
@@ -125,13 +125,13 @@ switch($_GET['mode'])
 
 				</div>
 
-				<div id="close" class="fr mrt bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
+				<div id="close" class="float-right mr-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="fa fa-fw fa-cancel vatt"></i></div>
 
-				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="noss"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
+				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
 
-				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="noss"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+				<button id="del" class="float-right m-8 text-smaller o50 ho1" title="<?php _e("Delete")?>"><span class="mobile-hidden"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
 
-				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
+				<div class="float-right m-8 mr-16 switch o50 ho1"><input type="checkbox" id="state-content" class="hidden"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
 			</div>
 			<div id="progress"></div>
@@ -209,7 +209,7 @@ switch($_GET['mode'])
 
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<ul class="smaller">
+			<ul class="text-smaller">
 				<?php
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
@@ -220,7 +220,7 @@ switch($_GET['mode'])
 				?>
 			</ul>
 
-			<div class="none">
+			<div class="hidden">
 				<?php
 				reset($GLOBALS['add_content']);
 				foreach($GLOBALS['add_content'] as $cle => $array)
@@ -233,8 +233,8 @@ switch($_GET['mode'])
 
 			<div>
 
-				<div class="mas">
-					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 bold">
+				<div class="m-16">
+					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 text-bold">
 
 					<select id="tpl" required class="w30">
 						<option value=""><?php _e("Select template")?></option>
@@ -250,10 +250,10 @@ switch($_GET['mode'])
 					</select>
 				</div>
 
-				<div class="mas mtm">
-					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70" class="w50 mrm">
-					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
-					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
+				<div class="m-16 mt-24">
+					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70">
+					<label for="homepage" class="mr-16 mt-0 hidden"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
+					<label id="refresh-permalink" class="mt-0"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
 				</div>
 
 			</div>
@@ -811,7 +811,7 @@ switch($_GET['mode'])
 					$url = (isset($change_url)?$change_url:$res['url']);
 					?>
 					// Chargement de la page
-					$("#ecoindex span").html("<i class='fa fa-cog fa-spin'></i>");
+					$("#ecoindex span").html("<i class='icon feather-settings icon-spin'></i>");
 
 					// Inject la page dans une iframe pour l'auditer
 					$("body").append('<iframe id="iframe_ecoindex" src="<?=make_url($url, array('domaine' => true))?>" frameborder="0" class="hidden" width="100%" height="850"></iframe>');
@@ -869,7 +869,7 @@ switch($_GET['mode'])
 			$(function()
 			{
 				// Message page supprimé
-				light("<?php _e("Page deleted, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
+				light("<?php _e("Page deleted, redirecting")?> <i class='icon icon-spin feather-settings ml-8'></i>");
 
 				// Redirection vers la page d'accueil
 				setTimeout(function(){ document.location.href = "<?=$GLOBALS['home'];?>"; }, 2000);
@@ -889,14 +889,14 @@ switch($_GET['mode'])
 
 		$type = null;
 
-		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mtn mbs pls">';
+		echo'<div class="dialog-list-content" title="'.__("List of contents").'"><ul class="mt-0 mb-16 pl-16">';
 
 		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE lang='".$lang."' ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
 		while($res = $sel->fetch_assoc())
 		{
-			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
+			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mt-24"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__("Deactivate")."'></i>").'</li>';
+			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='icon feather-eye-off' title='".__("Deactivate")."'></i>").'</li>';
 
 			$type = $res['type'];
 		}
@@ -1027,7 +1027,7 @@ switch($_GET['mode'])
 
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
-			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='\"+ __(\"Remove\") +\"'></i></li>";
+			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel color-red' title='\"+ __(\"Remove\") +\"'></i></li>";
 		}
 
 	break;
@@ -1058,9 +1058,9 @@ switch($_GET['mode'])
 			<input type="hidden" id="dialog-media-dir" value="<?=htmlspecialchars($_REQUEST['dir'])?>">
 
 			<!-- Chargement du moteur de recherche des médias -->
-			<input type="text" id="recherche-media" placeholder="<?php _e("Search")?>" class="mrl">
+			<input type="text" id="recherche-media" placeholder="<?php _e("Search")?>" class="mr-36">
 
-			<ul class="small">
+			<ul class="text-smaller">
 
 				<li data-filter="all"><a href="#media" title="<?php _e("Media")?>"><i class="fa fa-doc"></i> <span><?php _e("Media")?></span></a></li>
 
@@ -1106,26 +1106,26 @@ switch($_GET['mode'])
 
 				// Option de resize à afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
-					var resize = "<a class='resize' title=\"<?php _e("Get resized image");?>\"><i class='fa fa-fw fa-resize-small bigger'></i></a>";
+					var resize = "<a class='resize' title=\"<?php _e("Get resized image");?>\"><i class='fa fa-fw fa-resize-small'></i></a>";
 				else
 					var resize = "";
 
 				//@todo voir l'utilité de metre le data-media dans le li à ce niveau vu que c'est juste un bloc vide pour upload
 
 				// Crée un block vide pour y ajouter le media // $(".ui-state-active").attr("aria-controls") // + ($(".ui-state-active").attr("data-filter") == "resize" ? "resize/":"")
-				var container = "<li class='pat mat tc uploading' id='"+ id +"' data-media=\""+ media_dir +"/" + $("#dialog-media-dir").val() + file.name +"\" data-dir=\""+ $("#dialog-media-dir").val() +"\" data-type='"+ mime[0] +"'>";
+				var container = "<li class='p-8 m-8 text-center uploading' id='"+ id +"' data-media=\""+ media_dir +"/" + $("#dialog-media-dir").val() + file.name +"\" data-dir=\""+ $("#dialog-media-dir").val() +"\" data-type='"+ mime[0] +"'>";
 
 					if(mime[0] == "image")
 						container += "<img src=''>" + resize;
 					else {
-						container += '<div class="file"><i class="fa fa-fw fa-doc mega"></i><div>'+ file.name +"</div></div>";
+						container += '<div class="file"><i class="fa fa-fw fa-doc"></i><div>'+ file.name +"</div></div>";
 						container += '<div class="copy"><input type="text" value="'+ path + media_dir +'/' + $("#dialog-media-dir").val() + file.name +'"></div>';
 
 					}
 
 					container += "<div class='infos'></div>";
 
-					container += "<a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash bigger'></i></a>";
+					container += "<a class='supp hidden' title=\""+__("Delete file")+"\"><i class='fa fa-fw fa-trash'></i></a>";
 
 				container += "</li>";
 
@@ -1487,15 +1487,15 @@ switch($_GET['mode'])
 		}
 
 		?>
-		<ul class="unstyled pan man smaller"><?php
+		<ul class="is-unstyled p-0 m-0 text-smaller"><?php
 
 			// @todo ajouter la possiblitée de remonter dans l'arbo, jusqu'au dossier courant de l'onglet
 			// Si on navige dans un dossier on n'affiche pas l'upload
 			if(!isset($_GET['inject']))
 			{
 			?>
-			<li class="add-media pas mat tc big" onclick="document.getElementById('add-media').click();">
-				<i class="fa fa-upload biggest pbs"></i><br>
+			<li class="add-media p-16 m-8 text-center text-smaller" onclick="document.getElementById('add-media').click();">
+				<i class="fa fa-upload pb-16"></i><br>
 				<?php _e("Drag and drop a file here or click me");?>
 				<input type="file" id="add-media" style="display: none" multiple>
 			</li>
@@ -1508,14 +1508,14 @@ switch($_GET['mode'])
 				foreach($is_dir as $cle => $val)
 				{
 					echo'<li
-					class="pat mat tc"
+					class="p-8 m-8 text-center"
 					title="'.utf8_encode($val).'"
 					id="dialog-media-dir-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$cle.'"
 					data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val).'"
 					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
 					data-type="dir"
 					>
-						<div class="file"><i class="fa fa-fw fa-folder-empty mega"></i><div>'.utf8_encode($val).'</div></div>
+						<div class="file"><i class="fa fa-fw fa-folder-empty"></i><div>'.utf8_encode($val).'</div></div>
 					</li>';
 				}
 			}
@@ -1599,7 +1599,7 @@ switch($_GET['mode'])
 
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
 
-							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
+							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small"></i></a>';
 						}
 						else {
 							echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
@@ -1612,7 +1612,7 @@ switch($_GET['mode'])
 						echo"
 						<div class='mime ".$sizecolor."'>".$val['mime']."</div>
 						<div class='infos'>".$info." - ".$size."</div>
-						<a class='supp' title=\"".__("Delete file")."\"><i class='fa fa-fw fa-trash bigger'></i></a>
+						<a class='supp' title=\"".__("Delete file")."\"><i class='fa fa-fw fa-trash'></i></a>
 					</li>";
 
 					$i++;
@@ -1754,7 +1754,7 @@ switch($_GET['mode'])
 			<input type="hidden" id="dialog-icon-target" value="<?=(isset($_GET['target']) ? htmlspecialchars($_GET['target']) : "");?>"><!-- SUPP ?? -->
 			<input type="hidden" id="dialog-icon-source" value="<?=htmlspecialchars(isset($_GET['target']) ? $_GET['source'] : "")?>">
 
-			<input type="text" class="search w20 mbs" placeholder="<?php _e("Search")?>" value="">
+			<input type="text" class="search w20 mb-16" placeholder="<?php _e("Search")?>" value="">
 
 			<?php
 			//$pattern = '/\.([\w-]+):before\s*{\s*content:\s*(["\']\\\w+["\']);?\s*}/';
@@ -1766,7 +1766,7 @@ switch($_GET['mode'])
 
 			// Url du fichier qui contient les icônes
 			if($GLOBALS['icons']) $file = $GLOBALS['icons'];
-			else $file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/global.min.css";
+			else $file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/assets/css/style.min.css";
 
 
 			// On récupère le contenu du fichier css qui contient les icones
@@ -1784,7 +1784,7 @@ switch($_GET['mode'])
 			foreach($matches as $match){ $list[$match[1]] = $match[2];	}
 
 			?>
-			<ul id="icon" class="unstyled pan man smaller">
+			<ul id="icon" class="is-unstyled p-0 m-0 text-smaller">
 			<?php
 				// S'il y a des fichiers dans la biblio
 				if(isset($list))
@@ -1794,7 +1794,7 @@ switch($_GET['mode'])
 
 					foreach($list as $cle => $val)
 					{
-						echo"<li class='pat fl' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
+						echo"<li class='p-8 float-left' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
 					}
 				}
 			?>
