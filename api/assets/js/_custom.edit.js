@@ -126,7 +126,7 @@ get_content = function(content)
 
 	// Checkbox fa
 	$(document).find(content+" .editable-checkbox").each(function() {
-		if($(this).hasClass("feather-check")) data[content_array][this.id] = true;
+		if($(this).hasClass("fa-ok")) data[content_array][this.id] = true;
 	});
 
 	// Content of select, input hidden, href editable
@@ -150,7 +150,7 @@ save = function() //callback
 	if(memo_img) img_leave();
 
 	// Animation sauvegarde en cours (loading)
-	$("#save i").removeClass("feather-save").addClass("icon-spin feather-settings");
+	$("#save i").removeClass("fa-floppy").addClass("fa-spin fa-cog");
 
 	data = {};
 
@@ -304,7 +304,7 @@ tosave = function() {
 	// detecter les deplacement du menu
 	// detecter le changement de média
 
-	$("#save i").removeClass("icon-spin feather-settings").addClass("feather-save");// Affiche l'icône disant qu'il faut sauvegarder sur le btn save
+	$("#save i").removeClass("fa-spin fa-cog").addClass("fa-floppy");// Affiche l'icône disant qu'il faut sauvegarder sur le btn save
 	$("#save").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 }
 
@@ -369,7 +369,7 @@ exec_tool = function(command, value) {
 		if(/justify/.test(command))
 		{
 			// Désélectionne les alignements
-			$("[class*='feather-align']").parent().removeClass("checked");
+			$("[class*='fa-align']").parent().removeClass("checked");
 
 			// check le btn d'alignement
 			$("#align-"+command.match(/justify(.*)/)[1].toLowerCase()).addClass("checked");
@@ -426,7 +426,7 @@ video = function(link)
 	var id_video = (match && match[7].length==11)? match[7] : false;
 
 	// Si ajout de lien
-	if($("#txt-tool #video-option button i").hasClass("feather-plus"))
+	if($("#txt-tool #video-option button i").hasClass("fa-plus"))
 	{
 		// Ancienne version non accessible 22/04/2022
 		//exec_tool("insertHTML", '<figure role="group" class="float-left" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
@@ -463,17 +463,17 @@ anchor_option = function()
 	if(name)
 	{
 		// Bouton pour supp l'ancre //exec_tool('unanchor');
-		$("#txt-tool #anchor-option").prepend("<a href=\"javascript:unanchor();void(0);\" id='unanchor'><i class='icon feather-x px-8' title='"+ __("Remove the link from the selection") +"'></i></a>");
+		$("#txt-tool #anchor-option").prepend("<a href=\"javascript:unanchor();void(0);\" id='unanchor'><i class='fa fa-cancel px-8' title='"+ __("Remove the link from the selection") +"'></i></a>");
 
 		$("#txt-tool #anchor-option #anchor").val(name);
 		$("#txt-tool #anchor-option button span").text(__("Change Anchor"));
-		$("#txt-tool #anchor-option button i").removeClass("feather-plus").addClass("feather-save");
+		$("#txt-tool #anchor-option button i").removeClass("fa-plus").addClass("fa-floppy");
 	}
 	else
 	{
 		$("#txt-tool #anchor-option #anchor").val('');
 		$("#txt-tool #anchor-option button span").text(__("Add Anchor"));
-		$("#txt-tool #anchor-option button i").removeClass("feather-save").addClass("feather-plus");
+		$("#txt-tool #anchor-option button i").removeClass("fa-floppy").addClass("fa-plus");
 	}
 
 	$("#txt-tool #anchor-option").show("slide", 300);
@@ -494,7 +494,7 @@ edit_anchor = function()
 	var anchor = $('#txt-tool .option #anchor').val();
 
 	// Si ajout de lien
-	if($("#txt-tool #anchor-option button i").hasClass("feather-plus"))
+	if($("#txt-tool #anchor-option button i").hasClass("fa-plus"))
 		exec_tool('CreateAnchor', anchor)//insertHTML
 	else
 	{
@@ -524,17 +524,17 @@ lang_option = function()
 	if(lang)
 	{
 		// Bouton pour supp l'ancre //exec_tool('unanchor');
-		$("#txt-tool #lang-option").prepend("<a href=\"javascript:unlang();void(0);\" id='unlang'><i class='icon feather-x px-8' title='"+ __("Remove") +"'></i></a>");
+		$("#txt-tool #lang-option").prepend("<a href=\"javascript:unlang();void(0);\" id='unlang'><i class='fa fa-cancel px-8' title='"+ __("Remove") +"'></i></a>");
 
 		$("#txt-tool #lang-option #lang").val(lang);
 		$("#txt-tool #lang-option button span").text(__("Change Language"));
-		$("#txt-tool #lang-option button i").removeClass("feather-plus").addClass("feather-save");
+		$("#txt-tool #lang-option button i").removeClass("fa-plus").addClass("fa-floppy");
 	}
 	else
 	{
 		$("#txt-tool #lang-option #lang").val('');
 		$("#txt-tool #lang-option button span").text(__("Add Language"));
-		$("#txt-tool #lang-option button i").removeClass("feather-save").addClass("feather-plus");
+		$("#txt-tool #lang-option button i").removeClass("fa-floppy").addClass("fa-plus");
 	}
 
 	$("#txt-tool #lang-option").show("slide", 300);
@@ -555,7 +555,7 @@ edit_lang = function()
 	var lang = $('#txt-tool .option #lang').val();
 
 	// Si ajout de lien
-	if($("#txt-tool #lang-option button i").hasClass("feather-plus"))
+	if($("#txt-tool #lang-option button i").hasClass("fa-plus"))
 	{
 		exec_tool('insertHTML', '<span lang="'+lang+'">'+old_selection+'</span>');
 	}
@@ -593,17 +593,17 @@ link_option = function()
 		if($(memo_node).hasClass("btn")) $("#class-btn").addClass("checked");
 
 		// Bouton pour supp le lien //exec_tool('unlink');
-		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='icon feather-x px-8' title='"+ __("Remove the link from the selection") +"'></i></a>");
+		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='fa fa-cancel px-8' title='"+ __("Remove the link from the selection") +"'></i></a>");
 
 		$("#txt-tool #link-option #link").val(href);
 		$("#txt-tool #link-option button span").text(__("Change Link"));
-		$("#txt-tool #link-option button i").removeClass("feather-plus").addClass("feather-save");
+		$("#txt-tool #link-option button i").removeClass("fa-plus").addClass("fa-floppy");
 	}
 	else
 	{
 		$("#txt-tool #link-option #link").val('');
 		$("#txt-tool #link-option button span").text(__("Add Link"));
-		$("#txt-tool #link-option button i").removeClass("feather-save").addClass("feather-plus");
+		$("#txt-tool #link-option button i").removeClass("fa-floppy").addClass("fa-plus");
 	}
 
 	// Affichage des options pour le lien
@@ -630,7 +630,7 @@ link = function()
 	var link = $('#txt-tool .option #link').val();
 
 	// Si ajout de lien
-	if($("#txt-tool #link-option button i").hasClass("feather-plus"))
+	if($("#txt-tool #link-option button i").hasClass("fa-plus"))
 		exec_tool('CreateLink', link)
 	else
 	{
@@ -682,7 +682,7 @@ class_tool = function(theClass){
 			$(memo_node).closest("p, div, h2, h3, h4").removeAttr("align").css("text-align","");// Ancien alignement
 
 			// Désélectionne les alignements
-			$("[class*='feather-align']").parent().removeClass("checked");
+			$("[class*='fa-align']").parent().removeClass("checked");
 		}
 
 		$(memo_node).closest("p, div, h2, h3, h4").addClass(theClass);
@@ -973,10 +973,10 @@ upload = function(source, file, resize)
 						else if(!source.attr("data-media"))// Si c'est un fichier autre et isolé
 						{
 							$("img", source).remove();// Supprime les images
-							$("[class*='feather-file']", source).remove();// Supprime les fichier déjà présent
+							$("[class*='fa-file']", source).remove();// Supprime les fichier déjà présent
 
 							// On crée un bloc fichier
-							$(source).append('<i class="icon feather-file-text" title="'+ media +'"></i>');
+							$(source).append('<i class="fa fa-fw fa-doc text-bigger" title="'+ media +'"></i>');
 						}
 
 						// Nom du fichier final si dialog médias
@@ -1042,7 +1042,7 @@ get_file = function(id)
 			$("#"+$("#dialog-media-source").val()).append('<video src="'+ $("#"+id).attr("data-media") +'" controls></video>');
 		else
 			// Ajoute le fichier
-			$("#"+$("#dialog-media-source").val()).append('<i class="icon feather-file-text" title="'+ $("#"+id).attr("data-media") +'"></i>');
+			$("#"+$("#dialog-media-source").val()).append('<i class="fa fa-fw fa-doc text-bigger" title="'+ $("#"+id).attr("data-media") +'"></i>');
 	}
 	else// Insertion du lien vers le fichier dans bloc texte
 		exec_tool("insertHTML", '<a href="'+ path + $("#"+id).attr("data-media") +'">'+ $("#"+id).attr("data-media").split('/').pop() +' ('+ $("#"+id+" .infos").text() +')</a>');
@@ -1244,7 +1244,7 @@ filesize = function(file) {
 img_optim = function(option, that) {
 
 	// Loading
-	$(that).html("<i class='icon feather-settings icon-spin'></i>");
+	$(that).html("<i class='fa fa-cog fa-spin'></i>");
 
 	// Disable les btn d'optim
 	$(".dialog-optim-img .btn").attr("onclick","");
@@ -1654,7 +1654,7 @@ uncustom = function()
 
 // Vérifie que le contenu est sauvegardé en cas d'action de fermeture ou autres
 $(window).on("beforeunload", function(){
-	if(typeof dev == 'undefined' && $("#admin-bar button.to-save").length || $("#save i.icon-spin").length) return __("The changes are not saved");
+	if(typeof dev == 'undefined' && $("#admin-bar button.to-save").length || $("#save i.fa-spin").length) return __("The changes are not saved");
 });
 
 
@@ -1727,7 +1727,7 @@ $(function()
 		$("#admin-bar #og-image img").attr("src", $("meta[property='og:image']").last().attr("content"));
 
 		// Option de suppression de l'image
-		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='icon feather-x absolute' title='"+ __("Remove") +"'></i></a>");
+		$("#admin-bar #og-image").after("<a href='javascript:void(0)' onclick=\"$('#admin-bar #og-image img').attr('src','');$(this).remove();\"><i class='fa fa-cancel absolute' title='"+ __("Remove") +"'></i></a>");
 	}
 
 	// Ajout de l'état de la page
@@ -1801,11 +1801,11 @@ $(function()
 
 	// Bloc d'option pour le menu de navigation  class='black'
 	addnav = "<div id='add-nav'>";
-		addnav+= "<div class='zone btn btn--big bg-blue color-white pt-36' title='"+ __("Edit menu") +"'><i class='icon feather-edit-2 align-middle'></i></div>";
+		addnav+= "<div class='zone btn btn--big bg-blue color-white pt-36' title='"+ __("Edit menu") +"'><i class='fa fa-fw fa-pencil align-middle'></i></div>";
 		addnav+= "<div class='tooltip hidden p-8'>";
-			addnav+= "<i class='icon feather-x color-blue'></i>";
+			addnav+= "<i class='fa fa-cancel color-blue'></i>";
 			addnav+= "<ul class='block is-unstyled pl-24 m-0 text-left'>";
-				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='icon feather-x color-red' title='"+ __('Remove') +"'></i></li>";
+				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel color-red' title='"+ __('Remove') +"'></i></li>";
 			addnav+= "</ul>";
 		addnav+= "</div>";
 	addnav+= "</div>";
@@ -1854,7 +1854,7 @@ $(function()
 		axis: "x",
 		start: function(event) {
 			$("#add-nav").addClass("del");
-			$("#add-nav .zone i").removeClass("feather-plus").addClass("feather-trash");
+			$("#add-nav .zone i").removeClass("fa-plus").addClass("fa-trash");
 
 			$(".editable").off();//$("body").off(".editable");
 			$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
@@ -1865,7 +1865,7 @@ $(function()
 				$(ui.item).remove();// On le supprime de la nav
 
 			$("#add-nav").removeClass("del");
-			$("#add-nav .zone i").removeClass("feather-trash").addClass("feather-plus");
+			$("#add-nav .zone i").removeClass("fa-trash").addClass("fa-plus");
 
 			// Rends editable les éléments du menu
 			$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
@@ -1923,7 +1923,7 @@ $(function()
 
 	// Ouverture de la liste des pages disponibles absente du menu au click sur le +
     add_page_list = false;
-	$("#add-nav .zone, #add-nav .feather-x").on({
+	$("#add-nav .zone, #add-nav .fa-cancel").on({
 		"click": function(event) {
 			event.preventDefault();
 			//event.stopPropagation();
@@ -1984,7 +1984,7 @@ $(function()
 						$("#add-nav").addClass("open");
 
 						// Ajoute la croix de suppression // $(this).parent().remove()
-						$("nav ul:not(.exclude):first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='icon feather-x color-red' title='"+ __("Remove") +"'></i>");
+						$("nav ul:not(.exclude):first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel color-red' title='"+ __("Remove") +"'></i>");
 					}
 				});
 			}
@@ -1999,7 +1999,7 @@ $(function()
 				$("#add-nav").removeClass("open");
 
 				// Supprime la croix de suppression
-				$("nav ul:not(.exclude):first .feather-x").remove();
+				$("nav ul:not(.exclude):first .fa-cancel").remove();
 
 				// Supprime l'edition des élément du menu
 				$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable").off();
@@ -2018,34 +2018,34 @@ $(function()
 	toolbox = "<ul id='txt-tool' class='toolbox' role='toolbar'>";
 
 		if(typeof toolbox_h2 != 'undefined')
-			toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title")+" H2"+"\"><i class='icon feather-type'></i><span class='minus'>2</span></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('h2')\" id='h2' title=\""+__("Title")+" H2"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>2</span></button></li>";
 
 		if(typeof toolbox_h3 != 'undefined')
-			toolbox+= "<li><button onclick=\"html_tool('h3')\" id='h3' title=\""+__("Title")+" H3"+"\"><i class='icon feather-type'></i><span class='minus'>3</span></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('h3')\" id='h3' title=\""+__("Title")+" H3"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>3</span></button></li>";
 
 		if(typeof toolbox_h4 != 'undefined')
-			toolbox+= "<li><button onclick=\"html_tool('h4')\" id='h4' title=\""+__("Title")+" H4"+"\"><i class='icon feather-type'></i><span class='minus'>4</span></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('h4')\" id='h4' title=\""+__("Title")+" H4"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>4</span></button></li>";
 
 		if(typeof toolbox_h5 != 'undefined')
-			toolbox+= "<li><button onclick=\"html_tool('h5')\" id='h5' title=\""+__("Title")+" H5"+"\"><i class='icon feather-type'></i><span class='minus'>5</span></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('h5')\" id='h5' title=\""+__("Title")+" H5"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>5</span></button></li>";
 
 		if(typeof toolbox_h6 != 'undefined')
-			toolbox+= "<li><button onclick=\"html_tool('h6')\" id='h6' title=\""+__("Title")+" H6"+"\"><i class='icon feather-type'></i><span class='minus'>6</span></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('h6')\" id='h6' title=\""+__("Title")+" H6"+"\"><i class='fa fa-fw fa-header'></i><span class='minus'>6</span></button></li>";
 
 		if(typeof toolbox_bold != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('bold')\" title=\""+__("Bold")+"\"><i class='icon feather-bold'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('bold')\" title=\""+__("Bold")+"\"><i class='fa fa-fw fa-bold'></i></button></li>";
 
 		if(typeof toolbox_italic != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('italic')\" title=\""+__("Italic")+"\"><i class='icon feather-italic'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('italic')\" title=\""+__("Italic")+"\"><i class='fa fa-fw fa-italic'></i></button></li>";
 
 		if(typeof toolbox_underline != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('underline')\" title=\""+__("Underline")+"\"><i class='icon feather-underline'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('underline')\" title=\""+__("Underline")+"\"><i class='fa fa-fw fa-underline'></i></button></li>";
 
 		if(typeof toolbox_superscript != 'undefined')
 			toolbox+= "<li><button onclick=\"exec_tool('superscript')\" title=\""+__("Superscript")+"\"><i class='fa fa-fw fa-superscript'></i></button></li>";
 
 		if(typeof toolbox_fontSize != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='icon feather-minimize-2'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('fontSize', '2')\" title=\""+__("R\u00e9duire la taille du texte")+"\"><i class='fa fa-fw fa-resize-small'></i></button></li>";
 
 		if(typeof toolbox_color != 'undefined' && nbcolor >= 1)
 		{
@@ -2067,84 +2067,84 @@ $(function()
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
 		if(typeof toolbox_highlight != 'undefined')
-			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='icon feather-info'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='icon feather-list'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
 
 		if(typeof toolbox_justifyLeft != 'undefined')// justifyLeft
-			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl'><i class='icon feather-align-left'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl'><i class='fa fa-fw fa-align-left'></i></button></li>";
 
 		if(typeof toolbox_justifyCenter != 'undefined')// justifyCenter
-			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc'><i class='icon feather-align-center'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc'><i class='fa fa-fw fa-align-center'></i></button></li>";
 
 		if(typeof toolbox_justifyRight != 'undefined')// justifyRight
-			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr'><i class='icon feather-align-right'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 		if(typeof toolbox_justifyFull != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='icon feather-align-justify'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
 
 		if(typeof toolbox_InsertHorizontalRule != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='icon feather-more-horizontal'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='fa fa-fw fa-resize-horizontal'></i></button></li>";
 
 		if(typeof toolbox_viewsource != 'undefined')
-			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='icon feather-code'></i></button></li>";
+			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='fa fa-fw fa-code'></i></button></li>";
 
 		if(typeof toolbox_icon != 'undefined')
-			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='icon feather-flag'></i></button></li>";
+			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='fa fa-fw fa-flag'></i></button></li>";
 
 		if(typeof toolbox_videoLink != 'undefined') { videoLink = true; toolbox_video = true; } else videoLink = false;
 		if(typeof toolbox_video != 'undefined')
 		{
-			toolbox+= "<li><button onclick=\"$('#txt-tool #video-option').show(); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='icon feather-film'></i></button></li>";
+			toolbox+= "<li><button onclick=\"$('#txt-tool #video-option').show(); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='fa fa-fw fa-video'></i></button></li>";
 
 			toolbox+= "<li id='video-option' class='option'>";
 
 				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='w150p small'>";
 
-				toolbox+= "<button onclick=\"video("+videoLink+")\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='icon feather-plus'></i></button>";
+				toolbox+= "<button onclick=\"video("+videoLink+")\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 
 			toolbox+= "</li>";
 		}
 
 		if(typeof toolbox_media != 'undefined')
-			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='icon feather-image'></i></button></li>";
+			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='fa fa-fw fa-picture'></i></button></li>";
 
 		//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
 
 		if(typeof toolbox_lang != 'undefined')
 		{
-			toolbox+= "<li><button onclick=\"lang_option(); $('#txt-tool #lang-option #lang').select();\" title=\""+__("Add Language")+"\"><i class='icon feather-globe '></i></button></li>";
+			toolbox+= "<li><button onclick=\"lang_option(); $('#txt-tool #lang-option #lang').select();\" title=\""+__("Add Language")+"\"><i class='fa fa-fw fa-language '></i></button></li>";
 
 			toolbox+= "<li id='lang-option' class='option'>";
 				toolbox+= "<input type='text' id='lang' placeholder=\""+ __("Language") +"\" title=\""+ __("Language") +"\" class='w150p small'>";
-				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='ficon feather-plus'></i></button>";
+				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 
 		if(typeof toolbox_anchor != 'undefined')
 		{
-			toolbox+= "<li><button onclick=\"anchor_option(); $('#txt-tool #anchor-option #anchor').select();\" title=\""+__("Add Anchor")+"\"><i class='icon feather-hash color-blue'></i></button></li>";
+			toolbox+= "<li><button onclick=\"anchor_option(); $('#txt-tool #anchor-option #anchor').select();\" title=\""+__("Add Anchor")+"\"><i class='fa fa-fw fa-hashtag grey'></i></button></li>";
 
 			toolbox+= "<li id='anchor-option' class='option'>";
 				toolbox+= "<input type='text' id='anchor' placeholder=\""+ __("Anchor") +"\" title=\""+ __("Anchor") +"\" class='w150p small'>";
-				toolbox+= "<button onclick=\"edit_anchor()\" class='small plt prt'><span>"+ __("Add Anchor") +"</span><i class='icon feather-plus'></i></button>";
+				toolbox+= "<button onclick=\"edit_anchor()\" class='small plt prt'><span>"+ __("Add Anchor") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 
 		if(typeof toolbox_link != 'undefined')
 		{
-			toolbox+= "<li><button onclick=\"link_option(); $('#txt-tool #link-option #link').select();\" title=\""+__("Add Link")+"\"><i class='icon feather-link'></i></button></li>";
+			toolbox+= "<li><button onclick=\"link_option(); $('#txt-tool #link-option #link').select();\" title=\""+__("Add Link")+"\"><i class='fa fa-fw fa-link'></i></button></li>";
 
 			toolbox+= "<li id='link-option' class='option'>";
 
 				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
 
-				if(typeof toolbox_btn != 'undefined') toolbox+= "<a href=\"javascript:class_btn();void(0);\" title=\""+ __("Apparence d'un bouton") +"\" id='class-btn' class='o50 ho1'><i class='icon feather-log-in ml-8 mr-8 vam'></i></a>";
+				if(typeof toolbox_btn != 'undefined') toolbox+= "<a href=\"javascript:class_btn();void(0);\" title=\""+ __("Apparence d'un bouton") +"\" id='class-btn' class='o50 ho1'><i class='fa fa-login mlt mrt vam'></i></a>";
 
-				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='icon feather-external-link ml-8 mr-8 align-middle'></i></a>";
+				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-link-ext mlt mrt vam'></i></a>";
 
-				toolbox+= "<button onclick=\"link()\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='icon feather-plus'></i></button>";
+				toolbox+= "<button onclick=\"link()\" class='small plt prt'><span>"+ __("Add Link") +"</span><i class='fa fa-fw fa-plus'></i></button>";
 
 			toolbox+= "</li>";
 		}
@@ -2470,7 +2470,7 @@ $(function()
 
 
 				// Désélectionne les alignements
-				$("[class*='feather-align']").parent().removeClass("checked");
+				$("[class*='fa-align']").parent().removeClass("checked");
 
 				var align = null;
 
@@ -2669,9 +2669,9 @@ $(function()
 
 		if(!input)
 		{
-			option+= "<li><button onclick=\"img_position('fl')\" class='img-position' id='img-fl'><i class='icon feather-align-left'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('center')\" class='img-position' id='img-center'><i class='icon feather-align-center'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='icon feather-align-right'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('fl')\" class='img-position' id='img-fl'><i class='fa fa-fw fa-align-left'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('center')\" class='img-position' id='img-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
 		}
@@ -2679,7 +2679,7 @@ $(function()
 			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='w150p small'></li>";
 
 		if(!input)
-			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='icon feather-trash'></i></button></li>";
+			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-trash'></i></button></li>";
 
 		option+= "</ul>";
 
@@ -2766,8 +2766,8 @@ $(function()
 				if($(this).data("height")) print_size+= $(this).data("height")+'';
 
 				return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
-				"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='icon feather-upload'></i> "+__("Upload file")+"</div>" +
-				"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='icon feather-trash'></i> "+ __("Erase") +"</div>"
+				"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" +
+				"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
 				+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'');
 			}
 		});
@@ -2806,7 +2806,7 @@ $(function()
 					$(".print-size", this).fadeIn("fast");// Affiche la taille de l'image/zone
 
 					// Affichage de l'option pour supprimer le fichier si il y en a un
-					if($("img", this).attr("src") || $("video", this).attr("src") || $("a i", this).length || $(".feather-file", this).length)
+					if($("img", this).attr("src") || $("video", this).attr("src") || $("a i", this).length || $(".fa-doc", this).length)
 						$(".clear-file", this).fadeIn("fast");
 
 					// Affiche le alt éditable pour les images
@@ -2838,7 +2838,7 @@ $(function()
 						if($("img", this).attr("src")) $("img", this).attr("src","");// Supp img src
 						else if($("video", this).attr("src")) $("video", this).remove();// Supp la vidéo
 						else {
-							$(".feather-file", this).remove();// Supp le fichier qui vien d'etre ajouté <i>
+							$(".fa-doc", this).remove();// Supp le fichier qui vien d'etre ajouté <i>
 							$("a", this).remove();// Supp le fichier déjà présent avec lien <a><i>
 						}
 
@@ -2882,10 +2882,10 @@ $(function()
 		{
 			// Ajout un fond hachuré au cas ou il n'y ai pas de bg
 			$("[data-id][data-bg]").addClass("editable-bg");
-			$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='icon feather-image'></i></a></div>");
+			$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
 
 			// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
-			clearbg_btn = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='icon feather-trash'></i></a>";
+			clearbg_btn = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
 			$("[data-id][data-bg]").each(function() {
 				if($(this).data("bg"))
 					$(".bg-tool", this).prepend(clearbg_btn);
@@ -2965,7 +2965,7 @@ $(function()
 	move_module = function() {
 
 		// Change le style du bouton et l'action
-		$(".module-btn .feather-move").css("transform","scale(.5)");
+		$(".module-btn .fa-move").css("transform","scale(.5)");
 
 		// Désactive l'edition
 		$(".editable-media").off(".editable-media");
@@ -2982,7 +2982,7 @@ $(function()
 	unmove_module = function() {
 
 		// Change le style du bouton et l'action
-		$(".module-btn .feather-move").css("transform","scale(1)");
+		$(".module-btn .fa-move").css("transform","scale(1)");
 
 		// Change l'action sur le lien 'move'
 		$(".module-btn [href='javascript:unmove_module();']").attr("href","javascript:move_module();");
@@ -3009,16 +3009,16 @@ $(function()
 	$(".module .animation").removeClass("animation fire");
 
 	// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
-	$(".module").after("<div class='module-btn'><a href='javascript:move_module();'><i class='icon feather-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='icon feather-plus'></i><span> "+__("Add a module")+"</span></a></div>");
+	$(".module").after("<div class='module-btn'><a href='javascript:move_module();'><i class='fa fa-fw fa-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus'></i><span> "+__("Add a module")+"</span></a></div>");
 
 	// Force le parent en relatif pour bien positionner les boutons d'ajout
 	$(".module-btn").parent().addClass("relative");
 
 	// Ajout de la SUPPRESSION au survole d'un bloc
-	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='icon feather-x absolute none color-red' style='top: -5px; right: -5px; z-index: 10;' title='"+ __("Remove") +"'></i></a>");
+	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='fa fa-cancel absolute none red' style='top: -5px; right: -5px; z-index: 10;' title='"+ __("Remove") +"'></i></a>");
 
 	// Affiche les boutons de suppression
-	//$(".module li .feather-x").fadeIn();
+	//$(".module li .fa-cancel").fadeIn();
 
 	// Fonction pour supprimer un bloc
 	remove_module = function(that) {
@@ -3093,8 +3093,8 @@ $(function()
 
 		if($("#"+id).attr('type') != 'radio')
 		{
-			if($("#"+id).hasClass("feather-check")) $("#"+id).removeClass("feather-check yes").addClass("feather-x no");
-			else $("#"+id).removeClass("feather-x no").addClass("feather-check yes");
+			if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
+			else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
 		}
 	})
 
@@ -3351,7 +3351,7 @@ $(function()
 						$(document).on("click",
 							function(event) {
 								if(!$(event.target).parents().is("#user .absolute") && $("#user .absolute").is(":visible") && close == false)//event.type == 'click'
-									if($("#user button.to-save").length || $("#user button i.icon-spin").length)// Si fiche pas sauvegardé on shake
+									if($("#user button.to-save").length || $("#user button i.fa-spin").length)// Si fiche pas sauvegardé on shake
 										$("#user .absolute > div").effect("highlight");
 									else {
 										$("#user .absolute").fadeOut("fast", function(){ close = true; });
@@ -3433,7 +3433,7 @@ $(function()
 			// Affiche la liste des medias
 			$.each(medias_clean, function(media, type) {
 				if(type == "img") $(".dialog-del ul").append('<li><label for="'+ media +'"><img src="'+ media +'" title="'+ media +'"></label> <input type="checkbox" class="del-media" id="'+ media +'"></li>');
-				else $(".dialog-del ul").append('<li><label for="'+ media +'"><i class="icon feather-file title="'+ media +'"></i></label> <input type="checkbox" class="del-media" id="'+ media +'"></li>');
+				else $(".dialog-del ul").append('<li><label for="'+ media +'"><i class="fa fa-fw fa-doc text-bigger title="'+ media +'"></i></label> <input type="checkbox" class="del-media" id="'+ media +'"></li>');
 			});
 
 			// Au click sur la checkbox générale on coche tous les médias ont supprimé
