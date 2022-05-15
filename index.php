@@ -44,7 +44,7 @@ else $res = $sel->fetch_assoc();// On récupère les données de la page
 /********** TAGS **********/
 
 // Construction de l'ajout du contenu tag/cat, si filter et la racine de l'url pas dans les filtres autorisés
-if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($get_url, $GLOBALS['filter_auth'])) 
+if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($get_url, $GLOBALS['filter_auth']))
 {
 	$filter_one = array_keys($GLOBALS['filter'])[0];
 
@@ -80,15 +80,15 @@ if(@$GLOBALS['after_get_tag']) include_once($GLOBALS['root'].$GLOBALS['after_get
 /********** UNE PAGE EXISTE **********/
 $robots_data = '';
 
-if($res) 
+if($res)
 {
 	// Si on veut que le CMS soit en https dans la config on vérifie le statut d'origine de l'url
-	if(strpos($GLOBALS['scheme'], 'https') !== false) 
+	if(strpos($GLOBALS['scheme'], 'https') !== false)
 	{
 		// Verif si https dans l'url
-		if(strpos(@$_SERVER['SCRIPT_URI'], 'https') !== false or $_SERVER['REQUEST_SCHEME'] == 'https') 
+		if(strpos(@$_SERVER['SCRIPT_URI'], 'https') !== false or $_SERVER['REQUEST_SCHEME'] == 'https')
 			$http = "https://";
-		else 
+		else
 			$http = "http://";
 	}
 	else $http = $GLOBALS['scheme'];
@@ -97,7 +97,7 @@ if($res)
 	// On verifie l'url pour eviter les duplicates : si erreur = redirection
 	if($http.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] != make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))))
 	{
-		header($_SERVER['SERVER_PROTOCOL']." 301 Moved Permanently");		
+		header($_SERVER['SERVER_PROTOCOL']." 301 Moved Permanently");
 		header("location: ".make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true))));
 		exit;
 	}
@@ -109,7 +109,7 @@ if($res)
 	if($res['state'] != "active")// Page non activé
 	{
 		// Si pas admin on affiche page en construction
-		if(!@$_SESSION['auth']['edit-'.$res['type']]) 
+		if(!@$_SESSION['auth']['edit-'.$res['type']])
 		{
 			// On regarde si une template 503 est définie
 			$sel_503 = $connect->query("SELECT * FROM ".$table_content." WHERE url='503' AND lang='".$lang."' AND state='active' LIMIT 1");
@@ -131,7 +131,7 @@ if($res)
 		if(@$GLOBALS['online'] === false) $robots = 'noindex, nofollow';// Offline
 		elseif(@$res['robots']) $robots = $robots_data;// Online + paramètre déterminé
 		else $robots = 'index, follow';// Online + pas de paramètre
-	} 
+	}
 }
 else/********** PAS DE PAGE EXISTANTE **********/
 {
@@ -191,7 +191,7 @@ elseif(isset($res_tag['name']))// Si il y a juste le nom du tag
 }
 
 // Si filtre dans les filtres autorisés on ajoute les filtres à l'URL
-if($GLOBALS['filter']) 
+if($GLOBALS['filter'])
 {
 	foreach($GLOBALS['filter'] as $cle => $val)	{
 		if(in_array($cle, $GLOBALS['filter_auth'])) $title.= ' - '.__($cle).' '.$val;
@@ -216,7 +216,7 @@ $description = (isset($res['description']) ? htmlspecialchars(strip_tags($res['d
 // Image pour les réseaux sociaux
 if(isset($GLOBALS['content']['og-image'])) $image = $GLOBALS['content']['og-image'];
 elseif(isset($GLOBALS['content']['alaune'])) $image = $GLOBALS['content']['alaune'];
-elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel-1'])) 
+elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel-1']))
 {
 	if(isset($GLOBALS['content']['visuel'])) $image = $GLOBALS['content']['visuel'];
 	else $image = $GLOBALS['content']['visuel-1'];
@@ -227,7 +227,7 @@ elseif(isset($GLOBALS['content']['visuel']) or isset($GLOBALS['content']['visuel
 		parse_str($parse_url['query'], $get);
 		if(isset($get['zoom'])) $image = $get['zoom'];
 	}
-} 
+}
 // Si l'image n'est pas une url mais un fichier local on ajoute le domaine du site
 if(isset($image) and !@parse_url($image)['scheme']) $image = $GLOBALS['home'].$image;
 
@@ -237,7 +237,7 @@ if(isset($image) and !@parse_url($image)['scheme']) $image = $GLOBALS['home'].$i
 if(!$ajax)
 {
 	/********** RÉCUPÉRATION DES DONNÉES META : NAV | HEADER |FOOTER **********/
-	
+
 	$sel_meta = $connect->query("SELECT * FROM ".$tm." WHERE type IN ('nav','header','footer') AND cle='".$lang."' LIMIT 3");
 	while($res_meta = $sel_meta->fetch_assoc())
 	{
@@ -260,7 +260,7 @@ if(!$ajax)
 	?><!DOCTYPE html>
 	<html lang="<?=$lang;?>">
 	<head>
-		
+
 		<meta charset="utf-8">
 
 		<title><?=strip_tags($title);?></title>
@@ -283,35 +283,36 @@ if(!$ajax)
 		<?php if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?php }?>
 		<?php if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?php }?>
 
+		<!--modification des liens -->
+		<?php if(!isset($GLOBALS['style.css']) or @$GLOBALS['style.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
+		<?php if(!isset($GLOBALS['custom.css']) or @$GLOBALS['custom.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/custom<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
 
-		<?php if(!isset($GLOBALS['global.css']) or @$GLOBALS['global.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/global<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
-
-		<link rel="stylesheet" href="<?=(isset($GLOBALS['style.css']) ? $GLOBALS['style.css'] : $GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?"/":"").'style'.$GLOBALS['min'].'.css?'.$GLOBALS['cache'])?>">	
+		<link rel="stylesheet" href="<?=(isset($GLOBALS['theme.css']) ? $GLOBALS['theme.css'] : $GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?"/css/":"").'theme'.$GLOBALS['min'].'.css?'.$GLOBALS['cache'])?>">
 
 		<?php if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?php }
 		else{?>
 		<style>
 			@font-face {
 				font-family: 'FontAwesome';
-				src:  url('<?=$GLOBALS['path']?>api/icons/icons.eot?<?=$GLOBALS['cache']?>');
-				src:  
-					url('<?=$GLOBALS['path']?>api/icons/icons.eot?<?=$GLOBALS['cache']?>#iefix') format('embedded-opentype'),
-					url('<?=$GLOBALS['path']?>api/icons/icons.woff2?<?=$GLOBALS['cache']?>') format('woff2'),
-					url('<?=$GLOBALS['path']?>api/icons/icons.woff?<?=$GLOBALS['cache']?>') format('woff'),
-					url('<?=$GLOBALS['path']?>api/icons/icons.ttf?<?=$GLOBALS['cache']?>') format('truetype'),
-					url('<?=$GLOBALS['path']?>api/icons/icons.svg?<?=$GLOBALS['cache']?>#icons') format('svg');
+				src:  url('<?=$GLOBALS['path']?>api/assets/icons/icons.eot?<?=$GLOBALS['cache']?>');
+				src:
+					url('<?=$GLOBALS['path']?>api/assets/icons/icons.eot?<?=$GLOBALS['cache']?>#iefix') format('embedded-opentype'),
+					url('<?=$GLOBALS['path']?>api/assets/icons/icons.woff2?<?=$GLOBALS['cache']?>') format('woff2'),
+					url('<?=$GLOBALS['path']?>api/assets/icons/icons.woff?<?=$GLOBALS['cache']?>') format('woff'),
+					url('<?=$GLOBALS['path']?>api/assets/icons/icons.ttf?<?=$GLOBALS['cache']?>') format('truetype'),
+					url('<?=$GLOBALS['path']?>api/assets/icons/icons.svg?<?=$GLOBALS['cache']?>#icons') format('svg');
 				font-weight: normal;
 				font-style: normal;
 			}
 		</style>
-		<?php }?>
+	<?php }?>
 
 		<?php if(@$GLOBALS['favicon']){?><link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['favicon']?>"><?php }?>
 
 
 		<script src="<?=$GLOBALS['jquery']?>"></script>
 
-		<script src="<?=$GLOBALS['path']?>api/lucide.init<?=$GLOBALS['min']?>.js?<?=$GLOBALS['cache']?>"></script>
+		<script src="<?=$GLOBALS['path']?>api/js/custom.init<?=$GLOBALS['min']?>.js?<?=$GLOBALS['cache']?>"></script><!-- jusque ici-->
 
 
 		<?php if(@$GLOBALS['plausible']) { ?>
@@ -320,10 +321,10 @@ if(!$ajax)
 
 
 		<script>
-			
+
 			<?php if(@$GLOBALS['google_analytics']) { ?>
 			// Si Analytics pas desactivé
-			if(get_cookie('analytics') != "desactiver") 
+			if(get_cookie('analytics') != "desactiver")
 			{
 				// Google Analytics
 				google_analytics = '<?=$GLOBALS['google_analytics'];?>';
@@ -346,19 +347,19 @@ if(!$ajax)
 				js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.7&cookie=true&appId=<?=$GLOBALS['facebook_api_id'];?>";
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
-			<?php } 
+			<?php }
 
 
 			if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-page']){?>
 				// Si demande l'autoload du mode édition et si admin
 				$(function(){
 					edit_launcher();
-					$("a.bt.fixed.edit").fadeOut();				
+					$("a.bt.fixed.edit").fadeOut();
 				});
 				<?php
 				// Supprime le cookie qui demande de charger automatiquement l'admin
 				@setcookie("autoload_edit", "", time() - 3600, $GLOBALS['path'], $GLOBALS['domain']);
-			}?>		
+			}?>
 
 
 			// Variables
@@ -400,7 +401,7 @@ if(isset($res['tpl'])) // On a une page
 }
 else // Pas de contenu a chargé
 {
-	echo'<div class="pal tc">'.$msg.'</div>';
+	echo'<div class="p-36 text-center">'.$msg.'</div>';
 }
 
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 @include_once("config.init.php");// Les variables par défaut
 
 
@@ -17,24 +17,24 @@ if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des t
 
 
 switch($_GET['mode'])
-{		
+{
 	default:
 	case "login":// Check le login interne
 
 		login();
-		
+
 		?>
 		<script>
-			$(function() {	
+			$(function() {
 				if(callback) eval(callback + "()");// S'il y a un callback à exécuter
 			});
 		</script>
-		<?php 
+		<?php
 	break;
 
 
 	case "internal-login":// Connexion avec un login/passe interne au site
-		
+
 		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
 		?>
 		<div id="dialog-connect" title="<?php _e("Log in");?>">
@@ -63,7 +63,7 @@ switch($_GET['mode'])
 					<i class="fa fa-key" aria-hidden="true"></i>
 				</button>
 
-			</form>		
+			</form>
 		</div>
 
 		<script>
@@ -87,59 +87,59 @@ switch($_GET['mode'])
 
 
 			// Login
-			$("#internal-login").submit(function(event) 
+			$("#internal-login").submit(function(event)
 			{
 				event.preventDefault();
 
 				// Icône de chargement
 				$("#dialog-connect .bt .fa").removeClass("fa-key").addClass("fa-spin fa-cog");
-				
+
 				// Désactive le submit
 				$("#internal-login input[type='submit']").attr("disabled", true);
 				$("#internal-login").off("submit");
 
 				$.ajax(
-				{ 
+				{
 					type: "POST",
 					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=login",
-					data: { 
+					data: {
 						email: $("#internal-login #email").val(),
 						password: $("#internal-login #password").val(),
 						callback: callback,
 						nonce: $("#internal-login #nonce").val()
 					}
 				})
-				.done(function(html) { 
+				.done(function(html) {
 					// On ferme la dialog
 					$("#dialog-connect").dialog("close");
-					
+
 					// On exécute le retour
 					$("body").append(html);
 				});
 			});
 		});
 		</script>
-		<?php 
+		<?php
 	break;
 
 
 	case "quick-view-user":// AFFICHAGE RAPIDE D'UN COMPTE UTILISATEUR
-	
+
 		?>
 		<!DOCTYPE html>
 		<html lang="<?=$lang;?>">
-		<head>			
+		<head>
 			<meta charset="utf-8">
 			<title><?=__("User profile")." ".(int)$_REQUEST['uid'];?></title>
 			<meta name="robots" content="noindex, nofollow">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="global<?=$GLOBALS['min']?>.css?">
-			<link rel="stylesheet" href="lucide.css?">
+			<link rel="stylesheet" href="assets/css/style<?=$GLOBALS['min']?>.css?">
+			<link rel="stylesheet" href="assets/css/custom<?=$GLOBALS['min']?>.css?">
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
-			<script src="lucide.init<?=$GLOBALS['min']?>.js"></script>
-			
+			<script src="assets/js/custom.init<?=$GLOBALS['min']?>.js"></script>
+
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
 			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
 					<script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>admin.init.js"></script>
@@ -147,7 +147,7 @@ switch($_GET['mode'])
 
 			<style>
 				#user .absolute { width: 100%; }
-				#user .tooltip { 
+				#user .tooltip {
 					max-width: 420px;
 					margin: auto;
 				}
@@ -156,11 +156,11 @@ switch($_GET['mode'])
 			</style>
 		</head>
 		<body>
-			
+
 			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-			<div id="admin-bar" class="mtm">				
-				<div id="user">				
+			<div id="admin-bar" class="mtm">
+				<div id="user">
 					<center><i class="fa fa-spin fa-cog biggest mtl" style="position: absolute"></i></center>
 				</div>
 			</div>
@@ -172,7 +172,7 @@ switch($_GET['mode'])
 			{
 				// Injection du la fiche user
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=user&uid=<?=(int)$_REQUEST['uid']?>&callback=reload", data: { nonce: $("#nonce").val() } })
-					.done(function(html) { 
+					.done(function(html) {
 						$("#user").html(html);
 
 						// Execution des fonctions d'edition des plugins
@@ -185,13 +185,13 @@ switch($_GET['mode'])
 
 		</body>
 		</html>
-		<?php 
+		<?php
 
 	break;
 
 
 	case "user":// AFFICHAGE DE L'INTERFACE DE GESTION DES UTILISATEURS
-		
+
 		// @todo: ajouter les checks sur mail, password, et aussi mode non admin
 		// @todo encadrer le tout d'un formulaire pour avoir un onchange simple, et aussi metre en place le ajax qui affiche la progression de sauvegarde
 		// @todo si appel direct de la page on include dans le body générique
@@ -203,17 +203,17 @@ switch($_GET['mode'])
 		?>
 		<div class="absolute">
 			<div class="tooltip slide-left fire pas mas mlt mod">
-				
+
 				<div id="logout" class="fr" title="<?php _e("Log out")?>"><i class="fa fa-fw fa-logout big"></i></div>
 
 				<?php if(@$_SESSION['auth']['edit-user']) {?>
 				<div id="add-user" class="fr prs" title="<?php _e("Add user")?>"><i class="fa fa-fw fa-user-plus"></i></div>
 				<div id="list-user" class="fr prs" title="<?php _e("List of user")?>"><i class="fa fa-fw fa-users"></i></div>
 				<div id="profil" class="fr prs" title="<?php _e("My profil")?>"><i class="fa fa-fw fa-user big vam"></i></div>
-				<?php }?>				
+				<?php }?>
 
 				<div class="load">
-					<?php 
+					<?php
 					$_GET['mode'] = "profil";
 					include("ajax.php");
 					?>
@@ -237,12 +237,12 @@ switch($_GET['mode'])
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=list-user", data: { nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
 			});
 
-			$("#admin-bar #logout").click(function() {	
+			$("#admin-bar #logout").click(function() {
 				logout();
 			});
 		});
 		</script>
-		<?php 
+		<?php
 
 		// Pas de mysql close car déjà close dans le include ajax.php mode profil
 
@@ -255,7 +255,7 @@ switch($_GET['mode'])
 
 		login('high', 'edit-user');
 
-		if($_REQUEST['uid'] != $_SESSION['uid']) 
+		if($_REQUEST['uid'] != $_SESSION['uid'])
 		{
 			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
 			{
@@ -274,16 +274,16 @@ switch($_GET['mode'])
 		include_once("db.php");// Connexion à la db
 
 		login('medium', 'edit-user');
-		
+
 		if(!isset($_POST['search']) and !isset($_POST['page']))
 		{
 			?>
 			<h3 class="medium man mbs"><?php _e("List of user")?></h3>
 
-			<div class="mbs"><input type="text" class="search w70" placeholder="<?php _e("Search")?>" value=""></div>			
+			<div class="mbs"><input type="text" class="search w70" placeholder="<?php _e("Search")?>" value=""></div>
 
 			<ul class="unstyled pan man">
-			<?php 
+			<?php
 		}
 
 		$num_pp = 10;
@@ -295,7 +295,7 @@ switch($_GET['mode'])
 		$sql = "SELECT SQL_CALC_FOUND_ROWS ".$table_user.".id, ".$table_user.".* FROM ".$table_user." ";
 
 		$sql .= "WHERE 1 ";
-		
+
 		// L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
 		//if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
 		// @todo verifier que ça marche !!
@@ -317,7 +317,7 @@ switch($_GET['mode'])
 		$sql .= "ORDER BY date_insert DESC ";
 
 		$sql .= "LIMIT ".$start.", ".$num_pp;
-		
+
 		//echo $sql."<br>";
 
 		$sel = $connect->query($sql);
@@ -350,7 +350,7 @@ switch($_GET['mode'])
 
 			<script>
 			// Navigation par page (on charge les résultats suivants)
-			next_users = function(page) 
+			next_users = function(page)
 			{
 				$("#user .next").slideUp("normal", function(){ $(this).remove() });// Supprime le bouton next
 
@@ -371,14 +371,14 @@ switch($_GET['mode'])
 
 				return false;
 			}
-			
+
 			// Voir un profil
 			select_user = function(uid) {
 				$.ajax({ url: "<?=$GLOBALS['path']?>api/ajax.php?mode=profil", data: { uid: uid, nonce: $("#nonce").val() } }).done(function(html) { $("#user .load").html(html); });
 			}
-			
+
 			// Recherche un utilisateur
-			search_user = function() 
+			search_user = function()
 			{
 				timer = null;
 
@@ -408,15 +408,15 @@ switch($_GET['mode'])
 
 				// Recherche avec timer
 				var timer = null;
-				$("#user .search").keyup(function() 
+				$("#user .search").keyup(function()
 				{
 					if(timer != null) clearTimeout(timer);
-					timer = setTimeout(search_user, '500');		
+					timer = setTimeout(search_user, '500');
 				});
 			});
 			</script>
-			<?php 
-		}	
+			<?php
+		}
 
 		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
@@ -424,7 +424,7 @@ switch($_GET['mode'])
 
 
 	case "add-user":// AJOUTER UN UTILISATEUR PAR L'ADMIN
-		
+
 		include_once("db.php");// Connexion à la db
 
 		login('high', 'edit-user');
@@ -437,16 +437,16 @@ switch($_GET['mode'])
 
 		include_once("db.php");// Connexion à la db
 
-		if($_GET['mode'] != "add-user") 
+		if($_GET['mode'] != "add-user")
 		{
 			// Si l'utilisateur a affiché est diff de l'utilisateur en cours on vérifie que l'on est admin
-			if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) 
+			if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid'])
 				login('medium', 'edit-user');
 			else
 				login('medium');
 
 			$uid = (isset($_REQUEST['uid']) ? $_REQUEST['uid'] : $_SESSION['uid']);
-			
+
 			// Récupérationd des données de base de l'utilisateur
 			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
 			$res = $sel->fetch_assoc();
@@ -461,11 +461,11 @@ switch($_GET['mode'])
 			$array_auth = explode(",", $res['auth']);// Les autorisations
 
 			$oauth = json_decode($res['oauth'], true);// Les api tiers
-			
+
 			// On vérifie que l'on a le droit d'éditer les utilisateurs admin si fiche admin
 			if(array_search("edit-admin", $array_auth) !== false) login('medium', 'edit-admin');
 		}
-		
+
 		if($_GET['mode'] == "add-user") $h3 = __("Add user");
 		elseif($_SESSION['uid'] == $res["id"]) $h3 = __("Your profile")." ".$res["id"];
 		else $h3 = __("Profile")." ".$res["id"];
@@ -480,7 +480,7 @@ switch($_GET['mode'])
 			<div class="scroll">
 
 				<div class="mbt">
-					<label class="w100p tr mrt" for="state"><?php _e("State")?></label> 
+					<label class="w100p tr mrt" for="state"><?php _e("State")?></label>
 					<?php if(@$_SESSION['auth']['edit-user']){?>
 						<select id="state">
 							<option value="active"><?php _e("Active")?></option>
@@ -498,12 +498,12 @@ switch($_GET['mode'])
 				<div class="mbs" style="max-height: 100px;">
 					<label class="w100p tr mrt" for="auth"><?php _e("Authorization")?></label>
 					<select id="auth" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
-						<?php 
+						<?php
 						// Droit de base
 						foreach($GLOBALS['auth_level'] as $cle => $val)	{
 							echo'<option value="'.$cle.'">'.__($val).'</option>';
 						}
-						
+
 						// Droit contenu
 						foreach($GLOBALS['add_content'] as $cle => $array)
 						{
@@ -513,12 +513,12 @@ switch($_GET['mode'])
 						?>
 					</select>
 					<script>
-					$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
+					$.each("<?=@$res['auth']?>".split(','), function(cle, val){
 						$('#user #auth option[value="'+ val +'"]').prop('selected', true);
 					});
-					</script>					
+					</script>
 				</div>
-				
+
 				<!-- Désactive l'autocomplet du navigateur -->
 				<input type="text" id="email-fake" class="none">
 				<input type="password" id="password-fake" class="none">
@@ -539,26 +539,26 @@ switch($_GET['mode'])
 				</div>
 
 
-				<?php 
+				<?php
 				// Si il y a des méta/infos complementaire pour cette utilisateur
-				if(is_array(@$GLOBALS['user_info'])) 
-				{		
+				if(is_array(@$GLOBALS['user_info']))
+				{
 					?>
-					<div class="info mbs"><?php 
+					<div class="info mbs"><?php
 
 						$info = json_decode($res['info'], true);
 
 						foreach($GLOBALS['user_info'] as $cle => $val)
 						{
-							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?php _e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?php 
+							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?php _e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?php
 						}
-						
-					?></div><?php 
+
+					?></div><?php
 				}
 				?>
 
 				<?php if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
-				<?php if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>			
+				<?php if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>
 
 				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?php }?>
 
@@ -568,7 +568,7 @@ switch($_GET['mode'])
 				</button>
 
 			</div>
-		
+
 		</form>
 
 		<script>
@@ -577,24 +577,24 @@ switch($_GET['mode'])
 				$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 			}
 
-			send_password = function(){				
+			send_password = function(){
 				if(confirm("Envoyer un nouveau mot de passe à "+ $("#user-profil #email").val() +" ?"))
 				{
 					$("#send-password .fa").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
 
 					// Envoi du mail
-					$.ajax({ 
+					$.ajax({
 						type: "POST",
 						url: "<?=$GLOBALS['path']?>api/ajax.php?mode=send-password",
-						data: { 
+						data: {
 							uid: $("#user-profil #uid").val(),
 							email: $("#user-profil #email").val(),
 							nonce: $("#nonce").val()
 						}
 					})
-					.done(function(html) { 
+					.done(function(html) {
 						$("#send-password .fa").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
-						
+
 						// On exécute le retour
 						$("body").append(html);
 					});
@@ -602,7 +602,7 @@ switch($_GET['mode'])
 			}
 
 			$(function()
-			{			
+			{
 				// On focus on select le contenu
 				$("#user .search_user_id").focus(function() {
 					$(this).select();
@@ -610,12 +610,12 @@ switch($_GET['mode'])
 
 				// Recherche d'un utilisateur sur un api tiers
 				$("#user #facebook, #user #google").autocomplete({
-					source: function(request, response) {	
-						
+					source: function(request, response) {
+
 						var selector = this.element.attr('id');
-						
+
 						$("#user #"+selector).after("<i class='fa fa-spin fa-cog' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
-						
+
 						// Chargement des résultats
 						$.ajax({
 							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=get-external-uid",
@@ -625,10 +625,10 @@ switch($_GET['mode'])
 								api: selector,
 								nonce: $("#nonce").val()
 							},
-							success: function(data) {						
+							success: function(data) {
 								response(data);
 							},
-							complete: function() {		
+							complete: function() {
 								$("#user #"+selector).next("i").fadeOut();// Close loading
 							}
 						});
@@ -637,36 +637,36 @@ switch($_GET['mode'])
 					delay: 500
 				}).each(function() {
 					$(this).autocomplete("instance")._renderItem = function(ul, item) {
-						if(item.img) return $("<li>").append("<a class='block mod'><img src='"+ item.img +"' width='30' class='fl'>"+ item.label +"</a>").appendTo(ul);					
+						if(item.img) return $("<li>").append("<a class='block mod'><img src='"+ item.img +"' width='30' class='fl'>"+ item.label +"</a>").appendTo(ul);
 					}
 				});
 
 				// Si on click sur supprimer
-				$("#user .load #del").click(function(event) { 
+				$("#user .load #del").click(function(event) {
 					event.preventDefault();
 					if(confirm(__("Delete user")+" "+ $("#uid").val() +" ?")) {
-						$.ajax({ 
+						$.ajax({
 							url: "<?=$GLOBALS['path']?>api/ajax.php?mode=del-user",
 							data: { uid: $("#uid").val(), nonce: $("#nonce").val() }
-						}).done(function(html) { 
-							$("#user .load").html(html); 
+						}).done(function(html) {
+							$("#user .load").html(html);
 						});
 					}
 				});
-				
+
 
 				// Si le contenu change, on change le statut du bouton sauvegarder
 				$("#user .load input").keyup(function() { user_tosave(); });
 				$("#user .load select").change(function() { user_tosave(); });
 
-					
+
 				$("#user-profil").submit(function(event)
 				{
 					event.preventDefault();
-						
+
 					// Animation sauvegarde en cours (loading)
 					$("#save-user i").removeClass("fa-floppy").removeClass("fa-plus").addClass("fa-spin fa-cog");
-					
+
 					data = {};
 
 					data["nonce"] = $("#nonce").val();
@@ -691,7 +691,7 @@ switch($_GET['mode'])
 				});
 			});
 		</script>
-		<?php 
+		<?php
 
 		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
@@ -699,23 +699,23 @@ switch($_GET['mode'])
 
 
 	case "save-user":// CREATION D'UN COMPTE | SAUVEGARDER DES INFOS UTILISATEUR
-		
+
 		//@todo : ajouter un captcha pour éviter les spam d'ajout d'utilisateur. si admin pas de check
 
 		if($_SESSION['nonce'] == $_REQUEST['nonce'])
 		{
-			include_once("db.php");// Connexion à la db		
+			include_once("db.php");// Connexion à la db
 
 			$uid = $insert_user = $insert_info = $logout = null;
 
 			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
-			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) 
-				login('high', 'edit-user');			
+			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account'])
+				login('high', 'edit-user');
 			elseif(@$_REQUEST['uid'])
-			{				
+			{
 				// Si l'utilisateur est différent de nous on vérifie que l'on est admin
 				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
-				else login('high');				
+				else login('high');
 
 				// Récupère les données sur l'utilisateurs
 				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
@@ -725,7 +725,7 @@ switch($_GET['mode'])
 				if(isset($_POST['auth']))
 				{
 					// Si les droits d'accès ont changé on déconnecte l'utilisateur pour qu'il recrée son cookie auth
-					if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth'])) 
+					if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']))
 						$logout = true;
 					// Si on change nos propres droits on recrée le cookie auth (on doit avoir les droits d'édition user)
 					elseif($_REQUEST['uid'] == $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']) and isset($_SESSION['auth']['edit-user']))
@@ -735,7 +735,7 @@ switch($_GET['mode'])
 
 			// Nettoyage du email
 			$_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-			
+
 			// Hashage du pwd avec le salt unique
 			$password_new = null;
 			$hashed_password = null;
@@ -749,35 +749,35 @@ switch($_GET['mode'])
 
 			// Sécurisation supplémentaire
 			$_POST = array_map(function($value) use($connect) {
-				if(is_array($value)) { 
+				if(is_array($value)) {
 					foreach($value as $cle => $val) $value[$cle] = $connect->real_escape_string($val);
 				}
 				else $value = $connect->real_escape_string($value);
-				return $value; 
+				return $value;
 			}, $_POST);
 
 
 			// UPDATE / INSERT INFOS DE CONNEXION
-			if(@$_REQUEST['uid']) 
+			if(@$_REQUEST['uid'])
 				$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
-			else 
+			else
 				$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
-			
+
 			// État d'activation
 			if(isset($_SESSION['auth']['edit-user']) and isset($_POST['state']))
 				$sql .= "state = '".encode($_POST['state'])."', ";
-			elseif(!@$_REQUEST['uid']) 
+			elseif(!@$_REQUEST['uid'])
 				$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
-			
+
 			// Droit d'accès
 			if(isset($_SESSION['auth']['edit-admin']) and isset($_POST['auth'])) {
 				$auth = $connect->real_escape_string(implode(",", $_POST['auth']));
 				$sql .= "auth = '".$auth."', ";
 			}
-			elseif(!@$_REQUEST['uid']) 
+			elseif(!@$_REQUEST['uid'])
 				$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
 
-			$name = $connect->real_escape_string($_POST['name']);			
+			$name = $connect->real_escape_string($_POST['name']);
 			$sql .= "name = '".$name."', ";
 
 			$email = $connect->real_escape_string($_POST['email']);
@@ -799,10 +799,10 @@ switch($_GET['mode'])
 					$sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
 			}
 			else if($logout) $sql .= "token = '', ";// Déconnecte l'utilisateur
-			
+
 			// Token d'api externe
 			if(isset($_POST['oauth'])) {
-				$oauth = $connect->real_escape_string(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE));			
+				$oauth = $connect->real_escape_string(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE));
 				$sql .= "oauth = '".$oauth."', ";
 			}
 
@@ -818,10 +818,10 @@ switch($_GET['mode'])
 				$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
 			else
 				$sql .= ", date_insert = NOW() ";
-			
+
 			// Exécution de la requête
 			$connect->query($sql);
-				
+
 			//echo "_POST<br>"; highlight_string(print_r($_POST, true));
 			//echo $sql;
 
@@ -833,26 +833,26 @@ switch($_GET['mode'])
 				if($connect->insert_id) $insert_user = $uid = $connect->insert_id;
 				elseif(@$_REQUEST['uid']) $uid = (int)$_REQUEST['uid'];
 
-				if($uid) 
+				if($uid)
 				{
 					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
-					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state'] and $GLOBALS['mail_moderate']) 
+					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state'] and $GLOBALS['mail_moderate'])
 					{
 						// Pour le garder secret
 						unset($_POST['password_new'], $_POST['password_confirm']);
-						
+
 						// Sujet
 						$subject = "[".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
-						
+
 						// Lien vers la fiche admin pour activation
 						$message = "<br><a href='".make_url("", array("domaine" => true))."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
-						
+
 						$message .= "<pre>";
 						$message .= print_r($_POST, true);
 						$message .= "</pre><br>-------------------------------------------------------<br>";
 
 						$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br>";
-						$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br>";		
+						$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br>";
 						$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br>";
 						$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br>";
 
@@ -868,12 +868,12 @@ switch($_GET['mode'])
 
 					// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
 				}
-			
+
 				?>
 				<script>
 				$(function()
 				{
-					<?php 
+					<?php
 					if(!$connect->error){
 						if(@$_REQUEST['uid']){?>// Update réussit
 
@@ -887,7 +887,7 @@ switch($_GET['mode'])
 
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
-							
+
 							<?php if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users
 
 								$("#save-user span").html("<?php _e("Save")?>");
@@ -896,7 +896,7 @@ switch($_GET['mode'])
 
 								$("#save-user span").html("<?php _e("Account created")?>");
 
-								// @todo: bouton de sauvegarde readonly (pour éviter re-submit) + message si validation par mail/admin requise 
+								// @todo: bouton de sauvegarde readonly (pour éviter re-submit) + message si validation par mail/admin requise
 
 							<?php }?>
 
@@ -907,7 +907,7 @@ switch($_GET['mode'])
 					<?php }?>
 				});
 				</script>
-				<?php 
+				<?php
 			}
 			elseif($connect->error){?>
 				<script>
@@ -942,7 +942,7 @@ switch($_GET['mode'])
 
 					if($res = $sel->fetch_assoc())// Déjà dans la base
 						echo "existing account";
-					else 
+					else
 						echo "true";
 				}
 			}
@@ -957,12 +957,12 @@ switch($_GET['mode'])
 	case "check-password":// Check en ajax si le password est un minimum sécurisé
 	break;
 
-	case "make-password":// Crée un password aléatoirement		
+	case "make-password":// Crée un password aléatoirement
 		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(8,12));
 	break;
 
-	case "send-password":// Crée un password aléatoirement & l'envoi par mail à l'utilisateur	
-		if($_SESSION['nonce'] == $_REQUEST['nonce'] and @$_REQUEST['uid'] and @$_REQUEST['email']) 
+	case "send-password":// Crée un password aléatoirement & l'envoi par mail à l'utilisateur
+		if($_SESSION['nonce'] == $_REQUEST['nonce'] and @$_REQUEST['uid'] and @$_REQUEST['email'])
 		{
 			login('high', 'edit-user');
 
@@ -995,10 +995,10 @@ switch($_GET['mode'])
 		if($_SESSION['access_token_external'][$_REQUEST['api']])
 		{
 			header('Content-Type: application/json');
-			
+
 			switch($_REQUEST['api'])
 			{
-				case "facebook":					
+				case "facebook":
 					$response = json_decode(curl("https://graph.facebook.com/search?q=".urlencode($_REQUEST['search'])."&type=user&limit=50&access_token=".$_SESSION['access_token_external'][$_REQUEST['api']]), true);
 
 					//highlight_string(print_r($response, true));
@@ -1008,12 +1008,12 @@ switch($_GET['mode'])
 						$json[] = array(
 							'value' => $val['id'],
 							'label' => $val['name'],
-							'img' => "https://graph.facebook.com/".$val['id']."/picture"					
+							'img' => "https://graph.facebook.com/".$val['id']."/picture"
 						);
 					}
 				break;
 
-				case "google":	
+				case "google":
 					// maxResults
 					$response = json_decode(curl("https://www.googleapis.com/plus/v1/people/?query=".urlencode($_REQUEST['search'])."&access_token=".$_SESSION['access_token_external'][$_REQUEST['api']]), true);
 
@@ -1028,7 +1028,7 @@ switch($_GET['mode'])
 						);
 					}
 				break;
-			}		
+			}
 
 			echo json_encode($json);
 		}
@@ -1037,7 +1037,7 @@ switch($_GET['mode'])
 	break;
 
 
-	
+
 	case "logout":
 		logout();
 	break;
