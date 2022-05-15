@@ -1,165 +1,57 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
-
-<section class="mw960p mod center mtm mbl">
-
-	<?php h1('titre', 'tc mbl')?>
-
-	<div class="w50 fl tc animation slide-left">
-		<article>
-			<?php media('media-2', '130')?>
-			<?php h3('titre-2', 'mbn tdn')?>
-			<?php txt('txt-2','w50 center block')?>
-			<a <?php href("lien-2")?>><span class="bt mts"><?php _e("Lire plus")?></span></a>
-		</article>
+<section id="hero" class="layout-maxed">
+	<div class="layout-hero bg-section bg-overlay bg-gradient sm:py-36 py-8" <?php bg('bg-hero')?>>
+		<div class="hero-content grid md:grid-cols-2 flex flex-wrap sm:my-36 my-8 sm:py-36 py-8">
+			<div class="py-12">
+				<div class="hero-text mx-24 animation fade-in">
+					<?php h1('hero-title', 'hero-title color-light')?>
+					<?php txt('hero-desc','hero-desc color-light py-20 mb-16')?>
+					<div class="hero-action grid lg:grid-cols-2">
+						<a class="btn hero-btn bg-glaz border-rounded no-decoration" <?php href("hero-link")?>>Download <i class="icon feather-upload ml-8"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="flex mx-24 py-12">
+				<div class="hero-panel bg-white border-rounded shadow flex flex-col align-items-center text-center animation delay-1 slide-right-big">
+					<?php media('panel-icon','80x80')?>
+					<?php h3('panel-title', 'hero-panel-title color-blue my-8')?>
+					<?php txt('panel-desc','hero-panel-desc mb-8')?>
+					<a <?php href("panel-link")?>><i class="icon feather-link ml-8"></i></a>
+				</div>
+			</div>
+		</div>
 	</div>
-
-	<div class="w50 fl tc animation slide-right">
-		<article>
-			<?php media('media-3', '130')?>
-			<?php h3('titre-3', 'mbn tdn')?>
-			<?php txt('txt-3','w50 center block')?>
-			<a <?php href("lien-3")?>><span class="bt mts"><?php _e("Lire plus")?></span></a>
-		</article>
-	</div>
-
 </section>
 
-
-<section class="mw960p mod center mbl">
-
-	<?php h2('titre-4', 'tc mbt mtt ptm')?>
-
-	<article class="pbm mtl mod">
-
-		<div class="plm fl w40 animation slide-left"><a <?php href('lien-6')?>><?php media('image-6', '470')?></a></div>
-
-		<div class="pll fr w60">
-
-			<div class="animation slide-right">
-				<?php h3('titre-5','mbn')?>
-				<?php txt('txt-5')?>
-			</div>
-
-			<div class="mtl animation slide-right">
-				<?php h3('titre-6','mbn')?>
-				<?php txt('txt-6')?>
-			</div>
-
+<section id="features" class="layout-maxed bg-light text-center py-36">
+	<div class="features-content sm:grid md:grid-cols-2 flex flex-wrap py-36 m-auto">
+		<div class="features-text md:col-span-2 lg:col-span-full">
+			<?php txt('features-subtitle','features-subtitle color-glaz')?>
 		</div>
-
-
-	</article>
-
-	<article class="ptm mod" style="border-top: solid 1px #eee;" <?bg("bg", 'lazy')?>>
-
-		<div class="prs mtl ptm fl w60 tr animation slide-left">
-			<?php h3('titre-7','mbn')?>
-			<?php txt('txt-7', array('lazy' => true))?>
+		<div class="features-heading md:col-span-2 lg:col-span-full pt-8">
+			<?php h2('features-title', 'features-title color-blue')?>
 		</div>
-
-		<div class="prl fr w40 animation slide-right"><a <?php href('lien-map')?>><?php media('image-7', '470')?></a></div>
-
-	</article>
-
-</section>
-
-
-<!-- Module -->
-<section class="mw960p mod center mbl">
-
-	<?php h2('titre-module', 'tc')?>
-
-	<div class="flex">
-
-		<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
-		<ul id="partenaire" class="module unstyled pan auto tc">
+	</div>
+	<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
+	<div id="features-panel" class="module sm:grid md:grid-cols-2 lg:grid-cols-4 gap-36 flex flex-wrap sm:mx-20 mx-8 py-36 animation delay-1 fade-in">
 		<?php
-		// nom du module "partenaire" = id du module, et au début des id des txt() media() ...
-		$module = module("partenaire");
+		// nom du module "features-panel" = id du module, et au début des id des txt() media() ...
+		$module = module("features-panel");
 		foreach($module as $key => $val)
 		{
 			?>
-			<li class="fl">
-				<div><?php media("partenaire-img-".$key, array('size' => '250x250', 'lazy' => true));?></div>
-				<div class="pam">« <?php txt("partenaire-text-".$key, array("tag" => "span"));?> »</div>
-			</li>
+			<div class="features-panel bg-white shadow border-rounded flex flex-col my-16 md:my-24">
+				<div class="features-panel-icon">
+					<?php media("features-panel-icon-".$key, array('size' => '70x70', "class" => "ml-0", "lazy" => true))?>
+				</div>
+				<div class="features-panel-content flex flex-col align-items-center text-left">
+					<h4 class="features-panel-title color-blue pb-24 mb-24"><?php txt('features-panel-title-'.$key) ?></h4>
+					<p class="features-panel-desc mb-0"><?php txt('features-panel-desc-'.$key) ?></p>
+				</div>
+			</div>
 			<?php
 		}
 		?>
-		</ul>
-
-	</div>
-
-</section>
-
-
-
-<!-- Event -->
-<style>
-	.event {
-		margin-left: -2.5em;
-		border-radius: 0.5em;
-	}
-	.event .date {
-		border-radius : 100%;
-		margin: 0rem 2rem;
-		padding: 1rem 2rem;
-
-		background-color: white;
-		border-color: #35747f;
-		color: #35747f;
-	}
-</style>
-<section>
-
-	<div class="mw960p mod center mbl">
-
-		<?php h2('titre-event', 'tc')?>
-
-		<div class="fl w50 tr no-small-screen">
-			<span class="editable-event" id="img-illu-event"><?php media('media-event','425')?></span>
-		</div>
-
-		<div class="fl w50 mts">
-			<?php 
-			$sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
-			while($res_event = $sel_event->fetch_assoc())
-			{
-				$date = explode("-", explode(" ", $res_event['date_insert'])[0]);
-
-				?>
-				<div class="event pts pbs mtm mbm animation slide-right">
-
-					<article>
-
-						<!--Picot
-						<div class="picto fl">
-							<?php
-							$res_picto = ('article' == $res_event['type']) ? 'picto-actu.png' : 'picto-evenement.png';
-							?>
-							<img src="/<?=@$GLOBALS['media_dir']?>/tpl/<?=$res_picto?>" alt="picto <?=$res_event['type']?>">
-						</div>-->
-
-						<div class="date bold bt bg-color fl up big tc">
-							<div><?=$date[2]?></div>
-							<div><?=trim(utf8_encode(strftime("%h", mktime(0, 0, 0, $date[1], 10))),".")?></div>
-						</div>
-
-						<div>
-							<h2 class="bold mod up bigger man nowrap tdn"><?=$res_event['title']?></h2>
-
-							<a href="<?=make_url($res_event['url']);?>"><span class="bt bg-color"><?php _e("Lire")?></span></a>
-						</div>
-
-					</article>
-
-				</div>
-				<?php 
-			}
-			?>
-		</div>
-
 	</div>
 </section>
-<!-- Fin Event -->
