@@ -249,12 +249,12 @@ $GLOBALS['auth_level'] = array(
 
 // Type de contenu ajoutable
 $GLOBALS['add_content'] = array(
-	//"product" => ["fa" => "fa-basket", "tpl" => "product"],
-	"article" => ["fa" => "fa-rss", "tpl" => "article"],
-	//"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],
-	//"video" => ["fa" => "fa-video", "tpl" => "video"],
-	//"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
-	"page" => ["fa" => "fa-doc-text", "tpl" => "page"]
+	//"product" => ["icon" => "feather-shopping-cart", "tpl" => "product"],
+	"article" => ["icon" => "feather-rss", "tpl" => "article"],
+	//"event" => ["icon" => "feather-calendar", "tpl" => "event"],
+	//"video" => ["icon" => "feather-film", "tpl" => "video"],
+	//"media" => ["icon" => "feather-paperclip", "tpl" => "fichier"],
+	"page" => ["icon" => "feather-file", "tpl" => "page"]
 );
 
 
