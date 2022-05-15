@@ -283,7 +283,6 @@ if(!$ajax)
 		<?php if(@$GLOBALS['facebook_api_id']){?><meta property="fb:app_id" content="<?=$GLOBALS['facebook_api_id'];?>"><?php }?>
 		<?php if(@$GLOBALS['google_verification']){?><meta name="google-site-verification" content="<?=$GLOBALS['google_verification'];?>" /><?php }?>
 
-		<!--modification des liens -->
 		<?php if(!isset($GLOBALS['style.css']) or @$GLOBALS['style.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
 		<?php if(!isset($GLOBALS['custom.css']) or @$GLOBALS['custom.css'] == true){?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/custom<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>"><?php }?>
 
@@ -312,7 +311,7 @@ if(!$ajax)
 
 		<script src="<?=$GLOBALS['jquery']?>"></script>
 
-		<script src="<?=$GLOBALS['path']?>api/js/custom.init<?=$GLOBALS['min']?>.js?<?=$GLOBALS['cache']?>"></script><!-- jusque ici-->
+		<script src="<?=$GLOBALS['path']?>api/assets/js/custom.init<?=$GLOBALS['min']?>.js?<?=$GLOBALS['cache']?>"></script>
 
 
 		<?php if(@$GLOBALS['plausible']) { ?>
