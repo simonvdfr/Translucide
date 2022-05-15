@@ -125,7 +125,7 @@ switch($_GET['mode'])
 
 				</div>
 
-				<div id="close" class="float-right mr-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon feather-x vatt"></i></div>
+				<div id="close" class="float-right m-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon feather-x vatt"></i></div>
 
 				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="icon feather-save"></i></button>
 
