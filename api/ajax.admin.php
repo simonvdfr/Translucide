@@ -71,7 +71,7 @@ switch($_GET['mode'])
 
 								<span id="ispage" class="hidden"><input type="checkbox" id="homepage"> <label for="homepage" class="mr-16"><?php _e("Home page")?></label></span>
 
-								<label id="refresh-permalink"><i class="icon feather-refresh-cw"></i><?php _e("Regenerate address")?></label>
+								<label id="refresh-permalink"><i class="icon feather-refresh-cw mr-8"></i><?php _e("Regenerate address")?></label>
 							</div>
 
 							<div class="flex flex-wrap mt-24">
