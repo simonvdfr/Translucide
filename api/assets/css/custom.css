@@ -200,8 +200,9 @@ a:focus, a:hover, a:active { color: var(--color-3);}
 }
 
 .btn.edit, .btn.add, .btn.top {
-	height: 2.375rem !important;
-	padding: 0.5rem;
+	height: 2.4rem !important;
+	padding: 0.4rem 0.6rem 0.6rem;
+  font-size: 1.25rem !important;
 }
 
 .btn.fixed.edit {
