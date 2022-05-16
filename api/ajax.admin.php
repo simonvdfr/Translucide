@@ -214,7 +214,7 @@ switch($_GET['mode'])
 				foreach($GLOBALS['add_content'] as $cle => $array)
 				{
 					if(isset($_SESSION['auth']['add-'.$cle])){
-						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="icon '.$array['feather'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
+						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="icon '.$array['icon'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
 					}
 				}
 				?>
@@ -253,7 +253,7 @@ switch($_GET['mode'])
 				<div class="m-16 mt-24">
 					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70">
 					<label for="homepage" class="mr-16 mt-0 hidden"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
-					<label id="refresh-permalink" class="mt-0"><i class="icon feather-refresh-cw"></i><?php _e("Regenerate address")?></label>
+					<label id="refresh-permalink" class="mt-0"><i class="icon feather-refresh-cw mr-8"></i><?php _e("Regenerate address")?></label>
 				</div>
 
 			</div>
