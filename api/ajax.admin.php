@@ -43,8 +43,12 @@ switch($_GET['mode'])
 
 				<div id="user" class="fl pat"><i class="fa fa-fw fa-user-circle bigger" title="<?php _e("Show user info")?>"></i></div>
 				
+
 				<!-- list/bars -->
 				<div id="list-content" class="fl pat"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
+				
+				<a href="/tutoriel.html" id="tutoriel" class="fl pat" target="_blank" title="<?php echo __("Editing tutorial").' - '.__("New window");?>"><i class="fa fa-info-circled vam"></i></a>
+
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
 
