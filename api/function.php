@@ -431,13 +431,13 @@ function media($key = null, $filter = array())
 				$video = true;
 			break;
 
-			default: $fa = "doc"; break;
+			default: $icon = "doc"; break;
 
-			case"zip": $fa = "file-archive"; break;
-			case"msword": $fa = "file-word"; break;
-			case"vnd.ms-excel": $fa = "file-excel"; break;
-			case"vnd.ms-powerpoint": $fa = "file-powerpoint"; break;
-			case"pdf": $fa = "file-pdf"; break;
+			case"zip": $icon = "file-archive"; break;
+			case"msword": $icon = "file-word"; break;
+			case"vnd.ms-excel": $icon = "file-excel"; break;
+			case"vnd.ms-powerpoint": $icon = "file-powerpoint"; break;
+			case"pdf": $icon = "file-pdf"; break;
 		}
 	}
 
@@ -514,7 +514,7 @@ function media($key = null, $filter = array())
 		elseif(isset($video))// C'est une video
 			echo'<video'.(isset($size[0])?' width="'.$size[0].'"':'').' src="'.$filename.'" title="'.$GLOBALS['content'][$key].'" preload="none" controls></video>';
 		elseif($filename)// C'est un fichier
-			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="fa fa-fw fa-'.$fa.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
+			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="icon feather-'.$icon.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
 
 
 	echo'</span>';
@@ -610,7 +610,7 @@ function checkbox($key = null, $filter = array())
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
 	// fa-check/fa-close => fa-ok/fa-cancel
-	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." fa fa-fw ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "fa-ok yes" : "fa-cancel no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
+	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." icon feather ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "feather-check yes" : "feather-x no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
 
 	$GLOBALS['editkey']++;
 }
