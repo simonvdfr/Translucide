@@ -53,10 +53,10 @@ switch($_GET['mode'])
 					<?php _e("My email");?>
 					<i><?_e("Expected format" )?> : myname@domain.com</i>
 				</label>
-				<div class="mb-24"><input type="email" id="login-email" autocomplete="email" required><span class="wrapper text-bold" aria-hidden="true">@</span></div>
+				<div class="mb-24"><input type="email" id="email" autocomplete="email" required><span class="wrapper text-bold" aria-hidden="true">@</span></div>
 
 				<label for="password"><?php _e("My password");?></label>
-				<div class="mb-24"><input type="password" id="login-password" autocomplete="current-password" required><i class="icon feather-lock wrapper" aria-hidden="true"></i></div>
+				<div class="mb-24"><input type="password" id="password" autocomplete="current-password" required><i class="icon feather-lock wrapper" aria-hidden="true"></i></div>
 
 				<button class="bg-light float-right mr-0 mt-24 p-8">
 					<?php _e("Log in")?>
@@ -134,14 +134,14 @@ switch($_GET['mode'])
 			<meta name="robots" content="noindex, nofollow">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="/assets/css/style<?=$GLOBALS['min']?>.css?">
-			<link rel="stylesheet" href="/assets/css/custom<?=$GLOBALS['min']?>.css?">
+			<link rel="stylesheet" href="assets/css/style<?=$GLOBALS['min']?>.css?">
+			<link rel="stylesheet" href="assets/css/custom<?=$GLOBALS['min']?>.css?">
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
-			<script src="/assets/js/custom.init<?=$GLOBALS['min']?>.js"></script>
+			<script src="assets/js/custom.init<?=$GLOBALS['min']?>.js"></script>
 
 			<!-- Appel du js supplémentaire pour les options spécifiques au thème -->
-			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
+			<?php if(file_exists($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."admin.init.js")) {?>
 					<script src="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme'].($GLOBALS['theme']?"/":"")?>admin.init.js"></script>
 			<?php }?>
 		</head>
@@ -579,6 +579,7 @@ switch($_GET['mode'])
 					<i class="icon feather-<?=($uid?"save":"plus")?>"></i>
 				</button>
 
+			</div>
 			</div>
 
 		</form>
