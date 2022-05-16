@@ -36,6 +36,8 @@
   text-rendering: optimizeLegibility;
 	font-display: optional
 }
+
+
 @font-face {
   font-family: 'FontAwesome';
   src:  url('../icons/icons.eot');
@@ -553,8 +555,8 @@ button.saved {
 }
 
 #admin-bar .switch label:before {
-	font-family: 'FontAwesome';
-	content: '\e813';
+	font-family: 'Feather';
+	content: '\e960';
 	margin-left: 1.125rem;
 	transition: all .2s ease;
 }
@@ -564,8 +566,8 @@ button.saved {
 }
 
 #admin-bar .switch input[type=checkbox]:checked ~ label:before {
-	font-family: 'FontAwesome';
-	content: '\e812';
+	font-family: 'Feather';
+	content: '\e95f';
 	margin-left: 0.375rem;
 }
 
@@ -774,8 +776,8 @@ nav > ul li:hover i.fa-cancel {
 }
 
 #add-nav .dragger:before {
-	content: "\e80c";/*fa-plus*/
-	font-family: 'FontAwesome';
+	content: "\e9bc";/*fa-plus*/
+	font-family: 'Feather';
 }
 
 #add-nav .fa-cancel {
@@ -1267,8 +1269,8 @@ img.drag-elem {
 }
 
 .uploaded:before {
-	font-family: 'FontAwesome';
-  content: "\e80a";
+	font-family: 'Feather';
+  content: "\e92b";
 	font-size: 5rem;
 	color: var(--green-color);
 	animation: fade-in-out 1s ease forwards;
