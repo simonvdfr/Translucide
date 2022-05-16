@@ -353,7 +353,7 @@ if(!$ajax)
 				// Si demande l'autoload du mode édition et si admin
 				$(function(){
 					edit_launcher();
-					$("a.bt.fixed.edit").fadeOut();
+					$("a.btn.fixed.edit").fadeOut();
 				});
 				<?php
 				// Supprime le cookie qui demande de charger automatiquement l'admin
@@ -374,8 +374,8 @@ if(!$ajax)
 			media_dir = "<?=(isset($GLOBALS['media_dir'])?$GLOBALS['media_dir']:'media')?>";
 			<?=(isset($GLOBALS['lang_alt'])?'lang_alt = "'.addslashes($GLOBALS['lang_alt']).'";':'')?>
 			<?=(isset($GLOBALS['sitename'])?'sitename = "'.addslashes($GLOBALS['sitename']).'";':'')?>
-			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
-			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>
+			<?=((!isset($GLOBALS['btn_edit']) or $GLOBALS['btn_edit'] == true)?'btn_edit = true;':'')?>
+			<?=((!isset($GLOBALS['btn_top']) or $GLOBALS['btn_top'] == true)?'btn_top = true;':'')?>
 			<?=((!isset($GLOBALS['shortcut']) or $GLOBALS['shortcut'] == true)?'shortcut = true;':'')?>
 			<?=(@$dev?'dev = true;':'')?>
 
@@ -400,7 +400,7 @@ if(isset($res['tpl'])) // On a une page
 }
 else // Pas de contenu a chargé
 {
-	echo'<div class="p-36 text-center">'.$msg.'</div>';
+	echo'<div class="pa-36 text-center">'.$msg.'</div>';
 }
 
 

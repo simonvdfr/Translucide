@@ -2118,7 +2118,7 @@ $(function()
 
 			toolbox+= "<li id='lang-option' class='option'>";
 				toolbox+= "<input type='text' id='lang' placeholder=\""+ __("Language") +"\" title=\""+ __("Language") +"\" class='w150p small'>";
-				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='ficon feather-plus'></i></button>";
+				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='icon feather-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 

@@ -25,6 +25,18 @@
 }
 
 @font-face {
+  font-family: 'Luciole';
+    src: url('../fonts/Luciole-Regular.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Luciole-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/Luciole-Regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/Luciole-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/Luciole-Regular.svg#Luciole-Regular') format('svg'); /* Legacy iOS */
+	font-style: normal;
+	font-weight: normal;
+  text-rendering: optimizeLegibility;
+	font-display: optional
+}
+@font-face {
   font-family: 'FontAwesome';
   src:  url('../icons/icons.eot');
   src: url('../icons/icons.eot#iefix') format('embedded-opentype'),
@@ -388,7 +400,7 @@ header nav .burger-button {
 	background-color: rgba(240, 240, 240, 0.8);
 	box-sizing: padding-box;
 	text-shadow: none;
-	font-family: sans-serif;
+	font-family: 'Luciole', sans-serif;
 	position: fixed;
 	top: 0;
 	width: 100%;
@@ -455,7 +467,7 @@ header nav .burger-button {
 	color: var(--main-color);
 	border: none !important;
 	border-bottom: 1px dotted #9cabad !important;
-	font-family: Arial;
+	font-family: 'Luciole', sans-serif;
 	box-shadow: none;
 	border-radius: 0;
 	height: auto;
@@ -496,7 +508,7 @@ header nav .burger-button {
 	height: auto;
 	cursor: pointer;
 	color: var(--white-color);
-	font-family: Arial;
+	font-family: 'Luciole', sans-serif;
 	font-weight: bold;
 	text-decoration: none;
 	transition: background-color .3s;
@@ -763,7 +775,7 @@ nav > ul li:hover i.fa-cancel {
 
 #add-nav .dragger:before {
 	content: "\e80c";/*fa-plus*/
-	font-family: FontAwesome;
+	font-family: 'FontAwesome';
 }
 
 #add-nav .fa-cancel {
@@ -840,7 +852,7 @@ nav > ul li:hover i.fa-cancel {
 
 [contenteditable=true] p:after {
 	/* content: "Paragraphe"; */
-  font-family: FontAwesome;
+  font-family: 'FontAwesome';
   content: "\f1dd";
 	opacity: .6;
 	padding-left: 0.2rem;
@@ -916,7 +928,7 @@ img.drag-elem {
 	width: 100%;
 	z-index: 1;
 	color: var(--color-3);;
-	font-family: sans-serif;
+	font-family: 'Luciole', sans-serif;
 	text-align: center;
 	text-shadow: 1px 1px 0px var(--white-color);
 	display: none;
@@ -951,7 +963,7 @@ img.drag-elem {
 	border-radius: 5px;
 	/* border: 1px solid #909090; */
 	color: var(--white-color);/*#7AD2D9*/
-	font-family: sans-serif;
+	font-family: 'Luciole', sans-serif;
 	text-shadow: none;/*1px 1px 1px #2c5f66*/
 	text-decoration: none;
 	opacity: .6;
@@ -1041,7 +1053,7 @@ img.drag-elem {
 	position: absolute;
 	text-align: center;
 	font-size: initial;
-	font-family: Arial;
+	font-family: 'Luciole', sans-serif;
 	width: 100%;
 	display: block;
 	opacity: 0;
@@ -1443,7 +1455,7 @@ img.drag-elem {
 	background-color: var(--dark-color);
 	color: var(--white-color) !important;
 	font-size: 0.8em;
-	font-family: sans-serif;
+	font-family: 'Luciole', sans-serif;
   text-decoration: none;
   white-space: nowrap;
   line-height: 1.6rem;
@@ -1466,7 +1478,7 @@ img.drag-elem {
 	background: var(--white-color);
 	color: #000 !important;
 	font-size: 0.6em;
-	font-family: sans-serif;
+	font-family: 'Luciole', sans-serif;
   text-decoration: none;
   white-space: nowrap;
   line-height: 1.6rem;
