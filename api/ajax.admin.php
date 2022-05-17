@@ -1571,7 +1571,7 @@ switch($_GET['mode'])
 
 					// Affichage du fichier '.($i>=20?'none':'').'
 					echo'<li
-						class="pat mat tc"
+						class="p-8 m-8 text-center"
 						title="'.utf8_encode($val['filename']).' | '.date("d-m-Y H:i:s", $val['time']).' | '.$val['mime'].'"
 						id="dialog-media-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$i.'"
 						data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'"
