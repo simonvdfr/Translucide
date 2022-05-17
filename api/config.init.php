@@ -315,7 +315,7 @@ $GLOBALS['media_dir'] = 'media';
 
 
 // Favicon navigateur
-$GLOBALS['favicon'] = '';
+$GLOBALS['favicon'] = 'api/assets/img/favicon.png';
 
 // Librairie d'icons spécifiques à la template
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
