@@ -1860,10 +1860,5 @@ switch($_GET['mode'])
 
 
 // Fermeture de la connexion
-<<<<<<< HEAD
-if(isset($GLOBALS['connect'])) @$GLOBALS['connect']->close();
-?>
-=======
 if(isset($GLOBALS['connect']->thread_id)) @$GLOBALS['connect']->close();
 ?>
->>>>>>> e199f9888325c833c14267db266d7e9c1f57b794
