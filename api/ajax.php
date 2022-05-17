@@ -574,12 +574,12 @@ switch($_GET['mode'])
 				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="float-left"><i class="icon feather-trash vab"></i></a><?php }?>
 
 				<div class="col-span-full text-right ma-8">
-				<button id="save-user" class="text-smaller">
-					<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
-					<i class="icon feather-<?=($uid?"save":"plus")?>"></i>
-				</button>
+					<button id="save-user" class="text-smaller">
+						<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
+						<i class="icon feather-<?=($uid?"save":"plus")?>"></i>
+					</button>
+				</div>
 
-			</div>
 			</div>
 
 		</form>
