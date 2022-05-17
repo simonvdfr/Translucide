@@ -961,19 +961,16 @@ img.drag-elem {
 }
 
 .editable-bg > .bg-tool .open-dialog-media, .module-btn a {
-	box-shadow: none;/*inset 0px 1px 3px 0px #91b3b8*/
-	background-color: var(--main-color);/*rgba(117, 137, 140, .6)*/
+  box-shadow: none;
+  background-color: var(--color-1);
 	border-radius: 5px;
-	/* border: 1px solid #909090; */
-	color: var(--white-color);/*#7AD2D9*/
-	font-family: 'Luciole', sans-serif;
-	text-shadow: none;/*1px 1px 1px #2c5f66*/
+	color: var(--white-color);
 	text-decoration: none;
+  text-shadow: none;
 	opacity: .6;
-
 	width: initial; /* inherit */
-	padding: 0 6px;
-	margin: 10px 10px 10px 0px;
+	padding: 0.2rem 0.5rem 0;
+	margin: auto;
 	transition: opacity .3s, background .2s;
 }
 
@@ -1028,6 +1025,7 @@ img.drag-elem {
 	/*top: 0;*/
   right: 0;
   z-index: 10;
+  margin-right: 2rem;
 }
 
 .module-btn a {
