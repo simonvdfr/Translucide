@@ -125,7 +125,7 @@ switch($_GET['mode'])
 
 				</div>
 
-				<div id="close" class="float-right m-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon feather-x vatt"></i></div>
+				<div id="close" class="float-right m-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon feather-x align-top"></i></div>
 
 				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="icon feather-save"></i></button>
 
@@ -1164,7 +1164,7 @@ switch($_GET['mode'])
 			{
 				if(!$("#resize-width").val() && !$("#resize-height").val())
 				{
-					$("#resize-width, #resize-height").css("border-color","red");
+					$("#resize-width, #resize-height").css("border-color","color-red");
 				}
 				else
 				{
@@ -1545,24 +1545,24 @@ switch($_GET['mode'])
 						default:
 							switch($ext)
 							{
-								default: $fa = "doc"; break;
-								case"zip": $fa = "file-archive"; break;
-								case"msword": $fa = "file-word"; break;
-								case"vnd.ms-excel": $fa = "file-excel"; break;
-								case"vnd.ms-powerpoint": $fa = "file-powerpoint"; break;
-								case"pdf": $fa = "file-pdf"; break;
+								default: $icon = "doc"; break;
+								case"zip": $icon = "file-archive"; break;
+								case"msword": $icon = "file-word"; break;
+								case"vnd.ms-excel": $icon = "file-excel"; break;
+								case"vnd.ms-powerpoint": $icon = "file-powerpoint"; break;
+								case"pdf": $icon = "file-pdf"; break;
 							}
 						break;
 						case"text":
 							switch($ext)
 							{
-								default: $fa = "doc"; break;
-								case"plain": $fa = "doc-text"; break;
-								case"html": $fa = "file-code"; break;
+								default: $icon = "doc"; break;
+								case"plain": $icon = "doc-text"; break;
+								case"html": $icon = "file-code"; break;
 							}
 						break;
-						case"video": $fa = "video"; break;
-						case"audio": $fa = "volume-up"; break;
+						case"video": $icon = "video"; break;
+						case"audio": $icon = "volume-up"; break;
 					}
 
 					// Infos sur le fichier
@@ -1586,13 +1586,13 @@ switch($_GET['mode'])
 							// Poids
 							if(isset($GLOBALS['img_green']) and
 								$val['size'] <= $GLOBALS['img_green'])
-								$sizecolor = 'green';
+								$sizecolor = 'color-green';
 							else if(isset($GLOBALS['img_warning']) and
 								$val['size'] > $GLOBALS['img_green'] and $val['size'] < $GLOBALS['img_warning'])
-								$sizecolor = 'orange';
+								$sizecolor = 'color-orange';
 							else if(isset($GLOBALS['img_warning']) and
 								$val['size'] >= $GLOBALS['img_warning'])
-								$sizecolor = 'red';
+								$sizecolor = 'color-red';
 
 							// Affichage de l'image
 							$src = $GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.$val['filename'];
@@ -1602,7 +1602,7 @@ switch($_GET['mode'])
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="icon feather-minimize-2"></i></a>';
 						}
 						else {
-							echo'<div class="file"><i class="icon feather-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+							echo'<div class="file"><i class="icon feather-'.$icon.'"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
 							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
 
@@ -1794,7 +1794,7 @@ switch($_GET['mode'])
 
 					foreach($list as $cle => $val)
 					{
-						echo"<li class='p-8 float-left' title=\"".substr($cle, 3)."\"><i class='fa fa-fw biggest ".$cle."' id='".trim($val, '\\')."'></i></li>";
+						echo"<li class='p-8 float-left' title=\"".substr($cle, 3)."\"><i class='icon ".$cle."' id='".trim($val, '\\')."'></i></li>";
 					}
 				}
 			?>
