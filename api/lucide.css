@@ -46,7 +46,8 @@ body { transition: margin-top .2s linear; }
 
 	#admin-bar h3 { font-family: arial; }
 
-	#admin-bar #list-content i {
+	#admin-bar #list-content i,
+	#admin-bar #tutoriel i {
 		cursor: pointer;
 
 		color: #75898c;
@@ -58,7 +59,9 @@ body { transition: margin-top .2s linear; }
 		height: 22px;
 		line-height: 22px; */
 	}
-		#admin-bar #list-content i:hover { color: #6b6f7a; }
+		#admin-bar #list-content i:hover,
+		#admin-bar #tutoriel i:hover
+		{ color: #6b6f7a; }
 
 	#admin-bar #user i { color: #75898c; cursor: pointer; }
 		#admin-bar #user i:hover { color: #6b6f7a; }
