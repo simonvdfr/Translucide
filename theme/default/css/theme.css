@@ -281,14 +281,16 @@ section {
 .bg-white { background-color: var(--white-color);}
 .bg-light { background-color: var(--light-color);}
 .bg-blue { background-color: var(--color-1);}
-.bg-green { background-color: var(--color-3);}
-.bg-green:hover { background: var(--color-2);}
+.bg-glaz { background-color: var(--color-3);}
+.bg-glaz:hover { background: var(--color-2);}
 .bg-gray { background-color: var(--gray-color);}
 
 /* Color */
 .color-light { color: var(--light-color);}
 .color-1, .color-blue { color: var(--color-1);}
-.color-2, .color-green { color: var(--color-3);}
+.color-2, .color-glaz { color: var(--color-3);}
+.color-3, .color-blue-glaz { color: var(--color-2);}
+.color-4, .color-glaz-light{ color: var(--color-4);}
 
 /* Border */
 .border-rounded { border-radius: 0.5rem;}
