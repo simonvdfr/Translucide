@@ -1801,7 +1801,7 @@ $(function()
 
 	// Bloc d'option pour le menu de navigation  class='black'
 	addnav = "<div id='add-nav'>";
-		addnav+= "<div class='zone btn btn--big bg-blue color-white pt-36' title='"+ __("Edit menu") +"'><i class='icon feather-edit-2 align-middle'></i></div>";
+		addnav+= "<div class='zone btn btn--big bg-blue color-white pt-36' title='"+ __("Edit menu") +"'><i class='icon feather-edit-3 align-middle'></i></div>";
 		addnav+= "<div class='tooltip hidden p-8'>";
 			addnav+= "<i class='icon feather-x color-blue'></i>";
 			addnav+= "<ul class='block is-unstyled pl-24 m-0 text-left'>";
@@ -1813,7 +1813,7 @@ $(function()
 
 	// Positionne le menu
 	// Barre admin + position top du menu + marge du menu - hauteur du btn edit menu
-	var top_btn_menu = $("#admin-bar").outerHeight() + $("header nav > ul:not(.exclude)").offset().top + parseInt($("header nav > ul:not(.exclude)").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
+	var top_btn_menu = $("#admin-bar").outerHeight() + $("header nav > ul:not(.exclude)").offset().top + parseInt($("header nav > ul:not(.exclude)").css("marginTop").replace('px', ''));
 	$("#add-nav").css("top", top_btn_menu + "px");
 
 
@@ -1825,7 +1825,7 @@ $(function()
 			//event.stopPropagation();
 
 			// Si on est bien sur un élément ajoutable
-			if(event.target.className == "hidden")
+			if(event.target.className == "dragger")
 			{
 				if($(event.target).parent().hasClass("add-empty"))
 					$("header nav ul:not(.exclude):first").append($(event.target).parent().clone());// Copie
