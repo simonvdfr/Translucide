@@ -421,12 +421,14 @@ header nav .burger-button {
 	background-color: rgba(240, 240, 240, 0.95);
 }
 
-#admin-bar #list-content i {
+#admin-bar #list-content i,
+#admin-bar #tutoriel i {
 	cursor: pointer;
 	color: color: var(--main-color);
 }
 
-#admin-bar #list-content i:hover {
+#admin-bar #list-content i:hover,
+#admin-bar #tutoriel i:hover {
 	color: var(--dark-color);
 }
 
