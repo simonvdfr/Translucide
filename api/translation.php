@@ -47,6 +47,7 @@ $add_translation = array(
 
 
 	"List of contents" => array("fr" => "Liste des contenus"),
+	"Editing tutorial" => array("fr" => "Tutoriel édition"),
 
 
 	"Add content" => array("fr" => "Ajouter un contenu"),
@@ -84,6 +85,7 @@ $add_translation = array(
 
 	"Home page" => array("fr" => "Page d'accueil"),
 
+	"New window" => array("fr" => "Nouvelle fenêtre"),
 
 	"january" => array("fr" => "janvier"),
 	"february" => array("fr" => "février"),

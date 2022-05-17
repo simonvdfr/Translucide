@@ -46,6 +46,8 @@ switch($_GET['mode'])
 				<!-- list/bars -->
 				<div id="list-content" class="float-left p-8"><i class="icon feather-menu align-middle" title="<?php _e("List of contents")?>"></i></div>
 
+				<a href="/tutoriel.html" id="tutoriel" class="fl pat" target="_blank" title="<?php echo __("Editing tutorial").' - '.__("New window");?>"><i class="fa fa-info-circled vam"></i></a>
+
 				<div id="meta-responsive" class="float-left m-8 hidden"><i class="icon feather-edit-3" title="<?php _e("Page title")?>"></i></div>
 
 				<div id="meta" class="float-left m-8 mobile-hidden">
@@ -1856,5 +1858,5 @@ switch($_GET['mode'])
 
 
 // Fermeture de la connexion
-if(isset($GLOBALS['connect'])) @$GLOBALS['connect']->close();
+if(isset($GLOBALS['connect']->thread_id)) @$GLOBALS['connect']->close();
 ?>
