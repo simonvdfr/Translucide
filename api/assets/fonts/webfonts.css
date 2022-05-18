@@ -1,0 +1,27 @@
+/* Webfont: Luciole */
+
+@font-face {
+    font-family: 'Luciole';
+    src: url('luciole-regular.eot');
+    src: url('luciole-regular.eot?#iefix') format('embedded-opentype'),
+         url('luciole-regular.woff') format('woff'),
+         url('luciole-regular.woff2') format('woff2'),
+         url('luciole-regular.ttf') format('truetype'),
+         url('luciole-regular.svg#luciole-regular') format('svg');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@font-face {
+    font-family: 'Luciole';
+    src: url('luciole-bold.eot');
+    src: url('luciole-bold.eot?#iefix') format('embedded-opentype'),
+         url('luciole-bold.woff') format('woff'),
+         url('luciole-bold.woff2') format('woff2'),
+         url('luciole-bold.ttf') format('truetype'),
+         url('luciole-bold.svg#luciole-bold') format('svg');
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}

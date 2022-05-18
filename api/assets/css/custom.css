@@ -10,6 +10,7 @@
 /* ----------------------------- */
 
 @import url('../icons/style.css');
+@import url('../fonts/webfonts.css');
 
 :root {
   --main-color: #50596c; /*body color*/
@@ -24,19 +25,6 @@
 	--red-color: #b3344c;
 	--green-color: #84b334;
   --orange-color: #de7b2c;
-}
-
-@font-face {
-  font-family: 'Luciole';
-    src: url('../fonts/Luciole-Regular.eot'); /* IE9 Compat Modes */
-    src: url('../fonts/Luciole-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('../fonts/Luciole-Regular.woff') format('woff'), /* Modern Browsers */
-         url('../fonts/Luciole-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('../fonts/Luciole-Regular.svg#Luciole-Regular') format('svg'); /* Legacy iOS */
-	font-style: normal;
-	font-weight: normal;
-  text-rendering: optimizeLegibility;
-	font-display: optional
 }
 
 /* ----------------------------- */
@@ -496,7 +484,6 @@ header nav .burger-button {
 	cursor: pointer;
 	color: var(--white-color);
 	font-family: 'Luciole', sans-serif;
-	font-weight: bold;
 	text-decoration: none;
 	transition: background-color .3s;
 }
@@ -839,8 +826,8 @@ nav > ul li:hover i.moon-x {
 
 [contenteditable=true] p:after {
 	/* content: "Paragraphe"; */
-  font-family: 'FontAwesome';
-  content: "\f1dd";
+  font-family: 'moon';
+  content: "\e901";
 	opacity: .6;
 	padding-left: 0.2rem;
 }
