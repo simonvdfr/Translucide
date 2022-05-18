@@ -434,7 +434,7 @@ $(function()
 	if(typeof btn_top !== 'undefined')
 	{
 		// Bouton pour remonter en haut au scroll
-		$("body").append("<button class='btn fixed top' title='"+ __("Back to Top") +"' aria-label='"+ __("Back to Top") +"'><i class='icon moon-arrow-up-circle' aria-hidden='true'></i></button>");
+		$("body").append("<button class='btn fixed top' title='"+ __("Back to Top") +"' aria-label='"+ __("Back to Top") +"'><i class='icon moon-arrow-up' aria-hidden='true'></i></button>");
 
 		// Smoothscroll to top
 		$(".btn.fixed.top").click(function() {
