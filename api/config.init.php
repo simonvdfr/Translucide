@@ -184,7 +184,7 @@ $GLOBALS['toolbox'] = array(
 	"videoLink",// Lien vers youtube
 	"lang",
 	"anchor",
-	"bt",
+	"btn",
 	"link"
 );
 
