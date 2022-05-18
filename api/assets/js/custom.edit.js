@@ -346,7 +346,7 @@ exec_tool = function(command, value) {
 		// Si icône
 		if(command == "insertIcon") {
 			command = "insertHTML";
-			value = "<i class='fa' aria-hidden='true'>&#x"+ value +";</i>";
+			value = "<i class='icon' aria-hidden='true'>&#x"+ value +";</i>";
 		}
 
 		// Si alignement // Ancienne méthode d'alignement 22-04-2022

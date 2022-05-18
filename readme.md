@@ -32,8 +32,6 @@ After that, you can edit the generated `config.php` file. It contains the inform
 - uncomment the values of `$GLOBALS['add_content']` that you will need (product, article, event, video, media, page). They correspond to the types of content you will publish. You can add other custom ones. Be careful, you must also activate them by selecting them in the concerned administration profile(s) in edit mode (will be visible after reconnection).
 - uncomment the values of `$GLOBALS['toolbox']` that you will need (titles, formatting...). They will appear in a toolbar when editing a content.
 
-Translated with www.DeepL.com/Translator (free version)
-
 ### PHP configuration requirements
 In PHP configuration short_open_tag must be set to On `short_open_tag = On`. The following PHP extensions must be installed: php-mbstring, php-mysql, php-curl and php-gd.
 

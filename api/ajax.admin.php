@@ -1764,11 +1764,12 @@ switch($_GET['mode'])
 			//$pattern = '/\\.(moon-\\w+):before{content:"(\\\\\w+)"}/';
 			//$pattern = '/\\.(moon-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';
 			//$pattern = '/\\.(moon-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';
-			$pattern = "/\\.(moon-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";
+			//$pattern = "/\\.(moon-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";
+			$pattern = '/\\.(moon-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';
 
 			// Url du fichier qui contient les icônes
 			if($GLOBALS['icons']) $file = $GLOBALS['icons'];
-			else $file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/assets/css/style.min.css";
+			else $file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/assets/icons/style.min.css";
 
 
 			// On récupère le contenu du fichier css qui contient les icones
@@ -1796,7 +1797,7 @@ switch($_GET['mode'])
 
 					foreach($list as $cle => $val)
 					{
-						echo"<li class='p-8 float-left' title=\"".substr($cle, 3)."\"><i class='icon ".$cle."' id='".trim($val, '\\')."'></i></li>";
+						echo"<li class='p-8 float-left' title=\"".substr($cle, 5)."\"><i class='icon ".$cle."' id='".trim($val, '\\')."'></i></li>";
 					}
 				}
 			?>
