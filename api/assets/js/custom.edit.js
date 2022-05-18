@@ -393,8 +393,8 @@ exec_tool = function(command, value) {
 			else $(memo_node).removeAttr("target");
 
 			// Si class btn
-			if($("#class-btn").hasClass("checked")) memo_selection.anchorNode.parentElement.classList.add("btn");
-			else $(memo_node).removeClass("btn");
+			if($("#class-btn").hasClass("checked")) memo_selection.anchorNode.parentElement.classList.add("btn", "border-rounded", "hero-btn", "bg-glaz");
+			else $(memo_node).removeClass(["btn border-rounded hero-btn bg-glaz"]);
 
 			$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 		}
@@ -590,7 +590,7 @@ link_option = function()
 		if(memo_node.target == "_blank") $("#target-blank").addClass("checked");
 
 		// Si class btn
-		if($(memo_node).hasClass("btn")) $("#class-btn").addClass("checked");
+		if($(memo_node).hasClass(["btn border-rounded hero-btn bg-glaz"])) $("#class-btn").addClass("checked");
 
 		// Bouton pour supp le lien //exec_tool('unlink');
 		$("#txt-tool #link-option").prepend("<a href=\"javascript:unlink();void(0);\" id='unlink'><i class='icon moon-x px-8' title='"+ __("Remove the link from the selection") +"'></i></a>");
@@ -641,8 +641,8 @@ link = function()
 		else $(memo_node).closest("a").removeAttr("target");
 
 		// Si class btn
-		if($("#class-btn").hasClass("checked")) $(memo_node).closest("a").addClass("btn");
-		else $(memo_node).closest("a").removeClass("btn");
+		if($("#class-btn").hasClass("checked")) $(memo_node).closest("a").addClass(["btn border-rounded hero-btn bg-glaz"]);
+		else $(memo_node).closest("a").removeClass(["btn border-rounded hero-btn bg-glaz"]);
 
 		$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 
