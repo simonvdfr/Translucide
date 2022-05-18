@@ -676,9 +676,9 @@ class_tool = function(theClass){
 	else
 	{
 		// Si alignement => Supprime les alignement avant l'ajout du nouveau
-		if(["text-left", "text-center", "text-right"].indexOf(theClass) > -1)
+		if(["text-left", "text-center", "text-right", "text-justify"].indexOf(theClass) > -1)
 		{
-			$(memo_node).closest("p, div, h2, h3, h4").removeClass("text-left text-center text-right");
+			$(memo_node).closest("p, div, h2, h3, h4").removeClass("text-left text-center text-right text-justify");
 			$(memo_node).closest("p, div, h2, h3, h4").removeAttr("align").css("text-align","");// Ancien alignement
 
 			// Désélectionne les alignements
@@ -2073,16 +2073,16 @@ $(function()
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='icon moon-list'></i></button></li>";
 
 		if(typeof toolbox_justifyLeft != 'undefined')// justifyLeft
-			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl'><i class='icon moon-align-left'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('text-left')\" id='tool-text-left'><i class='icon moon-align-left'></i></button></li>";
 
 		if(typeof toolbox_justifyCenter != 'undefined')// justifyCenter
-			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc'><i class='icon moon-align-center'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('text-center')\" id='tool-text-center'><i class='icon moon-align-center'></i></button></li>";
 
 		if(typeof toolbox_justifyRight != 'undefined')// justifyRight
-			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr'><i class='icon moon-align-right'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('text-right')\" id='tool-text-right'><i class='icon moon-align-right'></i></button></li>";
 
 		if(typeof toolbox_justifyFull != 'undefined')
-			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='icon moon-align-justify'></i></button></li>";
+		toolbox+= "<li><button onclick=\"class_tool('text-justify')\" id='tool-text-justify'><i class='icon moon-align-justify'></i></button></li>";
 
 		if(typeof toolbox_InsertHorizontalRule != 'undefined')
 			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='icon moon-more-horizontal'></i></button></li>";
@@ -2483,14 +2483,16 @@ $(function()
 					var align = $(memo_node).closest("div [align]").attr("align");
 
 				// On cherche les aligements par class
-				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tl")) var align = "tl";
-				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tc")) var align = "tc";
-				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("tr")) var align = "tr";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("text-left")) var align = "text-left";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("text-center")) var align = "text-center";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("text-right")) var align = "text-right";
+				if($(memo_node).closest("p, div, h2, h3, h4").hasClass("text-justify")) var align = "text-justify";
 
 				switch (align) {
-					case 'left': align = 'tl'; break;
-					case 'center': align = 'tc'; break;
-					case 'right': align = 'tr'; break;
+					case 'left': align = 'text-left'; break;
+					case 'center': align = 'text-center'; break;
+					case 'right': align = 'text-right'; break;
+					case 'justify': align = 'text-justify'; break;
 				}
 
 				// On check le bon alignement
