@@ -266,8 +266,8 @@ $GLOBALS['add_menu'] = array(
 
 
 // Bouton en bas en layer
-$GLOBALS['bt_edit'] = true;
-$GLOBALS['bt_top'] = false;
+$GLOBALS['btn_edit'] = true;
+$GLOBALS['btn_top'] = false;
 
 
 // Raccourci clavier pour une administration rapide
