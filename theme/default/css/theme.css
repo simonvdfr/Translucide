@@ -192,7 +192,6 @@ section {
   display: flex;
   align-items: center;
   padding: 0 2.4rem;
-  font-weight: 600;
 }
 
 .holder-contact:hover {
@@ -220,13 +219,13 @@ section {
 /* Content left */
 
 .hero-title {
-  font-size: 3.5rem;
-  line-height: 1;
-  font-weight: 300;
+  font-size: 2.9rem;
+  line-height: 1.1;
+  font-weight: normal;
 }
 
-.hero-title span {
-  font-weight: 600;
+.hero-title b {
+  font-weight: bold;
 }
 
 @media screen and (max-width: 991.98px) {
@@ -237,7 +236,7 @@ section {
 }
 
 .hero-desc {
-  font-size: 1.6rem;
+  font-size: 1.44rem;
 }
 
 @media screen and (max-width: 991.98px) {
@@ -246,7 +245,7 @@ section {
   }
 }
 
-.hero-desc span {
+.hero-desc u {
   text-decoration: 2px wavy underline var(--color-3);
 }
 
@@ -330,12 +329,12 @@ section {
 }
 
 .features-subtitle {
-  font-weight: 600;
+  font-weight: normal;
   font-size: 1rem;
 }
 
 .features-title {
-  font-weight: 400;
+  font-weight: normal;
   font-size: 2.6rem;
   line-height: 1;
 }
@@ -381,7 +380,7 @@ section {
 
 .features-panel-title  {
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: normal;
   line-height: 1;
   border-bottom: 2px solid #eaeaea;
   width: 100%;

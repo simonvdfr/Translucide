@@ -26,7 +26,7 @@
 					<span class="close none"><?php _e("Close")?></span>
 				</button>
 
-				<ul id="main-navigation" class="nav-menu flex text-bold">
+				<ul id="main-navigation" class="nav-menu flex text-uppercase">
 					<?php
 					// Extraction du menu
 					foreach($GLOBALS['nav'] as $cle => $val)
@@ -43,7 +43,7 @@
 				</ul>
 
 				<div class="holder-panel">
-					<div class="holder-contact bg-glaz"><a class="btn"<?php href('holder-link')?>>Our Github</a><i class="icon feather-github color-white"></i></div>
+					<div class="holder-contact bg-glaz"><a class="btn"<?php href('holder-link')?>>Our Github</a><i class="icon moon-github color-white"></i></div>
 				</div>
 
 			</nav>

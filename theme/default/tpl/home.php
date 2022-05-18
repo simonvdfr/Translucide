@@ -8,7 +8,7 @@
 					<?php h1('hero-title', 'hero-title color-light')?>
 					<?php txt('hero-desc','hero-desc color-light py-20 mb-16')?>
 					<div class="hero-action grid lg:grid-cols-2">
-						<a class="btn hero-btn bg-glaz border-rounded no-decoration" <?php href("hero-link")?>>Download <i class="icon feather-upload ml-8"></i></a>
+						<a class="btn hero-btn bg-glaz border-rounded no-decoration" <?php href("hero-link")?>>Download <i class="icon moon-upload ml-8"></i></a>
 					</div>
 				</div>
 			</div>
@@ -17,7 +17,7 @@
 					<?php media('panel-icon','80x80')?>
 					<?php h3('panel-title', 'hero-panel-title color-blue my-8')?>
 					<?php txt('panel-desc','hero-panel-desc mb-8')?>
-					<a <?php href("panel-link")?>><i class="icon feather-link ml-8"></i></a>
+					<a <?php href("panel-link")?>><i class="icon moon-link ml-8"></i></a>
 				</div>
 			</div>
 		</div>
