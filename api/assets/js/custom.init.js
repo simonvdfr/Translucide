@@ -424,7 +424,7 @@ $(function()
 
 	// PAGE DÉSACTIVÉ => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page") > 0) {
-		$("body").append("<button class='btn fixed construction text-bold' title=\""+ __("Visitors do not see this content") +"\" aria-label=\""+ __("Visitors do not see this content") +"\"><i class='icon moon-alert-triangle' aria-hidden='true'></i> "+ __("Activation status") +" : "+ __(state) +"</button>");
+		$("body").append("<button class='btn fixed construction' title=\""+ __("Visitors do not see this content") +"\" aria-label=\""+ __("Visitors do not see this content") +"\"><i class='icon moon-alert-triangle' aria-hidden='true'></i> "+ __("Activation status") +" : "+ __(state) +"</button>");
 		$(".btn.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 

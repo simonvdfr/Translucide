@@ -1479,7 +1479,7 @@ img_check = function(file)
 		else if(num == imgs_num) var numcolor = 'color-orange';
 		else if(num > imgs_num) var numcolor = 'color-red';
 
-		$(".dialog-optim-img ul").after("<div class='pt-8 text-smaller text-bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
+		$(".dialog-optim-img ul").after("<div class='pt-8 text-smaller'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
 
 		// Si pas d'image on n'affiche pas la dialog
 		if(num == 0) $(".dialog-optim-img").dialog('close');

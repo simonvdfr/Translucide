@@ -17,6 +17,7 @@
   --color-1: #38547a; /*first color of SeaCms logo*/
   --color-2: #3e7f8a; /*second color of SeaCms logo*/
   --color-3: #44ac9b; /*third color of SeaCms logo*/
+  --color-4: #49d7ac; /*fourth color of SeaCms logo*/
 	--color-6: #e4f9f2; /*variation color of SeaCms logo*/
   --white-color: #ffffff;
   --light-color: #f5f5f5;
@@ -96,8 +97,15 @@ a:focus, a:hover, a:active { color: var(--color-3);}
 }
 .no-decoration, .no-decoration:hover { text-decoration: none;}
 
+.highlight {
+    background-color: var(--color-2);
+    color: var(--white-color);
+    font-weight: bold;
+    padding: 1rem;
+}
+
 /* ----------------------------- */
-/* 1. Button                     */
+/* 2. Button                     */
 /* ----------------------------- */
 .btn, .button {
   display: inline-flex;
