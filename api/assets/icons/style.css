@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'moon';
-  src:  url('moon.eot?ksyjp7');
-  src:  url('moon.eot?ksyjp7#iefix') format('embedded-opentype'),
-    url('moon.ttf?ksyjp7') format('truetype'),
-    url('moon.woff?ksyjp7') format('woff'),
-    url('moon.svg?ksyjp7#moon') format('svg');
+  src:  url('moon.eot?472xxc');
+  src:  url('moon.eot?472xxc#iefix') format('embedded-opentype'),
+    url('moon.ttf?472xxc') format('truetype'),
+    url('moon.woff?472xxc') format('woff'),
+    url('moon.svg?472xxc#moon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.moon-code:before {
+  content: "\f121";
+}
+.moon-superscript:before {
+  content: "\f12b";
+}
+.moon-subscript:before {
+  content: "\f12c";
+}
 .moon-alert-circle:before {
   content: "\e902";
 }
