@@ -199,7 +199,7 @@ switch(@$_GET['mode'])
 					<div class="layout-maxed">
 
 						<div class="text-center pb-36">
-							<img id="logo" class="img" alt="logo SeaCms" src="api/assets/img/logo.svg">
+							<img id="logo" class="img install-img" alt="logo SeaCms" src="api/assets/img/logo.svg">
 						</div>
 
 					</div>
@@ -232,7 +232,7 @@ switch(@$_GET['mode'])
 						</div>
 						<div>
 							<input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="bg-light px-8">
-							<a href="javascript:void(0);" onclick="if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password');" tabindex="-1"><i class="icon feather-eye align-middle"></i></a>
+							<a href="javascript:void(0);" onclick="if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password');" tabindex="-1"><i class="icon moon-eye align-middle"></i></a>
 						</div>
 
 						<div class="text-right p-x8">
@@ -283,26 +283,26 @@ switch(@$_GET['mode'])
 					<div class="grid grid-cols-2 gap-10 my-36">
 
 						<div class="text-right px-8">
-							<label><i class="icon feather-mail"></i> <?php _e("Administrator email");?></label>
+							<label><i class="icon moon-mail"></i> <?php _e("Administrator email");?></label>
 						</div>
 						<div>
 							<input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="bg-light px-8">
 						</div>
 
 						<div class="text-right px-8">
-							<label><i class="icon feather-lock"></i> <?php _e("Administrator password");?></label>
+							<label><i class="icon moon-lock"></i> <?php _e("Administrator password");?></label>
 						</div>
 						<div>
 							<input type="password" id="password" required class="bg-light px-8">
-							<a href="javascript:$('#setup #password').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="icon feather-refresh-cw align-middle"></i></a>
-							<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="icon feather-eye align-middle"></i></a>
+							<a href="javascript:$('#setup #password').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="icon moon-refresh-cw align-middle"></i></a>
+							<a href="javascript:void(0);" onclick="if($('#password').attr('type') == 'password') $('#password').attr('type','text'); else $('#password').attr('type','password');" tabindex="-1"><i class="icon moon-eye align-middle"></i></a>
 						</div>
 
 					</div>
 
 					<div class="float-right">
 
-						<button class="button bg-glaz color-light border-gray text-bold"><?php _e("Start installation");?> <i class="icon feather-settings ml-8"></i></button>
+						<button class="button bg-glaz color-light border-gray text-bold"><?php _e("Start installation");?> <i class="icon moon-settings ml-8"></i></button>
 
 					</div>
 

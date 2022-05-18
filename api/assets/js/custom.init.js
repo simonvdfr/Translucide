@@ -97,7 +97,7 @@ popin = function(txt, fadeout, mode, focus){
 
 	// Ajout de la croix pour fermer
 	if(mode == 'popin' || mode == 'error')
-		$("#"+mode).append("<button id='close-popin' class='absolute is-unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"' aria-label='"+ __("Close") +"'><i class='icon feather-x color-blue o80' aria-hidden='true'></i></button>");
+		$("#"+mode).append("<button id='close-popin' class='absolute is-unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"' aria-label='"+ __("Close") +"'><i class='icon moon-x color-blue o80' aria-hidden='true'></i></button>");
 
 
 	// Fond gris
@@ -239,7 +239,7 @@ $.fn.make_password = function() {
 	var $this = this;
 
 	// Animation de chargement
-	$(".feather-refresh-cw").addClass("icon-spin");
+	$(".moon-refresh-cw").addClass("icon-spin");
 
 	// Récupère un password
 	$.ajax({
@@ -247,7 +247,7 @@ $.fn.make_password = function() {
 		url: path+"api/ajax.php?mode=make-password",
 		data: {"nonce": $("#nonce").val()},
 		success: function(password){
-			$(".feather-refresh-cw").removeClass("icon-spin");
+			$(".moon-refresh-cw").removeClass("icon-spin");
 			$this.attr("type","text").val(password);
 		}
 	});
@@ -340,8 +340,8 @@ $(function()
 	// BOUTON EDITION | AJOUT
 
 	// BOUTON D'ÉDITION ou de connexion si la page existe dans la base
-	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "edit-3"; else var icon_edit = "key";// logé ou pas ?
-	if(typeof state !== 'undefined' && state) $("body").append("<button class='btn fixed edit' title='"+ __("Edit the content of the page") +"' aria-label='"+ __("Edit the content of the page") +"'><i class='icon feather-"+ icon_edit +" ' aria-hidden='true'></i></button>");
+	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "edit"; else var icon_edit = "key";// logé ou pas ?
+	if(typeof state !== 'undefined' && state) $("body").append("<button class='btn fixed edit' title='"+ __("Edit the content of the page") +"' aria-label='"+ __("Edit the content of the page") +"'><i class='icon moon-"+ icon_edit +" ' aria-hidden='true'></i></button>");
 
 	// Bind le bouton d'édition
 	$(".btn.edit").click(function()
@@ -358,7 +358,7 @@ $(function()
 
 
 	// BOUTON AJOUT de page/article
-	$("body").append("<button class='btn fixed add' title='"+ __("Add content") +"' aria-label='"+ __("Add content") +"'><i class='icon feather-plus' aria-hidden='true'></i></button>");
+	$("body").append("<button class='btn fixed add' title='"+ __("Add content") +"' aria-label='"+ __("Add content") +"'><i class='icon moon-plus' aria-hidden='true'></i></button>");
 
 	// Bind le bouton d'ajout
 	$(".btn.add").click(function(){
@@ -424,7 +424,7 @@ $(function()
 
 	// PAGE DÉSACTIVÉ => message admin
 	if(typeof state !== 'undefined' && state && state != "active" && get_cookie("auth").indexOf("edit-page") > 0) {
-		$("body").append("<button class='btn fixed construction text-bold' title=\""+ __("Visitors do not see this content") +"\" aria-label=\""+ __("Visitors do not see this content") +"\"><i class='icon feather-alert-triangle' aria-hidden='true'></i> "+ __("Activation status") +" : "+ __(state) +"</button>");
+		$("body").append("<button class='btn fixed construction text-bold' title=\""+ __("Visitors do not see this content") +"\" aria-label=\""+ __("Visitors do not see this content") +"\"><i class='icon moon-alert-triangle' aria-hidden='true'></i> "+ __("Activation status") +" : "+ __(state) +"</button>");
 		$(".btn.fixed.construction").click(function(){ $(this).slideUp(); });
 	}
 
@@ -434,7 +434,7 @@ $(function()
 	if(typeof btn_top !== 'undefined')
 	{
 		// Bouton pour remonter en haut au scroll
-		$("body").append("<button class='btn fixed top' title='"+ __("Back to Top") +"' aria-label='"+ __("Back to Top") +"'><i class='icon feather-arrow-up-circle' aria-hidden='true'></i></button>");
+		$("body").append("<button class='btn fixed top' title='"+ __("Back to Top") +"' aria-label='"+ __("Back to Top") +"'><i class='icon moon-arrow-up-circle' aria-hidden='true'></i></button>");
 
 		// Smoothscroll to top
 		$(".btn.fixed.top").click(function() {

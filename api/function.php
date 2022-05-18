@@ -514,7 +514,7 @@ function media($key = null, $filter = array())
 		elseif(isset($video))// C'est une video
 			echo'<video'.(isset($size[0])?' width="'.$size[0].'"':'').' src="'.$filename.'" title="'.$GLOBALS['content'][$key].'" preload="none" controls></video>';
 		elseif($filename)// C'est un fichier
-			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="icon feather-'.$icon.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
+			echo'<a href="'.$GLOBALS['content'][$key].'" target="_blank"><i class="icon moon-'.$icon.' mega" title="'.$GLOBALS['content'][$key].'"></i></a>';
 
 
 	echo'</span>';
@@ -609,8 +609,8 @@ function checkbox($key = null, $filter = array())
 {
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
-	// fa-check/fa-close => fa-ok/fa-cancel
-	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." icon feather ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "feather-check yes" : "feather-x no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
+	// moon-check/moon-close => moon-ok/moon-cancel
+	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." icon moon ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "moon-check yes" : "moon-x no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
 
 	$GLOBALS['editkey']++;
 }

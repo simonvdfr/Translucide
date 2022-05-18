@@ -56,11 +56,11 @@ switch($_GET['mode'])
 				<div class="mb-24"><input type="email" id="email" autocomplete="email" required><span class="wrapper text-bold" aria-hidden="true">@</span></div>
 
 				<label for="password"><?php _e("My password");?></label>
-				<div class="mb-24"><input type="password" id="password" autocomplete="current-password" required><i class="icon feather-lock wrapper" aria-hidden="true"></i></div>
+				<div class="mb-24"><input type="password" id="password" autocomplete="current-password" required><i class="icon moon-lock wrapper" aria-hidden="true"></i></div>
 
 				<button class="bg-light float-right mr-0 mt-24 p-8">
 					<?php _e("Log in")?>
-					<i class="icon feather-log-in" aria-hidden="true"></i>
+					<i class="icon moon-log-in" aria-hidden="true"></i>
 				</button>
 
 			</form>
@@ -92,7 +92,7 @@ switch($_GET['mode'])
 				event.preventDefault();
 
 				// Icône de chargement
-				$("#dialog-connect .btn .icon").removeClass("feather-key").addClass("icon-spin feather-settings");
+				$("#dialog-connect .btn .icon").removeClass("moon-key").addClass("icon-spin moon-settings");
 
 				// Désactive le submit
 				$("#internal-login input[type='submit']").attr("disabled", true);
@@ -152,7 +152,7 @@ switch($_GET['mode'])
 
 			<div id="admin-bar" class="mt-24">
 				<div id="user">
-					<center><i class="icon icon-spin feather-settings mt-36"></i></center>
+					<center><i class="icon icon-spin moon-settings mt-36"></i></center>
 				</div>
 			</div>
 
@@ -195,12 +195,12 @@ switch($_GET['mode'])
 		<div class="absolute">
 			<div class="tooltip slide-left p-16 m-16 ml-8">
 
-				<div id="logout" class="float-right" title="<?php _e("Log out")?>"><i class="icon feather-log-out"></i></div>
+				<div id="logout" class="float-right" title="<?php _e("Log out")?>"><i class="icon moon-log-out"></i></div>
 
 				<?php if(@$_SESSION['auth']['edit-user']) {?>
-				<div id="add-user" class="float-right pr-16" title="<?php _e("Add user")?>"><i class="icon feather-user-plus"></i></div>
-				<div id="list-user" class="float-right pr-16" title="<?php _e("List of user")?>"><i class="icon feather-users"></i></div>
-				<div id="profil" class="float-right pr-16" title="<?php _e("My profil")?>"><i class="icon feather-user align-middle"></i></div>
+				<div id="add-user" class="float-right pr-16" title="<?php _e("Add user")?>"><i class="icon moon-user-plus"></i></div>
+				<div id="list-user" class="float-right pr-16" title="<?php _e("List of user")?>"><i class="icon moon-users"></i></div>
+				<div id="profil" class="float-right pr-16" title="<?php _e("My profil")?>"><i class="icon moon-user"></i></div>
 				<?php }?>
 
 				<div class="load">
@@ -325,7 +325,7 @@ switch($_GET['mode'])
 
 			echo"
 			<li class='pl-8 pr-8' onclick=\"select_user('".$res['id']."');\">
-				<label><i class='icon feather-".$state."' title=\"".__($res['state'])."\"></i></label>
+				<label><i class='icon moon-".$state."' title=\"".__($res['state'])."\"></i></label>
 				<label class='text-bold p-8'>".$res['name']."</label>
 				<label class='text-smaller'>".$res['email']."</label>
 			</li>";
@@ -374,7 +374,7 @@ switch($_GET['mode'])
 				timer = null;
 
 				// loading
-				$("#user .search").after("<i class='icon icon-spin feather-settings' style='position: relative; left: -15px; color: rgba(117, 137, 140, 0.5);'></i>");
+				$("#user .search").after("<i class='icon icon-spin moon-settings' style='position: relative; left: -15px; color: rgba(117, 137, 140, 0.5);'></i>");
 
 				$.ajax({
 						type: "POST",
@@ -541,9 +541,9 @@ switch($_GET['mode'])
 
 				<div class="col-span-2 text-left">
 					<input type="password" id="password_new" class="float left" autocomplete="new-password">
-					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?php _e("See password");?>" class="no-decoration"><i class="icon feather-eye align-middle"></i></a>
-					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="icon feather-refresh-cw align-middle"></i></a>
-					<a href="javascript:send_password();" title="<?php _e("Send password by mail");?>" class="no-decoration" id="send-password"><i class="icon feather-mail align-middle"></i></a>
+					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?php _e("See password");?>" class="no-decoration"><i class="icon moon-eye align-middle"></i></a>
+					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="icon moon-refresh-cw align-middle"></i></a>
+					<a href="javascript:send_password();" title="<?php _e("Send password by mail");?>" class="no-decoration" id="send-password"><i class="icon moon-mail align-middle"></i></a>
 				</div>
 
 			</div>
@@ -571,12 +571,12 @@ switch($_GET['mode'])
 				<?php if(isset($res['date_insert'])){?><div class="mb-8 text-smaller"><label class="text-left"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>
 				<?php if(isset($res['date_update'])){?><div class="mb-8 text-smaller"><label class="text-left"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
 
-				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="float-left"><i class="icon feather-trash vab"></i></a><?php }?>
+				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="float-left"><i class="icon moon-trash vab"></i></a><?php }?>
 
 				<div class="col-span-full text-right ma-8">
 					<button id="save-user" class="text-smaller">
 						<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
-						<i class="icon feather-<?=($uid?"save":"plus")?>"></i>
+						<i class="icon moon-<?=($uid?"save":"plus")?>"></i>
 					</button>
 				</div>
 
@@ -586,14 +586,14 @@ switch($_GET['mode'])
 
 		<script>
 			user_tosave = function() {
-				$("#save-user i").removeClass("icon-spin feather-settings").addClass("feather-save"); // Affiche l'icône disant qu'il faut sauvegarder sur le btn save
+				$("#save-user i").removeClass("icon-spin moon-settings").addClass("moon-save"); // Affiche l'icône disant qu'il faut sauvegarder sur le btn save
 				$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 			}
 
 			send_password = function(){
 				if(confirm("Envoyer un nouveau mot de passe à "+ $("#user-profil #email").val() +" ?"))
 				{
-					$("#send-password .icon").removeClass("feather-mail").addClass("icon-spin feather-settings");
+					$("#send-password .icon").removeClass("moon-mail").addClass("icon-spin moon-settings");
 
 					// Envoi du mail
 					$.ajax({
@@ -606,7 +606,7 @@ switch($_GET['mode'])
 						}
 					})
 					.done(function(html) {
-						$("#send-password .icon").removeClass("icon-spin feather-settings").addClass("feather-mail");
+						$("#send-password .icon").removeClass("icon-spin moon-settings").addClass("moon-mail");
 
 						// On exécute le retour
 						$("body").append(html);
@@ -627,7 +627,7 @@ switch($_GET['mode'])
 
 						var selector = this.element.attr('id');
 
-						$("#user #"+selector).after("<i class='icon icon-spin feather-settings' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
+						$("#user #"+selector).after("<i class='icon icon-spin moon-settings' style='position: absolute; right: 30px; color: rgba(117, 137, 140, 0.5);'></i>");// Loading
 
 						// Chargement des résultats
 						$.ajax({
@@ -678,7 +678,7 @@ switch($_GET['mode'])
 					event.preventDefault();
 
 					// Animation sauvegarde en cours (loading)
-					$("#save-user i").removeClass("feather-save").removeClass("feather-plus").addClass("icon-spin feather-settings");
+					$("#save-user i").removeClass("moon-save").removeClass("moon-plus").addClass("icon-spin moon-settings");
 
 					data = {};
 
@@ -890,7 +890,7 @@ switch($_GET['mode'])
 					if(!$connect->error){
 						if(@$_REQUEST['uid']){?>// Update réussit
 
-							$("#save-user i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du btn
+							$("#save-user i").removeClass("moon-settings icon-spin").addClass("moon-check");// Si la sauvegarde réussit on change l'icône du btn
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
 						<?php }
@@ -898,7 +898,7 @@ switch($_GET['mode'])
 
 							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
 
-							$("#save-user i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du btn
+							$("#save-user i").removeClass("moon-settings icon-spin").addClass("moon-check");// Si la sauvegarde réussit on change l'icône du btn
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
 							<?php if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users

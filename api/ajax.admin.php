@@ -41,14 +41,12 @@ switch($_GET['mode'])
 			<!-- Barre du haut avec bouton sauvegarder et option -->
 			<div id="admin-bar" class="hidden">
 
-				<div id="user" class="float-left p-8"><i class="icon feather-user" title="<?php _e("Show user info")?>"></i></div>
+				<div id="user" class="float-left p-8"><i class="icon moon-user" title="<?php _e("Show user info")?>"></i></div>
 
 				<!-- list/bars -->
-				<div id="list-content" class="float-left p-8"><i class="icon feather-menu align-middle" title="<?php _e("List of contents")?>"></i></div>
+				<div id="list-content" class="float-left p-8"><i class="icon moon-menu align-middle" title="<?php _e("List of contents")?>"></i></div>
 
-				<a href="/tutoriel.html" id="tutoriel" class="fl pat" target="_blank" title="<?php echo __("Editing tutorial").' - '.__("New window");?>"><i class="fa fa-info-circled vam"></i></a>
-
-				<div id="meta-responsive" class="float-left m-8 hidden"><i class="icon feather-edit-3" title="<?php _e("Page title")?>"></i></div>
+				<div id="meta-responsive" class="float-left m-8 hidden"><i class="icon moon-edit" title="<?php _e("Page title")?>"></i></div>
 
 				<div id="meta" class="float-left m-8 mobile-hidden">
 
@@ -73,7 +71,7 @@ switch($_GET['mode'])
 
 								<span id="ispage" class="hidden"><input type="checkbox" id="homepage"> <label for="homepage" class="mr-16"><?php _e("Home page")?></label></span>
 
-								<label id="refresh-permalink"><i class="icon feather-refresh-cw mr-8"></i><?php _e("Regenerate address")?></label>
+								<label id="refresh-permalink"><i class="icon moon-refresh-cw mr-8"></i><?php _e("Regenerate address")?></label>
 							</div>
 
 							<div class="flex flex-wrap mt-24">
@@ -127,11 +125,13 @@ switch($_GET['mode'])
 
 				</div>
 
-				<div id="close" class="float-right m-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon feather-x align-top"></i></div>
+				<a href="/tutoriel.html" id="tutoriel" class="float-left p-8 text-bigger text-bold" target="_blank" title="<?php echo __("Editing tutorial").' - '.__("New window");?>"><i class="icon moon-info align-middle"></i></a>
 
-				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="icon feather-save"></i></button>
+				<div id="close" class="float-right m-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon moon-x align-top"></i></div>
 
-				<button id="del" class="float-right m-8 text-smaller o50 ho1" title="<?php _e("Delete")?>"><span class="mobile-hidden"><?php _e("Delete")?></span> <i class="icon feather-trash"></i></button>
+				<button id="save" class="float-right m-8 text-smaller" title="<?php _e("Save")?>"><span class="mobile-hidden"><?php _e("Save")?></span> <i class="icon moon-save"></i></button>
+
+				<button id="del" class="float-right m-8 text-smaller o50 ho1" title="<?php _e("Delete")?>"><span class="mobile-hidden"><?php _e("Delete")?></span> <i class="icon moon-trash"></i></button>
 
 				<div class="float-right m-8 mr-16 switch o50 ho1"><input type="checkbox" id="state-content" class="hidden"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
@@ -255,7 +255,7 @@ switch($_GET['mode'])
 				<div class="m-16 mt-24">
 					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70">
 					<label for="homepage" class="mr-16 mt-0 hidden"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
-					<label id="refresh-permalink" class="mt-0"><i class="icon feather-refresh-cw mr-8"></i><?php _e("Regenerate address")?></label>
+					<label id="refresh-permalink" class="mt-0"><i class="icon moon-refresh-cw mr-8"></i><?php _e("Regenerate address")?></label>
 				</div>
 
 			</div>
@@ -813,7 +813,7 @@ switch($_GET['mode'])
 					$url = (isset($change_url)?$change_url:$res['url']);
 					?>
 					// Chargement de la page
-					$("#ecoindex span").html("<i class='icon feather-settings icon-spin'></i>");
+					$("#ecoindex span").html("<i class='icon moon-settings icon-spin'></i>");
 
 					// Inject la page dans une iframe pour l'auditer
 					$("body").append('<iframe id="iframe_ecoindex" src="<?=make_url($url, array('domaine' => true))?>" frameborder="0" class="hidden" width="100%" height="850"></iframe>');
@@ -822,7 +822,7 @@ switch($_GET['mode'])
 
 
 
-				$("#save i").removeClass("feather-settings icon-spin").addClass("feather-check");// Si la sauvegarde réussit on change l'icône du btn
+				$("#save i").removeClass("moon-settings icon-spin").addClass("moon-check");// Si la sauvegarde réussit on change l'icône du btn
 				$("#save").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 			});
 			</script>
@@ -871,7 +871,7 @@ switch($_GET['mode'])
 			$(function()
 			{
 				// Message page supprimé
-				light("<?php _e("Page deleted, redirecting")?> <i class='icon icon-spin feather-settings ml-8'></i>");
+				light("<?php _e("Page deleted, redirecting")?> <i class='icon icon-spin moon-settings ml-8'></i>");
 
 				// Redirection vers la page d'accueil
 				setTimeout(function(){ document.location.href = "<?=$GLOBALS['home'];?>"; }, 2000);
@@ -898,7 +898,7 @@ switch($_GET['mode'])
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mt-24"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='icon feather-eye-off' title='".__("Deactivate")."'></i>").'</li>';
+			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='icon moon-eye-off' title='".__("Deactivate")."'></i>").'</li>';
 
 			$type = $res['type'];
 		}
@@ -1029,7 +1029,7 @@ switch($_GET['mode'])
 
 		$sel = $connect->query($sql);
 		while($res = $sel->fetch_assoc()) {
-			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='icon feather-x color-red' title='\"+ __(\"Remove\") +\"'></i></li>";
+			echo"<li><div class='dragger'></div><a href=\"".$res['url']."\">".$res['title']."</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='icon moon-x color-red' title='\"+ __(\"Remove\") +\"'></i></li>";
 		}
 
 	break;
@@ -1064,22 +1064,22 @@ switch($_GET['mode'])
 
 			<ul class="text-smaller">
 
-				<li data-filter="all"><a href="#media" title="<?php _e("Media")?>"><i class="icon feather-file"></i> <span><?php _e("Media")?></span></a></li>
+				<li data-filter="all"><a href="#media" title="<?php _e("Media")?>"><i class="icon moon-file"></i> <span><?php _e("Media")?></span></a></li>
 
-				<!-- <li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?php _e("Files")?>"><i class="icon feather-file-text"></i> <span><?php _e("Files")?></span></a></li> -->
+				<!-- <li data-filter="file"><a href="api/ajax.admin.php?mode=media&filter=file" title="<?php _e("Files")?>"><i class="icon moon-file-text"></i> <span><?php _e("Files")?></span></a></li> -->
 
-				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?php _e("Images")?>"><i class="icon feather-image"></i> <span><?php _e("Images")?></span></a></li> -->
+				<!-- <li data-filter="image"><a href="api/ajax.admin.php?mode=media&filter=image" title="<?php _e("Images")?>"><i class="icon moon-image"></i> <span><?php _e("Images")?></span></a></li> -->
 
-				<li data-filter="resize"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=resize" title="<?php _e("Resized")?>"><i class="icon feather-minimize-2"></i> <span><?php _e("Resized")?></span></a></li>
+				<li data-filter="resize"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=resize" title="<?php _e("Resized")?>"><i class="icon moon-minimize-2"></i> <span><?php _e("Resized")?></span></a></li>
 
 
 				<?php if(isset($_REQUEST['dir']) and $_REQUEST['dir']){?>
-				<li data-filter="dir"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?php _e("Specific")?>"><i class="icon feather-file"></i> <span><?php _e("Specific")?></span></a></li>
+				<li data-filter="dir"><a href="<?=$GLOBALS['home']?>api/ajax.admin.php?mode=media&filter=dir&dir=<?=urlencode($_REQUEST['dir']);?>" title="<?php _e("Specific")?>"><i class="icon moon-file"></i> <span><?php _e("Specific")?></span></a></li>
 				<?php }?>
 
-				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?php _e("Videos")?>"><i class="icon feather-film"></i> <span><?php _e("Videos")?></span></a></li>
+				<!-- <li data-filter="video"><a href="api/ajax.admin.php?mode=media&filter=video" title="<?php _e("Videos")?>"><i class="icon moon-film"></i> <span><?php _e("Videos")?></span></a></li>
 
-				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?php _e("Audios")?>"><i class="icon feather-volume-2"></i> <span><?php _e("Audios")?></span></a></li> -->
+				<li data-filter="audio"><a href="api/ajax.admin.php?mode=media&filter=audio" title="<?php _e("Audios")?>"><i class="icon moon-volume-2"></i> <span><?php _e("Audios")?></span></a></li> -->
 
 			</ul>
 
@@ -1108,7 +1108,7 @@ switch($_GET['mode'])
 
 				// Option de resize à afficher ?
 				if(!$("#dialog-media-width").val() && !$("#dialog-media-height").val())
-					var resize = "<a class='resize' title=\"<?php _e("Get resized image");?>\"><i class='icon feather-minimize-2'></i></a>";
+					var resize = "<a class='resize' title=\"<?php _e("Get resized image");?>\"><i class='icon moon-minimize-2'></i></a>";
 				else
 					var resize = "";
 
@@ -1120,14 +1120,14 @@ switch($_GET['mode'])
 					if(mime[0] == "image")
 						container += "<img src=''>" + resize;
 					else {
-						container += '<div class="file"><i class="icon feather-file"></i><div>'+ file.name +"</div></div>";
+						container += '<div class="file"><i class="icon moon-file"></i><div>'+ file.name +"</div></div>";
 						container += '<div class="copy"><input type="text" value="'+ path + media_dir +'/' + $("#dialog-media-dir").val() + file.name +'"></div>';
 
 					}
 
 					container += "<div class='infos'></div>";
 
-					container += "<a class='supp hidden' title=\""+__("Delete file")+"\"><i class='icon feather-trash'></i></a>";
+					container += "<a class='supp hidden' title=\""+__("Delete file")+"\"><i class='icon moon-trash'></i></a>";
 
 				container += "</li>";
 
@@ -1172,7 +1172,7 @@ switch($_GET['mode'])
 				{
 					$("#dialog-media-width").val($("#resize-width").val());
 					$("#dialog-media-height").val($("#resize-height").val());
-					get_img(id, $('#resize-tool .feather-maximize-2').hasClass('checked'));
+					get_img(id, $('#resize-tool .moon-maximize-2').hasClass('checked'));
 				}
 			}
 
@@ -1220,8 +1220,8 @@ switch($_GET['mode'])
 					resize_tool = "<div id='resize-tool' class='toolbox'>";
 						resize_tool+= __("Width") +": <input type='text' id='resize-width' class='w50p'> ";
 						resize_tool+= __("Height") +": <input type='text' id='resize-height' class='w50p'>";
-						resize_tool+= "<a href=\"javascript:$('#resize-tool .feather-maximize-2').toggleClass('checked');void(0);\"><i class='icon feather-maximize-2'></i>"+ __("Zoom link") +"</a> ";
-						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='icon feather-settings'></i> "+ __("Add") +"</button>";
+						resize_tool+= "<a href=\"javascript:$('#resize-tool .moon-maximize-2').toggleClass('checked');void(0);\"><i class='icon moon-maximize-2'></i>"+ __("Zoom link") +"</a> ";
+						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='icon moon-settings'></i> "+ __("Add") +"</button>";
 					resize_tool+= "</div>";
 
 					$(".ui-dialog").append(resize_tool);
@@ -1497,7 +1497,7 @@ switch($_GET['mode'])
 			{
 			?>
 			<li class="add-media p-16 m-8 text-center text-smaller" onclick="document.getElementById('add-media').click();">
-				<i class="icon feather-upload pb-16"></i><br>
+				<i class="icon moon-upload pb-16"></i><br>
 				<?php _e("Drag and drop a file here or click me");?>
 				<input type="file" id="add-media" style="display: none" multiple>
 			</li>
@@ -1517,7 +1517,7 @@ switch($_GET['mode'])
 					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
 					data-type="dir"
 					>
-						<div class="file"><i class="icon feather-folder"></i><div>'.utf8_encode($val).'</div></div>
+						<div class="file"><i class="icon moon-folder"></i><div>'.utf8_encode($val).'</div></div>
 					</li>';
 				}
 			}
@@ -1547,24 +1547,24 @@ switch($_GET['mode'])
 						default:
 							switch($ext)
 							{
-								default: $icon = "doc"; break;
-								case"zip": $icon = "file-archive"; break;
-								case"msword": $icon = "file-word"; break;
-								case"vnd.ms-excel": $icon = "file-excel"; break;
-								case"vnd.ms-powerpoint": $icon = "file-powerpoint"; break;
-								case"pdf": $icon = "file-pdf"; break;
+								default: $moon = "doc"; break;
+								case"zip": $moon = "file-archive"; break;
+								case"msword": $moon = "file-word"; break;
+								case"vnd.ms-excel": $moon = "file-excel"; break;
+								case"vnd.ms-powerpoint": $moon = "file-powerpoint"; break;
+								case"pdf": $moon = "file-pdf"; break;
 							}
 						break;
 						case"text":
 							switch($ext)
 							{
-								default: $icon = "doc"; break;
-								case"plain": $icon = "doc-text"; break;
-								case"html": $icon = "file-code"; break;
+								default: $moon = "doc"; break;
+								case"plain": $moon = "doc-text"; break;
+								case"html": $moon = "file-code"; break;
 							}
 						break;
-						case"video": $icon = "video"; break;
-						case"audio": $icon = "volume-up"; break;
+						case"video": $moon = "video"; break;
+						case"audio": $moon = "volume-up"; break;
 					}
 
 					// Infos sur le fichier
@@ -1601,20 +1601,20 @@ switch($_GET['mode'])
 
 							echo'<img src="'.($i<=20?$src:'').'"'.($i>20?' data-src="'.$src.'" loading="lazy"':'').'>';
 
-							echo'<a class="resize" title="'.__("Get resized image").'"><i class="icon feather-minimize-2"></i></a>';
+							echo'<a class="resize" title="'.__("Get resized image").'"><i class="icon moon-minimize-2"></i></a>';
 						}
 						else {
-							echo'<div class="file"><i class="icon feather-'.$icon.'"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+							echo'<div class="file"><i class="icon moon-'.$moon.'"></i><div>'.utf8_encode($val['filename']).'</div></div>';
 
 							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
 
-							echo'<a href="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="icon feather-external-link"></i></a>';
+							echo'<a href="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="icon moon-external-link"></i></a>';
 						}
 
 						echo"
 						<div class='mime ".$sizecolor."'>".$val['mime']."</div>
 						<div class='infos'>".$info." - ".$size."</div>
-						<a class='supp' title=\"".__("Delete file")."\"><i class='icon feather-trash'></i></a>
+						<a class='supp' title=\"".__("Delete file")."\"><i class='icon moon-trash'></i></a>
 					</li>";
 
 					$i++;
@@ -1760,11 +1760,11 @@ switch($_GET['mode'])
 
 			<?php
 			//$pattern = '/\.([\w-]+):before\s*{\s*content:\s*(["\']\\\w+["\']);?\s*}/';
-			//$pattern = '/\.(feather-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
-			//$pattern = '/\\.(feather-\\w+):before{content:"(\\\\\w+)"}/';
-			//$pattern = '/\\.(feather-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';
-			//$pattern = '/\\.(feather-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';
-			$pattern = "/\\.(feather-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";
+			//$pattern = '/\.(moon-(?:\w+(?:-)?)+):before\s*{\s*content:\s*"\\\\(.+)";?\s*}/';
+			//$pattern = '/\\.(moon-\\w+):before{content:"(\\\\\w+)"}/';
+			//$pattern = '/\\.(moon-(?:\\w+(?:-)?)+):before{content:"(\\\\\\w+)"}/';
+			//$pattern = '/\\.(moon-(?:[a-z-]*)):before{content:"(\\\\\\w+)"}/';
+			$pattern = "/\\.(moon-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";
 
 			// Url du fichier qui contient les icônes
 			if($GLOBALS['icons']) $file = $GLOBALS['icons'];
