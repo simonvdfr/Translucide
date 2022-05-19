@@ -2100,7 +2100,7 @@ $(function()
 
 			toolbox+= "<li id='video-option' class='option'>";
 
-				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='w150p small'>";
+				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='text-smaller'>";
 
 				toolbox+= "<button onclick=\"video("+videoLink+")\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='icon moon-plus'></i></button>";
 
@@ -2117,7 +2117,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"lang_option(); $('#txt-tool #lang-option #lang').select();\" title=\""+__("Add Language")+"\"><i class='icon moon-globe'></i></button></li>";
 
 			toolbox+= "<li id='lang-option' class='option'>";
-				toolbox+= "<input type='text' id='lang' placeholder=\""+ __("Language") +"\" title=\""+ __("Language") +"\" class='w150p small'>";
+				toolbox+= "<input type='text' id='lang' placeholder=\""+ __("Language") +"\" title=\""+ __("Language") +"\" class='text-smaller'>";
 				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='icon moon-plus'></i></button>";
 			toolbox+= "</li>";
 		}
@@ -2127,7 +2127,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"anchor_option(); $('#txt-tool #anchor-option #anchor').select();\" title=\""+__("Add Anchor")+"\"><i class='icon moon-anchor color-blue'></i></button></li>";
 
 			toolbox+= "<li id='anchor-option' class='option'>";
-				toolbox+= "<input type='text' id='anchor' placeholder=\""+ __("Anchor") +"\" title=\""+ __("Anchor") +"\" class='w150p small'>";
+				toolbox+= "<input type='text' id='anchor' placeholder=\""+ __("Anchor") +"\" title=\""+ __("Anchor") +"\" class='text-smaller'>";
 				toolbox+= "<button onclick=\"edit_anchor()\" class='small pl-8 pr-8'><span>"+ __("Add Anchor") +"</span><i class='icon moon-plus'></i></button>";
 			toolbox+= "</li>";
 		}
@@ -2138,7 +2138,7 @@ $(function()
 
 			toolbox+= "<li id='link-option' class='option'>";
 
-				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='w150p small'>";
+				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +"\" class='text-smaller'>";
 
 				if(typeof toolbox_btn != 'undefined') toolbox+= "<a href=\"javascript:class_btn();void(0);\" title=\""+ __("Apparence d'un bouton") +"\" id='class-btn' class='o50 ho1'><i class='icon moon-log-in ml-8 mr-8 align-middle'></i></a>";
 
@@ -2678,7 +2678,7 @@ $(function()
 			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
 		}
 
-			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='w150p small'></li>";
+			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='text-smaller'></li>";
 
 		if(!input)
 			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='icon moon-trash'></i></button></li>";
