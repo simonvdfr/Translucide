@@ -1147,10 +1147,10 @@ img_position = function(align) {
 	// Si l'image est dans une figure
 	if(figure.length)
 		if(figure.hasClass(align)) figure.removeClass(align);
-		else figure.removeClass("mx-auto float-left float-right").addClass(align);
+		else figure.removeClass("mx-auto block float-left float-right").addClass(align);
 	else
 		if($(memo_img).hasClass(align)) $(memo_img).removeClass(align);
-		else $(memo_img).removeClass("mx-auto float-left float-right").addClass(align);
+		else $(memo_img).removeClass("mx-auto block float-left float-right").addClass(align);
 }
 
 // Pour ajouter une légende sous l'image
@@ -2110,8 +2110,6 @@ $(function()
 		if(typeof toolbox_media != 'undefined')
 			toolbox+= "<li><button onclick=\"media(memo_focus, 'intext')\" title=\""+__("Media Library")+"\"><i class='icon moon-image'></i></button></li>";
 
-		//toolbox+= "<li><button onclick=\"exec_tool('unlink')\"><i class='fa fa-fw fa-chain-broken'></i></button></li>";
-
 		if(typeof toolbox_lang != 'undefined')
 		{
 			toolbox+= "<li><button onclick=\"lang_option(); $('#txt-tool #lang-option #lang').select();\" title=\""+__("Add Language")+"\"><i class='icon moon-globe'></i></button></li>";
@@ -2671,9 +2669,9 @@ $(function()
 
 		if(!input)
 		{
-			option+= "<li><button onclick=\"img_position('fl')\" class='img-position' id='img-fl'><i class='icon moon-align-left'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('center')\" class='img-position' id='img-center'><i class='icon moon-align-center'></i></button></li>";
-			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='icon moon-align-right'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('float-left')\" class='img-position' id='img-fl'><i class='icon moon-align-left'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('mx-auto block')\" class='img-position' id='img-center'><i class='icon moon-align-center'></i></button></li>";
+			option+= "<li><button onclick=\"img_position('float-right')\" class='img-position' id='img-fr'><i class='icon moon-align-right'></i></button></li>";
 
 			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
 		}
@@ -2698,9 +2696,9 @@ $(function()
 
 		// Alignement de l'image
 		$("#img-position").removeClass("checked");
-		if($(memo_img).hasClass("float-left") || $(memo_img).closest("figure").hasClass("fl")) $("#img-fl").addClass("checked");
-		if($(memo_img).hasClass("center") || $(memo_img).closest("figure").hasClass("center")) $("#img-center").addClass("checked");
-		if($(memo_img).hasClass("float-right") || $(memo_img).closest("figure").hasClass("fr")) $("#img-fr").addClass("checked");
+		if($(memo_img).hasClass("float-left") || $(memo_img).closest("figure").hasClass("float-left")) $("#img-fl").addClass("checked");
+		if($(memo_img).hasClass("mx-auto block") || $(memo_img).closest("figure").hasClass("mx-auto block")) $("#img-center").addClass("checked");
+		if($(memo_img).hasClass("float-right") || $(memo_img).closest("figure").hasClass("float-right")) $("#img-fr").addClass("checked");
 
 		$("#img-tool")
 			.show()
