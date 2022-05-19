@@ -2096,7 +2096,7 @@ $(function()
 		if(typeof toolbox_videoLink != 'undefined') { videoLink = true; toolbox_video = true; } else videoLink = false;
 		if(typeof toolbox_video != 'undefined')
 		{
-			toolbox+= "<li><button onclick=\"$('#txt-tool #video-option').show(); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='icon moon-film'></i></button></li>";
+			toolbox+= "<li><button onclick=\"$('#txt-tool .option').hide(); $('#txt-tool #video-option').show('slide', 300); $('#txt-tool #video-option #video').select();\" title=\""+__("Add Video")+"\"><i class='icon moon-film'></i></button></li>";
 
 			toolbox+= "<li id='video-option' class='option'>";
 
