@@ -1813,7 +1813,7 @@ $(function()
 
 	// Positionne le menu
 	// Barre admin + position top du menu + marge du menu - hauteur du btn edit menu
-	var top_btn_menu = $("#admin-bar").outerHeight() + $("header nav > ul:not(.exclude)").offset().top + parseInt($("header nav > ul:not(.exclude)").css("marginTop").replace('px', ''));
+	var top_btn_menu = $("#header").outerHeight()*2/3;
 	$("#add-nav").css("top", top_btn_menu + "px");
 
 

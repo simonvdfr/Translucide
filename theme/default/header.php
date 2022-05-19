@@ -16,7 +16,7 @@
 		<div class="inside flex lg:pl-36">
 
 			<div class="site-logo flex align-items-center py-24 mx-36">
-				<a href="<?=$GLOBALS['home']?>"><?php media('logo', '200')?></a>
+				<a href="<?=$GLOBALS['home']?>"><?php media('logo', '200x50')?></a>
 			</div>
 
 			<nav role="navigation" class="menu flex mobile-hidden" aria-label="<?php _e("Browsing menu")?>">
