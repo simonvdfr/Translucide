@@ -3155,7 +3155,7 @@ $(function()
 			$(this).data("uiAutocomplete").search($(this).val());// Ouvre les suggestions au focus
 		})
 		.autocomplete("instance")._renderItem = function(ul, item) {// Mise en page des résultats
-	      	return $("<li>").append("<div title='"+item.value+"'>"+item.label+" <span class='grey italic'>"+item.type+"</span></div>").appendTo(ul);
+	      	return $("<li>").append("<div title='"+item.value+"'>"+item.label+" <span class='color-grey text-italic'>"+item.type+"</span></div>").appendTo(ul);
 	    };
 	});
 

@@ -21,7 +21,7 @@
 	--color-6: #e4f9f2; /*variation color of SeaCms logo*/
   --white-color: #ffffff;
   --light-color: #f5f5f5;
-  --gray-color: #e1e1e1;
+  --grey-color: #e1e1e1;
   --dark-color: #3f4655;
 	--red-color: #b3344c;
 	--green-color: #84b334;
@@ -71,11 +71,13 @@ a:focus, a:hover, a:active { color: var(--color-3);}
 .bg-blue { background-color: var(--color-1);}
 .bg-glaz { background-color: var(--color-3);}
 .bg-glaz:hover { background: var(--color-2);}
-.bg-gray { background-color: var(--gray-color);}
+.bg-grey { background-color: var(--grey-color);}
 
 /* Color */
 .color-white { color: var(--white-color);}
 .color-light { color: var(--light-color);}
+.color-grey { color: var(--grey-color);}
+.color-dark { color: var(--dark-color);}
 .color-blue { color: var(--color-1);}
 .color-glaz { color: var(--color-3);}
 .color-red { color: var(--red-color);}
@@ -85,7 +87,7 @@ a:focus, a:hover, a:active { color: var(--color-3);}
 
 /* Border */
 .border-rounded { border-radius: 0.5rem;}
-.border-gray { border: 2px solid var(--gray-color);}
+.border-grey { border: 2px solid var(--grey-color);}
 .shadow { box-shadow: 0 5px 30px 0 rgb(40 40 40 / 21%);}
 
 /* Hide elements */
@@ -289,7 +291,7 @@ header nav .burger-button {
 /* ----------------------------- */
 
 .wrapper {
-  color: var(--gray-color);
+  color: var(--grey-color);
   position: relative;
   display: inline-block;
   vertical-align: text-bottom;

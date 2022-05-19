@@ -302,7 +302,7 @@ switch(@$_GET['mode'])
 
 					<div class="float-right">
 
-						<button class="button bg-glaz color-light border-gray text-bold"><?php _e("Start installation");?> <i class="icon moon-settings ml-8"></i></button>
+						<button class="button bg-glaz color-light border-grey text-bold"><?php _e("Start installation");?> <i class="icon moon-settings ml-8"></i></button>
 
 					</div>
 
