@@ -2102,7 +2102,7 @@ $(function()
 
 				toolbox+= "<input type='text' id='video' placeholder='https://youtu.be/***' title=\""+ __("Video") +"\" class='text-smaller'>";
 
-				toolbox+= "<button onclick=\"video("+videoLink+")\" class='small plt prt'><span>"+ __("Add Video") +"</span><i class='icon moon-plus'></i></button>";
+				toolbox+= "<button onclick=\"video("+videoLink+")\" class='text-smaller'><span>"+ __("Add Video") +"</span><i class='icon moon-plus'></i></button>";
 
 			toolbox+= "</li>";
 		}
@@ -2118,7 +2118,7 @@ $(function()
 
 			toolbox+= "<li id='lang-option' class='option'>";
 				toolbox+= "<input type='text' id='lang' placeholder=\""+ __("Language") +"\" title=\""+ __("Language") +"\" class='text-smaller'>";
-				toolbox+= "<button onclick=\"edit_lang()\" class='small plt prt'><span>"+ __("Add Language") +"</span><i class='icon moon-plus'></i></button>";
+				toolbox+= "<button onclick=\"edit_lang()\" class='text-smaller'><span>"+ __("Add Language") +"</span><i class='icon moon-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 
@@ -2128,7 +2128,7 @@ $(function()
 
 			toolbox+= "<li id='anchor-option' class='option'>";
 				toolbox+= "<input type='text' id='anchor' placeholder=\""+ __("Anchor") +"\" title=\""+ __("Anchor") +"\" class='text-smaller'>";
-				toolbox+= "<button onclick=\"edit_anchor()\" class='small pl-8 pr-8'><span>"+ __("Add Anchor") +"</span><i class='icon moon-plus'></i></button>";
+				toolbox+= "<button onclick=\"edit_anchor()\" class='text-smaller'><span>"+ __("Add Anchor") +"</span><i class='icon moon-plus'></i></button>";
 			toolbox+= "</li>";
 		}
 
@@ -2144,7 +2144,7 @@ $(function()
 
 				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='icon moon-external-link ml-8 mr-8 align-middle'></i></a>";
 
-				toolbox+= "<button onclick=\"link()\" class='small pl-8 pr-8'><span>"+ __("Add Link") +"</span><i class='icon moon-plus'></i></button>";
+				toolbox+= "<button onclick=\"link()\" class='text-smaller'><span>"+ __("Add Link") +"</span><i class='icon moon-plus'></i></button>";
 
 			toolbox+= "</li>";
 		}
