@@ -402,11 +402,6 @@ header nav .burger-button {
 	animation: slide-down .3s 1 ease-out;
 }
 
-@keyframes slide-down {
-	 0% { transform: translate3d(0, -100%, 0); }
-	 100% { transform: translateY(0, 0, 0); }
-}
-
 #admin-bar:hover {
 	background-color: rgba(240, 240, 240, 0.95);
 }
@@ -783,7 +778,7 @@ nav > ul li:hover i.moon-x {
 	border-radius: 100% 0 0 100%;
 	border-right: 0px;
 	display: inline-block;
-	padding: 5px 0px 8px 5px;
+	padding: 0.8rem 1rem;
 	cursor: pointer;
 	transition: all .3s;
 }
@@ -793,7 +788,7 @@ nav > ul li:hover i.moon-x {
 }
 
 #add-nav.open .zone {
-	margin: 0;
+	margin: 2rem 0 auto;
 }
 
 #add-nav.open {
@@ -805,7 +800,7 @@ nav > ul li:hover i.moon-x {
 #add-nav.open .zone {
 	border-radius: 30px 30px 0 0;
 	border-bottom: none;
-	padding: 5px 10px 5px;
+	padding: 0.5rem 0.8rem;
 }
 
 #add-nav.del .zone {
@@ -1143,11 +1138,6 @@ img.drag-elem {
 	position: absolute;
 	display: none;
 	animation: fade-in .2s;
-}
-
-@keyframes fade-in {
-	0% { opacity: 0; }
-	100% { opacity: 1; }
 }
 
 .dialog-media li .resize, .dialog-media li .supp, .dialog-media li .open {
