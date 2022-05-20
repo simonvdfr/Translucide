@@ -61,6 +61,11 @@ body {
 	white-space: pre-wrap;
 }
 
+/* Titles */
+h1, h2, h3 {
+  font-family: 'Luciole', sans-serif;
+}
+
 /* Links */
 a { color: var(--color-1);}
 a:focus, a:hover, a:active { color: var(--color-3);}

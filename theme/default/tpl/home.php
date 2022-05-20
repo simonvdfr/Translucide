@@ -14,10 +14,9 @@
 			</div>
 			<div class="flex mx-24 py-12">
 				<div class="hero-panel bg-white border-rounded shadow flex flex-col align-items-center text-center animation delay-1 slide-right-big">
-					<?php media('panel-icon','80x80')?>
-					<?php h3('panel-title', 'hero-panel-title color-blue my-8')?>
-					<?php txt('panel-desc','hero-panel-desc mb-8')?>
-					<a <?php href("panel-link")?>><i class="icon moon-link ml-8"></i></a>
+					<?php media('hero-panel-icon','80x80')?>
+					<?php h3('hero-panel-title', 'hero-panel-title color-blue my-8')?>
+					<?php txt('hero-panel-desc','hero-panel-desc mb-8')?>
 				</div>
 			</div>
 		</div>
