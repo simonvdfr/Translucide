@@ -6,430 +6,388 @@
 	<meta name="robots" content="noindex, nofollow">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>Tutoriel édition SeaCMS</title>
+	<title>SeaCMS | Documentation</title>
 
 	<script src="/api/assets/js/jquery.min.js"></script>
 
-	<link rel="stylesheet" href="/api/assets/css/custom.css">
+	<link rel="stylesheet" href="api/assets/css/style.css">
+	<link rel="stylesheet" href="api/assets/css/custom.css">
 
 	<style>
-		header nav li {
-			float: inherit;
-		}
+
+	body {
+		color: var(--main-color);
+	}
+
+	h1 {
+		font-size: 1.65rem;
+		color: var(--color-1);
+		margin: 2rem 0;
+		text-transform: uppercase;
+		font-weight: normal;
+		letter-spacing: 0.2rem;
+		margin-top: 2.3rem;
+	}
+
+	h2 {
+		font-size: 1.4rem;
+		font-weight: normal;
+	  margin: 0;
+	  cursor: pointer;
+	}
+
+	h3 {
+		font-size: 1.3rem;
+		margin: 1rem auto 0.5rem;
+	}
+	.title {
+	  padding: 1rem;
+	  border-bottom: solid 1px #bbb;
+	  transition: background 1s;
+	  cursor: pointer;
+	}
+	.title:hover {
+	  background: var(--light-color);
+	}
+	details[open] .title {
+	  background: var(--light-color);
+		border-bottom: 3px solid var(--color-3);
+	}
+	.content {
+	  padding: 1rem;
+	}
+
+	.title::after {
+		font-family: 'moon';
+		content:"\e935";
+		font-size: 1.5rem;
+		float: right;
+		transition: transform 0.5s;
+		margin-top: -2.2rem;
+	}
+
+	details[open]	.title::after {
+		content:"\e931";
+	  transition: transform 0.5s;
+	}
+
 	</style>
 
 </head>
-<body>
+<body class="bg-blue p-36">
 
+		<div class="layout-maxed grid">
 
-<header role="banner" class="p-24">
-	<nav role="navigation" aria-label="Accès rapide" class="inline">
-		<ul>
-			<li><a href="#main">Aller au contenu</a></li>
-		</ul>
-	</nav>
+			<div class="panel bg-white border-rounded shadow">
 
-	<h1>Tutoriel édition SeaCMS</h1>
+				<div class="layout-maxed">
 
-	<nav role="navigation" aria-label="Sommaire">
-		<h2>Sommaire</h2>
-		<ol id="sommaire" class="is-unstyled"></ol>
-	</nav>
-</header>
+					<div class="text-center mt-36 flex justify-center">
+						<img id="logo" class="img install-img mr-8" alt="logo SeaCms" src="api/assets/img/logo.svg">
+						<h1>// Documentation</h1>
+					</div>
 
+				</div>
 
-<main id="main" role="main" tabindex="-1" class="content">
+				<div id="content" class="layout-maxed m-36">
+					<details>
+						<summary class="title"><h2><i class="icon moon-edit" aria-hidden="true"></i> Mode édition</h2></summary>
+						<div id="edition_mode" class="content">
+							<h3>Se connecter en mode édition</h3>
+							<ul>
+								<li> Cliquer sur l'icône "clé" <i class="icon moon-key" aria-hidden="true"></i> en bas à gauche de l'écran (s'affiche au survol).</li>
+							  <li>Rentrer l'adresse email et le mot de passe transmis par votre webmaster.</li>
+							</ul>
+							<h3>Quitter le mode édition</h3>
+							<p>Pour quitter le mode édition afin d'avoir un aperçu des ajouts, modifications, suppressions, cliquer sur l'icône "croix" <i class="icon moon-x" aria-hidden="true"></i> en haut à droite.</p>
+							<h3>Se déconnecter</h3>
+							<p>Pour se déconnecter, afin par exemple de se connecter avec un autre utilisateur, se positionner sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis cliquer sur l'icône "se déconnecter" <i class="icon moon-log-out" aria-hidden="true"></i>.</p>
+						</div>
+					</details>
+					<details>
+						<summary class="title"><h2><i class="icon moon-file-text" aria-hidden="true"></i> Gérer du contenu</h2></summary>
+						<div id="content_management"class="content">
+							<h3>Ajouter un événement/article/annuaire/page</h3>
+							<ul>
+							 	<li> Cliquer sur l'icône "plus" <i class="icon moon-plus" aria-hidden="true"></i> en bas à gauche (apparaît au survol). Un popup apparaît. </li>
+								<li>Cliquer sur l'onglet du type de contenu souhaité.</li>
+								<li>Ajouter un titre.</li>
+								<li>Choisir le modèle de page correspondant dans la liste déroulante : <br>
+								</li>
+								<li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+								<li>Penser à passer la page/article en mode "visible" en cliquant sur l'icône "oeil barré" <i class="icon moon-eye-off" aria-hidden="true"></i> quand le contenu est prêt à être publié.</li>
+							</ul>
 
-	<section class="mw960p mod center mbl">
+							<h3>Saisir les données de la page (pour le référencement)</h3>
+							<ul>
+							  <li> Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).</li>
+							  <li>Survoler le titre de la page tout en haut afin de voir apparaître les données de la page.</li>
+							  <li>Saisir le titre de la page : il s'agit du titre qui apparaîtra dans les moteurs de recherche.</li>
+							  <li>Remplir le champ "Description pour les moteurs de recherche" : il s'agit des quelques lignes qui apparaîtront sous le titre dans les moteurs de recherche.</li>
+							  <li>Si besoin, cocher "noindex" afin d'empêcher que la page soit indexée par les moteurs de recherche (par exemple pour les mentions légales).</li>
+							  <li>Si besoin, cocher "nofollow" afin que les liens de cette page ne soient pas suivis par les moteurs de recherche.</li>
+							  <li>Si besoin, modifier l'adresse web formatée qui apparaîtra dans l'url de votre page.</li>
+							  <li>Si besoin, ajouter une image qui apparaîtra lors d'un partage de votre page sur les réseaux sociaux.</li>
+							  <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+							</ul>
 
+							<h3>Ajouter du contenu</h3>
+							<ul>
+					    	<li> Après la création d'un événement/article/annuaire/page, le mode édition est automatiquement activé.</li>
+								<li>Se positionner sur chaque zone éditable et ajouter le contenu souhaité.</li>
+								<li>Pour ajouter une image, cliquer sur la zone grisée puis sélectionner l'image à télécharger.</li>
+								<li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+							</ul>
 
-		<article>
+							<h3>Ajouter une catégorie/tag dans un événement/article/annuaire</h3>
+							<ul>
+								<li>Aller sur l'événement/article/annuaire concerné.</li>
+								<li>Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).</li>
+							  <li>Cliquer sur le champ sous "Catégories/Tags".</li>
+							  <li>Choisir une catégorie/tag dans la liste déroulante ou saisir une nouvelle catégorie/tag.</li>
+							  <li>Pour en saisir plusieurs, les séparer par une virgule.</li>
+							</ul>
 
-			<h2>Mode édition</h2>
+							<h3>Mettre en brouillon/ligne du contenu</h3>
+							<ul>
+								<li>Aller sur la page concernée.</li>
+							  <li>Cliquer sur l'icône "oeil" <i class="icon moon-eye" aria-hidden="true"></i> / "oeil barré" <i class="icon moon-eye-off" aria-hidden="true"></i> en haut à droite pour mettre en brouillon ou en ligne une page.</li>
+							  <li>Cliquer sur "Enregistrer".</li>
+							</ul>
 
-				<h3>Se connecter en mode édition</h3>
+							<h3>Mettre à jour du contenu</h3>
+					    <ul>
+								<li> Se positionner sur la page/article concerné-e via le menu.</li>
+							  <li>Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).</li>
+							  <li>Ou cliquer sur l'icône "menu" <i class="icon moon-menu" aria-hidden="true"></i> en haut à gauche puis cliquer sur la page/article concerné-e.</li>
+							  <li>Cliquer sur la zone à modifier, faire les modifications souhaitées (possibilité de mettre en forme le texte, la barre d'outils apparaît au survol du texte concerné).</li>
+							  <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+							</ul>
 
-				<ul>
-				    <li> Cliquer sur l'icône "clé" <i class="icon moon-key" aria-hidden="true"></i> en bas à gauche de l'écran (s'affiche au survol).</li>
-				    <li>Rentrer l'adresse email et le mot de passe transmis par votre webmaster.</li>
-				</ul>
+							<h3>Modifier la date d'un événement/article/annuaire (pour en modifier l'ordre)</h3>
+							<ul>
+								<li>Aller sur la page concernée.</li>
+							  <li>Cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche de la page (apparaît au survol).</li>
+							  <li>Survoler le titre de la page en haut du menu d'édition.</li>
+							  <li>Modifier la date de création.</li>
+							</ul>
 
-				<h3>Quitter le mode édition</h3>
+							<h3>Supprimer un événement/article/annuaire/page</h3>
+					    <ul>
+				        <li>Aller sur la page concernée.</li>
+				        <li>Cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche de la page (apparaît au survol).</li>
+				        <li>Cliquer sur le bouton "Supprimer" en haut à droite.</li>
+				        <li>Cliquer sur "OK".</li>
+					    </ul>
 
-				<p>Pour quitter le mode édition afin d'avoir un aperçu des ajouts, modifications, suppressions, cliquer sur l'icône "croix" <i class="icon moon-x" aria-hidden="true"></i> en haut à droite.</p>
-
-				<h3>Se déconnecter</h3>
-
-				<p>Pour se déconnecter, afin par exemple de se connecter avec un autre utilisateur, se positionner sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis cliquer sur l'icône "se déconnecter" <i class="icon moon-log-out" aria-hidden="true"></i>.</p>
-
-			<h2>Gérer du contenu</h2>
-
-				<h3>Ajouter un événement/article/annuaire/page</h3>
-
-				<ul>
-				    <li> Cliquer sur l'icône "plus" <i class="icon moon-plus" aria-hidden="true"></i> en bas à gauche (apparaît au survol). Un popup apparaît. </li>
-				    <li>Cliquer sur l'onglet du type de contenu souhaité.</li>
-				    <li>Ajouter un titre.</li>
-				    <li>Choisir le modèle de page correspondant dans la liste déroulante : <br>
-				    </li>
-				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-				    <li>Penser à passer la page/article en mode "visible" en cliquant sur l'icône "oeil barré" <i class="icon moon-eye-off" aria-hidden="true"></i> quand le contenu est prêt à être publié.</li>
-				</ul>
-
-				<h3>Saisir les données de la page (pour le référencement)</h3>
-
-				<ul>
-				    <li> Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).</li>
-				    <li>Survoler le titre de la page tout en haut afin de voir apparaître les données de la page.</li>
-				    <li>Saisir le titre de la page : il s'agit du titre qui apparaîtra dans les moteurs de recherche.</li>
-				    <li>Remplir le champ "Description pour les moteurs de recherche" : il s'agit des quelques lignes qui apparaîtront sous le titre dans les moteurs de recherche.</li>
-				    <li>Si besoin, cocher "noindex" afin d'empêcher que la page soit indexée par les moteurs de recherche (par exemple pour les mentions légales).</li>
-				    <li>Si besoin, cocher "nofollow" afin que les liens de cette page ne soient pas suivis par les moteurs de recherche.</li>
-				    <li>Si besoin, modifier l'adresse web formatée qui apparaîtra dans l'url de votre page.</li>
-				    <li>Si besoin, ajouter une image qui apparaîtra lors d'un partage de votre page sur les réseaux sociaux.</li>
-				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-				</ul>
-
-				<h3>Ajouter du contenu</h3>
-
-				<ul>
-				    <li> Après la création d'un événement/article/annuaire/page, le mode édition est automatiquement activé.</li>
-				    <li>Se positionner sur chaque zone éditable et ajouter le contenu souhaité.</li>
-				    <li>Pour ajouter une image, cliquer sur la zone grisée puis sélectionner l'image à télécharger.</li>
-				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-				</ul>
-
-			    <h3>Ajouter une catégorie/tag dans un événement/article/annuaire</h3>
-
-			    <ul>
-			        <li>Aller sur l'événement/article/annuaire concerné.</li>
-			        <li>Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).</li>
-			        <li>Cliquer sur le champ sous "Catégories/Tags".</li>
-			        <li>Choisir une catégorie/tag dans la liste déroulante ou saisir une nouvelle catégorie/tag.</li>
-			        <li>Pour en saisir plusieurs, les séparer par une virgule.</li>
-			    </ul>
-
-			    <h3>Mettre en brouillon/ligne du contenu</h3>
-
-			    <ul>
-			        <li>Aller sur la page concernée.</li>
-			        <li>Cliquer sur l'icône "oeil" <i class="icon moon-eye" aria-hidden="true"></i> / "oeil barré" <i class="icon moon-eye-off" aria-hidden="true"></i> en haut à droite pour mettre en brouillon ou en ligne une page.</li>
-			        <li>Cliquer sur "Enregistrer".</li>
-			    </ul>
-
-			    <h3>Mettre à jour du contenu</h3>
-
-			    <ul>
-			        <li> Se positionner sur la page/article concerné-e via le menu.</li>
-			        <li>Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).</li>
-			        <li>Ou cliquer sur l'icône "menu" <i class="icon moon-menu" aria-hidden="true"></i> en haut à gauche puis cliquer sur la page/article concerné-e.</li>
-			        <li>Cliquer sur la zone à modifier, faire les modifications souhaitées (possibilité de mettre en forme le texte, la barre d'outils apparaît au survol du texte concerné).</li>
-			        <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-			    </ul>
-
-			    <h3>Modifier la date d'un événement/article/annuaire (pour en modifier l'ordre)</h3>
-
-			    <ul>
-			        <li>Aller sur la page concernée.</li>
-			        <li>Cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche de la page (apparaît au survol).</li>
-			        <li>Survoler le titre de la page en haut du menu d'édition.</li>
-			        <li>Modifier la date de création.</li>
-			    </ul>
-
-			    <h3>Supprimer un événement/article/annuaire/page</h3>
-
-			    <ul>
-			        <li>Aller sur la page concernée.</li>
-			        <li>Cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche de la page (apparaît au survol).</li>
-			        <li>Cliquer sur le bouton "Supprimer" en haut à droite.</li>
-			        <li>Cliquer sur "OK".</li>
-			    </ul>
-			    <div>
 			        <h3>Ajouter une traduction</h3>
-
-			    </div>
-			    <ul>
-			        <li>Aller sur la page concernée.</li>
-			        <li>Cliquer sur le bouton "Langue" en haut à droite.</li>
-			        <li>Si la page de traduction existe déjà, cliquer sur le champ après "Connecter" et choisir la page traduite dans la liste déroulante.</li>
-			        <li>Pour créer une page de traduction, cliquer sur "Dupliquer" en face de la langue concernée.</li>
-			    </ul>
-
-
-			<h2>Mettre en forme du contenu</h2>
-
-
-			    <h3>Ajouter un titre</h3>
-
-				<ul>
-				    <li>Sélectionner le texte du titre.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur H² (titre de 2ème niveau) ou H³ (titre de 3ème niveau).</li>
-				</ul>
-
-			    <h3>Mettre en gras un mot ou une expression</h3>
-
-				<ul>
-				    <li>Sélectionner le mot ou l'expression à mettre en gras.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "gras" <i class="icon moon-bold" aria-hidden="true"></i>.</li>
-				</ul>
-
-			    <h3>Mettre en italique un mot ou une expression</h3>
-
-			    <ul>
-			        <li>Sélectionner le mot ou l'expression à mettre en gras.</li>
-			        <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "italique" <i class="icon moon-italic" aria-hidden="true"></i>.</li>
-			    </ul>
-
-			    <h3>Ajouter une citation</h3>
-
-				<ul>
-				    <li>Sélectionner le mot ou l'expression à mettre en gras.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "citation" <i class="icon moon-quote" aria-hidden="true"></i>.</li>
-				</ul>
-
-				<blockquote>Ceci est un exemple de citation.</blockquote>
-
-			    <h3>Ajouter une liste à puces</h3>
-
-				<ul>
-				    <li>Saisir le texte en appuyant sur "Entrée" à chaque nouvelle ligne.</li>
-				    <li>Sélectionner tout le texte.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "liste à puces" <i class="icon moon-list" aria-hidden="true"></i>.</li>
-				</ul>
-
-			    <h3>Aligner du contenu</h3>
-
-				<ul>
-				    <li>Sélectionner le texte à aligner.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "aligner à gauche" <i class="icon moon-align-left" aria-hidden="true"></i>, "centrer" <i class="icon moon-align-center" aria-hidden="true"></i> ou "aligner à droite" <i class="icon moon-align-right" aria-hidden="true"></i>.</li>
-				</ul>
-
-			    <h3>Éviter les mots isolés</h3>
-
-				<ul>
-				    <li>Dans la barre d'outils, cliquer sur l'icône "voir le code source" <i class="icon moon-code" aria-hidden="true"></i>.</li>
-				    <li>Placer votre curseur entre les 2 mots que vous voulez retrouver sur la même ligne. Il ne doit pas avoir d'espace entre les mots. Les mots doivent être collés.</li>
-				    <li>Ajouter le code HTML "&amp;nbsp;" pour avoir une espace insécable.</li>
-				</ul>
-
-			    <h3>Ajouter un pictogramme</h3>
-
-				<ul>
-				    <li>Se positionner à l'endroit où l'on souhaite insérer un pictogramme.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "drapeau" <i class="icon moon-flag" aria-hidden="true"></i>.</li>
-				</ul>
-
-			    <h3>Modifier la langue d'un mot ou d'une expression</h3>
-
-				<ul>
-				    <li>Sélectionner le mot ou l'expression concerné•e.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "langage".</li>
-				    <li>Saisir le code langue.</li>
-				    <li>Cliquer sur "Ajouter une langue".</li>
-				</ul>
-
-			    <h3>Ajouter un lien hypertexte</h3>
-
-				<ul>
-				    <li>Sélectionner le texte pour lequel on souhaite ajouter un lien hypertexte.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "lien" <i class="icon moon-link" aria-hidden="true"></i>.</li>
-				    <li>Pour une page interne, saisir la ou les premières lettres de la page et choisir la page dans le menu déroulant qui s'affiche.</li>
-				    <li>Pour une page externe, saisir l'adresse (url) du lien.</li>
-				    <li>Si besoin, cliquer sur l'icône "déconnexion" <i class="icon moon-log-out" aria-hidden="true"></i> pour donner au lien la forme d'un bouton.</li>
-				    <li>Si besoin, cliquer sur l'icône "lien externe" <i class="icon moon-external-link" aria-hidden="true"></i> pour que le lien s'ouvre dans un nouvel onglet (lien externe)</li>
-				    <li>Cliquer sur "Ajouter le lien".</li>
-				</ul>
-
-			    <h3>Mettre en avant du texte (highlight)</h3>
-
-				<ul>
-				    <li>Sélectionner le texte à mettre en avant.</li>
-				    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "information" <i class="icon moon-info" aria-hidden="true"></i>.</li>
-				</ul>
-
-				<div class="highlight mtm">Exemple de texte mis en avant.</div>
-
-
-			<h2>Gérer des images</h2>
-
-				<h3>Ajouter une image dans une zone de texte</h3>
-
-				<ul>
-				    <li> Après la création d'un événement/article/annuaire/page, le mode édition est automatiquement activé.</li>
-				    <li>Se positionner à l'endroit souhaité dans la zone de texte.</li>
-				    <li>Cliquer sur l'icône "image" <i class="icon moon-image" aria-hidden="true"></i> de la barre d'outil.</li>
-				    <li>Redimensionner l'image si besoin en cliquant sur l'image puis sur le coin en bas à droite de l'image.</li>
-				    <li>Si besoin, cliquer sur "sous-titre" pour ajouter une légende.</li>
-				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-				</ul>
-
-			    <h3>Ajouter une légende à une image (pour le référencement et l'accessibilité)</h3>
-
-				<ul>
-				    <li>Cliquer sur l'image.</li>
-				    <li>Saisir une légende dans le champ "Légende de l'image" au-dessus de l'image.</li>
-				</ul>
-
-			    <h3>Ajouter un sous-titre à une image (crédit/source)</h3>
-
-				<ul>
-				    <li>Cliquer sur l'image.</li>
-				    <li>Cliquer sur "Sous-titre" au-desssus de l'image.</li>
-				    <li>Remplacer le texte "Sous-titre" qui vient de s'ajouter au-dessous de l'image.</li>
-				</ul>
-
-
-			<h2>Gérer des modules (exemple du modèle de page "Personnalités")</h2>
-
-			    <h3>Ajouter un module</h3>
-
-				<ul>
-				    <li>Aller sur la page concernée.</li>
-				    <li>Cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à droite (apparaît au survol).<br>
-				    </li>
-				    <li>Cliquer sur le bouton "Ajouter un module".</li>
-				    <li>Saisir les données du module (texte, image...).</li>
-				    <li>Cliquer sur "Enregistrer" en haut à droite.</li>
-				</ul>
-
-			    <h3>Déplacer un module</h3>
-
-				<ul>
-				    <li>Une fois plusieurs modules ajoutés, il est possible de les déplacer :</li>
-				    <li>Cliquer sur le bouton "Déplacer".</li>
-				    <li>Glisser-déposer le ou les modules à déplacer.</li>
-				</ul>
-
-			    <h3>Supprimer un module</h3>
-
-			    <p>Cliquer sur l'icône "croix" <i class="icon moon-x" aria-hidden="true"></i> dans le coin haut-droit du ou des modules concernés.</p>
-
-
-			<h2>Gérer des menus et sous-menus</h2>
-
-				<h3>Ajouter un menu de navigation</h3>
-
-				<ul>
-				    <li> Se positionner sur le haut de la page et cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> (apparaît au survol).</li>
-				    <li>Cliquer sur l'icône "plus" <i class="icon moon-plus" aria-hidden="true"></i> en face de chaque menu qui doit être ajouté.</li>
-				    <li>Pour modifier l'ordre des menus, se positionner sur la zone grisée au-dessus du menu concerné puis cliquer quand la petite main apparaît.</li>
-				</ul>
-
-			    <h3>Supprimer un menu de navigation</h3>
-
-			    <p>Se positionner sur la zone grisée au-dessus du menu concerné puis cliquer sur l'icône "croix" <i class="icon moon-x" aria-hidden="true"></i> du ou des menus à supprimer.</p>
-
-			    <h3>Ajouter une page dans un sous-menu de navigation</h3>
-
-				<ul>
-				    <li>Aller sur la page concernée.</li>
-				    <li>Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).<br>
-				    </li>
-				    <li>Dans le fil d'ariane (sous le menu principal), choisir le sous-menu dans la liste déroulante.</li>
-				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-				</ul>
-
-
-			<h2>Gérer des utilisateurs </h2>
-
-				<h3>Ajouter un utilisateur</h3>
-
-				<ul>
-				    <li> Cliquer sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis sur l'icône "ajouter un utilisateur" <i class="icon moon-user-plus" aria-hidden="true"></i></li>
-				    <li>Sélectionner les droits à attribuer à cet utilisateur (maintenir la touche CTRL appuyée pour en sélectionner plusieurs).</li>
-				    <li>Saisir un pseudo, une adresse email.</li>
-				    <li>Cliquer sur l'icône "enveloppe" <i class="icon moon-mail" aria-hidden="true"></i> pour envoyer le mot de passe par mail.</li>
-				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-				</ul>
-
-				<h3>Modifier un utilisateur</h3>
-
-				<ul>
-				    <li> Cliquer sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis sur l'icône "groupe d'utilisateurs" <i class="icon moon-users" aria-hidden="true"></i> pour voir la liste de tous les utilisateurs.</li>
-				    <li>Cliquer sur l'utilisateur à modifier.</li>
-				    <li>Pour mettre à jour le pseudo, l'adresse email ou le mot de passe, les modifier simplement dans la zone concernée. </li>
-				    <li>Pour mettre à jour les droits utilisateur (autorisations), sélectionner ou désélectionner les droits concernés (maintenir la touche CTRL appuyée pour en sélectionner plusieurs).</li>
-				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
-				</ul>
-
-				<h3>Supprimer un utilisateur</h3>
-
-				<ul>
-				    <li>Cliquer sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis sur l'icône "groupe d'utilisateurs" <i class="icon moon-users" aria-hidden="true"></i> pour voir la liste de tous les utilisateurs.</li>
-				    <li>Cliquer sur l'utilisateur à supprimer.</li>
-				    <li>Cliquer sur l'icône "poubelle" <i class="icon moon-trash" aria-hidden="true"></i> en bas à gauche du menu.</li>
-				    <li>Confirmer en cliquant sur OK.</li>
-				</ul>
-
-		</article>
-
-	</section>
-
-</main>
-
-
-<footer role="contentinfo"></footer>
-
-
-<button class="btn fixed top block" title="Retour en haut" aria-label="Retour en haut"><i class="icon moon-arrow-up" aria-hidden="true"></i></button>
-
-
-<script>
-//$(function(){
-	// Buuton pour remonter en haut
-	$(".btn.fixed.top").click(function() {
-		$("html, body").animate({scrollTop: 0}, 200);
-		$("a[href='#main']").focus();
-		return false;
-	});
-
-	// CONSTRUCTION DU SOMMAIRE
-	i = 1;
-	open = false;
-	html = '';
-
-	$("article h2, article h3").each(function(index)
-	{
-		// 1er élément
-		if(i == 1) previous = $(this).prop("tagName");
-
-
-		// Ajoute l'encre dans le contenu
-		$(this).attr("id","ancre"+i);
-
-
-		// Si changement de niveau
-		if($(this).prop("tagName") != previous)
-		{
-			if(open)// On doit fermer
-			{
-				html += "</ol></li>";
-				open = false;
-			}
-			else// On ouvre une sous-section
-			{
-				html += "<li><ol>";
-				open = true;
-			}
-		}
-
-
-		// Ajoute l'élément au sommaire
-		html += "<li><a href='#ancre" + i + "'>" + $(this).text() + "</a></li>";
-
-
-		previous = $(this).prop("tagName");
-
-		++i;
-	});
-
-	// Si sommaire par fermer
-	if(open) html += "</ol></li>";
-
-	$("#sommaire").append(html);
-
-//});
-</script>
+					    <ul>
+				        <li>Aller sur la page concernée.</li>
+				        <li>Cliquer sur le bouton "Langue" en haut à droite.</li>
+				        <li>Si la page de traduction existe déjà, cliquer sur le champ après "Connecter" et choisir la page traduite dans la liste déroulante.</li>
+				        <li>Pour créer une page de traduction, cliquer sur "Dupliquer" en face de la langue concernée.</li>
+					    </ul>
+						</div>
+					</details>
+					<details>
+						<summary class="title"><h2><i class="icon moon-sliders" aria-hidden="true"></i> Mettre en forme du contenu</h2></summary>
+						<div id="formatting_content" class="content">
+							<h3>Ajouter un titre</h3>
+							<ul>
+					    	<li>Sélectionner le texte du titre.</li>
+								<li>Dans la barre d'outils qui apparaît, cliquer sur H² (titre de 2ème niveau) ou H³ (titre de 3ème niveau).</li>
+							</ul>
+
+							<h3>Mettre en gras un mot ou une expression</h3>
+							<ul>
+						    <li>Sélectionner le mot ou l'expression à mettre en gras.</li>
+						    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "gras" <i class="icon moon-bold" aria-hidden="true"></i>.</li>
+							</ul>
+
+					    <h3>Mettre en italique un mot ou une expression</h3>
+					    <ul>
+				        <li>Sélectionner le mot ou l'expression à mettre en gras.</li>
+				        <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "italique" <i class="icon moon-italic" aria-hidden="true"></i>.</li>
+					    </ul>
+
+				    	<h3>Ajouter une citation</h3>
+							<ul>
+							  <li>Sélectionner le mot ou l'expression à mettre en gras.</li>
+							  <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "citation" <i class="icon moon-quote" aria-hidden="true"></i>.</li>
+							</ul>
+
+							<blockquote>Ceci est un exemple de citation.</blockquote>
+
+					    <h3>Ajouter une liste à puces</h3>
+							<ul>
+						    <li>Saisir le texte en appuyant sur "Entrée" à chaque nouvelle ligne.</li>
+						    <li>Sélectionner tout le texte.</li>
+						    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "liste à puces" <i class="icon moon-list" aria-hidden="true"></i>.</li>
+							</ul>
+
+				    	<h3>Aligner du contenu</h3>
+							<ul>
+							  <li>Sélectionner le texte à aligner.</li>
+							  <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "aligner à gauche" <i class="icon moon-align-left" aria-hidden="true"></i>, "centrer" <i class="icon moon-align-center" aria-hidden="true"></i> ou "aligner à droite" <i class="icon moon-align-right" aria-hidden="true"></i>.</li>
+							</ul>
+
+				    	<h3>Éviter les mots isolés</h3>
+							<ul>
+						    <li>Dans la barre d'outils, cliquer sur l'icône "voir le code source" <i class="icon moon-code" aria-hidden="true"></i>.</li>
+						    <li>Placer votre curseur entre les 2 mots que vous voulez retrouver sur la même ligne. Il ne doit pas avoir d'espace entre les mots. Les mots doivent être collés.</li>
+						    <li>Ajouter le code HTML "&amp;nbsp;" pour avoir une espace insécable.</li>
+							</ul>
+
+							<h3>Ajouter un pictogramme</h3>
+							<ul>
+						    <li>Se positionner à l'endroit où l'on souhaite insérer un pictogramme.</li>
+						    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "drapeau" <i class="icon moon-flag" aria-hidden="true"></i>.</li>
+							</ul>
+
+							<h3>Modifier la langue d'un mot ou d'une expression</h3>
+							<ul>
+						    <li>Sélectionner le mot ou l'expression concerné·e.</li>
+						    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "langage" <i class="icon moon-globe" aria-hidden="true"></i>.</li>
+						    <li>Saisir le code langue.</li>
+						    <li>Cliquer sur "Ajouter une langue".</li>
+							</ul>
+
+				    	<h3>Ajouter un lien hypertexte</h3>
+							<ul>
+						    <li>Sélectionner le texte pour lequel on souhaite ajouter un lien hypertexte.</li>
+						    <li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "lien" <i class="icon moon-link" aria-hidden="true"></i>.</li>
+						    <li>Pour une page interne, saisir la ou les premières lettres de la page et choisir la page dans le menu déroulant qui s'affiche.</li>
+						    <li>Pour une page externe, saisir l'adresse (url) du lien.</li>
+						    <li>Si besoin, cliquer sur l'icône "déconnexion" <i class="icon moon-log-out" aria-hidden="true"></i> pour donner au lien la forme d'un bouton.</li>
+						    <li>Si besoin, cliquer sur l'icône "lien externe" <i class="icon moon-external-link" aria-hidden="true"></i> pour que le lien s'ouvre dans un nouvel onglet (lien externe)</li>
+						    <li>Cliquer sur "Ajouter le lien".</li>
+							</ul>
+
+					    <h3>Mettre en avant du texte (highlight)</h3>
+							<ul>
+						    <li>Sélectionner le texte à mettre en avant.</li>
+					    	<li>Dans la barre d'outils qui apparaît, cliquer sur l'icône "étoile" <i class="icon moon-star" aria-hidden="true"></i>.</li>
+							</ul>
+
+							<div class="highlight">Exemple de texte mis en avant.</div>
+						</div>
+					</details>
+					<details>
+						<summary class="title"><h2><i class="icon moon-image" aria-hidden="true"></i> Gérer des images</h2></summary>
+						<div id="pictures_management" class="content">
+							<h3>Ajouter une image dans une zone de texte</h3>
+							<ul>
+								<li> Après la création d'un événement/article/annuaire/page, le mode édition est automatiquement activé.</li>
+							  <li>Se positionner à l'endroit souhaité dans la zone de texte.</li>
+							  <li>Cliquer sur l'icône "image" <i class="icon moon-image" aria-hidden="true"></i> de la barre d'outil.</li>
+							  <li>Redimensionner l'image si besoin en cliquant sur l'image puis sur le coin en bas à droite de l'image.</li>
+							  <li>Si besoin, cliquer sur "sous-titre" pour ajouter une légende.</li>
+							  <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+							</ul>
+
+						  <h3>Ajouter une légende à une image (pour le référencement et l'accessibilité)</h3>
+							<ul>
+								<li>Cliquer sur l'image.</li>
+							  <li>Saisir une légende dans le champ "Légende de l'image" au-dessus de l'image.</li>
+							</ul>
+
+						  <h3>Ajouter un sous-titre à une image (crédit/source)</h3>
+							<ul>
+								<li>Cliquer sur l'image.</li>
+								<li>Cliquer sur "Sous-titre" au-desssus de l'image.</li>
+							  <li>Remplacer le texte "Sous-titre" qui vient de s'ajouter au-dessous de l'image.</li>
+							</ul>
+
+						</div>
+					</details>
+
+					<details>
+						<summary class="title"><h2><i class="icon moon-life-buoy" aria-hidden="true"></i> Gérer des modules</h2></summary>
+						<div id="module_management" class="content">
+							<h3>Ajouter un module</h3>
+							<ul>
+						    <li>Aller sur la page concernée.</li>
+						    <li>Cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à droite (apparaît au survol).<br>
+						    </li>
+						    <li>Cliquer sur le bouton "Ajouter un module".</li>
+						    <li>Saisir les données du module (texte, image...).</li>
+						    <li>Cliquer sur "Enregistrer" en haut à droite.</li>
+							</ul>
+					    <h3>Déplacer un module</h3>
+							<ul>
+						    <li>Une fois plusieurs modules ajoutés, il est possible de les déplacer :</li>
+						    <li>Cliquer sur le bouton "Déplacer".</li>
+						    <li>Glisser-déposer le ou les modules à déplacer.</li>
+							</ul>
+					    <h3>Supprimer un module</h3>
+					    <p>Cliquer sur l'icône "croix" <i class="icon moon-x" aria-hidden="true"></i> dans le coin haut-droit du ou des modules concernés.</p>
+						</div>
+					</details>
+
+					<details>
+						<summary class="title"><h2><i class="icon moon-menu" aria-hidden="true"></i> Gérer des menus et sous-menus</h2></summary>
+						<div id="menu_management" class="content">
+							<h3>Ajouter un menu de navigation</h3>
+							<ul>
+					    	<li> Se positionner sur le haut de la page et cliquer sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> (apparaît au survol).</li>
+							  <li>Cliquer sur l'icône "plus" <i class="icon moon-plus" aria-hidden="true"></i> en face de chaque menu qui doit être ajouté.</li>
+							  <li>Pour modifier l'ordre des menus, se positionner sur la zone grisée au-dessus du menu concerné puis cliquer quand la petite main apparaît.</li>
+							</ul>
+
+						  <h3>Supprimer un menu de navigation</h3>
+				 			<p>Se positionner sur la zone grisée au-dessus du menu concerné puis cliquer sur l'icône "croix" <i class="icon moon-x" aria-hidden="true"></i> du ou des menus à supprimer.</p>
+
+						  <h3>Ajouter une page dans un sous-menu de navigation</h3>
+							<ul>
+					    	<li>Aller sur la page concernée.</li>
+							  <li>Passer en mode édition en cliquant sur l'icône "crayon" <i class="icon moon-edit" aria-hidden="true"></i> en bas à gauche (apparaît au survol).<br></li>
+							  <li>Dans le fil d'ariane (sous le menu principal), choisir le sous-menu dans la liste déroulante.</li>
+							  <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+							</ul>
+						</div>
+					</details>
+
+					<details>
+						<summary class="title"><h2><i class="icon moon-users" aria-hidden="true"></i> Gérer des utilisateurs</h2></summary>
+						<div id="users_management" class="content">
+							<h3>Ajouter un utilisateur</h3>
+							<ul>
+				    		<li> Cliquer sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis sur l'icône "ajouter un utilisateur" <i class="icon moon-user-plus" aria-hidden="true"></i></li>
+							  <li>Sélectionner les droits à attribuer à cet utilisateur (maintenir la touche CTRL appuyée pour en sélectionner plusieurs).</li>
+							  <li>Saisir un pseudo, une adresse email.</li>
+							  <li>Cliquer sur l'icône "enveloppe" <i class="icon moon-mail" aria-hidden="true"></i> pour envoyer le mot de passe par mail.</li>
+							  <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+							</ul>
+
+							<h3>Modifier un utilisateur</h3>
+							<ul>
+					    	<li> Cliquer sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis sur l'icône "groupe d'utilisateurs" <i class="icon moon-users" aria-hidden="true"></i> pour voir la liste de tous les utilisateurs.</li>
+							  <li>Cliquer sur l'utilisateur à modifier.</li>
+							  <li>Pour mettre à jour le pseudo, l'adresse email ou le mot de passe, les modifier simplement dans la zone concernée. </li>
+							  <li>Pour mettre à jour les droits utilisateur (autorisations), sélectionner ou désélectionner les droits concernés (maintenir la touche CTRL appuyée pour en sélectionner plusieurs).</li>
+							  <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
+							</ul>
+
+							<h3>Supprimer un utilisateur</h3>
+							<ul>
+						    <li>Cliquer sur l'icône "utilisateur" <i class="icon moon-user" aria-hidden="true"></i> puis sur l'icône "groupe d'utilisateurs" <i class="icon moon-users" aria-hidden="true"></i> pour voir la liste de tous les utilisateurs.</li>
+						    <li>Cliquer sur l'utilisateur à supprimer.</li>
+						    <li>Cliquer sur l'icône "poubelle" <i class="icon moon-trash" aria-hidden="true"></i> en bas à gauche du menu.</li>
+						    <li>Confirmer en cliquant sur OK.</li>
+							</ul>
+						</div>
+					</details>
+
+				</div>
+
+			</div>
+
+		</div>
+
+<!--<footer role="contentinfo"></footer>
+
+
+<button class="btn fixed top block" title="Retour en haut" aria-label="Retour en haut"><i class="icon moon-arrow-up" aria-hidden="true"></i></button>-->
 
 </body>
 </html>
