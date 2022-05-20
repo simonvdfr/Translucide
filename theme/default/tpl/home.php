@@ -1,6 +1,6 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
-<section id="hero" class="layout-maxed">
+<section id="hero" class="layout-maxed bg-blue">
 	<div class="layout-hero bg-section bg-overlay bg-gradient sm:py-36 py-8" <?php bg('bg-hero')?>>
 		<div class="hero-content grid md:grid-cols-2 flex flex-wrap sm:my-36 my-8 sm:py-36 py-8">
 			<div class="py-12">
