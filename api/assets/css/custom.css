@@ -448,6 +448,13 @@ header nav .burger-button {
 	color: var(--dark-color);
 }
 
+#admin-bar #user .absolute li.next {
+	background-color: #dbdfe0;
+	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+	border-radius: 0 0 3px 3px;
+	text-align: center;
+}
+
 #admin-bar input {
 	padding: initial;
 }
