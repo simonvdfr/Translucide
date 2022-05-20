@@ -1499,7 +1499,7 @@ switch($_GET['mode'])
 			<li class="add-media p-16 m-8 text-center text-smaller" onclick="document.getElementById('add-media').click();">
 				<i class="icon moon-upload pb-16"></i><br>
 				<?php _e("Drag and drop a file here or click me");?>
-				<input type="file" id="add-media" style="display: none" multiple>
+				<input type="file" id="add-media" class="hidden" multiple>
 			</li>
 			<?php
 			}
