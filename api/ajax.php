@@ -540,7 +540,7 @@ switch($_GET['mode'])
 				</div>
 
 				<div class="col-span-2 text-left">
-					<input type="password" id="password_new" class="float left" autocomplete="new-password">
+					<input type="password" id="password_new" autocomplete="new-password">
 					<a href="javascript:if($('#user-profil #password_new').attr('type') == 'password') $('#user-profil #password_new').attr('type','text'); else $('#user-profil #password_new').attr('type','password'); void(0);" title="<?php _e("See password");?>" class="no-decoration"><i class="icon moon-eye align-middle"></i></a>
 					<a href="javascript:$('#user-profil #password_new').make_password();" title="<?php _e("Suggest a password");?>" class="no-decoration"><i class="icon moon-refresh-cw align-middle"></i></a>
 					<a href="javascript:send_password();" title="<?php _e("Send password by mail");?>" class="no-decoration" id="send-password"><i class="icon moon-mail align-middle"></i></a>
@@ -573,7 +573,7 @@ switch($_GET['mode'])
 
 			</div>
 
-				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="float-left"><i class="icon moon-trash vab"></i></a><?php }?>
+				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="float-left"><i class="icon moon-trash"></i></a><?php }?>
 
 				<div class="col-span-full text-right ma-8">
 					<button id="save-user" class="text-smaller">
