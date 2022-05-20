@@ -2088,7 +2088,7 @@ $(function()
 			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='icon moon-more-horizontal'></i></button></li>";
 
 		if(typeof toolbox_viewsource != 'undefined')
-			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='icon moon-hash'></i></button></li>";
+			toolbox+= "<li><button onclick=\"view_source(memo_focus)\" id='view-source' title=\""+__("See the source code")+"\"><i class='icon moon-code'></i></button></li>";
 
 		if(typeof toolbox_icon != 'undefined')
 			toolbox+= "<li><button onclick=\"dialog('icon', memo_focus)\" title=\""+__("Icon Library")+"\"><i class='icon moon-flag'></i></button></li>";
