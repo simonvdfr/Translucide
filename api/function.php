@@ -150,34 +150,34 @@ function page($num_total, $page, $filter = array())
 
 	?>
 	<nav role="navigation"<?=(isset($filter['aria-label'])?' aria-label="'.htmlspecialchars($filter['aria-label']).'"':'')?>>
-		<ul class="page unstyled inbl man pan">
+		<ul class="page is-unstyled inline-block align-top m-0 p-0">
 		<?php
 		if($num_total > $num_pp)
 		{
 			$num_page = ceil($num_total/$num_pp);
 
 			// Page 1
-			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?=($page == 1?' selected':'');?>"<?=($page == 1?' aria-current="page"':'')?>>1</a></li><?php
+			?><li class="float-left mr-16 mb-16"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="btn<?=($page == 1?' selected':'');?>"<?=($page == 1?' aria-current="page"':'')?>>1</a></li><?php
 
 			if($num_page > 10 and $page >= 10 and !isset($filter['full']))// + de 10 page
 			{
-				?><li class="fl mrs mtt">...</li><?php
+				?><li class="float-left mr-16 mt-8">...</li><?php
 
 				for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
-					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
+					<li class="float-left mr-16 mb-16"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="btn<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
 				<?php }
 			}
 			else// - de 10 page
 			{
 				for($i = 2; $i <= (isset($filter['full'])?$num_page:10) and $i < $num_page; $i++){?>
-					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
+					<li class="float-left mr-16 mb-16"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="btn<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
 				<?php }
 			}
 
-			if($num_page > 10 and $page < ($num_page - 2) and !isset($filter['full'])) {?><li class="fl mrs">...</li><?php }
+			if($num_page > 10 and $page < ($num_page - 2) and !isset($filter['full'])) {?><li class="float-left mr-16">...</li><?php }
 
 			// Page final
-			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?=($page == $num_page?' selected':'');?>"<?=($page == $num_page?' aria-current="page"':'')?>><?=$num_page?></a></li><?php
+			?><li class="float-left mr-16 mb-16"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="btn<?=($page == $num_page?' selected':'');?>"<?=($page == $num_page?' aria-current="page"':'')?>><?=$num_page?></a></li><?php
 
 		}?>
 		</ul>
@@ -196,7 +196,7 @@ function get_lang($lang = '')
 	if(isset($_SESSION['lang'])) {
 		$lang = $_SESSION['lang'];
 	}
-	elseif(!$lang and @$_SERVER['HTTP_ACCEPT_LANGUAGE']) // Si pas de langue on prend la 1er langue du navigateur
+	elseif(!$lang and @$_SERVER['HTTP_ACCEPT_LANGUAGE']) // Si pas de langue, on prend la 1ère langue du navigateur
 	{
 		preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), $matches, PREG_SET_ORDER);
 		$explode = explode("-", $matches[0][1]);
@@ -233,10 +233,10 @@ function load_translation($id)
 // Ajoute la traduction
 function add_translation($add_translation)
 {
-	// On met toutes les clés en minuscule pour une recherche insensible à la case
+	// On met toutes les clés en minuscule pour une recherche insensible à la casse
 	$add_translation = array_change_key_case($add_translation, CASE_LOWER);
 
-	// Encodage des clés avec accent => ne fonctionne pas / a peaufiné pour les traductions à partir du Français
+	// Encodage des clés avec accent => ne fonctionne pas / à peaufiner pour les traductions à partir du Français
 	//foreach($add_translation as $cle => $val) $add_translation_encode[utf8_encode($cle)] = $val;
 	//$add_translation = $add_translation_encode;
 
@@ -288,7 +288,7 @@ function txt($key = null, $filter = array())
 	// S'il y a une valeur pour le filter mais que != tableau => c'est une class
 	if(!is_array($filter)) $filter = array("class" => $filter);
 
-	// Si contenu global on rapatri le contenu depuis la table méta (Anciennement "universel")
+	// Si contenu global on rapatrit le contenu depuis la table méta (Anciennement "universel")
 	if(isset($filter['global']))
 	{
 		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
@@ -312,7 +312,7 @@ function txt($key = null, $filter = array())
 
 		if(isset($filter['itemprop'])) echo" itemprop=\"".$filter['itemprop']."\"";
 
-		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Desitation de stockage du fichier
+		if(isset($filter['dir'])) echo" data-dir='".$filter['dir']."'";// Destination de stockage du fichier
 
 		if(isset($filter['builder'])) echo" data-builder='".$filter['builder']."'";
 
@@ -375,7 +375,7 @@ function media($key = null, $filter = array())
 {
 	$key = ($key ? $key : "file-".$GLOBALS['editkey']);
 
-	// Si contenu global on rapatri le contenu depuis la table méta
+	// Si contenu global on rapatrit le contenu depuis la table méta
 	if(isset($filter['global']))
 	{
 		$sel = $GLOBALS['connect']->query("SELECT * FROM ". $GLOBALS['table_meta']." WHERE type='global' AND cle='".encode($key)."' LIMIT 1");
@@ -385,7 +385,7 @@ function media($key = null, $filter = array())
 	}
 
 
-	// Verification de la config de https pour crée le bon chemin (on force https dans les chemins)
+	// Verification de la config de https pour créer le bon chemin (on force https dans les chemins)
 	if(@$_SERVER['REQUEST_SCHEME'] == 'https' and $GLOBALS['scheme'] != 'https://')
 		$GLOBALS['home'] = str_replace('http://', 'https://', $GLOBALS['home']);
 
@@ -567,7 +567,7 @@ function module($module = "module", $content = null)
 	{
 		if(preg_match("/^".$module."-/", $key) == 1)
 		{
-			// Récupère le denier chiffre (numéro d'occurance)
+			// Récupère le dernier chiffre (numéro d'occurance)
 			preg_match('/(\d+)(?!.*\d)/', $key, $match);
 			$num_module = @$match[1];
 
@@ -595,7 +595,7 @@ function module($module = "module", $content = null)
 		}
 	}
 
-	// Bloc vide pour l'ajout de nouveau élément (bloc duplicable)
+	// Bloc vide pour l'ajout de nouvel élément (bloc duplicable)
 	$array_module[$module][0]['titre'] = "";
 
 	// Re-init le tableau
@@ -610,7 +610,7 @@ function checkbox($key = null, $filter = array())
 	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
 
 	// moon-check/moon-close => moon-ok/moon-cancel
-	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." icon moon ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "moon-check yes" : "moon-x no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
+	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." icon ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "moon-check yes" : "moon-x no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
 
 	$GLOBALS['editkey']++;
 }
@@ -750,7 +750,7 @@ function tag($key = null, $filter = array())
 			if(@$filter['href']===false)
 				echo'<span>'.$res_tag['name'].'</span>';
 			else
-				echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="tdn">'.$res_tag['name'].'</a>';
+				echo'<a href="'.make_url($key, array($res_tag['encode'], 'domaine' => true)).'" class="no-decoration">'.$res_tag['name'].'</a>';
 
 			// Si ul
 			if(@$filter['tag']=='ul') echo '</li>';
@@ -808,7 +808,7 @@ function curl($url, $params = null)
 function hash_pwd($pwd, $salt = null)
 {
 	// Création du salt unique a cet utilisateur char(16)
-	if(!$salt) $unique_salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));// @todo: peut-etre remplacer cette fonction par make_pwd
+	if(!$salt) $unique_salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));// @todo: peut-être remplacer cette fonction par make_pwd
 	else $unique_salt = $salt;
 
 	// Boucle pour encoder x fois le pwd avec le salt unique
@@ -827,7 +827,7 @@ function make_pwd($length = 12, $special_chars = false, $extra_special_chars = f
 {
 	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-	if($special_chars) $chars .= "!@#%^&*()";//$ <= Créé parfois un bug : crée une variable php
+	if($special_chars) $chars .= "!@#%^&*()";//$ <= Crée parfois un bug : crée une variable php
 
 	if($extra_special_chars) $chars .= "-_ []{}<>~`+=,.;:/?|";
 
@@ -863,7 +863,7 @@ function ip()
 // Création d'un token
 function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt de mettre le mail et pas le name ou rien
 {
-	// Si la fonction de memorisation de connexion de l'utilisateur et coché
+	// Si la fonction de mémorisation de connexion de l'utilisateur est cochée
 	if(isset($_POST['rememberme'])) {
 		setcookie("rememberme", encode($_POST['rememberme']), 0, $GLOBALS['path'], $GLOBALS['domain']);
 		$_COOKIE['rememberme'] = encode($_POST['rememberme']);
@@ -888,7 +888,7 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt d
 	// Date d'expiration du login
 	$_SESSION['expires'] = $time;
 
-	// Faire en sorte que le token soit plus complet et autonome sans trop de variable dans la session
+	// Faire en sorte que le token soit plus complet et autonome sans trop de variables dans la session
 	$_SESSION['token'] = $token = hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']);
 
 	// Niveau de sécurité élever, on enregistre le token dans la bdd
@@ -928,7 +928,7 @@ function token_check($token)
 // Connexion au site avec le système interne de login+password
 function login($level = 'low', $auth = null, $quiet = null)
 {
-	//////// Le level détermine le niveau de vérification pour des taches plus ou moins sensible
+	//////// Le level détermine le niveau de vérification pour des taches plus ou moins sensibles
 	// low : Vérif juste s'il y a un token dans la session
 	// medium : Check le contenu du token
 	// high : Check le token, et s'il est identique dans bdd (config : security=high ou token_light)
@@ -1168,7 +1168,7 @@ function file_check($file, $force_file_check_hack = false)
 	else return false;
 }
 
-// Redimentionne une image
+// Redimensionne une image
 function resize($source_file, $new_width = null, $new_height = null, $dest_dir = null, $option = null)
 {
 	// Supprime les arguments après l'extension (timer...)
@@ -1198,7 +1198,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 	// Si image à réduire ou à forcer
 	if(($new_width and $source_width > $new_width) or ($new_height and $source_height > $new_height) or $option)
 	{
-		// Version original pour le zoom
+		// Version originale pour le zoom
 		$zoom = $GLOBALS['media_dir'].'/' . $dir_clean . $file_name . '.' . $source_ext;
 
 		// Si media dans dir on force. ne met pas dans /resize/
@@ -1216,7 +1216,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 			default: exit(__("Unsupported file type")); break;
 		}
 
-		// Callage de l'image
+		// Calage de l'image
 		$x = $y = 0;
 
 		if($new_width and $new_height)// On redimensionne dans tous les sens
@@ -1237,7 +1237,7 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 						$dest_height = $new_height;
 					}
 
-					// Positionnement de l'image cropé
+					// Positionnement de l'image rognée
 					$x = ($new_width - $dest_width) / 2;
 					$y = ($new_height - $dest_height) / 3;// Paramètre pour callé en hauteur le crop (2 à l'origine)
 				}
