@@ -194,7 +194,7 @@ elseif(isset($res_tag['name']))// Si il y a juste le nom du tag
 if($GLOBALS['filter']) 
 {
 	foreach($GLOBALS['filter'] as $cle => $val)	{
-		if(in_array($cle, $GLOBALS['filter_auth'])) $title.= ' - '.__($cle).' '.$val;
+		if(in_array($cle, $GLOBALS['filter_auth']) and $cle != 'page') $title.= ' - '.__($cle).' '.$val;
 	}
 }
 
