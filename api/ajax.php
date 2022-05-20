@@ -571,6 +571,8 @@ switch($_GET['mode'])
 				<?php if(isset($res['date_insert'])){?><div class="mb-8 text-smaller"><label class="text-left"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>
 				<?php if(isset($res['date_update'])){?><div class="mb-8 text-smaller"><label class="text-left"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
 
+			</div>
+
 				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="float-left"><i class="icon moon-trash vab"></i></a><?php }?>
 
 				<div class="col-span-full text-right ma-8">
@@ -579,8 +581,6 @@ switch($_GET['mode'])
 						<i class="icon moon-<?=($uid?"save":"plus")?>"></i>
 					</button>
 				</div>
-
-			</div>
 
 		</form>
 
