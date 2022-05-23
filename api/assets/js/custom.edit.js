@@ -2185,6 +2185,23 @@ $(function()
 		}
 	}
 
+	// Pour pouvoir sortir du figcaption au retour à la ligne
+	clean_figcaption = function(selector) {
+		if(selector.prop("tagName") == 'FIGCAPTION') {
+			if(dev) console.log("clean_figcaption");
+
+			// Ajout du <p> après de figure
+			selector.parent("figure").after(p = $("<p></p>"));
+
+			// Si un figcatption est créé en plus on le supprime (chrome)
+			if(selector.prev().prop("tagName") == 'FIGCAPTION' && selector.prop("tagName") == 'FIGCAPTION')
+			selector.remove();
+
+			// Focus dans le nouveau <p> après la figure
+			empty_focus(p[0]);
+		}
+	}
+
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
 	clean_highlight = function(selector) {
 		if(selector.prev().hasClass("highlight")) {
@@ -2334,6 +2351,14 @@ $(function()
 
 				if(!$(this).hasClass("view-source"))
 				{
+					// Enter
+					if(event.keyCode == 13) {
+						clean_highlight($(memo_node));// Permet de sortir des highlight
+
+						// Si pas shift+enter (saut de ligne simple => <br>)
+						if(!event.shiftKey) clean_figcaption($(memo_node));// Permet de sortir des figcaption
+					}
+
 					// Supprime les <br> en fin de <p>
 					clean_last_br($(memo_node));
 
@@ -2341,9 +2366,6 @@ $(function()
 					// || event.keyCode == 40
 					//if(event.keyCode == 13) clean_br($(memo_node).prev());
 					//if(event.keyCode == 38) clean_br($(memo_node).next());
-
-					// Clean les highlight
-					if(event.keyCode == 13) clean_highlight($(memo_node));
 
 					// Replace les <div> par des <p>
 					if($(memo_node).prop("tagName") == "DIV") clean_div($(memo_node));

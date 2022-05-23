@@ -560,8 +560,13 @@ function bg($key = null, $filter = array())
 function module($module = "module", $content = null)
 {
 	if($content == null) $content = $GLOBALS['content'];
+<<<<<<< HEAD
 
 	// Extrait les données work du tableau des contenu
+=======
+	
+	// Extrait les données module du tableau des contenu
+>>>>>>> master
 	$keys = array_keys($content);
 	foreach($keys as $key)
 	{
@@ -590,6 +595,9 @@ function module($module = "module", $content = null)
 
 			// Création du tableau avec les elements de modules
 			$array_module[$module][$num_module][$type_module] = $content[$key];
+
+			// Force le contenu du bloc vide duplicable (0) à vide
+			if($num_module == 0) $GLOBALS['content'][$key] = '';
 
 			//echo $key." | ".$type_module."*".$num_module."*".($num_module == 0)." : ".$content[$key]."<br>";
 		}
