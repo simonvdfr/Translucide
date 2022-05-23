@@ -65,7 +65,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 			$res_tag = $sel_tag->fetch_assoc();
 
 			// Si tag n'existe pas => page 404
-			if(!$res_tag['name']) $res = null;
+			if(!@$res_tag['name']) $res = null;
 		}
 	}
 }
@@ -194,7 +194,7 @@ elseif(isset($res_tag['name']))// Si il y a juste le nom du tag
 if($GLOBALS['filter']) 
 {
 	foreach($GLOBALS['filter'] as $cle => $val)	{
-		if(in_array($cle, $GLOBALS['filter_auth'])) $title.= ' - '.__($cle).' '.$val;
+		if(in_array($cle, $GLOBALS['filter_auth']) and $cle != 'page') $title.= ' - '.__($cle).' '.$val;
 	}
 }
 
