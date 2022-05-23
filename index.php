@@ -65,7 +65,7 @@ if(isset($GLOBALS['filter']) and count($GLOBALS['filter']) > 0 and !in_array($ge
 			$res_tag = $sel_tag->fetch_assoc();
 
 			// Si tag n'existe pas => page 404
-			if(!$res_tag['name']) $res = null;
+			if(!@$res_tag['name']) $res = null;
 		}
 	}
 }
