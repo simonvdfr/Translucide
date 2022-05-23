@@ -754,7 +754,7 @@ template {
 }
 
 .text-bigger {
-  font-size: bigger;
+  font-size: larger;
 }
 
 .text-left {

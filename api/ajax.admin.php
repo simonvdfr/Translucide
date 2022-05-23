@@ -50,7 +50,7 @@ switch($_GET['mode'])
 
 				<div id="meta" class="float-left m-8 mobile-hidden">
 
-					<input type="text" id="title" value="" placeholder="<?php _e("Page title")?>" title="<?php _e("Page title")?>" maxlength="70" class="w100 bold">
+					<input type="text" id="title" value="" placeholder="<?php _e("Page title")?>" title="<?php _e("Page title")?>" maxlength="70" class="bold">
 
 					<div>
 						<div class="tooltip slide-left p-16 m-16 ml-8">
@@ -63,7 +63,7 @@ switch($_GET['mode'])
 									<input type="checkbox" id="nofollow"> <label for="nofollow" title="<?php _e("Empêche les liens d'être suivis par les robots et de transmettre de la popularité")?>">nofollow</label>
 								</div>
 							</div>
-							<input type="text" id="description" value="" maxlength="160" class="w100">
+							<input type="text" id="description" value="" maxlength="160" class="">
 
 							<div class="text-smaller mt-24"><?php _e("Formatted web address")?></div>
 							<div class="flex-wrap">
@@ -110,7 +110,7 @@ switch($_GET['mode'])
 								<div class="float-left">
 									<div class="text-smaller"><?php _e("Creation date")?></div>
 									<div>
-										<input type="text" id="date-insert" class="w150p">
+										<input type="text" id="date-insert" class="">
 									</div>
 								</div>
 
@@ -175,7 +175,7 @@ switch($_GET['mode'])
 						$("#admin-bar").show();
 
 						// Ajoute la marge haute
-						$("body").addClass("body-margin-top");
+						$("body").addClass("body-mt");
 
 						// Si Jquery UI bien charger on charge la lib qui rend le contenu éditable
 						var script = document.createElement('script');
@@ -236,9 +236,9 @@ switch($_GET['mode'])
 			<div>
 
 				<div class="m-16">
-					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 text-bold">
+					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="text-bold">
 
-					<select id="tpl" required class="w30">
+					<select id="tpl" required class="">
 						<option value=""><?php _e("Select template")?></option>
 						<?php
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['sous-dossier']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
@@ -1218,8 +1218,8 @@ switch($_GET['mode'])
 
 					// Boîte à outils resize
 					resize_tool = "<div id='resize-tool' class='toolbox'>";
-						resize_tool+= __("Width") +": <input type='text' id='resize-width' class='w50p'> ";
-						resize_tool+= __("Height") +": <input type='text' id='resize-height' class='w50p'>";
+						resize_tool+= __("Width") +": <input type='text' id='resize-width' class=''> ";
+						resize_tool+= __("Height") +": <input type='text' id='resize-height' class=''>";
 						resize_tool+= "<a href=\"javascript:$('#resize-tool .moon-maximize-2').toggleClass('checked');void(0);\"><i class='icon moon-maximize-2'></i>"+ __("Zoom link") +"</a> ";
 						resize_tool+= "<button onclick=\"resize_img('"+id+"')\"><i class='icon moon-settings'></i> "+ __("Add") +"</button>";
 					resize_tool+= "</div>";
@@ -1401,13 +1401,13 @@ switch($_GET['mode'])
 
 							console.log("recherche"+recherche);
 
-							$(".dialog-media [aria-hidden='false'] li").addClass("none");// Masque tous les Li
-							$(".dialog-media [aria-hidden='false'] li[title*='"+recherche+"']").removeClass("none");// Affiche les li qui contiennent le mot dans le title
+							$(".dialog-media [aria-hidden='false'] li").addClass("hidden");// Masque tous les Li
+							$(".dialog-media [aria-hidden='false'] li[title*='"+recherche+"']").removeClass("hidden");// Affiche les li qui contiennent le mot dans le title
 							$window.trigger("scroll")// Force le chargement des images
 
 						}, '500');
 					}
-					else $(".dialog-media [aria-hidden='false'] li").removeClass("none");// Re-affiche tous les médias
+					else $(".dialog-media [aria-hidden='false'] li").removeClass("hidden");// Re-affiche tous les médias
 				});
 
 			});
@@ -1756,7 +1756,7 @@ switch($_GET['mode'])
 			<input type="hidden" id="dialog-icon-target" value="<?=(isset($_GET['target']) ? htmlspecialchars($_GET['target']) : "");?>"><!-- SUPP ?? -->
 			<input type="hidden" id="dialog-icon-source" value="<?=htmlspecialchars(isset($_GET['target']) ? $_GET['source'] : "")?>">
 
-			<input type="text" class="search w20 mb-16" placeholder="<?php _e("Search")?>" value="">
+			<input type="text" class="search mb-16" placeholder="<?php _e("Search")?>" value="">
 
 			<?php
 			//$pattern = '/\.([\w-]+):before\s*{\s*content:\s*(["\']\\\w+["\']);?\s*}/';

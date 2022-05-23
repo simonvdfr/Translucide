@@ -1279,7 +1279,7 @@ img.drag-elem {
 }
 
 .dialog-icon li i:hover {
-	color: var(--dark-color);
+	color: var(--color-3);
 }
 
 /* Delete window */
