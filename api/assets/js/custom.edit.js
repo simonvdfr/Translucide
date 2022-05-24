@@ -3033,9 +3033,6 @@ $(function()
 	// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
 	$(".module").after("<div class='module-btn'><a href='javascript:move_module();'><i class='icon moon-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='icon moon-plus'></i><span> "+__("Add a module")+"</span></a></div>");
 
-	// Force le parent en relatif pour bien positionner les boutons d'ajout
-	$(".module-btn").parent().addClass("relative");
-
 	// Ajout de la SUPPRESSION au survole d'un bloc
 	$(".module > li").append("<a href='javascript:void(0)' onclick='remove_module(this)'><i class='icon moon-x absolute none color-red' style='top: -5px; right: -5px; z-index: 10;' title='"+ __("Remove") +"'></i></a>");
 
