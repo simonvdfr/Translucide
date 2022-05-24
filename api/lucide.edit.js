@@ -3226,6 +3226,11 @@ $(function()
 
 				// Remplace le contenu du ul par une liste textuelle
 				$(this).html(li_list);
+
+				// Transforme le ul en tagName plus classique pour éviter les bugs de saisie sur FF
+				$(this).replaceWith(function(){
+					return this.outerHTML.replace("<ul", "<nav").replace("</ul", "</nav")
+				});
 			}
 		});
 
