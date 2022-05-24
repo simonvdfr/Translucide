@@ -5052,10 +5052,6 @@ template {
   grid-column: span 2 / span 2;
 }
 
-.col-span-full {
-  grid-column: 1 / -1;
-}
-
 .row-start-2 {
   grid-row-start: 2;
 }
@@ -5078,10 +5074,6 @@ template {
 
 .col-span-3 {
   grid-column: span 3 / span 3;
-}
-
-.col-span-full {
-  grid-column: 1 / -1;
 }
 
 .row-start-3 {
@@ -5108,10 +5100,6 @@ template {
   grid-column: span 4 / span 4;
 }
 
-.col-span-full {
-  grid-column: 1 / -1;
-}
-
 .row-start-4 {
   grid-row-start: 4;
 }
@@ -5136,10 +5124,6 @@ template {
   grid-column: span 5 / span 5;
 }
 
-.col-span-full {
-  grid-column: 1 / -1;
-}
-
 .row-start-5 {
   grid-row-start: 5;
 }
@@ -5162,10 +5146,6 @@ template {
 
 .col-span-6 {
   grid-column: span 6 / span 6;
-}
-
-.col-span-full {
-  grid-column: 1 / -1;
 }
 
 .row-start-6 {
@@ -5212,9 +5192,6 @@ template {
   .sm\:col-span-2 {
     grid-column: span 2 / span 2;
   }
-  .sm\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .sm\:row-start-2 {
     grid-row-start: 2;
   }
@@ -5232,9 +5209,6 @@ template {
   }
   .sm\:col-span-3 {
     grid-column: span 3 / span 3;
-  }
-  .sm\:col-span-full {
-    grid-column: 1 / -1;
   }
   .sm\:row-start-3 {
     grid-row-start: 3;
@@ -5254,9 +5228,6 @@ template {
   .sm\:col-span-4 {
     grid-column: span 4 / span 4;
   }
-  .sm\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .sm\:row-start-4 {
     grid-row-start: 4;
   }
@@ -5275,9 +5246,6 @@ template {
   .sm\:col-span-5 {
     grid-column: span 5 / span 5;
   }
-  .sm\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .sm\:row-start-5 {
     grid-row-start: 5;
   }
@@ -5295,9 +5263,6 @@ template {
   }
   .sm\:col-span-6 {
     grid-column: span 6 / span 6;
-  }
-  .sm\:col-span-full {
-    grid-column: 1 / -1;
   }
   .sm\:row-start-6 {
     grid-row-start: 6;
@@ -5341,9 +5306,6 @@ template {
   .md\:col-span-2 {
     grid-column: span 2 / span 2;
   }
-  .md\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .md\:row-start-2 {
     grid-row-start: 2;
   }
@@ -5361,9 +5323,6 @@ template {
   }
   .md\:col-span-3 {
     grid-column: span 3 / span 3;
-  }
-  .md\:col-span-full {
-    grid-column: 1 / -1;
   }
   .md\:row-start-3 {
     grid-row-start: 3;
@@ -5383,9 +5342,6 @@ template {
   .md\:col-span-4 {
     grid-column: span 4 / span 4;
   }
-  .md\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .md\:row-start-4 {
     grid-row-start: 4;
   }
@@ -5404,9 +5360,6 @@ template {
   .md\:col-span-5 {
     grid-column: span 5 / span 5;
   }
-  .md\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .md\:row-start-5 {
     grid-row-start: 5;
   }
@@ -5424,9 +5377,6 @@ template {
   }
   .md\:col-span-6 {
     grid-column: span 6 / span 6;
-  }
-  .md\:col-span-full {
-    grid-column: 1 / -1;
   }
   .md\:row-start-6 {
     grid-row-start: 6;
@@ -5470,9 +5420,6 @@ template {
   .lg\:col-span-2 {
     grid-column: span 2 / span 2;
   }
-  .lg\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .lg\:row-start-2 {
     grid-row-start: 2;
   }
@@ -5490,9 +5437,6 @@ template {
   }
   .lg\:col-span-3 {
     grid-column: span 3 / span 3;
-  }
-  .lg\:col-span-full {
-    grid-column: 1 / -1;
   }
   .lg\:row-start-3 {
     grid-row-start: 3;
@@ -5512,9 +5456,6 @@ template {
   .lg\:col-span-4 {
     grid-column: span 4 / span 4;
   }
-  .lg\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .lg\:row-start-4 {
     grid-row-start: 4;
   }
@@ -5533,9 +5474,6 @@ template {
   .lg\:col-span-5 {
     grid-column: span 5 / span 5;
   }
-  .lg\:col-span-full {
-    grid-column: 1 / -1;
-  }
   .lg\:row-start-5 {
     grid-row-start: 5;
   }
@@ -5553,9 +5491,6 @@ template {
   }
   .lg\:col-span-6 {
     grid-column: span 6 / span 6;
-  }
-  .lg\:col-span-full {
-    grid-column: 1 / -1;
   }
   .lg\:row-start-6 {
     grid-row-start: 6;
