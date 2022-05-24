@@ -289,22 +289,7 @@ if(!$ajax)
 		<link rel="stylesheet" href="<?=(isset($GLOBALS['theme.css']) ? $GLOBALS['theme.css'] : $GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?"/css/":"").'theme'.$GLOBALS['min'].'.css?'.$GLOBALS['cache'])?>">
 
 		<?php if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?php }
-		else{?>
-		<style>
-			@font-face {
-				font-family: 'FontAwesome';
-				src:  url('<?=$GLOBALS['path']?>api/assets/icons/icons.eot?<?=$GLOBALS['cache']?>');
-				src:
-					url('<?=$GLOBALS['path']?>api/assets/icons/icons.eot?<?=$GLOBALS['cache']?>#iefix') format('embedded-opentype'),
-					url('<?=$GLOBALS['path']?>api/assets/icons/icons.woff2?<?=$GLOBALS['cache']?>') format('woff2'),
-					url('<?=$GLOBALS['path']?>api/assets/icons/icons.woff?<?=$GLOBALS['cache']?>') format('woff'),
-					url('<?=$GLOBALS['path']?>api/assets/icons/icons.ttf?<?=$GLOBALS['cache']?>') format('truetype'),
-					url('<?=$GLOBALS['path']?>api/assets/icons/icons.svg?<?=$GLOBALS['cache']?>#icons') format('svg');
-				font-weight: normal;
-				font-style: normal;
-			}
-		</style>
-	<?php }?>
+		else{?><link rel="stylesheet" href="/api/assets/icons/style.css"><?php }?>
 
 		<?php if(@$GLOBALS['favicon']){?><link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['favicon']?>"><?php }?>
 
