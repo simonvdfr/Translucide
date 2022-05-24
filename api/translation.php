@@ -195,6 +195,7 @@ $add_translation = array(
 	"Page deleted, redirecting" => array("fr" => "Page supprimée, redirection en cours"),
 
 
-	"Log out" => array("fr" => "Se déconnecter")
+	"Log out" => array("fr" => "Se déconnecter"),
+	"Sorry, your browser does not support JavaScript!" => array("fr" => "Désolé, votre navigateur ne prend pas en charge Javascript!")
 );
 ?>

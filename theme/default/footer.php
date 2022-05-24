@@ -40,7 +40,7 @@
 		</div>
 
 	</section>
-	
+
 
 	<section class="mod w100 tc"><?php txt('webmaster')?></section>
 
@@ -48,9 +48,4 @@
 </footer>
 
 
-<noscript>
-	<style>
-		/* Si pas de Javascript on affiche les contenus invisibles en attente d'animation */
-		.animation { opacity: 1 !important; transform: translate3d(0, 0, 0) !important;	}
-	</style>
-</noscript>
+<noscript><?php _e("Sorry, your browser does not support JavaScript!")?></noscript>
