@@ -78,6 +78,33 @@
   animation-name: fade-in;
 }
 
+@keyframes fade-in-out {
+	0%,100% { opacity: 0; }
+	50% { opacity: 1; }
+}
+.fade-in-out {
+  -webkit-animation-name: fade-in-out;
+  animation: fade-in-out 1s ease forwards;
+}
+
+@keyframes fadeInToolbox {
+	0% { opacity: 0; }
+	100% { opacity: 0.8; }
+}
+.fadeInToolbox {
+  -webkit-animation-name: fadeInToolbox;
+  animation: fadeInToolbox .3s ease-in;
+}
+
+@keyframes fade-50 {
+  0% { opacity: 0; }
+  100% { opacity: 0.5; }
+}
+.fade-50 {
+  -webkit-animation-name: fade-50;
+  animation: fade-50 .5s 1;
+}
+
 /* Slide */
 @-webkit-keyframes slide-down {
   from {
@@ -349,7 +376,6 @@
 }
 
 /* Flip */
-
 @-webkit-keyframes flip-in {
   from {
     -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
@@ -419,6 +445,21 @@
   backface-visibility: visible !important;
   -webkit-animation-name: flip-in;
   animation-name: flip-in;
+}
+
+/* Icon Spin */
+@keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+.icon-spin {
+  animation: icon-spin 2s infinite linear;
 }
 
 /* Specials */

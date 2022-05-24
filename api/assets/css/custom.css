@@ -1271,11 +1271,6 @@ img.drag-elem {
 	height: 100%;
 }
 
-@keyframes fade-in-out {
-	0%,100% { opacity: 0; }
-	50% { opacity: 1; }
-}
-
 /* Icons management window */
 .dialog-icon li i {
 	cursor: pointer;
@@ -1321,11 +1316,6 @@ img.drag-elem {
 	z-index: 11;
 	animation: fadeInToolbox .3s ease-in;
 	transition: all .24s ease-in-out;
-}
-
-@keyframes fadeInToolbox {
-	0% { opacity: 0; }
-	100% { opacity: 0.8; }
 }
 
 .toolbox li {
@@ -1530,10 +1520,6 @@ img.drag-elem {
   opacity: 0.5;
   animation: fade-50 .5s 1;
 }
-  @keyframes fade-50 {
-    0% { opacity: 0; }
-    100% { opacity: 0.5; }
-  }
 
 /* ---------------------------------- */
 /* 16. Ecoindex Grade                 */
@@ -1732,10 +1718,6 @@ img.drag-elem {
   width: 1.28571429em;
   text-align: center;
 }
-.icon-spin {
-  animation: icon-spin 2s infinite linear;
-}
-
 .icon-ul {
   padding-left: 0;
   list-style-type: none;
@@ -1749,15 +1731,4 @@ img.drag-elem {
   top: inherit;
   width: inherit;
   float: none;
-}
-
-@keyframes icon-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
 }
