@@ -560,13 +560,8 @@ function bg($key = null, $filter = array())
 function module($module = "module", $content = null)
 {
 	if($content == null) $content = $GLOBALS['content'];
-<<<<<<< HEAD
 
-	// Extrait les données work du tableau des contenu
-=======
-	
 	// Extrait les données module du tableau des contenu
->>>>>>> master
 	$keys = array_keys($content);
 	foreach($keys as $key)
 	{
