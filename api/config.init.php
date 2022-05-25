@@ -320,11 +320,6 @@ $GLOBALS['favicon'] = 'api/assets/img/favicon.svg';
 // Librairie d'icons spécifiques à la template
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
 
-
-// Utilisation de global.css ? à supprimer à termes (06/01/2021)
-$GLOBALS['global.css'] = false;
-
-
 // Url de la css du thème
 $GLOBALS['style.css'] = null;
 
