@@ -285,11 +285,11 @@ if(!$ajax)
 
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/knacss.min.css?<?=$GLOBALS['cache']?>">
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/custom<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">
-		
-		<link rel="stylesheet" href="<?=(isset($GLOBALS['theme.css']) ? $GLOBALS['theme.css'] : $GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?"/css/":"").'theme'.$GLOBALS['min'].'.css?'.$GLOBALS['cache'])?>">
+
+		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>/css/theme<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">
 
 		<?php if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>"><?php }
-		else{?><link rel="stylesheet" href="/api/assets/icons/style.css"><?php }?>
+		else{?><link rel="stylesheet" href="<?=$GLOBALS['path']?>/api/assets/icons/style.css"><?php }?>
 
 		<?php if(@$GLOBALS['favicon']){?><link rel="shortcut icon" type="image/x-icon" href="<?=$GLOBALS['favicon']?>"><?php }?>
 

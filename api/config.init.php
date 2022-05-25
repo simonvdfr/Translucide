@@ -315,21 +315,18 @@ $GLOBALS['media_dir'] = 'media';
 
 
 // Favicon navigateur
-$GLOBALS['favicon'] = 'api/assets/img/favicon.svg';
+$GLOBALS['favicon'] = $GLOBALS['path'].'api/assets/img/favicon.svg';
 
 // Librairie d'icons spécifiques à la template
 $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/icons/icons.min.css"
 
-// Url de la css du thème
-$GLOBALS['style.css'] = null;
-
 
 // Librairie externe
-$GLOBALS['jquery'] = '/api/assets/js/jquery.min.js';
+$GLOBALS['jquery'] = $GLOBALS['path'].'api/assets/js/jquery.min.js?'.$GLOBALS['cache'];
 
-$GLOBALS['jquery_ui'] = '/api/assets/js/jquery-ui.min.js';
+$GLOBALS['jquery_ui'] = $GLOBALS['path'].'api/assets/js/jquery-ui.min.js?'.$GLOBALS['cache'];
 
-$GLOBALS['jquery_ui_css'] = '/api/assets/css/jquery-ui.min.css';// cupertino flick smoothness base
+$GLOBALS['jquery_ui_css'] = $GLOBALS['path'].'api/assets/css/jquery-ui.min.css?'.$GLOBALS['cache'];// cupertino flick smoothness base
 
 
 // Filtre url autorisé
