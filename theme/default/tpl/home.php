@@ -3,7 +3,7 @@
 <section id="hero" class="layout-maxed bg-blue">
 	<div class="layout-hero bg-section bg-overlay bg-gradient sm:py-36 py-8" <?php bg('bg-hero')?>>
 		<div class="hero-content grid md:grid-cols-2 flex flex-wrap sm:my-36 my-8 sm:py-36 py-8">
-			<div class="py-12">
+			<div class="py-16">
 				<div class="hero-text mx-24 animation fade-in">
 					<?php h1('hero-title', 'hero-title color-light')?>
 					<?php txt('hero-desc','hero-desc color-light py-20 mb-16')?>
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 
-	
+
 	<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé
 	<div id="features-panel" class="module sm:grid md:grid-cols-2 lg:grid-cols-4 gap-36 flex flex-wrap sm:mx-20 mx-8 py-36 animation delay-1 fade-in">
 		<?php

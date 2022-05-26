@@ -240,6 +240,10 @@ section {
   }
 }
 
+.hero-subtitle {
+  font-size: 1.1rem;
+}
+
 .hero-desc {
   font-size: 1.44rem;
 }
@@ -322,7 +326,36 @@ section {
 }
 
 /* ----------------------------- */
-/* 3. Features                   */
+/* 3. Breadcrumb                 */
+/* ----------------------------- */
+
+.breadcrumb-content {
+  padding: 1rem 5rem;
+  border-bottom: 1px solid var(--grey-color);
+}
+
+.breadcrumb-list {
+  padding-left: 0;
+}
+
+.breadcrumb-list>li {
+  display: inline-block;
+}
+
+.breadcrumb-item+.breadcrumb-item {
+  padding-left: 0;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    float: left;
+    font-family: "moon";
+    content: "\e95e";
+    font-weight: bolder;
+    padding: 0 0.5rem;
+}
+
+/* ----------------------------- */
+/* 4. Features                   */
 /* ----------------------------- */
 
 .features-content {

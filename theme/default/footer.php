@@ -38,7 +38,7 @@
 			</div>
 
 			<div class="px-20">
-				Is released under the <a href="http://www.wtfpl.net">WTFPL license</a> and was <i class="icon moon-code"></i> with <i class="icon moon-heart"></i> by <a href="#" target="_blank">Thatoo</a> & <a href="https://marion.bouder.me" target="_blank">MB</a>.
+				Is released under the <a href="http://www.wtfpl.net">WTFPL license</a> and was <i class="icon moon-code"></i> with <i class="icon moon-heart"></i> by <a href="https://thatoo.leprette.fr" target="_blank">Thatoo</a> & <a href="https://marion.bouder.me" target="_blank">MB</a>.
 			</div>
 
 			<div class="px-20">
