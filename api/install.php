@@ -133,7 +133,7 @@ switch(@$_GET['mode'])
 			<!-- Pour eviter de charger un ico 404 qui recharge la config -->
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="api/assets/css/style.css?">
+			<link rel="stylesheet" href="api/assets/css/knacss.min.css?">
 			<link rel="stylesheet" href="api/assets/css/custom.css?">
 
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
