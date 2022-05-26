@@ -133,12 +133,12 @@ switch(@$_GET['mode'])
 			<!-- Pour eviter de charger un ico 404 qui recharge la config -->
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
-			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/knacss.min.css?">
-			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/custom.css?">
+			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/knacss.min.css?<?=$GLOBALS['cache']?>">
+			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/custom.css?<?=$GLOBALS['cache']?>">
 
 			<script src="<?=$GLOBALS['jquery'];?>"></script>
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
-			<script src="<?=$GLOBALS['path']?>api/assets/js/custom.init.js"></script>
+			<script src="<?=$GLOBALS['path']?>api/assets/js/custom.init.js?<?=$GLOBALS['cache']?>"></script>
 
 			<script>
 				path = "";
@@ -199,7 +199,7 @@ switch(@$_GET['mode'])
 					<div class="layout-maxed">
 
 						<div class="text-center pb-36">
-							<img id="logo" class="img install-img" alt="logo SeaCms" src="<?=$GLOBALS['path']?>api/assets/img/logo.svg">
+							<img id="logo" class="img install-img" alt="logo SeaCms" src="<?=$GLOBALS['path']?>api/assets/img/logo.svg?<?=$GLOBALS['cache']?>">
 						</div>
 
 					</div>
