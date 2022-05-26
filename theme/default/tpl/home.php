@@ -32,7 +32,9 @@
 			<?php h2('features-title', 'features-title color-blue')?>
 		</div>
 	</div>
-	<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
+
+	
+	<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé
 	<div id="features-panel" class="module sm:grid md:grid-cols-2 lg:grid-cols-4 gap-36 flex flex-wrap sm:mx-20 mx-8 py-36 animation delay-1 fade-in">
 		<?php
 		// nom du module "features-panel" = id du module, et au début des id des txt() media() ...
@@ -44,13 +46,13 @@
 				<div class="features-panel-icon">
 					<?php media("features-panel-icon-".$key, array('size' => '70x70', "class" => "ml-0", "lazy" => true))?>
 				</div>
-				<div class="features-panel-content flex flex-col align-items-center text-left">
-					<h4 class="features-panel-title color-blue pb-24 mb-24"><?php txt('features-panel-title-'.$key) ?></h4>
-					<p class="features-panel-desc mb-0"><?php txt('features-panel-desc-'.$key) ?></p>
+				<div class="flex flex-col align-items-center text-left">
+					<h4 class="color-blue pb-24 mb-24"><?php txt('features-panel-title-'.$key) ?></h4>
+					<p class="mb-0"><?php txt('features-panel-desc-'.$key) ?></p>
 				</div>
 			</div>
 			<?php
 		}
 		?>
-	</div>
+	</div>-->
 </section>

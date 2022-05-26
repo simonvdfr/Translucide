@@ -79,6 +79,8 @@ section {
   z-index: 999;
 }
 
+
+
 /* ----------------------------- */
 /* 2. Header                     */
 /* ----------------------------- */
@@ -381,10 +383,36 @@ section {
   z-index: 2;
 }
 
-.features-panel-title  {
+.features-panel h4 {
   font-size: 1.5rem;
   font-weight: normal;
   line-height: 1;
   border-bottom: 2px solid #eaeaea;
   width: 100%;
+}
+
+/* ----------------------------- */
+/* . Footer                      */
+/* ----------------------------- */
+
+#footer {
+  color: var(--light-color);
+  background: var(--color-1);
+  border-bottom: 1px solid #4b6384;
+}
+
+/* ----------------------------- */
+/* . BottomBar                   */
+/* ----------------------------- */
+
+#bottombar, #bottombar a {
+  min-height: 1rem;
+  background: var(--color-2);
+  color: var(--light-color);
+  z-index: 999;
+  text-decoration: none;
+}
+
+#bottombar a:hover {
+  text-decoration: 1px wavy underline var(--color-1);
 }
