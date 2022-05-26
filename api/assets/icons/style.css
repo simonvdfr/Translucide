@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'moon';
-  src:  url('moon.eot?29vpk7');
-  src:  url('moon.eot?29vpk7#iefix') format('embedded-opentype'),
-    url('moon.ttf?29vpk7') format('truetype'),
-    url('moon.woff?29vpk7') format('woff'),
-    url('moon.svg?29vpk7#moon') format('svg');
+  src:  url('moon.eot?kgwdmg');
+  src:  url('moon.eot?kgwdmg#iefix') format('embedded-opentype'),
+    url('moon.ttf?kgwdmg') format('truetype'),
+    url('moon.woff?kgwdmg') format('woff'),
+    url('moon.svg?kgwdmg#moon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -336,4 +336,16 @@
 }
 .moon-star:before {
   content: "\e956";
+}
+.moon-chevron-down:before {
+  content: "\e95c";
+}
+.moon-chevron-left:before {
+  content: "\e95d";
+}
+.moon-chevron-right:before {
+  content: "\e95e";
+}
+.moon-chevron-up:before {
+  content: "\e95f";
 }
