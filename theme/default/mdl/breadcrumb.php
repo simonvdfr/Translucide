@@ -1,7 +1,7 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
-<section id="breadcrumb" class="inside">
-	<div class="breadcrumb-content flex align-items-center ">
+<section id="breadcrumb" class="layout-maxed">
+	<div class="breadcrumb-content flex align-items-center text-center justify-between p-16">
 		<ol class="breadcrumb-list pt-8">
 			<li class="breadcrumb-item">
 				<a href="/"><?php _e("Home")?></a>
@@ -12,5 +12,6 @@
 				if(isset($title)) echo'<li class="breadcrumb-item" aria-current="page">'.$title.'</li>';
 			?>
 		</ol>
+		<?php include('theme/'.$GLOBALS['theme'].'/mdl/form-search.php');?>
 	</div>
 </section>
