@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'moon';
-  src:  url('moon.eot?kgwdmg');
-  src:  url('moon.eot?kgwdmg#iefix') format('embedded-opentype'),
-    url('moon.ttf?kgwdmg') format('truetype'),
-    url('moon.woff?kgwdmg') format('woff'),
-    url('moon.svg?kgwdmg#moon') format('svg');
+  src:  url('moon.eot?6ketf9');
+  src:  url('moon.eot?6ketf9#iefix') format('embedded-opentype'),
+    url('moon.ttf?6ketf9') format('truetype'),
+    url('moon.woff?6ketf9') format('woff'),
+    url('moon.svg?6ketf9#moon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -348,4 +348,7 @@
 }
 .moon-chevron-up:before {
   content: "\e95f";
+}
+.moon-search:before {
+  content: "\e960";
 }
