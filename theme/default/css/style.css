@@ -73,13 +73,11 @@ section {
 /* ----------------------------- */
 
 #topbar {
-  height: 1rem;
+  min-height: 1rem;
   width: 100%;
   background: var(--color-1);
   z-index: 999;
 }
-
-
 
 /* ----------------------------- */
 /* 2. Header                     */
@@ -214,14 +212,18 @@ section {
 }
 
 /* ----------------------------- */
-/* 2. Hero                       */
+/* 2. Modular content            */
 /* ----------------------------- */
 
-.hero-content {
+/* A. Search Content ----------- */
 
+#input-search {
+  border-bottom: 1px solid var(--grey-color);
 }
 
-/* Content left */
+/* B. Hero Content ------------- */
+
+/* Hero Content > Left */
 
 .hero-title {
   font-size: 2.9rem;
@@ -280,7 +282,7 @@ section {
   text-transform: uppercase;
 }
 
-/* Content right */
+/* Hero Content > Right */
 
 .hero-panel {
   position: relative;
@@ -325,12 +327,9 @@ section {
   line-height: 1.7;
 }
 
-/* ----------------------------- */
-/* 3. Breadcrumb                 */
-/* ----------------------------- */
+/* C. breadcrumb Content ------- */
 
-.breadcrumb-content {
-  padding: 1rem 5rem;
+#breadcrumb {
   border-bottom: 1px solid var(--grey-color);
 }
 
@@ -355,8 +354,10 @@ section {
 }
 
 /* ----------------------------- */
-/* 4. Features                   */
+/* 3. Home                       */
 /* ----------------------------- */
+
+/* A. Features Content --------- */
 
 .features-content {
   width: 50%;
@@ -425,7 +426,7 @@ section {
 }
 
 /* ----------------------------- */
-/* . Footer                      */
+/* 98. Footer                    */
 /* ----------------------------- */
 
 #footer {
@@ -435,7 +436,7 @@ section {
 }
 
 /* ----------------------------- */
-/* . BottomBar                   */
+/* 99. BottomBar                 */
 /* ----------------------------- */
 
 #bottombar, #bottombar a {
