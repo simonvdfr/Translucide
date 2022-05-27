@@ -286,7 +286,7 @@ if(!$ajax)
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/knacss.min.css?<?=$GLOBALS['cache']?>">
 		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/css/custom<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">
 
-		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>/css/theme<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">
+		<link rel="stylesheet" href="<?=$GLOBALS['path']?>theme/<?=$GLOBALS['theme']?>/css/style<?=$GLOBALS['min']?>.css?<?=$GLOBALS['cache']?>">
 
 		<?php if(@$GLOBALS['icons']){?><link rel="stylesheet" href="<?=$GLOBALS['icons']?>?<?=$GLOBALS['cache']?>"><?php }
 		else{?><link rel="stylesheet" href="<?=$GLOBALS['path']?>api/assets/icons/style.css?<?=$GLOBALS['cache']?>"><?php }?>
