@@ -1,8 +1,10 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
-<?php include('theme/'.$GLOBALS['theme'].'/mdl/hero.php');?>
+<?php include('theme/'.$GLOBALS['theme'].'/mdl/hero-page.php');?>
 
-<?php include('theme/'.$GLOBALS['theme'].'/mdl/breadcrumb.php');?>
+<section id="breadcrumb" class="flex justify-center py-16">
+	<?php include('theme/'.$GLOBALS['theme'].'/mdl/breadcrumb.php');?>
+</section>
 
 <section id="page" class="layout-maxed">
 

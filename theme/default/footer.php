@@ -42,7 +42,7 @@
 			</div>
 
 			<div class="px-20">
-				🄯 2022 - support@seacms.io
+				🄯 <?php echo date("Y");?> - support@seacms.io
 			</div>
 
 		</div>

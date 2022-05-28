@@ -69,24 +69,27 @@ section {
 
 
 /* ----------------------------- */
-/* 1. TopBar                     */
-/* ----------------------------- */
-
-#topbar {
-  min-height: 1rem;
-  width: 100%;
-  background: var(--color-1);
-  z-index: 999;
-}
-
-/* ----------------------------- */
-/* 2. Header                     */
+/* 1. Header                     */
 /* ----------------------------- */
 
 #header {
-  min-height: 5rem;
-  -webkit-box-shadow: 0 5px 41.5px rgb(40 40 40 / 11%);
-  box-shadow: 0 5px 41.5px rgb(40 40 40 / 11%);
+  min-height: 6.5rem;
+}
+
+.navbar {
+  z-index: 8888;
+  -webkit-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: var(--white-color);
+  border-top: 0.5rem solid var(--color-1);
 }
 
 .inside {
@@ -423,6 +426,60 @@ section {
   line-height: 1;
   border-bottom: 2px solid #eaeaea;
   width: 100%;
+}
+
+/* ----------------------------- */
+/* 4. Page                       */
+/* ----------------------------- */
+
+/* ----------------------------- */
+/* 5. Article                    */
+/* ----------------------------- */
+.post-content {
+  flex: 1 73%;
+}
+
+/* ----------------------------- */
+/* 97. Sidebar                   */
+/* ----------------------------- */
+
+.sidebar-content {
+  flex: 1 27%;
+}
+
+
+.widget {
+  background-color: var(--light-color);
+  padding: 2rem 2.5rem 2.5rem;
+  margin-bottom: 2.5rem;
+  border-radius: 0.5rem;
+  position: relative;
+}
+
+.widget::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 1.5rem;
+  left: 1.5rem;
+  height: 4px;
+  background-color: var(--color-3);
+}
+
+.widget-cat, .widget-tag, .widget-art, .widget-event {
+  padding-bottom: 1.75rem;
+}
+
+.widget-title {
+  margin-bottom: 1.5rem
+}
+
+.widget-content {
+  text-align: left;
+}
+
+.widget-tag .widget-content a {
+  display: inline-block;
 }
 
 /* ----------------------------- */

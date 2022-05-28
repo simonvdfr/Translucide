@@ -98,7 +98,7 @@ function highlight($txt, $search)
 		$texte = null;
 
 		// Affichage du message pour dire si l'article est invisible ou pas
-		if($res_fiche['state'] != "active") $state = " <span class='deactivate' title=\"".__("Disabled page")."\"><i class='icon moon-eye' aria-hidden='true'></i></span>";
+		if($res_fiche['state'] != "active") $state = " <span class='deactivate' title=\"".__("Disabled page")."\"><i class='icon moon-eye-off' aria-hidden='true'></i></span>";
 		else $state = "";
 
 		$content_fiche = json_decode($res_fiche['content'], true);
