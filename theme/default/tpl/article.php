@@ -13,7 +13,6 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 <section id="post" class="p-36">
 
 	<div class="md:flex flex-row flex-no-wrap justify-content ">
-
 		<!-- Contenu de l'article -->
 		<article class="post-content py-36 md:pr-36">
 			<?php txt('texte')?>
