@@ -263,6 +263,21 @@ section {
   text-decoration: 2px wavy underline var(--color-3);
 }
 
+  /* Permet de cacher les heures dans le hero mais à terme pas l'idéal
+  /*.hero-meta-date-add {
+  max-width: 11.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.hero-meta-date-update {
+  max-width: 13.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}*/
+
 .hero-meta-author {
   text-transform: capitalize;
 }
@@ -419,8 +434,8 @@ section {
 
 .features-panel-icon {
   position: absolute;
-  top: -40px;
-  left: 40px;
+  top: -2.5rem;
+  left: 2.5rem;
   z-index: 2;
 }
 
@@ -441,6 +456,45 @@ section {
 /* ----------------------------- */
 .post-content {
   flex: 1 73%;
+}
+
+.post-img {
+    position: relative;
+}
+
+.post-img img {
+  max-width: 100%;
+  border-radius: .5rem;
+}
+
+.post-img .post-event {
+  position: absolute;
+  color: var(--color-1);
+  background-color: var(--light-color) /*rgba(255, 255, 255, 0.6)*/;
+  border-radius: 0 0 0 .5rem;
+  bottom: 0;
+  left: 0;
+  padding: 1.5rem 4rem;
+}
+
+.post-img .post-event::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--color-3);
+  border-radius: 0 0 0 .5rem;
+}
+
+.entry {
+  border-top: 1px solid var(--light-color);
+}
+
+.entry a {
+  color: var(--color-3);
+  font-weight: 500;
 }
 
 /* ----------------------------- */
@@ -523,5 +577,5 @@ section {
 }
 
 #bottombar a:hover {
-  text-decoration: 1px wavy underline var(--color-1);
+  text-decoration: 2px wavy underline var(--color-1);
 }

@@ -1,10 +1,11 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
 
-	<aside id="sidebar" class="sidebar-content justify-items-center md:py-36 animation slide-right">
+	<aside id="sidebar" class="sidebar-content justify-items-center md:my-36 md:ml-36 animation slide-right">
 
 		<!-- Categories -->
-		<!-- A terme créer une liste de catégories sans utiliser editable-tag mais quelque chose comme editable-cat
+		<!-- 28/05/2022
+		A terme créer une liste de catégories sans utiliser editable-tag mais quelque chose comme editable-cat
 		<div class="widget widget-cat">
 
 			<div class="widget-title">
@@ -59,13 +60,12 @@
 				</div>
 
 				<div class="widget-content">
-					<ul class="unstyled p-0">
+					<ul class="is-unstyled p-0">
 					<?php
-
 					while($res_article = $sel_article->fetch_assoc())
 					{
 						?>
-						<li class="mb-16 ml-16"><a href="<?=make_url($res_article['url']);?>" class="no-decoration"><i class="icon-li icon moon-calendar float-left mr-8"></i> <?=$res_article['title']?></a></li>
+						<li class="mb-16"><a href="<?=make_url($res_article['url']);?>" class="no-decoration"><i class="icon-li icon moon-calendar float-left mr-8"></i> <?=$res_article['title']?></a></li>
 						<?php
 					}
 					?>
@@ -75,21 +75,16 @@
 		<?php }?>
 
 		<!-- Tags -->
+		<!-- 29/05/2022
+		Ici, à terme, afficher tous les tags du site et pas seulement ceux de l'article en cours
+	 	si tag aussi dans article ne prend les modifs que dans sidebar
 		<div class="widget widget-tag">
-
 			<div class="widget-title">
 				<h3><?php _e("Tags")?></h3>
 			</div>
-
 			<div class="widget-content">
 				<?php tag('tags')?>
 			</div>
-
-			<script>
-			if(!$(".editable-tag").text()) $("#tags").prev("h3").hide();
-			else $("#tags").addClass("mb-24");
-			</script>
-
-		</div>
+		</div> -->
 
 	</aside>
