@@ -6,7 +6,7 @@
 [![Knacss](https://img.shields.io/badge/knacss-8.2%20reborn-blue)](https://github.com/alsacreations/KNACSS/tree/master/css/knacss-full)
 [![jQuery](https://img.shields.io/badge/jQuery-3.3.1-blue.svg?colorB=78cff5)](https://jquery.com/)
 [![jQuery](https://img.shields.io/badge/jQuery_UI-1.12.1-yellow.svg?colorB=faa523)](http://jqueryui.com/)
-[![jQuery](https://img.shields.io/badge/FortAwesome-4.7.0-lightgrey.svg?colorB=1e9f75)](https://github.com/FortAwesome/Font-Awesome)
+[![jQuery](https://img.shields.io/badge/icons-IcoMoon%20App-44ac9b)](https://icomoon.io/)
 
 SEACMS is a CMS (Simple Ecological and Accessible) that allows to create and generate eco-responsible websites.
 
