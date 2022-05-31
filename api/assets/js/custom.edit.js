@@ -3161,7 +3161,7 @@ $(function()
 				{
 					// Ajoute le dernier terme au contenu courant (moins la saisie de recherche)
 					$(this).val(function(index, value) {
-						return value.substring(0, value.lastIndexOf('/')) +'/'+ ui.item.value.split("/").pop();
+						return value.substring(0, value.lastIndexOf('/')) + path + ui.item.value.split("/").pop();
 					});
 				}
 				else
