@@ -38,7 +38,7 @@
 }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
-  display: block;
+  flex: 1 100%;
 }
 
 select {
@@ -299,7 +299,7 @@ header nav .burger-button {
   max-width: 250px;
 }
 
-.panel::before {
+.card::before {
   content: "";
   position: absolute;
   top: 2.25rem;

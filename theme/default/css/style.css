@@ -185,7 +185,7 @@ section {
 
 /* Holder */
 
-.holder-panel {
+.holder-card {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -306,7 +306,7 @@ section {
 
 /* Hero Content > Right */
 
-.hero-panel {
+.hero-card {
   position: relative;
   padding: 2.3rem;
   -webkit-box-orient: vertical;
@@ -318,16 +318,16 @@ section {
 }
 
 @media screen and (max-width: 991.98px) {
-  .hero-panel {
+  .hero-card {
     margin: auto;
   }
 }
 
-.hero-panel img {
+.hero-card img {
   max-width: 80px;
 }
 
-.hero-panel::before {
+.hero-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -340,12 +340,12 @@ section {
   background-color: var(--color-3);
 }
 
-.hero-panel-title {
+.hero-card-title {
   font-size: 1.2rem;
   text-transform: uppercase;
 }
 
-.hero-panel-desc {
+.hero-card-desc {
   line-height: 1.7;
 }
 
@@ -404,18 +404,18 @@ section {
   letter-spacing: .25rem;
 }
 
-.features-panel {
+.features-card {
   position: relative;
   padding: 4.125rem 2.5rem 2.5rem;
 }
 
 @media screen and (max-width: 991.98px) {
-  .features-panel {
+  .features-card {
 
   }
 }
 
-.features-panel::after {
+.features-card::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -428,18 +428,18 @@ section {
   background-color: var(--color-3);
 }
 
-.features-panel img {
+.features-card img {
   max-width: 70px;
 }
 
-.features-panel-icon {
+.features-card-icon {
   position: absolute;
   top: -2.5rem;
   left: 2.5rem;
   z-index: 2;
 }
 
-.features-panel h4 {
+.features-card h4 {
   font-size: 1.5rem;
   font-weight: normal;
   line-height: 1;
@@ -450,6 +450,7 @@ section {
 /* ----------------------------- */
 /* 4. Page                       */
 /* ----------------------------- */
+
 
 /* ----------------------------- */
 /* 5. Article                    */
@@ -474,7 +475,7 @@ section {
   border-radius: 0 0 0 .5rem;
   bottom: 0;
   left: 0;
-  padding: 1.5rem 4rem;
+  padding: 1.5rem 2rem;
 }
 
 .post-img .post-event::after {
@@ -485,7 +486,7 @@ section {
   right: 0;
   height: 4px;
   background-color: var(--color-3);
-  border-radius: 0 0 0 .5rem;
+  border-radius: 0 0 0 1rem;
 }
 
 .entry {
@@ -495,6 +496,45 @@ section {
 .entry a {
   color: var(--color-3);
   font-weight: 500;
+}
+
+/* ----------------------------- */
+/* 6. Event List                 */
+/* ----------------------------- */
+
+.event-post-img {
+  position: relative;
+  overflow: hidden;
+  border-radius: .5rem .5rem 0 0;
+}
+
+.event-post-img img {
+    max-width: 100%;
+    height: auto;
+}
+
+.event-post-img img:hover {
+  filter: grayscale(.45);
+}
+
+.event-post-content {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 .5rem .5rem;
+}
+
+.event-post-date {
+  flex: 1 27%;
+}
+
+.event-post-date .date-number {
+  font-size: xx-large;
+  line-height: 0.9;
+}
+
+.event-post-title {
+  flex: 1 73%;
+  line-height: 1;
 }
 
 /* ----------------------------- */

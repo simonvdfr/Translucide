@@ -190,7 +190,7 @@ switch(@$_GET['mode'])
 
 			<div class="layout-maxed grid">
 
-				<div class="panel bg-white border-rounded shadow">
+				<div class="card bg-white border-rounded shadow">
 
 				<form id="setup" class="p-36" >
 

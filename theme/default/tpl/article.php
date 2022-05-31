@@ -1,4 +1,7 @@
-<?php if(!$GLOBALS['domain']) exit; ?>
+<?php
+if(!$GLOBALS['domain']) exit;
+if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['content']['title'];
+?>
 
 <?php include('theme/'.$GLOBALS['theme'].'/mdl/hero-article.php');?>
 
@@ -7,7 +10,7 @@
 	<?php include('theme/'.$GLOBALS['theme'].'/mdl/form-search.php');?>
 </section>
 
-<section id="post" class="p-36">
+<section id="post" class="<?= $res['tpl'] == 'event' ? 'p-36' : ''; ?>">
 
 	<div class="md:flex flex-row flex-no-wrap justify-content ">
 		<!-- Contenu de l'article -->
@@ -16,25 +19,32 @@
 			<!-- Image -->
 			<div class="post-img">
 				<!-- Date événement -->
+
 				<?php
 				if(stristr($res['tpl'], 'event'))
 				{
 					if(@$GLOBALS["content"]["aaaa-mm-jj"])
 					{
-						echo '<div class="post-event"><p class="text-bold color-blue mb-0"> Le ';
+						echo '<div class="post-event"><p class="text-bold color-blue mb-0"><i class="icon moon-calendar mr-8"></i>' ;
 						if($lang == 'eu') echo str_replace('-', '/', $GLOBALS["content"]["aaaa-mm-jj"]);
 						else echo date_lang($GLOBALS["content"]["aaaa-mm-jj"]);
 
 						if(@$GLOBALS["content"]["start-time"]){
-							echo ' '.__("de").' '.date_format(date_create($GLOBALS["content"]["start-time"]), 'H:i');
+							echo '<span class="color-glaz mx-8">//</span><i class="icon moon-clock mr-8"></i>'.date_format(date_create($GLOBALS["content"]["start-time"]), 'H:i');
 						}
 
 						if(@$GLOBALS["content"]["end-time"]){
-							echo ' '.__("à").' '.date_format(date_create($GLOBALS["content"]["end-time"]), 'H:i');
+							echo ' - '.date_format(date_create($GLOBALS["content"]["end-time"]), 'H:i');
+						}
+
+						if(@$GLOBALS["content"]["location"]){
+							$location = $GLOBALS["content"]["location"];
+							echo '<span class="color-glaz mx-8">//</span><i class="icon moon-map-pin mr-8"></i>'.$location.'';
 						}
 
 						echo '</p></div>';
 					}
+
 
 					input("aaaa-mm-jj", array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
 
@@ -42,6 +52,7 @@
 					{
 						input('start-time', array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
 						input('end-time', array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
+						input('location', array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
 					}
 				}
 			?>
