@@ -44,15 +44,3 @@
 		</div>
 
 </section>
-
-
-<script>
-$(function()
-{
-	// Met le lien sur zone la box et supprime le lien sur le h2
-	$(".event article").wrapInner(function() {
-		return "<a href='"+ $("a", this).attr("href") +"'"+ ($(this).attr("class")?" class='"+ $(this).attr("class") +"'":"")+ ($(this).attr("title") ? " title='"+ $(this).attr("title") +"'":"") +" />";
-	}).children(0).unwrap();
-	$(".event article").contents().unwrap();
-});
-</script>
