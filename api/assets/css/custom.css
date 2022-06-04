@@ -141,8 +141,8 @@ a:focus, a:hover, a:active { color: var(--color-3);}
   color: var(--color-1);
 }
 .btn--line:hover, .button--line:hover {
-  background: var(--color-2);
-  border: 1px solid var(--color-2);
+  background: var(--color-1);
+  border: 1px solid var(--color-1);
   color: var(--white-color);
 }
 

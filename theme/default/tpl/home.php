@@ -13,7 +13,7 @@
 				</div>
 			</div>
 			<div class="flex mx-24 py-12">
-				<div class="hero-card bg-white border-rounded shadow flex flex-col align-items-center text-center animation delay-1 slide-right-big">
+				<div class="hero-card bg-white border-rounded shadow flex flex-col align-items-center text-center animation slide-right">
 					<?php media('hero-card-icon','80x80')?>
 					<?php h3('hero-card-title', 'hero-card-title color-blue my-8')?>
 					<?php txt('hero-card-desc','hero-card-desc mb-8')?>
@@ -55,5 +55,5 @@
 		}
 		?>
 	</div>
-	
+
 </section>

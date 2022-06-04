@@ -3,14 +3,14 @@ if(!$GLOBALS['domain']) exit;
 if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['content']['title'];
 ?>
 
-<?php include('theme/'.$GLOBALS['theme'].'/mdl/hero-article.php');?>
+<?php include('theme/'.$GLOBALS['theme'].'/mdl/hero.php');?>
 
 <section id="breadcrumb" class="sm:flex align-items-center justify-between text-center px-36 py-16">
 	<?php include('theme/'.$GLOBALS['theme'].'/mdl/breadcrumb.php');?>
 	<?php include('theme/'.$GLOBALS['theme'].'/mdl/form-search.php');?>
 </section>
 
-<section id="post" class="<?= $res['tpl'] == 'event' ? 'p-36' : ''; ?>">
+<section id="post" class="<?= $res['tpl'] == 'event' ? 'p-36' : ''; ?> p-36">
 
 	<div class="md:flex flex-row flex-no-wrap justify-content ">
 		<!-- Contenu de l'article -->
@@ -45,17 +45,13 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 						echo '</p></div>';
 					}
 
-
-					input("aaaa-mm-jj", array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
-
-					if(stristr($res['tpl'], 'event'))
-					{
-						input('start-time', array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
-						input('end-time', array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
-						input('location', array("type" => "hidden", "autocomplete" => "off", "class" => "meta text-center"));
-					}
+					input("aaaa-mm-jj", array("type" => "hidden", "autocomplete" => "off", "class" => "text-center"));
+					input('start-time', array("type" => "hidden", "autocomplete" => "off", "class" => "text-center"));
+					input('end-time', array("type" => "hidden", "autocomplete" => "off", "class" => "text-center"));
+					input('location', array("type" => "hidden", "autocomplete" => "off", "class" => "text-center"));
 				}
 			?>
+
 			<?php media('img-event', array('class' => 'mt-36', 'lazy' => true)); ?>
 
 			</div>

@@ -6,7 +6,10 @@ function highlight($txt, $search)
 ?>
 
 <?php include('theme/'.$GLOBALS['theme'].'/mdl/hero.php');?>
-<?php include('theme/'.$GLOBALS['theme'].'/mdl/breadcrumb.php');?>
+
+<section id="breadcrumb" class="flex justify-center py-16">
+	<?php include('theme/'.$GLOBALS['theme'].'/mdl/breadcrumb.php');?>
+</section>
 
 <section id="page" class="layout-maxed">
 
@@ -104,19 +107,21 @@ function highlight($txt, $search)
 		$content_fiche = json_decode($res_fiche['content'], true);
 
 		?>
-		<article class="mt-24">
+		<article class="flex flex-wrap mt-24">
 
-			<h2><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="no-decoration"><?php echo highlight($res_fiche['title'], @$_POST['search'])?></a><?php echo $state?></h2>
+			<div>
+				<h2><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="no-decoration"><?php echo highlight($res_fiche['title'], @$_POST['search'])?></a><?php echo $state?></h2>
+				<?php
+					if(isset($content_fiche['description'])) $texte = $content_fiche['description'];
+					elseif(isset($content_fiche['texte'])) $texte = $content_fiche['texte'];
+					if(isset($texte))
+						echo '<p class="mb-0">'.highlight(word_cut($texte, '350', '...', '<br><i><div>'), @$_POST['search']).'</p>';
+				?>
+			</div>
 
-			<?php
-			if(isset($content_fiche['description'])) $texte = $content_fiche['description'];
-			elseif(isset($content_fiche['texte'])) $texte = $content_fiche['texte'];
-
-			if(isset($texte))
-				echo '<p class="mb-0">'.highlight(word_cut($texte, '350', '...', '<br><i><div>'), @$_POST['search']).'</p>';
-			?>
-
-			<a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="btn btn--line btn--small border-rounded text-bold float-right mt-20 no-decoration" aria-label="<?php _e("Lire")?> <?php echo $res_fiche['title']?>"><?php _e("Lire")?></a>
+			<div class="mt-8">
+				<a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="btn btn--line btn--small border-rounded text-bold no-decoration" aria-label="<?php _e("Lire")?> <?php echo $res_fiche['title']?>"><?php _e("Lire")?></a>
+			</div>
 
 		</article>
 		<?php

@@ -29,6 +29,11 @@ h1, h2, h3, h4, h5, h6 {
 a { color: var(--color-1);}
 a:focus, a:hover, a:active { color: var(--color-3);}
 
+/* Width */
+.w100 {
+  width: 100%;
+}
+
 /* Section */
 section {
   background: var(--white-color);
@@ -66,7 +71,6 @@ section {
   background-image: -o-linear-gradient(top,#14191c 0%,rgba(20,25,28,0) 82%);
   background-image: linear-gradient(180deg,#14191c 0%,rgba(20,25,28,0) 82%);
 }
-
 
 /* ----------------------------- */
 /* 1. Header                     */
@@ -226,7 +230,54 @@ section {
 
 /* B. Hero Content ------------- */
 
-/* Hero Content > Left */
+/* Basic Hero */
+
+.hero-subtitle {
+  font-size: 1.1rem;
+}
+
+/* Permet de cacher les heures dans le hero mais à terme pas l'idéal
+/*.hero-meta-date-add {
+max-width: 11.2rem;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: clip;
+}
+
+.hero-meta-date-update {
+max-width: 13.3rem;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: clip;
+}*/
+
+.hero-meta-author {
+text-transform: capitalize;
+}
+
+.hero-action {
+display: flex;
+align-items: center;
+}
+
+@media screen and (max-width: 992px) {
+.hero-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+}
+
+.hero-action-icon img {
+max-width: 60px;
+}
+
+.hero-btn, .hero-btn:hover {
+color: #fff;
+text-transform: uppercase;
+}
+
+/* Home Hero > Left */
 
 .hero-title {
   font-size: 2.9rem;
@@ -245,10 +296,6 @@ section {
   }
 }
 
-.hero-subtitle {
-  font-size: 1.1rem;
-}
-
 .hero-desc {
   font-size: 1.44rem;
 }
@@ -263,48 +310,8 @@ section {
   text-decoration: 2px wavy underline var(--color-3);
 }
 
-  /* Permet de cacher les heures dans le hero mais à terme pas l'idéal
-  /*.hero-meta-date-add {
-  max-width: 11.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
-}
 
-.hero-meta-date-update {
-  max-width: 13.3rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
-}*/
-
-.hero-meta-author {
-  text-transform: capitalize;
-}
-
-.hero-action {
-  display: flex;
-  align-items: center;
-}
-
-@media screen and (max-width: 992px) {
-  .hero-action {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-.hero-action-icon img {
-  max-width: 60px;
-}
-
-.hero-btn, .hero-btn:hover {
-  color: #fff;
-  text-transform: uppercase;
-}
-
-/* Hero Content > Right */
+/* Home Hero > Right */
 
 .hero-card {
   position: relative;
@@ -499,7 +506,57 @@ section {
 }
 
 /* ----------------------------- */
-/* 6. Event List                 */
+/* 6. Article List                 */
+/* ----------------------------- */
+
+.article-card {
+  padding: 2.5rem;
+}
+
+.article-post-img {
+  transform: translateX(-2.5rem);
+  width: calc(100% + 2.5rem);
+  position: relative;
+}
+
+.article-post-img .entry-img {
+  position: relative;
+  border-radius: 0 .5rem .5rem 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.article-post-img .entry-img img {
+  max-width: 100%;
+  height: auto;
+}
+
+.article-post-img .entry-img img:hover {
+  filter: grayscale(.45);
+}
+
+.article-post-img .entry-date{
+  position: absolute;
+  left: 2.5rem;
+  bottom: -1rem;
+  display: inline-flex;
+  align-items: center;
+  padding: .5rem .8rem;
+  background-color: var(--color-3);
+  border-radius: .5rem;
+}
+
+.article-post-img span {
+  color: var(--white-color);
+  font-size: .9rem;
+}
+
+.article-post-img .day, .article-post-img .month {
+  margin-right:.25rem;
+}
+
+/* ----------------------------- */
+/* 7. Event List                 */
 /* ----------------------------- */
 
 .event-post-img {
@@ -509,8 +566,8 @@ section {
 }
 
 .event-post-img img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .event-post-img img:hover {
@@ -543,6 +600,7 @@ section {
 
 .sidebar-content {
   flex: 1 27%;
+  order:2;
 }
 
 
