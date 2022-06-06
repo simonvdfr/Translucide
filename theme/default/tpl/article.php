@@ -52,7 +52,7 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 				}
 			?>
 
-			<?php media('img-event', array('class' => 'mt-36', 'lazy' => true)); ?>
+			<?php media('img-article', array('class' => 'mt-36', 'lazy' => true)); ?>
 
 			</div>
 

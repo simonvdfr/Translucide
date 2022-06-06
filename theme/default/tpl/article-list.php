@@ -25,6 +25,21 @@
 		?>
 	</div>
 
+	<nav role="navigation" aria-label="<?php _e("Filter by")?>" class="flex wrap space jcc tc ptl pbm">
+		<ul class="unstyled pln"><?php
+			// Liste les tags pour filtrer la page
+			$i = 1;
+			$sel_tag_list = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".$res['url']."' GROUP BY encode, name ORDER BY encode ASC");
+			//echo $connect->error;
+
+			while($res_tag_list = $sel_tag_list->fetch_assoc()) {
+				echo'<li class="inline prs"><a href="'.make_url($res['url'], array($res_tag_list['encode'], 'domaine' => true)).'" class="bt-tag">'.$res_tag_list['name'].'</a></li>';
+				$i++;
+			}
+			?>
+		</ul>
+	</nav>
+
 	<div class="article-list sm:grid md:grid-cols-2 lg:grid-cols-3 gap-36 sm:mx-20 mx-8 py-36 animation delay-1 fade-in">
 	<?php
 	// Si on n'a pas les droits d'édition des articles on affiche uniquement ceux actifs
@@ -52,23 +67,25 @@
 		".$tt.".encode = '".$tag."'
 	)";
 
-	$sql.=" WHERE (".$tc.".type='article') AND ".$tc.".lang='".$lang."' ".$sql_state."
-	ORDER BY ".$tc.".date_insert DESC
-	LIMIT ".$start.", ".$num_pp;
+	$sql.=" WHERE ".$tc.".lang='".$lang."' ".$sql_state." AND";
 
-	$sel_fiche = $connect->query($sql);
+		$sql.=" ".$tc.".type='article'";
 
-	$num_total = $connect->query("SELECT FOUND_ROWS()")->fetch_row()[0];// Nombre total de fiche
+		$sql.=" LIMIT ".$start.", ".$num_pp;
 
-	while($res_fiche = $sel_fiche->fetch_assoc())
+	$sel_article = $connect->query($sql);
+
+	$num_total = $connect->query("SELECT FOUND_ROWS()")->fetch_row()[0];// Nombre total d'articles
+
+	while($res_article = $sel_article->fetch_assoc())
 	{
 		// Affichage du message pour dire si l'article est invisible ou pas
-		if($res_fiche['state'] != "active") $state = " <span class='deactivate p-8'>".__("Article d&eacute;sactiv&eacute;")."</span>";
+		if($res_article['state'] != "active") $state = " <span class='deactivate p-8'>".__("Article d&eacute;sactiv&eacute;")."</span>";
 		else $state = "";
 
-		$content_fiche = json_decode($res_fiche['content'], true);
+		$content_article = json_decode($res_article['content'], true);
 
-		$date = explode("-", explode(" ", $res_fiche['date_insert'])[0]);
+		$date = explode("-", explode(" ", $res_article['date_insert'])[0]);
 		?>
 
 		<div class="article-card shadow border-rounded my-16 md:my-24">
@@ -77,13 +94,13 @@
 
 				<div class="article-post-content">
 					<div class="article-post-title">
-						<h3 class="mb-0 no-decoration"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="no-decoration"><?=$res_fiche['title']?></a><?=$state?></h3>
+						<h3 class="mb-0 no-decoration"><a href="<?=make_url($res_article['url'], array("domaine" => true));?>" class="no-decoration"><?=$res_article['title']?></a><?=$state?></h3>
 					</div>
 					<div class="article-post-img mt-24 mb-36">
 						<div class="entry-img">
-							<a href="<?=make_url($res_fiche['url']);?>" class="no-decoration">
+							<a href="<?=make_url($res_article['url']);?>" class="no-decoration">
 								<!-- Chercher variable pour appeler la photo publiée dans l'article !-->
-								<img src="http://translucide.local/media/background-home.jpg?1653997854">
+								<img src="<?=(isset(parse_url(@$content_article['img-article'])['scheme'])?'':$GLOBALS['home']).@$content_article['img-article']; ?>">
 							</a>
 						</div>
 						<div class="entry-date">
@@ -93,9 +110,9 @@
 						</div>
 					</div>
 				</div>
-				<?php if(isset($content_fiche['texte'])) echo word_cut($content_fiche['texte'], '180')."...";?>
+				<?php if(isset($content_article['texte'])) echo word_cut($content_article['texte'], '180')."...";?>
 				<div class="entry-more mt-24">
-					<a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="btn btn--line border-rounded text-bold no-decoration"><?php _e("Lire l'article")?> <i class="icon moon-arrow-right no-decoration ml-8"></i></a>
+					<a href="<?=make_url($res_article['url'], array("domaine" => true));?>" class="btn btn--line border-rounded text-bold no-decoration"><?php _e("Lire l'article")?> <i class="icon moon-arrow-right no-decoration ml-8"></i></a>
 				</div>
 
 			</article>

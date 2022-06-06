@@ -10,6 +10,8 @@
 			while($res_event = $sel_event->fetch_assoc())
 
 			{
+				$content_event = json_decode($res_event['content'], true);
+
 				$date = explode("-",explode("\"", explode("aaaa-mm-jj", $res_event['content'])[1])[2]);
 				//print_r($date);
 				?>
@@ -20,13 +22,13 @@
 
 						<div class="event-post-img">
 							<a href="<?=make_url($res_event['url']);?>" class="no-decoration">
-								<!-- Chercher variable pour appeler la photo publiée dans l'event !-->
-								<img src="#">
+								<!-- Chercher variable pour appeler la photo publiée dans l'article !-->
+								<img src="<?=(isset(parse_url(@$content_event['img-article'])['scheme'])?'':$GLOBALS['home']).@$content_event['img-article']; ?>">
 							</a>
 						</div>
 
 						<div class="event-post-content flex align-items-center">
-							<div class="event-post-date bg-blue color-light text-uppercase text-center p-8">
+							<div class="event-post-date bg-blue color-light text-uppercase text-center p-16">
 								<div class="date-number"><?=$date[2]?></div>
 								<div><?=trim(utf8_encode(strftime("%h", mktime(0, 0, 0, $date[1], 10))),".")?></div>
 							</div>
