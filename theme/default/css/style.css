@@ -48,7 +48,6 @@ section {
   background-repeat: no-repeat;
   background-position: center center;
   width: 100%;
-  height: 100%;
 }
 
 .bg-overlay:before {
@@ -70,6 +69,10 @@ section {
   background-image: -webkit-gradient(linear,left top,left bottom,from(#14191c),color-stop(82%,rgba(20,25,28,0)));
   background-image: -o-linear-gradient(top,#14191c 0%,rgba(20,25,28,0) 82%);
   background-image: linear-gradient(180deg,#14191c 0%,rgba(20,25,28,0) 82%);
+}
+
+.bg-glazient:before {
+  background-image: linear-gradient(rgba(68,172,155,.8),rgba(68,172,155,.9));
 }
 
 /* ----------------------------- */
@@ -592,6 +595,42 @@ text-transform: uppercase;
 .event-post-title {
   flex: 1 73%;
   line-height: 1;
+}
+
+/* ----------------------------- */
+/* 96. Contact                   */
+/* ----------------------------- */
+
+.contact-card {
+  flex: 1 27%;
+}
+
+.contact-card .card-info li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.contact-form {
+  flex: 1 73%;
+}
+
+.contact-title {
+  font-weight: normal;
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+#name, #email-from, #email-to, #subject, #message {
+  min-height: 4rem;
+  border: 1px solid var(--grey-color);
+  border-radius: .25rem;
+  padding: .5rem 1rem;
+}
+
+#captcha {
+  border: 1px solid var(--grey-color);
+  border-radius: .25rem;
 }
 
 /* ----------------------------- */

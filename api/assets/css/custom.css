@@ -49,26 +49,12 @@ body {
 	transition: margin-top .2s linear;
 }
 
-.body-mt {
-	margin-top: 2.5rem ;
-}
-
-.pt-78 {
-  padding-top: 4.875rem;
-}
-
-.pb-78 {
-  padding-bottom: 4.875rem;
-}
-
-.view-source {
-	text-align: left;
-	white-space: pre-wrap;
-}
-
-.pointer {
-  cursor: pointer !important;
-}
+.body-mt { margin-top: 2.5rem ; }
+.pt-78 { padding-top: 4.875rem; }
+.pb-78 { padding-bottom: 4.875rem; }
+.view-source { text-align: left; white-space: pre-wrap; }
+.pointer { cursor: pointer !important; }
+.editable-hidden { display: none; }
 
 /* Titles */
 h1, h2, h3 {
