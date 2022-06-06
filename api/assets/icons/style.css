@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'moon';
-  src:  url('moon.eot?47pbzi');
-  src:  url('moon.eot?47pbzi#iefix') format('embedded-opentype'),
-    url('moon.ttf?47pbzi') format('truetype'),
-    url('moon.woff?47pbzi') format('woff'),
-    url('moon.svg?47pbzi#moon') format('svg');
+  src:  url('moon.eot?hjmzrs');
+  src:  url('moon.eot?hjmzrs#iefix') format('embedded-opentype'),
+    url('moon.ttf?hjmzrs') format('truetype'),
+    url('moon.woff?hjmzrs') format('woff'),
+    url('moon.svg?hjmzrs#moon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -354,6 +354,9 @@
 }
 .moon-map-pin:before {
   content: "\e961";
+}
+.moon-phone:before {
+  content: "\e963";
 }
 .moon-search:before {
   content: "\e960";
