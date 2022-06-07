@@ -14,6 +14,7 @@ function highlight($txt, $search)
 <section id="page" class="layout-maxed">
 
 	<div class="page-content px-16 py-36">
+
 		<?php
 
 		// Traitement des mots-clés de recherche
@@ -86,14 +87,17 @@ function highlight($txt, $search)
 		$num_total = $connect->query("SELECT FOUND_ROWS()")->fetch_row()[0];// Nombre total de fiche
 		?>
 
-
-	<p class="text-center">
-		<?php
-		echo $num_total.' '.__("result").($num_total>1?'s':'');
-		if(@$_SESSION['search']) echo ' '.__("for")." <strong>".htmlspecialchars(@$_SESSION['search'])."</strong>";
-		?>
-	</p>
-
+	<div class="flex justify-between">
+		<div>
+			<?php
+			echo $num_total.' '.__("result").($num_total>1?'s':'');
+			if(@$_SESSION['search']) echo ' '.__("for")." <strong>".htmlspecialchars(@$_SESSION['search'])."</strong>";
+			?>
+		</div>
+		<div>
+			<?php include('theme/'.$GLOBALS['theme'].'/mdl/form-search.php');?>
+		</div>
+	</div>
 
 	<?php
 	while($res_fiche = $sel_fiche->fetch_assoc())
@@ -107,21 +111,19 @@ function highlight($txt, $search)
 		$content_fiche = json_decode($res_fiche['content'], true);
 
 		?>
-		<article class="flex flex-wrap mt-24">
+		<article class="mt-24">
 
-			<div>
-				<h2><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="no-decoration"><?php echo highlight($res_fiche['title'], @$_POST['search'])?></a><?php echo $state?></h2>
+			<div class="">
+				<h2 class="my-8"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="no-decoration"><?php echo highlight($res_fiche['title'], @$_POST['search'])?></a><?php echo $state?></h2>
 				<?php
 					if(isset($content_fiche['description'])) $texte = $content_fiche['description'];
 					elseif(isset($content_fiche['texte'])) $texte = $content_fiche['texte'];
 					if(isset($texte))
-						echo '<p class="mb-0">'.highlight(word_cut($texte, '350', '...', '<br><i><div>'), @$_POST['search']).'</p>';
+						echo '<p class="mb-8">'.highlight(word_cut($texte, '350', '...', '<br><i><div>'), @$_POST['search']).'</p>';
 				?>
 			</div>
 
-			<div class="mt-8">
-				<a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="btn btn--line btn--small border-rounded text-bold no-decoration" aria-label="<?php _e("Lire")?> <?php echo $res_fiche['title']?>"><?php _e("Lire")?></a>
-			</div>
+			<a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="btn btn--line btn--small border-rounded text-bold no-decoration" aria-label="<?php _e("Lire")?> <?php echo $res_fiche['title']?>"><?php _e("Lire")?></a>
 
 		</article>
 		<?php

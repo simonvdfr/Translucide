@@ -1,6 +1,6 @@
 <?php if(!$GLOBALS['domain']) exit;?>
 
-<!-- Formulaire de recherche -->
+<!-- Search form -->
 <?php $sel_search = $connect->query("SELECT * FROM ".$table_content." WHERE tpl='search' LIMIT 1");
 if($connect->error) {
 	header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
