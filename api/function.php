@@ -738,7 +738,7 @@ function tag($key = null, $filter = array())
 	.'>';
 
 		$i = 1;
-		$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_tag']." WHERE id='".(int)$GLOBALS['id']."' AND zone='".$key."' ORDER BY ordre ASC LIMIT 10");
+		$sel_tag = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_tag']." WHERE id='".(int)$GLOBALS['id']."' AND zone='".$key."' AND lang='".$GLOBALS['lang']."' ORDER BY ordre ASC LIMIT 10");
 		while($res_tag = $sel_tag->fetch_assoc()) 
 		{ 
 			$GLOBALS['tags'][$res_tag['encode']] = $res_tag['name'];
