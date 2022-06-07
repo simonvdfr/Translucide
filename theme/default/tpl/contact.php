@@ -134,7 +134,7 @@ switch(@$_GET['mode'])
 
 		<script>
 			// Titre de la page en cours
-			title = document.title;
+			// title = document.title;
 
 			// Pour rétablir le fonctionnement du formulaire
 			function activation_form(){

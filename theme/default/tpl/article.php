@@ -60,8 +60,6 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 				<?php txt('texte')?>
 			</div>
 
-			<?php if($res['tpl'] == "event-form") include 'contact.php';?>
-
 			<!-- Tags -->
 			<div class="entry entry-tag mt-36 py-36">
 				<h4 class="float-left mr-8"><?php _e("Tags")?> :</h4>

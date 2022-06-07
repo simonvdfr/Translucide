@@ -40,14 +40,14 @@
 		</ul>
 	</nav>
 
-	<div class="article-list sm:grid md:grid-cols-2 lg:grid-cols-3 gap-36 sm:mx-20 mx-8 py-36 animation delay-1 fade-in">
+	<div class="article-list sm:grid md:grid-cols-2 lg:grid-cols-3 gap-36 sm:mx-20 mx-8 animation delay-1 fade-in">
 	<?php
 	// Si on n'a pas les droits d'édition des articles on affiche uniquement ceux actifs
 	if(!@$_SESSION['auth']['edit-article']) $sql_state = "AND state='active'";
 	else $sql_state = "";
 
 	// Navigation par page
-	$num_pp = 5;
+	$num_pp = 9;
 
 	if(isset($GLOBALS['filter']['page'])) $page = (int)$GLOBALS['filter']['page']; else $page = 1;
 
@@ -63,15 +63,17 @@
 	ON
 	(
 		".$tt.".id = ".$tc.".id AND
-		".$tt.".zone = 'tags' AND
+		".$tt.".zone = '".$res['url']."' AND
 		".$tt.".encode = '".$tag."'
 	)";
 
 	$sql.=" WHERE ".$tc.".lang='".$lang."' ".$sql_state." AND";
 
-		$sql.=" ".$tc.".type='article'";
+	$sql.=" ".$tc.".type='article'";
 
-		$sql.=" LIMIT ".$start.", ".$num_pp;
+	$sql.=" LIMIT ".$start.", ".$num_pp;
+
+	//echo $sql;
 
 	$sel_article = $connect->query($sql);
 

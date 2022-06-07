@@ -407,7 +407,7 @@ text-transform: uppercase;
 .features-title {
   font-weight: normal;
   font-size: 2.6rem;
-  line-height: 1;
+  line-height: 1.1;
 }
 
 .features-title span {
@@ -474,8 +474,10 @@ text-transform: uppercase;
 }
 
 .post-img img {
-  max-width: 100%;
   border-radius: .5rem;
+  max-height: 22rem;
+  width: max-content;
+  object-fit: cover;
 }
 
 .post-img .post-event {
@@ -529,15 +531,15 @@ text-transform: uppercase;
 
 .article-post-img .entry-img {
   position: relative;
-  border-radius: 0 .5rem .5rem 0;
   overflow: hidden;
   max-width: 100%;
 }
 
 .article-post-img .entry-img img {
-  max-width: 100%;
-  height: auto;
+  border-radius: 0 .5rem .5rem 0;
   max-height: 16rem;
+  width: max-content;
+  object-fit: cover;
 }
 
 .article-post-img .entry-img img:hover {
@@ -600,7 +602,7 @@ text-transform: uppercase;
 
 .event-post-title {
   flex: 1 73%;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .event-post-title h3 {

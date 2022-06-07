@@ -22,7 +22,6 @@
 
 						<div class="event-post-img">
 							<a href="<?=make_url($res_event['url']);?>" class="no-decoration">
-								<!-- Chercher variable pour appeler la photo publiée dans l'article !-->
 								<img src="<?=(isset(parse_url(@$content_event['img-article'])['scheme'])?'':$GLOBALS['home']).@$content_event['img-article']; ?>">
 							</a>
 						</div>
