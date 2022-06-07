@@ -589,7 +589,7 @@ switch($_GET['mode'])
 				$i = 1;
 				foreach($tags as $cle => $val) {
 					if(isset($val) and trimer($val) != "") {
-						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".(isset($_POST['tag-ordre'])?(int)$_POST['tag-ordre']:$i)."'");
+						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', lang='".$lang."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".(isset($_POST['tag-ordre'])?(int)$_POST['tag-ordre']:$i)."'");
 						$i++;
 					}
 				}
@@ -619,7 +619,7 @@ switch($_GET['mode'])
 
 
 			// Update les tags des contenus
-			$connect->query("UPDATE ".$table_tag." SET encode='".encode($tag)."', name='".addslashes($tag)."' WHERE zone='".encode($_POST['permalink'])."' AND encode='".$tag_url."'");
+			$connect->query("UPDATE ".$table_tag." SET encode='".encode($tag)."', name='".addslashes($tag)."' WHERE zone='".encode($_POST['permalink'])."' AND lang='".$lang."' AND encode='".$tag_url."'");
 			if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 
 
@@ -1845,7 +1845,7 @@ switch($_GET['mode'])
 
 		login('medium');
 
-		$sel_tag = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' ORDER BY ordre ASC, encode ASC");
+		$sel_tag = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' AND lang='".$lang."' ORDER BY ordre ASC, encode ASC");
 		while($res_tag = $sel_tag->fetch_assoc()) {
 			$tab_tag[] = $res_tag['name'];
 		}

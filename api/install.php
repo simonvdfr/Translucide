@@ -445,11 +445,12 @@ switch(@$_GET['mode'])
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_tag']."` (
 								`id` bigint(20) NOT NULL DEFAULT '0',
 								`zone` varchar(32) NOT NULL,
+								`lang` varchar(8) NOT NULL DEFAULT 'fr',
 								`encode` varchar(255) NOT NULL DEFAULT '',
 								`name` text NOT NULL,
 								`ordre` smallint(6) NOT NULL DEFAULT '0',
-								PRIMARY KEY (`id`,`zone`,`encode`),
-								KEY `type` (`zone`,`encode`),
+								PRIMARY KEY (`id`,`zone`,`lang`,`encode`),
+								KEY `zone` (`zone`,`lang`,`encode`),
 								KEY `ordre` (`ordre`)
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 						");
