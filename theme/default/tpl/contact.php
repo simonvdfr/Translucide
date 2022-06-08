@@ -32,7 +32,7 @@ switch(@$_GET['mode'])
 
 					<article class="contact-card border-rounded flex flex-col justify-between flex-grow bg-blue bg-section bg-overlay bg-glazient color-white sm:p-24 md:m-24" <?php bg('bg-hero')?>>
 						<div class="card-content-top">
-							<?php h3('title-card', 'color-white')?>
+							<?php h3('title-card', 'color-white mt-8')?>
 							<?php txt('intro-card', 'text-bold md:mt-24')?>
 						</div>
 						<div class="card-content-bottom">
@@ -67,7 +67,7 @@ switch(@$_GET['mode'])
 									<input type="email" name="email-from" id="email-from" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" autocomplete="email" placeholder="<?php _e("Email")?> *" class="w100" required>
 								</div>
 								<div class="col-span-full">
-									<input type="text" name="subject" id="subject" placeholder="<?php _e("Subject")?> *" class="w100">
+									<input type="text" name="subject" id="subject" placeholder="<?php _e("Subject")?> *" class="w100" required>
 								</div>
 								<div class="col-span-full">
 									<textarea name="message" id="message" placeholder="<?php _e("Message")?> *" rows="5" cols="150" class="mb-8" required></textarea>

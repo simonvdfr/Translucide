@@ -26,14 +26,14 @@
 	</div>
 
 	<nav role="navigation" aria-label="<?php _e("Filter by")?>" class="flex wrap space jcc tc ptl pbm">
-		<ul class="unstyled pln"><?php
+		<ul class="is-unstyled pl-0"><?php
 			// Liste les tags pour filtrer la page
 			$i = 1;
 			$sel_tag_list = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".$res['url']."' GROUP BY encode, name ORDER BY encode ASC");
 			//echo $connect->error;
 
 			while($res_tag_list = $sel_tag_list->fetch_assoc()) {
-				echo'<li class="inline prs"><a href="'.make_url($res['url'], array($res_tag_list['encode'], 'domaine' => true)).'" class="bt-tag">'.$res_tag_list['name'].'</a></li>';
+				echo'<li class="inline pr-16"><a href="'.make_url($res['url'], array($res_tag_list['encode'], 'domaine' => true)).'" class="btn">'.$res_tag_list['name'].'</a></li>';
 				$i++;
 			}
 			?>
@@ -47,7 +47,7 @@
 	else $sql_state = "";
 
 	// Navigation par page
-	$num_pp = 9;
+	$num_pp = 6;
 
 	if(isset($GLOBALS['filter']['page'])) $page = (int)$GLOBALS['filter']['page']; else $page = 1;
 

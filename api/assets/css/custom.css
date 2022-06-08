@@ -94,6 +94,9 @@ a:focus, a:hover, a:active { color: var(--color-3);}
 @media screen and (max-width: 576px) {
   .mobile-hidden {display:none; }
 }
+@media screen and (max-width: 992px) {
+  .tablet-hidden {display:none; }
+}
 @media (min-width: 1400px) {
 	.large-screen-hidden { display: none; }
 }
@@ -240,7 +243,7 @@ header nav .burger-button {
 	border: none;
 	cursor: pointer;
 	transition: background 0.3s;
-	background-color: #35747f;
+	background-color: var(--color-3);
 }
 
 .burger-button span {
@@ -266,7 +269,7 @@ header nav .burger-button {
 }
 
 .burger-button span::before { top: -6px; transition-property: top, transform; }
-.burger span::after { bottom: -6px; transition-property: bottom, transform; }
+.burger-button span::after { bottom: -6px; transition-property: bottom, transform; }
 
 /* active state, i.e. menu open */
 .burger-button.active { background-color: #cb0032; }

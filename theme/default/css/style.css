@@ -148,7 +148,7 @@ section {
 }
 
 
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 992px) {
   .nav-menu {
     flex-wrap: wrap;
     align-items: center;
@@ -160,13 +160,14 @@ section {
   display: block;
   position: relative;
   text-align: left;
-  margin-right: 2.25rem;
+  border-radius: 0;
 }
 
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 992px) {
   .nav-menu .nav-item {
     display: inline-block;
     text-align: center;
+    margin-right: 2.25rem;
   }
 }
 
@@ -177,7 +178,7 @@ section {
     white-space: nowrap;
 }
 
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 992px) {
   .nav-menu .nav-item a {
     padding: 0;
   }
@@ -185,9 +186,15 @@ section {
 
 .nav-menu .nav-item a.selected, .nav-item>a:focus, .nav-item>a:hover, .nav-item>a:active {
   color: var(--color-3);
-  line-height: 5.7rem;
-  margin-top:0.22rem;
   border-bottom: 3px solid var(--color-3);
+  background-color: var(--white-color);
+}
+
+@media screen and (min-width: 992px) {
+  .nav-menu .nav-item a {
+    margin-top:0.22rem;
+    line-height: 5.7rem;
+  }
 }
 
 /* Holder */
@@ -318,11 +325,7 @@ text-transform: uppercase;
 
 .hero-card {
   position: relative;
-  padding: 2.3rem;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+  padding: 1.5rem;
   max-width: 20rem;
   margin-left: auto;
 }
@@ -485,9 +488,9 @@ text-transform: uppercase;
   color: var(--color-1);
   background-color: var(--light-color) /*rgba(255, 255, 255, 0.6)*/;
   border-radius: 0 0 0 .5rem;
-  bottom: 0;
+  bottom: .5rem;
   left: 0;
-  padding: 1.5rem 2rem;
+  padding: 1rem 1.5rem;
 }
 
 .post-img .post-event::after {
@@ -577,8 +580,9 @@ text-transform: uppercase;
 }
 
 .event-post-img img {
-  max-width: 100%;
-  height: auto;
+  max-height: 14rem;
+  width: max-content;
+  object-fit: cover;
 }
 
 .event-post-img img:hover {

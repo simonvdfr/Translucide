@@ -17,30 +17,40 @@
 			<a href="<?=$GLOBALS['home']?>"><?php media('logo', '200x50')?></a>
 		</div>
 
-		<nav role="navigation" class="menu flex mobile-hidden" aria-label="<?php _e("Browsing menu")?>">
+		<nav role="navigation" class="menu flex" aria-label="<?php _e("Browsing menu")?>">
 
 			<button type="button" class="burger-button float-right" aria-expanded="false" aria-label="Afficher ou masquer la navigation" aria-controls="main-navigation">
-				<i></i>
+				<span class="open"><?php _e("Menu")?></span>
 				<span class="close none"><?php _e("Close")?></span>
 			</button>
 
-			<ul id="main-navigation" class="nav-menu flex text-bold">
+			<ul id="main-navigation" class="nav-menu flex flex-wrap text-bold">
 				<?php
+				$navigation = [''=>__('Upper menu')];
 				// Extraction du menu
 				foreach($GLOBALS['nav'] as $cle => $val)
 				{
-					// Menu sélectionné si page en cours ou article (actu)
-					if(get_url() == $val['href'] or (@$res['type'] == "article" and $val['href'] == "actualites"))
-						$selected = " selected";
-					else
-						$selected = "";
+					// Pour le fil d'ariane
+					$navigation = array_merge($navigation, [$val['href'] => str_replace('<br>',' ', $val['text'])]);
 
-					echo"<li class='nav-item'><a href=\"".make_url($val['href'], array("domaine" => true))."\"".($val['id']?" id='".$val['id']."'":"")."".($val['target']?" target='".$val['target']."'":"")." class='".$selected."'".($selected?' title="'.$val['text'].' - '.__("current page").'"':'').">".$val['text']."</a></li>";
+					// Menu sélectionné si page en cours // @$res['type'] == "article" and $val['href'] == "actualites"  or ()
+					if(get_url() == $val['href'] or @array_keys($GLOBALS['filter'])[0] == basename($val['href']))
+						$selected = ' selected';
+					else
+						$selected = '';
+
+					echo'<li class="nav-item '.$selected.'">
+						<a href="'.make_url($val['href'], array('domaine' => true)).'"'.
+						($val['id']?' id="'.$val['id'].'"':'').
+						($val['target']?' target="'.$val['target'].'"':'').
+						($selected?' class="selected" title="'.$val['text'].' - '.__("current page").'"':'').
+						'>'.$val['text'].'</a>
+					</li>';
 				}
 				?>
 			</ul>
 
-			<div class="holder-panel">
+			<div class="holder-panel tablet-hidden">
 				<div class="holder-contact bg-glaz text-bold"><a class="btn"<?php href('holder-link')?>>Our Github</a><i class="icon moon-github color-white"></i></div>
 			</div>
 

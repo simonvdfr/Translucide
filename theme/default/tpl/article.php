@@ -17,7 +17,7 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 		<article class="post-content md:mr-36">
 
 			<!-- Image -->
-			<div class="post-img">
+			<div class="<?=(isset($GLOBALS['content']['img-article'])) ? '' : 'editable-hidden ' ?> post-img">
 				<!-- Date événement -->
 
 				<?php
@@ -52,7 +52,10 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 				}
 			?>
 
-			<?php media('img-article', array('class' => 'mt-36', 'lazy' => true)); ?>
+				<figure class="m-0">
+					<?php media('img-article', array('class' => 'mt-36', 'lazy' => true)); ?>
+					<figcaption><?php txt('legend-img-article', 'text-smaller text-center pt-8'); ?></figcaption>
+				</figure>
 
 			</div>
 
@@ -61,7 +64,7 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 			</div>
 
 			<!-- Tags -->
-			<div class="entry entry-tag mt-36 py-36">
+			<div id="tags" class="entry entry-tag mt-36 py-36">
 				<h4 class="float-left mr-8"><?php _e("Tags")?> :</h4>
 				<?php tag('tags')?>
 			</div>
