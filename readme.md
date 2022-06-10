@@ -43,7 +43,7 @@ Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 - Pour créer une nouvelle template, ajoutez un fichier php dans le dossier `tpl` de votre thème. Créez la trame avec la structure html de votre choix et ajoutez les contenus éditables à l'aide des fonctions existantes (cf. plus loin). Ajoutez le contenu directement sur le site en mode édition, ceci alimentera directement la BDD.
 
 ## Raccourcis clavier (sur Chrome)
-- <kbd>ctrl + e</kbd>Lance le mode édition
+- <kbd>ctrl + e</kbd> Lance le mode édition
 
 ### Raccourcis en mode édition
 Pour qu'il soit fonctionnel vous devez modifier dans `config.php` la variable `$GLOBALS['shortcut'] = true;`
@@ -51,6 +51,8 @@ Pour qu'il soit fonctionnel vous devez modifier dans `config.php` la variable `$
 - <kbd>ctrl + s</kbd> Sauvegarde les changements
 - <kbd>ctrl + q</kbd> Change le niveau d'activation de la page
 - <kbd>ctrl + z</kbd> Annule la dernière action dans les blocs textes
+
+Note : pour un site accessible (RGAA) vous devez désactiver les raccourcis clavier dans `config.php` avec `$GLOBALS['shortcut'] = false;`
 
 ## Utilisation de l'éditeur du menu de navigation
 - Lorsque vous modifiez du contenu qui se trouve dans `<header>` ou `<footer>`, ça le modifie pour toutes les pages du site.
@@ -107,6 +109,12 @@ Pour qu'il soit fonctionnel vous devez modifier dans `config.php` la variable `$
 
 ## Gestion du multilingue
 Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/testé. Globalement les traductions de l'interface du CMS se trouvent dans le fichier `api/translation.php`
+
+## Page 404 & 503
+Vous pouvez customiser les pages 404 (not found) & 503 (Service Unavailable) en créant une page avec comme permalien `404` ou `503`
+
+## Option fermeture du site
+Vous pouvez fermer le site dans une tranche horaire définit dans la variable `$GLOBALS['offline'] = '20:00-06:00 +1 day';`. dans cet exemple le site serra fermer entre 20h et 6h du matin. C'est la page 503 qui serra charger.
 
 ## Version bêta de l'intégration de ecoIndex
 Pour permettre de prendre conscience de l'impact environnemental de l'intégration des contenus dans le CMS j'ai intégré de façon simplifier la note ecoIndex.
