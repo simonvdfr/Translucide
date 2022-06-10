@@ -108,7 +108,7 @@ $GLOBALS['email_contact'] = '';
 $GLOBALS['online'] = false;
 
 // Heure de fermeture du site (strtotime) = 20:00-06:00 +1 day
-$GLOBALS['offline'] = false;
+$GLOBALS['offline'] = null;
 
 
 // Utilisation de librairie minifier
