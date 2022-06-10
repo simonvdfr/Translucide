@@ -30,15 +30,32 @@ if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des t
 
 /********** CONTENU **********/
 
-// On récupère les données de la page
+// Permalien de la page
 $get_url = $connect->real_escape_string(get_url());
-$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='".$get_url."' AND lang='".$lang."' LIMIT 1");
-if($connect->error) {
-	header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
-	exit($connect->error);
-}
-else $res = $sel->fetch_assoc();// On récupère les données de la page
 
+// Check si pas admin & horaire de fermeture du site
+if(!@$_SESSION['auth']['edit-page'] and isset($GLOBALS['offline']))
+{
+	$offline = explode('-', $GLOBALS['offline']);
+
+	// Si l'heure actuelle est dans la tranche de fermeture
+	if(time() > strtotime($offline[0]) and time() < strtotime($offline[1])) {
+		$close = true;
+		$res['state'] = "deactivate";
+		$res['url'] = $get_url;
+	}
+}
+
+// On récupère les données de la page
+if(!@$close)
+{
+	$sel = $connect->query("SELECT * FROM ".$table_content." WHERE url='".$get_url."' AND lang='".$lang."' LIMIT 1");
+	if($connect->error) {
+		header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
+		exit($connect->error);
+	}
+	else $res = $sel->fetch_assoc();// On récupère les données de la page
+}
 
 
 /********** TAGS **********/
@@ -116,9 +133,10 @@ if($res)
 			$res_503 = $sel_503->fetch_assoc();
 			if(isset($res_503['id'])) $res = $res_503;
 			else {
-				$res = null;
-				$res['title'] = $msg = __("Under Construction");
+				$res = null;				
 				$res['state'] = 'deactivate';
+				if(@$close) $res['title'] = $msg = __("Site closing time");
+				else $res['title'] = $msg = __("Under Construction");
 			}
 
 			header($_SERVER['SERVER_PROTOCOL']." 503 Service Unavailable");
