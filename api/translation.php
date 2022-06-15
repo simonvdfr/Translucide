@@ -131,7 +131,7 @@ $add_translation = array(
 	"Unsupported file type" => array("fr" => "Type de fichier non pris en charge"),
 	"A file with the same name already exists" => array("fr" => "Un fichier avec le même nom existe déjà"),
 
-	"Icon Library" => array("fr" => "Bibliothèque d'icône"),
+	"Icon Library" => array("fr" => "Bibliothèque d'icônes"),
 
 
 	"Loading" => array("fr" => "Chargement"),
@@ -155,11 +155,11 @@ $add_translation = array(
 	"Your profile" => array("fr" => "Votre profil"),
 	"Profile" => array("fr" => "Profil"),
 
-	"State" => array("fr" => "Etat"),
+	"State" => array("fr" => "État"),
 	"Authorization" => array("fr" => "Autorisation"),
 	"Name" => array("fr" => "Pseudo"),
 	"Password" => array("fr" => "Mot de passe"),
-	"Updated the" => array("fr" => "Mise à jour le"),
+	"Updated the" => array("fr" => "Mis à jour le"),
 	"Add the" => array("fr" => "Ajouté le"),
 
 	"Active" => array("fr" => "Actif"),
@@ -172,10 +172,10 @@ $add_translation = array(
 	"User profile" => array("fr" => "Profil de l'utilisateur"),
 
 
-	"Managing admins" => array("fr" => "Gestion des admins"),
+	"Managing admins" => array("fr" => "Gestion des administrateurs"),
 	"Managing users" => array("fr" => "Gestion des utilisateurs"),
 
-	"Edit Config" => array("fr" => "Modifier la config"),
+	"Edit Config" => array("fr" => "Modifier la configuration"),
 
 	"Edit menu" => array("fr" => "Modifier le menu"),
 	"Edit header" => array("fr" => "Modifier l'en-tête"),
@@ -187,7 +187,7 @@ $add_translation = array(
 	"Edit page" => array("fr" => "Edition des pages"),
 	"Edit article" => array("fr" => "Edition des articles"),
 	"Edit product" => array("fr" => "Edition des produits"),
-	"Edit video" => array("fr" => "Edition des vidéo"),
+	"Edit video" => array("fr" => "Edition des vidéos"),
 
 	"Public content" => array("fr" => "Contenu public"),
 	"Public file" => array("fr" => "Dossier public"),

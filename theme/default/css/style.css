@@ -188,11 +188,11 @@ section {
   color: var(--color-3);
   border-bottom: 3px solid var(--color-3);
   background-color: var(--white-color);
+  margin-top:0.22rem;
 }
 
 @media screen and (min-width: 992px) {
   .nav-menu .nav-item a {
-    margin-top:0.22rem;
     line-height: 5.7rem;
   }
 }

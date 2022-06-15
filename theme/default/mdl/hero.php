@@ -5,7 +5,7 @@
 		<div class="hero-content">
 			<div class="py-16">
 					<div class="hero-text text-center m-24 animation fade-in">
-						<h1 class="hero-title color-blue"><?=$res['title']?></h1>
+						<h1 class="hero-title color-blue mb-0"><?=$res['title']?></h1>
 						<?php include('theme/'.$GLOBALS['theme'].'/mdl/entry-hero.php');?>
 					</div>
 			</div>
