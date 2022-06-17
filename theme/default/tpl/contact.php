@@ -90,7 +90,7 @@ switch(@$_GET['mode'])
 								?>
 								<div>
 									<label for="captcha">
-										<?php _e("For security reasons, please solve the following calculation")?><span class="color-red">*</span> :
+										<?php _e("For security reasons please solve the following calculation")?><span class="color-red">*</span> :
 										<?=(__($chiffre[$nb1])." ".($operator=='-'?'−':$operator)." ".__($chiffre[$nb2]));?> =
 									</label>
 									<input type="text" name="captcha" id="captcha" placeholder="?" class="text-center" autocomplete="off" required>

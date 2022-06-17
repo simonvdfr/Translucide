@@ -19,6 +19,7 @@
   --color-2: #3e7f8a; /*second color of SeaCms logo*/
   --color-3: #44ac9b; /*third color of SeaCms logo*/
   --color-4: #49d7ac; /*fourth color of SeaCms logo*/
+  --color-5: #a4ebd4; /*fiveth color of SeaCms logo*/
 	--color-6: #e4f9f2; /*variation color of SeaCms logo*/
   --white-color: #ffffff;
   --light-color: #f5f5f5;
@@ -103,10 +104,33 @@ a:focus, a:hover, a:active { color: var(--color-3);}
 .no-decoration, .no-decoration:hover { text-decoration: none;}
 
 .highlight {
-    background-color: var(--color-2);
-    color: var(--white-color);
-    font-weight: bold;
-    padding: 1rem;
+  display: inline;
+  background: linear-gradient(120deg, var(--color-5), var(--color-6));
+  background-repeat: no-repeat;
+  background-size: 100% 70%;
+  background-position: 20% 60%;
+  border-radius: 20% 30% 35% 24%;
+  padding: 0.3rem 0.2rem;
+}
+
+blockquote {
+  background: var(--light-color);
+  border-left: 0.5rem solid var(--grey-color);
+  margin: 1.5rem 0.5rem;
+  padding: 0.5rem 0.5rem;
+  color: var(--color-1);
+  font-style: italic;
+}
+
+blockquote::after {
+  color: var(--grey-color);
+  font-family: 'moon';
+  content:"\e900";
+  font-style: normal;
+  font-size: 2.5rem;
+  line-height: 0.2rem;
+  margin-left: 0.25rem;
+  vertical-align: -0.6rem;
 }
 
 /* ----------------------------- */
@@ -1523,7 +1547,7 @@ img.drag-elem {
 }
 
 /* ---------------------------------- */
-/* 16. Ecoindex Grade                 */
+/* 97. Ecoindex Grade                 */
 /* ---------------------------------- */
 
 #ecoindex span {
@@ -1714,6 +1738,9 @@ img.drag-elem {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.icon-bolder {
+  font-weight: bolder;
 }
 .icon-fw {
   width: 1.28571429em;

@@ -1,11 +1,11 @@
 <?php
-include_once("../config.php");// Les variables
-include_once("function.php");// Fonction
+include_once("../config.php");// variables
+include_once("function.php");// functions
 
 
-$lang = get_lang();// Sélectionne  la langue
-load_translation('api');// Chargement des traductions du système
-if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des traductions du theme
+$lang = get_lang();// select languages
+load_translation('api');// Loading system translations
+if(@$GLOBALS['theme_translation']) load_translation('theme');// Loading theme translations
 
 
 switch($_GET['mode'])
@@ -13,16 +13,16 @@ switch($_GET['mode'])
 	default:
 	break;
 
-	case "edit":// Lancement du mode édition du contenu de la page
+	case "edit":// Launching the editing mode of the page content
 
-		unset($_SESSION['nonce']);// Pour éviter les interférences avec un autre nonce de session
+		unset($_SESSION['nonce']);// To avoid interference with another nonce session
 
-		login('high', 'edit-'.($_GET['type']?encode($_GET['type']):"page"));// Vérifie que l'on a le droit d'éditer les contenus
+		login('high', 'edit-'.($_GET['type']?encode($_GET['type']):"page"));// Check that you have the right to edit the contents
 
-		// Si on doit recharger la page avant de lancer le mode édition
+		// If you need to reload the page before starting the editing mode
 		if(isset($_REQUEST['callback']) and $_REQUEST['callback'] == "reload_edit")
 		{
-			// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
+			// Set a cookie on loading to request the opening of the admin automatically
 			setcookie("autoload_edit", "true", time() + 60*60, $GLOBALS['path'], $GLOBALS['domain']);
 			?>
 			<script>
@@ -31,14 +31,14 @@ switch($_GET['mode'])
 		<?php }
 		else
 		{
-			// JS pour mettre en mode édit les contenus et ajout d'un nonce pour signer les formulaires
+			// JS to put the content in edit mode and add a nonce to sign the forms
 			?>
 			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
 
-			<!-- Barre du haut avec bouton sauvegarder et option -->
+			<!-- Top bar with save and option buttons -->
 			<div id="admin-bar" class="hidden">
 
 				<div id="user" class="float-left p-8"><i class="icon moon-user" title="<?php _e("Show user info")?>"></i></div>
@@ -125,7 +125,7 @@ switch($_GET['mode'])
 
 				</div>
 
-				<a href="/tutoriel.html" id="tutoriel" class="float-left p-8 text-bigger text-bold" target="_blank" title="<?php echo __("Editing tutorial").' - '.__("New window");?>"><i class="icon moon-info align-middle"></i></a>
+				<a href="support.php" id="<?php echo __("Support page");?>" class="float-left p-8 text-bigger text-bold" target="_blank" title="<?php echo __("Access support page");?>"><i class="icon moon-info align-middle"></i></a>
 
 				<div id="close" class="float-right m-8 text-bigger" title="<?php _e("Close the edit mode")?>"><i class="icon moon-x align-top"></i></div>
 
@@ -459,7 +459,7 @@ switch($_GET['mode'])
 		if(@$_SERVER['REQUEST_SCHEME'] == 'https' and $GLOBALS['scheme'] != 'https://')
 		{
 			// Message d'erreur pour inviter à éditer config.php
-			echo "<script>error(\"".__("Vous naviguer en https mais ça n'est pas spécifié dans config.php (scheme = https://)")."\");</script>";
+			echo "<script>error(\"".__("You are browsing in https but it's not specified in config.php (scheme = https://)")."\");</script>";
 
 			// On change la variable qui permet de supprimer les chemins pour qu'elle soit appropriée
 			$GLOBALS['home'] = str_replace('http://', 'https://', $GLOBALS['home']);
