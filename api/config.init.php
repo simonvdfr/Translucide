@@ -108,6 +108,9 @@ $GLOBALS['email_contact'] = '';
 // false => noindex, nofollow | true => index, follow
 $GLOBALS['online'] = false;
 
+// Heure de fermeture du site (strtotime) = 20:00-06:00 +1 day
+$GLOBALS['offline'] = null;
+
 
 // Utilisation de librairie minifier
 if($dev)// Dev local
@@ -335,7 +338,7 @@ $GLOBALS['filter_auth'] = array('page', 'user');
 
 // Sécurité / défaut
 $id = $title = $description = $image = $tag = null;
-$mode = $uid = $error = $robots = $robots_data = null;
+$mode = $uid = $error = $robots = $robots_data = $close = null;
 $GLOBALS['filter'] = array();
 $GLOBALS['translation'] = array();
 $GLOBALS['content'] = array();

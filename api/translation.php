@@ -2,6 +2,8 @@
 $add_translation = array(
 	"404 error : page not found" => array("fr" => "Erreur 404 : page introuvable"),
 	"Under Construction" => array("fr" => "En construction"),
+	"Site closing time" => array("fr" => "Heure de fermeture du site"),
+
 	"Quick access" => array("fr" => "Accès rapide"),
 	"Skip to content" => array("fr" => "Aller au contenu"),
 	"Enhanced contrast" => array("fr" => "Contraste renforcé"),

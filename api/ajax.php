@@ -590,10 +590,20 @@ switch($_GET['mode'])
 				$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 			}
 
-			send_password = function(){
-				if(confirm("Envoyer un nouveau mot de passe à "+ $("#user-profil #email").val() +" ?"))
+			send_password = function()
+			{
+				// Si utilisateur en cours de création => on sauvegarde avant l'envoi du pass
+				if(!$("#user-profil #uid").val())
+				{
+					callback = 'send_password';
+					$("#user-profil").submit();
+				}
+				// Si utilisateur créer
+				else if(confirm("Envoyer un nouveau mot de passe à "+ $("#user-profil #email").val() +" ?"))
 				{
 					$("#send-password .icon").removeClass("moon-mail").addClass("icon-spin moon-settings");
+
+					callback = undefined;// re-init la variable
 
 					// Envoi du mail
 					$.ajax({
@@ -912,6 +922,9 @@ switch($_GET['mode'])
 								// @todo: bouton de sauvegarde readonly (pour éviter re-submit) + message si validation par mail/admin requise
 
 							<?php }?>
+
+							// Si callback après sauvegarde user
+							if(typeof callback !== "undefined") eval(callback + "()");
 
 						<?php }
 					}
