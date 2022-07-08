@@ -275,19 +275,19 @@
 				    <li>Cliquer sur le bouton "Enregistrer" en haut à droite.</li>
 				</ul>
 	
-			    <h3>Ajouter une légende à une image (pour le référencement et l'accessibilité)</h3>
+			    <h3>Ajouter un texte alternatif à une image (pour le référencement et l'accessibilité)</h3>
 		
 				<ul>
 				    <li>Cliquer sur l'image.</li>
-				    <li>Saisir une légende dans le champ "Légende de l'image" au-dessus de l'image.</li>
+				    <li>Saisir une légende dans le champ "Texte alternatif" au-dessus de l'image.</li>
 				</ul>
 			
-			    <h3>Ajouter un sous-titre à une image (crédit/source)</h3>
+			    <h3>Ajouter une légende à une image (crédit/source)</h3>
 				
 				<ul>
 				    <li>Cliquer sur l'image.</li>
-				    <li>Cliquer sur "Sous-titre" au-desssus de l'image.</li>
-				    <li>Remplacer le texte "Sous-titre" qui vient de s'ajouter au-dessous de l'image.</li>
+				    <li>Cliquer sur "Légende" au-dessus de l'image.</li>
+				    <li>Remplacer le texte "Légende" qui vient de s'ajouter au-dessous de l'image.</li>
 				</ul>
 			  
 
@@ -402,12 +402,16 @@
 
 	$("article h2, article h3").each(function(index) 
 	{
+		// nom de l'ancre
+		var ancre = $(this).text().toLowerCase().replace(/[^a-z0-9]+/g,'-');
+
+
 		// 1er élément
 		if(i == 1) previous = $(this).prop("tagName");
 
 
 		// Ajoute l'encre dans le contenu
-		$(this).attr("id","ancre"+i);
+		$(this).attr("id","ancre-"+ancre);
 
 
 		// Si changement de niveau
@@ -427,7 +431,7 @@
 
 
 		// Ajoute l'élément au sommaire
-		html += "<li><a href='#ancre" + i + "'>" + $(this).text() + "</a></li>";
+		html += "<li><a href='#ancre-" + ancre + "'>" + $(this).text() + "</a></li>";
 
 
 		previous = $(this).prop("tagName");

@@ -47,7 +47,7 @@ add_translation({
 	"Destination URL" : {"fr" : "URL de destination"},	
 
 	"Remove the link from the selection" : {"fr" : "Supprimer le lien de la sélection"},
-	"Image caption" : {"fr" : "Légende de l'image"},		
+	"Alt text" : {"fr" : "Texte alternatif"},		
 	"Delete image" : {"fr" : "Supprimer l'image"},		
 	"Delete file" : {"fr" : "Supprimer le fichier"},
 	"Erase" : {"fr" : "Effacer"},
@@ -58,7 +58,7 @@ add_translation({
 	"Width" : {"fr" : "Largeur"},
 	"Height" : {"fr" : "Hauteur"},
 	"Optimize" : {"fr" : "Optimiser"},
-	"Subtitle" : {"fr" : "Sous-titre"},
+	"Caption" : {"fr" : "Légende"},
 
 	"Add a module" : {"fr" : "Ajouter un module"},
 	"Move" : {"fr" : "Déplacer"},
@@ -430,18 +430,18 @@ video = function(link)
 	if($("#txt-tool #video-option button i").hasClass("fa-plus")) 
 	{
 		// Ancienne version non accessible 22/04/2022
-		//exec_tool("insertHTML", '<figure role="group" class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
+		//exec_tool("insertHTML", '<figure role="group" class="fl" style="display: table !important;"><a href="'+ url_video +'" class="video" data-video="'+ id_video +'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Caption") +'</figcaption></figure>');
 
 		// Version input image
-		//exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><input type="image" src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" title="'+__("Show video")+'"><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+		//exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><input type="image" src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" title="'+__("Show video")+'"><p id="desc-'+id_video+'">'+ __("Caption") +'</p></div>');
 
 
 		if(link)
 			// Version lien vers Youtube dans un nouvel onglet
-			exec_tool("insertHTML", '<figure role="group" class="center"><a href="'+ url_video +'" aria-label="'+__("Show video in new window")+'" target="_blank"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Subtitle") +'</figcaption></figure>');
+			exec_tool("insertHTML", '<figure role="group" class="center"><a href="'+ url_video +'" aria-label="'+__("Show video in new window")+'" target="_blank"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></a><figcaption>'+ __("Caption") +'</figcaption></figure>');
 		else
 			// Version button lecture dans le site
-			exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><button title="'+__("Show video")+'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></button><p id="desc-'+id_video+'">'+ __("Subtitle") +'</p></div>');
+			exec_tool("insertHTML", '<div class="video tc" data-video="'+ id_video +'"><button title="'+__("Show video")+'"><img src="https://img.youtube.com/vi/'+ id_video +'/mqdefault.jpg" alt="" width="320" height="180"'+lazy+'></button><p id="desc-'+id_video+'">'+ __("Caption") +'</p></div>');
 
 
 		//$("figure .video").parent().attr('style','');
@@ -1189,8 +1189,8 @@ img_figure = function() {
 		// Ajoute la figure et le figcaption
 		$(memo_img).parent(".editable .ui-wrapper")
 	   		.after("<br>")// Pour pouvoir ajouter des contenus à la suite de la figure
-	    	.wrap('<figure role="group" class="'+img_class+'" aria-label="'+ __("Subtitle") +'" />')
-	    	.after("<figcaption>"+ __("Subtitle") +"</figcaption>");
+	    	.wrap('<figure role="group" class="'+img_class+'" aria-label="'+ __("Caption") +'" />')
+	    	.after("<figcaption>"+ __("Caption") +"</figcaption>");
 	}
 }
 
@@ -2713,10 +2713,10 @@ $(function()
 			option+= "<li><button onclick=\"img_position('center')\" class='img-position' id='img-center'><i class='fa fa-fw fa-align-center'></i></button></li>";
 			option+= "<li><button onclick=\"img_position('fr')\" class='img-position' id='img-fr'><i class='fa fa-fw fa-align-right'></i></button></li>";
 
-			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Subtitle") +"</button></li>";
+			if(typeof toolbox_figure != 'undefined') option+= "<li><button onclick=\"img_figure()\" id='img-figure'>"+ __("Caption") +"</button></li>";
 		}
 
-			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Image caption") +"\" title=\""+ __("Image caption") +"\" class='w150p small'></li>";
+			option+= "<li class=''><input type='text' id='alt' placeholder=\""+ __("Alt text") +"\" title=\""+ __("Alt text") +"\" class='w150p small'></li>";
 
 		if(!input)
 			option+= "<li><button onclick=\"img_remove()\" title=\""+ __("Delete image") +"\"><i class='fa fa-fw fa-trash'></i></button></li>";
@@ -2805,7 +2805,7 @@ $(function()
 				if($(this).data("width") && $(this).data("height")) print_size+=" x ";
 				if($(this).data("height")) print_size+= $(this).data("height")+'';
 
-				return "<input type='text' placeholder=\""+ __("Image caption") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
+				return "<input type='text' placeholder=\""+ __("Alt text") +"\" class='editable-alt' id='"+ $(this).attr("id") +"-alt' value=\""+ (alt != undefined ? alt : '') +"\">" +
 				"<div class='open-dialog-media' title='"+__("Upload file")+"'><i class='fa fa-upload bigger'></i> "+__("Upload file")+"</div>" + 
 				"<div class='clear-file' title=\""+ __("Erase") +"\"><i class='fa fa-trash'></i> "+ __("Erase") +"</div>"
 				+ (print_size?"<div class='print-size' title=\""+ __("Image dimension in pixel (width x height)") +"\">"+print_size+"</div>":'');
