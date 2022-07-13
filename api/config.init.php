@@ -171,6 +171,7 @@ $GLOBALS['toolbox'] = array(
 	//"color",
 	//"p",
 	//"blockquote",
+	//"q", => A finir
 	//"highlight",
 	//"insertUnorderedList",
 	//"justifyLeft",

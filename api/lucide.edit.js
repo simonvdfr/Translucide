@@ -2077,6 +2077,10 @@ $(function()
 		if(typeof toolbox_blockquote != 'undefined') 
 			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
 
+		/* changer la fonction color_text pour la rendre plus générique et fonctionner aussi avec <q>
+		if(typeof toolbox_q != 'undefined') 
+			toolbox+= "<li><button onclick=\"html_tool('q')\" id='q' title=\""+__("Quote")+"\" class=\"\"><i class='fa fa-fw fa-quote-left'></i><i class='fa fa-fw fa-quote-right'></i></button></li>";*/
+
 		if(typeof toolbox_highlight != 'undefined') 
 			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
 
@@ -2215,6 +2219,19 @@ $(function()
 		}
 	}
 
+	// Pour pouvoir sortir du blockquote au retour à la ligne
+	clean_blockquote = function(selector) {
+		if(selector.prop("tagName") == 'BLOCKQUOTE') {
+			if(dev) console.log("clean_blockquote");
+
+			// Remplace le blockquote par un <p> avec le contenu
+			selector.replaceWith(p = $("<p>"+selector.html()+"</p>"));
+
+			// Focus dans le nouveau <p> après le blockquote
+			empty_focus(p[0]);
+		}
+	}
+
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
 	clean_highlight = function(selector) {
 		if(selector.prev().hasClass("highlight")) {
@@ -2223,7 +2240,7 @@ $(function()
 		}
 	}
 
-	// @todo supp => plus utiliser car fait lors du save pour plus de stabilité
+	// @todo supp => pas utiliser car fait lors du save pour plus de stabilité
 	// Si juste un <p> ou <div> avec un <br> => on remplace par un <div> vide avec une marge basse, non vocalisé
 	clean_br = function(selector) {
 		if(selector.html() == "<br>" || selector.html() == "") {
@@ -2369,11 +2386,17 @@ $(function()
 				if(!$(this).hasClass("view-source"))
 				{			
 					// Enter
-					if(event.keyCode == 13) {
+					if(event.keyCode == 13)
+					{
 						clean_highlight($(memo_node));// Permet de sortir des highlight
-						
+
 						// Si pas shift+enter (saut de ligne simple => <br>)
-						if(!event.shiftKey) clean_figcaption($(memo_node));// Permet de sortir des figcaption
+						if(!event.shiftKey) 
+						{
+							clean_blockquote($(memo_node));// Permet de sortir des blockquote
+
+							clean_figcaption($(memo_node));// Permet de sortir des figcaption
+						}
 					}
 
 					// Supprime les <br> en fin de <p>		
