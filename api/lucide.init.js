@@ -356,12 +356,13 @@ $(function()
 		$(".bt.fixed.edit").fadeOut();
 
 		// Force l'affichage du bouton  +
-		$(".bt.fixed.add").show().css({"bottom":"10px", "opacity":".2"});
+		$(".bt.fixed.add").show().css({"bottom":"10px"});//, "opacity":".7"
 		edit_on = true;
 	});	
 
 
 	// BOUTON AJOUT de page/article
+	if(get_cookie("auth"))
 	$("body").append("<button class='bt fixed add' title='"+ __("Add content") +"' aria-label='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam' aria-hidden='true'></i></button>");
 
 	// Bind le bouton d'ajout
