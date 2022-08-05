@@ -964,7 +964,8 @@ function login($level = 'low', $auth = null, $quiet = null)
 				// Création d'un token maison
 				if($res['password'] == hash_pwd($_POST['password'], $res['salt']))
 				{
-					if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// Vérifie les auth d'utilisateur si c'est demandée 
+					$array_diff = array_diff(explode(",", $auth), explode(",", $res['auth']));
+					if(isset($auth) and !empty($array_diff))// Vérifie les auth d'utilisateur si c'est demandée 
 					{
 						$msg = __("Bad credential");
 						logout();
@@ -1009,7 +1010,8 @@ function login($level = 'low', $auth = null, $quiet = null)
 					$sel = $GLOBALS['connect']->query("SELECT auth FROM ".$GLOBALS['table_user']." WHERE id='".(int)$_SESSION['uid']."' AND state='active' LIMIT 1");
 					$res = $sel->fetch_assoc();
 
-					if(!empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))
+					$array_diff = array_diff(explode(",", $auth), explode(",", $res['auth']));
+					if(!empty($array_diff))
 					{
 						$msg = __("Bad credential");
 						logout();
@@ -1027,7 +1029,8 @@ function login($level = 'low', $auth = null, $quiet = null)
 				$sel = $GLOBALS['connect']->query("SELECT auth, token FROM ".$GLOBALS['table_user']." WHERE id='".(int)$_SESSION['uid']."' AND state='active' LIMIT 1");
 				$res = $sel->fetch_assoc();
 				
-				if(isset($auth) and !empty(array_diff(explode(",", $auth), explode(",", $res['auth']))))// Vérifie les autorisations
+				$array_diff = array_diff(explode(",", $auth), explode(",", $res['auth']));
+				if(isset($auth) and !empty($array_diff))// Vérifie les autorisations
 				{
 					$msg = __("Bad credential");
 					logout();
