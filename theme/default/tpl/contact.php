@@ -111,11 +111,11 @@ switch(@$_GET['mode'])
 				$("#contact #send .fa-cog").removeClass("fa-spin fa-cog").addClass("fa-mail-alt");
 
 				// Activation des champs du formulaire
-				$("#contact input, #contact textarea, #contact button").attr("readonly", false).removeClass("disabled");
+				$("#contact input, #contact textarea, #contact button").removeClass("disabled");//readonly .attr("aria-disabled", true)
 
 				// On peut soumettre le formulaire avec la touche entrée
 				//$("#contact").on("submit", function(event) { send_mail(event) });
-				$("#contact button").attr("disabled", false);
+				$("#contact button").attr("aria-disabled", false);
 			}
 
 			desactive = false;
@@ -133,11 +133,11 @@ switch(@$_GET['mode'])
 					$("#contact #send .fa-mail-alt").removeClass("fa-mail-alt").addClass("fa-spin fa-cog");
 
 					// Désactive le formulaire
-					$("#contact input, #contact textarea, #contact button").attr("readonly", true).addClass("disabled");
+					$("#contact input, #contact textarea, #contact button").addClass("disabled");//readonly .attr("aria-disabled", true)
 
 					// Désactive le bouton submit (pour les soumissions avec la touche entrée)
 					//$("#contact").off("submit");
-					//$("#contact button").attr("disabled", true);// => ne permet pas le focus sur le bt une fois envoyer
+					$("#contact button").attr("aria-disabled", true);// => ne permet pas le focus sur le bt une fois envoyer
 
 					$.ajax(
 						{
