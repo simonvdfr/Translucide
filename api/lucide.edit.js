@@ -23,7 +23,8 @@ add_translation({
 	"Icon Library" : {"fr" : "Bibliothèque d'icône"},		
 	"See the source code" : {"fr" : "Voir le code source"},		
 	"Paragraph" : {"fr" : "Paragraphe"},		
-	"Quote" : {"fr" : "Citation"},		
+	"Quote line" : {"fr" : "Ligne de citation"},		
+	"Blockquote" : {"fr" : "Bloc de citation"},
 	"Highlight" : {"fr" : "Mise en avant"},		
 	"Bold" : {"fr" : "Gras"},		
 	"Italic" : {"fr" : "Italique"},		
@@ -93,10 +94,10 @@ get_content = function(content)
 	$(document).find(content+" .editable:not(.global)").not("#main-navigation .editable").each(function() 
 	{
 		// Nettoie les <p> vides ou avec juste un <br> // Accessibilité
-		$("p", this).each(function() {
+		/*$("p", this).each(function() {
 			if($(this).html() == "<br>" || $(this).html() == "")
 				$(this).replaceWith($('<div class="pbp"></div>'));			
-		});
+		});*/
 
 		// Duplique les figcaption dans un aria-label dans la figure // Accessibilité
 		$("figcaption", this).each(function() {
@@ -666,6 +667,47 @@ class_bt = function(mode) {
 	else $("#class-bt").removeClass("checked");
 }
 
+// Mets le contenu dans un bloc de mise en avant
+highlight = function(){
+
+	var closest = $(memo_node).closest(".highlight");//parents
+
+	// Si on est déjà dans un highlight on le supprime
+	if(closest.length) {
+		if(closest.prop("tagName") == 'P') {
+			if(dev) console.log("P removeClass highlight");
+			closest.removeClass("highlight");
+		}
+		else {
+			if(dev) console.log("Remove DIV with highlight");
+
+			$("#tool-highlight").removeClass("checked");
+
+			if(closest.html()) {
+				if(dev) console.log("replaceWith html");
+			 	closest.replaceWith(closest.html());// Chrome
+			}
+			else {
+				if(dev) console.log("replaceWith closest text");
+				closest.closest(html).replaceWith(closest.text());// FF
+			}
+		}
+	}
+	else {
+		if(dev) console.log("highlight");
+
+		$("#tool-highlight").addClass("checked");
+	
+		var node = $(memo_node);
+
+		// Si l'élément n'est pas un P (un a ou b par exemple), on prend l'élément du dessu
+		if($(memo_node).prop("tagName") != "P" && $(memo_node).parent().prop("tagName") == "P") 
+			node = $(memo_node).parent();
+
+		node.wrap('<div class="highlight"></div>');
+	}
+}
+
 // Ajout/Suppression d'une class
 class_tool = function(theClass){
 	// Si on est déjà dans un élément avec la class demandé : on supp la class
@@ -691,7 +733,7 @@ class_tool = function(theClass){
 	}
 }
 
-// Ajout/Suppression d'un element html
+// Ajout/Suppression d'un element html en block
 html_tool = function(html){
 	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
 	if($(memo_node).closest(html).length)
@@ -712,6 +754,21 @@ html_tool = function(html){
 		$("#"+html).addClass("checked");
 		exec_tool('formatBlock', html);
 	}
+}
+
+// Ajout/Suppression d'un element html dans un contenu
+html_tool_inline = function(tag){
+	// Si on est déjà dans un élément entouré du 'HTML' demandé : on le supp
+	if($(memo_node).is(tag)) {
+		$("#"+tag).removeClass("checked");
+		$(memo_node).replaceWith($(memo_node).html());
+	}
+	else {
+		// Ajoute la balise avec la class de couleur
+		var selection = window.getSelection().toString();
+		var add_tag = '<'+tag+'>' + selection + '</'+tag+'>';
+		exec_tool('insertHTML', add_tag);
+	}	
 }
 
 // Colorise un texte
@@ -1760,7 +1817,8 @@ $(function()
 	{ 
 		// Pour corriger les div qui ne prennent pas toutes la largeur a cause des img en float
 		var style = null;
-		if($(this).parent().is("article")) style = "width: "+$(this).parent().width()+"px;";//if($(this).parent().children().length <= 1)
+		if($(this).parent().is("article") && $(this).parent().width()>0) 
+			style = "width: "+$(this).parent().width()+"px;";//if($(this).parent().children().length <= 1)
 
 		// Clean la dom
 		return $("<"+ $(this)[0].tagName.toLowerCase() +"/>", { 
@@ -2075,14 +2133,14 @@ $(function()
 			toolbox+= "<li><button onclick=\"html_tool('p')\" id='p' title=\""+__("Paragraph")+"\"><i class='fa fa-fw fa-paragraph'></i></button></li>";
 
 		if(typeof toolbox_blockquote != 'undefined') 
-			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Quote")+"\"><i class='fa fa-fw fa-quote-left'></i></button></li>";
+			toolbox+= "<li><button onclick=\"html_tool('blockquote')\" id='blockquote' title=\""+__("Blockquote")+"\"><i class='fa fa-fw fa-quote-left smaller'></i><i class='fa fa-fw fa-quote-right smaller'></i></button></button></li>";
 
-		/* changer la fonction color_text pour la rendre plus générique et fonctionner aussi avec <q>
+		//changer la fonction color_text pour la rendre plus générique et fonctionner aussi avec <q>
 		if(typeof toolbox_q != 'undefined') 
-			toolbox+= "<li><button onclick=\"html_tool('q')\" id='q' title=\""+__("Quote")+"\" class=\"\"><i class='fa fa-fw fa-quote-left'></i><i class='fa fa-fw fa-quote-right'></i></button></li>";*/
+			toolbox+= "<li><button onclick=\"html_tool_inline('q')\" id='q' title=\""+__("Quote line")+"\" class=\"\"><i class='fa fa-fw fa-quote-left small'></i></li>";
 
-		if(typeof toolbox_highlight != 'undefined') 
-			toolbox+= "<li><button onclick=\"class_tool('highlight')\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
+		if(typeof toolbox_highlight != 'undefined') //highlight() class_tool('highlight')
+			toolbox+= "<li><button onclick=\"highlight()\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
@@ -2233,10 +2291,22 @@ $(function()
 	}
 
 	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
-	clean_highlight = function(selector) {
-		if(selector.prev().hasClass("highlight")) {
+	clean_highlight = function(selector) {		
+		if(selector.closest(".highlight").length) {
 			if(dev) console.log("clean_highlight");
-			selector.removeAttr("class");
+			// Si l'élément précédent est vide on le supprime et on focus dans un nouveau <p> après le bloc highlight
+			if(selector.prev().html() == "")
+			{
+				selector.closest(".highlight").after(p = $("<p>"+selector.html()+"</p>"));// Créer un <p> après le highlight 
+
+				selector.prev().remove();// Supprime
+				selector.remove();// Supprime
+
+				empty_focus(p[0]);// Focus dans le nouveau <p> après le highlight
+			}
+
+			//selector.closest(".highlight")[0].nextElementSibling
+			//selector.removeAttr("class");
 		}
 	}
 
@@ -2513,7 +2583,11 @@ $(function()
 				if($(memo_node).closest("blockquote").length) $("#txt-tool #blockquote").addClass("checked");
 				else $("#txt-tool #blockquote").removeClass("checked");
 
-				if($(memo_node).closest("p, div").hasClass("highlight")) $("#txt-tool #tool-highlight").addClass("checked");
+				if($(memo_node).closest("q").length) $("#txt-tool #q").addClass("checked");
+				else $("#txt-tool #q").removeClass("checked");
+
+				//if($(memo_node).closest("p, div").hasClass("highlight")) $("#txt-tool #tool-highlight").addClass("checked");
+				if($(memo_node).closest(".highlight").length) $("#txt-tool #tool-highlight").addClass("checked");
 				else $("#txt-tool #tool-highlight").removeClass("checked");
 				
 				if(typeof toolbox_color != 'undefined')
