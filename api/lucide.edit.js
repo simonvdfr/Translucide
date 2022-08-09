@@ -2970,8 +2970,11 @@ $(function()
 				},
 				// Ouverture de la fenêtre des médias
 				"click.editable-media": function(event) {
+
+					console.log($(event.target))
+
 					// Suppression
-					if($(event.target).hasClass("clear-file")){
+					if($(event.target).hasClass("clear-file") || $(event.target).hasClass("fa-trash")){
 						if($("img", this).attr("src")) $("img", this).attr("src","");// Supp img src
 						else if($("video", this).attr("src")) $("video", this).remove();// Supp la vidéo
 						else {
