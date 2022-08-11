@@ -749,9 +749,13 @@ html_tool = function(html){
 			$(memo_node).closest(html).replaceWith($(memo_node).text());// FF
 		}
 	}
-	else {
+	else 
+	{
 		if(dev) console.log("formatBlock");
+
+		$("#txt-tool button").removeClass("checked");
 		$("#"+html).addClass("checked");
+
 		exec_tool('formatBlock', html);
 	}
 }
