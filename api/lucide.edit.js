@@ -3545,7 +3545,8 @@ $(function()
 			if($(this).hasClass("editable-bg")) var media = $(this).attr("data-bg");
 			else var media = $(this).attr("src");
 
-			if(media) medias[media] = "img";
+			// et si le média est bien sur le site/dossier en cours
+			if(media && media.indexOf(media_dir) !== -1) medias[media] = "img";
 		});
 
 		// Contenu des fichiers éditables et dans les contenus textuels
@@ -3553,7 +3554,8 @@ $(function()
 			if($(this).closest("span").hasClass("editable-media")) var media = $(this).attr("title");
 			else var media = $(this).attr("href");
 
-			if(media) medias[media] = "fichier";
+			// et si le média est bien sur le site/dossier en cours
+			if(media && media.indexOf(media_dir) !== -1) medias[media] = "fichier";
 		});
 
 

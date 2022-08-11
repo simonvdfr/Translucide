@@ -858,9 +858,12 @@ switch($_GET['mode'])
 			$_POST['medias'] = str_replace($GLOBALS['home'], "", $_POST['medias']);
 
 			// On a demandé la SUPPRESSION DES FICHIERS liées au contenu
-			foreach($_POST['medias'] as $cle => $file) {
+			foreach($_POST['medias'] as $cle => $file)
+			{
 				// strtok : Supprime les arguments après l'extension (timer...)
-				unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($file, "?")));
+				// Si le fichier est bien dans le dossier local en cours
+				if(strpos($file, $GLOBALS['media_dir']) !== false)
+					unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($file, "?")));
 			}
 		}
 
