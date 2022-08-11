@@ -1849,7 +1849,7 @@ switch($_GET['mode'])
 
 		login('medium');
 
-		$sel_tag = $connect->query("SELECT distinct encode, name FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' AND lang='".$lang."' ORDER BY ordre ASC, encode ASC");
+		$sel_tag = $connect->query("SELECT distinct encode, name, ordre FROM ".$table_tag." WHERE zone='".encode($_POST['zone'])."' AND lang='".$lang."' ORDER BY ordre ASC, encode ASC");
 		while($res_tag = $sel_tag->fetch_assoc()) {
 			$tab_tag[] = $res_tag['name'];
 		}	
