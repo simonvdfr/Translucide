@@ -331,17 +331,32 @@ selected_element = function(range) {
 		return range.startContainer;
 }
 
+// Mémorise la sélection pour la retrouver après focus ailleur (toolbox par ex.)
+selection = function() {
+	// @todo voir si le fait de ne pas raz les memo_ ne crée pas de problème colatéraux...
+
+	memo_selection = window.getSelection();			
+	if(memo_selection.anchorNode) {
+		memo_range = memo_selection.getRangeAt(0);
+		memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
+	}
+	else {
+		if(typeof memo_range === 'undefined') memo_range = null;
+		if(typeof memo_node === 'undefined') memo_node = null;
+	}
+}
+
 
 // Barre d'outil de mise en forme et de contenu
 exec_tool = function(command, value) {
 	value = value || "";	
-				
+
 	// Sélectionne le contenu car on a perdu le focus en entrant dans les options
 	if((command == "CreateLink" || command == "CreateAnchor" || command == "insertImage" || command == "insertIcon" || command == "insertHTML" || command == "insertText") && memo_selection && memo_range) {
 		memo_selection.removeAllRanges();
 		memo_selection.addRange(memo_range);		
 	}
-	
+
 	if(command)
 	{
 		// Si icône
@@ -399,6 +414,14 @@ exec_tool = function(command, value) {
 			
 			$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 		}
+		else if(command == "insertUnorderedList")
+		{
+			// Sur Chrome le <ul> reste entouré d'un <p>, on le supprime
+			if($(memo_node).closest("p").html()) {
+				if(dev) console.log("unwrap P");
+				$(memo_node).closest("p").replaceWith($(memo_node).closest("p").html())
+			}
+		}
 		else
 			$("#txt-tool .option").hide();// Cache le menu d'option rapidement
 	}
@@ -407,6 +430,7 @@ exec_tool = function(command, value) {
 
 	// Recrée une sélection en fonction des changements de la dom
 	//@todo voir bug FF qd on veut supp un H2 avec html_tool => le focus va sur le <p> précédent créer lors de l'ajout du h2
+	//@todo remplacer par la fonction selection();
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
 	memo_node = selected_element(memo_range);
@@ -578,6 +602,8 @@ edit_lang = function()
 // Menu avec les options d'ajout/modif de lien
 link_option = function()
 {		
+	selection();// Récupère la sélection avant ouverture des options
+
 	$("#unlink").remove();// Supprime le bouton de supp de lien
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 	$("#target-blank").removeClass("checked");// Réinitialise la colorisation du target _blank
@@ -740,7 +766,7 @@ html_tool = function(html){
 	{
 		$("#"+html).removeClass("checked");
 
-		if($(memo_node).html()) {
+		if($(memo_node).closest(html).html()) {
 			if(dev) console.log("replaceWith html");
 		 	$(memo_node).closest(html).replaceWith($(memo_node).closest(html).html());// Chrome
 		}
@@ -2451,6 +2477,7 @@ $(function()
 				// Ajoute un <p> si vide
 				init_paragraph(this);
 
+				//@todo remplacer par la fonction selection();
 				memo_selection = window.getSelection();				
 				if(memo_selection.anchorNode) {
 					memo_range = memo_selection.getRangeAt(0);
@@ -2492,18 +2519,8 @@ $(function()
 			{		
 				$("#txt-tool .option").hide();// Cache le menu d'option		
 
-				// @todo voir si le fait de ne pas raz les memo_ ne crée pas de problème colatéraux...
-				
-				// Mémorise la sélection pour la retrouver au focus après ajout de lien
-				memo_selection = window.getSelection();				
-				if(memo_selection.anchorNode) {
-					memo_range = memo_selection.getRangeAt(0);
-					memo_node = selected_element(memo_range);//memo_selection.anchorNode.parentElement memo_range.commonAncestorContainer.parentNode
-				}
-				else {
-					if(typeof memo_range === 'undefined') memo_range = null;
-					if(typeof memo_node === 'undefined') memo_node = null;
-				}
+				// @todo voir pour get selection + init toolbox quand on termine la selection hors du champs editable
+				selection();// Récupère la sélection
 
 				// Si la toolbox est autorisé
 				if(!$(this).hasClass("notoolbox"))
