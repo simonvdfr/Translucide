@@ -742,7 +742,7 @@ html_tool = function(html){
 
 		if($(memo_node).html()) {
 			if(dev) console.log("replaceWith html");
-		 	$(memo_node).replaceWith($(memo_node).html());// Chrome
+		 	$(memo_node).closest(html).replaceWith($(memo_node).closest(html).html());// Chrome
 		}
 		else {
 			if(dev) console.log("replaceWith closest text");
