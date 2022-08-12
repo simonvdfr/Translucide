@@ -480,6 +480,8 @@ video = function(link)
 // Menu avec les options d'ajout/modif d'ancre
 anchor_option = function()
 {		
+	selection();// Récupère la sélection avant ouverture des options
+	
 	$("#unanchor").remove();// Supprime le bouton de supp d'anchor
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 
@@ -539,6 +541,8 @@ edit_anchor = function()
 // Menu avec les options d'ajout/modif de lang
 lang_option = function()
 {		
+	selection();// Récupère la sélection avant ouverture des options
+
 	$("#unlang").remove();// Supprime le bouton de supp de lang
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 
