@@ -481,7 +481,7 @@ video = function(link)
 anchor_option = function()
 {		
 	selection();// Récupère la sélection avant ouverture des options
-	
+
 	$("#unanchor").remove();// Supprime le bouton de supp d'anchor
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 
@@ -2285,6 +2285,7 @@ $(function()
 		selection.addRange(range);		
 	}
 
+	// @todo supp => instable
 	// Nétoie un champ éditable des <br> <p> <div> vide
 	clean_editable = function(memo_focus) {
 		var clean = ['<br>', '<p><br></p>', '<div><br></div>'];
@@ -2353,6 +2354,7 @@ $(function()
 		}
 	}
 
+	// @todo supp => instable
 	// Supprime les <br> en fin de <p> => pour éviter que le sigle du paragraphe ne soit après la ligne courante
 	clean_last_br = function(selector) {
 		if(selector.html() == "<br>") {
@@ -2410,7 +2412,7 @@ $(function()
 	init_paragraph = function(memo_focus)
 	{
 		// Nétoie le champ
-		clean_editable(memo_focus);
+		//clean_editable(memo_focus);
 
 		if(/DIV|ARTICLE|section/.test($(memo_focus).prop("tagName")) && $(memo_focus).html() == "")
 		{
@@ -2456,7 +2458,10 @@ $(function()
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
 				}
 
-				clean_editable(this);// Nétoie le champ
+				// Supprime là class qui indique dans quel paragraphe on édite
+				$(memo_node).closest("p").removeClass("focus");
+
+				//clean_editable(this);// Nétoie le champ
 
 				// Si juste un paragraphe vide on le supp
 				if(("p", this).length == 1 && $("p", this).html() == '') {
@@ -2490,6 +2495,23 @@ $(function()
 
 				if(!$(this).hasClass("view-source"))
 				{			
+					// Mets en évidence le paragraphe éditer
+					$("p", this).removeClass("focus");
+					$(memo_node).closest("p").addClass("focus");
+
+
+					// Les éléments dans le node focus
+					var node = $(memo_node)[0].childNodes;
+
+					// Si le node contien que un <br>+nobr on le supp
+					if(node[0].nodeName == "BR" && node[1])
+						if(node[1].nodeName == "BR" && node[1].className == "nobr")
+						{
+							if(dev) console.log("remove <br>");
+							$(node[0]).remove();					
+						}
+
+
 					// Enter
 					if(event.keyCode == 13)
 					{
@@ -2501,11 +2523,42 @@ $(function()
 							clean_blockquote($(memo_node));// Permet de sortir des blockquote
 
 							clean_figcaption($(memo_node));// Permet de sortir des figcaption
+
+
+							// Clean les BR de fin de paragraphe quand on rentre dedans
+							if(node[node.length-1].nodeName == "BR") {
+								if(dev) console.log("nobr");
+								$(node[node.length-1]).addClass("nobr");							
+							}
+
+
+							// Clean les multiples <br> à la fin du précédent <p>
+							var node = $(memo_node).prev("p")[0].childNodes;
+							if(node[node.length-1].nodeName == "BR")
+							{
+								if(dev) console.log("prev nobr");
+
+								// Si reste un <br> on le met en class=nobr
+								if(node[node.length-1].nodeName == "BR")
+									$(node[node.length-1]).addClass("nobr");
+
+								if(node[node.length-2].nodeName == "BR")
+								{
+									if(dev) console.log("prev remove <br>");
+
+									// Avant dernier <br>
+									$(node[node.length-2]).remove();
+
+									// Si avant avant dernier <br>
+									if(node[node.length-2].nodeName == "BR")
+										$(node[node.length-2]).remove();
+								}
+							}
 						}
 					}
-
+											
 					// Supprime les <br> en fin de <p>		
-					clean_last_br($(memo_node));
+					//clean_last_br($(memo_node));
 
 					// Constrole les saut de ligne vide // enter = 13 | up = 38 | down : 40
 					// || event.keyCode == 40
@@ -2626,6 +2679,11 @@ $(function()
 					// Check la couleur en cours
 					$("#txt-tool #color-option ."+$(memo_node).attr("class").match(/color-[\w-]+/)).addClass("checked");
 				}
+
+
+				// Mets en évidence le paragraphe éditer
+				$("p", this).removeClass("focus");
+				$(memo_node).closest("p").addClass("focus");
 					
 
 				// Désélectionne les alignements
