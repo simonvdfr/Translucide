@@ -799,8 +799,8 @@ html_tool_inline = function(tag){
 	}
 	else {
 		// Ajoute la balise avec la class de couleur
-		var selection = window.getSelection().toString();
-		var add_tag = '<'+tag+'>' + selection + '</'+tag+'>';
+		var selection_string = window.getSelection().toString();
+		var add_tag = '<'+tag+'>' + selection_string + '</'+tag+'>';
 		exec_tool('insertHTML', add_tag);
 	}	
 }
@@ -814,8 +814,8 @@ color_text = function(color){
 	}
 	else {
 		// Ajoute la balise avec la class de couleur
-		var selection = window.getSelection().toString();
-		var add_class = '<em class="'+color+'">' + selection + '</em>';
+		var selection_string = window.getSelection().toString();
+		var add_class = '<em class="'+color+'">' + selection_string + '</em>';
 		exec_tool('insertHTML', add_class);
 	}	
 }
@@ -2280,9 +2280,9 @@ $(function()
 		range = document.createRange();
 		range.selectNodeContents(selector);
 		range.collapse(false);
-		selection = window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);		
+		memo_selection = window.getSelection();
+		memo_selection.removeAllRanges();
+		memo_selection.addRange(range);		
 	}
 
 	// @todo supp => instable
@@ -3492,9 +3492,9 @@ $(function()
 				range = document.createRange();//Create a range (a range is a like the selection but invisible)
 		        range.selectNodeContents(this);//Select the entire contents of the element with the range
 		        range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-		        selection = window.getSelection();//get the selection object (allows you to change selection)
-		        selection.removeAllRanges();//remove any selections already made
-		        selection.addRange(range);
+		        memo_selection = window.getSelection();//get the selection object (allows you to change selection)
+		        memo_selection.removeAllRanges();//remove any selections already made
+		        memo_selection.addRange(range);
 
 		        // A sauvegarder
 		        tosave();
