@@ -2463,8 +2463,12 @@ $(function()
 
 				//clean_editable(this);// Nétoie le champ
 
+				// Supprime les br inutiles : nobr
+				if(dev) console.log("clean nobr");
+				$(".nobr", this).remove();
+
 				// Si juste un paragraphe vide on le supp
-				if(("p", this).length == 1 && $("p", this).html() == '') {
+				if($("p", this).length == 1 && $("p", this).html() == '') {
 					if(dev) console.log("p remove");
 					$("p", this).remove();
 				}
