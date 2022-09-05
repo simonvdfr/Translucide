@@ -2530,32 +2530,35 @@ $(function()
 
 
 							// Clean les BR de fin de paragraphe quand on rentre dedans
-							if(node[node.length-1].nodeName == "BR") {
+							if($(memo_node)[0].nodeName == "P" && node[node.length-1].nodeName == "BR") {
 								if(dev) console.log("nobr");
 								$(node[node.length-1]).addClass("nobr");							
 							}
 
 
 							// Clean les multiples <br> à la fin du précédent <p>
-							var node = $(memo_node).prev("p")[0].childNodes;
-							if(node[node.length-1].nodeName == "BR")
+							if($(memo_node).prev("p")[0] != undefined) 
 							{
-								if(dev) console.log("prev nobr");
-
-								// Si reste un <br> on le met en class=nobr
-								if(node[node.length-1].nodeName == "BR")
-									$(node[node.length-1]).addClass("nobr");
-
-								if(node[node.length-2].nodeName == "BR")
+								var node = $(memo_node).prev("p")[0].childNodes;
+								if(node && node[node.length-1].nodeName == "BR")
 								{
-									if(dev) console.log("prev remove <br>");
+									if(dev) console.log("prev nobr");
 
-									// Avant dernier <br>
-									$(node[node.length-2]).remove();
+									// Si reste un <br> on le met en class=nobr
+									if(node[node.length-1].nodeName == "BR")
+										$(node[node.length-1]).addClass("nobr");
 
-									// Si avant avant dernier <br>
 									if(node[node.length-2].nodeName == "BR")
+									{
+										if(dev) console.log("prev remove <br>");
+
+										// Avant dernier <br>
 										$(node[node.length-2]).remove();
+
+										// Si avant avant dernier <br>
+										if(node[node.length-2].nodeName == "BR")
+											$(node[node.length-2]).remove();
+									}
 								}
 							}
 						}
