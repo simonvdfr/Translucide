@@ -450,9 +450,9 @@ function media($key = null, $filter = array())
 
 		echo' class="';
 		if(isset($filter['editable'])) echo $filter['editable']; else echo'editable-media';
-		if(isset($filter['global'])) echo' global';
+		if(isset($filter['global']) and $filter['crop'] == true) echo' global';
 		//if(isset($size[0]) and isset($size[1])) echo' crop';
-		if(isset($filter['crop'])) echo' crop';
+		if(isset($filter['crop']) and $filter['crop'] == true) echo' crop';
 		echo'"';
 
 		if(isset($filter['class'])) echo' data-class="'.$filter['class'].'"';
