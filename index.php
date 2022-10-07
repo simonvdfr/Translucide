@@ -382,7 +382,7 @@ if(!$ajax)
 			// Variables
 			id = "<?=$id?>";
 			state = "<?=@$res['state']?>";
-			title = "<?=addslashes(@$GLOBALS['content']['title']);?>";
+			title = "<?=addslashes(trim(@$GLOBALS['content']['title']));?>";
 			permalink = "<?=@$res['url']?>";
 			type = "<?=@$res['type']?>";
 			tpl = "<?=@$res['tpl']?>";
