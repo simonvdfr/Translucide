@@ -29,7 +29,12 @@ add_translation({
 	"Bold" : {"fr" : "Gras"},		
 	"Italic" : {"fr" : "Italique"},		
 	"Underline" : {"fr" : "Souligner"},		
-	"Superscript" : {"fr" : "Exposant"},		
+	"Superscript" : {"fr" : "Exposant"},	
+	"Insert list" : {"fr" : "Insérer une liste"},	
+	"Justify Left" : {"fr" : "Justifier à gauche"},	
+	"Justify Center" : {"fr" : "Justifier au centre"},	
+	"Justify Right" : {"fr" : "Justifier à droite"},	
+	"Justify" : {"fr" : "Justifier"},	
 	"Language" : {"fr" : "Langue"},		
 	"Add Language" : {"fr" : "Ajouter une langue"},		
 	"Change Language" : {"fr" : "Change la langue"},		
@@ -434,6 +439,10 @@ exec_tool = function(command, value) {
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
 	memo_node = selected_element(memo_range);
+
+	// Mise en surbrillance du bouton dans la barre d'outil
+	if($(memo_node).closest("li").length) $("#txt-tool #insertUnorderedList").addClass("checked");
+	else $("#txt-tool #insertUnorderedList").removeClass("checked");
 }
 
 
@@ -2177,19 +2186,19 @@ $(function()
 			toolbox+= "<li><button onclick=\"highlight()\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\" id='insertUnorderedList' title=\""+__("Insert list")+"\"><i class='fa fa-fw fa-list'></i></button></li>";
 
 		if(typeof toolbox_justifyLeft != 'undefined')// justifyLeft
-			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl'><i class='fa fa-fw fa-align-left'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl' title=\""+__("Justify Left")+"\"><i class='fa fa-fw fa-align-left'></i></button></li>";
 
 		if(typeof toolbox_justifyCenter != 'undefined')// justifyCenter
-			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc'><i class='fa fa-fw fa-align-center'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc' title=\""+__("Justify Center")+"\"><i class='fa fa-fw fa-align-center'></i></button></li>";
 
 		if(typeof toolbox_justifyRight != 'undefined')// justifyRight
-			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr'><i class='fa fa-fw fa-align-right'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr' title=\""+__("Justify Right")+"\"><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 		if(typeof toolbox_justifyFull != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify' title=\""+__("Justify")+"\"><i class='fa fa-fw fa-align-justify'></i></button></li>";
 
 		if(typeof toolbox_InsertHorizontalRule != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='fa fa-fw fa-resize-horizontal'></i></button></li>";
@@ -2686,6 +2695,10 @@ $(function()
 					// Check la couleur en cours
 					$("#txt-tool #color-option ."+$(memo_node).attr("class").match(/color-[\w-]+/)).addClass("checked");
 				}
+
+
+				if($(memo_node).closest("li").length) $("#txt-tool #insertUnorderedList").addClass("checked");
+				else $("#txt-tool #insertUnorderedList").removeClass("checked");
 
 
 				// Mets en évidence le paragraphe éditer
