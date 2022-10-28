@@ -288,7 +288,7 @@ if(!$ajax)
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<meta property="og:title" content="<?=$title;?>">
+		<meta property="og:title" content="<?=strip_tags($title);?>">
 		<meta property="og:type" content="website">
 		<?php if(isset($res['url'])){?>
 		<meta property="og:url" content="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("domaine" => true)))?>">
@@ -369,8 +369,15 @@ if(!$ajax)
 
 			if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-'.$res['type']]){?>
 				// Si demande l'autoload du mode édition et si admin
-				$(function(){
+				$(function()
+				{
+					// Supprime le cookie
+					set_cookie("autoload_edit", "", "");
+
+					// lance l'édition
 					edit_launcher();
+
+					// Efface le bouton d'édition
 					$("a.bt.fixed.edit").fadeOut();				
 				});
 				<?php
@@ -382,7 +389,7 @@ if(!$ajax)
 			// Variables
 			id = "<?=$id?>";
 			state = "<?=@$res['state']?>";
-			title = "<?=addslashes(trim(@$GLOBALS['content']['title']));?>";
+			title = "<?=addslashes(strip_tags(trim(@$GLOBALS['content']['title'])));?>";
 			permalink = "<?=@$res['url']?>";
 			type = "<?=@$res['type']?>";
 			tpl = "<?=@$res['tpl']?>";
@@ -390,6 +397,7 @@ if(!$ajax)
 			path = "<?=$GLOBALS['path']?>";
 			theme = "<?=$GLOBALS['theme']?>";
 			media_dir = "<?=(isset($GLOBALS['media_dir'])?$GLOBALS['media_dir']:'media')?>";
+			date_update = "<?=@$res['date_update']?>";
 			<?=(isset($GLOBALS['lang_alt'])?'lang_alt = "'.addslashes($GLOBALS['lang_alt']).'";':'')?>
 			<?=(isset($GLOBALS['sitename'])?'sitename = "'.addslashes($GLOBALS['sitename']).'";':'')?>
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>

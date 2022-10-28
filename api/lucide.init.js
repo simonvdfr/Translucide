@@ -270,7 +270,7 @@ edit_launcher = function(callback)
 	// Si le mode édition n'est pas déjà lancé
 	if(!$("#admin-bar").length) 
 	{
-		$.ajax({url: path+"api/ajax.admin.php?mode=edit&type="+type+(callback?"&callback="+callback:""), cache: false})
+		$.ajax({url: path+"api/ajax.admin.php?mode=edit&type="+type+"&id="+id+"&date_update="+date_update+(callback?"&callback="+callback:""), cache: false})
 		.done(function(html) {				
 			$("body").append(html);
 		});
