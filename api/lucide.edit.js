@@ -1803,8 +1803,8 @@ $(function()
 	$("#admin-bar #date-insert").val($("meta[property='article:published_time']").last().attr("content").slice(0, 19).replace('T', ' ')).datepicker({dateFormat: 'yy-mm-dd 00:00:00', firstDay: 1});
 
 
-	// Checkbox homepage si c'est une page
-	if(type == "page") $("#admin-bar #ispage").show();
+	// Checkbox homepage si c'est une page // Plus afficher pour éviter les mauvaises manipulation
+	//if(type == "page") $("#admin-bar #ispage").show();
 
 	// Etat de la checkbox homepage onready
 	if($("#admin-bar #permalink").val() == "index") $("#admin-bar #homepage").prop("checked", true);
