@@ -261,6 +261,15 @@ $GLOBALS['add_content'] = array(
 );
 
 
+// Pour des noms de modele plus explicite dans le select
+$GLOBALS['tpl_name'] = array(
+	"home" => "Page accueil",
+	"article" => "Actualité",
+	"event" => "Évènement agenda",
+	"article-liste" => "Liste actualités - Agenda",
+);
+
+
 // Type de contenu ajoutable dans le menu
 $GLOBALS['add_menu'] = array(
 	//"article",

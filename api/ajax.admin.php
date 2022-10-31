@@ -116,7 +116,7 @@ switch($_GET['mode'])
 											foreach($GLOBALS['add_content'] as $cle => $array)
 											{
 												if(isset($_SESSION['auth']['add-'.$cle]))
-													echo'<option value="'.$cle.'">'.__($cle).'</option>';
+													echo'<option value="'.$cle.'">'.ucfirst(__($cle)).'</option>';
 											}
 											?>
 										</select>
@@ -132,7 +132,16 @@ switch($_GET['mode'])
 											foreach($scandir as $cle => $filename)
 											{			
 												$filename = pathinfo($filename, PATHINFO_FILENAME);
-												echo'<option value="'.$filename.'">'.$filename.'</option>';
+
+												echo'<option value="'.$filename.'">';
+													
+													//Si des noms sont spécifiés pour les templates
+													if(isset($GLOBALS['tpl_name'][$filename]))
+														echo ucfirst($GLOBALS['tpl_name'][$filename]);
+													else 
+														echo ucfirst($filename);
+
+												echo'</option>';
 											}
 											?>	
 										</select>
@@ -276,8 +285,20 @@ switch($_GET['mode'])
 						foreach($scandir as $cle => $filename)
 						{			
 							$pathinfo = pathinfo($filename);
+
 							if($pathinfo['extension'])
-								echo"<option value=\"".$pathinfo['filename']."\">".$pathinfo['filename']."</option>";
+							{
+								echo'<option value="'.$pathinfo['filename'].'">';
+
+									//Si des noms sont spécifiés pour les templates
+									if(isset($GLOBALS['tpl_name'][$pathinfo['filename']]))
+										echo ucfirst($GLOBALS['tpl_name'][$pathinfo['filename']]);
+									else 
+										echo ucfirst($pathinfo['filename']);
+
+								echo'</option>';
+							}
+							
 						}
 						?>					
 					</select>
