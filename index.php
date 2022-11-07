@@ -102,8 +102,15 @@ if($res)
 	// Si on veut que le CMS soit en https dans la config on vérifie le statut d'origine de l'url
 	if(strpos($GLOBALS['scheme'], 'https') !== false) 
 	{
+		//!\\ @TODO voir BUG redirection infini à cause du script_uri et request_scheme qui ne son pas en https mais en http alors que dans l'url c'est bien https ! => voir la redirection faite automatiquement par le navigateur en cas de http pour redir vers https (HTTP_X_FORWARDED_PROTO // REDIRECT_HTTPS)
+		// $_SERVER['HTTPS'] = on ? => ok pour poser le https ?
+
 		// Verif si https dans l'url
-		if(strpos(@$_SERVER['SCRIPT_URI'], 'https') !== false or $_SERVER['REQUEST_SCHEME'] == 'https') 
+		if(
+			strpos(@$_SERVER['SCRIPT_URI'], 'https') !== false or
+			$_SERVER['REQUEST_SCHEME'] == 'https' or
+			isset($_SERVER['HTTPS'])
+		) 
 			$http = "https://";
 		else 
 			$http = "http://";
