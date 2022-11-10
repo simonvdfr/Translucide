@@ -35,6 +35,8 @@ switch($_GET['mode'])
 			// Cas de page ouverte et on rentre dans l'édition alors qu'un autre utilisateur a modifié la page entre temps
 			if(@$_GET['id'] and @$_GET['date_update'])
 			{
+				include_once("db.php");// Connexion à la db
+				
 				$sel = $connect->query("SELECT ".$tc.".date_update, ".$tu.".name, ".$tu.".email FROM ".$tc." JOIN ".$tu." ON ".$tu.".id = ".$tc.".user_update WHERE ".$tc.".id='".(int)$_GET['id']."' LIMIT 1");
 				$res = $sel->fetch_assoc();		
 
