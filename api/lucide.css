@@ -44,7 +44,11 @@ body { transition: margin-top .2s linear; }
 
 	#admin-bar:hover { background-color: rgba(240, 240, 240, 0.95); }
 
-	#admin-bar h3 { font-family: arial; }
+	#admin-bar h3 {
+		font-family: arial;
+		position: inherit;
+		padding: inherit;
+	}
 
 	#admin-bar #list-content i,
 	#admin-bar #tutoriel i {
