@@ -1645,12 +1645,12 @@ function computeQuantile(quantiles,value)
 
 function getEcoIndexGrade(ecoIndex)
 {
-	if (ecoIndex > 75) return "A";
-	if (ecoIndex > 65) return "B";
-	if (ecoIndex > 50) return "C";
-	if (ecoIndex > 35) return "D";
-	if (ecoIndex > 20) return "E";
-	if (ecoIndex > 5) return "F";
+	if (ecoIndex > 80) return "A";//75
+	if (ecoIndex > 70) return "B";//65
+	if (ecoIndex > 55) return "C";//50
+	if (ecoIndex > 40) return "D";//35
+	if (ecoIndex > 25) return "E";//20
+	if (ecoIndex > 10) return "F";//5
 	return "G";
 }
 
