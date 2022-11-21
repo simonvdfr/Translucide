@@ -880,9 +880,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	{ display: block; }
 
 
-	.dialog-optim-img img {
-		border: 1px solid #bbbbbb;
-	}
+	.dialog-optim-img img { border: 1px solid #bbbbbb; }
+	.dialog-optim-img a { text-decoration: underline; }
 
 
 	/* Image à moitié transparante */
