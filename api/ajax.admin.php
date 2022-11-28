@@ -1840,9 +1840,12 @@ switch($_GET['mode'])
 			$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";	
 
 			// Url du fichier qui contient les icônes
-			if($GLOBALS['icons']) $file = $GLOBALS['icons'];
-			else $file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/global.min.css";
-
+			if($GLOBALS['icons']) 
+				$file = $GLOBALS['icons'];
+			else 
+				//$file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'].'api/global.min.css';
+				$file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'].'theme/'.$GLOBALS['theme'].'/style.min.css';
+				
 
 			// On récupère le contenu du fichier css qui contient les icones
 			$content = curl($file);

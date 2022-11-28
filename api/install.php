@@ -135,7 +135,7 @@ switch(@$_GET['mode'])
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
 
-			<link rel="stylesheet" href="api/global.css?">
+			<link rel="stylesheet" href="/theme/default/style.min.css?">
 
 			<style>
 				@font-face {
@@ -231,7 +231,7 @@ switch(@$_GET['mode'])
 
 			<div class="w80 center">
 
-				<h2 class="tc"><?php _e("Site Installation");?></h2>
+				<h1 class="tc black"><?php _e("Site Installation");?></h1>
 
 				<div class="layer mod pam mbm">
 
