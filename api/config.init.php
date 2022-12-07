@@ -98,7 +98,7 @@ else
 
 $GLOBALS['path'] = '';
 
-$GLOBALS['replace_path'] = "";// "/" Pour les chemins des média sur les sites avec dossier dans les url (filtre)
+$GLOBALS['replace_path'] = '';// "/" Pour les chemins des média sur les sites avec dossier dans les url (filtre)
 
 
 $GLOBALS['email_contact'] = '';
@@ -261,6 +261,15 @@ $GLOBALS['add_content'] = array(
 );
 
 
+// Pour des noms de modele plus explicite dans le select
+$GLOBALS['tpl_name'] = array(
+	"home" => "Page accueil",
+	"article" => "Actualité",
+	"event" => "Évènement agenda",
+	"article-liste" => "Liste actualités - Agenda",
+);
+
+
 // Type de contenu ajoutable dans le menu
 $GLOBALS['add_menu'] = array(
 	//"article",
@@ -333,11 +342,15 @@ $GLOBALS['style.css'] = null;
 
 
 // Librairie externe
-$GLOBALS['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js';
+$GLOBALS['jquery'] = '/api/jquery.min.js';// //ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
 
 $GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
 
 $GLOBALS['jquery_ui_css'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css';// cupertino flick smoothness base 
+
+
+// Url pour faire un lien vers un tutoriel externe
+$GLOBALS['tutoriel'] = null;
 
 
 // Filtre url autorisé

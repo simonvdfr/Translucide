@@ -30,7 +30,37 @@ switch($_GET['mode'])
 			</script>
 		<?php }
 		else 
-		{				
+		{		
+			// On récupère la date de dernière mise à jour pour voir si la page n'a pas été modifier depuis son affichage
+			// Cas de page ouverte et on rentre dans l'édition alors qu'un autre utilisateur a modifié la page entre temps
+			if(@$_GET['id'] and @$_GET['date_update'])
+			{
+				include_once("db.php");// Connexion à la db
+				
+				$sel = $connect->query("SELECT ".$tc.".date_update, ".$tu.".name, ".$tu.".email FROM ".$tc." JOIN ".$tu." ON ".$tu.".id = ".$tc.".user_update WHERE ".$tc.".id='".(int)$_GET['id']."' LIMIT 1");
+				$res = $sel->fetch_assoc();		
+
+				if(@$_GET['date_update'] != $res['date_update'] and $res['email']) 
+				{
+					?>
+					<script>
+						if(confirm("<?=(@$res['name']?$res['name']:$res['email'])?> a modifié la page le <?=$res['date_update']?>, voulez-vous recharger pour voir les modifications ?"))
+						{
+							// Cookie pour demander l'édition après le reload
+							set_cookie("autoload_edit", true);
+
+							// vide la page
+							$("body").fadeOut("fast");
+
+							// Recharge la page
+							reload();						
+						}
+					</script>
+					<?
+					//exit;
+				}
+			}
+
 			// JS pour mettre en mode édit les contenus et ajout d'un nonce pour signer les formulaires
 			?>
 			<input type="hidden" name="nonce" id="nonce" value="<?=nonce("nonce");?>">
@@ -47,7 +77,7 @@ switch($_GET['mode'])
 				<!-- list/bars -->
 				<div id="list-content" class="fl pat"><i class="fa fa-menu vam" title="<?php _e("List of contents")?>"></i></div>
 				
-				<a href="/tutoriel.html" id="tutoriel" class="fl pat" target="_blank" title="<?php echo __("Editing tutorial").' - '.__("New window");?>"><i class="fa fa-info-circled vam"></i></a>
+				<a href="<?=(isset($GLOBALS['tutoriel'])?$GLOBALS['tutoriel']:'/tutoriel.html')?>" id="tutoriel" class="fl pat" target="_blank" title="<?php echo __("Editing tutorial").' - '.__("New window");?>"><i class="fa fa-info-circled vam"></i></a>
 
 
 				<div id="meta-responsive" class="fl mat none small-screen"><i class="fa fa-fw fa-pencil bigger" title="<?php _e("Page title")?>"></i></div>
@@ -88,7 +118,7 @@ switch($_GET['mode'])
 											foreach($GLOBALS['add_content'] as $cle => $array)
 											{
 												if(isset($_SESSION['auth']['add-'.$cle]))
-													echo'<option value="'.$cle.'">'.__($cle).'</option>';
+													echo'<option value="'.$cle.'">'.ucfirst(__($cle)).'</option>';
 											}
 											?>
 										</select>
@@ -104,7 +134,16 @@ switch($_GET['mode'])
 											foreach($scandir as $cle => $filename)
 											{			
 												$filename = pathinfo($filename, PATHINFO_FILENAME);
-												echo'<option value="'.$filename.'">'.$filename.'</option>';
+
+												echo'<option value="'.$filename.'">';
+													
+													//Si des noms sont spécifiés pour les templates
+													if(isset($GLOBALS['tpl_name'][$filename]))
+														echo ucfirst($GLOBALS['tpl_name'][$filename]);
+													else 
+														echo ucfirst($filename);
+
+												echo'</option>';
 											}
 											?>	
 										</select>
@@ -237,6 +276,7 @@ switch($_GET['mode'])
 
 			<div>
 
+
 				<div class="mas">
 					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 bold">
 					
@@ -247,18 +287,36 @@ switch($_GET['mode'])
 						foreach($scandir as $cle => $filename)
 						{			
 							$pathinfo = pathinfo($filename);
+
 							if($pathinfo['extension'])
-								echo"<option value=\"".$pathinfo['filename']."\">".$pathinfo['filename']."</option>";
+							{
+								echo'<option value="'.$pathinfo['filename'].'">';
+
+									//Si des noms sont spécifiés pour les templates
+									if(isset($GLOBALS['tpl_name'][$pathinfo['filename']]))
+										echo ucfirst($GLOBALS['tpl_name'][$pathinfo['filename']]);
+									else 
+										echo ucfirst($pathinfo['filename']);
+
+								echo'</option>';
+							}
+							
 						}
 						?>					
 					</select>
 				</div>
 
+
 				<div class="mas mtm">
+
 					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70" class="w50 mrm">
-					<label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label>
+
+					<!-- <label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label> -->
+
 					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
+
 				</div>
+
 
 			</div>
 
@@ -279,6 +337,10 @@ switch($_GET['mode'])
 
 					// Force la template du type
 					$(".dialog-add #tpl").val($(this).data("tpl"));
+
+					// Affiche ou masque le select des tpl
+					if($(this).data("tpl") == "page") $(".dialog-add #tpl").show();
+					else $(".dialog-add #tpl").hide();
 
 					// Reconstruit le permalink
 					refresh_permalink(".dialog-add");
@@ -358,6 +420,12 @@ switch($_GET['mode'])
 
 								// Template sélectionnée par défaut
 								$(".dialog-add #tpl").val($(".ui-dialog ul li[aria-selected='true']").data("tpl"));
+
+								// Affiche ou masque le select des tpl
+								if($(".ui-dialog ul li[aria-selected='true']").data("tpl") == "page")
+									$(".dialog-add #tpl").show();
+								else
+									$(".dialog-add #tpl").hide();
 							},
 							close: function() {
 								$(".dialog-add").remove();					
@@ -390,7 +458,7 @@ switch($_GET['mode'])
 		{
 			// Ajoute la page
 			$sql = "INSERT ".$table_content." SET ";
-			$sql .= "title = '".addslashes($_POST['title'])."', ";
+			$sql .= "title = '".addslashes(strip_tags(trim($_POST['title'])))."', ";
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
 			$sql .= "url = '".$url."', ";
 			$sql .= "lang = '".$lang."', ";
@@ -727,7 +795,7 @@ switch($_GET['mode'])
 			//@todo ajouter un check si un content n'existe pas déjà avec ce nom. si existe on incremente (check en boucle)
 			if(isset($change_url)) $sql .= "url = '".$change_url."', ";
 
-			$sql .= "title = '".addslashes($_POST['title'])."', ";
+			$sql .= "title = '".addslashes(strip_tags(trim($_POST['title'])))."', ";
 			$sql .= "description = '".addslashes($_POST['description'])."', ";
 			$sql .= "content = '".addslashes($json_content)."', ";
 			$sql .= "robots = '".addslashes(@$_POST['robots'])."', ";
@@ -754,7 +822,7 @@ switch($_GET['mode'])
 			$(function()
 			{
 				// Change le titre de la page
-				document.title = "<?=addslashes($_POST['title']);?>";
+				document.title = "<?=addslashes(strip_tags(trim($_POST['title'])));?>";
 
 				<?php if(isset($change_url)){?>		
 					// Change l'url de la page			
@@ -1772,9 +1840,12 @@ switch($_GET['mode'])
 			$pattern = "/\\.(fa-(?:[a-z-]*)):before{content:'(\\\\\\w+)'}/";	
 
 			// Url du fichier qui contient les icônes
-			if($GLOBALS['icons']) $file = $GLOBALS['icons'];
-			else $file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']."api/global.min.css";
-
+			if($GLOBALS['icons']) 
+				$file = $GLOBALS['icons'];
+			else 
+				//$file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'].'api/global.min.css';
+				$file = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'].'theme/'.$GLOBALS['theme'].'/style.min.css';
+				
 
 			// On récupère le contenu du fichier css qui contient les icones
 			$content = curl($file);

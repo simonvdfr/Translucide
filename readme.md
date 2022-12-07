@@ -39,8 +39,9 @@ Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 
 ## Premier pas
 - Descendez tout en bas du site, sur la gauche doit apparaître un bouton avec un petit crayon pour éditer la page courante, au survol de ce dernier un autre bouton `+` apparaît pour ajouter une page. Choisissez l'onglet correspondant à votre type de contenu, choisissez la template souhaitée dans le menu déroulant et saisissez le nom de la page.
-- Une fois la page créée (vous lui avez donné un titre et une template, idéalement `home`), vous pouvez l'éditer en cliquant en bas à gauche sur le crayon d'édition.
+- Une fois la page créée (vous lui avez donné un titre et une template), vous pouvez l'éditer en cliquant en bas à gauche sur le crayon d'édition.
 - Pour créer une nouvelle template, ajoutez un fichier php dans le dossier `tpl` de votre thème. Créez la trame avec la structure html de votre choix et ajoutez les contenus éditables à l'aide des fonctions existantes (cf. plus loin). Ajoutez le contenu directement sur le site en mode édition, ceci alimentera directement la BDD.
+- Normalement après votre installation vous êtes redirigé vers la page d'accueil déjà créer et non activé (pensez à l'activer pour rendre votre site visible). Cette page d'accueil avec normalement la template `home` a la particularité d'avoir comme permalien `index` pour être défini comme page de défaut quand on tape le nom de domaine de votre site sans URL spécifique.
 
 ## Raccourcis clavier (sur Chrome)
 - <kbd>ctrl + e</kbd> Lance le mode édition

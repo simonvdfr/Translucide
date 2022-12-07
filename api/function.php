@@ -148,41 +148,44 @@ function page($num_total, $page, $filter = array())
 	// S'il y a une valeur pour le filter mais que != tableau => c'est que l'on veut afficher toutes les pages
 	if(!is_array($filter)) $filter = array("full" => $filter);
 
-	?>
-	<nav role="navigation"<?=(isset($filter['aria-label'])?' aria-label="'.htmlspecialchars($filter['aria-label']).'"':'')?>>
-		<ul class="page unstyled inbl man pan">		
-		<?php
-		if($num_total > $num_pp)
-		{
-			$num_page = ceil($num_total/$num_pp);
+	// Si navigation par page
+	if($num_total > $num_pp)
+	{
+		?>
+		<nav role="navigation"<?=(isset($filter['aria-label'])?' aria-label="'.htmlspecialchars($filter['aria-label']).'"':'')?>>
+			<ul class="page unstyled inbl man pan">		
+			<?php
 			
-			// Page 1
-			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?=($page == 1?' selected':'');?>"<?=($page == 1?' aria-current="page"':'')?>>1</a></li><?php
-
-			if($num_page > 10 and $page >= 10 and !isset($filter['full']))// + de 10 page
-			{
-				?><li class="fl mrs mtt">...</li><?php
+				$num_page = ceil($num_total/$num_pp);
 				
-				for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
-					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
-				<?php }
-			}
-			else// - de 10 page
-			{
-				for($i = 2; $i <= (isset($filter['full'])?$num_page:10) and $i < $num_page; $i++){?>
-					<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
-				<?php }
-			}
+				// Page 1
+				?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => "1", "domaine" => true)))?>" class="bt<?=($page == 1?' selected':'');?>"<?=($page == 1?' aria-current="page"':'')?>>1</a></li><?php
 
-			if($num_page > 10 and $page < ($num_page - 2) and !isset($filter['full'])) {?><li class="fl mrs">...</li><?php }
+				if($num_page > 10 and $page >= 10 and !isset($filter['full']))// + de 10 page
+				{
+					?><li class="fl mrs mtt">...</li><?php
+					
+					for($i = ($page - 1); $i <= ($page + 1) and $i < $num_page; $i++){?>
+						<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
+					<?php }
+				}
+				else// - de 10 page
+				{
+					for($i = 2; $i <= (isset($filter['full'])?$num_page:10) and $i < $num_page; $i++){?>
+						<li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array("page" => $i, "domaine" => true)))?>" class="bt<?=($page == $i?' selected':'');?>"<?=($page == $i?' aria-current="page"':'')?>><?=$i?></a></li>
+					<?php }
+				}
 
-			// Page final
-			?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?=($page == $num_page?' selected':'');?>"<?=($page == $num_page?' aria-current="page"':'')?>><?=$num_page?></a></li><?php
+				if($num_page > 10 and $page < ($num_page - 2) and !isset($filter['full'])) {?><li class="fl mrs">...</li><?php }
 
-		}?>
-		</ul>
-	</nav>
-	<?php
+				// Page final
+				?><li class="fl mrs mbs"><a href="<?=make_url($res['url'], array_merge($GLOBALS['filter'], array('page' => $num_page, "domaine" => true)))?>" class="bt<?=($page == $num_page?' selected':'');?>"<?=($page == $num_page?' aria-current="page"':'')?>><?=$num_page?></a></li><?php
+
+			?>
+			</ul>
+		</nav>
+		<?php
+	}
 }
 
 
@@ -447,9 +450,9 @@ function media($key = null, $filter = array())
 
 		echo' class="';
 		if(isset($filter['editable'])) echo $filter['editable']; else echo'editable-media';
-		if(isset($filter['global'])) echo' global';
+		if(isset($filter['global']) and $filter['crop'] == true) echo' global';
 		//if(isset($size[0]) and isset($size[1])) echo' crop';
-		if(isset($filter['crop'])) echo' crop';
+		if(isset($filter['crop']) and $filter['crop'] == true) echo' crop';
 		echo'"';
 
 		if(isset($filter['class'])) echo' data-class="'.$filter['class'].'"';
@@ -917,7 +920,7 @@ function token_light($uid, $salt)
 function token_check($token)
 {	
 	// @todo verif si ce n'est pas ça qui crée un bug collatéral de perte de session
-	if($token == hash("sha256", $_SESSION['uid'] . $_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']) and time() < $_SESSION['expires'])
+	if(isset($_SESSION['uid']) and $token == hash("sha256", $_SESSION['uid'] . @$_SESSION['expires'] . ip() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['SERVER_NAME'] . $GLOBALS['pub_hash']) and time() < $_SESSION['expires'])
 	{
 		// On update la date d'expiration de la session
 		token($_SESSION['uid'], $_SESSION['email']);

@@ -2,6 +2,7 @@
 config.php
 media/
 theme/
+static/
 
 # Windows image file caches
 Thumbs.db

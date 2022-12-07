@@ -53,8 +53,8 @@ $add_translation = array(
 	
 	"Add content" => array("fr" => "Ajouter un contenu"),
 	"Add page" => array("fr" => "Ajouter une page"),
-	"Add article" => array("fr" => "Ajouter un article"),
-	"Add event" => array("fr" => "Ajouter un événement"),
+	"Add article" => array("fr" => "Ajouter une actualité"),
+	"Add event" => array("fr" => "Ajouter un évènement agenda"),
 	"Add media" => array("fr" => "Ajouter un média"),
 	"Add video" => array("fr" => "Ajouter une vidéo"),
 	"Add product" => array("fr" => "Ajouter un produit"),

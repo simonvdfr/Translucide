@@ -29,7 +29,12 @@ add_translation({
 	"Bold" : {"fr" : "Gras"},		
 	"Italic" : {"fr" : "Italique"},		
 	"Underline" : {"fr" : "Souligner"},		
-	"Superscript" : {"fr" : "Exposant"},		
+	"Superscript" : {"fr" : "Exposant"},	
+	"Insert list" : {"fr" : "Insérer une liste"},	
+	"Justify Left" : {"fr" : "Justifier à gauche"},	
+	"Justify Center" : {"fr" : "Justifier au centre"},	
+	"Justify Right" : {"fr" : "Justifier à droite"},	
+	"Justify" : {"fr" : "Justifier"},	
 	"Language" : {"fr" : "Langue"},		
 	"Add Language" : {"fr" : "Ajouter une langue"},		
 	"Change Language" : {"fr" : "Change la langue"},		
@@ -434,6 +439,10 @@ exec_tool = function(command, value) {
 	memo_selection = window.getSelection();
 	memo_range = memo_selection.getRangeAt(0);// @todo debug sous safari lors de l'ajout d'une nouvelle image
 	memo_node = selected_element(memo_range);
+
+	// Mise en surbrillance du bouton dans la barre d'outil
+	if($(memo_node).closest("li").length) $("#txt-tool #insertUnorderedList").addClass("checked");
+	else $("#txt-tool #insertUnorderedList").removeClass("checked");
 }
 
 
@@ -480,6 +489,8 @@ video = function(link)
 // Menu avec les options d'ajout/modif d'ancre
 anchor_option = function()
 {		
+	selection();// Récupère la sélection avant ouverture des options
+
 	$("#unanchor").remove();// Supprime le bouton de supp d'anchor
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 
@@ -539,6 +550,8 @@ edit_anchor = function()
 // Menu avec les options d'ajout/modif de lang
 lang_option = function()
 {		
+	selection();// Récupère la sélection avant ouverture des options
+
 	$("#unlang").remove();// Supprime le bouton de supp de lang
 	$("#txt-tool .option").hide();// Réinitialise le menu d'option
 
@@ -795,8 +808,8 @@ html_tool_inline = function(tag){
 	}
 	else {
 		// Ajoute la balise avec la class de couleur
-		var selection = window.getSelection().toString();
-		var add_tag = '<'+tag+'>' + selection + '</'+tag+'>';
+		var selection_string = window.getSelection().toString();
+		var add_tag = '<'+tag+'>' + selection_string + '</'+tag+'>';
 		exec_tool('insertHTML', add_tag);
 	}	
 }
@@ -810,8 +823,8 @@ color_text = function(color){
 	}
 	else {
 		// Ajoute la balise avec la class de couleur
-		var selection = window.getSelection().toString();
-		var add_class = '<em class="'+color+'">' + selection + '</em>';
+		var selection_string = window.getSelection().toString();
+		var add_class = '<em class="'+color+'">' + selection_string + '</em>';
 		exec_tool('insertHTML', add_class);
 	}	
 }
@@ -1632,12 +1645,12 @@ function computeQuantile(quantiles,value)
 
 function getEcoIndexGrade(ecoIndex)
 {
-	if (ecoIndex > 75) return "A";
-	if (ecoIndex > 65) return "B";
-	if (ecoIndex > 50) return "C";
-	if (ecoIndex > 35) return "D";
-	if (ecoIndex > 20) return "E";
-	if (ecoIndex > 5) return "F";
+	if (ecoIndex > 80) return "A";//75
+	if (ecoIndex > 70) return "B";//65
+	if (ecoIndex > 55) return "C";//50
+	if (ecoIndex > 40) return "D";//35
+	if (ecoIndex > 25) return "E";//20
+	if (ecoIndex > 10) return "F";//5
 	return "G";
 }
 
@@ -1790,8 +1803,8 @@ $(function()
 	$("#admin-bar #date-insert").val($("meta[property='article:published_time']").last().attr("content").slice(0, 19).replace('T', ' ')).datepicker({dateFormat: 'yy-mm-dd 00:00:00', firstDay: 1});
 
 
-	// Checkbox homepage si c'est une page
-	if(type == "page") $("#admin-bar #ispage").show();
+	// Checkbox homepage si c'est une page // Plus afficher pour éviter les mauvaises manipulation
+	//if(type == "page") $("#admin-bar #ispage").show();
 
 	// Etat de la checkbox homepage onready
 	if($("#admin-bar #permalink").val() == "index") $("#admin-bar #homepage").prop("checked", true);
@@ -2173,19 +2186,19 @@ $(function()
 			toolbox+= "<li><button onclick=\"highlight()\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\"><i class='fa fa-fw fa-list'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\" id='insertUnorderedList' title=\""+__("Insert list")+"\"><i class='fa fa-fw fa-list'></i></button></li>";
 
 		if(typeof toolbox_justifyLeft != 'undefined')// justifyLeft
-			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl'><i class='fa fa-fw fa-align-left'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tl')\" id='tool-tl' title=\""+__("Justify Left")+"\"><i class='fa fa-fw fa-align-left'></i></button></li>";
 
 		if(typeof toolbox_justifyCenter != 'undefined')// justifyCenter
-			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc'><i class='fa fa-fw fa-align-center'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tc')\" id='tool-tc' title=\""+__("Justify Center")+"\"><i class='fa fa-fw fa-align-center'></i></button></li>";
 
 		if(typeof toolbox_justifyRight != 'undefined')// justifyRight
-			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr'><i class='fa fa-fw fa-align-right'></i></button></li>";
+			toolbox+= "<li><button onclick=\"class_tool('tr')\" id='tool-tr' title=\""+__("Justify Right")+"\"><i class='fa fa-fw fa-align-right'></i></button></li>";
 
 		if(typeof toolbox_justifyFull != 'undefined') 
-			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify'><i class='fa fa-fw fa-align-justify'></i></button></li>";
+			toolbox+= "<li><button onclick=\"exec_tool('justifyFull')\" id='align-justify' title=\""+__("Justify")+"\"><i class='fa fa-fw fa-align-justify'></i></button></li>";
 
 		if(typeof toolbox_InsertHorizontalRule != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('InsertHorizontalRule')\" title=\""+__("Ajoute une barre de s\u00e9paration")+"\"><i class='fa fa-fw fa-resize-horizontal'></i></button></li>";
@@ -2276,11 +2289,12 @@ $(function()
 		range = document.createRange();
 		range.selectNodeContents(selector);
 		range.collapse(false);
-		selection = window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);		
+		memo_selection = window.getSelection();
+		memo_selection.removeAllRanges();
+		memo_selection.addRange(range);		
 	}
 
+	// @todo supp => instable
 	// Nétoie un champ éditable des <br> <p> <div> vide
 	clean_editable = function(memo_focus) {
 		var clean = ['<br>', '<p><br></p>', '<div><br></div>'];
@@ -2349,6 +2363,7 @@ $(function()
 		}
 	}
 
+	// @todo supp => instable
 	// Supprime les <br> en fin de <p> => pour éviter que le sigle du paragraphe ne soit après la ligne courante
 	clean_last_br = function(selector) {
 		if(selector.html() == "<br>") {
@@ -2406,7 +2421,7 @@ $(function()
 	init_paragraph = function(memo_focus)
 	{
 		// Nétoie le champ
-		clean_editable(memo_focus);
+		//clean_editable(memo_focus);
 
 		if(/DIV|ARTICLE|section/.test($(memo_focus).prop("tagName")) && $(memo_focus).html() == "")
 		{
@@ -2452,10 +2467,17 @@ $(function()
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
 				}
 
-				clean_editable(this);// Nétoie le champ
+				// Supprime là class qui indique dans quel paragraphe on édite
+				$(memo_node).closest("p").removeClass("focus");
+
+				//clean_editable(this);// Nétoie le champ
+
+				// Supprime les br inutiles : nobr
+				if(dev) console.log("clean nobr");
+				$(".nobr", this).remove();
 
 				// Si juste un paragraphe vide on le supp
-				if(("p", this).length == 1 && $("p", this).html() == '') {
+				if($("p", this).length == 1 && $("p", this).html() == '') {
 					if(dev) console.log("p remove");
 					$("p", this).remove();
 				}
@@ -2486,6 +2508,23 @@ $(function()
 
 				if(!$(this).hasClass("view-source"))
 				{			
+					// Mets en évidence le paragraphe éditer
+					$("p", this).removeClass("focus");
+					$(memo_node).closest("p").addClass("focus");
+
+
+					// Les éléments dans le node focus
+					var node = $(memo_node)[0].childNodes;
+
+					// Si le node contien que un <br>+nobr on le supp
+					if(node[0].nodeName == "BR" && node[1])
+						if(node[1].nodeName == "BR" && node[1].className == "nobr")
+						{
+							if(dev) console.log("remove <br>");
+							$(node[0]).remove();					
+						}
+
+
 					// Enter
 					if(event.keyCode == 13)
 					{
@@ -2497,11 +2536,45 @@ $(function()
 							clean_blockquote($(memo_node));// Permet de sortir des blockquote
 
 							clean_figcaption($(memo_node));// Permet de sortir des figcaption
+
+
+							// Clean les BR de fin de paragraphe quand on rentre dedans
+							if($(memo_node)[0].nodeName == "P" && node[node.length-1].nodeName == "BR") {
+								if(dev) console.log("nobr");
+								$(node[node.length-1]).addClass("nobr");							
+							}
+
+
+							// Clean les multiples <br> à la fin du précédent <p>
+							if($(memo_node).prev("p")[0] != undefined) 
+							{
+								var node = $(memo_node).prev("p")[0].childNodes;
+								if(node && node[node.length-1].nodeName == "BR")
+								{
+									if(dev) console.log("prev nobr");
+
+									// Si reste un <br> on le met en class=nobr
+									if(node[node.length-1].nodeName == "BR")
+										$(node[node.length-1]).addClass("nobr");
+
+									if(node[node.length-2].nodeName == "BR")
+									{
+										if(dev) console.log("prev remove <br>");
+
+										// Avant dernier <br>
+										$(node[node.length-2]).remove();
+
+										// Si avant avant dernier <br>
+										if(node[node.length-2].nodeName == "BR")
+											$(node[node.length-2]).remove();
+									}
+								}
+							}
 						}
 					}
-
+											
 					// Supprime les <br> en fin de <p>		
-					clean_last_br($(memo_node));
+					//clean_last_br($(memo_node));
 
 					// Constrole les saut de ligne vide // enter = 13 | up = 38 | down : 40
 					// || event.keyCode == 40
@@ -2622,6 +2695,15 @@ $(function()
 					// Check la couleur en cours
 					$("#txt-tool #color-option ."+$(memo_node).attr("class").match(/color-[\w-]+/)).addClass("checked");
 				}
+
+
+				if($(memo_node).closest("li").length) $("#txt-tool #insertUnorderedList").addClass("checked");
+				else $("#txt-tool #insertUnorderedList").removeClass("checked");
+
+
+				// Mets en évidence le paragraphe éditer
+				$("p", this).removeClass("focus");
+				$(memo_node).closest("p").addClass("focus");
 					
 
 				// Désélectionne les alignements
@@ -3430,9 +3512,9 @@ $(function()
 				range = document.createRange();//Create a range (a range is a like the selection but invisible)
 		        range.selectNodeContents(this);//Select the entire contents of the element with the range
 		        range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-		        selection = window.getSelection();//get the selection object (allows you to change selection)
-		        selection.removeAllRanges();//remove any selections already made
-		        selection.addRange(range);
+		        memo_selection = window.getSelection();//get the selection object (allows you to change selection)
+		        memo_selection.removeAllRanges();//remove any selections already made
+		        memo_selection.addRange(range);
 
 		        // A sauvegarder
 		        tosave();

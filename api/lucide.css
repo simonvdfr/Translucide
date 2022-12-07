@@ -44,7 +44,11 @@ body { transition: margin-top .2s linear; }
 
 	#admin-bar:hover { background-color: rgba(240, 240, 240, 0.95); }
 
-	#admin-bar h3 { font-family: arial; }
+	#admin-bar h3 {
+		font-family: arial;
+		position: inherit;
+		padding: inherit;
+	}
 
 	#admin-bar #list-content i,
 	#admin-bar #tutoriel i {
@@ -514,15 +518,24 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		/* content: "Paragraphe"; */
 	    font-family: FontAwesome;
 	    content: "\f1dd";
-		opacity: .6;
+		opacity: .5;
 		padding-left: 0.2rem;
-		/* position: absolute; */
+		/*
+		position: absolute;
+		left: -15px;
+		top: 0;
+		*/
 	}
+		p.focus:after { color: green !important; }
+		p:hover:after { opacity: .8; }
 
-	/* [contenteditable=true] p br:last-of-type,
-	[contenteditable=true] p br:last-child
-	{ display: none; } */
+		.nobr { display: none; }/* pour bien afficher le P à la suite du texte */
 
+		/* [contenteditable=true] p br:last-of-type,
+		[contenteditable=true] p br:last-child
+		{ display: none; } */
+
+	
 	.editable-media[placeholder]:before { 
 		content: attr(placeholder);
 		opacity: .6;
@@ -867,9 +880,8 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	{ display: block; }
 
 
-	.dialog-optim-img img {
-		border: 1px solid #bbbbbb;
-	}
+	.dialog-optim-img img { border: 1px solid #bbbbbb; }
+	.dialog-optim-img a { text-decoration: underline; }
 
 
 	/* Image à moitié transparante */
@@ -1173,7 +1185,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 	bottom: 0;
     right: 0;    
     
-    z-index: 1;
+    z-index: 2;
 
     padding: 0 0.4rem;
 
