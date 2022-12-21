@@ -1911,217 +1911,221 @@ $(function()
 
 	/************** MENU NAV **************/
 	
-	// Bloc d'option pour le menu de navigation  class='black'
-	addnav = "<div id='add-nav'>";
-		addnav+= "<div class='zone bt' title='"+ __("Edit menu") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></div>";
-		addnav+= "<div class='tooltip none pat'>";
-			addnav+= "<i class='fa fa-cancel grey o50'></i>";
-			addnav+= "<ul class='block unstyled plm man tl'>";
-				addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __('Remove') +"'></i></li>";
-			addnav+= "</ul>";
+	// Si menu on inject les fonctionnalitées
+	if($("header nav > ul:not(.exclude)").length)
+	{
+		// Bloc d'option pour le menu de navigation  class='black'
+		addnav = "<div id='add-nav'>";
+			addnav+= "<div class='zone bt' title='"+ __("Edit menu") +"'><i class='fa fa-fw fa-pencil bigger vam'></i></div>";
+			addnav+= "<div class='tooltip none pat'>";
+				addnav+= "<i class='fa fa-cancel grey o50'></i>";
+				addnav+= "<ul class='block unstyled plm man tl'>";
+					addnav+= "<li class='add-empty'><div class='dragger'></div><a href='#'>"+__("Empty element")+"</a><i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __('Remove') +"'></i></li>";
+				addnav+= "</ul>";
+			addnav+= "</div>";	
 		addnav+= "</div>";	
-	addnav+= "</div>";	
-	$("header nav > ul:not(.exclude)").after(addnav);
+		$("header nav > ul:not(.exclude)").after(addnav);
 
-	// Positionne le menu
-	// Barre admin + position top du menu + marge du menu - hauteur du bt edit menu
-	var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul:not(.exclude)").offset().top + parseInt($("header nav > ul:not(.exclude)").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
-	$("#add-nav").css("top", top_bt_menu + "px");
-	
+		// Positionne le menu
+		// Barre admin + position top du menu + marge du menu - hauteur du bt edit menu
+		var top_bt_menu = $("#admin-bar").outerHeight() + $("header nav > ul:not(.exclude)").offset().top + parseInt($("header nav > ul:not(.exclude)").css("marginTop").replace('px', '')) - ($("#add-nav").outerHeight());
+		$("#add-nav").css("top", top_bt_menu + "px");
+		
 
-	// Déplace un élément du menu add vers le menu courant au click sur le +
-	hover_add_nav = false;	
-	$("#add-nav").on({
-		"click.dragger": function(event) {
-			event.preventDefault();  
-			//event.stopPropagation();
+		// Déplace un élément du menu add vers le menu courant au click sur le +
+		hover_add_nav = false;	
+		$("#add-nav").on({
+			"click.dragger": function(event) {
+				event.preventDefault();  
+				//event.stopPropagation();
 
-			// Si on est bien sur un élément ajoutable
-			if(event.target.className == "dragger")
-			{
-				if($(event.target).parent().hasClass("add-empty"))
-					$("header nav ul:not(.exclude):first").append($(event.target).parent().clone());// Copie
-				else
-					$($(event.target).parent()).appendTo("header nav ul:not(.exclude):first");// Déplace
+				// Si on est bien sur un élément ajoutable
+				if(event.target.className == "dragger")
+				{
+					if($(event.target).parent().hasClass("add-empty"))
+						$("header nav ul:not(.exclude):first").append($(event.target).parent().clone());// Copie
+					else
+						$($(event.target).parent()).appendTo("header nav ul:not(.exclude):first");// Déplace
+					
+					// Rends editable les éléments du menu (pointage sur A)
+					$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
+					editable_event();
+
+					tosave();// A sauvegarder
+						
+					// Désactive les liens dans le menu d'ajout
+					$("#add-nav ul:not(.exclude) a").click(function() { return false; });
+				}
+			},
+			// On check si on est sur le menu d'ajout de page au menu
+			"mouseenter": function(event) { hover_add_nav = true; },
+			"mouseleave": function(event) {	hover_add_nav = false; }
+		});
+		
+		// Drag & Drop des éléments du menu principal
+		$("header nav ul:not(.exclude):first").sortable({
+			connectWith: "header nav ul:not(.exclude), #add-nav .zone",
+			handle: ".dragger",
+			axis: "x",
+			start: function(event) {
+				$("#add-nav").addClass("del");
+				$("#add-nav .zone i").removeClass("fa-plus").addClass("fa-trash");
+
+				$(".editable").off();//$("body").off(".editable");		
+				$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
+			},
+			stop: function(event, ui) {
+				// Si on drop l'element dans la zone de suppression mais pas dans le ul liste autre page
+				if($(event.toElement).closest("#add-nav").length && !$(event.toElement).parent("#add-nav .tooltip").length)
+					$(ui.item).remove();// On le supprime de la nav
+
+				$("#add-nav").removeClass("del");
+				$("#add-nav .zone i").removeClass("fa-trash").addClass("fa-plus");
 				
-				// Rends editable les éléments du menu (pointage sur A)
+				// Rends editable les éléments du menu
 				$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 				editable_event();
 
 				tosave();// A sauvegarder
-					
-				// Désactive les liens dans le menu d'ajout
+				
+				// désactive les liens dans le menu d'ajout
 				$("#add-nav ul:not(.exclude) a").click(function() { return false; });
 			}
-		},
-		// On check si on est sur le menu d'ajout de page au menu
-		"mouseenter": function(event) { hover_add_nav = true; },
-		"mouseleave": function(event) {	hover_add_nav = false; }
-	});
-	
-	// Drag & Drop des éléments du menu principal
-	$("header nav ul:not(.exclude):first").sortable({
-		connectWith: "header nav ul:not(.exclude), #add-nav .zone",
-		handle: ".dragger",
-		axis: "x",
-		start: function(event) {
-			$("#add-nav").addClass("del");
-			$("#add-nav .zone i").removeClass("fa-plus").addClass("fa-trash");
+		});
 
-			$(".editable").off();//$("body").off(".editable");		
-			$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
-		},
-		stop: function(event, ui) {
-			// Si on drop l'element dans la zone de suppression mais pas dans le ul liste autre page
-			if($(event.toElement).closest("#add-nav").length && !$(event.toElement).parent("#add-nav .tooltip").length)
-				$(ui.item).remove();// On le supprime de la nav
+		// Si on est en mode burger on active le tri verticalement
+		$(".burger, .sortable-y").click(function() {
+			$("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
+		});
 
-			$("#add-nav").removeClass("del");
-			$("#add-nav .zone i").removeClass("fa-trash").addClass("fa-plus");
-			
-			// Rends editable les éléments du menu
-			$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
-			editable_event();
-
-			tosave();// A sauvegarder
-			
-			// désactive les liens dans le menu d'ajout
-			$("#add-nav ul:not(.exclude) a").click(function() { return false; });
-		}
-	});
-
-	// Si on est en mode burger on active le tri verticalement
-	$(".burger, .sortable-y").click(function() {
-		$("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
-	});
-
-	// Si on demande à ce que le menu soit triable verticalement
-	if($(".sortable-y").length) $("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
-	
-	// Rend clonable uniquement le bloc vide
-	$(".add-empty").draggable({
-		connectToSortable: "header nav ul:not(.exclude):first",
-		helper: "clone",
-		revert: "invalid"
-    });
+		// Si on demande à ce que le menu soit triable verticalement
+		if($(".sortable-y").length) $("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
+		
+		// Rend clonable uniquement le bloc vide
+		$(".add-empty").draggable({
+			connectToSortable: "header nav ul:not(.exclude):first",
+			helper: "clone",
+			revert: "invalid"
+	    });
 
 
-	// Affichage du bouton pour ouvrir le menu d'ajout
-	on_header = false;
-	add_page_bt = false;		
-	$("header").on({
-		"mouseover": function(event) {//mouseenter
+		// Affichage du bouton pour ouvrir le menu d'ajout
+		on_header = false;
+		add_page_bt = false;		
+		$("header").on({
+			"mouseover": function(event) {//mouseenter
 
-			on_header = true;// On est sur le header avec la souris
+				on_header = true;// On est sur le header avec la souris
 
-			if(!add_page_bt)
-			{
-				// Affichage du bouton pour l'ouverture du menu d'ajout
-				$("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
+				if(!add_page_bt)
+				{
+					// Affichage du bouton pour l'ouverture du menu d'ajout
+					$("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
 
-				add_page_bt = true;// Bouton pour ouvrir le layer de liste de page, visible
+					add_page_bt = true;// Bouton pour ouvrir le layer de liste de page, visible
+				}
+				else if($("#add-nav").css("display") != "block")// Si pas affiché on l'affiche
+					$("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
+			},
+			// Si on sort du header, on check si on est sur le menu d'ajout de page avant de le fermer
+			"mouseleave": function(event) {
+				on_header = false;
+				setTimeout(function() { 
+					if(!add_page_list && !hover_add_nav && !on_header) $("#add-nav").fadeOut("fast");
+				}, 1000);			
 			}
-			else if($("#add-nav").css("display") != "block")// Si pas affiché on l'affiche
-				$("#add-nav").css({opacity: 0, display: 'inline-block'}).animate({opacity: 0.8}, 300);
-		},
-		// Si on sort du header, on check si on est sur le menu d'ajout de page avant de le fermer
-		"mouseleave": function(event) {
-			on_header = false;
-			setTimeout(function() { 
-				if(!add_page_list && !hover_add_nav && !on_header) $("#add-nav").fadeOut("fast");
-			}, 1000);			
-		}
-	});
+		});
 
-	// Ouverture de la liste des pages disponibles absente du menu au click sur le +
-    add_page_list = false;
-	$("#add-nav .zone, #add-nav .fa-cancel").on({
-		"click": function(event) {
-			event.preventDefault();  
-			//event.stopPropagation();
+		// Ouverture de la liste des pages disponibles absente du menu au click sur le +
+	    add_page_list = false;
+		$("#add-nav .zone, #add-nav .fa-cancel").on({
+			"click": function(event) {
+				event.preventDefault();  
+				//event.stopPropagation();
 
-			// Ouvre le menu d'ajout
-			// Cherche dans la base les pages manquantes
-			if(!add_page_list)
-			{
-				// Rends le menu de navigation éditable
-				// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
-				$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
+				// Ouvre le menu d'ajout
+				// Cherche dans la base les pages manquantes
+				if(!add_page_list)
+				{
+					// Rends le menu de navigation éditable
+					// Cible le A pour eviter les bug de selection de navigateur qui sortent du lien
+					$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
 
-				// Pour la toolbox sur les éléments du menu
-				editable_event();
+					// Pour la toolbox sur les éléments du menu
+					editable_event();
 
-				// Ajout d'une zone de drag pour chaque élément
-				$("header nav ul:not(.exclude):first li").prepend("<div class='dragger'></div>");
+					// Ajout d'une zone de drag pour chaque élément
+					$("header nav ul:not(.exclude):first li").prepend("<div class='dragger'></div>");
 
 
-				// Liste les pages déjà dans le menu
-				var menu = {};
-				$(document).find("header nav ul:not(.exclude) a").each(function(index) { menu[index] = $(this).attr('href'); });
+					// Liste les pages déjà dans le menu
+					var menu = {};
+					$(document).find("header nav ul:not(.exclude) a").each(function(index) { menu[index] = $(this).attr('href'); });
 
-				$.ajax({
-					type: "POST",
-					url: path+"api/ajax.admin.php?mode=add-nav",
-					data: {
-						"menu" : menu,
-						"nonce": $("#nonce").val()
-					},
-					success: function(html){ 
-						$("#add-nav .tooltip ul").append(html);		
-						
-						// Pour éviter de relancer l'ajax
-						add_page_list = true;
-
-						// Rends draggable les pages manquantes du menu
-						$("#add-nav .tooltip ul").sortable({
-							connectWith: "header nav ul:not(.exclude)",
-							start: function() {
-								$(".editable").off();//$("body").off(".editable");
-								$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
-							},
-							stop: function() {
-								$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
-								editable_event();
-								tosave();// A sauvegarder
-							}
-						});
+					$.ajax({
+						type: "POST",
+						url: path+"api/ajax.admin.php?mode=add-nav",
+						data: {
+							"menu" : menu,
+							"nonce": $("#nonce").val()
+						},
+						success: function(html){ 
+							$("#add-nav .tooltip ul").append(html);		
 							
-						// désactive les liens
-						$("#add-nav ul a").click(function() { return false; });
+							// Pour éviter de relancer l'ajax
+							add_page_list = true;
 
-						// Affichage de la liste
-						$("#add-nav .tooltip").show();//slideDown
+							// Rends draggable les pages manquantes du menu
+							$("#add-nav .tooltip ul").sortable({
+								connectWith: "header nav ul:not(.exclude)",
+								start: function() {
+									$(".editable").off();//$("body").off(".editable");
+									$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable");
+								},
+								stop: function() {
+									$("header nav ul:not(.exclude):first li a").attr("contenteditable","true").addClass("editable");
+									editable_event();
+									tosave();// A sauvegarder
+								}
+							});
+								
+							// désactive les liens
+							$("#add-nav ul a").click(function() { return false; });
 
-						// Changement de la class zone +
-						$("#add-nav").addClass("open");
+							// Affichage de la liste
+							$("#add-nav .tooltip").show();//slideDown
 
-						// Ajoute la croix de suppression // $(this).parent().remove()
-						$("nav ul:not(.exclude):first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
-					}
-				});
+							// Changement de la class zone +
+							$("#add-nav").addClass("open");
+
+							// Ajoute la croix de suppression // $(this).parent().remove()
+							$("nav ul:not(.exclude):first li").append("<i onclick='$(this).parent().appendTo(\"#add-nav ul\");' class='fa fa-cancel red' title='"+ __("Remove") +"'></i>");
+						}
+					});
+				}
+				else// Ferme le menu d'ajout
+				{
+					add_page_list = false;
+
+					// Affichage de la liste
+					$("#add-nav .tooltip").hide();//slideUp
+
+					// Changement de la class zone +
+					$("#add-nav").removeClass("open");
+
+					// Supprime la croix de suppression
+					$("nav ul:not(.exclude):first .fa-cancel").remove();
+
+					// Supprime l'edition des élément du menu
+					$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable").off();
+
+					// Supprime la zone de drag pour chaque élément
+					$("header nav ul:not(.exclude):first li .dragger").remove();
+				}
 			}
-			else// Ferme le menu d'ajout
-			{
-				add_page_list = false;
+		});
 
-				// Affichage de la liste
-				$("#add-nav .tooltip").hide();//slideUp
-
-				// Changement de la class zone +
-				$("#add-nav").removeClass("open");
-
-				// Supprime la croix de suppression
-				$("nav ul:not(.exclude):first .fa-cancel").remove();
-
-				// Supprime l'edition des élément du menu
-				$("header nav ul:not(.exclude):first li a").attr("contenteditable","false").removeClass("editable").off();
-
-				// Supprime la zone de drag pour chaque élément
-				$("header nav ul:not(.exclude):first li .dragger").remove();
-			}
-		}
-	});
-
+	}
 
 
 	/************** TOOLBOX **************/
