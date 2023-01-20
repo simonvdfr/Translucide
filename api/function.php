@@ -986,12 +986,12 @@ function login($level = 'low', $auth = null, $quiet = null)
 					}
 				}
 				else {
-					$msg = __("Password error");
+					$msg = __("Connection error");//Password error
 					logout();
 				} 
 			}
 			else {
-				$msg = __("Unknown user");
+				$msg = __("Connection error");//Password error
 				logout();
 			}
 		}
