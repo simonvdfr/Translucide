@@ -278,6 +278,7 @@ $GLOBALS['add_menu'] = array(
 
 
 // Bouton en bas en layer
+$GLOBALS['bt_login'] = true; // Possibilité de mettre l'emplacement ou le bouton sera injectée. ex : "footer .webmaster"
 $GLOBALS['bt_edit'] = true;
 $GLOBALS['bt_top'] = false;
 
