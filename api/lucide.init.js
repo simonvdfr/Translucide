@@ -92,35 +92,48 @@ popin = function(txt, fadeout, mode, focus){
 	//var role = 'dialog';
 
 	// Supprimer les anciennes popin ouverte
-	$("#popin, #light, #error, #under-popin").remove();
+	//$("#popin, #light, #error, #under-popin").remove();// SUPP JQ
+	Array.from(document.querySelectorAll("#popin, #light, #error, #under-popin")).forEach(function(element) {
+		element.remove();
+	});
 
 	
 	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' // __("Information message")
-	$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></div>");
-	var height = $("#"+mode).outerHeight();
+	//$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></div>");// SUPP JQ
+	document.body.insertAdjacentHTML("beforeend","<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-describedby='message-popin' style='z-index: 1002; opacity: 0; top: -1000px; transition: all .4s;'><span id='message-popin'>" + txt + "</span></div>");
+	//var height = $("#"+mode).outerHeight();// SUPP JQ
+	var height = document.querySelector("#"+mode).getBoundingClientRect().height;// Hauteur de la dialog
 
 	// Ajout de la croix pour fermer
 	if(mode == 'popin' || mode == 'error')
-		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"' aria-label='"+ __("Close") +"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
+		//$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"' aria-label='"+ __("Close") +"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");// SUPP JQ
+		document.querySelector("#"+mode).insertAdjacentHTML("beforeend","<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+ __("Close") +"' aria-label='"+ __("Close") +"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
 		
 
 	// Fond gris
 	if(mode == 'popin' || mode == 'error')
 	{
 		// Ajout du fond gris
-		$("body").append("<div id='under-popin' class='none absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 1001; top: 0; left: 0; right: 0;'></div>");
+		//$("body").append("<div id='under-popin' class='none absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 1001; top: 0; left: 0; right: 0;'></div>");// SUPP JQ
+		document.body.insertAdjacentHTML("beforeend","<div id='under-popin' class='absolute' style='background-color: rgba(200, 200, 200, 0.8); z-index: 1001; top: 0; left: 0; right: 0; transition: opacity .4s .2s ease-out; opacity: 0;'></div>");
 			
 		// Donne la bonne taille au fond gris et l'affiche
-		$("#under-popin")
+		/*$("#under-popin")
 		.css({
 			width: $(document).width(),
 			height: $(document).height()
 		})
-		.fadeIn();
+		.fadeIn();*/// SUPP JQ
+		//document.querySelector("#under-popin").style.cssText+= 'width: '+document.body.clientWidth+'px'+'; height: '+document.body.clientHeight+'px'+'; opacity: 1';
+		Object.assign(document.querySelector("#under-popin").style, {
+			width: document.body.clientWidth+'px',
+			height: document.body.clientHeight+'px',
+			opacity: "1"
+		});
 	}
 
 	// Affichage
-	$("#"+mode)
+	/*$("#"+mode)
 		.css({
 			zIndex: 1002,
 			opacity: 0,
@@ -132,17 +145,41 @@ popin = function(txt, fadeout, mode, focus){
 				top: ($(window).scrollTop() + (($(window).height() - height) / 2))
 			}, 500, function() {
 				// Focus sur le bouton de fermeture
-				if(mode == 'popin' || mode == 'error') $("#close-popin").focus();
+				if(mode == 'popin' || mode == 'error') 
+					//$("#close-popin").focus();// SUPP JQ
+					document.querySelector("#close-popin").focus();
 		})
 		.on("click", function(){ 
 			close_popin(focus);
-		});
+		});*/// SUPP JQ
+	Object.assign(document.querySelector("#"+mode).style, {
+		opacity: "1",
+		//left: (($(window).width() - $("#"+mode).outerWidth()) / 2)+'px',// dialog centré// SUPP JQ
+		left: ((document.body.clientWidth - document.querySelector("#"+mode).offsetWidth) / 2)+'px',// dialog centré
+		//top: -document.querySelector("#"+mode).getBoundingClientRect().height+'px',// position caché = - taille dialog
+		//top: ($(window).scrollTop() + (($(window).height() - height) / 2))+'px',// position affichée = au centre de l'écran// SUPP JQ
+		top: (window.pageYOffset + ((window.innerHeight - height) / 2))+'px',// position affichée = au centre de l'écran
+	});
+
+
+	// Focus sur le bouton de fermeture
+	if(mode == 'popin' || mode == 'error') 
+		//$("#close-popin").focus();// SUPP JQ
+		setTimeout(function() { document.querySelector("#close-popin").focus();	}, 500);
+
+
+	// Ferme au click la dialog
+	document.querySelector("#"+mode).addEventListener("click", function(event) {
+		close_popin(focus);
+	});
+
 
 	// Fermeture si echap
 	//$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
 
 	// Focus bloquer sur le bt de fermeture // @todo pas optimal
-	//$(document).keydown(function(event) { if(event.keyCode === 9) $("#close-popin").focus();	});
+	//$(document).keydown(function(event) { if(event.keyCode === 9) $("#close-popin").focus(); });
+
 
 	// Action au clavier // up = 38 | down : 40 | tab : 9 | echap : 27
 	document.querySelector("#"+mode).addEventListener("keydown", function(event)
@@ -153,28 +190,32 @@ popin = function(txt, fadeout, mode, focus){
 		// Focus bloquer sur le bt de fermeture 
 		if(event.keyCode === 9) { 
 			event.preventDefault();
-			$("#close-popin").focus();
+			//$("#close-popin").focus();// SUPP JQ
+			document.querySelector("#close-popin").focus();
 		}
 	}, false);
 
+
 	// Disparition au bout de x seconde
-	if($.isNumeric(fadeout))
+	//if($.isNumeric(fadeout))// SUPP JQ
+	if(!isNaN(fadeout - parseFloat(fadeout)))
 	{
 		window.setTimeout(function(){ 
 			close_popin(focus);
 		}, fadeout);
-	}
-
-	
+	}	
 }
+
 error = function(txt, fadeout, focus) { popin(txt, fadeout, 'error', focus); }		
 light = function(txt, fadeout, focus) { popin(txt, fadeout, 'light', focus); }		
+
 close_popin = function(focus){
 	$("#popin, #light, #error, #under-popin").fadeOut("fast", function(){ 
 		$(this).remove();// Supprime les éléments
 		focus.focus();// Repositionne le focus sur l'ancien élément
 	}); 
 }
+
 
 // Url en cours nettoyé
 clean_url = function() {
