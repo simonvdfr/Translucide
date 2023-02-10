@@ -625,7 +625,7 @@ switch(@$_GET['mode'])
 						$_POST['path'] = $GLOBALS['path'] = $parse_url['path'];
 
 						// Formate le nom du site
-						$_POST['sitename'] = htmlspecialchars(stripslashes($_POST['sitename']));
+						$_POST['sitename'] = htmlspecialchars(stripslashes(@$_POST['sitename']));
 
 						// Cache du jour de l'install
 						$_POST['cache'] = $GLOBALS['cache'] = date("Ymd");
@@ -665,7 +665,7 @@ switch(@$_GET['mode'])
 						{	
 							// Ajout de la page d'accueil
 							$sql = "INSERT ".addslashes($_POST['db_prefix'])."content SET ";
-							$sql .= "title = '".addslashes(utf8_decode($_POST['sitename']))."', ";
+							$sql .= "title = '".addslashes(utf8_decode(@$_POST['sitename']))."', ";
 							$sql .= "tpl = 'home', ";
 							$sql .= "url = 'index', ";
 							$sql .= "lang = '".$GLOBALS['language'][0]."', ";
