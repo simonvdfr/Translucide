@@ -344,24 +344,38 @@ if(!$ajax)
 		<?php }?>
 
 
-		<script>
-			
-			<?php if(@$GLOBALS['google_analytics']) { ?>
+		<!-- Google Analytics -->
+		<?php if(@$GLOBALS['google_analytics']) {
 			// Si Analytics pas desactivé
-			if(get_cookie('analytics') != "desactiver") 
-			{
-				// Google Analytics
-				google_analytics = '<?=$GLOBALS['google_analytics'];?>';
-				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-				ga('create', google_analytics, 'auto');
-				ga('send', 'pageview');
+			if(@$_COOKIE['analytics'] != "desactiver") {
+				// Si c-est Analytics 3 ou inférieur
+				if(substr(@$GLOBALS['google_analytics'], 0, 2)=='UA') { ?>
+					<!-- Analytics 3 ou inférieur -->
+					<script>
+						google_analytics = '<?=$GLOBALS['google_analytics'];?>';
+						// console.log('Analytics 3');
+						(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+						(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+						m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+						})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+						ga('create', google_analytics, 'auto');
+						ga('send', 'pageview');
+					</script>
+				<?php } else { ?>
+					<!-- Analytics 4 -->
+					<script async src="https://www.googletagmanager.com/gtag/js?id=<?=$GLOBALS['google_analytics'];?>"></script>
+					<script>
+						// console.log('Analytics 4');
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', '<?=$GLOBALS['google_analytics'];?>');
+					</script>
+				<?php }
 			}
-			<?php }
+		} ?>
 
-
+		<script>
 			if(@$GLOBALS['facebook_api_id']) { ?>
 			// Facebook
 			(function(d, s, id){
