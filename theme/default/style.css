@@ -1133,6 +1133,7 @@ header #logo { transition: opacity .5s; }
 	/* Ouvertur du menu */
 	.responsive-nav header nav ul {
 		visibility: visible;
+		grid-auto-flow: inherit;
 		transform: translateX(0);
 		-webkit-transform: translateX(0);
 	}
