@@ -152,6 +152,10 @@ $GLOBALS['google_analytics'] = '';
 // https://search.google.com/search-console
 $GLOBALS['google_verification'] = '';
 
+// Matomo
+$GLOBALS['matomo_url'] = '';
+$GLOBALS['matomo_id'] = '1';
+
 // https://plausible.io
 $GLOBALS['plausible'] = '';// $GLOBALS['domain']
 
