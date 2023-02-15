@@ -407,6 +407,7 @@ if(!$ajax)
 			date_update = "<?=@$res['date_update']?>";
 			<?=(isset($GLOBALS['lang_alt'])?'lang_alt = "'.addslashes($GLOBALS['lang_alt']).'";':'')?>
 			<?=(isset($GLOBALS['sitename'])?'sitename = "'.addslashes($GLOBALS['sitename']).'";':'')?>
+			<?=((!isset($GLOBALS['bt_login']) or $GLOBALS['bt_login'] == true)? 'bt_login = ' . ((isset($GLOBALS['bt_login']) and $GLOBALS['bt_login'] !== true) ? '"'.$GLOBALS['bt_login'].'"' : 'true').';' : '')?>
 			<?=((!isset($GLOBALS['bt_edit']) or $GLOBALS['bt_edit'] == true)?'bt_edit = true;':'')?>
 			<?=((!isset($GLOBALS['bt_top']) or $GLOBALS['bt_top'] == true)?'bt_top = true;':'')?>
 			<?=((!isset($GLOBALS['shortcut']) or $GLOBALS['shortcut'] == true)?'shortcut = true;':'')?>

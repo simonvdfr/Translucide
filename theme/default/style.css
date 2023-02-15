@@ -645,7 +645,7 @@ input[type="reset"].unstyled:focus {
 
 	border-radius: 30px;
 
-	opacity: 0.6;
+	opacity: 1;/*0.6 pas accessible*/
 	text-shadow: none;
 }
 	.bt.fixed.top { 	
@@ -657,11 +657,17 @@ input[type="reset"].unstyled:focus {
 		padding: 0.5rem;
 	}
 	.bt.fixed.edit { 	
-		transition: right .1s;	
-		opacity: 0.2;
+		/* transition: right .1s; */	
+		/* opacity: 0.2; pas accessible */
 		left: 20px;
 		right: initial;
 	}
+		.bt.fixed.edit.key {
+			position: initial;
+			border: none;
+			margin: 0 auto 1rem;
+    		display: block !important;
+		}
 	.bt.fixed.add { 
 		margin-bottom: 10px;
 		transition: bottom .3s, right .1s, opacity .3s;		

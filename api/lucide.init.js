@@ -321,7 +321,7 @@ $(function()
 	});*/
 
 	$(".video button").on("click", function(event){/*.video input, */
-		console.log(event);
+		//console.log(event);
 		event.preventDefault();
 
 		// Inject l'iframe avec la vidéo, avec les même class, et la même taille
@@ -344,8 +344,23 @@ $(function()
 	// BOUTON EDITION | AJOUT
 
 	// BOUTON D'ÉDITION ou de connexion si la page existe dans la base
-	if(get_cookie("auth").indexOf("edit-page") > 0) var icon_edit = "pencil"; else var icon_edit = "key";// logé ou pas ?
-	if(typeof state !== 'undefined' && state) $("body").append("<button class='bt fixed edit' title='"+ __("Edit the content of the page") +"' aria-label='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam' aria-hidden='true'></i></button>");
+	if(get_cookie("auth").indexOf("edit-page") > 0) 
+		var icon_edit = "pencil"; else var icon_edit = "key";// logé ou pas ?
+
+	// Placement du bouton de connexion
+	if(typeof bt_login !== 'undefined' && bt_login != true && icon_edit == "key") 
+		var login_append = bt_login;
+	else
+		var login_append = "body";
+
+	// Affichage du bouton de connexion ou édition, si activé dans la config
+	if(
+		typeof state !== 'undefined' && state
+		&& 
+		(icon_edit == "pencil" || (icon_edit == "key" && typeof bt_login !== 'undefined'))
+	) 
+		$(login_append).append("<button class='bt fixed edit "+icon_edit+"' title='"+ __("Edit the content of the page") +"' aria-label='"+ __("Edit the content of the page") +"'><i class='fa fa-fw fa-"+ icon_edit +" bigger vam' aria-hidden='true'></i></button>");
+
 
 	// Bind le bouton d'édition
 	$(".bt.edit").click(function() 
@@ -361,6 +376,7 @@ $(function()
 	});	
 
 
+
 	// BOUTON AJOUT de page/article
 	if(get_cookie("auth"))
 	$("body").append("<button class='bt fixed add' title='"+ __("Add content") +"' aria-label='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam' aria-hidden='true'></i></button>");
@@ -371,6 +387,7 @@ $(function()
 	});	
 
 
+
 	// MODE ÉDITION AU CTRL+E
 	if(typeof shortcut !== 'undefined')
 	{
@@ -379,13 +396,17 @@ $(function()
 			if(!$("#admin-bar").length)// Admin pas lancé
 			{
 				if(event.ctrlKey || event.metaKey)
-				if(String.fromCharCode(event.which).toLowerCase() == 'e') {
-					event.preventDefault();
-					$(".bt.edit").click();
-				}
+					if(String.fromCharCode(event.which).toLowerCase() == 'e') 
+					{
+						event.preventDefault();
+
+						if($(".bt.edit").length) $(".bt.edit").click();
+						else edit_launcher('edit_launcher');
+					}
 			}
 		});
 	}
+
 
 
 	// Affichage du bouton add au survole du bt edition
@@ -405,13 +426,14 @@ $(function()
 		}
 	);
 	
-	// Onhover bouton add on le conserve visible
-	$(".bt.fixed.add").hover(
-		function() { hover_add = true; },
-		function() {
-			hover_add = false;
-			setTimeout(function() { if(!hover_add && !edit_on && $(".bt.fixed.edit").length) $(".bt.fixed.add").fadeOut("fast");	}, 1000);
-	});
+		// Onhover bouton add on le conserve visible
+		$(".bt.fixed.add").hover(
+			function() { hover_add = true; },
+			function() {
+				hover_add = false;
+				setTimeout(function() { if(!hover_add && !edit_on && $(".bt.fixed.edit").length) $(".bt.fixed.add").fadeOut("fast");	}, 1000);
+		});
+
 
 
 	// AFFICHAGE DU BOUTON D'ÉDITION || AJOUT

@@ -278,6 +278,7 @@ $GLOBALS['add_menu'] = array(
 
 
 // Bouton en bas en layer
+$GLOBALS['bt_login'] = true;// Possibilité de mettre l'emplacement ou le bouton sera injectée. ex : "footer .webmaster"
 $GLOBALS['bt_edit'] = true;
 $GLOBALS['bt_top'] = false;
 
@@ -342,7 +343,7 @@ $GLOBALS['style.css'] = null;
 
 
 // Librairie externe
-$GLOBALS['jquery'] = '/api/jquery.min.js';// //ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
+$GLOBALS['jquery'] = $GLOBALS['path'].'api/jquery.min.js';// //ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
 
 $GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
 

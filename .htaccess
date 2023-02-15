@@ -8,8 +8,8 @@
 
 ## Variante de compression qui permet de faire fonctionner le img_check
 # <IfModule mod_deflate.c>
-#     ## La ligne suivante suffit pour .js et .css
-#     AddOutputFilter DEFLATE js css
+#     ## La ligne suivante suffit pour .js .css .svg
+#     AddOutputFilter DEFLATE js css svg
 #     AddOutputFilterByType DEFLATE text/plain text/xml application/xhtml+xml text/css   application/xml application/rss+xml application/atom_xml application/x-javascript application/x-httpd-php application/x-httpd-fastphp text/html
 
 #     ## Les lignes suivantes sont destinées à éviter les bugs avec certains navigateurs

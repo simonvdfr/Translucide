@@ -106,12 +106,16 @@ switch(@$_GET['mode'])
 		else 
 		{
 			$parse_url = parse_url($scheme_domain_path);
-			// Si dossier
-			if($parse_url['path'] != '/') $sitename = ucfirst(trim($parse_url['path'],'/'));
+			
+			
+			if($parse_url['path'] != '/')// Si dossier
+			{
+				$sitename = ucfirst(trim($parse_url['path'],'/'));
+			}			
 			else// Si juste domaine
 			{
 				$domains = explode('.', $_SERVER['SERVER_NAME']);
-				$sitename = ucfirst($domains[count($domains)-2]);
+				$sitename = ucfirst($domains[count($domains)-2]);				
 			}
 		}
 
@@ -135,18 +139,18 @@ switch(@$_GET['mode'])
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">
 
-			<link rel="stylesheet" href="/theme/default/style.min.css?">
+			<link rel="stylesheet" href="theme/default/style.min.css?">
 
 			<style>
 				@font-face {
 					font-family: 'FontAwesome';
-					src:  url('<?=$GLOBALS['path']?>api/icons/icons.eot?<?=$GLOBALS['cache']?>');
+					src:  url('api/icons/icons.eot?<?=$GLOBALS['cache']?>');
 					src:  
-						url('<?=$GLOBALS['path']?>api/icons/icons.eot?<?=$GLOBALS['cache']?>#iefix') format('embedded-opentype'),
-						url('<?=$GLOBALS['path']?>api/icons/icons.woff2?<?=$GLOBALS['cache']?>') format('woff2'),
-						url('<?=$GLOBALS['path']?>api/icons/icons.woff?<?=$GLOBALS['cache']?>') format('woff'),
-						url('<?=$GLOBALS['path']?>api/icons/icons.ttf?<?=$GLOBALS['cache']?>') format('truetype'),
-						url('<?=$GLOBALS['path']?>api/icons/icons.svg?<?=$GLOBALS['cache']?>#icons') format('svg');
+						url('api/icons/icons.eot?<?=$GLOBALS['cache']?>#iefix') format('embedded-opentype'),
+						url('api/icons/icons.woff2?<?=$GLOBALS['cache']?>') format('woff2'),
+						url('api/icons/icons.woff?<?=$GLOBALS['cache']?>') format('woff'),
+						url('api/icons/icons.ttf?<?=$GLOBALS['cache']?>') format('truetype'),
+						url('api/icons/icons.svg?<?=$GLOBALS['cache']?>#icons') format('svg');
 					font-weight: normal;
 					font-style: normal;
 				}
@@ -175,7 +179,7 @@ switch(@$_GET['mode'])
 				.bt.fixed.top { display: none !important; }
 			</style>
 
-			<script src="<?=$GLOBALS['jquery'];?>"></script>
+			<script src="api/jquery.min.js"></script>
 
 			<script src="<?=$GLOBALS['jquery_ui'];?>"></script>
 
@@ -621,7 +625,7 @@ switch(@$_GET['mode'])
 						$_POST['path'] = $GLOBALS['path'] = $parse_url['path'];
 
 						// Formate le nom du site
-						$_POST['sitename'] = htmlspecialchars(stripslashes($_POST['sitename']));
+						$_POST['sitename'] = htmlspecialchars(stripslashes(@$_POST['sitename']));
 
 						// Cache du jour de l'install
 						$_POST['cache'] = $GLOBALS['cache'] = date("Ymd");
@@ -661,7 +665,7 @@ switch(@$_GET['mode'])
 						{	
 							// Ajout de la page d'accueil
 							$sql = "INSERT ".addslashes($_POST['db_prefix'])."content SET ";
-							$sql .= "title = '".addslashes(utf8_decode($_POST['sitename']))."', ";
+							$sql .= "title = '".addslashes(utf8_decode(@$_POST['sitename']))."', ";
 							$sql .= "tpl = 'home', ";
 							$sql .= "url = 'index', ";
 							$sql .= "lang = '".$GLOBALS['language'][0]."', ";
