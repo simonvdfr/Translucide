@@ -252,7 +252,7 @@ switch(@$_GET['mode'])
 							<li><label class="w30"><?php _e("MySQL Username");?></label> <input type="text" id="db_user" value="<?=$GLOBALS['db_user'];?>" placeholder="root" required class="w60 vatt"></li>
 							
 							<li>
-								<label class="w30"><?php _e("MySQL User Password");?></label> <input type="password" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="w60 vatt">
+								<label class="w30"><?php _e("MySQL User Password");?></label> <input type="text" id="db_pwd" value="<?=$GLOBALS['db_pwd'];?>" class="w60 vatt">
 								<a href="javascript:void(0);" onclick="if($('#db_pwd').attr('type') == 'password') $('#db_pwd').attr('type','text'); else $('#db_pwd').attr('type','password');" tabindex="-1"><i class="fa fa-fw fa-eye mts vam"></i></a>
 							</li>
 							
@@ -281,11 +281,11 @@ switch(@$_GET['mode'])
 
 
 							<li class="mtm">
-								<label class="w30 bold"><i class="fa fa-fw fa-globe"></i> <?php _e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt">					
+								<label class="w30 bold"><i class="fa fa-fw fa-globe"></i> <?php _e("Administrator email");?></label> <input type="email" id="email_contact" value="<?=$GLOBALS['email_contact'];?>" required maxlength="100" class="w60 vatt" autocomplete="username"><!-- autocomplete="username" -->
 							</li>
 							<li>
 								<label class="w30 bold"><i class="fa fa-fw fa-key"></i> <?php _e("Administrator password");?></label>
-								<input type="password" id="password" required class="w60 vatt">
+								<input type="password" id="password" required class="w60 vatt"><!--  autocomplete="current-password" -->
 
 								<a href="javascript:$('#setup #password').make_password();" title="<?php _e("Suggest a password");?>" class="tdn"><i class="fa fa-fw fa-arrows-cw mts vam"></i></a>
 
