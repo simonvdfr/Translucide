@@ -364,12 +364,18 @@ switch(@$_GET['mode'])
 					$GLOBALS['table_tag'] = addslashes($_POST['db_prefix']."tag");
 					$GLOBALS['table_meta'] = addslashes($_POST['db_prefix']."meta");
 					$GLOBALS['table_user'] = addslashes($_POST['db_prefix']."user");
-										
+								
 					// Vérification de l'existence des base de données
-					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content'])){// Table déjà existante
+					try 
+					{	
+						// Table déjà existante
+						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content']);
+
 						?><script>light("<?php _e("Table already exists")?> : content");</script><?php 
-					}
-					else {// Création de la base de données
+					} 
+					catch (mysqli_sql_exception $e) 
+					{
+						// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_content']."` (
 								`id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -406,10 +412,15 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
-					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta'])){// Table déjà existante
+					try 
+					{
+						// Table déjà existante
+						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta']);
 						?><script>light("<?php _e("Table already exists")?> : meta");</script><?php 
-					}
-					else {// Création de la base de données
+					} 
+					catch (mysqli_sql_exception $e) 
+					{
+						// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_meta']."` (
 								`id` bigint(20) NOT NULL DEFAULT '0',
@@ -435,10 +446,15 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
-					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_tag'])){// Table déjà existante
+					try 
+					{
+						// Table déjà existante
+						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_tag']);
 						?><script>light("<?php _e("Table already exists")?> : tag");</script><?php 
-					}
-					else {// Création de la base de données
+					} 
+					catch (mysqli_sql_exception $e) 
+					{
+						// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_tag']."` (
 								`id` bigint(20) NOT NULL DEFAULT '0',
@@ -465,10 +481,15 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
-					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user'])){// Table déjà existante
+					try 
+					{
+						// Table déjà existante
+						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']);						
 						?><script>light("<?php _e("Table already exists")?> : user");</script><?php 
-					}
-					else {// Création de la base de données
+					} 
+					catch (mysqli_sql_exception $e) 
+					{
+						// Création de la base de données
 						$GLOBALS['connect']->query("
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_user']."` (
 								`id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -511,7 +532,8 @@ switch(@$_GET['mode'])
 
 					// Vérification de l'email
 					$email = filter_input(INPUT_POST, 'email_contact', FILTER_SANITIZE_EMAIL);
-					if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+					if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
+					{
 						?>
 						<script>
 							submittable();
@@ -520,8 +542,8 @@ switch(@$_GET['mode'])
 						<?php 
 						exit;
 					}
-					else {
-
+					else 
+					{
 						// Clean l'email pour éviter les injections
 						$email = $GLOBALS['connect']->real_escape_string($email);
 
@@ -575,8 +597,8 @@ switch(@$_GET['mode'])
 							</script>
 							<?php 
 						}
-						else {// Création de l'utilisateur admin avec tous les droits
-
+						else // Création de l'utilisateur admin avec tous les droits
+						{
 							// Création de la requête
 							$sql = "INSERT INTO ".addslashes($_POST['db_prefix'])."user SET ";
 							$sql .= "state = 'active', ";
@@ -661,7 +683,7 @@ switch(@$_GET['mode'])
 						// Vérifie qu'il n'y a pas déjà une page home
 						$sel = $GLOBALS['connect']->query("SELECT id FROM ".addslashes($_POST['db_prefix'])."content WHERE url='index' LIMIT 1");
 						$res = $sel->fetch_assoc();
-						if(!$res['id'])// Page non existante : on la crée
+						if(!@$res['id'])// Page non existante : on la crée
 						{	
 							// Ajout de la page d'accueil
 							$sql = "INSERT ".addslashes($_POST['db_prefix'])."content SET ";
