@@ -8,6 +8,12 @@ static/
 Thumbs.db
 ehthumbs.db
 
+# Config hébergeur
+.user.ini
+
+# Soft de dev
+.vscode/
+
 # Folder config file
 Desktop.ini
 
@@ -52,4 +58,3 @@ Network Trash Folder
 Temporary Items
 .apdisk
 theme
-.user.ini
