@@ -481,10 +481,10 @@ nav ul li i.fa-cancel {
 		box-shadow: 0 0 15px rgba(0, 0, 0, 0.3) inset;
 		border-color: #df7578;
 	}
-	#add-nav.del ul {
-		/* padding-top: 55px;
-		margin-top: -55px; */
-	}
+	/* #add-nav.del ul {
+		padding-top: 55px;
+		margin-top: -55px;
+	} */
 	
 
 
@@ -492,7 +492,7 @@ nav ul li i.fa-cancel {
 
 /* block éditable */
 
-article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la largeur */
+/*article { width: 100%; }*//* pour que le bloc éditable prenne bien toute la largeur */
 
 .lucide .editable, .lucide [contenteditable=true], a[name] {
 	border-bottom: 1px dotted rgba(61, 128, 179, 0.2) !important;
@@ -635,7 +635,7 @@ article { /*width: 100%;*/ }/* pour que le bloc éditable prenne bien toute la l
 		
 		width: initial; /* inherit */
 		padding: 0 6px;
-		margin: 10px 10px 10px 0px;
+		margin: 10px 10px 0 0;
 
 		transition: opacity .3s, background .2s;
 	}
