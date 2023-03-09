@@ -58,7 +58,7 @@ switch($_GET['mode'])
 				<label for="password"><?php _e("My password");?></label>
 				<input type="password" id="password" autocomplete="current-password" required class="w90"><i class="fa fa-lock wrapper bigger" aria-hidden="true"></i> 
 
-				<button class="mls" aria-label="<?php _e("See password");?>" title="<?php _e("See password");?>" onclick="if($('#password').attr('type') == 'password') { $('#password').attr('type','text'); $('i', this).removeClass('fa-eye').addClass('fa-eye-off'); } else { $('#password').attr('type','password');	$('i', this).removeClass('fa-eye-off').addClass('fa-eye'); } return false;" style="background: transparent;">
+				<button class="mls" aria-label="<?php _e("See password");?>" title="<?php _e("See password");?>" onclick="if($('#password').attr('type') == 'password') { $('#password').attr('type','text'); $('i', this).removeClass('fa-eye').addClass('fa-eye-off'); } else { $('#password').attr('type','password');	$('i', this).removeClass('fa-eye-off').addClass('fa-eye'); } return false;">
 					<i class="fa fa-fw fa-eye" aria-hidden="true"></i>
 				</button>
 				
