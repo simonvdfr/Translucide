@@ -56,8 +56,12 @@ switch($_GET['mode'])
 				<div class="mbm"><input type="email" id="email" autocomplete="email" required class="w100"><span class="wrapper big bold" aria-hidden="true">@</span></div>
 
 				<label for="password"><?php _e("My password");?></label>
-				<input type="password" id="password" autocomplete="current-password" required class="w100"><i class="fa fa-lock wrapper bigger" aria-hidden="true"></i>
+				<input type="password" id="password" autocomplete="current-password" required class="w90"><i class="fa fa-lock wrapper bigger" aria-hidden="true"></i> 
 
+				<button class="mls" aria-label="<?php _e("See password");?>" title="<?php _e("See password");?>" onclick="if($('#password').attr('type') == 'password') { $('#password').attr('type','text'); $('i', this).removeClass('fa-eye').addClass('fa-eye-off'); } else { $('#password').attr('type','password');	$('i', this).removeClass('fa-eye-off').addClass('fa-eye'); } return false;" style="background: transparent;">
+					<i class="fa fa-fw fa-eye" aria-hidden="true"></i>
+				</button>
+				
 				<button class="bt internal fr mrn mtm pat">
 					<?php _e("Log in")?>
 					<i class="fa fa-key" aria-hidden="true"></i>
