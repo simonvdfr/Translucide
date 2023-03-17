@@ -347,8 +347,11 @@ switch(@$_GET['mode'])
 				// BASE DE DONNEE
 				// Connexion à la bdd
 				$GLOBALS['connect'] = @new mysqli(addslashes($_POST['db_server']), addslashes($_POST['db_user']), addslashes($_POST['db_pwd']), addslashes($_POST['db']));
+
+				// Désactive les exceptions qui bloquent l'exécution de php > 8.0
+				mysqli_report(MYSQLI_REPORT_OFF);
 				
-				if ($GLOBALS['connect']->connect_errno) {// Erreur
+				if($GLOBALS['connect']->connect_errno) {// Erreur
 					?>
 					<script>
 						submittable();
@@ -366,14 +369,12 @@ switch(@$_GET['mode'])
 					$GLOBALS['table_user'] = addslashes($_POST['db_prefix']."user");
 								
 					// Vérification de l'existence des base de données
-					try 
-					{	
-						// Table déjà existante
-						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content']);
-
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_content']))
+					{					
+						// Table déjà existante	
 						?><script>light("<?php _e("Table already exists")?> : content");</script><?php 
 					} 
-					catch (mysqli_sql_exception $e) 
+					else
 					{
 						// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -412,13 +413,12 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
-					try 
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta']))
 					{
 						// Table déjà existante
-						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_meta']);
 						?><script>light("<?php _e("Table already exists")?> : meta");</script><?php 
 					} 
-					catch (mysqli_sql_exception $e) 
+					else
 					{
 						// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -446,13 +446,12 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
-					try 
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_tag']))
 					{
 						// Table déjà existante
-						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_tag']);
 						?><script>light("<?php _e("Table already exists")?> : tag");</script><?php 
 					} 
-					catch (mysqli_sql_exception $e) 
+					else
 					{
 						// Création de la base de données
 						$GLOBALS['connect']->query("
@@ -481,13 +480,12 @@ switch(@$_GET['mode'])
 					}
 
 					// Vérification de l'existence des base de données
-					try 
+					if($GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']))
 					{
 						// Table déjà existante
-						$GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']);						
 						?><script>light("<?php _e("Table already exists")?> : user");</script><?php 
 					} 
-					catch (mysqli_sql_exception $e) 
+					else
 					{
 						// Création de la base de données
 						$GLOBALS['connect']->query("
