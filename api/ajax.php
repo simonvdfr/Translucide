@@ -464,7 +464,7 @@ switch($_GET['mode'])
 
 			$array_auth = explode(",", $res['auth']);// Les autorisations
 
-			$oauth = json_decode($res['oauth'], true);// Les api tiers
+			$oauth = json_decode((string)$res['oauth'], true);// Les api tiers
 			
 			// On vérifie que l'on a le droit d'éditer les utilisateurs admin si fiche admin
 			if(array_search("edit-admin", $array_auth) !== false) login('medium', 'edit-admin');
@@ -856,7 +856,7 @@ switch($_GET['mode'])
 						unset($_POST['password_new'], $_POST['password_confirm']);
 						
 						// Sujet
-						$subject = "[".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
+						$subject = "[".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
 						
 						// Lien vers la fiche admin pour activation
 						$message = "<br><a href='".make_url("", array("domaine" => true))."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
@@ -996,8 +996,8 @@ switch($_GET['mode'])
 			$connect->query($sql);
 
 			// Mail avec le mdp
-			$subject = "[".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))."] ".__("New Password");
-			$message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".utf8_encode(htmlspecialchars($_SERVER['HTTP_HOST']))." : ".($pwd);
+			$subject = "[".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())."] ".__("New Password");
+			$message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())." : ".($pwd);
 			$header="Content-type:text/html; charset=utf-8\r\nFrom:".$GLOBALS['email_contact'];
 
 			mail($_REQUEST['email'], $subject, stripslashes($message), $header);

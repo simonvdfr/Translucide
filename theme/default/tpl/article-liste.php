@@ -73,18 +73,16 @@
 		if($res_fiche['state'] != "active") $state = " <span class='deactivate pat'>".__("Article d&eacute;sactiv&eacute;")."</span>";
 		else $state = "";
 
-		$content_fiche = json_decode($res_fiche['content'], true);
+		$content_fiche = json_decode((string)$res_fiche['content'], true);
 
 		$date = explode("-", explode(" ", $res_fiche['date_insert'])[0]);
 		?>
 		<article class="mod plm mrm mtl mbm">
 
-			<!--
-			<div class="date fl mrm prm up bold big tc">
+			<div class="date fl prm up bold big tc">
 				<div class="bigger"><?=$date[2]?></div>
-				<div><?=trim(utf8_encode(strftime("%h", mktime(0, 0, 0, $date[1], 10))),".")?></div>
+				<div><?=trim(mb_convert_encoding(date("M", strtotime($res_fiche['date_insert'])), 'UTF-8', mb_list_encodings()),".")?></div>
 			</div>
-			-->
 
 			<h2 class="mts up bigger"><a href="<?=make_url($res_fiche['url'], array("domaine" => true));?>" class="tdn"><?=$res_fiche['title']?></a><?=$state?></h2>
 

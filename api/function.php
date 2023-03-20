@@ -22,25 +22,30 @@ function trimer($value)
 // Nettoie et encode les mots
 function encode($value, $separator = "-", $pass = null) 
 {
-	// Tableau des special chars PHP 7.2
-	$from = str_split(utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>"));
-    $to = str_split("aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ");
-	
-	// Si on doit laisser certains caractères
-	if(isset($pass) and @count($pass)) {
-		foreach($pass as $char){
-			$strpos = strpos(implode($from), $char);
-			$from[$strpos] = "";
-			$to[$strpos] = "";
+	if(!is_null($value))
+	{
+		// Tableau des special chars PHP 7.2
+		//$from = str_split(utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>"));// SUPP 20/03/2023
+		$from = str_split(mb_convert_encoding("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñß@\’\"'_-&()=/*+$!:;,.\²~#?§µ%£°{[|`^]}¤€<>", 'ISO-8859-1', 'UTF-8'));
+		$to = str_split("aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynnba                                         ");
+		
+		// Si on doit laisser certains caractères
+		if(isset($pass) and @count($pass)) {
+			foreach($pass as $char){
+				$strpos = strpos(implode($from), $char);
+				$from[$strpos] = "";
+				$to[$strpos] = "";
+			}
 		}
+
+		//$value = strtolower(strtr(utf8_decode($value), implode($from), implode($to)));// Supp les caractères indésirables// SUPP 20/03/2023
+		$value = strtolower(strtr(mb_convert_encoding($value, 'ISO-8859-1', 'UTF-8'), implode($from), implode($to)));// Supp les caractères indésirables
+
+		$value = trimer($value, " \t\n\r\0\x0B\xC2\xA0");// Supprime les espaces et espaces insecable de début et fin
+		$value = preg_replace('/ {2,}/', $separator, $value);// Remplace les double espaces
+		$value = preg_replace('/ /', $separator, $value);// Remplace les espaces simple
+		//$value = preg_replace('/\xa0/', $separator, $value);// Remplace les espaces insecable [\xc2\xa0]
 	}
-
-	$value = strtolower(strtr(utf8_decode($value), implode($from), implode($to)));// Supp les caractères indésirables
-
-	$value = trimer($value, " \t\n\r\0\x0B\xC2\xA0");// Supprime les espaces et espaces insecable de début et fin
-	$value = preg_replace('/ {2,}/', $separator, $value);// Remplace les double espaces
-	$value = preg_replace('/ /', $separator, $value);// Remplace les espaces simple
-	//$value = preg_replace('/\xa0/', $separator, $value);// Remplace les espaces insecable [\xc2\xa0]
 
 	return $value;
 }
@@ -256,7 +261,7 @@ function __($singulier, $pluriel = "", $num = 0)
 		if(isset($singulier[key($singulier)][$GLOBALS['lang']]))// Une traduction dans la langue courante
 			return $singulier[key($singulier)][$GLOBALS['lang']];
 		else
-			return key($singulier);//utf8_encode
+			return key($singulier);
 	}
 	else
 	{
@@ -269,7 +274,7 @@ function __($singulier, $pluriel = "", $num = 0)
 		elseif(isset($GLOBALS['lang_alt']) and isset($GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang_alt']]))
 			return $GLOBALS['translation'][mb_strtolower($txt)][$GLOBALS['lang_alt']];
 		else
-			return $txt;//utf8_encode
+			return $txt;
 	}
 }
 
@@ -406,7 +411,7 @@ function media($key = null, $filter = array())
 		if(isset(parse_url($GLOBALS['content'][$key])['scheme']))
 			$filename = $GLOBALS['content'][$key];
 		else
-			$filename = $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @$GLOBALS['replace_path']);
+			$filename = $GLOBALS['home'].ltrim($GLOBALS['content'][$key], @(string)$GLOBALS['replace_path']);
 	}
 	else
 		$filename = "";
@@ -967,7 +972,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 				// Création d'un token maison
 				if($res['password'] == hash_pwd($_POST['password'], $res['salt']))
 				{
-					$array_diff = array_diff(explode(",", $auth), explode(",", $res['auth']));
+					$array_diff = array_diff(explode(",", (string)$auth), explode(",", $res['auth']));
 					if(isset($auth) and !empty($array_diff))// Vérifie les auth d'utilisateur si c'est demandée 
 					{
 						$msg = __("Bad credential");

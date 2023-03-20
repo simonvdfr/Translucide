@@ -591,7 +591,7 @@ switch($_GET['mode'])
 			$res_header = $sel_header->fetch_assoc();	
 			
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['header'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['header']);
+			$_POST['header'] = str_replace($GLOBALS['home'], @(string)$GLOBALS['replace_path'], $_POST['header']);
 			
 			// On  encode les données
 			$json_header = json_encode($_POST['header'], JSON_UNESCAPED_UNICODE);
@@ -621,7 +621,7 @@ switch($_GET['mode'])
 			$res_footer = $sel_footer->fetch_assoc();		
 
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['footer'] = str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['footer']);
+			$_POST['footer'] = str_replace($GLOBALS['home'], @(string)$GLOBALS['replace_path'], $_POST['footer']);
 			
 			// On  encode les données
 			$json_footer = json_encode($_POST['footer'], JSON_UNESCAPED_UNICODE);
@@ -742,7 +742,7 @@ switch($_GET['mode'])
 					$sel_meta = $connect->query("SELECT id FROM ".$table_meta." WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."' LIMIT 1");
 					$res_meta  = $sel_meta ->fetch_assoc();	
 
-					if($res_meta['id'])
+					if(@$res_meta['id'])
 						$connect->query("UPDATE ".$table_meta." SET id='".(int)$_POST['id']."', type='".encode($cle)."', cle='".addslashes(trim($val))."' WHERE id='".(int)$_POST['id']."' AND type='".encode($cle)."' LIMIT 1");
 					else
 						$connect->query("INSERT INTO ".$table_meta." SET id='".(int)$_POST['id']."', type='".encode($cle)."', cle='".addslashes(trim($val))."'");
@@ -780,7 +780,7 @@ switch($_GET['mode'])
 		if(!isset($_POST['tag-info']))// On verifie que l'on est pas sur une page tag
 		{
 			// Supprime les url avec le domaine pour faciliter le transport du site
-			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], @$GLOBALS['replace_path'], $_POST['content']) : "");
+			$_POST['content'] = (isset($_POST['content']) ? str_replace($GLOBALS['home'], @(string)$GLOBALS['replace_path'], $_POST['content']) : "");
 
 			// Encode le contenu
 			if(isset($_POST['content']) and $_POST['content'] != "") 
@@ -798,7 +798,7 @@ switch($_GET['mode'])
 			$sql .= "title = '".addslashes(strip_tags(trim($_POST['title'])))."', ";
 			$sql .= "description = '".addslashes($_POST['description'])."', ";
 			$sql .= "content = '".addslashes($json_content)."', ";
-			$sql .= "robots = '".addslashes(@$_POST['robots'])."', ";
+			$sql .= "robots = '".addslashes(isset($_POST['robots'])?$_POST['robots']:'')."', ";
 			$sql .= "state = '".addslashes($_POST['state'])."', ";
 			$sql .= "type = '".$type."', ";
 			$sql .= "tpl = '".addslashes($_POST['tpl'])."', ";
@@ -931,7 +931,7 @@ switch($_GET['mode'])
 				// strtok : Supprime les arguments après l'extension (timer...)
 				// Si le fichier est bien dans le dossier local en cours
 				if(strpos($file, $GLOBALS['media_dir']) !== false)
-					unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($file, "?")));
+					unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].mb_convert_encoding(strtok($file, "?"), 'ISO-8859-1', 'UTF-8'));
 			}
 		}
 
@@ -1584,13 +1584,13 @@ switch($_GET['mode'])
 				{
 					echo'<li 
 					class="pat mat tc"
-					title="'.utf8_encode($val).'"
+					title="'.mb_convert_encoding($val, 'UTF-8', mb_list_encodings()).'"
 					id="dialog-media-dir-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$cle.'"
-					data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val).'"
-					data-dir="'.trim($subfolder,'/').utf8_encode($val).'"
+					data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.mb_convert_encoding($val, 'UTF-8', mb_list_encodings()).'"
+					data-dir="'.trim($subfolder,'/').mb_convert_encoding($val, 'UTF-8', mb_list_encodings()).'"
 					data-type="dir"
 					>
-						<div class="file"><i class="fa fa-fw fa-folder-empty mega"></i><div>'.utf8_encode($val).'</div></div>
+						<div class="file"><i class="fa fa-fw fa-folder-empty mega"></i><div>'.mb_convert_encoding($val, 'UTF-8', mb_list_encodings()).'</div></div>
 					</li>';
 				}
 			}
@@ -1647,10 +1647,10 @@ switch($_GET['mode'])
 					// Affichage du fichier '.($i>=20?'none':'').'
 					echo'<li 
 						class="pat mat tc"
-						title="'.utf8_encode($val['filename']).' | '.date("d-m-Y H:i:s", $val['time']).' | '.$val['mime'].'"
+						title="'.mb_convert_encoding($val['filename'], 'UTF-8', mb_list_encodings()).' | '.date("d-m-Y H:i:s", $val['time']).' | '.$val['mime'].'"
 						id="dialog-media-'.encode((isset($_GET['filter'])?$_GET['filter']:'')).'-'.$i.'"
-						data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'"
-						data-dir="'.trim($subfolder,'/').'"
+						data-media="'.$GLOBALS['media_dir'].'/'.$subfolder.mb_convert_encoding($val['filename'], 'UTF-8', mb_list_encodings()).'"
+						data-dir="'.trim((string)$subfolder,'/').'"
 						data-type="'.$type.'"
 					>';
 
@@ -1677,11 +1677,11 @@ switch($_GET['mode'])
 							echo'<a class="resize" title="'.__("Get resized image").'"><i class="fa fa-fw fa-resize-small bigger"></i></a>';
 						}
 						else {
-							echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.utf8_encode($val['filename']).'</div></div>';
+							echo'<div class="file"><i class="fa fa-fw fa-'.$fa.' mega"></i><div>'.mb_convert_encoding($val['filename'], 'UTF-8', mb_list_encodings()).'</div></div>';
 
-							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" title="'.__("Copy to clipboard").'"></div>';
+							echo'<div class="copy"><input type="text" value="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.mb_convert_encoding($val['filename'], 'UTF-8', mb_list_encodings()).'" title="'.__("Copy to clipboard").'"></div>';
 
-							echo'<a href="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.utf8_encode($val['filename']).'" class="open" target="_blank"><i class="fa fa-fw fa-link-ext"></i></a>';
+							echo'<a href="'.$GLOBALS['path'].$GLOBALS['media_dir'].'/'.$subfolder.mb_convert_encoding($val['filename'], 'UTF-8', mb_list_encodings()).'" class="open" target="_blank"><i class="fa fa-fw fa-link-ext"></i></a>';
 						}
 
 						echo"						
@@ -1718,7 +1718,7 @@ switch($_GET['mode'])
 
 		// @todo Nettoyer l'URL de la request pour éviter des suppressions hors dossier médias
 
-		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].utf8_decode(strtok($_REQUEST['file'], "?")));
+		return unlink($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].mb_convert_encoding(strtok($_REQUEST['file'], "?"), 'ISO-8859-1', 'UTF-8'));
 		
 	break;
 

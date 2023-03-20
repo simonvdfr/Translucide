@@ -126,7 +126,7 @@
 			$sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
 			while($res_event = $sel_event->fetch_assoc())
 			{
-				$date = explode("-", explode(" ", $res_event['date_insert'])[0]);
+				$content_event = json_decode($res_event['content'], true);
 
 				?>
 				<div class="event pts pbs mtm mbm animation slide-right">
@@ -142,8 +142,8 @@
 						</div>-->
 
 						<div class="date bold bt bg-color fl up big tc">
-							<div><?=$date[2]?></div>
-							<div><?=trim(utf8_encode(strftime("%h", mktime(0, 0, 0, $date[1], 10))),".")?></div>
+							<div><?=explode("-", $content_event['aaaa-mm-jj'])[2]?></div>
+							<div><?=trim(mb_convert_encoding(date("M", strtotime($content_event['aaaa-mm-jj'])), 'UTF-8', mb_list_encodings()),".")?></div>
 						</div>
 
 						<div>

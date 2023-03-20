@@ -14,7 +14,7 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 
 	<article class="fl w80 prl pbm">
 
-		<?php txt('texte')?>
+		<?php txt('texte', array('dir'=>'actu'))?>
 
 		<?php if($res['tpl'] == "event-formulaire") include 'contact.php';?>
 

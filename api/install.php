@@ -102,7 +102,7 @@ switch(@$_GET['mode'])
 		}
 
 		// Nom du site
-		if(isset($GLOBALS['sitename'])) $sitename =  utf8_encode($GLOBALS['sitename']);
+		if(isset($GLOBALS['sitename'])) $sitename =  mb_convert_encoding($GLOBALS['sitename'], 'UTF-8', mb_list_encodings());
 		else 
 		{
 			$parse_url = parse_url($scheme_domain_path);
@@ -355,7 +355,7 @@ switch(@$_GET['mode'])
 					?>
 					<script>
 						submittable();
-						error("<?=utf8_encode($GLOBALS['connect']->connect_error);?>");
+						error("<?=mb_convert_encoding($GLOBALS['connect']->connect_error, 'UTF-8', mb_list_encodings());?>");
 					</script>
 					<?php 
 					exit;
@@ -405,7 +405,7 @@ switch(@$_GET['mode'])
 							?>
 							<script>
 								submittable();
-								error("<?=utf8_encode($connect->error);?>");
+								error("<?=mb_convert_encoding($connect->error, 'UTF-8', mb_list_encodings());?>");
 							</script>
 							<?php 
 							exit;
@@ -438,7 +438,7 @@ switch(@$_GET['mode'])
 							?>
 							<script>
 								submittable();
-								error("<?=utf8_encode($connect->error);?>");
+								error("<?=mb_convert_encoding($connect->error, 'UTF-8', mb_list_encodings());?>");
 							</script>
 							<?php 
 							exit;
@@ -472,7 +472,7 @@ switch(@$_GET['mode'])
 							?>
 							<script>
 								submittable();
-								error("<?=utf8_encode($connect->error);?>");
+								error("<?=mb_convert_encoding($connect->error, 'UTF-8', mb_list_encodings());?>");
 							</script>
 							<?php 
 							exit;
@@ -512,7 +512,7 @@ switch(@$_GET['mode'])
 							?>
 							<script>
 								submittable();
-								error("<?=utf8_encode($connect->error);?>");
+								error("<?=mb_convert_encoding($connect->error, 'UTF-8', mb_list_encodings());?>");
 							</script>
 							<?php 
 							exit;
@@ -583,7 +583,7 @@ switch(@$_GET['mode'])
 								?>
 								<script>
 									submittable();
-									error("<?=utf8_encode($connect->error);?>");
+									error("<?=mb_convert_encoding($connect->error, 'UTF-8', mb_list_encodings());?>");
 								</script>
 								<?php 
 								exit;
@@ -622,7 +622,7 @@ switch(@$_GET['mode'])
 								?>
 								<script>
 									submittable();
-									error("<?=utf8_encode($connect->error);?>");
+									error("<?=mb_convert_encoding($connect->error, 'UTF-8', mb_list_encodings());?>");
 								</script>
 								<?php 
 								exit;
@@ -660,7 +660,7 @@ switch(@$_GET['mode'])
 							
 							// Changement de la ligne et ajout de la nouvelle variable
 							if(isset($key) and isset($_POST[$key])) 
-								$config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".utf8_decode($_POST[$key])."\";\r\n";							
+								$config_file[$line_num] = "\$GLOBALS['".$key."'] = \"".mb_convert_encoding($_POST[$key], 'ISO-8859-1', 'UTF-8')."\";\r\n";							
 						}
 
 						unset($line);
@@ -685,7 +685,7 @@ switch(@$_GET['mode'])
 						{	
 							// Ajout de la page d'accueil
 							$sql = "INSERT ".addslashes($_POST['db_prefix'])."content SET ";
-							$sql .= "title = '".addslashes(utf8_decode(@$_POST['sitename']))."', ";
+							$sql .= "title = '".addslashes(mb_convert_encoding(@$_POST['sitename'], 'ISO-8859-1', 'UTF-8'))."', ";
 							$sql .= "tpl = 'home', ";
 							$sql .= "url = 'index', ";
 							$sql .= "lang = '".$GLOBALS['language'][0]."', ";
@@ -698,7 +698,7 @@ switch(@$_GET['mode'])
 								?>
 								<script>
 									submittable();
-									error("<?=utf8_encode($connect->error);?>");
+									error("<?=mb_convert_encoding($connect->error, 'UTF-8', mb_list_encodings());?>");
 								</script>
 								<?php 
 								exit;
@@ -721,7 +721,7 @@ switch(@$_GET['mode'])
 							light("<?php _e("Successful installation ! Redirection to homepage ...")?>");
 							setTimeout(function(){
 								 $("#error, #highlight, #light").slideUp("slow").fadeOut(function() {
-									window.location.reload();// window.location = window.location.href;
+									//window.location.reload();// window.location = window.location.href;
 								 });
 							}, 3000);
 						</script>

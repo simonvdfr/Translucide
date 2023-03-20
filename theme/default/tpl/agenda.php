@@ -39,8 +39,7 @@
 			$sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
 			while($res_event = $sel_event->fetch_assoc())
 			{
-				$date = explode("-",explode("\"", explode("aaaa-mm-jj", $res_event['content'])[1])[2]);
-				//print_r($date);
+				$content_event = json_decode($res_event['content'], true);
 				?>
 				<div class="event pts pbs mtm mbm animation slide-right">
 
@@ -55,12 +54,12 @@
 					</div>-->
 
 					<div class="date bold bt bg-color fl up big tc">
-						<div><?=$date[2]?></div>
-						<div><?=trim(utf8_encode(strftime("%h", mktime(0, 0, 0, $date[1], 10))),".")?></div>
+						<div><?=explode("-", $content_event['aaaa-mm-jj'])[2]?></div>
+						<div><?=trim(mb_convert_encoding(date("M", strtotime($content_event['aaaa-mm-jj'])), 'UTF-8', mb_list_encodings()),".")?></div>
 					</div>
 
 					<div>
-						<h2 class="bold mod up bigger man nowrap tdn"><a href="<?=make_url($res_event['url']);?>" class="tdn" target="_blank"><?=$res_event['title']?></a></h2>
+						<h2 class="bold mod up bigger man nowrap tdn"><a href="<?=make_url($res_event['url']);?>" class="tdn"><?=$res_event['title']?></a></h2>
 
 						<div class="bold bt bg-color"><?php _e("Lire")?></div>
 					</div>
@@ -90,21 +89,13 @@ $(function()
 
 
 
-
-
-
-
-
-
-
-
 <!-- slide event -->
 
 <?php 
 // Actu à la une
 $sel_alaune = $connect->query("SELECT * FROM ".$table_meta." WHERE type='content' AND cle='alaune' LIMIT 1");
 $res_alaune = $sel_alaune->fetch_assoc();
-if($res_alaune['cle'])
+if(@$res_alaune['cle'])
 {
 	$sel_alaune = $connect->query("SELECT * FROM ".$table_content." WHERE id='".$res_alaune['val']."' LIMIT 1");
 	$res_alaune = $sel_alaune->fetch_assoc();
