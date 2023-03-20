@@ -721,7 +721,7 @@ switch(@$_GET['mode'])
 							light("<?php _e("Successful installation ! Redirection to homepage ...")?>");
 							setTimeout(function(){
 								 $("#error, #highlight, #light").slideUp("slow").fadeOut(function() {
-									//window.location.reload();// window.location = window.location.href;
+									window.location.reload();// window.location = window.location.href;
 								 });
 							}, 3000);
 						</script>
