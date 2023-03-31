@@ -490,6 +490,10 @@ nav ul li i.fa-cancel {
 
 /* CONTENT */
 
+/* Erreur d'accessiblité */
+.empty_elem { border: 1px #C51A1B dotted; }
+.empty_elem.active { background-color: #c51a1a7a;}
+
 /* block éditable */
 
 /*article { width: 100%; }*//* pour que le bloc éditable prenne bien toute la largeur */
@@ -803,6 +807,8 @@ nav ul li i.fa-cancel {
 	    padding: 1px 3px;
 	    border-radius: 2px;
 	    animation: fade-in .2s;
+		height: 16px;
+    	overflow: auto;
 	}
 
 	.dialog-media li .infos { 
