@@ -975,7 +975,7 @@ switch($_GET['mode'])
 	break;
 
 	case "make-password":// Crée un password aléatoirement		
-		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(12,14));
+		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(15,20));
 	break;
 
 	case "send-password":// Crée un password aléatoirement & l'envoi par mail à l'utilisateur	
@@ -983,7 +983,7 @@ switch($_GET['mode'])
 		{
 			login('high', 'edit-user');
 
-			$pwd = make_pwd(mt_rand(12,14));
+			$pwd = make_pwd(mt_rand(15,20));
 			list($hashed_password, $unique_salt) = hash_pwd($pwd);
 
 			$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
