@@ -1551,12 +1551,14 @@ img_check = function(file)
 		// Dialog des images // nw
 		$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='pan unstyled smaller'></ul></div>");
 
-		// Dialog en layer
+		// Dialog en layer 
+		// "right-10 top", at: "left bottom+10"
+		// "left top", at: "left+10 bottom+10"
 		$(".dialog-optim-img").dialog({
 			autoOpen: false,
 			width: 'auto',
 			maxHeight: 500,
-			position: { my: "right-10 top", at: "left bottom+10", of: $("#admin-bar") },
+			position: { my: "left top", at: "left+10 bottom+10", of: $("#admin-bar") },
 			show: function() {$(this).fadeIn(300);},
 			close: function() { $(".dialog-optim-img").remove(); }
 		});
@@ -1645,8 +1647,104 @@ img_check = function(file)
 
 		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
 
+		// Si dialog sur l'accessibilité on place la dialog des images en dessous
+		if($(".dialog-access").length >= 1) 
+			$(".dialog-optim-img").dialog({
+				position: { 
+					my: 'left top',
+					at: 'left-5 bottom+15',
+					of: (".dialog-access")
+				}
+			});
+
 		// Si pas d'image on n'affiche pas la dialog
 		if(num == 0) $(".dialog-optim-img").dialog('close');
+	}
+}
+
+
+
+// Liste les erreurs d'accessibilité dans la page
+access_check = function(file) 
+{
+	access_error = "";
+	var num_empty = 0;
+	var clean_empty = false;
+	
+	//**** Check les erreurs d'access 
+	
+	// @todo check marche pas pour les li
+	// Elément html vide // $("p:empty")
+	$(".editable p, .editable li, .editable div, .editable h1, .editable h2, .editable h3, .editable h4, .editable h5, .editable h6").each(function() {
+		var $this = $(this);
+		if($this.html() == "" || $this.html() == "<br>" || $this.html() == "&nbsp") 
+		{
+			$this.addClass("empty_elem");
+			++num_empty;
+		}
+	});
+
+	if(num_empty > 0) 		
+	{
+		// Affiche les champs vides
+		access_error += "<li class='pbt pointer toscroll'><span class='empty_elem'>"+num_empty+"</span> élément"+(num_empty>1?"s":"")+" vide"+(num_empty>1?"s":"")+"</li>";
+
+		// Avant la sauvegarde supprime la class qui montre les éléments vide
+		if(!clean_empty)
+		{ 
+			clean_empty = true; 
+
+			before_save.push(function()
+			{
+				$(".empty_elem").removeClass("empty_elem");
+			});
+		}
+	}
+
+	// @todo ajouter une crois de suppresion au survole des éléments vides
+
+	// S'il y a des erreurs d'access
+	if(access_error)
+	{
+		// Dialog des images // nw
+		$("body").append("<div class='dialog-access' title='"+__("Access")+"'><ul class='pan unstyled small'>"+ access_error +"</ul></div>");
+
+		// Scroll pour voir les éléments vide
+		$(".toscroll").click(function()
+		{
+			//$(".empty_elem:not(.active):first");
+			//.empty_elem.active
+			//$(".empty_elem.active").parent().find(".empty_elem:not(.active)")
+
+			// if($(".empty_elem.active").length == 0) 
+			// 	var $target = $(".empty_elem:first");
+			// else
+			// 	var $target = $(".empty_elem.active").nextAll(".empty_elem:first");
+
+			var $target = $('.empty_elem.active').nextAll('.empty_elem:first');
+			if ($target.length == 0) $target = $('.empty_elem:first');
+			  
+			// + $("#admin-bar").height()
+			$root.animate({ scrollTop: (Math.round($target.offset().top) - 100) }, 300, "linear");
+		  
+			$(".active").removeClass("active");
+			$target.addClass("active");
+		});
+
+		// Dialog en layer
+		$(".dialog-access").dialog({
+			autoOpen: false,
+			width: 'auto',
+			maxHeight: 500,
+			position: { my: "left top", at: "left+10 bottom+10", of: $("#admin-bar") },
+			show: function() {$(this).fadeIn(300);},
+			close: function() { $(".dialog-access").remove(); }
+		});
+		$(".dialog-access").parent().css({position:"fixed"}).end().dialog('open');
+
+
+		// Si pas d'erreur d'access on n'affiche pas la dialog
+		//if(num == 0) $(".dialog-access").dialog('close');
 	}
 }
 

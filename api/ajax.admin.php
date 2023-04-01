@@ -867,6 +867,12 @@ switch($_GET['mode'])
 
 
 
+				<?php if(@$GLOBALS['access_check'])// Affichage des stats sur l'accessibilité
+				{?>
+					access_check();
+				<?php }?>
+				
+
 				<?php if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
 				{?>
 					img_check();

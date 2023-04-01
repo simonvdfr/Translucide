@@ -123,6 +123,9 @@ $GLOBALS['static'] = false;
 $GLOBALS['static_dir'] = '';
 
 
+// Vérifie l'accessibilité du contenu
+$GLOBALS['access_check'] = false;
+
 // Vérifie l'état d'écoconception des images
 $GLOBALS['img_check'] = true;
 
