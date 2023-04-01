@@ -42,12 +42,12 @@ RewriteCond %{REQUEST_FILENAME} !\.(css|js|html|htm|txt|xml|jpg|jpeg|png|gif|tif
 # SITE STATIQUE
 
 #### Si tous les fichiers statiques sont dans un dossier activé ce qui est
-## Dans robot.txt indiquer de ne par référencer ce qu'il y a dans static/
+## Dans robots.txt ne pas référencer dans static/ => Disallow: static/*
 
 ## Pour charger le index.html statique s'il existe, sinon execution de index.php
 #DirectoryIndex static/index.html index.php
 
-## Charche le fichier en cache s'il existe
+## Charge le fichier en cache s'il existe
 #RewriteCond %{DOCUMENT_ROOT}/static/$1.html -f
 #RewriteRule (.*) /static/$1.html [L]
 
