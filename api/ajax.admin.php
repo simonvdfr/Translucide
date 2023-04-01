@@ -854,7 +854,7 @@ switch($_GET['mode'])
 					$html = mb_convert_encoding($html, 'UTF-8', 'auto');
 
 					// Création du fichier avec le html
-					file_put_contents($file, time().$html.'<!-- STATIC '.date('d-m-Y H:i:s').' -->');//time().
+					file_put_contents($file, $html.'<!-- STATIC '.date('d-m-Y H:i:s').' -->');//time().
 					?>
 
 					$("#progress").css({"opacity":"1", "width":"100%"});
