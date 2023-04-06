@@ -968,7 +968,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 			$sel = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_user']." WHERE email='".$email."' ".($level == 'low' ? "" : "AND state='active'")." LIMIT 1");
 			$res = $sel->fetch_assoc();
 
-			if($res['email']) 
+			if(@$res['email']) 
 			{						
 				// Création d'un token maison
 				if($res['password'] == hash_pwd($_POST['password'], $res['salt']))
