@@ -1558,7 +1558,7 @@ img_check = function(file)
 			autoOpen: false,
 			width: 'auto',
 			maxHeight: 500,
-			position: { my: "left top", at: "left+10 bottom+10", of: $("#admin-bar") },
+			position: { my: "right top", at: "right-10 bottom+10", of: $("#admin-bar") },
 			show: function() {$(this).fadeIn(300);},
 			close: function() { $(".dialog-optim-img").remove(); }
 		});
@@ -1647,14 +1647,10 @@ img_check = function(file)
 
 		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
 
-		// Si dialog sur l'accessibilité on place la dialog des images en dessous
+		// Si dialog sur l'accessibilité on place la dialog des images en dessous // left-5
 		if($(".dialog-access").length >= 1) 
 			$(".dialog-optim-img").dialog({
-				position: { 
-					my: 'left top',
-					at: 'left-5 bottom+15',
-					of: (".dialog-access")
-				}
+				position: { my: 'right+5 top', at: 'right bottom+15', of: (".dialog-access") }
 			});
 
 		// Si pas d'image on n'affiche pas la dialog
@@ -1664,84 +1660,182 @@ img_check = function(file)
 
 
 
+// Fonction pour scroller de class en class
+clickScroll = function(from, to) 
+{
+	var num = 0;		
+	$(from).click(function()
+	{
+		// Choisi la ligne à mettre en surbrillance en fonction de celle déjà active
+		if($(to+".active").length == 0 || num+1 >= $(to).length) {
+			num = 0;
+			var $target = $(to).eq(0);
+		}
+		else var $target = $(to).eq(num);
+
+		num++;
+
+		// + $("#admin-bar").height()
+		$root.animate({ scrollTop: (Math.round($target.offset().top) - 100) }, 300, "linear");
+	
+		$(".active").removeClass("active");
+		$target.addClass("active");
+	});
+}
+
 // Liste les erreurs d'accessibilité dans la page
+clean_access_class = false;
 access_check = function(file) 
 {
+	// @todo ajouter une croix de suppression au survol des éléments vides ?
+	
+	// Init Variable
 	access_error = "";
+
 	var num_empty = 0;
-	var clean_empty = false;
+	var num_div_text = 0;
+	var num_titre = 0;
+	var num_titre_prev = 1;
+	var num_brbr = 0;
+
+	// Clean si dialog access déjà presente
+	$(".dialog-access").remove(); 
+
+
+	/**** 
+	 * Check les erreurs d'access
+	 *****/
 	
-	//**** Check les erreurs d'access 
-	
-	// @todo check marche pas pour les li
-	// Elément html vide // $("p:empty")
-	$(".editable p, .editable li, .editable div, .editable h1, .editable h2, .editable h3, .editable h4, .editable h5, .editable h6").each(function() {
+	// Parcours les éléments du contenu
+	$(".editable p, .editable li, .editable div, .editable h1, .editable h2, .editable h3, .editable h4, .editable h5, .editable h6").each(function() 
+	{
 		var $this = $(this);
-		if($this.html() == "" || $this.html() == "<br>" || $this.html() == "&nbsp") 
+
+		// Elément html vide // $("p:empty")
+		if($this.html() == "" || $this.html() == "<br>\n" || $this.html() == "<br>" || $this.html() == "&nbsp") 
 		{
-			$this.addClass("empty_elem");
+			$this.addClass("access_empty");
 			++num_empty;
 		}
+
+		// DIV avec texte
+		if($this[0].nodeName == 'DIV' && $this.text() != '')
+		{
+			$this.addClass("access_div");
+			++num_div_text;
+		}
+
+		// Vérifie que les titres sont dans l'ordre
+		if(['H1','H2','H3','H4','H5','H6'].includes($this[0].nodeName))
+		{
+			var num_titre_current = $this[0].nodeName.substring(1);
+
+			// Vérifie que le titre est bien à un niveau+1
+			if(
+				num_titre_prev > 1 
+				&& num_titre_prev != num_titre_current 
+				&& num_titre_prev < num_titre_current 
+				&& (+num_titre_prev+1) != num_titre_current 
+			)
+			{
+				$this.addClass("access_titre");
+				++num_titre;
+			}
+			else num_titre_prev = num_titre_current;
+		}		
 	});
 
+	// Double <br><br>
+	$(".editable").each(function() 
+	{
+		var html = $(this).html();
+		html = html.replace(/(?:<br[^>]*>\s*){2,}/g, "<br><br class='access_brbr'>");
+		$(this).html(html);
+	});
+	$(".access_brbr").each(function() { ++num_brbr; });
+
+	// $('br').map(function(){
+	// 	if(($next = $(this).next()).is('br')) 
+	// 	{
+	// 		$next.addClass("access_brbr");
+	// 		++num_brbr;
+	// 	}
+	// });
+	
+
+
+	/****
+	 * Construction des affichages d'erreurs
+	 *****/
+
+	// Affiche les champs vides
 	if(num_empty > 0) 		
 	{
-		// Affiche les champs vides
-		access_error += "<li class='pbt pointer toscroll'><span class='empty_elem'>"+num_empty+"</span> élément"+(num_empty>1?"s":"")+" vide"+(num_empty>1?"s":"")+"</li>";
-
-		// Avant la sauvegarde supprime la class qui montre les éléments vide
-		if(!clean_empty)
-		{ 
-			clean_empty = true; 
-
-			before_save.push(function()
-			{
-				$(".empty_elem").removeClass("empty_elem");
-			});
-		}
+		access_error += "<li class='pbt pointer empty_toscroll'><i class='fa fa-attention red mrt' aria-hidden='true'></i><span class='access_empty plt prt'>"+num_empty+"</span> élément"+(num_empty>1?"s":"")+" vide"+(num_empty>1?"s":"")+"</li>";
 	}
 
-	// @todo ajouter une crois de suppresion au survole des éléments vides
+	// Affiche les div avec texte
+	if(num_div_text > 0) 		
+	{
+		access_error += "<li class='pbt pointer div_text_toscroll'><i class='fa fa-attention red mrt' aria-hidden='true'></i><span class='access_div plt prt'>"+num_div_text+"</span> élément"+(num_div_text>1?"s":"")+" pas dans un paragraphe</li>";
+	}
 
-	// S'il y a des erreurs d'access
+	// Affiche les erreurs d'ordre des titres
+	if(num_titre > 0) 		
+	{
+		access_error += "<li class='pbt pointer titre_toscroll'><i class='fa fa-attention red mrt' aria-hidden='true'></i><span class='access_titre plt prt'>"+num_titre+"</span> titre"+(num_titre>1?"s":"")+" dans le mauvais ordre</li>";
+	}
+
+	// Affiche les erreurs de double <br><br>
+	if(num_brbr > 0) 		
+	{
+		access_error += "<li class='pbt pointer brbr_toscroll'><i class='fa fa-attention red mrt' aria-hidden='true'></i><span class='access_brbr plt prt'>"+num_brbr+"</span> double"+(num_brbr>1?"s":"")+" retour"+(num_brbr>1?"s":"")+" à la ligne</li>";
+	}
+
+
+	/****
+	 * Affichage des erreurs
+	 *****/
 	if(access_error)
 	{
 		// Dialog des images // nw
-		$("body").append("<div class='dialog-access' title='"+__("Access")+"'><ul class='pan unstyled small'>"+ access_error +"</ul></div>");
+		$("body").append("<div class='dialog-access' title='"+__("Accessibilité")+"'><ul class='pan unstyled small'>"+ access_error +"</ul></div>");
 
 		// Scroll pour voir les éléments vide
-		$(".toscroll").click(function()
-		{
-			//$(".empty_elem:not(.active):first");
-			//.empty_elem.active
-			//$(".empty_elem.active").parent().find(".empty_elem:not(.active)")
+		clickScroll(".empty_toscroll", ".access_empty");
+		
+		// Scroll pour voir les div avec texte
+		clickScroll(".div_text_toscroll", ".access_div");
 
-			// if($(".empty_elem.active").length == 0) 
-			// 	var $target = $(".empty_elem:first");
-			// else
-			// 	var $target = $(".empty_elem.active").nextAll(".empty_elem:first");
+		// Scroll pour voir les titres dans le mauvais ordre
+		clickScroll(".titre_toscroll", ".access_titre");
 
-			var $target = $('.empty_elem.active').nextAll('.empty_elem:first');
-			if ($target.length == 0) $target = $('.empty_elem:first');
-			  
-			// + $("#admin-bar").height()
-			$root.animate({ scrollTop: (Math.round($target.offset().top) - 100) }, 300, "linear");
-		  
-			$(".active").removeClass("active");
-			$target.addClass("active");
-		});
+		// Scroll pour voir les double <br><br>
+		clickScroll(".brbr_toscroll", ".access_brbr");
 
 		// Dialog en layer
 		$(".dialog-access").dialog({
 			autoOpen: false,
 			width: 'auto',
 			maxHeight: 500,
-			position: { my: "left top", at: "left+10 bottom+10", of: $("#admin-bar") },
+			position: { my: "right top", at: "right-10 bottom+10", of: $("#admin-bar") },
 			show: function() {$(this).fadeIn(300);},
 			close: function() { $(".dialog-access").remove(); }
 		});
 		$(".dialog-access").parent().css({position:"fixed"}).end().dialog('open');
 
+		// Avant la sauvegarde supprime les class de surbrillances des erreurs
+		if(!clean_access_class)
+		{ 
+			clean_access_class = true; 
+			before_data.push(function(){
+				$(".editable .active").removeClass("active");
+				$(".access_empty").removeClass("access_empty");
+				$(".access_div").removeClass("access_div");
+				$(".access_titre").removeClass("access_titre");
+				$(".access_brbr").removeClass("access_brbr");
+			});
+		}
 
 		// Si pas d'erreur d'access on n'affiche pas la dialog
 		//if(num == 0) $(".dialog-access").dialog('close');

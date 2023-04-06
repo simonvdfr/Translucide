@@ -491,8 +491,31 @@ nav ul li i.fa-cancel {
 /* CONTENT */
 
 /* Erreur d'accessiblité */
-.empty_elem { border: 1px #C51A1B dotted; }
-.empty_elem.active { background-color: #c51a1a7a;}
+.dialog-access { padding: 0.5em 0.5em 0 0.2em !important; }
+
+.dialog-access span { border-radius: 10%; }
+
+.access_empty { border: 1px #C51A1B dotted; border-radius: 5px; }
+	.access_empty.active { background-color: #c51a1a7a;}
+
+.access_div { border: 1px #781ac5 dotted; border-radius: 5px; }
+	.access_div.active { background-color: #781ac55c;}
+
+.access_titre { border: 1px #c5a61a dotted; border-radius: 5px; }
+	.access_titre.active { background-color: #c5a61a7c;}
+
+.access_brbr {
+	content: '';
+    display: block;
+	border: 1px #c5671a dotted;
+	border-radius: 5px;
+}
+	.access_brbr:after { 
+		content: '';
+		border: 1px transparent dotted;
+	}
+	.access_brbr.active { background-color: #c5671a6b;}
+	.dialog-access .access_brbr { display: inline; }
 
 /* block éditable */
 
