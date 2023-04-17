@@ -1548,6 +1548,9 @@ img_check = function(file)
 	// S'il y a des images
 	if(Object.keys(imgs).length > 0)
 	{
+		// Supprime les anciennes occurrences de la fenêtre
+		$(".dialog-optim-img").dialog('close');
+
 		// Dialog des images // nw
 		$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='pan unstyled smaller'></ul></div>");
 
@@ -1558,7 +1561,7 @@ img_check = function(file)
 			autoOpen: false,
 			width: 'auto',
 			maxHeight: 500,
-			position: { my: "right top", at: "right-10 bottom+10", of: $("#admin-bar") },
+			position: { my: "right top", at: "right bottom+10", of: $("#admin-bar") },
 			show: function() {$(this).fadeIn(300);},
 			close: function() { $(".dialog-optim-img").remove(); }
 		});
@@ -1798,7 +1801,10 @@ access_check = function(file)
 	 *****/
 	if(access_error)
 	{
-		// Dialog des images // nw
+		// Supprime les anciennes occurrences de la fenêtre
+		$(".dialog-access").dialog('close');
+
+		// Dialog des erreur d'access // nw
 		$("body").append("<div class='dialog-access' title='"+__("Accessibilité")+"'><ul class='pan unstyled small'>"+ access_error +"</ul></div>");
 
 		// Scroll pour voir les éléments vide

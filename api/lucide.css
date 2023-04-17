@@ -909,8 +909,15 @@ nav ul li i.fa-cancel {
 	{ display: block; }
 
 
+	.dialog-optim-img li { 
+		border-bottom: 1px solid #d3d3d3;
+		margin-bottom: 0.5rem;
+	}
 	.dialog-optim-img img { border: 1px solid #bbbbbb; }
-	.dialog-optim-img a { text-decoration: underline; }
+	.dialog-optim-img a { 
+		/* text-decoration: underline; */
+		margin-top: 0.5rem;
+	}
 
 
 	/* Image à moitié transparante */
