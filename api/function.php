@@ -486,6 +486,51 @@ function media($key = null, $filter = array())
 
 				echo'<img ';
 
+				//srcset pour image adaptative
+				if(isset($filter['srcset'])) {		
+
+					$img_src = $filename;
+					$img_src_clean = parse_url($img_src, PHP_URL_PATH);
+					list($source_width, $source_height) = getimagesize($filename);// Taille de l'image
+
+					
+					echo'srcset="';
+					
+					foreach ($filter['srcset'] as $key => $width) {
+						
+						$new_width = $width;// Largeur max
+
+						// image à resize ?
+						if($source_width > $new_width)
+						{
+							// on calcule la nouvelle hauteur
+							$new_height = round($new_width * $source_height / $source_width);
+							// Pour modifier le nom de l'image avec la nouvelle taille
+							preg_match("/(-[0-9]+x[0-9]+)\./", $img_src, $matches);
+			
+							if(isset($matches[1])) $new_name = str_replace($matches[1], "-".$new_width."x".$new_height, $img_src);
+							else
+							{// Cas d'une image pas forcement redimentionner lors de l'upload initial
+								$pathinfo = pathinfo($img_src);
+								$new_name = $pathinfo['dirname'].'/'.$pathinfo['filename']."-".$new_width."x".$new_height.$pathinfo['extension'];
+							}
+			
+							// La nouvelle image existe déjà ?
+							if(file_exists($new_name)) $img_resized = $new_name;							
+							else $img_resized = resize($img_src, $new_width, $new_height);
+						}
+						else{
+							$img_resized = $img_src_clean;
+						}
+
+						echo ($key>0 ? ',' : '')
+						.parse_url($img_resized, PHP_URL_PATH)
+						.' '.$width.'w';
+					}
+
+					echo'"';
+				}
+
 				// Si lazyloading on met une image transparente dans le src
 				if(isset($filter['lazy']))
 					echo'src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'.$filename.'" loading="lazy"';
