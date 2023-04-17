@@ -517,6 +517,10 @@ nav ul li i.fa-cancel {
 	.access_brbr.active { background-color: #c5671a6b;}
 	.dialog-access .access_brbr { display: inline; }
 
+.access_alt, .access_fig { border: 1px #1abfc5 dotted; border-radius: 5px; }
+	.access_alt.active, .access_fig.active { background-color: #1abfc579;}
+
+
 /* block éditable */
 
 /*article { width: 100%; }*//* pour que le bloc éditable prenne bien toute la largeur */

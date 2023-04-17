@@ -1699,6 +1699,8 @@ access_check = function(file)
 	var num_titre = 0;
 	var num_titre_prev = 1;
 	var num_brbr = 0;
+	var num_alt = 0;
+	var num_fig = 0;
 
 	// Clean si dialog access déjà presente
 	$(".dialog-access").remove(); 
@@ -1763,6 +1765,30 @@ access_check = function(file)
 	// 	}
 	// });
 	
+	// Texte alternatif dans une image <img alt="">
+	$(".editable img").each(function() 
+	{
+		var $this = $(this);
+
+		if($(this).attr("alt") != "") {
+			$this.addClass("access_alt");
+			++num_alt;
+		}		
+	});
+
+	// Vérifie les textes alternatifs dans les images dans une figure
+	$(".editable figure").each(function() 
+	{
+		var $this = $(this);
+
+		console.log($("img", $this).attr("alt") +"**"+$("figcaption", $this).text())
+
+		//$("img", $this).attr("alt") == "" && 
+		if($("img", $this).length && $("figcaption", $this).text()) {
+			$("img", $this).addClass("access_fig");
+			++num_fig;
+		}		
+	});
 
 
 
@@ -1794,6 +1820,18 @@ access_check = function(file)
 		access_error += "<li class='pbt pointer brbr_toscroll'><i class='fa fa-attention red mrt' aria-hidden='true'></i><span class='access_brbr plt prt'>"+num_brbr+"</span> double"+(num_brbr>1?"s":"")+" retour"+(num_brbr>1?"s":"")+" à la ligne</li>";
 	}
 
+	// Affiche les avertissements concernant les textes alternatifs sur les images
+	if(num_alt > 0) 		
+	{
+		access_error += "<li class='pbt pointer alt_toscroll'><i class='fa fa-attention orange mrt' aria-hidden='true'></i><span class='access_alt plt prt'>"+num_alt+"</span> image"+(num_alt>1?"s":"")+" avec texte alternatif <i class='fa fa-info-circled grey' title=\"Il s'agit bien d'image porteuse d'information et pas d'image décorative ?\nVotre texte est-il pertinent (il reprend les informations textuelles incluses dans l'image) ?\"></i></li>";
+	}
+	
+	// Affiche les avertissements concernant les textes alternatifs sur les images
+	if(num_fig > 0) 		
+	{
+		access_error += "<li class='pbt pointer fig_toscroll'><i class='fa fa-attention orange mrt' aria-hidden='true'></i><span class='access_fig plt prt'>"+num_fig+"</span> la légende est l'image son bien liée ? <i class='fa fa-info-circled grey' title=\"La légende doit commencer par un texte qui reprend idéalement celui du texte alternatif de l'image, ceci afin d'avoir un lien sémantique.\"></i></li>";
+	}
+
 
 	/****
 	 * Affichage des erreurs
@@ -1818,6 +1856,13 @@ access_check = function(file)
 		// Scroll pour voir les double <br><br>
 		clickScroll(".brbr_toscroll", ".access_brbr");
 
+		// Scroll pour voir les images avec alt
+		clickScroll(".alt_toscroll", ".access_alt");
+
+		// Scroll pour voir les images avec légende
+		clickScroll(".fig_toscroll", ".access_fig");
+
+
 		// Dialog en layer
 		$(".dialog-access").dialog({
 			autoOpen: false,
@@ -1829,6 +1874,7 @@ access_check = function(file)
 		});
 		$(".dialog-access").parent().css({position:"fixed"}).end().dialog('open');
 
+
 		// Avant la sauvegarde supprime les class de surbrillances des erreurs
 		if(!clean_access_class)
 		{ 
@@ -1839,6 +1885,8 @@ access_check = function(file)
 				$(".access_div").removeClass("access_div");
 				$(".access_titre").removeClass("access_titre");
 				$(".access_brbr").removeClass("access_brbr");
+				$(".access_alt").removeClass("access_alt");
+				$(".access_fig").removeClass("access_fig");
 			});
 		}
 
