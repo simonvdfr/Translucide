@@ -915,7 +915,7 @@ nav ul li i.fa-cancel {
 	}
 	.dialog-optim-img img { border: 1px solid #bbbbbb; }
 	.dialog-optim-img a { 
-		/* text-decoration: underline; */
+		text-decoration: underline;
 		margin-top: 0.5rem;
 	}
 

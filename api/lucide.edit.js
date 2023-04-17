@@ -1505,11 +1505,16 @@ scrollToImg = function(that){
 // Liste les images dans la page pour suggérer des optimisations
 img_check = function(file) 
 {
+	// Init Variable
+	imgs_optim = "";
 	imgs = {};
 	var imgs_size = 0;
 	host = location.protocol +'//'+ location.host + path;
 
-	// Contenu des images éditables, bg et dans les contenus textuels
+	// Supprime les anciennes occurrences de la fenêtre
+	$(".dialog-optim-img").dialog('close');
+
+	// Liste les images dans des zone média, les contenu éditables, bg
 	$(document).find("main .editable-media img, main .editable img, main [data-id][data-bg]").each(function()
 	{
 		if($(this).hasClass("editable-bg")) {// Image en background
@@ -1545,28 +1550,10 @@ img_check = function(file)
 
 	//console.log(imgs);
 
+
 	// S'il y a des images
 	if(Object.keys(imgs).length > 0)
 	{
-		// Supprime les anciennes occurrences de la fenêtre
-		$(".dialog-optim-img").dialog('close');
-
-		// Dialog des images // nw
-		$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='pan unstyled smaller'></ul></div>");
-
-		// Dialog en layer 
-		// "right-10 top", at: "left bottom+10"
-		// "left top", at: "left+10 bottom+10"
-		$(".dialog-optim-img").dialog({
-			autoOpen: false,
-			width: 'auto',
-			maxHeight: 500,
-			position: { my: "right top", at: "right bottom+10", of: $("#admin-bar") },
-			show: function() {$(this).fadeIn(300);},
-			close: function() { $(".dialog-optim-img").remove(); }
-		});
-		$(".dialog-optim-img").parent().css({position:"fixed"}).end().dialog('open');
-
 		// Liste les images
 		var num = 0;
 		$.each(imgs, function(src, img)
@@ -1625,39 +1612,51 @@ img_check = function(file)
 						else if(size > img_green && size < img_warning) var imgcolor = 'orange';
 						else if(size >= img_warning) var imgcolor = 'red';
 
-						// Affichage
-						$(".dialog-optim-img ul").append("<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>");
+						// Pour l'affichage
+						imgs_optim += "<li class='"+imgcolor+" pbt'><img src='"+src+"' width='50' class='pointer "+img.type+"' onclick='scrollToImg(this)' title='"+src.split("?")[0] +" | "+ (imgs[src]['naturalWidth']?imgs[src]['naturalWidth']+"x"+imgs[src]['naturalHeight']+"px":__("Background"))+"'> ["+ext+"] <span class='size'>"+size+"Ko</span> "+optimize+"</li>";
 
 						++num;
 					}
 				}
 			}
-
 		});
 
 
-		// Statistique final
+		// Si des images à optimiser
+		if(imgs_optim)
+		{
+			// Statistique final
 
-		// Poids
-		if(imgs_size <= imgs_green) var sizecolor = 'green';
-		else if(imgs_size > imgs_green && imgs_size < imgs_warning) var sizecolor = 'orange';
-		else if(imgs_size >= imgs_warning) var sizecolor = 'red';
+			// Poids
+			if(imgs_size <= imgs_green) var sizecolor = 'green';
+			else if(imgs_size > imgs_green && imgs_size < imgs_warning) var sizecolor = 'orange';
+			else if(imgs_size >= imgs_warning) var sizecolor = 'red';
 
-		// Nombre d'image
-		if(num < imgs_num) var numcolor = 'green';
-		else if(num == imgs_num) var numcolor = 'orange';
-		else if(num > imgs_num) var numcolor = 'red';
+			// Nombre d'image
+			if(num < imgs_num) var numcolor = 'green';
+			else if(num == imgs_num) var numcolor = 'orange';
+			else if(num > imgs_num) var numcolor = 'red';
 
-		$(".dialog-optim-img ul").after("<div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div>");
 
-		// Si dialog sur l'accessibilité on place la dialog des images en dessous // left-5
-		if($(".dialog-access").length >= 1) 
+			// Affichage de la dialog avec les images a optimisé
+			$("body").append("<div class='dialog-optim-img' title='"+__("Image optimization")+"'><ul class='pan unstyled smaller'>"+imgs_optim+"</ul><div class='ptt smaller bold'><span class='"+numcolor+"' title='"+__("Limit")+" "+imgs_num+"'>"+num+" images</span> = <span class='"+sizecolor+"' title='"+__("Limit")+" "+imgs_warning+"Ko'>"+imgs_size+"Ko</span></div></div>");
+
+			// Dialog en layer 
+			// "right-10 top", at: "left bottom+10"
+			// "left top", at: "left+10 bottom+10"
 			$(".dialog-optim-img").dialog({
-				position: { my: 'right+5 top', at: 'right bottom+15', of: (".dialog-access") }
+				autoOpen: false,
+				width: 'auto',
+				maxHeight: 500,
+				position: { my: "right top", at: "right bottom+10", of: $("#admin-bar") },
+				show: function() {$(this).fadeIn(300);},
+				close: function() { $(".dialog-optim-img").remove(); }
 			});
+			$(".dialog-optim-img").parent().css({position:"fixed"}).end().dialog('open');
 
-		// Si pas d'image on n'affiche pas la dialog
-		if(num == 0) $(".dialog-optim-img").dialog('close');
+			// Si pas d'image on n'affiche pas la dialog
+			//if(num == 0) $(".dialog-optim-img").dialog('close');
+		}
 	}
 }
 
@@ -1758,13 +1757,13 @@ access_check = function(file)
 	$(".access_brbr").each(function() { ++num_brbr; });
 
 	// $('br').map(function(){
-	// 	if(($next = $(this).next()).is('br')) 
-	// 	{
+	// 	if(($next = $(this).next()).is('br')) {
 	// 		$next.addClass("access_brbr");
 	// 		++num_brbr;
 	// 	}
 	// });
 	
+
 
 
 	/****
@@ -1842,6 +1841,13 @@ access_check = function(file)
 				$(".access_brbr").removeClass("access_brbr");
 			});
 		}
+
+
+		// Si dialog sur l'accessibilité et check img on place la dialog des images en dessous // left-5
+		if($(".dialog-optim-img").length >= 1) 
+			$(".dialog-optim-img").dialog({
+				position: { my: 'right+5 top', at: 'right bottom+15', of: (".dialog-access") }
+			});
 
 		// Si pas d'erreur d'access on n'affiche pas la dialog
 		//if(num == 0) $(".dialog-access").dialog('close');

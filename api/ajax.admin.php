@@ -865,18 +865,18 @@ switch($_GET['mode'])
 					}, 1000);	
 				<?php }?>
 
-
-
-				<?php if(@$GLOBALS['access_check'])// Affichage des stats sur l'accessibilité
-				{?>
-					access_check();
-				<?php }?>
 				
 
 				<?php if(@$GLOBALS['img_check'])// Affichage des stats sur les images pour optimisation
 				{?>
 					img_check();
 				<?php }?>
+
+
+				<?php if(@$GLOBALS['access_check'])// Affichage des stats sur l'accessibilité
+				{?>
+					access_check();
+				<?php }?>	
 
 
 				
@@ -1529,7 +1529,7 @@ switch($_GET['mode'])
 					// Si ce n'est pas une image
 					if(!is_array($file_infos)) {
 						$finfo = finfo_open(FILEINFO_MIME_TYPE);
-						$file_infos['mime'] = finfo_file($finfo, $dir.$filename);
+						$file_infos = ['mime' => finfo_file($finfo, $dir.$filename)];
 						finfo_close($finfo);
 
 						$file_infos['0'] = $file_infos['1'] = "";
