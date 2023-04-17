@@ -1290,10 +1290,10 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 				{
 					if($ratio_width < $ratio_height) {
 						$dest_width = $new_width;
-						$dest_height = $source_height / $ratio_width;
+						$dest_height = ceil(round($source_height / $ratio_width, 2));
 					}
 					else {
-						$dest_width = $source_width / $ratio_height;				
+						$dest_width = ceil(round($source_width / $ratio_height, 2));
 						$dest_height = $new_height;				
 					}
 					
@@ -1304,12 +1304,12 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 				else// Si pas crop on resize la taille la plus grande
 				{
 					if($ratio_width < $ratio_height) {
-						$dest_width = $new_width = $source_width / $ratio_height;				
+						$dest_width = $new_width = ceil(round($source_width / $ratio_height, 2));	
 						$dest_height = $new_height;				
 					}
 					else {
 						$dest_width = $new_width;	
-						$dest_height = $new_height = $source_height / $ratio_width;		
+						$dest_height = $new_height = ceil(round($source_height / $ratio_width, 2));
 					}
 				}
 			}
@@ -1323,11 +1323,11 @@ function resize($source_file, $new_width = null, $new_height = null, $dest_dir =
 		elseif($new_width and !$new_height)// On force la largeur => on calcule la nouvelle hauteur
 		{ 
 			$new_width = $dest_width = $new_width;
-			$new_height = $dest_height = $new_width * $source_height / $source_width;
+			$new_height = $dest_height = ceil(round($new_width * $source_height / $source_width, 2));
 		}
 		elseif(!$new_width and $new_height)// On force la hauteur => on calcule la nouvelle largeur
 		{
-			$new_width = $dest_width = $new_height * $source_width / $source_height;
+			$new_width = $dest_width = ceil(round($new_height * $source_width / $source_height, 2));
 			$new_height = $dest_height = $new_height;
 		}
 
