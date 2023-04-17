@@ -56,7 +56,7 @@ switch($_GET['mode'])
 							reload();						
 						}
 					</script>
-					<?
+					<?php
 					//exit;
 				}
 			}
