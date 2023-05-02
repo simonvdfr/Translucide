@@ -487,48 +487,50 @@ function media($key = null, $filter = array())
 				echo'<img ';
 
 				//srcset pour image adaptative
-				if(isset($filter['srcset'])) {		
+				if(isset($filter['srcset'])) {
 
-					$img_src = $filename;
-					$img_src_clean = parse_url($img_src, PHP_URL_PATH);
-					list($source_width, $source_height) = getimagesize($filename);// Taille de l'image
+					//on récupère le chemin de l'image de référence à partir de laquelle on fait les miniatures
+					$parse_url = parse_url($filename);
+					parse_str($parse_url['query'], $get);
+					if(@$get['zoom']) 
+						$source = $get['zoom'];
+					else	
+						$source = $filename;
 
-					
+					//récupération des informations de l'image de référence
+					$pathinfo = pathinfo($source);
+					list($source_width, $source_height) = getimagesize($source);
+
+					//ecriture de l'attribut
 					echo'srcset="';
-					
-					foreach ($filter['srcset'] as $key => $width) {
-						
-						$new_width = $width;// Largeur max
+					foreach ($filter['srcset'] as $key => $thumbnail_width) {
 
-						// image à resize ?
-						if($source_width > $new_width)
-						{
-							// on calcule la nouvelle hauteur
-							$new_height = round($new_width * $source_height / $source_width);
-							// Pour modifier le nom de l'image avec la nouvelle taille
-							preg_match("/(-[0-9]+x[0-9]+)\./", $img_src, $matches);
-			
-							if(isset($matches[1])) $new_name = str_replace($matches[1], "-".$new_width."x".$new_height, $img_src);
+						//si la taille de la miniature est inférieur à la taille de l'image source
+						if($source_width > $thumbnail_width) {
+
+							//calcul de la hauteur de la miniature
+							$thumbnail_height = round($thumbnail_width * $source_height / $source_width);
+
+							// on regarde s'il y a déjà une miniature existante
+							$thumbnail_path = $pathinfo['dirname']."/resize/".$pathinfo['filename']."-".$thumbnail_width."x".$thumbnail_height.".".$pathinfo['extension'];
+							$thumbnail_clean = parse_url($thumbnail_path, PHP_URL_PATH);
+
+							if(file_exists($_SERVER['DOCUMENT_ROOT']. $GLOBALS['path'] .$thumbnail_clean)) 
+								$thumbnail = $thumbnail_clean;
 							else
-							{// Cas d'une image pas forcement redimentionner lors de l'upload initial
-								$pathinfo = pathinfo($img_src);
-								$new_name = $pathinfo['dirname'].'/'.$pathinfo['filename']."-".$new_width."x".$new_height.$pathinfo['extension'];
-							}
-			
-							// La nouvelle image existe déjà ?
-							if(file_exists($new_name)) $img_resized = $new_name;							
-							else $img_resized = resize($img_src, $new_width, $new_height);
+								$thumbnail = resize($source, $thumbnail_width, $thumbnail_height);
+							
 						}
-						else{
-							$img_resized = $img_src_clean;
-						}
+						else 
+							$thumbnail = $source;
 
 						echo ($key>0 ? ',' : '')
-						.parse_url($img_resized, PHP_URL_PATH)
-						.' '.$width.'w';
-					}
+						.parse_url($thumbnail, PHP_URL_PATH)
+						.' '.$thumbnail_width.'w';
 
+					}
 					echo'"';
+
 				}
 
 				// Si lazyloading on met une image transparente dans le src
