@@ -1000,7 +1000,10 @@ switch($_GET['mode'])
 			$message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())." : ".($pwd);
 			$header="Content-type:text/html; charset=utf-8\r\nFrom:".$GLOBALS['email_contact'];
 
-			mail($_REQUEST['email'], $subject, stripslashes($message), $header);
+			if(mail($_REQUEST['email'], $subject, stripslashes($message), $header))
+			{?>
+				<script>$("#send-password .fa").addClass("green");</script>
+			<?php }
 		}
 	break;
 
