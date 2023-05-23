@@ -647,6 +647,7 @@ switch($_GET['mode'])
 		$connect->query("DELETE FROM ".$table_tag." WHERE id='".(int)$_POST['id']."'");
 
 		// TAG ajout au tag
+		//$tag_array = null;
 		if(!isset($_POST['tag-info']) and isset($_POST['tag']))
 		{
 			foreach($_POST['tag'] as $zone => $tags) 
@@ -657,15 +658,23 @@ switch($_GET['mode'])
 				$tags = explode((@$_POST['tag-separator'][$zone]?trim($_POST['tag-separator'][$zone]):","), trim($tags));
 
 				$i = 1;
-				foreach($tags as $cle => $val) {
-					if(isset($val) and trimer($val) != "") {		
+				foreach($tags as $cle => $val) 
+				{
+					if(isset($val) and trimer($val) != "") 
+					{		
 						$connect->query("INSERT INTO ".$table_tag." SET id='".(int)$_POST['id']."', zone='".$zone."', lang='".$lang."', encode='".encode($val)."', name='".addslashes(trimer($val))."', ordre='".(isset($_POST['tag-ordre'])?(int)$_POST['tag-ordre']:$i)."'");
+
+						//$tag_array[$zone][] = trimer($val);// Liste les tags pour le contenu
+
 						$i++;
 					}
 				}
 				
 				if($connect->error)	echo "<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
 			}
+
+			// Ajout des tags au contenu pour les recherches et affichage simplifié/rapide (ne pas affichager dans le contenu, car n'est pas remplacé massivement quand edit page d'un tag)
+			//$_POST['content']['tag'] = json_encode($tag_array, JSON_UNESCAPED_UNICODE);
 		}
 
 		
