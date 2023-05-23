@@ -238,9 +238,10 @@ save = function() //callback
 			data["tag-ordre"] = $(this).next(".editable-tag-ordre").val();
 	});	
 
+	// @SUPP Ajout des tags au contenu pour les recherches et affichage simplifié/rapide (ne pas affichager dans le contenu, car n'est pas remplacé massivement quand edit page d'un tag)
+	//data["content"]["tag"] = JSON.stringify(data["tag"]);
+
 	
-
-
 	// Si sur page tag
 	if(tag) 
 	{
@@ -257,6 +258,7 @@ save = function() //callback
 	
 
 	//@todo voir pourquoi ça ne supp pas de la nav quand on glisse sur poubelle un element du menu
+	
 	// Contenu du menu de navigation
 	data["nav"] = {};
 	//$(document).find("header nav ul li").not("#add-nav ul li, .exclude").each(function(i) {
@@ -3520,8 +3522,14 @@ $(function()
 			// Modifie les cles
 			$("[class*='editable']", this).each(function() {
 				old_key = $(this).attr("id");
-				if(old_key == undefined) old_key = $("[id*='" + module + "-']", this).attr("id");
+				if(old_key == undefined) 
+					old_key = $("[id*='" + module + "-']", this).attr("id");
+
+				// Pour les inputs editable
+				if($(this).attr("placeholder") != undefined) 
+					$("#" + old_key).attr("placeholder", $(this).attr("placeholder").replace("-0", "-"+ key));
 				
+				// Change l'id
 				$("#" + old_key).attr({
 					id: old_key.replace("-0", "-"+ key),
 					src: ""
