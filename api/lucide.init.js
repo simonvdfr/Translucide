@@ -262,26 +262,6 @@ add_content = function()
 }
 
 
-// @todo repasser dans edit.js car pas suffisament utiliser pour etre charger à chaque fois & supp de install.php
-// Renvoi un mot de passe
-$.fn.make_password = function() {
-	var $this = this;
-
-	// Animation de chargement
-	$(".fa-arrows-cw").addClass("fa-spin");
-
-	// Récupère un password
-	$.ajax({
-		type: "POST",
-		url: path+"api/ajax.php?mode=make-password",
-		data: {"nonce": $("#nonce").val()},
-		success: function(password){ 
-			$(".fa-arrows-cw").removeClass("fa-spin");
-			$this.attr("type","text").val(password);
-		}
-	});
-}
-
 // Recharge la page et lance le mode édition
 reload_edit = function() {	
 	edit_launcher("reload_edit");

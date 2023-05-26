@@ -577,6 +577,25 @@ switch($_GET['mode'])
 				$("#save-user").removeClass("saved").addClass("to-save");// Changement de la couleur de fond du bouton pour indiquer qu'il faut sauvegarder
 			}
 
+			// Renvoi un mot de passe
+			$.fn.make_password = function() {
+				var $this = this;
+
+				// Animation de chargement
+				$(".fa-arrows-cw").addClass("fa-spin");
+
+				// Récupère un password
+				$.ajax({
+					type: "POST",
+					url: path+"api/ajax.php?mode=make-password",
+					data: {"nonce": $("#nonce").val()},
+					success: function(password){ 
+						$(".fa-arrows-cw").removeClass("fa-spin");
+						$this.attr("type","text").val(password);
+					}
+				});
+			}
+
 			send_password = function()
 			{		
 				// Si utilisateur en cours de création => on sauvegarde avant l'envoi du pass

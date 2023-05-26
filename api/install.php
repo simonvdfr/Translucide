@@ -192,6 +192,25 @@ switch(@$_GET['mode'])
 					$("#setup button").attr("disabled", false);
 				}
 
+				// Renvoi un mot de passe
+				$.fn.make_password = function() {
+					var $this = this;
+
+					// Animation de chargement
+					$(".fa-arrows-cw").addClass("fa-spin");
+
+					// Récupère un password
+					$.ajax({
+						type: "POST",
+						url: path+"api/ajax.php?mode=make-password",
+						data: {"nonce": $("#nonce").val()},
+						success: function(password){ 
+							$(".fa-arrows-cw").removeClass("fa-spin");
+							$this.attr("type","text").val(password);
+						}
+					});
+				}
+
 				$(function()
 				{
 					// Setup
