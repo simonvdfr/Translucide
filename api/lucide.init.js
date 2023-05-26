@@ -210,10 +210,16 @@ error = function(txt, fadeout, focus) { popin(txt, fadeout, 'error', focus); }
 light = function(txt, fadeout, focus) { popin(txt, fadeout, 'light', focus); }		
 
 close_popin = function(focus){
-	$("#popin, #light, #error, #under-popin").fadeOut("fast", function(){ 
+	/*$("#popin, #light, #error, #under-popin").fadeOut("fast", function(){ 
 		$(this).remove();// Supprime les éléments
 		focus.focus();// Repositionne le focus sur l'ancien élément
-	}); 
+	});*/// SUPP JQ
+	
+	Array.from(document.querySelectorAll("#popin, #light, #error, #under-popin")).forEach(function(element) {
+		element.remove();// Supprime les éléments
+	});
+
+	focus.focus();// Repositionne le focus sur l'ancien élément
 }
 
 
@@ -255,28 +261,6 @@ add_content = function()
 	xhr.send();
 }
 
-
-// Déplacer dans add-content de ajax.admin.php et aussi dans edit.js (dupliquer mais pas utile en front)
-// Crée le permalink à partir du titre de la page
-refresh_permalink = function(target) {
-	// Animation de chargement
-	$(target+" #refresh-permalink i").addClass("fa-spin");
-
-	// Récupère l'url encodée
-	$.ajax({
-		type: "POST",
-		url: path+"api/ajax.admin.php?mode=make-permalink",
-		data: {"title": $(target+" #title").val(), "type": type, "nonce": $("#nonce").val()},
-		success: function(url){ 
-			$(target+" #refresh-permalink i").removeClass("fa-spin");
-			$(target+" #permalink").val(url);
-
-			$(target+" #homepage").prop("checked", false);// On uncheck l'option homepage
-			
-			if($("#admin-bar").length) tosave();// A sauvegarder
-		}
-	});
-}
 
 // @todo repasser dans edit.js car pas suffisament utiliser pour etre charger à chaque fois & supp de install.php
 // Renvoi un mot de passe

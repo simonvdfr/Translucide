@@ -353,6 +353,28 @@ selection = function() {
 }
 
 
+// Crée le permalink à partir du titre de la page
+refresh_permalink = function(target) {
+	// Animation de chargement
+	$(target+" #refresh-permalink i").addClass("fa-spin");
+
+	// Récupère l'url encodée
+	$.ajax({
+		type: "POST",
+		url: path+"api/ajax.admin.php?mode=make-permalink",
+		data: {"title": $(target+" #title").val(), "type": type, "nonce": $("#nonce").val()},
+		success: function(url){ 
+			$(target+" #refresh-permalink i").removeClass("fa-spin");
+			$(target+" #permalink").val(url);
+
+			$(target+" #homepage").prop("checked", false);// On uncheck l'option homepage
+			
+			if($("#admin-bar").length) tosave();// A sauvegarder
+		}
+	});
+}
+
+
 // Barre d'outil de mise en forme et de contenu
 exec_tool = function(command, value) {
 	value = value || "";	
