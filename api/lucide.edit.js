@@ -1752,11 +1752,28 @@ access_check = function(file)
 	});
 
 	// Double <br><br>
-	$(".editable").each(function() 
+	
+	$(".editable br").each(function() 
 	{
-		var html = $(this).html();
-		html = html.replace(/(?:<br[^>]*>\s*){2,}/g, "<br><br class='access_brbr'>");
-		$(this).html(html);
+		// @todo supp => version non performante car manipule tout le contenu et pas les noeuds
+		//var html = $(this).html();
+		//html = html.replace(/(?:<br[^>]*>\s*){2,}/gi, "<br><br class='access_brbr'>");
+		//$(this).html(html);
+
+		// Version de recherche des double br, qui manipule uniquement les br dans la dom
+		const {nodeName} = this;
+
+		let node = this;
+
+		while(node = node.previousSibling) {
+			if(node.nodeType !== Node.TEXT_NODE || node.nodeValue.trim() !== '') break;		
+		}
+
+		if(
+			node && node !== this && node.nodeName === nodeName && 
+			node.nextSibling && node.nextSibling.nodeName == "BR"
+			)
+			$(node.nextSibling).addClass("access_brbr");
 	});
 	$(".access_brbr").each(function() { ++num_brbr; });
 
