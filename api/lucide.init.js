@@ -70,7 +70,7 @@ logout = function() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', path+'api/ajax.php?mode=logout', true);
 	xhr.onload = function() {
-		document.body.insertAdjacentHTML('beforeend', this.response);
+		document.body.insertAdjacentHTML('beforeend', this.response);// Pas de js a exécuté a priori
 		reload();// Recharge la page	
 	}
 	xhr.send();
@@ -270,15 +270,27 @@ reload_edit = function() {
 // Lance le mode édition
 edit_launcher = function(callback) 
 {	
-	if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");
-
+	//if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");// SUPP JQ
+	// Si dialog de connexion charger on la ferme (jquery est charger normalement)
+	if(document.querySelector("#dialog-connect")) $("#dialog-connect").fadeOut().dialog("close");
+	
 	// Si le mode édition n'est pas déjà lancé
-	if(!$("#admin-bar").length) 
+	//if(!$("#admin-bar").length) // SUPP JQ
+	if(!document.querySelector("#admin-bar")) 
 	{
-		$.ajax({url: path+"api/ajax.admin.php?mode=edit&type="+type+"&id="+id+"&date_update="+date_update+(callback?"&callback="+callback:""), cache: false})
+		/*$.ajax({url: path+"api/ajax.admin.php?mode=edit&type="+type+"&id="+id+"&date_update="+date_update+(callback?"&callback="+callback:""), cache: false})
 		.done(function(html) {				
 			$("body").append(html);
-		});
+		});*/// SUPP JQ
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', path+"api/ajax.admin.php?mode=edit&type="+type+"&id="+id+"&date_update="+date_update+(callback?"&callback="+callback:""), true);
+		xhr.onload = function() {
+			// Pour bien exécuter le js injecté par l'Ajax ES6
+			const response = document.createRange().createContextualFragment(this.response);
+			document.body.append(response);
+		}
+		xhr.send();
 	}
 };
 
@@ -286,9 +298,10 @@ edit_launcher = function(callback)
 
 $(function()
 {
-	$root = $("html, body");
+	/*$root = $("html, body");
 	$body = $("body");
-	$window = $(window);
+	$window = $(window);*/
+	$window = window;
 
 	// Détecte si le navigateur gère nativement les LAZYLOAD des images, si oui on assigne les images au src
 	if('loading' in HTMLImageElement.prototype) {
@@ -470,7 +483,7 @@ $(function()
 
 		// Smoothscroll to top
 		$(".bt.fixed.top").click(function() {
-			$root.animate({scrollTop: 0}, 300);
+			$("html, body").animate({scrollTop: 0}, 300);
 			$("a[href='#main']").focus();
 			return false;
 		});
@@ -501,7 +514,7 @@ $(function()
 
 			// Ancre existante on scroll
 			if(anchor != undefined)
-			$root.animate({ 
+			$("html, body").animate({ 
 				scrollTop: anchor.offset().top
 			}, 800, "linear");
 		}

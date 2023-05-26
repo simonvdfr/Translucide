@@ -1521,7 +1521,7 @@ scrollToImg = function(that){
 
 	var scrollTo = (scrollTo > $("#admin-bar").height() ? scrollTo : 0);
 
-	$root.animate({ scrollTop: scrollTo	}, 300, "linear");
+	$("html, body").animate({ scrollTop: scrollTo	}, 300, "linear");
 }
 
 // Liste les images dans la page pour suggérer des optimisations
