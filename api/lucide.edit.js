@@ -1836,7 +1836,7 @@ access_check = function(file)
 	// Affiche les erreurs de double <br><br>
 	if(num_brbr > 0) 		
 	{
-		access_error += "<li class='pbt pointer brbr_toscroll'><i class='fa fa-attention red mrt' aria-hidden='true'></i><span class='access_brbr plt prt'>"+num_brbr+"</span> double"+(num_brbr>1?"s":"")+" retour"+(num_brbr>1?"s":"")+" à la ligne</li>";
+		access_error += "<li class='pbt pointer brbr_toscroll'><i class='fa fa-attention red mrt' aria-hidden='true'></i><span class='access_brbr plt prt'>"+num_brbr+"</span> double"+(num_brbr>1?"s":"")+" retour"+(num_brbr>1?"s":"")+" à la ligne <i class='fa fa-fw fa-trash'></i></li>";
 	}
 
 	// Affiche les avertissements concernant les textes alternatifs sur les images
@@ -1874,6 +1874,14 @@ access_check = function(file)
 
 		// Scroll pour voir les double <br><br>
 		clickScroll(".brbr_toscroll", ".access_brbr");
+
+		// Supprime les doubles <br> d'un coup
+		$(".brbr_toscroll .fa-trash").click(function(){
+			if(confirm("Supprimer tous les doubles retours à la ligne ?")){
+				$(".access_brbr").remove();
+				$(".brbr_toscroll").remove();
+			}
+		});
 
 		// Scroll pour voir les images avec alt
 		//clickScroll(".alt_toscroll", ".access_alt");

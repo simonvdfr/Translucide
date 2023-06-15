@@ -506,7 +506,8 @@ nav ul li i.fa-cancel {
 
 .access_brbr {
 	content: '';
-    display: block;
+    display: table-cell;
+	width: 20px;
 	border: 1px #c5671a dotted;
 	border-radius: 5px;
 }
