@@ -3124,24 +3124,28 @@ $(function()
 		// Si PAS en mode visionnage du code source 
 		if(!$(this).hasClass("view-source")) 
 		{
+			// Clean les retours à la ligne |\r
+			if(/content="LibreOffice/i.test(paste))		
+				paste = paste.replace(/\n/gi, " ")
+			else
+				paste = paste.replace(/\n/gi, "")
+
 			// Html dans le paste
 			if(/<[a-z][\s\S]*>/i.test(paste))
-			paste = paste
-				.replace(/\n/gi, "")// Clean les retours à la ligne |\r
+				paste = paste
+					.replace(/<p[^>]*><br><\/p><\/div>/gi, "\n")// <br> dans des </p></div>
+					.replace(/<p[^>]*><span><\/span><br><\/p>/gi, "\n")// <br> dans des <p> => \n
 
-			    .replace(/<p[^>]*><br><\/p><\/div>/gi, "\n")// <br> dans des </p></div>
-			    .replace(/<p[^>]*><span><\/span><br><\/p>/gi, "\n")// <br> dans des <p> => \n
+					//.replace(/<p[^>]*>/gi, "")// Supp les <p> 
+					//.replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
 
-			    //.replace(/<p[^>]*>/gi, "")// Supp les <p> 
-			    //.replace(/<\/p>/gi, "\n")// Ajoute un saut à la place des <p>
+					.replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
 
-			    .replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
+					.replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
 
-			    .replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
-
-	    		//.replace(/\<head[^>]*\>([^]*)\<\/head\>/g, '')// Supprime l'entête
-			    .replace(/\<style[^>]*\>([^]*)\<\/style\>/g, '')// Supprime les styles
-				.replace(/\<script[^>]*\>([^]*)\<\/script\>/g, '')// Supprime le js
+					//.replace(/\<head[^>]*\>([^]*)\<\/head\>/g, '')// Supprime l'entête
+					.replace(/\<style[^>]*\>([^]*)\<\/style\>/g, '')// Supprime les styles
+					.replace(/\<script[^>]*\>([^]*)\<\/script\>/g, '')// Supprime le js
 
 			// Transforme les retours à la ligne en <br>
 			paste = paste.replace(/\n/gi, "<br>");
