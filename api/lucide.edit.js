@@ -1725,7 +1725,7 @@ access_check = function(file)
 		}
 
 		// DIV avec texte
-		if($this[0].nodeName == 'DIV' && $this.text() != '')
+		if($this[0].nodeName == 'DIV' && $this.text() != '' && !$this.hasClass("highlight"))
 		{
 			$this.addClass("access_div");
 			++num_div_text;
