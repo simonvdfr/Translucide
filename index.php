@@ -278,8 +278,10 @@ if(!$ajax)
 	// Si pas de nav
 	if(!isset($GLOBALS['nav'])) $GLOBALS['nav'] = array();
 
+	// Protection contre le Clickjacking
+	header('X-Frame-Options: SAMEORIGIN');
 
-
+	// Encodage du html
 	header('Content-type: text/html; charset=UTF-8');
 
 	?><!DOCTYPE html>
