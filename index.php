@@ -285,7 +285,7 @@ if(!$ajax)
 	header('Content-type: text/html; charset=UTF-8');
 
 	?><!DOCTYPE html>
-	<html lang="<?=$lang;?>">
+	<html lang="<?=$lang;?>" itemscope itemtype="http://schema.org/WebPage">
 	<head>
 		
 		<meta charset="utf-8">
