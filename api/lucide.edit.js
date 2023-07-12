@@ -6,7 +6,7 @@ add_translation({
 	"Save" : {"fr" : "Enregistrer"},
 	"Delete" : {"fr" : "Supprimer"},
 	"Delete the page" : {"fr" : "Supprimer la page"},
-	"Warning, this will permanently delete the page!" : {"fr" : "Attention, ceci supprimera définitivement la page !"},
+	"Warning, this will permanently delete the page!" : {"fr" : "Attention, ceci supprimera définitivement <b>la page</b> !"},
 	"Also remove media from content" : {"fr" : "Supprimer également les médias présents dans le contenu"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistrées"},
 	"Cancel" : {"fr" : "Annuler"},	
