@@ -6,6 +6,7 @@ add_translation({
 	"Save" : {"fr" : "Enregistrer"},
 	"Delete" : {"fr" : "Supprimer"},
 	"Delete the page" : {"fr" : "Supprimer la page"},
+	"Warning, this will permanently delete the page!" : {"fr" : "Attention, ceci supprimera définitivement la page !"},
 	"Also remove media from content" : {"fr" : "Supprimer également les médias présents dans le contenu"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistrées"},
 	"Cancel" : {"fr" : "Annuler"},	
@@ -4053,7 +4054,7 @@ $(function()
 
 
 		// Dialog de confirmation de suppression 
-		$("body").append("<div class='dialog-del' title='"+ __("Delete the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'></div>");
+		$("body").append("<div class='dialog-del' title='"+ __("Delete the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'><p><i class='fa fa-attention red biggest mrs' aria-hidden='true'></i>"+__("Warning, this will permanently delete the page!")+"</p></div>");
 
 		// S'il y a des médias à supprimer
 		if(Object.keys(medias_clean).length > 0)
