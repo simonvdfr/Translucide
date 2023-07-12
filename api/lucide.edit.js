@@ -3149,7 +3149,12 @@ $(function()
 
 					.replace(/<br>|<\/div>/gi, "\n")// Normalise les objets qui font des retours à la ligne
 
-					.replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
+					// Ancienne méthode qui ne garde pas les name
+					//.replace(/<([a-z][a-z0-9]*)(?:[^>]*(\s(src|href)=['\"][^'\"]*['\"]))?[^>]*?(\/?)>/gi, '<$1$2>')// Supprime les formatages dans des balises
+
+					.replace(/<img(?:[^>]*(\ssrc=['\"][^'\"]*['\"]))?[^>]*?>/gi, '<img$1>')// Supprime les formatages des img
+
+					.replace(/<a(?:[^>]*(\sname=['\"][^'\"]*['\"]))?(?:[^>]*(\shref=['\"][^'\"]*['\"]))+(?:[^>]*(\sname=['\"][^'\"]*['\"]))?[^>]*?>/gi, '<a$1$2$3>')// Supprime les formatages et garde les href et name
 
 					//.replace(/\<head[^>]*\>([^]*)\<\/head\>/g, '')// Supprime l'entête
 					.replace(/\<style[^>]*\>([^]*)\<\/style\>/g, '')// Supprime les styles
@@ -3743,8 +3748,8 @@ $(function()
 
 
 	/************** AUTOCOMPLETE DE SUGGESTION DES PAGES EXISTANTES POUR L'AJOUT DE LIEN **************/
-	$(document).on("keydown.autocomplete", "#txt-tool .option #link, .editable-href", function() {
-		console.log
+	$(document).on("keydown.autocomplete", "#txt-tool .option #link, .editable-href", function() 
+	{
 		$(this).autocomplete({
 			minLength: 0,
 			source: path + "api/ajax.admin.php?mode=links&nonce="+ $("#nonce").val() +"&dir="+ ($(memo_node).data("dir") || ""),
