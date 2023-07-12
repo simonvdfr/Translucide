@@ -3752,7 +3752,7 @@ $(function()
 	{
 		$(this).autocomplete({
 			minLength: 0,
-			source: path + "api/ajax.admin.php?mode=links&nonce="+ $("#nonce").val() +"&dir="+ ($(memo_node).data("dir") || ""),
+			source: path + "api/ajax.admin.php?mode=links&nonce="+ $("#nonce").val() +"&dir="+ ($(memo_node).closest(".editable").data("dir") || ""),
 			select: function(event, ui) 
 			{ 
 				// S'il y a déjà un chemin présent ont ajouté à la suite avec juste la dernière partie | Cas tag
