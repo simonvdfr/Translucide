@@ -27,6 +27,8 @@ add_translation({
 	"Quote line" : {"fr" : "Ligne de citation"},		
 	"Blockquote" : {"fr" : "Bloc de citation"},
 	"Highlight" : {"fr" : "Mise en avant"},		
+	"Grid" : {"fr" : "Grille"},		
+	"Column" : {"fr" : "Colonne"},		
 	"Bold" : {"fr" : "Gras"},		
 	"Italic" : {"fr" : "Italique"},		
 	"Underline" : {"fr" : "Souligner"},		
@@ -801,6 +803,15 @@ highlight = function(){
 
 		node.wrap('<div class="highlight"></div>');
 	}
+}
+
+// Ajout/Suppression d'une class
+grid = function(col){
+	var grid = "<div class='grid'>";
+	for(i=1; i<=col ;i++) grid+= "<div></div>";
+	grid+= "</div>";
+
+	exec_tool('insertHTML', grid);
 }
 
 // Ajout/Suppression d'une class
@@ -1726,7 +1737,7 @@ access_check = function(file)
 		}
 
 		// DIV avec texte
-		if($this[0].nodeName == 'DIV' && $this.text() != '' && !$this.hasClass("highlight"))
+		if($this[0].nodeName == 'DIV' && $this.text() != '' && !$this.hasClass("highlight") && !$this.hasClass("grid"))
 		{
 			$this.addClass("access_div");
 			++num_div_text;
@@ -2505,9 +2516,8 @@ $(function()
 
 			toolbox+= "<li id='color-option' class='option'>";
 
-				for(i=1; i<=nbcolor ;i++) {
+				for(i=1; i<=nbcolor ;i++) 
 					toolbox+= "<button onclick=\"color_text('color-"+i+"')\" class='color-"+i+"'>■</button>";
-				}
 
 			toolbox+= "</li>";
 		}
@@ -2524,6 +2534,18 @@ $(function()
 
 		if(typeof toolbox_highlight != 'undefined') //highlight() class_tool('highlight')
 			toolbox+= "<li><button onclick=\"highlight()\" id='tool-highlight' title=\""+__("Highlight")+"\"><i class='fa fa-fw fa-info-circled'></i></button></li>";
+
+		if(typeof toolbox_grid != 'undefined') 
+		{
+			toolbox+= "<li><button onclick=\"$('#txt-tool #grid-option').toggle();\" id='tool-grid' title=\""+__("Grid")+"\"><i class='fa fa-fw fa-th-large'></i></button></li>";
+
+			toolbox+= "<li id='grid-option' class='option'>";
+
+				for(i=2; i<=4 ;i++)
+					toolbox+= "<button onclick=\"grid('"+i+"')\" class='' title=\""+i+" "+__("Column")+(i>1?'s':'')+"\">"+i+"</button>";
+
+			toolbox+= "</li>";
+		}
 
 		if(typeof toolbox_insertUnorderedList != 'undefined') 
 			toolbox+= "<li><button onclick=\"exec_tool('insertUnorderedList')\" id='insertUnorderedList' title=\""+__("Insert list")+"\"><i class='fa fa-fw fa-list'></i></button></li>";
@@ -2717,7 +2739,8 @@ $(function()
 
 	// Transforme les <div> en <p>
 	clean_div = function(selector) {
-		if(selector.prop("tagName") == "DIV")
+		// Div, pas une grille
+		if(selector.prop("tagName") == "DIV" && !selector.hasClass("grid"))
 		{
 			if(dev) console.log("clean_div");
 
@@ -2737,7 +2760,7 @@ $(function()
 			}
 			else
 			{
-				// Replace par un <p>
+				// Remplace par un <p>
 				selector.replaceWith(p = $('<p>' + selector.html() + '</p>'));
 				p = p[0];
 			}
@@ -2925,7 +2948,8 @@ $(function()
 					//if(event.keyCode == 38) clean_br($(memo_node).next());
 
 					// Replace les <div> par des <p>
-					if($(memo_node).prop("tagName") == "DIV") clean_div($(memo_node));						
+					if($(memo_node).prop("tagName") == "DIV") 
+						clean_div($(memo_node));						
 				}
 			},
 			"click.editable": function(event){// Désactive les ouvertures de liens sous ie

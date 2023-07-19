@@ -180,6 +180,7 @@ $GLOBALS['toolbox'] = array(
 	//"blockquote",
 	//"q", => A finir
 	//"highlight",
+	//"grid",
 	//"insertUnorderedList",
 	//"justifyLeft",
 	//"justifyCenter",
