@@ -2974,7 +2974,7 @@ $(function()
 					// Si déjà un contenu
 					if(memo_range && memo_range.getClientRects()[0] != undefined)
 						this_top = memo_range.getClientRects()[0].top + $window.scrollTop();// position du caractère + scroll
-					else 
+					else
 						this_top = $(memo_focus).offset().top;// position de la div/tag
 
 					this_top_scroll = this_top - toolbox_height - 12;
@@ -3465,8 +3465,6 @@ $(function()
 				},
 				// Ouverture de la fenêtre des médias
 				"click.editable-media": function(event) {
-
-					console.log($(event.target))
 
 					// Suppression
 					if($(event.target).hasClass("clear-file") || $(event.target).hasClass("fa-trash")){
