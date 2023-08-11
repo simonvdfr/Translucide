@@ -538,6 +538,7 @@ nav ul li i.fa-cancel {
 	}
 
 	[contenteditable=true]:empty:before { 
+		position: initial;/* sécurise l'affiche du placeholder si un style est attribué au before */
 		content: attr(id);
 		opacity: .6;
 	}
