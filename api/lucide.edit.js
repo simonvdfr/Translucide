@@ -323,7 +323,7 @@ tosave = function() {
 
 // Champs requis
 $.fn.required = function(txt){						
-	$(this).addClass("invalid").attr("title", txt).tooltip().tooltip("open").focus().effect("highlight");
+	$(this).addClass("invalid").attr("title", txt).tooltip().tooltip("open").trigger("focus").effect("highlight");
 }
 
 
@@ -437,7 +437,7 @@ exec_tool = function(command, value) {
 			$("#txt-tool .option").hide();// Cache le menu d'option rapidement
 	}
 
-	$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
+	$(memo_focus).trigger("focus");// On focus le contenu édité pour faire fonctionner onblur = close toolbox
 
 	// Recrée une sélection en fonction des changements de la dom
 	//@todo voir bug FF qd on veut supp un H2 avec html_tool => le focus va sur le <p> précédent créer lors de l'ajout du h2
@@ -528,7 +528,7 @@ unanchor = function()
 	$(memo_node).contents().unwrap();
 	$("#txt-tool #anchor-option").hide("slide", 300);
 
-	$(memo_focus).focus();
+	$(memo_focus).trigger("focus");
 }
 
 // Edite ou ajoute l'ancre
@@ -591,7 +591,7 @@ unlang = function()
 	$(memo_node).contents().unwrap();
 	$("#txt-tool #lang-option").hide("slide", 300);
 
-	$(memo_focus).focus();
+	$(memo_focus).trigger("focus");
 }
 
 // Edite ou ajoute la langue
@@ -679,7 +679,7 @@ unlink = function()
 	$(memo_node).closest("a").contents().unwrap();
 	$("#txt-tool #link-option").hide("slide", 300);
 
-	$(memo_focus).focus();
+	$(memo_focus).trigger("focus");
 }
 
 // @todo: SUPP 01/2023 / Plus utiliser car tout se passe dans l'edition à la volé des liens 
@@ -1015,7 +1015,7 @@ dialog = function(mode, source, target, callback) {
 
 // Ouvre la fenêtre pour ajouter une image/fichier dans la galerie des medias (intext, isolate, bg)
 media = function(source, target) {
-	//$(memo_focus).focus();// On focus le contenu édité pour faire fonctionner onblur = close toolbox
+	//$(memo_focus).trigger("focus");// On focus le contenu édité pour faire fonctionner onblur = close toolbox
 	
 	// Dialog de gestion des medias
 	dialog("media", source, target, function() {					
@@ -1680,7 +1680,7 @@ img_check = function(file)
 clickScroll = function(from, to) 
 {
 	var num = 0;		
-	$(from).click(function()
+	$(from).on("click", function()
 	{
 		// Choisi la ligne à mettre en surbrillance en fonction de celle déjà active
 		if($(to+".active").length == 0 || num+1 >= $(to).length) {
@@ -1888,7 +1888,7 @@ access_check = function(file)
 		clickScroll(".brbr_toscroll", ".access_brbr");
 
 		// Supprime les doubles <br> d'un coup
-		$(".brbr_toscroll .fa-trash").click(function(){
+		$(".brbr_toscroll .fa-trash").on("click", function(){
 			if(confirm("Supprimer tous les doubles retours à la ligne ?")){
 				$(".access_brbr").remove();
 				$(".brbr_toscroll").remove();
@@ -2170,7 +2170,7 @@ $(function()
 	});
 
 	// Click refresh permalink
-	$("#admin-bar #refresh-permalink").click(function() {
+	$("#admin-bar #refresh-permalink").on("click", function() {
 		refresh_permalink("#admin-bar");
 	});
 
@@ -2301,7 +2301,7 @@ $(function()
 					tosave();// A sauvegarder
 						
 					// Désactive les liens dans le menu d'ajout
-					$("#add-nav ul:not(.exclude) a").click(function() { return false; });
+					$("#add-nav ul:not(.exclude) a").on("click", function() { return false; });
 				}
 			},
 			// On check si on est sur le menu d'ajout de page au menu
@@ -2336,12 +2336,12 @@ $(function()
 				tosave();// A sauvegarder
 				
 				// désactive les liens dans le menu d'ajout
-				$("#add-nav ul:not(.exclude) a").click(function() { return false; });
+				$("#add-nav ul:not(.exclude) a").on("click", function() { return false; });
 			}
 		});
 
 		// Si on est en mode burger on active le tri verticalement
-		$(".burger, .sortable-y").click(function() {
+		$(".burger, .sortable-y").on("click", function() {
 			$("header nav ul:not(.exclude):first").sortable("option", "axis", "y");
 		});
 
@@ -2437,7 +2437,7 @@ $(function()
 							});
 								
 							// désactive les liens
-							$("#add-nav ul a").click(function() { return false; });
+							$("#add-nav ul a").on("click", function() { return false; });
 
 							// Affichage de la liste
 							$("#add-nav .tooltip").show();//slideDown
@@ -3254,7 +3254,7 @@ $(function()
 	memo_img = null;
 
 	// @todo: voir si on ne peux pas le déplacer sur le blur des event .editable
-	$("body").click(function(event) {
+	$("body").on("click", function(event) {
 		// Si on n'est pas sur une image dans un contenu éditable ou edition du alt on supp la toolbox image
 		if(!$(event.target).is('.editable img, #alt')) img_leave();// Raz Propriétés image
 		
@@ -4037,13 +4037,13 @@ $(function()
 	/************** ACTION **************/
 
 	// Si on ferme l'admin
-	$("#close").click(function() {	
+	$("#close").on("click", function() {	
 		reload();
 	});
 
 
 	// Suppression du contenu
-	$("#del").click(function() 
+	$("#del").on("click", function() 
 	{	
 		medias = {};
 
@@ -4091,13 +4091,13 @@ $(function()
 			});
 
 			// Au click sur la checkbox générale on coche tous les médias ont supprimé
-			$("#del-medias").click(function() {	
+			$("#del-medias").on("click", function() {	
 				if($(this).prop("checked") == true) $(".del-media").prop("checked", true);
 				else $(".del-media").prop("checked", false);
 			});
 
 			// Au click sur une checkbox de média on vérifie si tous est coché et on coche la checkbox générale
-			$(".del-media").click(function() {	
+			$(".del-media").on("click", function() {	
 				if($(".del-media:checked").length == $(".del-media").length) $("#del-medias").prop("checked", true);
 				else $("#del-medias").prop("checked", false);
 			});
@@ -4159,7 +4159,7 @@ $(function()
 
 
 	// Si on change le statut d'activation
-	$("#state-content").click(function() {
+	$("#state-content").on("click", function() {
 
 		// Masque la bulle admin qui indique si la page est désactivée
 		if($("#admin-bar #state-content").prop("checked") == true)
@@ -4172,7 +4172,7 @@ $(function()
 
 
 	// Si on sauvegarde
-	$("#save").click(function() {	
+	$("#save").on("click", function() {	
 		save();
 	});
 

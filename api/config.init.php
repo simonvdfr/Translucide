@@ -351,11 +351,11 @@ $GLOBALS['style.css'] = null;
 
 
 // Librairie externe
-$GLOBALS['jquery'] = $GLOBALS['path'].'api/jquery.min.js';// //ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
+$GLOBALS['jquery'] = $GLOBALS['path'].'api/jquery.min.js';// //ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js
 
-$GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
+$GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js';
 
-$GLOBALS['jquery_ui_css'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css';// cupertino flick smoothness base 
+$GLOBALS['jquery_ui_css'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.min.css';// cupertino flick smoothness base 
 
 
 // Url pour faire un lien vers un tutoriel externe
