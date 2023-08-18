@@ -1,7 +1,7 @@
 # [CMS Translucide](https://www.translucide.net) - Léger et puissant
 
 [![jQuery](https://img.shields.io/badge/Licence-MIT-green.svg)]()
-[![jQuery](https://img.shields.io/badge/PHP-7.2-to-8.2-lightgrey.svg?colorB=8892bf)](http://php.net/)
+[![jQuery](https://img.shields.io/badge/PHP-7.2_to_8.2-lightgrey.svg?colorB=8892bf)](http://php.net/)
 [![jQuery](https://img.shields.io/badge/MySQL-5.7-lightgrey.svg?colorB=f29111)](https://www.mysql.fr/)
 [![jQuery](https://img.shields.io/badge/MariaDB-10.4-lightgrey.svg?colorB=f29111)](https://mariadb.org/)
 [![Knacss](https://img.shields.io/badge/Knacss-Fork-red.svg?colorB=cf381c)](https://github.com/simonvdfr/KNACSS)
