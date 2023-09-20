@@ -3591,7 +3591,30 @@ $(function()
 					id: old_key.replace("-0", "-"+ key),
 					src: ""
 				});
+				
+				// Pour les bg
+				if($(this).attr("data-id")) {
+					old_key = $(this).attr("data-id");
+					$(this).attr({
+						'data-id': old_key.replace("-0", "-"+ key)
+					});
+				}
 			});
+
+			// Rend editable le bg que l-on vient d-ajouter
+			if($("[data-id][data-bg]").length != 0) 
+			{
+				// Action du hover de la souris pour le bg
+				$("[data-id][data-bg]").first()
+				.on({
+					"mouseenter.editable-bg": function(event) {// Hover zone upload		
+						$("> .bg-tool", this).fadeIn("fast");
+					},
+					"mouseleave.editable-bg": function(event) {// Out
+						$("> .bg-tool", this).fadeOut("fast");
+					}
+				});		
+			}
 
 			// Relance les events d'edition
 			editable_event();
