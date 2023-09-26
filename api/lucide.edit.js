@@ -334,6 +334,9 @@ range_selects_single_node = function(range) {
 }
 
 selected_element = function(range) {
+	
+	// @todo le cas nodeType === 3 ne prend qu'un node en compte et pas toutes la selection
+	
 	if (range_selects_single_node(range))// La sélection comprend un seul élément
 		return range.startContainer.childNodes[range.startOffset];
 	else if (range.startContainer.nodeType === 3)// La sélection commence à l'intérieur d'un noeud de texte, donc obtenir son parent
@@ -355,6 +358,11 @@ selection = function() {
 		if(typeof memo_range === 'undefined') memo_range = null;
 		if(typeof memo_node === 'undefined') memo_node = null;
 	}
+
+	//if(dev) console.log("memo_selection", memo_selection);
+	//if(dev) console.log("memo_range", memo_range);
+	//if(dev) console.log("memo_node", memo_node);
+	//if(dev) console.log("memo_range.cloneContents().querySelectorAll('*')", memo_range.cloneContents().querySelectorAll('*'));
 }
 
 
@@ -790,18 +798,80 @@ highlight = function(){
 			}
 		}
 	}
-	else {
+	else 
+	{
 		if(dev) console.log("highlight");
 
 		$("#tool-highlight").addClass("checked");
-	
-		var node = $(memo_node);
+			
+		// Si plus d'un node selectionné on utilise la méthode complexe
+		if(memo_range.cloneContents().querySelectorAll('*').length>1)
+		{
+			if(dev) console.log("highlight multiple node");
 
-		// Si l'élément n'est pas un P (un a ou b par exemple), on prend l'élément du dessu
-		if($(memo_node).prop("tagName") != "P" && $(memo_node).parent().prop("tagName") == "P") 
-			node = $(memo_node).parent();
+			// Si le parent est un ul on wrap dans le highlight et stop l'execution
+			//if(!$(memo_range.commonAncestorContainer).hasClass("editable"))
+			if(memo_range.commonAncestorContainer.nodeName == "UL")
+			{
+				if(dev) console.log("highlight parent node");
 
-		node.wrap('<div class="highlight"></div>');
+				$(memo_range.commonAncestorContainer).wrap('<div class="highlight"></div>');
+
+				return;
+			}
+
+			// Contenu parent éditable
+			var commonAncestorContainer = memo_range.commonAncestorContainer;
+
+			// Mémorise la selection pour connaitre la position des nodes de début et de fin de la selection
+			var clone_range = memo_range.cloneRange();
+			//if(dev) console.log("clone_range", clone_range);
+
+			// Etand la selection au node qui entoure la selection de début et de fin
+			memo_range.setStartBefore(memo_range.startContainer);
+			memo_range.setEndAfter(memo_range.endContainer);
+
+			// Création du div avec la class highlight
+			var highlight = document.createElement("div");
+			highlight.className = "highlight";
+
+			// Déplace le contenu selectioné dans le div highlight
+			highlight.appendChild(memo_range.extractContents());
+			
+			// Inject le div highlight avec le contenu a l'emplacement de la selection
+			memo_range.insertNode(highlight);
+
+			// Supprime les nodes qui contenais le début et fin de selection car ils restent en resident dans la page (ils ne sont pas extrait, seul le texte et node dans la selection l'est)
+			// Regarde aussi si le parent supprimé n'est pas le bloc éditable, mais bien l'élément restant
+			if(clone_range.startContainer.parentNode == commonAncestorContainer) 
+				clone_range.startContainer.remove();
+			else
+				clone_range.startContainer.parentNode.remove();
+			
+			if(clone_range.endContainer.parentNode == commonAncestorContainer)
+				clone_range.endContainer.remove();
+			else
+				clone_range.endContainer.parentNode.remove();
+
+			// Clean les range
+			//memo_selection.removeAllRanges();
+			//memo_selection.addRange(clone);
+
+		}
+		else// Qu'un node selectionnée on le wrap dans le highlight
+		{
+			if(dev) console.log("highlight one node");
+
+			var node = $(memo_node);
+
+			// Si l'élément n'est pas un P (un a ou b par exemple), on prend l'élément du dessu
+			if($(memo_node).prop("tagName") != "P" && $(memo_node).parent().prop("tagName") == "P") {
+				if(dev) console.log("parent");
+				node = $(memo_node).parent();
+			}
+			
+			node.wrap('<div class="highlight"></div>');
+		}
 	}
 }
 
@@ -2821,13 +2891,19 @@ $(function()
 		
 		// Action sur les zone éditable
 		$(".editable").on({
-			"focus.editable": function() {// On positionne la toolbox
+			"focus.editable": function() // On positionne la toolbox
+			{
+				//if(dev) console.log("focus");
+
 				memo_focus = this;// Pour memo le focus en cours
 
 				// Ajoute un <p> si vide
 				init_paragraph(this);
 			},
-			"blur.editable": function() {// On clique hors du champ éditable
+			"blur.editable": function() // On clique hors du champ éditable
+			{
+				//if(dev) console.log("blur");
+
 				if($("#txt-tool:not(:hover)").val()=="") {
 					$("#txt-tool").hide();// ferme la toolbox
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
@@ -2848,11 +2924,17 @@ $(function()
 					$("p", this).remove();
 				}
 			},
-			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
+			"dragstart.editable": function() // Pour éviter les interférences avec les drag&drop d'image dans les champs images
+			{
+				//if(dev) console.log("dragstart");
+
 				$("body").off(".editable-media");// Désactive les events image
 				$("#img-tool").remove();// Supprime la barre d'outil image
 			},
-			"dragend.editable": function() {// drop dragend
+			"dragend.editable": function() // drop dragend
+			{
+				//if(dev) console.log("dragend");
+
 				// Active les events block image
 				editable_media_event();
 				body_editable_media_event();
@@ -2860,8 +2942,10 @@ $(function()
 				memo_img = null;
 				img_leave();// Raz Propriétés image
 			},			
-			"keyup.editable": function(event) {// Mémorise la position du curseur
-
+			"keyup.editable": function(event)// Mémorise la position du curseur
+			{
+				//if(dev) console.log("keyup");
+				
 				// Ajoute un <p> si vide
 				init_paragraph(this);
 
@@ -2952,11 +3036,16 @@ $(function()
 						clean_div($(memo_node));						
 				}
 			},
-			"click.editable": function(event){// Désactive les ouvertures de liens sous ie
+			"click.editable": function(event)// Désactive les ouvertures de liens sous ie
+			{
+				//if(dev) console.log("click");
+
 				event.preventDefault();
 			},
 			"mouseup.editable": function(event)// Si on click dans un contenu éditable
 			{		
+				//if(dev) console.log("mouseup");
+
 				$("#txt-tool .option").hide();// Cache le menu d'option		
 
 				// @todo voir pour get selection + init toolbox quand on termine la selection hors du champs editable
