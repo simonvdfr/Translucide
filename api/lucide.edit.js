@@ -808,7 +808,7 @@ highlight = function(){
 		if(memo_range.cloneContents().querySelectorAll('*').length>1)
 		{
 			if(dev) console.log("highlight multiple node");
-
+			
 			// Si le parent est un ul on wrap dans le highlight et stop l'execution
 			//if(!$(memo_range.commonAncestorContainer).hasClass("editable"))
 			if(memo_range.commonAncestorContainer.nodeName == "UL")
@@ -845,12 +845,12 @@ highlight = function(){
 			// Regarde aussi si le parent supprimé n'est pas le bloc éditable, mais bien l'élément restant
 			if(clone_range.startContainer.parentNode == commonAncestorContainer) 
 				clone_range.startContainer.remove();
-			else
+			else if(!$(clone_range.startContainer).hasClass("editable"))
 				clone_range.startContainer.parentNode.remove();
 			
 			if(clone_range.endContainer.parentNode == commonAncestorContainer)
 				clone_range.endContainer.remove();
-			else
+			else if(!$(clone_range.endContainer).hasClass("editable"))
 				clone_range.endContainer.parentNode.remove();
 
 			// Clean les range
@@ -2769,23 +2769,24 @@ $(function()
 		}
 	}
 
-	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
-	clean_highlight = function(selector) {		
-		if(selector.closest(".highlight").length) {
-			if(dev) console.log("clean_highlight");
-			// Si l'élément précédent est vide on le supprime et on focus dans un nouveau <p> après le bloc highlight
-			if(selector.prev().html() == "")
+	// Si l'élément parent à la class ça ne le duplique pas pour le nouvelle élément, on sort du bloc (highlight|grid)
+	clean_return = function(theClass, selector) {		
+		if(selector.closest(theClass).length) {
+			if(dev) console.log("clean_return");
+			
+			// Si l'élément précédent est vide on le supprime et on focus dans un nouveau <p> après le bloc avec la class
+			if(selector.prev().html() == "" || selector.prev().html() == '<br class="nobr">')
 			{
-				selector.closest(".highlight").after(p = $("<p>"+selector.html()+"</p>"));// Créer un <p> après le highlight 
+				selector.closest(theClass).after(p = $("<p>"+selector.html()+"</p>"));// Créer un <p> après le bloc avec la class 
 
 				selector.prev().remove();// Supprime
 				selector.remove();// Supprime
 
-				empty_focus(p[0]);// Focus dans le nouveau <p> après le highlight
+				empty_focus(p[0]);// Focus dans le nouveau <p> après le bloc avec la class
 			}
 
-			//selector.closest(".highlight")[0].nextElementSibling
-			//selector.removeAttr("class");
+			//selector.closest(theClass)[0].nextElementSibling
+			//selector.removeAttr(theClass);
 		}
 	}
 
@@ -2978,7 +2979,8 @@ $(function()
 					// Enter
 					if(event.keyCode == 13)
 					{
-						clean_highlight($(memo_node));// Permet de sortir des highlight
+						clean_return(".highlight", $(memo_node));// Permet de sortir des highlight
+						clean_return(".grid", $(memo_node));// Permet de sortir des grid
 
 						// Si pas shift+enter (saut de ligne simple => <br>)
 						if(!event.shiftKey) 
