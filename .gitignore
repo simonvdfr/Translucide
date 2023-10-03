@@ -13,6 +13,7 @@ ehthumbs.db
 
 # Soft de dev
 .vscode/
+.idea/
 
 # Folder config file
 Desktop.ini
@@ -58,3 +59,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 theme
+
+# Autoload
+/vendor/

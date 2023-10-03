@@ -1,0 +1,9 @@
+{
+    "name": "translucide/translucide",
+    "autoload": {
+        "psr-4": {
+            "Translucide\\": "src/"
+        }
+    },
+    "require": {}
+}
