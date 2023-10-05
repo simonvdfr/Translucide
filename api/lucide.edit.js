@@ -4,9 +4,11 @@ if(typeof dev == 'undefined') dev = false;
 // Traduction
 add_translation({
 	"Save" : {"fr" : "Enregistrer"},
+	"Archive" : {"fr" : "Archiver"},
+	"Archive the page" : {"fr" : "Archiver la page"},
 	"Delete" : {"fr" : "Supprimer"},
 	"Delete the page" : {"fr" : "Supprimer la page"},
-	"Warning, this will permanently delete the page!" : {"fr" : "Attention, ceci supprimera définitivement <b>la page</b> !"},
+	"Warning, this will permanently delete the page" : {"fr" : "Attention, ceci supprimera définitivement la page"},
 	"Also remove media from content" : {"fr" : "Supprimer également les médias présents dans le contenu"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistrées"},
 	"Cancel" : {"fr" : "Annuler"},	
@@ -2259,8 +2261,8 @@ $(function()
 	}
 
 	// Ajout de l'état de la page
-	if(state == "deactivate") $("#admin-bar #state-content").prop("checked", false);
-	else $("#admin-bar #state-content").prop("checked", true);
+	if(state == "active") $("#admin-bar #state-content").prop("checked", true);
+	else $("#admin-bar #state-content").prop("checked", false);
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on("click",	function() {
@@ -4133,6 +4135,53 @@ $(function()
 	});
 
 
+	// Archive du contenu
+	$("#archive").on("click", function() 
+	{	
+		// Dialog de confirmation d'archive 
+		$("body").append("<div class='dialog-archive' title='"+ __("Archive the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'><p><i class='fa fa-attention red biggest mrs' aria-hidden='true'></i>"+__("Archive the page")+" : <b>"+document.title+"</b> ?</p></div>");
+
+		// Dialog d'archive
+		$(".dialog-archive").dialog({
+			modal: true,
+			buttons: 
+			[{
+            	text: __("Cancel"),
+           		click: function() { $(".dialog-archive").remove(); }
+			},{
+				text: "Ok",
+				click: function() 
+				{
+					// Fonction à exécuter avant l'archivage de la page
+					$(before_del).each(function(key, funct){ funct(); });
+
+					// Requete de suppression
+					$.ajax({
+						type: "POST",
+						url: path + "api/ajax.admin.php?mode=archive",
+						data: {
+							"url": clean_url(),
+							"type": type,
+							"id": id,
+							"nonce": $("#nonce").val()// Pour la signature du formulaire
+						}
+					})
+					.done(function(html) {		
+						// Fonction à exécuter après l'archivage de la page
+						$(after_del).each(function(key, funct){ funct(); });
+
+						$(".dialog-archive").dialog("close");
+						$("body").append(html);
+					});					
+				}
+			}],
+			close: function() {
+				$(".dialog-archive").remove();					
+			}
+		});
+	});
+
+
 	// Suppression du contenu
 	$("#del").on("click", function() 
 	{	
@@ -4167,7 +4216,7 @@ $(function()
 
 
 		// Dialog de confirmation de suppression 
-		$("body").append("<div class='dialog-del' title='"+ __("Delete the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'><p><i class='fa fa-attention red biggest mrs' aria-hidden='true'></i>"+__("Warning, this will permanently delete the page!")+"</p></div>");
+		$("body").append("<div class='dialog-del' title='"+ __("Delete the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'><p><i class='fa fa-attention red biggest mrs' aria-hidden='true'></i>"+__("Warning, this will permanently delete the page")+" : <b>"+document.title+"</b></p></div>");
 
 		// S'il y a des médias à supprimer
 		if(Object.keys(medias_clean).length > 0)

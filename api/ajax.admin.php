@@ -37,7 +37,7 @@ switch($_GET['mode'])
 			{
 				include_once("db.php");// Connexion à la db
 				
-				$sel = $connect->query("SELECT ".$tc.".date_update, ".$tu.".name, ".$tu.".email FROM ".$tc." JOIN ".$tu." ON ".$tu.".id = ".$tc.".user_update WHERE ".$tc.".id='".(int)$_GET['id']."' LIMIT 1");
+				$sel = $connect->query("SELECT ".$tc.".state, ".$tc.".date_update, ".$tu.".name, ".$tu.".email FROM ".$tc." JOIN ".$tu." ON ".$tu.".id = ".$tc.".user_update WHERE ".$tc.".id='".(int)$_GET['id']."' LIMIT 1");
 				$res = $sel->fetch_assoc();		
 
 				if(@$_GET['date_update'] != $res['date_update'] and $res['email']) 
@@ -172,7 +172,7 @@ switch($_GET['mode'])
 
 				<button id="save" class="fr mat small" title="<?php _e("Save")?>"><span class="noss"><?php _e("Save")?></span> <i class="fa fa-fw fa-floppy big"></i></button>
 
-				<button id="del" class="fr mat small o50 ho1 t5" title="<?php _e("Delete")?>"><span class="noss"><?php _e("Delete")?></span> <i class="fa fa-fw fa-trash big"></i></button>
+				<button id="<?=(@$res['state']=='archive'?'del':'archive')?>" class="fr mat small o50 ho1 t5" title="<?php _e((@$res['state']=='archive'?'Delete':'Archive'))?>"><span class="noss"><?php _e((@$res['state']=='archive'?'Delete':'Archive'))?></span> <i class="fa fa-fw fa-trash big"></i></button>
 
 				<div class="fr mat mrs switch o50 ho1 t5"><input type="checkbox" id="state-content" class="none"><label for="state-content" title="<?php _e("Activation status")?>"><i></i></label></div>
 
@@ -917,6 +917,39 @@ switch($_GET['mode'])
 	break;
 
 
+	case "archive":// Archive le contenu
+
+		include_once("db.php");// Connexion à la db
+
+		//highlight_string(print_r($_POST, true)); exit;
+
+		$type = ($_POST['type']?encode($_POST['type']):"page");// Type de contenu
+
+		login('high', 'edit-'.$type);// Vérifie que l'on a le droit d'éditer le type de contenu
+
+		// ARCHIVE LA PAGE
+		$connect->query("UPDATE ".$table_content." SET state = 'archive' WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'");
+
+		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
+		else // Archive réussit
+		{
+			?>
+			<script>
+			$(function()
+			{		
+				// Message page archivé
+				light("<?php _e("Page archived, redirecting")?> <i class='fa fa-cog fa-spin mlt'></i>");
+
+				// Redirection vers la page d'accueil
+				setTimeout(function(){ document.location.href = "<?=$GLOBALS['home'];?>"; }, 2000);
+			});
+			</script>
+			<?php 
+		}
+
+	break;
+
+
 	case "delete":// Supprime le contenu
 
 		include_once("db.php");// Connexion à la db
@@ -986,7 +1019,7 @@ switch($_GET['mode'])
 		{
 			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__("Deactivate")."'></i>").'</li>';
+			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"'.($res['state']=='archive'?' class="red"':'').'><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__($res['state'])."'></i>").'</li>';
 
 			$type = $res['type'];
 		}
