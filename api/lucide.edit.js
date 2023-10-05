@@ -4222,7 +4222,7 @@ $(function()
 		if(Object.keys(medias_clean).length > 0)
 		{
 			// Option de suppression des média liée au contenu			
-			$(".dialog-del").append("<input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul>");
+			$(".dialog-del").append("<hr><input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul>");
 
 			// Affiche la liste des medias
 			$.each(medias_clean, function(media, type) {
