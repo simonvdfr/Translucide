@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  apache:
+    build:
+      context: .
+      dockerfile: "docker/apache/Dockerfile"
+    container_name: TranslucideApache
+    depends_on:
+      - php
+      - mysql
+    ports:
+      - "80:80"
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'Translucide1234'
+      MYSQL_DATABASE: 'translucide'
+      MYSQL_USER: 'JohnDoe'
+      MYSQL_PASSWORD: 'Translucide1234'
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./.data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: TranslucidePhpmyadmin
+    ports:
+      - "8888:80"
+    volumes:
+      - /sessions
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: JohnDoe
+      PMA_PASSWORD: "Translucide1234"
+    depends_on:
+      - mysql
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: TranslucidePhp
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - mysql

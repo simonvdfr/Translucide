@@ -62,3 +62,6 @@ theme
 
 # Autoload
 /vendor/
+
+# Data
+.data
