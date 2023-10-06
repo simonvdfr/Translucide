@@ -32,7 +32,7 @@ $add_translation = array(
 
 	"Validate the connection in the popup" => array("fr" => "Validez la connexion dans la fenêtre qui vient de s'ouvrir"),
 
-	"My email" => array("fr" => "Mon e-mail"),
+	"My email" => array("fr" => "Mon courriel"),
 	"My password" => array("fr" => "Mon mot de passe"),
 	"Remember me" => array("fr" => "Se souvenir de moi"),
 	"Forgot your password" => array("fr" => "Mot de passe oublié"),
