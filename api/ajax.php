@@ -1,10 +1,13 @@
-<?php 
+<?php
 @include_once("config.init.php");// Les variables par défaut
 
 
 // Chemin de la config en fonction d'ou on appel
-if(strstr($_SERVER['SCRIPT_FILENAME'], 'theme/')) $dir_conf = explode('theme/', $_SERVER['SCRIPT_FILENAME'])[0];
-else $dir_conf = explode('api/ajax.php', $_SERVER['SCRIPT_FILENAME'])[0];
+if(strstr($_SERVER['SCRIPT_FILENAME'], 'theme/')) {
+    $dir_conf = explode('theme/', $_SERVER['SCRIPT_FILENAME'])[0];
+} else {
+    $dir_conf = explode('api/ajax.php', $_SERVER['SCRIPT_FILENAME'])[0];
+}
 
 
 @include($dir_conf."config.php");// Les variables ../config.php || $_SERVER['DOCUMENT_ROOT']."/config.php"
@@ -13,33 +16,34 @@ else $dir_conf = explode('api/ajax.php', $_SERVER['SCRIPT_FILENAME'])[0];
 
 $lang = get_lang();// Sélectionne la langue
 load_translation('api');// Chargement des traductions du système
-if(@$GLOBALS['theme_translation']) load_translation('theme');// Chargement des traductions du theme
+if(@$GLOBALS['theme_translation']) {
+    load_translation('theme');
+}// Chargement des traductions du theme
 
 
-switch($_GET['mode'])
-{		
-	default:
-	case "login":// Check le login interne
+switch($_GET['mode']) {
+    default:
+    case "login":// Check le login interne
 
-		login();
-		
-		?>
+        login();
+        
+        ?>
 		<script>
 			$(function() {	
 				if(callback) eval(callback + "()");// S'il y a un callback à exécuter
 			});
 		</script>
-		<?php 
-	break;
+		<?php
+    break;
 
 
-	case "internal-login":// Connexion avec un login/passe interne au site
-		
-		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
-		?>
+    case "internal-login":// Connexion avec un login/passe interne au site
+        
+        // @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
+        ?>
 		<div id="dialog-connect" title="<?php _e("Log in");?>">
 
-			<?php if($_REQUEST['msg']){?>
+			<?php if($_REQUEST['msg']) {?>
 			<div class="mas mtn pat ui-state-highlight"><?=htmlspecialchars($_REQUEST['msg']);?></div>
 			<?php }?>
 
@@ -72,7 +76,11 @@ switch($_GET['mode'])
 
 		<script>
 		// S'il y a une fonction de callback
-		callback = <?php if($_REQUEST['callback']){ echo'"'.encode($_REQUEST['callback'], "_").'"';} else echo"null";?>;
+		callback = <?php if($_REQUEST['callback']) {
+		    echo'"'.encode($_REQUEST['callback'], "_").'"';
+		} else {
+		    echo"null";
+		}?>;
 
 		$(function()
 		{
@@ -123,13 +131,13 @@ switch($_GET['mode'])
 			});
 		});
 		</script>
-		<?php 
-	break;
+		<?php
+    break;
 
 
-	case "quick-view-user":// AFFICHAGE RAPIDE D'UN COMPTE UTILISATEUR
-	
-		?>
+    case "quick-view-user":// AFFICHAGE RAPIDE D'UN COMPTE UTILISATEUR
+    
+        ?>
 		<!DOCTYPE html>
 		<html lang="<?=$lang;?>">
 		<head>			
@@ -189,22 +197,22 @@ switch($_GET['mode'])
 
 		</body>
 		</html>
-		<?php 
+		<?php
 
-	break;
+    break;
 
 
-	case "user":// AFFICHAGE DE L'INTERFACE DE GESTION DES UTILISATEURS
-		
-		// @todo: ajouter les checks sur mail, password, et aussi mode non admin
-		// @todo encadrer le tout d'un formulaire pour avoir un onchange simple, et aussi metre en place le ajax qui affiche la progression de sauvegarde
-		// @todo si appel direct de la page on include dans le body générique
+    case "user":// AFFICHAGE DE L'INTERFACE DE GESTION DES UTILISATEURS
+        
+        // @todo: ajouter les checks sur mail, password, et aussi mode non admin
+        // @todo encadrer le tout d'un formulaire pour avoir un onchange simple, et aussi metre en place le ajax qui affiche la progression de sauvegarde
+        // @todo si appel direct de la page on include dans le body générique
 
-		include_once("db.php");// Connexion à la db
+        include_once("db.php");// Connexion à la db
 
-		login('medium');
+        login('medium');
 
-		?>
+        ?>
 		<div class="absolute">
 			<div class="tooltip slide-left fire pas mas mlt mod">
 				
@@ -217,10 +225,10 @@ switch($_GET['mode'])
 				<?php }?>				
 
 				<div class="load">
-					<?php 
-					$_GET['mode'] = "profil";
-					include("ajax.php");
-					?>
+					<?php
+                    $_GET['mode'] = "profil";
+        include("ajax.php");
+        ?>
 				</div>
 
 			</div>
@@ -246,110 +254,115 @@ switch($_GET['mode'])
 			});
 		});
 		</script>
-		<?php 
+		<?php
 
-		// Pas de mysql close car déjà close dans le include ajax.php mode profil
+        // Pas de mysql close car déjà close dans le include ajax.php mode profil
 
-	break;
-
-
-	case "del-user":// SUPPRESSION D'UN COMPTE
-
-		include_once("db.php");// Connexion à la db
-
-		login('high', 'edit-user');
-
-		if($_REQUEST['uid'] != $_SESSION['uid']) 
-		{
-			if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'"))
-			{
-				// Supprime les métas //@todo migration supp au long terme (12/11/2018)
-				//$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
-
-				$msg = __("User deleted")." ".(int)$_REQUEST['uid'];
-			}
-			else
-				$msg = $connect->error;
-		}
+    break;
 
 
-	case "list-user":// LISTE LES UTILISATEURS
+    case "del-user":// SUPPRESSION D'UN COMPTE
 
-		include_once("db.php");// Connexion à la db
+        include_once("db.php");// Connexion à la db
 
-		login('medium', 'edit-user');
-		
-		if(!isset($_POST['search']) and !isset($_POST['page']))
-		{
-			?>
+        login('high', 'edit-user');
+
+        if($_REQUEST['uid'] != $_SESSION['uid']) {
+            if($connect->query("DELETE FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."'")) {
+                // Supprime les métas //@todo migration supp au long terme (12/11/2018)
+                //$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_REQUEST['uid']."' AND type='user_info'");
+
+                $msg = __("User deleted")." ".(int)$_REQUEST['uid'];
+            } else {
+                $msg = $connect->error;
+            }
+        }
+
+
+        // no break
+    case "list-user":// LISTE LES UTILISATEURS
+
+        include_once("db.php");// Connexion à la db
+
+        login('medium', 'edit-user');
+        
+        if(!isset($_POST['search']) and !isset($_POST['page'])) {
+            ?>
 			<h3 class="medium man mbs"><?php _e("List of user")?></h3>
 
 			<div class="mbs"><input type="text" class="search w70" placeholder="<?php _e("Search")?>" value=""></div>			
 
 			<ul class="unstyled pan man">
-			<?php 
-		}
+			<?php
+        }
 
-		$num_pp = 10;
+        $num_pp = 10;
 
-		$start = ($page * $num_pp) - $num_pp;
+        $start = ($page * $num_pp) - $num_pp;
 
-		$search = (isset($_POST['search']) ? $connect->real_escape_string($_POST['search']) : "");
+        $search = (isset($_POST['search']) ? $connect->real_escape_string($_POST['search']) : "");
 
-		$sql = "SELECT SQL_CALC_FOUND_ROWS ".$table_user.".id, ".$table_user.".* FROM ".$table_user." ";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS ".$table_user.".id, ".$table_user.".* FROM ".$table_user." ";
 
-		$sql .= "WHERE 1 ";
-		
-		// L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
-		//if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
-		// @todo verifier que ça marche !!
-		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND auth NOT LIKE '%edit-admin%' ";
+        $sql .= "WHERE 1 ";
+        
+        // L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
+        //if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
+        // @todo verifier que ça marche !!
+        if(!$_SESSION['auth']['edit-admin']) {
+            $sql .= "AND auth NOT LIKE '%edit-admin%' ";
+        }
 
-		if($search)
-		{
-			$sql .= "AND ";
-			$sql .= "id LIKE '%".$search."%' OR ";
-			$sql .= "state LIKE '%".$search."%' OR ";
-			$sql .= "auth LIKE '%".$search."%' OR ";
-			$sql .= "name LIKE '%".$search."%' OR ";
-			$sql .= "email LIKE '%".$search."%' OR ";
-			//$sql .= "oauth LIKE '%".$search."%' OR ";
+        if($search) {
+            $sql .= "AND ";
+            $sql .= "id LIKE '%".$search."%' OR ";
+            $sql .= "state LIKE '%".$search."%' OR ";
+            $sql .= "auth LIKE '%".$search."%' OR ";
+            $sql .= "name LIKE '%".$search."%' OR ";
+            $sql .= "email LIKE '%".$search."%' OR ";
+            //$sql .= "oauth LIKE '%".$search."%' OR ";
 
-			$sql = trim($sql, 'OR ')." ";
-		}
+            $sql = trim($sql, 'OR ')." ";
+        }
 
-		$sql .= "ORDER BY date_insert DESC ";
+        $sql .= "ORDER BY date_insert DESC ";
 
-		$sql .= "LIMIT ".$start.", ".$num_pp;
-		
-		//echo $sql."<br>";
+        $sql .= "LIMIT ".$start.", ".$num_pp;
+        
+        //echo $sql."<br>";
 
-		$sel = $connect->query($sql);
+        $sel = $connect->query($sql);
 
-		$num_total = $connect->query("SELECT FOUND_ROWS()")->fetch_row()[0];
+        $num_total = $connect->query("SELECT FOUND_ROWS()")->fetch_row()[0];
 
-		while($res = $sel->fetch_assoc())
-		{
-			if($res['state'] == "active") $state = "ok";
-			elseif($res['state'] == "moderate") $state = "eye";
-			elseif($res['state'] == "email") $state = "mail";
-			elseif($res['state'] == "blacklist") $state = "lock";
-			elseif($res['state'] == "deactivate") $state = "cancel";
+        while($res = $sel->fetch_assoc()) {
+            if($res['state'] == "active") {
+                $state = "ok";
+            } elseif($res['state'] == "moderate") {
+                $state = "eye";
+            } elseif($res['state'] == "email") {
+                $state = "mail";
+            } elseif($res['state'] == "blacklist") {
+                $state = "lock";
+            } elseif($res['state'] == "deactivate") {
+                $state = "cancel";
+            }
 
-			echo"
+            echo"
 			<li class='plt prt' onclick=\"select_user('".$res['id']."');\">
 				<label><i class='fa fa-fw fa-".$state."' title=\"".__($res['state'])."\"></i></label>
 				<label class='bold pat'>".$res['name']."</label>
 				<label class='small'>".$res['email']."</label>
 			</li>";
-		}
+        }
 
-		// Si on n'a pas affiché tous les résultats on affiche la navigation par page
-		if($num_total > ($page * $num_pp)) echo"<li class='next small' onclick=\"next_users('".($page + 1)."');\">".__("Next")."</li>";
+        // Si on n'a pas affiché tous les résultats on affiche la navigation par page
+        if($num_total > ($page * $num_pp)) {
+            echo"<li class='next small' onclick=\"next_users('".($page + 1)."');\">".__("Next")."</li>";
+        }
 
-		if(!isset($_POST['search']) and !isset($_POST['page']))
-		{
-			?>
+        if(!isset($_POST['search']) and !isset($_POST['page'])) {
+            ?>
 			</ul>
 
 			<script>
@@ -419,62 +432,71 @@ switch($_GET['mode'])
 				});
 			});
 			</script>
-			<?php 
-		}	
+			<?php
+        }
 
-		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+        if(isset($GLOBALS['connect'])) {
+            $GLOBALS['connect']->close();
+        }
 
-	break;
-
-
-	case "add-user":// AJOUTER UN UTILISATEUR PAR L'ADMIN
-		
-		include_once("db.php");// Connexion à la db
-
-		login('high', 'edit-user');
+        break;
 
 
-	case "profil":// AFFICHAGE DU FORMULAIRE UTILISATEUR
+    case "add-user":// AJOUTER UN UTILISATEUR PAR L'ADMIN
+        
+        include_once("db.php");// Connexion à la db
 
-		// @todo ajouter une icône a coté du picto de state pour re-envoyer le mail d'activation à l'utilisateur / bt pour passer l'utilisateur en 'active' si en mode 'moderate'
-		// @todo: autocomplet sur les champs de connexion d'api tiers (fb, g+...)
+        login('high', 'edit-user');
 
-		include_once("db.php");// Connexion à la db
 
-		if($_GET['mode'] != "add-user") 
-		{
-			// Si l'utilisateur a affiché est diff de l'utilisateur en cours on vérifie que l'on est admin
-			if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) 
-				login('medium', 'edit-user');
-			else
-				login('medium');
+        // no break
+    case "profil":// AFFICHAGE DU FORMULAIRE UTILISATEUR
 
-			$uid = (isset($_REQUEST['uid']) ? $_REQUEST['uid'] : $_SESSION['uid']);
-			
-			// Récupérationd des données de base de l'utilisateur
-			$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
-			$res = $sel->fetch_assoc();
+        // @todo ajouter une icône a coté du picto de state pour re-envoyer le mail d'activation à l'utilisateur / bt pour passer l'utilisateur en 'active' si en mode 'moderate'
+        // @todo: autocomplet sur les champs de connexion d'api tiers (fb, g+...)
 
-			//@todo migration supp au long terme (12/11/2018)
-			if(!@$GLOBALS['user_info_in_table_user']) {
-				// Récupération des infos sur l'utilisateur
-				/*$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
-				$res_meta = $sel_meta->fetch_assoc();*/
-			}
+        include_once("db.php");// Connexion à la db
 
-			$array_auth = explode(",", $res['auth']);// Les autorisations
+        if($_GET['mode'] != "add-user") {
+            // Si l'utilisateur a affiché est diff de l'utilisateur en cours on vérifie que l'on est admin
+            if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) {
+                login('medium', 'edit-user');
+            } else {
+                login('medium');
+            }
 
-			$oauth = json_decode((string)$res['oauth'], true);// Les api tiers
-			
-			// On vérifie que l'on a le droit d'éditer les utilisateurs admin si fiche admin
-			if(array_search("edit-admin", $array_auth) !== false) login('medium', 'edit-admin');
-		}
-		
-		if($_GET['mode'] == "add-user") $h3 = __("Add user");
-		elseif($_SESSION['uid'] == $res["id"]) $h3 = __("Your profile")." ".$res["id"];
-		else $h3 = __("Profile")." ".$res["id"];
+            $uid = (isset($_REQUEST['uid']) ? $_REQUEST['uid'] : $_SESSION['uid']);
+            
+            // Récupérationd des données de base de l'utilisateur
+            $sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$uid."' LIMIT 1");
+            $res = $sel->fetch_assoc();
 
-		?>
+            //@todo migration supp au long terme (12/11/2018)
+            if(!@$GLOBALS['user_info_in_table_user']) {
+                // Récupération des infos sur l'utilisateur
+                /*$sel_meta = $connect->query("SELECT * FROM ".$table_meta." WHERE id='".(int)$uid."' AND type='user_info' LIMIT 1");
+                $res_meta = $sel_meta->fetch_assoc();*/
+            }
+
+            $array_auth = explode(",", $res['auth']);// Les autorisations
+
+            $oauth = json_decode((string)$res['oauth'], true);// Les api tiers
+            
+            // On vérifie que l'on a le droit d'éditer les utilisateurs admin si fiche admin
+            if(array_search("edit-admin", $array_auth) !== false) {
+                login('medium', 'edit-admin');
+            }
+        }
+        
+        if($_GET['mode'] == "add-user") {
+            $h3 = __("Add user");
+        } elseif($_SESSION['uid'] == $res["id"]) {
+            $h3 = __("Your profile")." ".$res["id"];
+        } else {
+            $h3 = __("Profile")." ".$res["id"];
+        }
+
+        ?>
 		<form id="user-profil">
 
 			<h3 class="medium man mbs"><?=$h3?></h3>
@@ -485,7 +507,7 @@ switch($_GET['mode'])
 
 				<div class="mbt">
 					<label class="w100p tr mrt" for="state"><?php _e("State")?></label> 
-					<?php if(@$_SESSION['auth']['edit-user']){?>
+					<?php if(@$_SESSION['auth']['edit-user']) {?>
 						<select id="state">
 							<option value="active"><?php _e("Active")?></option>
 							<option value="moderate"><?php _e("Moderate")?></option>
@@ -494,7 +516,7 @@ switch($_GET['mode'])
 							<option value="deactivate"><?php _e("Deactivate")?></option>
 						</select>
 						<script>$('#user #state option[value="<?=@$res['state']?>"]').prop('selected', true);</script>
-					<?php }else{?>
+					<?php } else {?>
 						<?php _e(@$res['state'])?>
 					<?php }?>
 				</div>
@@ -502,19 +524,18 @@ switch($_GET['mode'])
 				<div class="mbs" style="max-height: 100px;">
 					<label class="w100p tr mrt" for="auth"><?php _e("Authorization")?></label>
 					<select id="auth" multiple <?=(!@$_SESSION['auth']['edit-admin']?"disabled":"");?>>
-						<?php 
-						// Droit de base
-						foreach($GLOBALS['auth_level'] as $cle => $val)	{
-							echo'<option value="'.$cle.'">'.__($val).'</option>';
-						}
-						
-						// Droit contenu
-						foreach($GLOBALS['add_content'] as $cle => $array)
-						{
-							echo'<option value="add-'.$cle.'">'.__("Add ".$cle).'</option>';
-							echo'<option value="edit-'.$cle.'">'.__("Edit ".$cle).'</option>';
-						}
-						?>
+						<?php
+                        // Droit de base
+                        foreach($GLOBALS['auth_level'] as $cle => $val) {
+                            echo'<option value="'.$cle.'">'.__($val).'</option>';
+                        }
+                        
+                        // Droit contenu
+                        foreach($GLOBALS['add_content'] as $cle => $array) {
+                            echo'<option value="add-'.$cle.'">'.__("Add ".$cle).'</option>';
+                            echo'<option value="edit-'.$cle.'">'.__("Edit ".$cle).'</option>';
+                        }
+        ?>
 					</select>
 					<script>
 					$.each("<?=@$res['auth']?>".split(','), function(cle, val){ 
@@ -543,28 +564,26 @@ switch($_GET['mode'])
 				</div>
 
 
-				<?php 
-				// Si il y a des méta/infos complementaire pour cette utilisateur
-				if(is_array(@$GLOBALS['user_info'])) 
-				{		
-					?>
-					<div class="info mbs"><?php 
+				<?php
+                // Si il y a des méta/infos complementaire pour cette utilisateur
+                if(is_array(@$GLOBALS['user_info'])) {
+                    ?>
+					<div class="info mbs"><?php
 
-						$info = json_decode($res['info'], true);
+                        $info = json_decode($res['info'], true);
 
-						foreach($GLOBALS['user_info'] as $cle => $val)
-						{
-							?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?php _e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?php 
-						}
-						
-					?></div><?php 
-				}
-				?>
+                    foreach($GLOBALS['user_info'] as $cle => $val) {
+                        ?><div class="mbt"><label class="w100p tr mrt" for="<?=$cle?>"><?php _e($val)?></label> <input type="text" id="info[<?=$cle?>]" value="<?=@$info[$cle]?>" class="w60"></div><?php
+                    }
+                        
+                    ?></div><?php
+                }
+        ?>
 
-				<?php if(isset($res['date_update'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
-				<?php if(isset($res['date_insert'])){?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>			
+				<?php if(isset($res['date_update'])) {?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Updated the")?></label> <?=$res['date_update']?></div><?php }?>
+				<?php if(isset($res['date_insert'])) {?><div class="mbt small"><label class="w100p tr mrt"><?php _e("Add the")?></label> <?=$res['date_insert']?></div><?php }?>			
 
-				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']){?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?php }?>
+				<?php if(isset($_REQUEST['uid']) and $_REQUEST['uid'] != $_SESSION['uid']) {?><a id="del" class="fl"><i class="fa fa-fw fa-trash big vab"></i></a><?php }?>
 
 				<button id="save-user" class="fr mat small">
 					<span><?=($_GET['mode'] == "add-user"? _e("Add") : ($uid ? _e("Save") : _e("Register")))?></span>
@@ -705,208 +724,220 @@ switch($_GET['mode'])
 				});
 			});
 		</script>
-		<?php 
+		<?php
 
-		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+        if(isset($GLOBALS['connect'])) {
+            $GLOBALS['connect']->close();
+        }
 
-	break;
-
-
-	case "save-user":// CREATION D'UN COMPTE | SAUVEGARDER DES INFOS UTILISATEUR
-		
-		//@todo : ajouter un captcha pour éviter les spam d'ajout d'utilisateur. si admin pas de check
-
-		if($_SESSION['nonce'] == $_REQUEST['nonce'])
-		{
-			include_once("db.php");// Connexion à la db		
-
-			$uid = $insert_user = $insert_info = $logout = null;
-
-			// Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
-			if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) 
-				login('high', 'edit-user');			
-			elseif(@$_REQUEST['uid'])
-			{				
-				// Si l'utilisateur est différent de nous on vérifie que l'on est admin
-				if($_REQUEST['uid'] != $_SESSION['uid']) login('high', 'edit-user');
-				else login('high');				
-
-				// Récupère les données sur l'utilisateurs
-				$sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
-				$res = $sel->fetch_assoc();
-
-				// Si on édite les droits d'un utilisateur
-				if(isset($_POST['auth']))
-				{
-					// Si les droits d'accès ont changé on déconnecte l'utilisateur pour qu'il recrée son cookie auth
-					if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth'])) 
-						$logout = true;
-					// Si on change nos propres droits on recrée le cookie auth (on doit avoir les droits d'édition user)
-					elseif($_REQUEST['uid'] == $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']) and isset($_SESSION['auth']['edit-user']))
-						token($_REQUEST['uid'], null, implode(",", $_POST['auth']));
-				}
-			}
-
-			// Nettoyage du email
-			$_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-			
-			// Hashage du pwd avec le salt unique
-			$password_new = null;
-			$hashed_password = null;
-			if(@$_POST['password_new']) {
-				list($hashed_password, $unique_salt) = hash_pwd($_POST['password_new']);
-				$password_new = $_POST['password_new'];
-			}
-
-			// Suppression des caractères indésirable pour la sécurité et des espaces de début et fin
-			$_POST = array_map("secure_value", $_POST);
-
-			// Sécurisation supplémentaire
-			$_POST = array_map(function($value) use($connect) {
-				if(is_array($value)) { 
-					foreach($value as $cle => $val) $value[$cle] = $connect->real_escape_string($val);
-				}
-				else $value = $connect->real_escape_string($value);
-				return $value; 
-			}, $_POST);
+    break;
 
 
-			// UPDATE / INSERT INFOS DE CONNEXION
-			if(@$_REQUEST['uid']) 
-				$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
-			else 
-				$sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
-			
-			// État d'activation
-			if(isset($_SESSION['auth']['edit-user']) and isset($_POST['state']))
-				$sql .= "state = '".encode($_POST['state'])."', ";
-			elseif(!@$_REQUEST['uid']) 
-				$sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
-			
-			// Droit d'accès
-			if(isset($_SESSION['auth']['edit-admin']) and isset($_POST['auth'])) {
-				$auth = $connect->real_escape_string(implode(",", $_POST['auth']));
-				$sql .= "auth = '".$auth."', ";
-			}
-			elseif(!@$_REQUEST['uid']) 
-				$sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
+    case "save-user":// CREATION D'UN COMPTE | SAUVEGARDER DES INFOS UTILISATEUR
+        
+        //@todo : ajouter un captcha pour éviter les spam d'ajout d'utilisateur. si admin pas de check
 
-			$name = $connect->real_escape_string($_POST['name']);			
-			$sql .= "name = '".$name."', ";
+        if($_SESSION['nonce'] == $_REQUEST['nonce']) {
+            include_once("db.php");// Connexion à la db
 
-			$email = $connect->real_escape_string($_POST['email']);
-			$sql .= "email = '".$email."', ";
+            $uid = $insert_user = $insert_info = $logout = null;
 
-			// Si informations supplémentaires sur l'utilisateur
-			if(isset($_POST['info']) and is_array($_POST['info'])) {
-				$info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
-				$sql .= "info = '".$info."', ";
-			}
+            // Vérifie que l'on est admin si les utilisateurs publics ne peuvent pas créé de compte
+            if(!@$_REQUEST['uid'] and !$GLOBALS['public_account']) {
+                login('high', 'edit-user');
+            } elseif(@$_REQUEST['uid']) {
+                // Si l'utilisateur est différent de nous on vérifie que l'on est admin
+                if($_REQUEST['uid'] != $_SESSION['uid']) {
+                    login('high', 'edit-user');
+                } else {
+                    login('high');
+                }
 
-			// Mot de passe
-			if($hashed_password) {
-				$sql .= "password = '".addslashes($hashed_password)."', ";
-				$sql .= "salt = '".addslashes($unique_salt)."', ";
+                // Récupère les données sur l'utilisateurs
+                $sel = $connect->query("SELECT * FROM ".$table_user." WHERE id='".(int)$_REQUEST['uid']."' LIMIT 1");
+                $res = $sel->fetch_assoc();
 
-				// Création du token light
-				if($GLOBALS['security'] != 'high' and @$_REQUEST['uid'])
-					$sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
-			}
-			else if($logout) $sql .= "token = '', ";// Déconnecte l'utilisateur
-			
-			// Token d'api externe
-			if(isset($_POST['oauth'])) {
-				$oauth = $connect->real_escape_string(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE));			
-				$sql .= "oauth = '".$oauth."', ";
-			}
+                // Si on édite les droits d'un utilisateur
+                if(isset($_POST['auth'])) {
+                    // Si les droits d'accès ont changé on déconnecte l'utilisateur pour qu'il recrée son cookie auth
+                    if($_REQUEST['uid'] != $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth'])) {
+                        $logout = true;
+                    }
+                    // Si on change nos propres droits on recrée le cookie auth (on doit avoir les droits d'édition user)
+                    elseif($_REQUEST['uid'] == $_SESSION['uid'] and $res['auth'] != implode(",", $_POST['auth']) and isset($_SESSION['auth']['edit-user'])) {
+                        token($_REQUEST['uid'], null, implode(",", $_POST['auth']));
+                    }
+                }
+            }
 
-			$sql .= "date_update = NOW() ";
+            // Nettoyage du email
+            $_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            
+            // Hashage du pwd avec le salt unique
+            $password_new = null;
+            $hashed_password = null;
+            if(@$_POST['password_new']) {
+                list($hashed_password, $unique_salt) = hash_pwd($_POST['password_new']);
+                $password_new = $_POST['password_new'];
+            }
 
-			if(isset($_SESSION['auth']['edit-user']) and isset($_POST['date_insert']))
-			{
-				$date_insert = $connect->real_escape_string($_POST['date_insert']);
-				$sql .= ", date_insert = '".$date_insert."' ";
-			}
+            // Suppression des caractères indésirable pour la sécurité et des espaces de début et fin
+            $_POST = array_map("secure_value", $_POST);
 
-			if(@$_REQUEST['uid'])
-				$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
-			else
-				$sql .= ", date_insert = NOW() ";
-			
-			// Exécution de la requête
-			$connect->query($sql);
-				
-			//echo "_POST<br>"; highlight_string(print_r($_POST, true));
-			//echo $sql;
+            // Sécurisation supplémentaire
+            $_POST = array_map(function ($value) use ($connect) {
+                if(is_array($value)) {
+                    foreach($value as $cle => $val) {
+                        $value[$cle] = $connect->real_escape_string($val);
+                    }
+                } else {
+                    $value = $connect->real_escape_string($value);
+                }
+                return $value;
+            }, $_POST);
 
 
-			// Pas d'erreur sur les infos de connexion
-			if(!$connect->error)
-			{
-				// Id de l'utilisateur crée
-				if($connect->insert_id) $insert_user = $uid = $connect->insert_id;
-				elseif(@$_REQUEST['uid']) $uid = (int)$_REQUEST['uid'];
+            // UPDATE / INSERT INFOS DE CONNEXION
+            if(@$_REQUEST['uid']) {
+                $sql = "UPDATE ".$GLOBALS['table_user']." SET ";
+            } else {
+                $sql = "INSERT INTO ".$GLOBALS['table_user']." SET ";
+            }
+            
+            // État d'activation
+            if(isset($_SESSION['auth']['edit-user']) and isset($_POST['state'])) {
+                $sql .= "state = '".encode($_POST['state'])."', ";
+            } elseif(!@$_REQUEST['uid']) {
+                $sql .= "state = '".addslashes($GLOBALS['default_state'])."', ";
+            }
+            
+            // Droit d'accès
+            if(isset($_SESSION['auth']['edit-admin']) and isset($_POST['auth'])) {
+                $auth = $connect->real_escape_string(implode(",", $_POST['auth']));
+                $sql .= "auth = '".$auth."', ";
+            } elseif(!@$_REQUEST['uid']) {
+                $sql .= "auth = '".addslashes($GLOBALS['default_auth'])."', ";
+            }
 
-				if($uid) 
-				{
-					// ENVOI DU MAIL À L'ADMIN : default_state = moderate
-					if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state'] and $GLOBALS['mail_moderate']) 
-					{
-						// Pour le garder secret
-						unset($_POST['password_new'], $_POST['password_confirm']);
-						
-						// Sujet
-						$subject = "[".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
-						
-						// Lien vers la fiche admin pour activation
-						$message = "<br><a href='".make_url("", array("domaine" => true))."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
-						
-						$message .= "<pre>";
-						$message .= print_r($_POST, true);
-						$message .= "</pre><br>-------------------------------------------------------<br>";
+            $name = $connect->real_escape_string($_POST['name']);
+            $sql .= "name = '".$name."', ";
 
-						$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br>";
-						$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br>";		
-						$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br>";
-						$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br>";
+            $email = $connect->real_escape_string($_POST['email']);
+            $sql .= "email = '".$email."', ";
 
-						$header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST['email'] ? htmlspecialchars($_POST['email']) : $GLOBALS['email_contact']);
+            // Si informations supplémentaires sur l'utilisateur
+            if(isset($_POST['info']) and is_array($_POST['info'])) {
+                $info = $connect->real_escape_string(json_encode($_POST['info'], JSON_UNESCAPED_UNICODE));
+                $sql .= "info = '".$info."', ";
+            }
 
-						mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header);
-					}
+            // Mot de passe
+            if($hashed_password) {
+                $sql .= "password = '".addslashes($hashed_password)."', ";
+                $sql .= "salt = '".addslashes($unique_salt)."', ";
+
+                // Création du token light
+                if($GLOBALS['security'] != 'high' and @$_REQUEST['uid']) {
+                    $sql .= "token = '".addslashes(token_light((int)$_REQUEST['uid'], $unique_salt))."', ";
+                }
+            } elseif($logout) {
+                $sql .= "token = '', ";
+            }// Déconnecte l'utilisateur
+            
+            // Token d'api externe
+            if(isset($_POST['oauth'])) {
+                $oauth = $connect->real_escape_string(json_encode($_POST['oauth'], JSON_UNESCAPED_UNICODE));
+                $sql .= "oauth = '".$oauth."', ";
+            }
+
+            $sql .= "date_update = NOW() ";
+
+            if(isset($_SESSION['auth']['edit-user']) and isset($_POST['date_insert'])) {
+                $date_insert = $connect->real_escape_string($_POST['date_insert']);
+                $sql .= ", date_insert = '".$date_insert."' ";
+            }
+
+            if(@$_REQUEST['uid']) {
+                $sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
+            } else {
+                $sql .= ", date_insert = NOW() ";
+            }
+            
+            // Exécution de la requête
+            $connect->query($sql);
+                
+            //echo "_POST<br>"; highlight_string(print_r($_POST, true));
+            //echo $sql;
 
 
-					// Pour l'auto-login
-					if($password_new) $_POST['password'] = $password_new;
+            // Pas d'erreur sur les infos de connexion
+            if(!$connect->error) {
+                // Id de l'utilisateur crée
+                if($connect->insert_id) {
+                    $insert_user = $uid = $connect->insert_id;
+                } elseif(@$_REQUEST['uid']) {
+                    $uid = (int)$_REQUEST['uid'];
+                }
+
+                if($uid) {
+                    // ENVOI DU MAIL À L'ADMIN : default_state = moderate
+                    if($GLOBALS['default_state'] == "moderate" and $insert_user and !$_POST['state'] and $GLOBALS['mail_moderate']) {
+                        // Pour le garder secret
+                        unset($_POST['password_new'], $_POST['password_confirm']);
+                        
+                        // Sujet
+                        $subject = "[".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())."] ".__("New user to activate")." ".htmlspecialchars($_POST['email']);
+                        
+                        // Lien vers la fiche admin pour activation
+                        $message = "<br><a href='".make_url("", ["domaine" => true])."api/ajax.php?mode=quick-view-user&uid=".$uid."' target='_blank'>".__("User profile")."</a><br>";
+                        
+                        $message .= "<pre>";
+                        $message .= print_r($_POST, true);
+                        $message .= "</pre><br>-------------------------------------------------------<br>";
+
+                        $message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."<br>";
+                        $message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."<br>";
+                        $message .= "User Agent : ".getenv("HTTP_USER_AGENT")."<br>";
+                        $message .= "IP du Serveur : ".getenv("SERVER_ADDR")."<br>";
+
+                        $header="Content-type:text/html; charset=utf-8\r\nFrom:".($_POST['email'] ? htmlspecialchars($_POST['email']) : $GLOBALS['email_contact']);
+
+                        mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header);
+                    }
 
 
-					// @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
-				}
-			
-				?>
+                    // Pour l'auto-login
+                    if($password_new) {
+                        $_POST['password'] = $password_new;
+                    }
+
+
+                    // @todo: ajouter l'envoi de mail à l'user si public_account = true dans conf (hash de verif = id + date crea + global hash).
+                }
+            
+                ?>
 				<script>
 				$(function()
 				{
-					<?php 
-					if(!$connect->error){
-						if(@$_REQUEST['uid']){?>// Update réussit
+					<?php
+                    if(!$connect->error) {
+                        if(@$_REQUEST['uid']) {?>// Update réussit
 
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 
-						<?php }
-						elseif($insert_user){?>// Ajout d'un utilisateur
+						<?php } elseif($insert_user) {?>// Ajout d'un utilisateur
 
 							$("#user .load #uid").val("<?=$insert_user?>");// On met l'id de l'utilisateur dans le input pour le mode save
 
 							$("#save-user i").removeClass("fa-cog fa-spin").addClass("fa-ok");// Si la sauvegarde réussit on change l'icône du bt
 							$("#save-user").removeClass("to-save").addClass("saved");// Si la sauvegarde réussit on met la couleur verte
 							
-							<?php if(isset($_SESSION['auth']['edit-user'])){?>// Peut éditer les users
+							<?php if(isset($_SESSION['auth']['edit-user'])) {?>// Peut éditer les users
 
 								$("#save-user span").html("<?php _e("Save")?>");
 
-							<?php }else{?>// Inscription
+							<?php } else {?>// Inscription
 
 								$("#save-user span").html("<?php _e("Account created")?>");
 
@@ -918,148 +949,148 @@ switch($_GET['mode'])
 							if(typeof callback !== "undefined") eval(callback + "()");
 
 						<?php }
-					}
-					else {?>
+						} else {?>
 						error("<?=$connect->error;?>");
 					<?php }?>
 				});
 				</script>
-				<?php 
-			}
-			elseif($connect->error){?>
+				<?php
+            } elseif($connect->error) {?>
 				<script>
 					error("<?=$connect->error;?>");
 				</script>
 			<?php }
-		}
+            }
 
-		// Supp ?? car include parfois
-		//if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+        // Supp ?? car include parfois
+        //if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
 
-	break;
+        break;
 
 
-	case "check-email":// Check en ajax si le mail est conforme, mx existant, et pas déjà dans la base
+    case "check-email":// Check en ajax si le mail est conforme, mx existant, et pas déjà dans la base
 
-		// @todo: check mx : nous n'avons pas réussi à vérifier si votre fournisseur de mail fonctionne correctement
+        // @todo: check mx : nous n'avons pas réussi à vérifier si votre fournisseur de mail fonctionne correctement
 
-		if($_SESSION['nonce'] == $_REQUEST['nonce'])
-		{
-			$_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        if($_SESSION['nonce'] == $_REQUEST['nonce']) {
+            $_POST['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 
-			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))// Format valide
-			{
-				// Si le mail est celui de la personne connecter OU admin, pas besoin de check l'existance
-				if(@$_SESSION['email'] == $_POST['email'] OR @$_SESSION['auth']['edit-user']) echo "true";
-				else
-				{
-					include_once("db.php");
-					$email = $GLOBALS['connect']->real_escape_string($_POST['email']);
-					$sel = $GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']." WHERE email='".$email."' LIMIT 1");
+            if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {// Format valide
+                // Si le mail est celui de la personne connecter OU admin, pas besoin de check l'existance
+                if(@$_SESSION['email'] == $_POST['email'] or @$_SESSION['auth']['edit-user']) {
+                    echo "true";
+                } else {
+                    include_once("db.php");
+                    $email = $GLOBALS['connect']->real_escape_string($_POST['email']);
+                    $sel = $GLOBALS['connect']->query("SELECT id FROM ".$GLOBALS['table_user']." WHERE email='".$email."' LIMIT 1");
 
-					if($res = $sel->fetch_assoc())// Déjà dans la base
-						echo "existing account";
-					else 
-						echo "true";
-				}
-			}
-			else echo "false mail";
-		}
-		else echo "false nonce";
+                    if($res = $sel->fetch_assoc()) {// Déjà dans la base
+                        echo "existing account";
+                    } else {
+                        echo "true";
+                    }
+                }
+            } else {
+                echo "false mail";
+            }
+        } else {
+            echo "false nonce";
+        }
 
-		if(isset($GLOBALS['connect'])) $GLOBALS['connect']->close();
+        if(isset($GLOBALS['connect'])) {
+            $GLOBALS['connect']->close();
+        }
 
-	break;
+        break;
 
-	case "check-password":// Check en ajax si le password est un minimum sécurisé
-	break;
+    case "check-password":// Check en ajax si le password est un minimum sécurisé
+        break;
 
-	case "make-password":// Crée un password aléatoirement		
-		if($_SESSION['nonce'] == $_REQUEST['nonce']) echo make_pwd(mt_rand(15,20));
-	break;
+    case "make-password":// Crée un password aléatoirement
+        if($_SESSION['nonce'] == $_REQUEST['nonce']) {
+            echo make_pwd(mt_rand(15, 20));
+        }
+        break;
 
-	case "send-password":// Crée un password aléatoirement & l'envoi par mail à l'utilisateur	
-		if($_SESSION['nonce'] == $_REQUEST['nonce'] and @$_REQUEST['uid'] and @$_REQUEST['email']) 
-		{
-			login('high', 'edit-user');
+    case "send-password":// Crée un password aléatoirement & l'envoi par mail à l'utilisateur
+        if($_SESSION['nonce'] == $_REQUEST['nonce'] and @$_REQUEST['uid'] and @$_REQUEST['email']) {
+            login('high', 'edit-user');
 
-			$pwd = make_pwd(mt_rand(15,20));
-			list($hashed_password, $unique_salt) = hash_pwd($pwd);
+            $pwd = make_pwd(mt_rand(15, 20));
+            list($hashed_password, $unique_salt) = hash_pwd($pwd);
 
-			$sql = "UPDATE ".$GLOBALS['table_user']." SET ";
-			$sql .= "password = '".addslashes($hashed_password)."', ";
-			$sql .= "salt = '".addslashes($unique_salt)."', ";
-			$sql .= "token = '', ";// Déconnecte l'utilisateur
-			$sql .= "date_update = NOW() ";
-			$sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
+            $sql = "UPDATE ".$GLOBALS['table_user']." SET ";
+            $sql .= "password = '".addslashes($hashed_password)."', ";
+            $sql .= "salt = '".addslashes($unique_salt)."', ";
+            $sql .= "token = '', ";// Déconnecte l'utilisateur
+            $sql .= "date_update = NOW() ";
+            $sql .= "WHERE id = '".(int)$_REQUEST['uid']."'";
 
-			$connect->query($sql);
+            $connect->query($sql);
 
-			// Mail avec le mdp
-			$subject = "[".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())."] ".__("New Password");
-			$message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())." : ".($pwd);
-			$header="Content-type:text/html; charset=utf-8\r\nFrom:".$GLOBALS['email_contact'];
+            // Mail avec le mdp
+            $subject = "[".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())."] ".__("New Password");
+            $message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())." : ".($pwd);
+            $header="Content-type:text/html; charset=utf-8\r\nFrom:".$GLOBALS['email_contact'];
 
-			if(mail($_REQUEST['email'], $subject, stripslashes($message), $header))
-			{?>
+            if(mail($_REQUEST['email'], $subject, stripslashes($message), $header)) {?>
 				<script>$("#send-password .fa").addClass("green");</script>
 			<?php }
-		}
-	break;
+            }
+        break;
 
-	case "get-external-uid":// Cherche l'id d'un utilisateur sur une api tiers
+    case "get-external-uid":// Cherche l'id d'un utilisateur sur une api tiers
 
-		// @todo si pas le token tiers on ajoute un élément de retour dans le tableau pour ouvrir la boite de login (relog, sans pour autant changer le token maison)
-		// @todo: faire : yahoo et microsoft
+        // @todo si pas le token tiers on ajoute un élément de retour dans le tableau pour ouvrir la boite de login (relog, sans pour autant changer le token maison)
+        // @todo: faire : yahoo et microsoft
 
-		if($_SESSION['access_token_external'][$_REQUEST['api']])
-		{
-			header('Content-Type: application/json');
-			
-			switch($_REQUEST['api'])
-			{
-				case "facebook":					
-					$response = json_decode(curl("https://graph.facebook.com/search?q=".urlencode($_REQUEST['search'])."&type=user&limit=50&access_token=".$_SESSION['access_token_external'][$_REQUEST['api']]), true);
+        if($_SESSION['access_token_external'][$_REQUEST['api']]) {
+            header('Content-Type: application/json');
+            
+            switch($_REQUEST['api']) {
+                case "facebook":
+                    $response = json_decode(curl("https://graph.facebook.com/search?q=".urlencode($_REQUEST['search'])."&type=user&limit=50&access_token=".$_SESSION['access_token_external'][$_REQUEST['api']]), true);
 
-					//highlight_string(print_r($response, true));
+                    //highlight_string(print_r($response, true));
 
-					//while(list($cle, $val) = each($response['data'])) PHP 7.2
-					foreach($response['data'] as $cle => $val) {
-						$json[] = array(
-							'value' => $val['id'],
-							'label' => $val['name'],
-							'img' => "https://graph.facebook.com/".$val['id']."/picture"					
-						);
-					}
-				break;
+                    //while(list($cle, $val) = each($response['data'])) PHP 7.2
+                    foreach($response['data'] as $cle => $val) {
+                        $json[] = [
+                            'value' => $val['id'],
+                            'label' => $val['name'],
+                            'img' => "https://graph.facebook.com/".$val['id']."/picture"
+                        ];
+                    }
+                    break;
 
-				case "google":	
-					// maxResults
-					$response = json_decode(curl("https://www.googleapis.com/plus/v1/people/?query=".urlencode($_REQUEST['search'])."&access_token=".$_SESSION['access_token_external'][$_REQUEST['api']]), true);
+                case "google":
+                    // maxResults
+                    $response = json_decode(curl("https://www.googleapis.com/plus/v1/people/?query=".urlencode($_REQUEST['search'])."&access_token=".$_SESSION['access_token_external'][$_REQUEST['api']]), true);
 
-					//highlight_string(print_r($response, true));
+                    //highlight_string(print_r($response, true));
 
-					//while(list($cle, $val) = each($response['items'])) PHP 7.2
-					foreach($response['items'] as $cle => $val) {
-						$json[] = array(
-							'value' => $val['id'],
-							'label' => $val['displayName'],
-							'img' => $val['image']['url']
-						);
-					}
-				break;
-			}		
+                    //while(list($cle, $val) = each($response['items'])) PHP 7.2
+                    foreach($response['items'] as $cle => $val) {
+                        $json[] = [
+                            'value' => $val['id'],
+                            'label' => $val['displayName'],
+                            'img' => $val['image']['url']
+                        ];
+                    }
+                    break;
+            }
 
-			echo json_encode($json);
-		}
-		else echo"[{\"value\":\" \", \"label\":\"".ucfirst(encode($_REQUEST['api']))." ".__("Connection required")."\"}]";
+            echo json_encode($json);
+        } else {
+            echo"[{\"value\":\" \", \"label\":\"".ucfirst(encode($_REQUEST['api']))." ".__("Connection required")."\"}]";
+        }
 
-	break;
+        break;
 
 
-	
-	case "logout":
-		logout();
-	break;
+    
+    case "logout":
+        logout();
+        break;
 }
 ?>

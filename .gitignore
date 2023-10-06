@@ -62,6 +62,7 @@ theme
 
 # Autoload
 /vendor/
+/.php-cs-fixer.cache
 
 # Data
 .data

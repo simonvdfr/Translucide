@@ -1,6 +1,10 @@
 <?php
-if(!$GLOBALS['domain']) exit;
-if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['content']['title'];
+if(!$GLOBALS['domain']) {
+    exit;
+}
+if(!@$GLOBALS['content']['titre']) {
+    $GLOBALS['content']['titre'] = $GLOBALS['content']['title'];
+}
 ?>
 
 <style>
@@ -14,31 +18,31 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 
 	<article class="fl w80 prl pbm">
 
-		<?php txt('texte', array('dir'=>'actu'))?>
+		<?php txt('texte', ['dir'=>'actu'])?>
 
-		<?php if($res['tpl'] == "event-formulaire") include 'contact.php';?>
+		<?php if($res['tpl'] == "event-formulaire") {
+		    include 'contact.php';
+		}?>
 
 	</article>
 
 
 	<aside class="fr w20 plt animation slide-right">
 
-		<?php 
-		// Date évènement
-		if(stristr($res['tpl'], 'event'))
-		{
-			?><div class="tc mbm"><?php 
-			if(@$GLOBALS["content"]["aaaa-mm-jj"])
-			{
-				//@todo faire une transformation de la date en une ligne au lieu du explode
-				$date_debut = explode("-", $GLOBALS["content"]["aaaa-mm-jj"]);
-				echo'<h3 class="big tc mtn mbt">'.__("Début de l'événement").'</h3>'.$date_debut['2'].'/'.$date_debut['1'].'/'.$date_debut['0'].'<br>';
-			}
+		<?php
+        // Date évènement
+        if(stristr($res['tpl'], 'event')) {
+            ?><div class="tc mbm"><?php
+            if(@$GLOBALS["content"]["aaaa-mm-jj"]) {
+                //@todo faire une transformation de la date en une ligne au lieu du explode
+                $date_debut = explode("-", $GLOBALS["content"]["aaaa-mm-jj"]);
+                echo'<h3 class="big tc mtn mbt">'.__("Début de l'événement").'</h3>'.$date_debut['2'].'/'.$date_debut['1'].'/'.$date_debut['0'].'<br>';
+            }
 
-			input("aaaa-mm-jj", array("type" => "hidden", "class" => "meta tc"));
+            input("aaaa-mm-jj", ["type" => "hidden", "class" => "meta tc"]);
 
-			?></div><?php 
-		}?>
+            ?></div><?php
+        }?>
 
 		<!-- Tag -->
 		<div class="tc">
@@ -56,42 +60,38 @@ if(!@$GLOBALS['content']['titre']) $GLOBALS['content']['titre'] = $GLOBALS['cont
 
 
 		<!-- Liste des autres articles -->
-		<?php 
-		$sel_article = $connect->query("SELECT * FROM ".$table_content." WHERE type='article' AND lang='".$lang."' AND state='active' AND id!='".$res['id']."' ORDER BY date_insert DESC LIMIT 0, 3");
-		if($sel_article->num_rows)
-		{?>
+		<?php
+        $sel_article = $connect->query("SELECT * FROM ".$table_content." WHERE type='article' AND lang='".$lang."' AND state='active' AND id!='".$res['id']."' ORDER BY date_insert DESC LIMIT 0, 3");
+if($sel_article->num_rows) {?>
 		<h3 class="big tc mtn mbt"><?php _e("Derniers Articles")?></h3>
 
 		<ul class="unstyled pan">
-		<?php 		
-		while($res_article = $sel_article->fetch_assoc())
-		{
-			?>
+		<?php
+while($res_article = $sel_article->fetch_assoc()) {
+    ?>
 			<li class="medium mbs mls"><a href="<?=make_url($res_article['url']);?>" class="tdn"><i class="fa-li fa fa-fw fa-rss fl mrt"></i> <?=$res_article['title']?></a></li>
-			<?php 
-		}
-		?>
+			<?php
+}
+    ?>
 		</ul>
 		<?php }?>
 
 
 		<!-- Liste des autres évènements -->
-		<?php 
-		$sel_article = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' AND id!='".$res['id']."' ORDER BY date_insert DESC LIMIT 0, 3");
-		if($sel_article->num_rows)
-		{?>
+		<?php
+    $sel_article = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' AND id!='".$res['id']."' ORDER BY date_insert DESC LIMIT 0, 3");
+if($sel_article->num_rows) {?>
 			<h3 class="big tc ptm mbt"><?php _e("Derniers Évènements")?></h3>
 
 			<ul class="unstyled pan">
-			<?php 
-			
-			while($res_article = $sel_article->fetch_assoc())
-			{
-				?>
+			<?php
+            
+    while($res_article = $sel_article->fetch_assoc()) {
+        ?>
 				<li class="medium mbs mls"><a href="<?=make_url($res_article['url']);?>" class="tdn"><i class="fa-li fa fa-fw fa-calendar-empty fl mrt"></i> <?=$res_article['title']?></a></li>
-				<?php 
-			}
-			?>
+				<?php
+    }
+    ?>
 			</ul>
 		<?php }?>
 

@@ -1,4 +1,6 @@
-<?php if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) {
+    exit;
+}?>
 
 <style>
 .event {
@@ -31,16 +33,15 @@
 		<?php h2('titre-event', 'tc')?>
 
 		<div class="fl w50 tr no-small-screen">
-			<span class="editable-event" id="img-illu-event"><?php media('media-event','425')?></span>
+			<span class="editable-event" id="img-illu-event"><?php media('media-event', '425')?></span>
 		</div>
 
 		<div class="fl w50 mts">
-			<?php 
-			$sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
-			while($res_event = $sel_event->fetch_assoc())
-			{
-				$content_event = json_decode($res_event['content'], true);
-				?>
+			<?php
+            $sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
+while($res_event = $sel_event->fetch_assoc()) {
+    $content_event = json_decode($res_event['content'], true);
+    ?>
 				<div class="event pts pbs mtm mbm animation slide-right">
 
 					<article>
@@ -48,14 +49,14 @@
 						<!--Picot
 						<div class="picto fl">
 						<?php
-						$res_picto = ('article' == $res_event['type']) ? 'picto-actu.png' : 'picto-evenement.png';
-						?>
+            $res_picto = ('article' == $res_event['type']) ? 'picto-actu.png' : 'picto-evenement.png';
+    ?>
 						<img src="/<?=@$GLOBALS['media_dir']?>/tpl/<?=$res_picto?>" alt="picto <?=$res_event['type']?>">
 					</div>-->
 
 					<div class="date bold bt bg-color fl up big tc">
 						<div><?=explode("-", $content_event['aaaa-mm-jj'])[2]?></div>
-						<div><?=trim(mb_convert_encoding(date("M", strtotime($content_event['aaaa-mm-jj'])), 'UTF-8', mb_list_encodings()),".")?></div>
+						<div><?=trim(mb_convert_encoding(date("M", strtotime($content_event['aaaa-mm-jj'])), 'UTF-8', mb_list_encodings()), ".")?></div>
 					</div>
 
 					<div>
@@ -67,9 +68,9 @@
 				</article>
 
 			</div>
-			<?php 
-		}
-		?>
+			<?php
+}
+?>
 	</div>
 
 </div>
@@ -91,30 +92,30 @@ $(function()
 
 <!-- slide event -->
 
-<?php 
+<?php
 // Actu à la une
 $sel_alaune = $connect->query("SELECT * FROM ".$table_meta." WHERE type='content' AND cle='alaune' LIMIT 1");
 $res_alaune = $sel_alaune->fetch_assoc();
-if(@$res_alaune['cle'])
-{
-	$sel_alaune = $connect->query("SELECT * FROM ".$table_content." WHERE id='".$res_alaune['val']."' LIMIT 1");
-	$res_alaune = $sel_alaune->fetch_assoc();
+if(@$res_alaune['cle']) {
+    $sel_alaune = $connect->query("SELECT * FROM ".$table_content." WHERE id='".$res_alaune['val']."' LIMIT 1");
+    $res_alaune = $sel_alaune->fetch_assoc();
 
-	$alaune_content = json_decode($res_alaune['content'], true);
+    $alaune_content = json_decode($res_alaune['content'], true);
 
-	if($res_alaune['type'] == "media") {
-		$ext = pathinfo(explode("?", $alaune_content['fichier'])[0], PATHINFO_EXTENSION);
-		if($ext == "jpg") $alaune_content['bg-header'] = $GLOBALS['path'].$alaune_content['fichier'];
+    if($res_alaune['type'] == "media") {
+        $ext = pathinfo(explode("?", $alaune_content['fichier'])[0], PATHINFO_EXTENSION);
+        if($ext == "jpg") {
+            $alaune_content['bg-header'] = $GLOBALS['path'].$alaune_content['fichier'];
+        }
 
-		$url  = $GLOBALS['path'].$alaune_content['fichier']."\" target=\"_blank";
-		$link_txt = __("Voir le document");
-	}
-	else {
-		$url = make_url($res_alaune['url']);
-		$link_txt = __("Lire l'article");
-	}
+        $url  = $GLOBALS['path'].$alaune_content['fichier']."\" target=\"_blank";
+        $link_txt = __("Voir le document");
+    } else {
+        $url = make_url($res_alaune['url']);
+        $link_txt = __("Lire l'article");
+    }
 
-	?>
+    ?>
 	<section class="mw960p center">
 		<div class="alaune overlay cover mal ptl pbl tc tdn" style="background: url('<?=$alaune_content['bg-header']?>');">
 			<div class="mod mtm mbl animation slide-up">
@@ -134,6 +135,6 @@ if(@$res_alaune['cle'])
 		}).children(0).unwrap();
 		$(".alaune a").contents().unwrap();
 	</script>
-	<?php 
+	<?php
 }
 ?>

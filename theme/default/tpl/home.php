@@ -1,4 +1,6 @@
-<?php if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) {
+    exit;
+}?>
 
 
 <section class="mw960p mod center mtm mbl">
@@ -9,7 +11,7 @@
 		<article>
 			<?php media('media-2', '130')?>
 			<?php h3('titre-2', 'mbn tdn')?>
-			<?php txt('txt-2','w50 center block')?>
+			<?php txt('txt-2', 'w50 center block')?>
 			<a <?php href("lien-2")?>><span class="bt mts"><?php _e("Lire plus")?></span></a>
 		</article>
 	</div>
@@ -18,7 +20,7 @@
 		<article>
 			<?php media('media-3', '130')?>
 			<?php h3('titre-3', 'mbn tdn')?>
-			<?php txt('txt-3','w50 center block')?>
+			<?php txt('txt-3', 'w50 center block')?>
 			<a <?php href("lien-3")?>><span class="bt mts"><?php _e("Lire plus")?></span></a>
 		</article>
 	</div>
@@ -37,12 +39,12 @@
 		<div class="pll fr w60">
 
 			<div class="animation slide-right">
-				<?php h3('titre-5','mbn')?>
+				<?php h3('titre-5', 'mbn')?>
 				<?php txt('txt-5')?>
 			</div>
 
 			<div class="mtl animation slide-right">
-				<?php h3('titre-6','mbn')?>
+				<?php h3('titre-6', 'mbn')?>
 				<?php txt('txt-6')?>
 			</div>
 
@@ -54,8 +56,8 @@
 	<article class="ptm mod" style="border-top: solid 1px #eee;" <?bg("bg", 'lazy')?>>
 
 		<div class="prs mtl ptm fl w60 tr animation slide-left">
-			<?php h3('titre-7','mbn')?>
-			<?php txt('txt-7', array('lazy' => true))?>
+			<?php h3('titre-7', 'mbn')?>
+			<?php txt('txt-7', ['lazy' => true])?>
 		</div>
 
 		<div class="prl fr w40 animation slide-right"><a <?php href('lien-map')?>><?php media('image-7', '470')?></a></div>
@@ -75,18 +77,17 @@
 		<!-- .module pour bien identifier que ce sont les elements à dupliquer et a sauvegardé -->
 		<ul id="partenaire" class="module unstyled pan auto tc">
 		<?php
-		// nom du module "partenaire" = id du module, et au début des id des txt() media() ...
-		$module = module("partenaire");
-		foreach($module as $key => $val)
-		{
-			?>
+        // nom du module "partenaire" = id du module, et au début des id des txt() media() ...
+        $module = module("partenaire");
+foreach($module as $key => $val) {
+    ?>
 			<li class="fl">
-				<div><?php media("partenaire-img-".$key, array('size' => '250x250', 'lazy' => true));?></div>
-				<div class="pam">« <?php txt("partenaire-text-".$key, array("tag" => "span"));?> »</div>
+				<div><?php media("partenaire-img-".$key, ['size' => '250x250', 'lazy' => true]);?></div>
+				<div class="pam">« <?php txt("partenaire-text-".$key, ["tag" => "span"]);?> »</div>
 			</li>
 			<?php
-		}
-		?>
+}
+?>
 		</ul>
 
 	</div>
@@ -118,17 +119,16 @@
 		<?php h2('titre-event', 'tc')?>
 
 		<div class="fl w50 tr no-small-screen">
-			<span class="editable-event" id="img-illu-event"><?php media('media-event','425')?></span>
+			<span class="editable-event" id="img-illu-event"><?php media('media-event', '425')?></span>
 		</div>
 
 		<div class="fl w50 mts">
-			<?php 
-			$sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
-			while($res_event = $sel_event->fetch_assoc())
-			{
-				$content_event = json_decode($res_event['content'], true);
+			<?php
+    $sel_event = $connect->query("SELECT * FROM ".$table_content." WHERE type='event' AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
+while($res_event = $sel_event->fetch_assoc()) {
+    $content_event = json_decode($res_event['content'], true);
 
-				?>
+    ?>
 				<div class="event pts pbs mtm mbm animation slide-right">
 
 					<article>
@@ -136,14 +136,14 @@
 						<!--Picot
 						<div class="picto fl">
 							<?php
-							$res_picto = ('article' == $res_event['type']) ? 'picto-actu.png' : 'picto-evenement.png';
-							?>
+                $res_picto = ('article' == $res_event['type']) ? 'picto-actu.png' : 'picto-evenement.png';
+    ?>
 							<img src="/<?=@$GLOBALS['media_dir']?>/tpl/<?=$res_picto?>" alt="picto <?=$res_event['type']?>">
 						</div>-->
 
 						<div class="date bold bt bg-color fl up big tc">
 							<div><?=explode("-", $content_event['aaaa-mm-jj'])[2]?></div>
-							<div><?=trim(mb_convert_encoding(date("M", strtotime($content_event['aaaa-mm-jj'])), 'UTF-8', mb_list_encodings()),".")?></div>
+							<div><?=trim(mb_convert_encoding(date("M", strtotime($content_event['aaaa-mm-jj'])), 'UTF-8', mb_list_encodings()), ".")?></div>
 						</div>
 
 						<div>
@@ -155,9 +155,9 @@
 					</article>
 
 				</div>
-				<?php 
-			}
-			?>
+				<?php
+}
+?>
 		</div>
 
 	</div>

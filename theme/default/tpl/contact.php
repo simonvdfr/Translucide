@@ -1,12 +1,13 @@
-<?php 
+<?php
 
-switch(@$_GET['mode'])
-{
-	// AFFICHAGE DU FORMULAIRE DE CONTACT
-	default :
+switch(@$_GET['mode']) {
+    // AFFICHAGE DU FORMULAIRE DE CONTACT
+    default:
 
-		if(!$GLOBALS['domain']) exit;		
-		?>
+        if(!$GLOBALS['domain']) {
+            exit;
+        }
+        ?>
 
 
 		<script>
@@ -49,16 +50,16 @@ switch(@$_GET['mode'])
 					<div class="mod">
 
 						<!-- Question -->
-						<?
-						$chiffre = array('zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten');
-						$operators = array("+", "-");
-						$operator = $operators[array_rand($operators)];
-						$nb1 = rand(1, 5);//10
-						$nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 5);// on évite les résultats négatifs en cas de soustraction
-						eval('$question = strval('.$nb1.$operator.$nb2.');');
-						$question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
-						// On change le signe "-" moins de calcul en "−" lisible en accessibilité
-						?>
+						<?php
+                        $chiffre = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+        $operators = ["+", "-"];
+        $operator = $operators[array_rand($operators)];
+        $nb1 = rand(1, 5);//10
+        $nb2 = ($operator === '-') ? mt_rand(1, $nb1) : mt_rand(1, 5);// on évite les résultats négatifs en cas de soustraction
+        eval('$question = strval('.$nb1.$operator.$nb2.');');
+        $question_hash = hash('sha256', $question.$GLOBALS['pub_hash']);
+        // On change le signe "-" moins de calcul en "−" lisible en accessibilité
+        ?>
 						<div>
 							<label for="question">
 								<?php span('texte-label-question')?><span class="red">*</span> :
@@ -81,7 +82,7 @@ switch(@$_GET['mode'])
 					<!-- Bouton envoyer -->
 					<div class="fr mtm mbl">
 						<button type="submit" id="send" class="bt bold">
-							<?php _e(array("Send" => array("fr" => "Envoyer")))?>
+							<?php _e(["Send" => ["fr" => "Envoyer"]])?>
 							<i class="fa fa-mail-alt mlt" aria-hidden="true"></i>
 						</button>
 					</div>
@@ -167,57 +168,54 @@ switch(@$_GET['mode'])
 				});
 			});
 		</script>
-		<?php 
+		<?php
 
-	break;
-
-
-
-	// SCRIPT D'ENVOIE DE L'EMAIL
-	case 'send-mail':
-
-		//print_r($_REQUEST);
-
-		// Si on a posté le formulaire
-		if(isset($_POST["email-from"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"])// reponse pour éviter les bots qui remplisse tous les champs
-		{
-			include_once("../../../config.php");// Les variables
-
-			if($_SESSION["nonce_contact"] and $_SESSION["nonce_contact"] == $_POST["nonce_contact"])// Protection CSRF
-			{
-				if(filter_var($_POST["email-from"], FILTER_VALIDATE_EMAIL))// Email valide
-				{
-					if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
-					{
-						$from = ($_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $GLOBALS['email_contact']);
+    break;
 
 
-						$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email-from"]);
+
+        // SCRIPT D'ENVOIE DE L'EMAIL
+    case 'send-mail':
+
+        //print_r($_REQUEST);
+
+        // Si on a posté le formulaire
+        if(isset($_POST["email-from"]) and $_POST["message"] and isset($_POST["question"]) and !$_POST["reponse"]) {// reponse pour éviter les bots qui remplisse tous les champs
+            include_once("../../../config.php");// Les variables
+
+            if($_SESSION["nonce_contact"] and $_SESSION["nonce_contact"] == $_POST["nonce_contact"]) {// Protection CSRF
+                if(filter_var($_POST["email-from"], FILTER_VALIDATE_EMAIL)) {// Email valide
+                    if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"]) {// Captcha valide
+                        $from = ($_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $GLOBALS['email_contact']);
 
 
-						// Message
-						$message = (strip_tags($_POST["message"]));
-
-						$message .= "\n\n-------------------------------------------------------\n";
-
-						if($_POST['referer']) $message .= "Referer : ".htmlspecialchars($_POST['referer'])."\n";
-
-						$message .= "Consentement : ".htmlspecialchars($_POST["rgpd_text"])."\n";
-						$message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."\n";
-						$message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."\n";
-						$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."\n";
-						$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."\n";
+                        $subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email-from"]);
 
 
-						// header
-						$header = "From:".$GLOBALS['email_contact']."\r\n";// Pour une meilleure délivrabilité des mails
-						$header.= "Reply-To: ".$from."\r\n";
-						$header.= "Content-Type: text/plain; charset=utf-8\r\n";// utf-8 ISO-8859-1
+                        // Message
+                        $message = (strip_tags($_POST["message"]));
+
+                        $message .= "\n\n-------------------------------------------------------\n";
+
+                        if($_POST['referer']) {
+                            $message .= "Referer : ".htmlspecialchars($_POST['referer'])."\n";
+                        }
+
+                        $message .= "Consentement : ".htmlspecialchars($_POST["rgpd_text"])."\n";
+                        $message .= "IP du Visiteur : ".getenv("REMOTE_ADDR")."\n";
+                        $message .= "Host : ".gethostbyaddr($_SERVER["REMOTE_ADDR"])."\n";
+                        $message .= "IP du Serveur : ".getenv("SERVER_ADDR")."\n";
+                        $message .= "User Agent : ".getenv("HTTP_USER_AGENT")."\n";
 
 
-						if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))
-						{
-							?>
+                        // header
+                        $header = "From:".$GLOBALS['email_contact']."\r\n";// Pour une meilleure délivrabilité des mails
+                        $header.= "Reply-To: ".$from."\r\n";
+                        $header.= "Content-Type: text/plain; charset=utf-8\r\n";// utf-8 ISO-8859-1
+
+
+                        if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header)) {
+                            ?>
 							<script>
 								popin(__("Message sent"), 'nofade', 'popin', $("#send"));
 								document.title = title +' - '+ __("Message sent");
@@ -225,46 +223,41 @@ switch(@$_GET['mode'])
 								// Icone envoyer
 								$("#contact #send .fa-spin").removeClass("fa-spin fa-cog").addClass("fa-ok");
 							</script>
-							<?php 
-						}
-						else {
-							?>
+							<?php
+                        } else {
+                            ?>
 							<script>
 								error(__("Error sending email"), 'nofade', $("#send"));
 								document.title = title +' - '+ __("Error sending email");
 								
 								activation_form();// On rétablie le formulaire
 							</script>
-							<?php 
-							//echo error_get_last()['message']; print_r(error_get_last());
-						}
-					}
-					else
-					{
-						?>
+							<?php
+                            //echo error_get_last()['message']; print_r(error_get_last());
+                        }
+                    } else {
+                        ?>
 						<script>
 							error(__("Wrong answer to the verification question!"), 'nofade', $("#question"));
 							document.title = title +' - '+ __("Wrong answer to the verification question!");
 							
 							activation_form();// On rétablie le formulaire
 						</script>
-						<?php 
-					}
-				}
-				else
-				{
-					?>
+						<?php
+                    }
+                } else {
+                    ?>
 					<script>
 						error(__("Invalid email!"), 'nofade', $("#email-from"));
 						document.title = title +' - '+ __("Invalid email!");
 						
 						activation_form();// On rétablie le formulaire
 					</script>
-					<?php 
-				}
-			}
-		}
+					<?php
+                }
+            }
+        }
 
-	break;
+        break;
 }
 ?>

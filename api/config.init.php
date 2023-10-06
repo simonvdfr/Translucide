@@ -10,22 +10,24 @@ ini_set('display_errors', 'On');
 ini_set('allow_url_include', 'off');
 ini_set('default_charset', 'UTF-8');
 
-if(!isset($_SESSION))
-{
-	// Pour aider safari qui ne gère pas les cookies en iframe/cross domain
-	ini_set('session.use_cookies', 1);       // Use cookies to store session.
-	ini_set('session.use_only_cookies', 1);  // Force cookies for session (phpsessionID forbidden in URL)
-	ini_set('session.use_trans_sid', false); // Prevent php to use session ID in URL if cookies are disabled.
+if(!isset($_SESSION)) {
+    // Pour aider safari qui ne gère pas les cookies en iframe/cross domain
+    ini_set('session.use_cookies', 1);       // Use cookies to store session.
+    ini_set('session.use_only_cookies', 1);  // Force cookies for session (phpsessionID forbidden in URL)
+    ini_set('session.use_trans_sid', false); // Prevent php to use session ID in URL if cookies are disabled.
 
-	if(!isset($cron)) session_start();
+    if(!isset($cron)) {
+        session_start();
+    }
 }
 
 
 // Fixe la langue
-if(strstr($_SERVER['SERVER_NAME'], 'domaine.com')) 
-	$lang = $_SESSION['lang'] = 'en';
-else
-	$lang = $_SESSION['lang'] = 'fr';
+if(strstr($_SERVER['SERVER_NAME'], 'domaine.com')) {
+    $lang = $_SESSION['lang'] = 'en';
+} else {
+    $lang = $_SESSION['lang'] = 'fr';
+}
 
 // Langue alternative si une traduction n'existe pas
 $GLOBALS['lang_alt'] = 'en';
@@ -35,17 +37,21 @@ $GLOBALS['lang_alt'] = 'en';
 date_default_timezone_set('Europe/Paris');
 
 // Langue des dates .UTF8
-if($lang == 'fr') setlocale(LC_ALL, 'fr_FR.utf8', 'fra');
-else setlocale(LC_ALL, 'en_US.utf8');
+if($lang == 'fr') {
+    setlocale(LC_ALL, 'fr_FR.utf8', 'fra');
+} else {
+    setlocale(LC_ALL, 'en_US.utf8');
+}
 
 
 // Serveur local ou online ? DEV || PROD
 if(
-	$_SERVER['SERVER_ADDR'] == '127.0.0.1' or
-	strpos($_SERVER['SERVER_ADDR'], '::1') !== false)
-	$dev = true;
-else 
-	$dev = false;
+    $_SERVER['SERVER_ADDR'] == '127.0.0.1' or
+    strpos($_SERVER['SERVER_ADDR'], '::1') !== false) {
+    $dev = true;
+} else {
+    $dev = false;
+}
 
 
 // Variables de la base de données
@@ -58,21 +64,20 @@ $GLOBALS['table_tag'] = $GLOBALS['tt'] = $GLOBALS['db_prefix'].'tag';
 $GLOBALS['table_user'] = $GLOBALS['tu'] = $GLOBALS['db_prefix'].'user';
 
 if($dev) {// Dev local
-	$GLOBALS['db_server'] = '';
-	$GLOBALS['db_user'] = '';
-	$GLOBALS['db'] = '';
-	$GLOBALS['db_pwd'] = '';
-}
-else {
-	$GLOBALS['db_server'] = '';
-	$GLOBALS['db_user'] = '';
-	$GLOBALS['db'] = '';
-	$GLOBALS['db_pwd'] = '';
+    $GLOBALS['db_server'] = '';
+    $GLOBALS['db_user'] = '';
+    $GLOBALS['db'] = '';
+    $GLOBALS['db_pwd'] = '';
+} else {
+    $GLOBALS['db_server'] = '';
+    $GLOBALS['db_user'] = '';
+    $GLOBALS['db'] = '';
+    $GLOBALS['db_pwd'] = '';
 }
 
 
 // VARIABLES SITES
-$GLOBALS['language'] = array('fr');
+$GLOBALS['language'] = ['fr'];
 
 // charge le fichier translation.php dans le dossier du theme
 $GLOBALS['theme_translation'] = false;
@@ -84,16 +89,18 @@ $GLOBALS['theme'] = '';
 $GLOBALS['sitename'] = null;
 
 
-if($dev)// Dev local
-	$GLOBALS['scheme'] = '';
-else 
-	$GLOBALS['scheme'] = '';
+if($dev) {// Dev local
+    $GLOBALS['scheme'] = '';
+} else {
+    $GLOBALS['scheme'] = '';
+}
 
 
-if($dev)// Dev local
-	$GLOBALS['domain'] = '';
-else 
-	$GLOBALS['domain'] = '';
+if($dev) {// Dev local
+    $GLOBALS['domain'] = '';
+} else {
+    $GLOBALS['domain'] = '';
+}
 
 
 $GLOBALS['path'] = '';
@@ -112,10 +119,11 @@ $GLOBALS['offline'] = null;
 
 
 // Utilisation de librairie minifier
-if($dev)// Dev local
-	$GLOBALS['min'] = '';
-else 
-	$GLOBALS['min'] = '';//.min
+if($dev) {// Dev local
+    $GLOBALS['min'] = '';
+} else {
+    $GLOBALS['min'] = '';
+}//.min
 
 
 // Générer une page en statique html
@@ -165,40 +173,40 @@ $GLOBALS['plausible_path'] = '';// /js/script.file-downloads.js
 
 
 // Toolbox
-$GLOBALS['toolbox'] = array(
-	//"h2",
-	//"h3",
-	//"h4",
-	//"h5",
-	//"h6",
-	"bold",
-	"italic",
-	//"underline",
-	//"superscript",
-	//"fontSize",
-	//"color",
-	//"p",
-	//"blockquote",
-	//"q", => A finir
-	//"highlight",
-	//"grid",
-	//"insertUnorderedList",
-	//"justifyLeft",
-	//"justifyCenter",
-	//"justifyRight",
-	//"justifyFull",
-	//"InsertHorizontalRule",
-	//"viewsource",
-	//"icon",
-	"media",
-	//"figure",
-	//"video",// Lecture dans le site
-	//"videoLink",// Lien vers youtube
-	//"lang",
-	//"anchor",
-	//"bt",
-	"link"
-);
+$GLOBALS['toolbox'] = [
+    //"h2",
+    //"h3",
+    //"h4",
+    //"h5",
+    //"h6",
+    "bold",
+    "italic",
+    //"underline",
+    //"superscript",
+    //"fontSize",
+    //"color",
+    //"p",
+    //"blockquote",
+    //"q", => A finir
+    //"highlight",
+    //"grid",
+    //"insertUnorderedList",
+    //"justifyLeft",
+    //"justifyCenter",
+    //"justifyRight",
+    //"justifyFull",
+    //"InsertHorizontalRule",
+    //"viewsource",
+    //"icon",
+    "media",
+    //"figure",
+    //"video",// Lecture dans le site
+    //"videoLink",// Lien vers youtube
+    //"lang",
+    //"anchor",
+    //"bt",
+    "link"
+];
 
 // Nombre de couleur custom dans la css color-x
 $GLOBALS['nbcolor'] = 0;
@@ -238,52 +246,52 @@ $GLOBALS['default_auth'] = 'edit-public';// add-media-public
 $GLOBALS['user_info'] = null;
 
 // Niveaux d'authentification possible
-$GLOBALS['auth_level'] = array(
-	'edit-admin' => 'Managing admins',
-	'edit-user' => 'Managing users',
+$GLOBALS['auth_level'] = [
+    'edit-admin' => 'Managing admins',
+    'edit-user' => 'Managing users',
 
-	//'edit-config' => 'Edit Config',// A codé une admin de la config
+    //'edit-config' => 'Edit Config',// A codé une admin de la config
 
-	'edit-nav' => 'Edit menu',
+    'edit-nav' => 'Edit menu',
 
-	//'edit-header' => 'Edit header',// Pas utilisée pour le moment
-	//'edit-footer' => 'Edit footer',// Pas utilisée pour le moment
+    //'edit-header' => 'Edit header',// Pas utilisée pour le moment
+    //'edit-footer' => 'Edit footer',// Pas utilisée pour le moment
 
-	'add-media' => 'Send Files',
+    'add-media' => 'Send Files',
 
-	//'edit-media' => 'Edit Files',// Pas utilisée pour le moment
+    //'edit-media' => 'Edit Files',// Pas utilisée pour le moment
 
-	// Pour que les utilisateurs puissent ajouter du contenu au site
-	//'add-media-public' => 'Public file',
-	//'edit-public' => 'Public content',
-);
+    // Pour que les utilisateurs puissent ajouter du contenu au site
+    //'add-media-public' => 'Public file',
+    //'edit-public' => 'Public content',
+];
 
 
 // Type de contenu ajoutable
-$GLOBALS['add_content'] = array(
-	//"product" => ["fa" => "fa-basket", "tpl" => "product"],
-	"article" => ["fa" => "fa-rss", "tpl" => "article"],
-	//"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],
-	//"video" => ["fa" => "fa-video", "tpl" => "video"],
-	//"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
-	"page" => ["fa" => "fa-doc-text", "tpl" => "page"]
-);
+$GLOBALS['add_content'] = [
+    //"product" => ["fa" => "fa-basket", "tpl" => "product"],
+    "article" => ["fa" => "fa-rss", "tpl" => "article"],
+    //"event" => ["fa" => "fa-calendar-empty", "tpl" => "event"],
+    //"video" => ["fa" => "fa-video", "tpl" => "video"],
+    //"media" => ["fa" => "fa-file-pdf", "tpl" => "fichier"],
+    "page" => ["fa" => "fa-doc-text", "tpl" => "page"]
+];
 
 
 // Pour des noms de modele plus explicite dans le select
-$GLOBALS['tpl_name'] = array(
-	"home" => "Page accueil",
-	"article" => "Actualité",
-	"event" => "Évènement agenda",
-	"article-liste" => "Liste actualités - Agenda",
-);
+$GLOBALS['tpl_name'] = [
+    "home" => "Page accueil",
+    "article" => "Actualité",
+    "event" => "Évènement agenda",
+    "article-liste" => "Liste actualités - Agenda",
+];
 
 
 // Type de contenu ajoutable dans le menu
-$GLOBALS['add_menu'] = array(
-	//"article",
-	"page"
-);
+$GLOBALS['add_menu'] = [
+    //"article",
+    "page"
+];
 
 
 // Bouton en bas en layer
@@ -297,24 +305,24 @@ $GLOBALS['shortcut'] = false;
 
 
 // Type mime supporté pour l'upload
-$GLOBALS['mime_supported'] = array(
-	'image/jpg',
-	'image/jpeg',
-	'image/pjpeg',
-	'image/png',
-	'image/x-png',
-	'image/gif',
-	'image/webp',
-	'image/x-icon',
-	'image/svg',
-	'image/svg+xml',
-	//'video/webm',
-	//'video/mp4',
-	'application/pdf',
-	'application/zip',
-	'application/x-zip-compressed',
-	//'text/plain'
-);
+$GLOBALS['mime_supported'] = [
+    'image/jpg',
+    'image/jpeg',
+    'image/pjpeg',
+    'image/png',
+    'image/x-png',
+    'image/gif',
+    'image/webp',
+    'image/x-icon',
+    'image/svg',
+    'image/svg+xml',
+    //'video/webm',
+    //'video/mp4',
+    'application/pdf',
+    'application/zip',
+    'application/x-zip-compressed',
+    //'text/plain'
+];
 
 
 // Variables tailles images
@@ -356,7 +364,7 @@ $GLOBALS['jquery'] = $GLOBALS['path'].'api/jquery.min.js';// //ajax.googleapis.c
 
 $GLOBALS['jquery_ui'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js';
 
-$GLOBALS['jquery_ui_css'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.min.css';// cupertino flick smoothness base 
+$GLOBALS['jquery_ui_css'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.min.css';// cupertino flick smoothness base
 
 
 // Url pour faire un lien vers un tutoriel externe
@@ -364,24 +372,22 @@ $GLOBALS['tutoriel'] = null;
 
 
 // Filtre url autorisé
-$GLOBALS['filter_auth'] = array('page', 'user');
+$GLOBALS['filter_auth'] = ['page', 'user'];
 
 
 // Sécurité / défaut
 $id = $title = $description = $image = $tag = null;
 $mode = $uid = $error = $robots = $robots_data = $close = null;
-$GLOBALS['filter'] = array();
-$GLOBALS['translation'] = array();
-$GLOBALS['content'] = array();
+$GLOBALS['filter'] = [];
+$GLOBALS['translation'] = [];
+$GLOBALS['content'] = [];
 $GLOBALS['editkey'] = 1;
 $GLOBALS['home'] = $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path'];
 $GLOBALS['root'] = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['path'].'theme/'.$GLOBALS['theme'].($GLOBALS['theme']?'/':'');
 
 
 // Numéro de la page en cours
-if(isset($_REQUEST['page'])) $page = (int)$_REQUEST['page'];
-else $page = 1;
+$page = isset($_REQUEST['page']) ? (int)$_REQUEST['page'] : 1;
 
 // Nombre d'entré par page
 $num_pp = 20;
-?>

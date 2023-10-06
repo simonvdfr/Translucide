@@ -1,204 +1,203 @@
 <?php
-$add_translation = array(
-	"404 error : page not found" => array("fr" => "Erreur 404 : page introuvable"),
-	"Under Construction" => array("fr" => "En construction"),
-	"Site closing time" => array("fr" => "Heure de fermeture du site"),
+$add_translation = [
+    "404 error : page not found" => ["fr" => "Erreur 404 : page introuvable"],
+    "Under Construction" => ["fr" => "En construction"],
+    "Site closing time" => ["fr" => "Heure de fermeture du site"],
 
-	"Quick access" => array("fr" => "Accès rapide"),
-	"Skip to content" => array("fr" => "Aller au contenu"),
-	"Enhanced contrast" => array("fr" => "Contraste renforcé"),
-	"Browsing menu" => array("fr" => "Menu de navigation"),
-	"current page" => array("fr" => "page active"),
-	"Close" => array("fr" => "Fermer"),
+    "Quick access" => ["fr" => "Accès rapide"],
+    "Skip to content" => ["fr" => "Aller au contenu"],
+    "Enhanced contrast" => ["fr" => "Contraste renforcé"],
+    "Browsing menu" => ["fr" => "Menu de navigation"],
+    "current page" => ["fr" => "page active"],
+    "Close" => ["fr" => "Fermer"],
 
-	"Search" => array("fr" => "Recherche"),
-	"Next" => array("fr" => "Suivant"),
-	"Previous" => array("fr" => "Précédent"),
+    "Search" => ["fr" => "Recherche"],
+    "Next" => ["fr" => "Suivant"],
+    "Previous" => ["fr" => "Précédent"],
 
-	"Text" => array("fr" => "Texte"),
+    "Text" => ["fr" => "Texte"],
 
-	"Log in" => array("fr" => "Connexion"),
-	"Administrator Login" => array("fr" => "Connexion Administrateur"),
-	"Connection with" => array("fr" => "Connexion avec"),
-	"Connection error" => array("fr" => "Erreur de connexion"),
-	"Token error" => array("fr" => "Erreur de jeton"),
-	"Password error" => array("fr" => "Erreur de mot de passe"),
-	"Unknown user" => array("fr" => "Utilisateur inconnu"),
-	"Unable to find the user number" => array("fr" => "Impossible de trouver le numéro d'utilisateur"),
-	"Unable to find the access token" => array("fr" => "Impossible de trouver le jeton d'accès"),
-	"Bad credential" => array("fr" => "Vous n'avez pas le niveau d'accès requis"),
-	"Connection required" => array("fr" => "Connexion requise"),
-	"You are already connected" => array("fr" => "Vous êtes déjà connecté"),
+    "Log in" => ["fr" => "Connexion"],
+    "Administrator Login" => ["fr" => "Connexion Administrateur"],
+    "Connection with" => ["fr" => "Connexion avec"],
+    "Connection error" => ["fr" => "Erreur de connexion"],
+    "Token error" => ["fr" => "Erreur de jeton"],
+    "Password error" => ["fr" => "Erreur de mot de passe"],
+    "Unknown user" => ["fr" => "Utilisateur inconnu"],
+    "Unable to find the user number" => ["fr" => "Impossible de trouver le numéro d'utilisateur"],
+    "Unable to find the access token" => ["fr" => "Impossible de trouver le jeton d'accès"],
+    "Bad credential" => ["fr" => "Vous n'avez pas le niveau d'accès requis"],
+    "Connection required" => ["fr" => "Connexion requise"],
+    "You are already connected" => ["fr" => "Vous êtes déjà connecté"],
 
-	"Validate the connection in the popup" => array("fr" => "Validez la connexion dans la fenêtre qui vient de s'ouvrir"),
+    "Validate the connection in the popup" => ["fr" => "Validez la connexion dans la fenêtre qui vient de s'ouvrir"],
 
-	"My email" => array("fr" => "Mon courriel"),
-	"My password" => array("fr" => "Mon mot de passe"),
-	"Remember me" => array("fr" => "Se souvenir de moi"),
-	"Forgot your password" => array("fr" => "Mot de passe oublié"),
-	"Suggest a password" => array("fr" => "Suggérer un mot de passe"),
-	"Send password by mail" => array("fr" => "Envoyer le mot de passe par mail"),
-	"New Password" => array("fr" => "Nouveau mot de passe"),
-	"See password" => array("fr" => "Voir le mot de passe"),
-	"Not a member yet ?" => array("fr" => "Pas encore membre ?"),
-	"Sign up" => array("fr" => "Inscrivez-vous"),
-	"All fields are mandatory" => array("fr" => "Tous les champs sont obligatoires"),
-	"Expected format" => array("fr" => "Format attendu"),
-	"Invalid email" => array("fr" => "E-mail invalide"),
+    "My email" => ["fr" => "Mon courriel"],
+    "My password" => ["fr" => "Mon mot de passe"],
+    "Remember me" => ["fr" => "Se souvenir de moi"],
+    "Forgot your password" => ["fr" => "Mot de passe oublié"],
+    "Suggest a password" => ["fr" => "Suggérer un mot de passe"],
+    "Send password by mail" => ["fr" => "Envoyer le mot de passe par mail"],
+    "New Password" => ["fr" => "Nouveau mot de passe"],
+    "See password" => ["fr" => "Voir le mot de passe"],
+    "Not a member yet ?" => ["fr" => "Pas encore membre ?"],
+    "Sign up" => ["fr" => "Inscrivez-vous"],
+    "All fields are mandatory" => ["fr" => "Tous les champs sont obligatoires"],
+    "Expected format" => ["fr" => "Format attendu"],
+    "Invalid email" => ["fr" => "E-mail invalide"],
 
-
-	"List of contents" => array("fr" => "Liste des contenus"),
-	"Editing tutorial" => array("fr" => "Tutoriel édition"),
-
-	
-	"Add content" => array("fr" => "Ajouter un contenu"),
-	"Add page" => array("fr" => "Ajouter une page"),
-	"Add article" => array("fr" => "Ajouter une actualité"),
-	"Add event" => array("fr" => "Ajouter un évènement agenda"),
-	"Add media" => array("fr" => "Ajouter un média"),
-	"Add video" => array("fr" => "Ajouter une vidéo"),
-	"Add product" => array("fr" => "Ajouter un produit"),
-
-	"Add Item" => array("fr" => "Ajouter un élément"),
+    "List of contents" => ["fr" => "Liste des contenus"],
+    "Editing tutorial" => ["fr" => "Tutoriel édition"],
 
 
-	"Title" => array("fr" => "Titre"),
-	"Select template" => array("fr" => "Sélectionner un modèle"),
-	"Permanent link" => array("fr" => "Lien Permanent"),
-	"Regenerate address" => array("fr" => "Regénérer l'adresse"),
-	"Permanent link: 'index' if homepage" => array("fr" => "Lien permanent: 'index' si c'est la page d'accueil"),
-	"No permanent link for content" => array("fr" => "Pas de lien permanent pour le contenu"),
+    "Add content" => ["fr" => "Ajouter un contenu"],
+    "Add page" => ["fr" => "Ajouter une page"],
+    "Add article" => ["fr" => "Ajouter une actualité"],
+    "Add event" => ["fr" => "Ajouter un évènement agenda"],
+    "Add media" => ["fr" => "Ajouter un média"],
+    "Add video" => ["fr" => "Ajouter une vidéo"],
+    "Add product" => ["fr" => "Ajouter un produit"],
+
+    "Add Item" => ["fr" => "Ajouter un élément"],
 
 
-	"Page title" => array("fr" => "Titre de la page"),
-	"Description for search engines" => array("fr" => "Description pour les moteurs de recherche"),
-	"Formatted web address" => array("fr" => "Adresse web formaté"),
-	
-	"Template" => array("fr" => "Modèle de page"),
-	"Type of page" => array("fr" => "Type de page"),
-	"Creation date" => array("fr" => "Date de création"),
-	
-	"Image on social networks" => array("fr" => "Image sur les réseaux sociaux"),
-	
-	"Close the edit mode" => array("fr" => "Fermer le mode d'édition"),
-	"Activation status" => array("fr" => "Etat d'activation"),
+    "Title" => ["fr" => "Titre"],
+    "Select template" => ["fr" => "Sélectionner un modèle"],
+    "Permanent link" => ["fr" => "Lien Permanent"],
+    "Regenerate address" => ["fr" => "Regénérer l'adresse"],
+    "Permanent link: 'index' if homepage" => ["fr" => "Lien permanent: 'index' si c'est la page d'accueil"],
+    "No permanent link for content" => ["fr" => "Pas de lien permanent pour le contenu"],
 
 
-	"Home page" => array("fr" => "Page d'accueil"),
+    "Page title" => ["fr" => "Titre de la page"],
+    "Description for search engines" => ["fr" => "Description pour les moteurs de recherche"],
+    "Formatted web address" => ["fr" => "Adresse web formaté"],
 
-	"New window" => array("fr" => "Nouvelle fenêtre"),
+    "Template" => ["fr" => "Modèle de page"],
+    "Type of page" => ["fr" => "Type de page"],
+    "Creation date" => ["fr" => "Date de création"],
 
-	"january" => array("fr" => "janvier"),
-	"february" => array("fr" => "février"),
-	"march" => array("fr" => "mars"),
-	"april" => array("fr" => "avril"),
-	"may" => array("fr" => "mai"),
-	"june" => array("fr" => "juin"),
-	"july" => array("fr" => "juillet"),
-	"august" => array("fr" => "août"),
-	"september" => array("fr" => "septembre"),
-	"october" => array("fr" => "octobre"),
-	"november" => array("fr" => "novembre"),
-	"december" => array("fr" => "décembre"),
-	"st" => array("fr" => "er"),
+    "Image on social networks" => ["fr" => "Image sur les réseaux sociaux"],
 
-	"zero" => array("fr" => "zéro"),
-	"one" => array("fr" => "un"),
-	"two" => array("fr" => "deux"),
-	"three" => array("fr" => "trois"),
-	"four" => array("fr" => "quatre"),
-	"five" => array("fr" => "cinq"),
-	"six" => array("fr" => "six"),
-	"seven" => array("fr" => "sept"),
-	"eight" => array("fr" => "huit"),
-	"nine" => array("fr" => "neuf"),
-	"ten" => array("fr" => "dix"),
+    "Close the edit mode" => ["fr" => "Fermer le mode d'édition"],
+    "Activation status" => ["fr" => "Etat d'activation"],
 
 
-	"Media Library" => array("fr" => "Bibliothèque des médias"),
-	"Drag and drop a file here or click me" => array("fr" => "Glisser-déplacer un fichier ici ou cliquez-moi"),
-	"Delete file" => array("fr" => "Supprimer le fichier"),
-	"Media" => array("fr" => "Médias"),
-	"Images" => array("fr" => "Images"),
-	"Resized" => array("fr" => "Redimensionnées"),
-	"Files" => array("fr" => "Fichiers"),
-	"Specific" => array("fr" => "Spécifique"),
-	"Videos" => array("fr" => "Vidéos"),
-	"Audios" => array("fr" => "Audios"),
-	"Get resized image" => array("fr" => "Obtenir une image redimensionnée"),
-	"Copy to clipboard" => array("fr" => "Copier dans le presse papier"),
+    "Home page" => ["fr" => "Page d'accueil"],
 
-	"Size of source file unspecified" => array("fr" => "Taille du fichier source non précisée"),
-	"Unsupported file type" => array("fr" => "Type de fichier non pris en charge"),
-	"A file with the same name already exists" => array("fr" => "Un fichier avec le même nom existe déjà"),
-	
-	"Icon Library" => array("fr" => "Bibliothèque d'icône"),
+    "New window" => ["fr" => "Nouvelle fenêtre"],
 
+    "january" => ["fr" => "janvier"],
+    "february" => ["fr" => "février"],
+    "march" => ["fr" => "mars"],
+    "april" => ["fr" => "avril"],
+    "may" => ["fr" => "mai"],
+    "june" => ["fr" => "juin"],
+    "july" => ["fr" => "juillet"],
+    "august" => ["fr" => "août"],
+    "september" => ["fr" => "septembre"],
+    "october" => ["fr" => "octobre"],
+    "november" => ["fr" => "novembre"],
+    "december" => ["fr" => "décembre"],
+    "st" => ["fr" => "er"],
 
-	"Loading" => array("fr" => "Chargement"),
-
-
-	"Save" => array("fr" => "Enregistrer"),
-	"Add" => array("fr" => "Ajouter"),
-	"Delete" => array("fr" => "Supprimer"),
-	"Archive" => array("fr" => "Archiver"),
-
-
-	"Show user info" => array("fr" => "Voir les infos utilisateur"),
-
-	"Register" => array("fr" => "S'inscrire"),
-	"Account created" => array("fr" => "Compte créé"),
-	"User deleted" => array("fr" => "Utilisateur supprimé"),
-
-	"Add user" => array("fr" => "Ajouter un utilisateur"),
-	"List of user" => array("fr" => "Liste des utilisateur"),
-	"My profil" => array("fr" => "Mon profil"),
-
-	"Your profile" => array("fr" => "Votre profil"),
-	"Profile" => array("fr" => "Profil"),
-
-	"State" => array("fr" => "Etat"),
-	"Authorization" => array("fr" => "Autorisation"),
-	"Name" => array("fr" => "Pseudo"),
-	"Password" => array("fr" => "Mot de passe"),
-	"Updated the" => array("fr" => "Mise à jour le"),
-	"Add the" => array("fr" => "Ajouté le"),
-
-	"Active" => array("fr" => "Actif"),
-	"Moderate" => array("fr" => "Modérer"),
-	"User email" => array("fr" => "Mail utilisateur"),
-	"Blacklist" => array("fr" => "Liste noire"),
-	"Deactivate" => array("fr" => "Désactivé"),
-
-	"New user to activate" => array("fr" => "Nouvel utilisateur a activé"),
-	"User profile" => array("fr" => "Profil de l'utilisateur"),
+    "zero" => ["fr" => "zéro"],
+    "one" => ["fr" => "un"],
+    "two" => ["fr" => "deux"],
+    "three" => ["fr" => "trois"],
+    "four" => ["fr" => "quatre"],
+    "five" => ["fr" => "cinq"],
+    "six" => ["fr" => "six"],
+    "seven" => ["fr" => "sept"],
+    "eight" => ["fr" => "huit"],
+    "nine" => ["fr" => "neuf"],
+    "ten" => ["fr" => "dix"],
 
 
-	"Managing admins" => array("fr" => "Gestion des admins"),
-	"Managing users" => array("fr" => "Gestion des utilisateurs"),
+    "Media Library" => ["fr" => "Bibliothèque des médias"],
+    "Drag and drop a file here or click me" => ["fr" => "Glisser-déplacer un fichier ici ou cliquez-moi"],
+    "Delete file" => ["fr" => "Supprimer le fichier"],
+    "Media" => ["fr" => "Médias"],
+    "Images" => ["fr" => "Images"],
+    "Resized" => ["fr" => "Redimensionnées"],
+    "Files" => ["fr" => "Fichiers"],
+    "Specific" => ["fr" => "Spécifique"],
+    "Videos" => ["fr" => "Vidéos"],
+    "Audios" => ["fr" => "Audios"],
+    "Get resized image" => ["fr" => "Obtenir une image redimensionnée"],
+    "Copy to clipboard" => ["fr" => "Copier dans le presse papier"],
 
-	"Edit Config" => array("fr" => "Modifier la config"),
-	
-	"Edit menu" => array("fr" => "Edition du menu"),
-	"Edit header" => array("fr" => "Modifier l'en-tête"),
-	"Edit footer" => array("fr" => "Modifier le pied de page"),
+    "Size of source file unspecified" => ["fr" => "Taille du fichier source non précisée"],
+    "Unsupported file type" => ["fr" => "Type de fichier non pris en charge"],
+    "A file with the same name already exists" => ["fr" => "Un fichier avec le même nom existe déjà"],
 
-	"Send Files" => array("fr" => "Envoyer des fichiers"),
-	"Edit Files" => array("fr" => "Modifier les fichiers"),
-
-	"Edit page" => array("fr" => "Edition des pages"),
-	"Edit article" => array("fr" => "Edition des articles"),
-	"Edit product" => array("fr" => "Edition des produits"),
-	"Edit video" => array("fr" => "Edition des vidéo"),
-
-	"Public content" => array("fr" => "Contenu public"),
-	"Public file" => array("fr" => "Dossier public"),
-
-	"Page archived, redirecting" => array("fr" => "Page archivée, redirection en cours"),
-	"Page deleted" => array("fr" => "Page supprimée"),
-	"Page deleted, redirecting" => array("fr" => "Page supprimée, redirection en cours"),
+    "Icon Library" => ["fr" => "Bibliothèque d'icône"],
 
 
-	"Log out" => array("fr" => "Se déconnecter")
-);
-?>
+    "Loading" => ["fr" => "Chargement"],
+
+
+    "Save" => ["fr" => "Enregistrer"],
+    "Add" => ["fr" => "Ajouter"],
+    "Delete" => ["fr" => "Supprimer"],
+    "Archive" => ["fr" => "Archiver"],
+
+
+    "Show user info" => ["fr" => "Voir les infos utilisateur"],
+
+    "Register" => ["fr" => "S'inscrire"],
+    "Account created" => ["fr" => "Compte créé"],
+    "User deleted" => ["fr" => "Utilisateur supprimé"],
+
+    "Add user" => ["fr" => "Ajouter un utilisateur"],
+    "List of user" => ["fr" => "Liste des utilisateur"],
+    "My profil" => ["fr" => "Mon profil"],
+
+    "Your profile" => ["fr" => "Votre profil"],
+    "Profile" => ["fr" => "Profil"],
+
+    "State" => ["fr" => "Etat"],
+    "Authorization" => ["fr" => "Autorisation"],
+    "Name" => ["fr" => "Pseudo"],
+    "Password" => ["fr" => "Mot de passe"],
+    "Updated the" => ["fr" => "Mise à jour le"],
+    "Add the" => ["fr" => "Ajouté le"],
+
+    "Active" => ["fr" => "Actif"],
+    "Moderate" => ["fr" => "Modérer"],
+    "User email" => ["fr" => "Mail utilisateur"],
+    "Blacklist" => ["fr" => "Liste noire"],
+    "Deactivate" => ["fr" => "Désactivé"],
+
+    "New user to activate" => ["fr" => "Nouvel utilisateur a activé"],
+    "User profile" => ["fr" => "Profil de l'utilisateur"],
+
+
+    "Managing admins" => ["fr" => "Gestion des admins"],
+    "Managing users" => ["fr" => "Gestion des utilisateurs"],
+
+    "Edit Config" => ["fr" => "Modifier la config"],
+
+    "Edit menu" => ["fr" => "Edition du menu"],
+    "Edit header" => ["fr" => "Modifier l'en-tête"],
+    "Edit footer" => ["fr" => "Modifier le pied de page"],
+
+    "Send Files" => ["fr" => "Envoyer des fichiers"],
+    "Edit Files" => ["fr" => "Modifier les fichiers"],
+
+    "Edit page" => ["fr" => "Edition des pages"],
+    "Edit article" => ["fr" => "Edition des articles"],
+    "Edit product" => ["fr" => "Edition des produits"],
+    "Edit video" => ["fr" => "Edition des vidéo"],
+
+    "Public content" => ["fr" => "Contenu public"],
+    "Public file" => ["fr" => "Dossier public"],
+
+ "Page archived, redirecting" => ["fr" => "Page archivée, redirection en cours"],
+ "Page deleted" => ["fr" => "Page supprimée"],
+    "Page deleted, redirecting" => ["fr" => "Page supprimée, redirection en cours"],
+
+
+    "Log out" => ["fr" => "Se déconnecter"]
+];
+

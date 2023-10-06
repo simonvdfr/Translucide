@@ -1,4 +1,6 @@
-<?php if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) {
+    exit;
+}?>
 
 
 <header role="banner">
@@ -23,18 +25,18 @@
 			
 			<ul id="main-navigation" class="grid up">
 				<?php
-				// Extraction du menu
-				foreach($GLOBALS['nav'] as $cle => $val)
-				{
-					// Menu sélectionné si page en cours ou article (actu)
-					if(get_url() == $val['href'] or (@$res['type'] == "article" and $val['href'] == "actualites"))
-						$selected = " selected";
-					else
-						$selected = "";
+                // Extraction du menu
+                foreach($GLOBALS['nav'] as $cle => $val) {
+                    // Menu sélectionné si page en cours ou article (actu)
+                    if(get_url() == $val['href'] or (@$res['type'] == "article" and $val['href'] == "actualites")) {
+                        $selected = " selected";
+                    } else {
+                        $selected = "";
+                    }
 
-					echo"<li><a href=\"".make_url($val['href'], array("domaine" => true))."\"".($val['id']?" id='".$val['id']."'":"")."".($val['target']?" target='".$val['target']."'":"")." class='".$selected."'".($selected?' title="'.$val['text'].' - '.__("current page").'"':'').">".$val['text']."</a></li>";
-				}
-				?>
+                    echo"<li><a href=\"".make_url($val['href'], ["domaine" => true])."\"".($val['id']?" id='".$val['id']."'":"")."".($val['target']?" target='".$val['target']."'":"")." class='".$selected."'".($selected?' title="'.$val['text'].' - '.__("current page").'"':'').">".$val['text']."</a></li>";
+                }
+?>
 			</ul>
 
 		</nav>

@@ -1,5 +1,6 @@
-<?php 
-if(!$GLOBALS['domain']) exit;
+<?php
+if(!$GLOBALS['domain']) {
+    exit;
+}
 
 include_once("article.php");
-?>

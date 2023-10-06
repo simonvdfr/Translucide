@@ -1,4 +1,6 @@
-<?php if(!$GLOBALS['domain']) exit;?>
+<?php if(!$GLOBALS['domain']) {
+    exit;
+}?>
 
 <footer role="contentinfo">
 
@@ -19,14 +21,13 @@
 			<!--Va chercher les dernieres actu-->
 			<ul class="unstyled pan">
 			<?php
-			$sel_actu = $connect->query("SELECT * FROM ".$tc." WHERE (type='article' OR type='event') AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
-			while($res_actu = $sel_actu->fetch_assoc())
-			{
-				?>
+            $sel_actu = $connect->query("SELECT * FROM ".$tc." WHERE (type='article' OR type='event') AND lang='".$lang."' AND state='active' ORDER BY date_insert DESC LIMIT 0, 3");
+while($res_actu = $sel_actu->fetch_assoc()) {
+    ?>
 				<li class="mbs"><i class="fa-li fa fa-fw fa-<?=($res_actu['type']=='article'?'rss':'calendar-empty')?> fl mrt"></i> <a href="<?=make_url($res_actu['url']);?>" class="tdn" style="color: black;"><?=$res_actu['title']?></a></li>
 				<?php
-			}
-			?>
+}
+?>
 			</ul>
 
 		</div>
