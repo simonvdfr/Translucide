@@ -8,5 +8,8 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.34",
         "phpstan/phpstan": "^1.10"
-    }
+    },
+  "require": {
+    "ext-json": "*"
+  }
 }
