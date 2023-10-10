@@ -492,7 +492,7 @@ switch(@$_GET['mode'])
 							CREATE TABLE IF NOT EXISTS `".$GLOBALS['table_user']."` (
 								`id` bigint(20) NOT NULL AUTO_INCREMENT,
 								`state` varchar(20) NOT NULL DEFAULT 'active',
-								`auth` varchar(255) NOT NULL,
+								`auth` text NOT NULL,
 								`name` varchar(60) DEFAULT NULL,
 								`email` varchar(100) NOT NULL,
 								`info` text,
