@@ -342,7 +342,7 @@ if(!$ajax)
 
 
 		<?php if(@$GLOBALS['plausible']) { ?>
-		<script async defer data-domain="<?=@$GLOBALS['plausible']?>" src="https://plausible.io/js/plausible.js"></script>
+		<script async defer data-domain="<?=@$GLOBALS['plausible']?>" src="https://plausible.io<?=(@$GLOBALS['plausible_path']?@$GLOBALS['plausible_path']:'/js/plausible.js')?>"></script>
 		<?php }?>
 
 		<?php if(@$GLOBALS['google_analytics']) { ?>
