@@ -1809,7 +1809,7 @@ access_check = function(file)
 		}
 
 		// DIV avec texte
-		if($this[0].nodeName == 'DIV' && $this.text() != '' && !$this.hasClass("highlight") && !$this.hasClass("grid"))
+		if($this[0].nodeName == 'DIV' && $this.text() != '' && !$this.hasClass("highlight") && !$this.hasClass("grid") && !$this.parent().hasClass("grid") )
 		{
 			$this.addClass("access_div");
 			++num_div_text;
