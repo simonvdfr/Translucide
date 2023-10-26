@@ -42,6 +42,7 @@ function encode($value, $separator = "-", $pass = null)
 		$value = strtolower(strtr(mb_convert_encoding($value, 'ISO-8859-1', 'UTF-8'), implode($from), implode($to)));// Supp les caractères indésirables
 
 		$value = trimer($value, " \t\n\r\0\x0B\xC2\xA0");// Supprime les espaces et espaces insecable de début et fin
+		$value = preg_replace('/\t+/', $separator, $value);// Remplace les tabulations
 		$value = preg_replace('/ {2,}/', $separator, $value);// Remplace les double espaces
 		$value = preg_replace('/ /', $separator, $value);// Remplace les espaces simple
 		//$value = preg_replace('/\xa0/', $separator, $value);// Remplace les espaces insecable [\xc2\xa0]
