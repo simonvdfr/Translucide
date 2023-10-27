@@ -3645,17 +3645,46 @@ $(function()
 
 
 	/************** MODULE DUPLICABLE **************/
+	// Change la clé
+	edit_key = function()
+	{		
+		// Modifie les cles
+		$("[class*='editable']", this).each(function() {
+			old_key = $(this).attr("id");
+			if(old_key == undefined) 
+				old_key = $("[id*='" + module + "-']", this).attr("id");
+
+			// Pour les inputs editable
+			if($(this).attr("placeholder") != undefined) 
+				$("#" + old_key).attr("placeholder", $(this).attr("placeholder").replace("-0", "-"+ new_key));
+			
+			// Change l'id
+			$("#" + old_key).attr({
+				id: old_key.replace("-0", "-"+ new_key),
+				src: ""
+			});
+		});
+
+		// Relance les events d'edition
+		editable_event();
+		editable_media_event();
+		editable_href_event();
+	}
+
+	// Ajoute un module
 	add_module = function(event)
 	{
 		module = $(event).parent().prev("ul, ol").attr("id");
 
 		// On regarde qu'elle type d’élément éditable existe pour récupérer l'id le plus grand
-		if($("#" + module + " li .editable").length) var elem = $("#" + module + " li .editable");
-		else if($("#" + module + " li .editable-media").length) var elem = $("#" + module + " li .editable-media");
+		if($("#" + module + " li .editable").length) 
+			var elem = $("#" + module + " li .editable");
+		else if($("#" + module + " li .editable-media").length) 
+			var elem = $("#" + module + " li .editable-media");
 
 		// Crée un id unique (dernier id le plus grand + 1)
 		//key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1; Ne tien pas compte de l'ordre des id
-		var key = $.map(elem, function(k) {
+		new_key = $.map(elem, function(k) {
 			return parseInt(k.id.match(/(\d+)(?!.*\d)/));//Récupère le dernier digit de la chaine
 		}).sort(function(a, b) {
 			return(b-a); // reverse sort : tri les id pour prendre le dernier (le plus grand)
@@ -3666,31 +3695,12 @@ $(function()
 		$(".editable-media").off(".editable-media");
 		$(".editable-href").off(".editable-href");
 
-		// Crée un block
-		$("#" + module + " > li:last-child").clone().prependTo("#" + module).show("400", function()
-		{
-			// Modifie les cles
-			$("[class*='editable']", this).each(function() {
-				old_key = $(this).attr("id");
-				if(old_key == undefined) 
-					old_key = $("[id*='" + module + "-']", this).attr("id");
-
-				// Pour les inputs editable
-				if($(this).attr("placeholder") != undefined) 
-					$("#" + old_key).attr("placeholder", $(this).attr("placeholder").replace("-0", "-"+ key));
-				
-				// Change l'id
-				$("#" + old_key).attr({
-					id: old_key.replace("-0", "-"+ key),
-					src: ""
-				});
-			});
-
-			// Relance les events d'edition
-			editable_event();
-			editable_media_event();
-			editable_href_event();
-		});
+		if($("#"+module).hasClass("end"))
+			// Crée un block à la fin
+			$("#" + module + " > li:last-child").clone().insertBefore("#" + module + " > li:last-child").show("400", edit_key);
+		else
+			// Crée un block au début
+			$("#" + module + " > li:last-child").clone().prependTo("#" + module).show("400", edit_key);
 	}
 
 	// Rends déplaçables les blocs
@@ -3740,9 +3750,18 @@ $(function()
 	});
 	$(".module .animation").removeClass("animation fire");
 
-	// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
-	$(".module").after("<div class='module-bt'><a href='javascript:move_module();'><i class='fa fa-fw fa-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus'></i><span> "+__("Add a module")+"</span></a></div>");
-	
+	// Ajoute les boutons de mobule
+	$(".module", this).each(function() {
+		// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
+		$(this).after("<div class='module-bt'"+($(this).hasClass("end")?" style='top:unset;bottom:0;'":"")+"><a href='javascript:move_module();'><i class='fa fa-fw fa-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus'></i><span> "+__("Add a module")+"</span></a></div>");
+
+		// Ajoute une marge pour pas que les boutons d'ajout se superpose avec les blocs
+		if($(this).hasClass("end"))		
+			$(this).css("padding-bottom","4rem");// Bouton en bas
+		else				
+			$(this).css("padding-top","5rem");// Bouton en haut
+	});
+
 	// Force le parent en relatif pour bien positionner les boutons d'ajout
 	$(".module-bt").parent().addClass("relative");
 

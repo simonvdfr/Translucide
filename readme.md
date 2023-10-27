@@ -101,6 +101,8 @@ Note : pour un site accessible (RGAA) vous devez désactiver les raccourcis clav
 	</ul> 	
 	~~~~
 
+	- Si vous ajoutez la class `end` au UL qui contient la class `module`, le bouton d'ajout de modules se positionnera en bas de la liste des modules, et les nouveaux modules ajoutés s'ajouteront à la fin et non au début.
+
 ## A faire à la mise en ligne
 - minifiez fichiers js et css
 - dans `config.php` :
