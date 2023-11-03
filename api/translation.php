@@ -32,7 +32,7 @@ $add_translation = array(
 
 	"Validate the connection in the popup" => array("fr" => "Validez la connexion dans la fenêtre qui vient de s'ouvrir"),
 
-	"My email" => array("fr" => "Mon e-mail"),
+	"My email" => array("fr" => "Mon courriel"),
 	"My password" => array("fr" => "Mon mot de passe"),
 	"Remember me" => array("fr" => "Se souvenir de moi"),
 	"Forgot your password" => array("fr" => "Mot de passe oublié"),
@@ -141,6 +141,7 @@ $add_translation = array(
 	"Save" => array("fr" => "Enregistrer"),
 	"Add" => array("fr" => "Ajouter"),
 	"Delete" => array("fr" => "Supprimer"),
+	"Archive" => array("fr" => "Archiver"),
 
 
 	"Show user info" => array("fr" => "Voir les infos utilisateur"),
@@ -193,6 +194,8 @@ $add_translation = array(
 	"Public content" => array("fr" => "Contenu public"),
 	"Public file" => array("fr" => "Dossier public"),
 
+	"Page archived, redirecting" => array("fr" => "Page archivée, redirection en cours"),
+	"Page deleted" => array("fr" => "Page supprimée"),
 	"Page deleted, redirecting" => array("fr" => "Page supprimée, redirection en cours"),
 
 

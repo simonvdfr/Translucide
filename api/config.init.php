@@ -161,6 +161,7 @@ $GLOBALS['matomo_id'] = '1';
 
 // https://plausible.io
 $GLOBALS['plausible'] = '';// $GLOBALS['domain']
+$GLOBALS['plausible_path'] = '';// /js/script.file-downloads.js
 
 
 // Toolbox

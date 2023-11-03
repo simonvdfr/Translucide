@@ -11,7 +11,7 @@
 
 J'ai créé le CMS Translucide pour répondre à certains besoins personnels que j'ai en tant que développeur et intégrateur, mais aussi pour permettre aux clients de modifier plus simplement leur site sans casser le travail graphique fait en amont.
 
-En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel, le tout avec le moins de dépendance possible (uniquement jQuery, et pour l'administration jQuery UI & Font Awesome) et le plus éprouvé possible (php, mysql, jquery). Le moteur du site tient en très peu de fichiers, et pourtant il fait déjà pas mal de choses.
+En clair je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution (avec seulement 2 requêtes pour rapatrier le contenu, la tête et pied de page), qui va plus à l'essentiel, le tout avec le moins de dépendance possible (uniquement jQuery, et pour l'administration jQuery UI & Font Awesome) et le plus éprouvé possible (PHP, mariadb/MySQL, jQuery). Le moteur du site tient dans très peu de fichiers (moins de 50 fichiers, il pèse 1 mo avec le thème par défaut), et pourtant gère le multilingue, permet d'éditer le contenu en direct, sans administration complexe. Il propose aussi les outils de base pour un bon SEO, pour optimiser les images et contrôler l'accessibilité du contenu.
 
 ## Installation
 - Décompressez les fichiers du site sur votre FTP et avec votre navigateur allez à l'adresse où se trouve `index.php` (Attention, si vous copiez-collez ces fichiers, pensez à copier également les fichiers cachés)
@@ -101,6 +101,8 @@ Note : pour un site accessible (RGAA) vous devez désactiver les raccourcis clav
 	</ul> 	
 	~~~~
 
+	- Si vous ajoutez la class `end` au UL qui contient la class `module`, le bouton d'ajout de modules se positionnera en bas de la liste des modules, et les nouveaux modules ajoutés s'ajouteront à la fin et non au début.
+
 ## A faire à la mise en ligne
 - minifiez fichiers js et css
 - dans `config.php` :
@@ -169,4 +171,4 @@ Le dossier `plugin` est plus fait pour des fonctions génériques pas forcément
 Le processus est plus fait pour qu'un graphiste|intégrateur ou/et un développeur web construisent une template simple en HTML et y intégrent les 4/5 balises de contenu type là où ils veulent que ça soit éditable. Le CMS fait le reste pour que l'utilisateur final puisse modifier en live son site avec le moins de clic possible.
 
 ### Est-il multiplate-forme et responsive ?
-Autant que possible ! Nous utilisons <a href="https://www.browserstack.com">BrowserStack</a> pour faire nos tests.
+Autant que possible ! Nous utilisons <a href="https://www.browserstack.com">BrowserStack</a> pour faire nos tests sur plus de 15 plateformes différentes (combinaison de systèmes d'exploitation et navigateurs web) pour que nos sites puissent fonctionner sur des périphériques qui ont plus de 10 ans.

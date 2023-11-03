@@ -4,9 +4,11 @@ if(typeof dev == 'undefined') dev = false;
 // Traduction
 add_translation({
 	"Save" : {"fr" : "Enregistrer"},
+	"Archive" : {"fr" : "Archiver"},
+	"Archive the page" : {"fr" : "Archiver la page"},
 	"Delete" : {"fr" : "Supprimer"},
 	"Delete the page" : {"fr" : "Supprimer la page"},
-	"Warning, this will permanently delete the page!" : {"fr" : "Attention, ceci supprimera définitivement <b>la page</b> !"},
+	"Warning, this will permanently delete the page" : {"fr" : "Attention, ceci supprimera définitivement la page"},
 	"Also remove media from content" : {"fr" : "Supprimer également les médias présents dans le contenu"},
 	"The changes are not saved" : {"fr" : "Les modifications ne sont pas enregistrées"},
 	"Cancel" : {"fr" : "Annuler"},	
@@ -334,6 +336,9 @@ range_selects_single_node = function(range) {
 }
 
 selected_element = function(range) {
+	
+	// @todo le cas nodeType === 3 ne prend qu'un node en compte et pas toutes la selection
+	
 	if (range_selects_single_node(range))// La sélection comprend un seul élément
 		return range.startContainer.childNodes[range.startOffset];
 	else if (range.startContainer.nodeType === 3)// La sélection commence à l'intérieur d'un noeud de texte, donc obtenir son parent
@@ -355,6 +360,11 @@ selection = function() {
 		if(typeof memo_range === 'undefined') memo_range = null;
 		if(typeof memo_node === 'undefined') memo_node = null;
 	}
+
+	//if(dev) console.log("memo_selection", memo_selection);
+	//if(dev) console.log("memo_range", memo_range);
+	//if(dev) console.log("memo_node", memo_node);
+	//if(dev) console.log("memo_range.cloneContents().querySelectorAll('*')", memo_range.cloneContents().querySelectorAll('*'));
 }
 
 
@@ -790,18 +800,80 @@ highlight = function(){
 			}
 		}
 	}
-	else {
+	else 
+	{
 		if(dev) console.log("highlight");
 
 		$("#tool-highlight").addClass("checked");
-	
-		var node = $(memo_node);
+			
+		// Si plus d'un node selectionné on utilise la méthode complexe
+		if(memo_range.cloneContents().querySelectorAll('*').length>1)
+		{
+			if(dev) console.log("highlight multiple node");
+			
+			// Si le parent est un ul on wrap dans le highlight et stop l'execution
+			//if(!$(memo_range.commonAncestorContainer).hasClass("editable"))
+			if(memo_range.commonAncestorContainer.nodeName == "UL")
+			{
+				if(dev) console.log("highlight parent node");
 
-		// Si l'élément n'est pas un P (un a ou b par exemple), on prend l'élément du dessu
-		if($(memo_node).prop("tagName") != "P" && $(memo_node).parent().prop("tagName") == "P") 
-			node = $(memo_node).parent();
+				$(memo_range.commonAncestorContainer).wrap('<div class="highlight"></div>');
 
-		node.wrap('<div class="highlight"></div>');
+				return;
+			}
+
+			// Contenu parent éditable
+			var commonAncestorContainer = memo_range.commonAncestorContainer;
+
+			// Mémorise la selection pour connaitre la position des nodes de début et de fin de la selection
+			var clone_range = memo_range.cloneRange();
+			//if(dev) console.log("clone_range", clone_range);
+
+			// Etand la selection au node qui entoure la selection de début et de fin
+			memo_range.setStartBefore(memo_range.startContainer);
+			memo_range.setEndAfter(memo_range.endContainer);
+
+			// Création du div avec la class highlight
+			var highlight = document.createElement("div");
+			highlight.className = "highlight";
+
+			// Déplace le contenu selectioné dans le div highlight
+			highlight.appendChild(memo_range.extractContents());
+			
+			// Inject le div highlight avec le contenu a l'emplacement de la selection
+			memo_range.insertNode(highlight);
+
+			// Supprime les nodes qui contenais le début et fin de selection car ils restent en resident dans la page (ils ne sont pas extrait, seul le texte et node dans la selection l'est)
+			// Regarde aussi si le parent supprimé n'est pas le bloc éditable, mais bien l'élément restant
+			if(clone_range.startContainer.parentNode == commonAncestorContainer) 
+				clone_range.startContainer.remove();
+			else if(!$(clone_range.startContainer).hasClass("editable"))
+				clone_range.startContainer.parentNode.remove();
+			
+			if(clone_range.endContainer.parentNode == commonAncestorContainer)
+				clone_range.endContainer.remove();
+			else if(!$(clone_range.endContainer).hasClass("editable"))
+				clone_range.endContainer.parentNode.remove();
+
+			// Clean les range
+			//memo_selection.removeAllRanges();
+			//memo_selection.addRange(clone);
+
+		}
+		else// Qu'un node selectionnée on le wrap dans le highlight
+		{
+			if(dev) console.log("highlight one node");
+
+			var node = $(memo_node);
+
+			// Si l'élément n'est pas un P (un a ou b par exemple), on prend l'élément du dessu
+			if($(memo_node).prop("tagName") != "P" && $(memo_node).parent().prop("tagName") == "P") {
+				if(dev) console.log("parent");
+				node = $(memo_node).parent();
+			}
+			
+			node.wrap('<div class="highlight"></div>');
+		}
 	}
 }
 
@@ -1737,7 +1809,7 @@ access_check = function(file)
 		}
 
 		// DIV avec texte
-		if($this[0].nodeName == 'DIV' && $this.text() != '' && !$this.hasClass("highlight") && !$this.hasClass("grid"))
+		if($this[0].nodeName == 'DIV' && $this.text() != '' && !$this.hasClass("highlight") && !$this.hasClass("grid") && !$this.parent().hasClass("grid") )
 		{
 			$this.addClass("access_div");
 			++num_div_text;
@@ -2189,8 +2261,8 @@ $(function()
 	}
 
 	// Ajout de l'état de la page
-	if(state == "deactivate") $("#admin-bar #state-content").prop("checked", false);
-	else $("#admin-bar #state-content").prop("checked", true);
+	if(state == "active") $("#admin-bar #state-content").prop("checked", true);
+	else $("#admin-bar #state-content").prop("checked", false);
 
 	// Ouverture de l'édition du title si en mode responsive
 	$("#meta-responsive i").on("click",	function() {
@@ -2699,23 +2771,24 @@ $(function()
 		}
 	}
 
-	// Si l'élément précédent est un highlight ça ne le duplique pas pour le nouvelle élément
-	clean_highlight = function(selector) {		
-		if(selector.closest(".highlight").length) {
-			if(dev) console.log("clean_highlight");
-			// Si l'élément précédent est vide on le supprime et on focus dans un nouveau <p> après le bloc highlight
-			if(selector.prev().html() == "")
+	// Si l'élément parent à la class ça ne le duplique pas pour le nouvelle élément, on sort du bloc (highlight|grid)
+	clean_return = function(theClass, selector) {		
+		if(selector.closest(theClass).length) {
+			if(dev) console.log("clean_return");
+			
+			// Si l'élément précédent est vide on le supprime et on focus dans un nouveau <p> après le bloc avec la class
+			if(selector.prev().html() == "" || selector.prev().html() == '<br class="nobr">')
 			{
-				selector.closest(".highlight").after(p = $("<p>"+selector.html()+"</p>"));// Créer un <p> après le highlight 
+				selector.closest(theClass).after(p = $("<p>"+selector.html()+"</p>"));// Créer un <p> après le bloc avec la class 
 
 				selector.prev().remove();// Supprime
 				selector.remove();// Supprime
 
-				empty_focus(p[0]);// Focus dans le nouveau <p> après le highlight
+				empty_focus(p[0]);// Focus dans le nouveau <p> après le bloc avec la class
 			}
 
-			//selector.closest(".highlight")[0].nextElementSibling
-			//selector.removeAttr("class");
+			//selector.closest(theClass)[0].nextElementSibling
+			//selector.removeAttr(theClass);
 		}
 	}
 
@@ -2821,13 +2894,19 @@ $(function()
 		
 		// Action sur les zone éditable
 		$(".editable").on({
-			"focus.editable": function() {// On positionne la toolbox
+			"focus.editable": function() // On positionne la toolbox
+			{
+				//if(dev) console.log("focus");
+
 				memo_focus = this;// Pour memo le focus en cours
 
 				// Ajoute un <p> si vide
 				init_paragraph(this);
 			},
-			"blur.editable": function() {// On clique hors du champ éditable
+			"blur.editable": function() // On clique hors du champ éditable
+			{
+				//if(dev) console.log("blur");
+
 				if($("#txt-tool:not(:hover)").val()=="") {
 					$("#txt-tool").hide();// ferme la toolbox
 					$window.off(".scroll-toolbox");// Désactive le scroll de la toolbox
@@ -2848,11 +2927,17 @@ $(function()
 					$("p", this).remove();
 				}
 			},
-			"dragstart.editable": function() {// Pour éviter les interférences avec les drag&drop d'image dans les champs images
+			"dragstart.editable": function() // Pour éviter les interférences avec les drag&drop d'image dans les champs images
+			{
+				//if(dev) console.log("dragstart");
+
 				$("body").off(".editable-media");// Désactive les events image
 				$("#img-tool").remove();// Supprime la barre d'outil image
 			},
-			"dragend.editable": function() {// drop dragend
+			"dragend.editable": function() // drop dragend
+			{
+				//if(dev) console.log("dragend");
+
 				// Active les events block image
 				editable_media_event();
 				body_editable_media_event();
@@ -2860,8 +2945,10 @@ $(function()
 				memo_img = null;
 				img_leave();// Raz Propriétés image
 			},			
-			"keyup.editable": function(event) {// Mémorise la position du curseur
-
+			"keyup.editable": function(event)// Mémorise la position du curseur
+			{
+				//if(dev) console.log("keyup");
+				
 				// Ajoute un <p> si vide
 				init_paragraph(this);
 
@@ -2894,7 +2981,8 @@ $(function()
 					// Enter
 					if(event.keyCode == 13)
 					{
-						clean_highlight($(memo_node));// Permet de sortir des highlight
+						clean_return(".highlight", $(memo_node));// Permet de sortir des highlight
+						clean_return(".grid", $(memo_node));// Permet de sortir des grid
 
 						// Si pas shift+enter (saut de ligne simple => <br>)
 						if(!event.shiftKey) 
@@ -2952,11 +3040,16 @@ $(function()
 						clean_div($(memo_node));						
 				}
 			},
-			"click.editable": function(event){// Désactive les ouvertures de liens sous ie
+			"click.editable": function(event)// Désactive les ouvertures de liens sous ie
+			{
+				//if(dev) console.log("click");
+
 				event.preventDefault();
 			},
 			"mouseup.editable": function(event)// Si on click dans un contenu éditable
 			{		
+				//if(dev) console.log("mouseup");
+
 				$("#txt-tool .option").hide();// Cache le menu d'option		
 
 				// @todo voir pour get selection + init toolbox quand on termine la selection hors du champs editable
@@ -3552,17 +3645,69 @@ $(function()
 
 
 	/************** MODULE DUPLICABLE **************/
+	// Change la clé
+	edit_key = function()
+	{		
+		// Modifie les cles
+		$("[class*='editable']", this).each(function() {
+			old_key = $(this).attr("id");
+			if(old_key == undefined) 
+				old_key = $("[id*='" + module + "-']", this).attr("id");
+
+			// Pour les inputs editable
+			if($(this).attr("placeholder") != undefined) 
+				$("#" + old_key).attr("placeholder", $(this).attr("placeholder").replace("-0", "-"+ new_key));
+			
+			// Change l'id
+			$("#" + old_key).attr({
+				id: old_key.replace("-0", "-"+ new_key),
+				src: ""
+			});
+      
+      // Pour les bg
+      if($(this).attr("data-id")) {
+        old_key = $(this).attr("data-id");
+        $(this).attr({
+          'data-id': old_key.replace("-0", "-"+ new_key)
+        });
+      }
+		});
+
+    // Rend editable le bg que l-on vient d-ajouter
+    if($("[data-id][data-bg]").length != 0) 
+    {
+      // Action du hover de la souris pour le bg
+      $("[data-id][data-bg]").first()
+      .on({
+        "mouseenter.editable-bg": function(event) {// Hover zone upload		
+          $("> .bg-tool", this).fadeIn("fast");
+        },
+        "mouseleave.editable-bg": function(event) {// Out
+          $("> .bg-tool", this).fadeOut("fast");
+        }
+      });		
+    }
+    
+		// Relance les events d'edition
+		editable_event();
+		editable_media_event();
+		editable_href_event();
+	}
+
+	// Ajoute un module
 	add_module = function(event)
 	{
 		module = $(event).parent().prev("ul, ol").attr("id");
 
 		// On regarde qu'elle type d’élément éditable existe pour récupérer l'id le plus grand
-		if($("#" + module + " li .editable").length) var elem = $("#" + module + " li .editable");
-		else if($("#" + module + " li .editable-media").length) var elem = $("#" + module + " li .editable-media");
+		if($("#" + module + " li .editable").length) 
+			var elem = $("#" + module + " li .editable");
+		else if($("#" + module + " li .editable-media").length) 
+			var elem = $("#" + module + " li .editable-media");
 
 		// Crée un id unique (dernier id le plus grand + 1)
 		//key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1; Ne tien pas compte de l'ordre des id
-		var key = $.map(elem, function(k) {
+		new_key = $.map(elem, function(k) {
 			return parseInt(k.id.match(/(\d+)(?!.*\d)/));//Récupère le dernier digit de la chaine
 		}).sort(function(a, b) {
 			return(b-a); // reverse sort : tri les id pour prendre le dernier (le plus grand)
@@ -3572,55 +3717,6 @@ $(function()
 		$(".editable").off();
 		$(".editable-media").off(".editable-media");
 		$(".editable-href").off(".editable-href");
-
-		// Crée un block
-		$("#" + module + " > li:last-child").clone().prependTo("#" + module).show("400", function()
-		{
-			// Modifie les cles
-			$("[class*='editable']", this).each(function() {
-				old_key = $(this).attr("id");
-				if(old_key == undefined) 
-					old_key = $("[id*='" + module + "-']", this).attr("id");
-
-				// Pour les inputs editable
-				if($(this).attr("placeholder") != undefined) 
-					$("#" + old_key).attr("placeholder", $(this).attr("placeholder").replace("-0", "-"+ key));
-				
-				// Change l'id
-				$("#" + old_key).attr({
-					id: old_key.replace("-0", "-"+ key),
-					src: ""
-				});
-				
-				// Pour les bg
-				if($(this).attr("data-id")) {
-					old_key = $(this).attr("data-id");
-					$(this).attr({
-						'data-id': old_key.replace("-0", "-"+ key)
-					});
-				}
-			});
-
-			// Rend editable le bg que l-on vient d-ajouter
-			if($("[data-id][data-bg]").length != 0) 
-			{
-				// Action du hover de la souris pour le bg
-				$("[data-id][data-bg]").first()
-				.on({
-					"mouseenter.editable-bg": function(event) {// Hover zone upload		
-						$("> .bg-tool", this).fadeIn("fast");
-					},
-					"mouseleave.editable-bg": function(event) {// Out
-						$("> .bg-tool", this).fadeOut("fast");
-					}
-				});		
-			}
-
-			// Relance les events d'edition
-			editable_event();
-			editable_media_event();
-			editable_href_event();
-		});
 	}
 
 	// Rends déplaçables les blocs
@@ -3670,9 +3766,18 @@ $(function()
 	});
 	$(".module .animation").removeClass("animation fire");
 
-	// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
-	$(".module").after("<div class='module-bt'><a href='javascript:move_module();'><i class='fa fa-fw fa-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus'></i><span> "+__("Add a module")+"</span></a></div>");
-	
+	// Ajoute les boutons de mobule
+	$(".module", this).each(function() {
+		// Ajoute le BOUTON POUR DUPLIQUER le bloc vide de défaut
+		$(this).after("<div class='module-bt'"+($(this).hasClass("end")?" style='top:unset;bottom:0;'":"")+"><a href='javascript:move_module();'><i class='fa fa-fw fa-move'></i><span> "+__("Move")+"</span></a> <a href='javascript:void(0)' onclick='add_module(this)'><i class='fa fa-fw fa-plus'></i><span> "+__("Add a module")+"</span></a></div>");
+
+		// Ajoute une marge pour pas que les boutons d'ajout se superpose avec les blocs
+		if($(this).hasClass("end"))		
+			$(this).css("padding-bottom","4rem");// Bouton en bas
+		else				
+			$(this).css("padding-top","5rem");// Bouton en haut
+	});
+
 	// Force le parent en relatif pour bien positionner les boutons d'ajout
 	$(".module-bt").parent().addClass("relative");
 
@@ -4065,6 +4170,53 @@ $(function()
 	});
 
 
+	// Archive du contenu
+	$("#archive").on("click", function() 
+	{	
+		// Dialog de confirmation d'archive 
+		$("body").append("<div class='dialog-archive' title='"+ __("Archive the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'><p><i class='fa fa-attention red biggest mrs' aria-hidden='true'></i>"+__("Archive the page")+" : <b>"+document.title+"</b> ?</p></div>");
+
+		// Dialog d'archive
+		$(".dialog-archive").dialog({
+			modal: true,
+			buttons: 
+			[{
+            	text: __("Cancel"),
+           		click: function() { $(".dialog-archive").remove(); }
+			},{
+				text: "Ok",
+				click: function() 
+				{
+					// Fonction à exécuter avant l'archivage de la page
+					$(before_del).each(function(key, funct){ funct(); });
+
+					// Requete de suppression
+					$.ajax({
+						type: "POST",
+						url: path + "api/ajax.admin.php?mode=archive",
+						data: {
+							"url": clean_url(),
+							"type": type,
+							"id": id,
+							"nonce": $("#nonce").val()// Pour la signature du formulaire
+						}
+					})
+					.done(function(html) {		
+						// Fonction à exécuter après l'archivage de la page
+						$(after_del).each(function(key, funct){ funct(); });
+
+						$(".dialog-archive").dialog("close");
+						$("body").append(html);
+					});					
+				}
+			}],
+			close: function() {
+				$(".dialog-archive").remove();					
+			}
+		});
+	});
+
+
 	// Suppression du contenu
 	$("#del").on("click", function() 
 	{	
@@ -4099,13 +4251,13 @@ $(function()
 
 
 		// Dialog de confirmation de suppression 
-		$("body").append("<div class='dialog-del' title='"+ __("Delete the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'><p><i class='fa fa-attention red biggest mrs' aria-hidden='true'></i>"+__("Warning, this will permanently delete the page!")+"</p></div>");
+		$("body").append("<div class='dialog-del' title='"+ __("Delete the page") + ' \"' + document.title.replace(/'/g, '&apos;') + "\" ?'><p><i class='fa fa-attention red biggest mrs' aria-hidden='true'></i>"+__("Warning, this will permanently delete the page")+" : <b>"+document.title+"</b></p></div>");
 
 		// S'il y a des médias à supprimer
 		if(Object.keys(medias_clean).length > 0)
 		{
 			// Option de suppression des média liée au contenu			
-			$(".dialog-del").append("<input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul>");
+			$(".dialog-del").append("<hr><input type='checkbox' id='del-medias' class='inline'> <label for='del-medias' class='inline'>"+ __("Also remove media from content") +"</label><ul class='unstyled man'></ul>");
 
 			// Affiche la liste des medias
 			$.each(medias_clean, function(media, type) {
