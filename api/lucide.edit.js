@@ -3603,21 +3603,28 @@ $(function()
 	// Rends éditables les images en background
 	editable_bg_event = function() 
 	{
-		// Si pas d'option de suppression on l'ajoute
-		if(!$(this).hasClass("editable-bg")) 
-		{
-			// Ajout un fond hachuré au cas ou il n'y ai pas de bg 
-			$("[data-id][data-bg]").addClass("editable-bg");
-			$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
+		// Bouton d'édition et de suppression
+		$("[data-id][data-bg]").append(function()
+		{		
+			// Si pas d'options d'édition et suppressions, on les ajoute
+			if(!$(this).hasClass("editable-bg")) 
+			{
+				// Ajoute un fond hachuré au cas ou il n'y ait pas de bg
+				$("[data-id][data-bg]").addClass("editable-bg");
 
-			// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
-			clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
-			$("[data-id][data-bg]").each(function() {
-				if($(this).data("bg"))
-					$(".bg-tool", this).prepend(clearbg_bt);
-			});
-		}
+				// Bouton pour changer le fond
+				$("[data-id][data-bg]").append("<div class='bg-tool'><a href=\"javascript:void(0)\" class='open-dialog-media block'>"+__("Change the background image")+" <i class='fa fa-picture'></i></a></div>");
 
+				// S'il y a une image en fond on ajoute l'option de suppression de l'image de fond
+				clearbg_bt = "<a href=\"javascript:void(0)\" class='clear-bg' title=\""+__("Delete image")+"\"><i class='fa fa-trash'></i></a>";
+				$("[data-id][data-bg]").each(function() {
+					if($(this).data("bg"))
+						$(".bg-tool", this).prepend(clearbg_bt);
+				});
+			}
+		});
+
+		// Affichage des boutons d'action au survol
 		$("[data-id][data-bg]")
 			.on({
 				"mouseenter.editable-bg": function(event) {// Hover zone upload		
@@ -3657,6 +3664,15 @@ $(function()
 			// Pour les inputs editable
 			if($(this).attr("placeholder") != undefined) 
 				$("#" + old_key).attr("placeholder", $(this).attr("placeholder").replace("-0", "-"+ new_key));
+
+			// Pour les bg editable
+			if($(this).attr("data-id")) {
+				old_key = $(this).attr("data-id");
+				
+				$(this).attr({
+					'data-id': old_key.replace("-0", "-"+ new_key)
+				});
+			}
 			
 			// Change l'id
 			$("#" + old_key).attr({
@@ -3669,6 +3685,7 @@ $(function()
 		editable_event();
 		editable_media_event();
 		editable_href_event();
+		editable_bg_event();
 	}
 
 	// Ajoute un module
@@ -3694,6 +3711,7 @@ $(function()
 		$(".editable").off();
 		$(".editable-media").off(".editable-media");
 		$(".editable-href").off(".editable-href");
+		$(".editable-bg").off(".editable-bg");
 
 		if($("#"+module).hasClass("end"))
 			// Crée un block à la fin
