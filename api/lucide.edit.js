@@ -4408,16 +4408,29 @@ $(function()
 
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
 	if($.browser.webkit) {
-		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
+		var targets = $("[contenteditable=true]");
+
+		// creation de l-observateur
+		var observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {    
 			// Si c'est un span, sans langue, sans editable
 			if(
-				event.target.tagName == "SPAN"
-				&& event.target.lang == ""
-				&& !$(event.target).hasClass("editable")
-				&& !$(event.target).hasClass("editable-tag")
+				mutation.target.tagName == "SPAN"
+				&& mutation.target.lang == ""
+				&& !$(mutation.target).hasClass("editable")
+				&& !$(mutation.target).hasClass("editable-tag")
 			)
-				event.target.outerHTML = event.target.innerHTML;			
+				mutation.target.outerHTML = mutation.target.innerHTML;
+			});    
 		});
+
+		// configuration de l-observer
+		var config = { childList: true, characterData:true };
+
+		// On observe toutes les cibles
+		for (let nbtarget = 0; nbtarget < targets.length; nbtarget++) {
+			observer.observe(targets[nbtarget], config);
+		}
 	}
 
 
