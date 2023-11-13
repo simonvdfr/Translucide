@@ -651,7 +651,7 @@ link_option = function()
 		if($(memo_node).hasClass("bt")) $("#class-bt").addClass("checked");
 
 		$("#txt-tool #link-option #link").val(href);
-		$("#txt-tool #link-option #link-text").val($(memo_node).closest('a').text()).show();
+		$("#txt-tool #link-option #link-text").val($(memo_node).closest('a').text().trim()).show();
 
 		// Cache le bouton, car édition en live
 		$("#txt-tool #link-option button").hide();
@@ -3303,7 +3303,10 @@ $(function()
 		if(!$("#txt-tool #link-option button i").is(":visible"))//.hasClass("fa-plus")
 		{
 			// Change l'intitulé du lien
-			$(memo_node).closest('a').text($("#txt-tool .option #link-text").val());
+			if($(memo_node)[0].nodeName == 'SPAN')
+				$(memo_node).closest('span').text($("#txt-tool .option #link-text").val());// Si c'est un SPAN
+			else
+				$(memo_node).closest('a').text($("#txt-tool .option #link-text").val());// Si c'est un A
 
 			// Change le lien
 			$(memo_node).closest("a").attr("href", $('#txt-tool .option #link').val());
@@ -4415,8 +4418,9 @@ $(function()
 				&& event.target.lang == ""
 				&& !$(event.target).hasClass("editable")
 				&& !$(event.target).hasClass("editable-tag")
-			)
+			) {
 				event.target.outerHTML = event.target.innerHTML;			
+			}
 		});
 	}
 
