@@ -268,7 +268,7 @@ edit_launcher = function(callback)
 	if($("#dialog-connect").length) $("#dialog-connect").fadeOut().dialog("close");
 
 	// Si le mode édition n'est pas déjà lancé
-	if(!$("#admin-bar").length) 
+	if(!$("#admin-bar").length || callback=="reload_edit") 
 	{
 		$.ajax({url: path+"api/ajax.admin.php?mode=edit&type="+type+"&id="+id+"&date_update="+date_update+(callback?"&callback="+callback:""), cache: false})
 		.done(function(html) {				
