@@ -107,8 +107,8 @@ switch($_GET['mode'])
 					type: "POST",
 					url: "<?=$GLOBALS['path']?>api/ajax.php?mode=login",
 					data: { 
-						email: $("#internal-login #email").val(),
-						password: $("#internal-login #password").val(),
+						email: $("#internal-login #email").val().trim(),
+						password: $("#internal-login #password").val().trim(),
 						callback: callback,
 						nonce: $("#internal-login #nonce").val()
 					}
