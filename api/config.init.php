@@ -142,8 +142,11 @@ $GLOBALS['cache'] = "";
 
 
 // Include
-$GLOBALS['function'] = '';// fonction du theme
-$GLOBALS['after_get_tag'] = '';// Action avant d'afficher l'header
+// Dans api/fonction.php, les fonctions du theme
+$GLOBALS['function'] = '';
+// Action dans index.php avant d'afficher le header
+$GLOBALS['before_get_tag'] = '';
+$GLOBALS['after_get_tag'] = '';
 
 
 // https://developers.facebook.com/apps/

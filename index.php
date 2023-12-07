@@ -58,6 +58,12 @@ if(!@$close)
 }
 
 
+
+/********** ACTION avant la récupération des données du tag **********/
+if(@$GLOBALS['before_get_tag']) include_once($GLOBALS['root'].$GLOBALS['before_get_tag']);
+
+
+
 /********** TAGS **********/
 
 // Construction de l'ajout du contenu tag/cat, si filter et la racine de l'url pas dans les filtres autorisés
