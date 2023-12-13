@@ -37,7 +37,7 @@ switch($_GET['mode'])
 			{
 				include_once("db.php");// Connexion à la db
 				
-				$sel = $connect->query("SELECT ".$tc.".state, ".$tc.".date_update, ".$tu.".name, ".$tu.".email FROM ".$tc." JOIN ".$tu." ON ".$tu.".id = ".$tc.".user_update WHERE ".$tc.".id='".(int)$_GET['id']."' LIMIT 1");
+				$sel = $connect->query("SELECT ".$tc.".state, ".$tc.".date_update, ".$tu.".name, ".$tu.".email FROM ".$tc." LEFT JOIN ".$tu." ON ".$tu.".id = ".$tc.".user_update WHERE ".$tc.".id='".(int)$_GET['id']."' LIMIT 1");
 				$res = $sel->fetch_assoc();		
 
 				if(@$_GET['date_update'] != $res['date_update'] and $res['email']) 
@@ -940,7 +940,7 @@ switch($_GET['mode'])
 		login('high', 'edit-'.$type);// Vérifie que l'on a le droit d'éditer le type de contenu
 
 		// ARCHIVE LA PAGE
-		$connect->query("UPDATE ".$table_content." SET state = 'archive' WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'");
+		$connect->query("UPDATE ".$table_content." SET state = 'archive', date_update = NOW(), user_update = '".(int)$_SESSION['uid']."' WHERE url = '".get_url($_POST['url'])."' AND lang = '".$lang."'");
 
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
 		else // Archive réussit
