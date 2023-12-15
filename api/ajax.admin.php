@@ -1029,14 +1029,27 @@ switch($_GET['mode'])
 		$sel = $connect->query("SELECT title, state, type, tpl, url, date_update FROM ".$GLOBALS['table_content']." WHERE lang='".$lang."' ORDER BY FIELD(type, 'page', 'article', 'product'), type ASC, title ASC");//date_update DESC
 		while($res = $sel->fetch_assoc()) 
 		{
-			if($res['type'] != $type) echo (isset($type)?'</ul></li>':'').'<li'.(isset($type)?' class="mtm"':'').'><b>'.ucfirst(__($res['type'])).'</b><ul>';
+			// Changement de section
+			if($res['type'] != $type) 
+				echo (isset($type)?'</ul></li>':'').'<li title="Réduire/Agrandir" class="pointer '.(isset($type)?'mtm':'').'"><b>'.ucfirst(__($res['type'])).'</b><ul>';
 
-			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"'.($res['state']=='archive'?' class="red"':'').'><a href="'.make_url($res['url'], array("domaine" => true)).'">'.($res['title']?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__($res['state'])."'></i>").'</li>';
+			// Entrée
+			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"'.($res['state']=='archive'?' class="red"':'').'><a href="'.make_url($res['url'], array("domaine" => true)).'">'.(trim($res['title'])?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__($res['state'])."'></i>").'</li>';
 
 			$type = $res['type'];
 		}
 
 		echo"</ul></div>";
+
+		?>
+		<script>
+			// Réduit un élément
+			$(".dialog-list-content ul > li").on("click", function()
+			{
+				$(this).children("ul").toggle();
+			});
+		</script>
+		<?php
 
 	break;
 
