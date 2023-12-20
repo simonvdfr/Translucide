@@ -130,20 +130,26 @@ switch($_GET['mode'])
 									<div>
 										<select id="tpl">
 											<?php 
+											// Extrai les fichiers
 											$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
+											
+											// Tableau des nom lisible, si dans config
 											foreach($scandir as $cle => $filename)
-											{			
+											{
 												$filename = pathinfo($filename, PATHINFO_FILENAME);
 
-												echo'<option value="'.$filename.'">';
-													
-													//Si des noms sont spécifiés pour les templates
-													if(isset($GLOBALS['tpl_name'][$filename]))
-														echo ucfirst($GLOBALS['tpl_name'][$filename]);
-													else 
-														echo ucfirst($filename);
+												// Si des noms sont spécifiés pour les templates
+												if(isset($GLOBALS['tpl_name'][$filename]))
+													$readdir[$filename] = ucfirst($GLOBALS['tpl_name'][$filename]);
+												else 
+													$readdir[$filename] =  ucfirst($filename);
+											}
 
-												echo'</option>';
+											// Affiche les options par ordre alpha name
+											asort($readdir);
+											foreach($readdir as $filename => $name)
+											{			
+												echo'<option value="'.$filename.'">'.$name.'</option>';
 											}
 											?>	
 										</select>
@@ -278,7 +284,7 @@ switch($_GET['mode'])
 
 
 				<div class="mas">
-					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="70" class="w60 bold">
+					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="255" class="w60 bold">
 					
 					<select id="tpl" required class="w30">
 						<option value=""><?php _e("Select template")?></option>
@@ -309,7 +315,7 @@ switch($_GET['mode'])
 
 				<div class="mas mtm">
 
-					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="70" class="w50 mrm">
+					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="255" class="w50 mrm">
 
 					<!-- <label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label> -->
 
