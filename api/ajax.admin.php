@@ -1037,7 +1037,7 @@ switch($_GET['mode'])
 		{
 			// Changement de section
 			if($res['type'] != $type) 
-				echo (isset($type)?'</ul></li>':'').'<li title="Réduire/Agrandir" class="pointer '.(isset($type)?'mtm':'').'"><b>'.ucfirst(__($res['type'])).'</b><ul>';
+				echo (isset($type)?'</ul></li>':'').'<li title="Réduire/Agrandir" class="'.(isset($type)?'mtm':'').'"><span class="bold pointer">'.ucfirst(__((isset($GLOBALS['tpl_name'][$res['type']])?$GLOBALS['tpl_name'][$res['type']]:$res['type']))).'</span><ul>';
 
 			// Entrée
 			echo'<li title="'.$res['date_update'].' - '.$res['tpl'].'"'.($res['state']=='archive'?' class="red"':'').'><a href="'.make_url($res['url'], array("domaine" => true)).'">'.(trim($res['title'])?$res['title']:__("Under Construction")).'</a>'.($res['state'] == "active" ? "":" <i class='fa fa-eye-off' title='".__($res['state'])."'></i>").'</li>';
@@ -1050,9 +1050,9 @@ switch($_GET['mode'])
 		?>
 		<script>
 			// Réduit un élément
-			$(".dialog-list-content ul > li").on("click", function()
+			$(".dialog-list-content ul .pointer").on("click", function(event)
 			{
-				$(this).children("ul").toggle();
+				$(this).next("ul").toggle();
 			});
 		</script>
 		<?php
