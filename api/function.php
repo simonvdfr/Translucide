@@ -962,7 +962,7 @@ function token($uid, $email = null, $auth = null) // @todo: Vérif l'intérêt d
 	return $token;
 }
 
-// Création d'un token light (utile lors des changements de mot de passe et donne la possibiliter le log sur plusieurs machines)
+// Création d'un token light (utile lors des changements de mot de passe et donne la possibilité de log sur plusieurs machines)
 function token_light($uid, $salt)
 {	
 	$_SESSION['token_light'] = $token_light = hash("sha256", $salt . $uid . $GLOBALS['pub_hash']);
@@ -1040,12 +1040,16 @@ function login($level = 'low', $auth = null, $quiet = null)
 					}
 				}
 				else {
+					sleep(4);// Retarde la prochaine tentation de login (anti-brutforce)
+
 					$msg = __("Connection error");//Password error
 					logout();
 				} 
 			}
 			else {
-				$msg = __("Connection error");//Password error
+				sleep(4);// Retarde la prochaine tentation de login (anti-brutforce)
+
+				$msg = __("Connection error");//Invalid email
 				logout();
 			}
 		}
@@ -1094,8 +1098,10 @@ function login($level = 'low', $auth = null, $quiet = null)
 					$msg = __("Bad credential");
 					logout();
 				}
-				elseif($GLOBALS['security'] == 'high' and $res['token'] == $_SESSION['token']) return true;// Sécurité haute forcée dans la config
-				elseif($level == 'high' and $res['token'] == $_SESSION['token_light']) return true;// Verification du token light (changement de pwd...)
+				elseif($GLOBALS['security'] == 'high' and $res['token'] == $_SESSION['token']) 
+					return true;// Sécurité haute forcée dans la config
+				elseif($level == 'high' and $res['token'] == $_SESSION['token_light']) 
+					return true;// Verification du token light (changement de pwd...)
 				else 
 				{
 					$msg = __("Connection error");
