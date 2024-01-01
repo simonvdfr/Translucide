@@ -290,23 +290,27 @@ switch($_GET['mode'])
 						<option value=""><?php _e("Select template")?></option>
 						<?php 
 						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
+
+						// Tableau des nom lisible, si dans config
 						foreach($scandir as $cle => $filename)
-						{			
+						{
 							$pathinfo = pathinfo($filename);
 
 							if($pathinfo['extension'])
 							{
-								echo'<option value="'.$pathinfo['filename'].'">';
-
-									//Si des noms sont spécifiés pour les templates
-									if(isset($GLOBALS['tpl_name'][$pathinfo['filename']]))
-										echo ucfirst($GLOBALS['tpl_name'][$pathinfo['filename']]);
-									else 
-										echo ucfirst($pathinfo['filename']);
-
-								echo'</option>';
+								// Si des noms sont spécifiés pour les templates
+								if(isset($GLOBALS['tpl_name'][$pathinfo['filename']]))
+									$readdir[$pathinfo['filename']] = ucfirst($GLOBALS['tpl_name'][$pathinfo['filename']]);
+								else 
+									$readdir[$pathinfo['filename']] =  ucfirst($pathinfo['filename']);
 							}
-							
+						}
+
+						// Affiche les options par ordre alpha name
+						asort($readdir);
+						foreach($readdir as $filename => $name)
+						{			
+							echo'<option value="'.$filename.'">'.$name.'</option>';
 						}
 						?>					
 					</select>
