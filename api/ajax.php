@@ -21,7 +21,7 @@ switch($_GET['mode'])
 	default:
 	case "login":// Check le login interne
 
-		login();
+		login($GLOBALS['security']);
 		
 		?>
 		<script>

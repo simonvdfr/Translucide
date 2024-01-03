@@ -219,6 +219,10 @@ $GLOBALS['pwd_hash_loop'] = '';
 $GLOBALS['security'] = 'medium';
 
 
+// Limite le nombre d'essai de connexion avant blocage
+$GLOBALS['login_limit'] = '4';
+
+
 // Vérifie que les fichiers uploadés ne contiennent pas des caractères susceptibles d'être des codes exécutables pour des hacks => A utiliser si compte public actif
 $GLOBALS['file_check_hack'] = false;
 

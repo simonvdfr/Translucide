@@ -1034,12 +1034,29 @@ function login($level = 'low', $auth = null, $quiet = null)
 							$token_light = token_light($res['id'], $res['salt']);
 							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET token='".$token_light."' WHERE id='".$res['id']."'");
 						}
-						
+
+						// On réinitialise la limite d'essai si l'on réussit
+						if(isset($GLOBALS['login_limit']) and @$res['error']>0)
+							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error='0' WHERE id='".$res['id']."'");
+												
 						// On est logé !
 						return true;
 					}
 				}
-				else {
+				else
+				{
+					if(isset($GLOBALS['login_limit']) and isset($res['error']))
+					{
+						// Si erreur de connexion <= à la limite d'essai
+						if($res['error'] <= $GLOBALS['login_limit']){
+							// Incrémente dans la base de données le nombre d'erreurs de connexion
+							// Si on a dépasse le nombre d'essais limite = > blacklistage
+							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error = error + 1 ".(($res['error'] + 1) >= $GLOBALS['login_limit']?", state = 'blacklist'":"")." WHERE id='".$res['id']."'");
+
+							// @todo envoyer un mail à l'admin avec toutes les infos sur l'utilisateurs (ip, mail de login, passeword...)
+						}
+					}
+					
 					sleep(4);// Retarde la prochaine tentation de login (anti-brutforce)
 
 					$msg = __("Connection error");//Password error

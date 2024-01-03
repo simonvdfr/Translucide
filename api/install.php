@@ -500,6 +500,7 @@ switch(@$_GET['mode'])
 								`salt` char(16) DEFAULT NULL,
 								`token` varchar(255) DEFAULT NULL COMMENT 'token light',
 								`oauth` text COMMENT 'Token api externe',
+								`error` tinyint(4) NOT NULL DEFAULT 0,
 								`date_update` datetime DEFAULT NULL,
 								`date_insert` datetime NOT NULL,
 								PRIMARY KEY (`id`),
