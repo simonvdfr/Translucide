@@ -2716,6 +2716,7 @@ $(function()
 		$("#txt-tool").css({
 			top: top + "px",
 			left: left + "px",
+			//right: "10px",
 			position: position
 		});
 	}	
