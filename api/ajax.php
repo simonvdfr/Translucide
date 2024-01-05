@@ -34,6 +34,9 @@ switch($_GET['mode'])
 
 
 	case "internal-login":// Connexion avec un login/passe interne au site
+
+		// Temps pour calculer l'expiration de la période autorisée de login et limiter les log trop rapides
+		$_SESSION['microtime'] = microtime(true);
 		
 		// @todo: si la page est appelée directement (ajax.php), charger un fond et charger la dialog
 		?>

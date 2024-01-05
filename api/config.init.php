@@ -17,6 +17,9 @@ if(!isset($_SESSION))
 	ini_set('session.use_only_cookies', 1);  // Force cookies for session (phpsessionID forbidden in URL)
 	ini_set('session.use_trans_sid', false); // Prevent php to use session ID in URL if cookies are disabled.
 
+	ini_set('session.cookie_httponly', true);// Le cookie ne sera accessible que par le protocole HTTP. Le cookie ne sera pas accessible via des langages de scripts, comme Javascript 
+	// ini_set('session.cookie_secure', false); // Indique si le cookie doit uniquement être transmis à travers une connexion sécurisée HTTPS depuis le client. Fonction qu'en https
+
 	if(!isset($cron)) session_start();
 }
 
@@ -43,9 +46,9 @@ else setlocale(LC_ALL, 'en_US.utf8');
 if(
 	$_SERVER['SERVER_ADDR'] == '127.0.0.1' or
 	strpos($_SERVER['SERVER_ADDR'], '::1') !== false)
-	$dev = true;
+	$GLOBALS['dev'] = true;
 else 
-	$dev = false;
+	$GLOBALS['dev'] = false;
 
 
 // Variables de la base de données
@@ -220,7 +223,7 @@ $GLOBALS['security'] = 'medium';
 
 
 // Limite le nombre d'essai de connexion avant blocage
-$GLOBALS['login_limit'] = '4';
+$GLOBALS['login_limit'] = '5';
 
 
 // Vérifie que les fichiers uploadés ne contiennent pas des caractères susceptibles d'être des codes exécutables pour des hacks => A utiliser si compte public actif

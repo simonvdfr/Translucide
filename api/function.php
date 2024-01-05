@@ -985,6 +985,18 @@ function token_check($token)
 		return false;
 }
 
+// Sécurise la déconnexion en cas d'erreur de login+mdp
+function logout_error($msg)
+{
+	logout();
+
+	nonce("nonce");// Force un nouveau nonce dans la session pour remplir la condition de vérification de nonce au cas ou le nouveau formulaire ne s'affiche pas
+
+	sleep(mt_rand(3,5));// Retarde la prochaine tentation de login (anti-brutforce) mt_rand(3,5)
+
+	return __($msg);
+}
+
 // Connexion au site avec le système interne de login+password
 function login($level = 'low', $auth = null, $quiet = null)
 {	
@@ -992,6 +1004,9 @@ function login($level = 'low', $auth = null, $quiet = null)
 	// low : Vérif juste s'il y a un token dans la session
 	// medium : Check le contenu du token
 	// high : Check le token, et s'il est identique dans bdd (config : security=high ou token_light)
+
+	//echo"_SESSION"; highlight_string(print_r($_SESSION, true));
+	//echo"_REQUEST"; highlight_string(print_r($_REQUEST, true));
 
 	// Vérifie que la personne qui a posté le formulaire a bien la variable de session de protection contre les CSRF
 	$csrf = false;
@@ -1003,71 +1018,110 @@ function login($level = 'low', $auth = null, $quiet = null)
 		// On se log avec le formulaire donc on check password & mail
 		if(isset($_POST['email']) and isset($_POST['password']))
 		{
-			if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
+			//echo "microtime : ".(microtime(true)-@$_SESSION['microtime'])." miliseconde<br>";
 
-			// Supprime l'ancienne session
-			@session_regenerate_id(true);
-
-			// Nettoyage du mail envoyé
-			$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-			$email = $GLOBALS['connect']->real_escape_string($email);
-
-			// Extraction des données de l'utilisateur
-			$sel = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_user']." WHERE email='".$email."' ".($level == 'low' ? "" : "AND state='active'")." LIMIT 1");
-			$res = $sel->fetch_assoc();
-
-			if(@$res['email']) 
-			{						
-				// Création d'un token maison
-				if($res['password'] == hash_pwd($_POST['password'], $res['salt']))
-				{
-					$array_diff = array_diff(explode(",", (string)$auth), explode(",", $res['auth']));
-					if(isset($auth) and !empty($array_diff))// Vérifie les auth d'utilisateur si c'est demandée 
-					{
-						$msg = __("Bad credential");
-						logout();
-					}
-					else if($token = token($res['id'], $res['email'], $res['auth']))// Tout est ok on crée le token
-					{
-						// Création d'un token light : permet une vérif au changement de mdp et permet log sur plusieurs machines
-						if($GLOBALS['security'] != 'high') {							
-							$token_light = token_light($res['id'], $res['salt']);
-							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET token='".$token_light."' WHERE id='".$res['id']."'");
-						}
-
-						// On réinitialise la limite d'essai si l'on réussit
-						if(isset($GLOBALS['login_limit']) and @$res['error']>0)
-							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error='0' WHERE id='".$res['id']."'");
-												
-						// On est logé !
-						return true;
-					}
-				}
-				else
-				{
-					if(isset($GLOBALS['login_limit']) and isset($res['error']))
-					{
-						// Si erreur de connexion <= à la limite d'essai
-						if($res['error'] <= $GLOBALS['login_limit']){
-							// Incrémente dans la base de données le nombre d'erreurs de connexion
-							// Si on a dépasse le nombre d'essais limite = > blacklistage
-							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error = error + 1 ".(($res['error'] + 1) >= $GLOBALS['login_limit']?", state = 'blacklist'":"")." WHERE id='".$res['id']."'");
-
-							// @todo envoyer un mail à l'admin avec toutes les infos sur l'utilisateurs (ip, mail de login, passeword...)
-						}
-					}
-					
-					sleep(4);// Retarde la prochaine tentation de login (anti-brutforce)
-
-					$msg = __("Connection error");//Password error
-					logout();
-				} 
+			// Vérifie si le temps de login n'a pas expiré // 60*10 => 10 minute pour se logger
+			if(isset($_SESSION['microtime']) and microtime(true) >= ($_SESSION['microtime'] + (60*10)))
+			{
+				$msg = logout_error(@$GLOBALS['dev']?"Login session expire":"Connection error");
 			}
-			else {
-				sleep(4);// Retarde la prochaine tentation de login (anti-brutforce)
+			// Si le temps de login est inférieur à 1 secondes c'est sûrement du brut force
+			elseif(isset($_SESSION['microtime']) and (microtime(true) - $_SESSION['microtime']) <= 1)
+			{
+				$msg = logout_error(@$GLOBALS['dev']?"Login too speed":"Connection error");
+			}
+			else
+			{
+				if(!isset($GLOBALS['connect'])) include_once("db.php");// Connexion à la db
 
-				$msg = __("Connection error");//Invalid email
-				logout();
+				// Supprime l'ancienne session
+				@session_regenerate_id(true);
+
+				// Nettoyage du mail envoyé
+				$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+				$email = $GLOBALS['connect']->real_escape_string($email);
+
+				// Extraction des données de l'utilisateur
+				$sel = $GLOBALS['connect']->query("SELECT * FROM ".$GLOBALS['table_user']." WHERE email='".$email."' LIMIT 1");
+				$res = $sel->fetch_assoc();
+				
+				if(@$res['email']) 
+				{						
+					// Si on a dépassé le nombre d'essais limite (error = time())
+					if(isset($GLOBALS['login_limit']) and isset($res['error']) and $res['error'] > $GLOBALS['login_limit'])
+					{
+						// Si ça fait plus de 15 min (60*15), on permet de nouveaux essais
+						if(time() >= ($res['error']+(60*15)))
+						{
+							$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error = 0, state = 'active' WHERE id='".$res['id']."'");
+
+							$res['error'] = 0;
+							$res['state'] = 'active';
+						}
+						else// Limite de login dépassé et on est dans les 15 min d'attente
+						{
+							// Utile si level security = low
+							// Force l'entrée dans la boucle de check de state
+							$level = 'medium';
+							$res['state'] = 'blacklist';
+						}						
+					}
+
+					// Si statue du compte non actif et niveau > low de sécurité => on logout
+					if($level != 'low' and $res['state'] != 'active')
+					{
+						$msg = logout_error(@$GLOBALS['dev']?"State ".$res['state']:"Connection error");
+					}
+					// Vérification du mot de passe
+					elseif($res['password'] == hash_pwd($_POST['password'], $res['salt']))
+					{
+						$array_diff = array_diff(explode(",", (string)$auth), explode(",", $res['auth']));
+						if(isset($auth) and !empty($array_diff))// Vérifie les auth d'utilisateur si c'est demandée 
+						{
+							$msg = __("Bad credential");
+							logout();
+						}
+						else if($token = token($res['id'], $res['email'], $res['auth']))// Tout est ok on crée le token
+						{
+							// Création d'un token light : permet une vérif au changement de mdp et permet log sur plusieurs machines
+							if($GLOBALS['security'] != 'high') {							
+								$token_light = token_light($res['id'], $res['salt']);
+								$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET token='".$token_light."' WHERE id='".$res['id']."'");
+							}
+
+							// On réinitialise la limite d'essai si l'on réussit
+							if(isset($GLOBALS['login_limit']) and @$res['error']>0)
+								$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error='0' WHERE id='".$res['id']."'");
+													
+							// On est logé !
+							return true;
+						}
+					}
+					else// Mauvais mot de passe
+					{
+						if(isset($GLOBALS['login_limit']) and isset($res['error']))
+						{
+							// Si erreur de connexion < à la limite d'essai on incrémente dans la base de données le nombre d'erreurs de connexion
+							if(($res['error']+1) < $GLOBALS['login_limit'])
+							{
+								$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error = error + 1 WHERE id='".$res['id']."'");
+							}
+							// Si on a dépasse le nombre d'essais limite => blacklistage pour 15 min
+							elseif(($res['error']+1) >= $GLOBALS['login_limit'])
+							{
+								$GLOBALS['connect']->query("UPDATE LOW_PRIORITY ".$GLOBALS['table_user']." SET error = '".time()."', state = 'blacklist' WHERE id='".$res['id']."'");
+
+								// @todo envoyer un mail à l'admin avec toutes les infos sur l'utilisateurs (ip, mail de login, passeword...)
+							}
+						}
+
+						$msg = logout_error(@$GLOBALS['dev']?"Password error":"Connection error");
+					} 
+				}
+				else 
+				{
+					$msg = logout_error(@$GLOBALS['dev']?"Invalid email":"Connection error");
+				}
 			}
 		}
 		// Sinon on vérifie la validité du token et s'il n'a pas expiré
@@ -1125,7 +1179,10 @@ function login($level = 'low', $auth = null, $quiet = null)
 					logout();
 				}
 			}
-			else return true;
+			else 
+				// $level == 'low', fonction login par défaut
+				// @todo voir si on ne fait pas un token_check($_SESSION['token']) => check les cas ou on utilise login() sans variable
+				return true;
 		}
 		else {
 			//$msg = __("No token");
@@ -1133,8 +1190,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 		}
 	}
 	else {
-		$msg = __("Nonce error");
-		logout();
+		$msg = logout_error(@$GLOBALS['dev']?"Nonce error":"Connection error");
 	}
 
 
