@@ -785,7 +785,7 @@ function tag($key = null, $filter = array())
 
 	echo'<'
 	.(isset($filter['tag'])?$filter['tag']:"nav")
-	.' id="'.$key.'" class="editable-tag'.(isset($filter['class'])?" ".$filter['class'] : '').'"'
+	.' id="'.$key.'" class="editable-tag'.(isset($filter['content'])?' add-to-content': '').(isset($filter['class'])?' '.$filter['class'] : '').'"'
 	.(isset($filter['placeholder'])?' placeholder="'.$filter['placeholder'].'"' : '')
 	.(isset($filter['aria-label'])?' aria-label="'.$filter['aria-label'].'"' : '')
 	.(isset($filter['separator'])?' data-separator="'.$filter['separator'].'"' : '')

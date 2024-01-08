@@ -236,7 +236,14 @@ save = function() //callback
 		data["tag-separator"][$(this).attr("id")] = $(this).data("separator");
 
 		// Tags
-		if($(this).text()) data["tag"][$(this).attr("id")] = $(this).text();
+		if($(this).text()) 
+		{
+			// Les tags pour la table spécifique
+			data["tag"][$(this).attr("id")] = $(this).text();
+
+			// Si demande d'ajouter les tags au contenu json de la page
+			if($(this).hasClass("add-to-content")) data["content"][$(this).attr("id")] = $(this).text();
+		}
 
 		// Ordre forcé du tag
 		if($(this).next(".editable-tag-ordre").val() != undefined) 
