@@ -401,7 +401,7 @@ $(function()
 						event.preventDefault();
 
 						if($(".bt.edit").length) $(".bt.edit").click();
-						else edit_launcher('edit_launcher');
+						else edit_launcher(((state != "active" && get_cookie("auth").indexOf("edit-page") < 0) ? "reload_edit":"edit_launcher"));
 					}
 			}
 		});
