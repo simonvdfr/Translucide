@@ -113,7 +113,7 @@ if($res)
 
 		// Verif si https dans l'url
 		if(
-			strpos(@$_SERVER['SCRIPT_URI'], 'https') !== false or
+			strpos(@$_SERVER['SCRIPT_URI'], 'https') === 0 or
 			$_SERVER['REQUEST_SCHEME'] == 'https' or
 			isset($_SERVER['HTTPS'])
 		) 
