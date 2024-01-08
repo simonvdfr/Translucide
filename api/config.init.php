@@ -18,7 +18,11 @@ if(!isset($_SESSION))
 	ini_set('session.use_trans_sid', false); // Prevent php to use session ID in URL if cookies are disabled.
 
 	ini_set('session.cookie_httponly', true);// Le cookie ne sera accessible que par le protocole HTTP. Le cookie ne sera pas accessible via des langages de scripts, comme Javascript 
-	// ini_set('session.cookie_secure', true); // Indique si le cookie doit uniquement être transmis à travers une connexion sécurisée HTTPS depuis le client. Fonction qu'en https
+	
+	// Si site en https on créer le cookie de session en mode secure
+	if(strpos(@$_SERVER['SCRIPT_URI'], 'https') === 0 or @$_SERVER['REQUEST_SCHEME'] == 'https' or
+	isset($_SERVER['HTTPS']))
+	ini_set('session.cookie_secure', true); // Indique si le cookie doit uniquement être transmis à travers une connexion sécurisée HTTPS depuis le client. Fonction qu'en https
 
 	if(!isset($cron)) session_start();
 }
