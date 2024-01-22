@@ -829,6 +829,7 @@ nav ul li i.fa-cancel {
 		.dialog-media li .copy input { 
 			background-color: #fff;
 			width: 100%;
+			line-height: normal;
 		}	
 
 	.dialog-media li .mime { 
