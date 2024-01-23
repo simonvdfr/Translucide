@@ -755,6 +755,7 @@ nav ul li i.fa-cancel {
 		font-size: initial;
 		font-family: Arial;
 		width: 100%;
+		min-width: 100px;
 		display: block;
 		opacity: 0;
 	}

@@ -3889,19 +3889,36 @@ $(function()
 
 	// Rends éditables les liens
 	// Note: on utilise animate car l'input est inline-block par défaut avec le fadeIn
+	editableHrefView = {};
 	editable_href_event = function(event) {
 		$("[data-href]")
 			.on({
 				"click.editable-href": function(event) {// Supprime l'action de click sur le lien
 					//event.stopPropagation();// @todo supp car empèche l'édition des bg
 					event.preventDefault();
+
+					// on mémorise le href-editable clicker pour le maintenir visible
+					editableHrefView[this] = this;
 				},
-				"mouseenter.editable-href": function(event) {// Hover zone href		
-					$(".editable-href", this).animate({'opacity':'1'}, 'fast');
-				},
-				"mouseleave.editable-href, focusout.editable-href": function(event) {// Out
-					if(autocompleteOpen == false) 
+				"focusout.editable-href": function(event) {// on focus out du href-editable
+					event.preventDefault();		
+
+					// Si pas autocomplete et le parent de la destination du click (typiquement un input) est différent du href-editable courant => on masque le href-editable				
+					if(autocompleteOpen == false && $(event.relatedTarget).parent("[data-href]")[0] != $(this)[0]) 
+					{
+						editableHrefView[this] = false;// Permet le masquage si mouseout
+
 						$(".editable-href", this).animate({'opacity':'0'}, 'fast');
+					}
+				},
+				"mouseenter.editable-href": function(event) {// Hover zone href => on affiche
+					$(".editable-href", this).css({'opacity':'1'});
+				},
+				"mouseleave.editable-href": function(event)// Souris out href-editable
+				{
+					// Si pas autocomplète et href-editable click différent du href-editable ou on est OU href-editable click différent du href-editable => on masque le href-editable
+					if((autocompleteOpen == false && this != editableHrefView[this]) || this != editableHrefView[this]) 
+						$(".editable-href", this).css({'opacity':'0'});
 				}
 			});		
 	}
