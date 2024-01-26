@@ -3870,8 +3870,9 @@ $(function()
 	$(".editable-checkbox, .lucide [for]").not(".lucide #admin-bar [for]").on("click", function(event) {
 		if($(this).attr("for")) var id = $(this).attr("for");
 		else var id = this.id;
-
-		if($("#"+id).attr('type') != 'radio') 
+		
+		// Active ou désactive les checkbox custom
+		if(id && $("#"+id).attr('type') != 'radio') 
 		{
 			if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
 			else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
