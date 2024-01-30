@@ -4008,14 +4008,28 @@ $(function()
 		autocomplete_keydown = false;
 		var samezone = false;
 
-		$(".editable-tag").on("keydown", function(event) {				
-			// Ne quitte pas le champ lorsque l'on utilise TAB pour sélectionner un élément
-			if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active)
-				event.preventDefault();	
+		$(".editable-tag").on({
+			"keydown.editable-tag": function(event){			
+				// Ne quitte pas le champ lorsque l'on utilise TAB pour sélectionner un élément
+				if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active)
+					event.preventDefault();	
 
-			autocomplete_keydown = true;// On a fait une saisie au clavier
-			
-			tosave();// A sauvegarder si on écrit
+				autocomplete_keydown = true;// On a fait une saisie au clavier
+				
+				tosave();// A sauvegarder si on écrit
+			},			
+			"keyup.editable-tag": function(event)// Clean le dernier <br>
+			{
+				clean_last_br($(event.target));
+
+				// Si node, et le node contient que un <br> (et pas de node suivant), on le supp
+				// var node = event.target.childNodes;
+				// if(node.length > 0 && node[0].nodeName == "BR" && typeof node[1] == 'undefined')
+				// {
+				// 	if(dev) console.log("remove <br>");
+				// 	$(node[0]).remove();					
+				// }
+			}
 		})
 		.autocomplete({
 			minLength: 0,
