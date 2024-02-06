@@ -3286,8 +3286,15 @@ $(function()
 					.replace(/\<style[^>]*\>([^]*)\<\/style\>/g, '')// Supprime les styles
 					.replace(/\<script[^>]*\>([^]*)\<\/script\>/g, '')// Supprime le js
 
+					// Supprime les styles et class
+					.replace(/(style|class)=(["'])(.*?)(["'])/g, '')// style="[^"]*"
+
+
 			// Transforme les retours à la ligne en <br>
 			paste = paste.replace(/\n/gi, "<br>");
+
+			// Supprime les <br> de fin de paragraphe
+			//paste = paste.replace(/<br><\/p>/gi, '</p>');// /!\ Ne fonctionne pas
 
 			// Clean les tags en gardant certain élément de mise en page //@todo voir le cas des <p></p>
 			paste = strip_tags(paste, "<p></p><a></a><b><b/><i></i><h1></h1><h2></h2><h3></h3><h4></h4><ul></ul><li></li><br>");
