@@ -361,8 +361,12 @@ $GLOBALS['icons'] = '';// $GLOBALS['scheme'].$GLOBALS['domain'].$GLOBALS['path']
 $GLOBALS['global.css'] = false;
 
 
-// Url de la css du thème
+// URL de la CSS du thème, si on veut en spécifier une précise
 $GLOBALS['style.css'] = null;
+
+
+// Pour désactiver les CSS ou/et le JavaScript
+$GLOBALS['nocss'] = $GLOBALS['nojs'] = null;
 
 
 // Librairie externe
