@@ -4,6 +4,9 @@
 ## LoadModule deflate_module "{APACHEPATH}/modules/mod_deflate.so"
 ## LoadModule filter_module "{APACHEPATH}/modules/mod_filter.so"
 
+
+#### COMPRESSION
+
 #SetOutputFilter DEFLATE
 #AddOutputFilterByType DEFLATE "application/atom+xml" "application/javascript" "application/json" "application/ld+json" "application/manifest+json" "application/rdf+xml" "application/rss+xml" "application/schema+json" "application/vnd.geo+json" "application/vnd.ms-fontobject" "application/x-font-ttf" "application/x-javascript" "application/x-web-app-manifest+json" "application/xhtml+xml" "application/xml" "font/eot" "font/opentype" "image/bmp" "image/svg+xml" "image/vnd.microsoft.icon" "image/x-icon" "text/cache-manifest" "text/css" "text/html" "text/javascript" "text/plain" "text/vcard" "text/vnd.rim.location.xloc" "text/vtt" "text/x-component" "text/x-cross-domain-policy" "text/xml"
 
@@ -20,33 +23,78 @@
 # </IfModule>
 
 
-# Empêcher Apache d'afficher sa signature de serveur
-ServerSignature off
+#### CACHE
+
+## Contrôle du cache navigateur - Expire headers
+<IfModule mod_expires.c>
+	ExpiresActive On
+	#ExpiresDefault "access plus 7200 seconds"
+	ExpiresByType image/jpg 			"access plus 1 week"
+	ExpiresByType image/jpeg 			"access plus 1 week"
+	ExpiresByType image/png 			"access plus 1 week"
+	ExpiresByType image/gif 			"access plus 1 week"
+	ExpiresByType image/webp 			"access plus 1 week"
+	ExpiresByType image/svg+xml			"access plus 1 week"
+	AddType image/x-icon .ico
+	ExpiresByType image/ico 			"access plus 1 week"
+	ExpiresByType image/icon 			"access plus 1 week"
+	ExpiresByType image/x-icon 			"access plus 1 week"
+	ExpiresByType text/css 				"access plus 1 week"
+	ExpiresByType text/javascript 		"access plus 1 week"
+	#ExpiresByType text/html 			"access plus 7200 seconds"
+	#ExpiresByType application/xhtml+xml 	"access plus 7200 seconds"
+	ExpiresByType application/javascript 	"access plus 1 week"
+	ExpiresByType application/x-javascript 	"access plus 1 week"
+</IfModule>
+
+## Contrôle du cache navigateur - Cache-control
+<IfModule mod_headers.c>
+
+    <FilesMatch "\\.(ico|jpe?g|png|gif|webp|svg|woff2)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+
+    <FilesMatch "\\.(css)$">
+        Header set Cache-Control "max-age=604800, public"
+    </FilesMatch>
+
+    <FilesMatch "\\.(js)$">
+        Header set Cache-Control "max-age=216000, private"
+    </FilesMatch>
+
+    #<FilesMatch "\\.(x?html?|php)$">
+        #Header set Cache-Control "max-age=600, private, must-revalidate"
+    #</FilesMatch>
+
+</IfModule>
 
 
-## <??> simple // Supp 6 mois après le 22/10/2020
-#php_value short_open_tag 1
 
-##Rewrite On
+#### RÉÉCRITURE URL et gestion des exécutions/erreurs
+
+## Rewrite On
 RewriteEngine On
 
-##No Directory Listing #FollowSymLinks 
+## Empêcher Apache d'afficher sa signature de serveur
+ServerSignature off
+
+## No Directory Listing #FollowSymLinks 
 Options -Indexes
 
 #RewriteCond %{HTTP_HOST} ^domaine.com
 #RewriteRule ^(.*) http://www.domaine.com/$1 [R=301,L]
 
-# Protège de l'exécution de fichier php dans le dossier media
+## Protège de l'exécution de fichier php dans le dossier media
 RewriteRule media/.*\.(php5|php4|php|php3|php2|phtml|pl|py|jsp|asp|htm|shtml|sh|cgi)$ - [F,NC,L]
 
-# On exclut les fichiers des extensions suivantes. Permets de ne pas charger index.php en cas de 404
+## Affichage du 404 simple d'Apache sur les extensions suivantes
 RewriteCond %{REQUEST_FILENAME} !\.(css|js|html|htm|txt|xml|jpg|jpeg|png|gif|tif|tiff|bmp|ico|svg|svgz|pdf|exe|gz|gzip|tar|zip|mp3|ogg|wav|wma|avi|mp4|mpeg|odb|odc|odf|odg|odp|ods|odt|rtf|doc|docx|xls|xlsx|pps|ppt|pptx|swf)$ [NC]
 
 
 
-# SITE STATIQUE
+#### SITE STATIQUE
 
-#### Si tous les fichiers statiques sont dans un dossier activé ce qui est
+## Si tous les fichiers statiques sont dans un dossier :
 ## Dans robots.txt ne pas référencer dans static/ => Disallow: static/*
 
 ## Pour charger le index.html statique s'il existe, sinon execution de index.php
@@ -57,7 +105,7 @@ RewriteCond %{REQUEST_FILENAME} !\.(css|js|html|htm|txt|xml|jpg|jpeg|png|gif|tif
 #RewriteRule (.*) /static/$1.html [L]
 
 
-#### Si pas de dossier spécifique pour les fichiers statiques activer la priorisation de lecture des .HTML sur l'exécution de PHP
+## Si pas de dossier spécifique pour les fichiers statiques activer la priorisation de lecture des .HTML sur l'exécution de PHP
 
 ## Si fichier HTML existant on le charge au lieu de l'execution de PHP
 #RewriteCond %{REQUEST_FILENAME}.html -f
@@ -65,12 +113,12 @@ RewriteCond %{REQUEST_FILENAME} !\.(css|js|html|htm|txt|xml|jpg|jpeg|png|gif|tif
 
 
 
-# EXECUTION PHP
-# Pas un fichier
+#### EXECUTION PHP
+## Pas un fichier
 RewriteCond %{REQUEST_FILENAME} !-f
 
-# Pas un dossier
+## Pas un dossier
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# On ouvre index.php qui gère la génération des contenus
+## On ouvre index.php qui gère la génération des contenus
 RewriteRule . index.php [L]
