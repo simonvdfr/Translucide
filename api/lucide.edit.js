@@ -439,6 +439,10 @@ exec_tool = function(command, value) {
 			// Si class bt
 			if($("#class-bt").hasClass("checked")) memo_selection.anchorNode.parentElement.classList.add("bt");
 			else $(memo_node).removeClass("bt");
+
+			// Si class no-access
+			if($("#link-access").hasClass("checked")) memo_selection.anchorNode.parentElement.classList.add("no-access");
+			else $(memo_node).removeClass("no-access");
 			
 			$("#txt-tool #link-option").hide("slide", 300);// Cache le menu d'option avec animation
 		}
@@ -645,6 +649,7 @@ link_option = function()
 	$("#txt-tool #link-option #link-text").hide().val('');// Cache et Clean le champs du texte du lien
 	$("#target-blank").removeClass("checked");// Réinitialise la colorisation du target _blank
 	$("#class-bt").removeClass("checked");// Réinitialise la colorisation du class bt
+	$("#link-access").removeClass("checked");// Réinitialise la colorisation du no-access
 
 	var href = $(memo_node).closest('a').attr('href');// On récupère le href de la sélection en cours
 
@@ -656,6 +661,9 @@ link_option = function()
 
 		// Si class bt
 		if($(memo_node).hasClass("bt")) $("#class-bt").addClass("checked");
+
+		// Si class no access
+		if($(memo_node).hasClass("no-access")) $("#link-access").addClass("checked");
 
 		$("#txt-tool #link-option #link").val(href);
 		$("#txt-tool #link-option #link-text").val($(memo_node).closest('a').text().trim()).show();
@@ -780,6 +788,33 @@ class_bt = function(mode) {
 		}
 	}
 }
+
+// Lien non accessible
+link_access = function(mode) {
+	if(mode == true || !$("#link-access").hasClass("checked")) 
+	{
+		$("#link-access").addClass("checked");
+
+		// Si lien existe on ajoute la class
+		if(!$("#txt-tool #link-option button i").is(":visible"))
+		{
+			$(memo_node).closest("a").addClass("no-access");
+			tosave();
+		}
+	}
+	else 
+	{
+		$("#link-access").removeClass("checked");
+
+		// Si lien existe on supp la class
+		if(!$("#txt-tool #link-option button i").is(":visible"))
+		{
+			$(memo_node).closest("a").removeClass("no-access");
+			tosave();
+		}
+	}
+}
+
 
 // Mets le contenu dans un bloc de mise en avant
 highlight = function(){
@@ -2700,6 +2735,8 @@ $(function()
 				toolbox+= "<input type='text' id='link' placeholder='http://' title=\""+ __("Link") +" URL\" class='w150p small'>";
 
 				if(typeof toolbox_bt != 'undefined') toolbox+= "<a href=\"javascript:class_bt();void(0);\" title=\""+ __("Apparence d'un bouton") +"\" id='class-bt' class='o50 ho1'><i class='fa fa-login mlt mrt vam'></i></a>";
+
+				if(typeof toolbox_linkAccess != 'undefined') toolbox+= "<a href=\"javascript:link_access();void(0);\" title=\""+ __("Destination du lien non accessible") +"\" id='link-access' class='o50 ho1'><i class='fa fa-no-access mlt mrt vam'></i></a>";
 				
 				toolbox+= "<a href=\"javascript:target_blank();void(0);\" title=\""+ __("Open link in new window") +"\" id='target-blank' class='o50 ho1'><i class='fa fa-link-ext mlt mrt vam'></i></a>";
 

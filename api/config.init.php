@@ -207,6 +207,7 @@ $GLOBALS['toolbox'] = array(
 	//"lang",
 	//"anchor",
 	//"bt",
+	//"linkAccess",
 	"link"
 );
 
