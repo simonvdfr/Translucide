@@ -1410,7 +1410,7 @@ header #logo { transition: opacity .5s; }
 .fa-key:before { content: '\e838'; } /* '' */
 .fa-login:before { content: '\e839'; } /* '' */
 .fa-x-twitter:before { content: '\e86c'; } /* '' */
-.fa-no-access:before { content: '\e86d'; } /* '' */
+.fa-no-access:before { content: '\e86f'; } /* '' */
 .fa-move:before { content: '\f047'; } /* '' */
 .fa-link-ext:before { content: '\f08e'; } /* '' */
 .fa-twitter:before { content: '\f099'; } /* '' */
