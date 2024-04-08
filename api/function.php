@@ -215,10 +215,18 @@ function get_lang($lang = '')
 	// Si la langue de l'utilisateur n'existe pas pour les contenus de ce site on charge la langue par défaut
 	if(!in_array($lang, $GLOBALS['language'])) $lang = $GLOBALS['language'][0];
 
-	// Création du cookie avec la langue. Utile pour le js
-	setcookie("lang", $lang, time() + $GLOBALS['session_expiration'], $GLOBALS['path'], $GLOBALS['domain']);
+	// Set la variable lang
+	$GLOBALS['lang'] = $_SESSION['lang'] = $lang;
 
-	$GLOBALS['lang'] = $_SESSION['lang'] = $_COOKIE['lang'] = $lang;	
+	// Si la langue est != fr (français) on ajoute la langue dans un cookie pour les traductions JavaScript
+	if($GLOBALS['lang'] != 'fr') 
+	{
+		// Pour avoir directement la variable cookie sans attendre le rechargement de la page
+		$_COOKIE['lang'] = $GLOBALS['lang'];
+
+		// Création du cookie avec la langue pour le JS
+		setcookie("lang", $lang, time() + $GLOBALS['session_expiration'], $GLOBALS['path'], $GLOBALS['domain']);
+	} 
 
 	return encode($lang);
 }
