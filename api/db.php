@@ -3,7 +3,7 @@
 if(isset($GLOBALS['db_server']) and $GLOBALS['db_user'] and $GLOBALS['db'])
 {
 	// Connexion
-	$GLOBALS['connect'] = new mysqli($GLOBALS['db_server'], $GLOBALS['db_user'], $GLOBALS['db_pwd'], $GLOBALS['db']);
+	$GLOBALS['connect'] = @new mysqli($GLOBALS['db_server'], $GLOBALS['db_user'], $GLOBALS['db_pwd'], $GLOBALS['db']);
 
 	// Si pas de connexion on affiche pour google une indisponibilité
 	if($GLOBALS['connect']->connect_errno){
