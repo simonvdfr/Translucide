@@ -742,7 +742,7 @@ function input($key = null, $filter = null)
 
 	echo' class="editable-input '.@$filter['class'].'"';
 
-	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == true)
+	if($filter['type'] == "checkbox" and @$GLOBALS['content'][$key] == 'true')
 		echo' checked="checked"';
 	elseif($filter['type'] == "radio" and @$filter['name'] and (@$GLOBALS['content'][$filter['name']] == $key or (!@$GLOBALS['content'][$filter['name']] and $filter['checked'])))
 		echo' checked="checked"';
