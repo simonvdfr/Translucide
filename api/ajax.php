@@ -1003,8 +1003,8 @@ switch($_GET['mode'])
 			
 			$message = "Bonjour,\r\n\r\nVoici votre nouveau mot de passe pour vous connecter au site ".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())." : ".($pwd);
 			
-			$header = "From:".$_REQUEST['email']."\r\n";// Pour une meilleure délivrabilité des mails
-			$header.= "Reply-To: ".$_REQUEST['email']."\r\n";
+			$header = "From:".$GLOBALS['email_contact']."\r\n";// Pour une meilleure délivrabilité des mails
+			$header.= "Reply-To: ".$GLOBALS['email_contact']."\r\n";
 			$header.= "Content-Type: text/plain; charset=utf-8\r\n";// utf-8 ISO-8859-1
 
 			if(mail($_REQUEST['email'], $subject, stripslashes($message), $header))
