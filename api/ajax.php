@@ -50,11 +50,11 @@ switch($_GET['mode'])
 
 				<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-				<p class="mbm"><?_e("All fields are mandatory")?></p>
+				<p class="mbm"><?php _e("All fields are mandatory")?></p>
 
 				<label for="email">
 					<?php _e("My email");?>
-					(<?_e("Expected format" )?> : dupont@exemple.com)
+					(<?php _e("Expected format" )?> : dupont@exemple.com)
 				</label>
 				<div class="mbm"><input type="email" id="email" autocomplete="email" required class="w100"><span class="wrapper big bold" aria-hidden="true">@</span></div>
 
@@ -86,7 +86,7 @@ switch($_GET['mode'])
 			// Message d'erreur en cas de mauvaise saisie du mail. Pour l'accessibilité
 			var email = document.getElementById("email");
 			email.addEventListener("invalid", function() {
-				email.setCustomValidity("<?_e("Invalid email")?>. <?_e("Expected format")?> : dupont@exemple.com")
+				email.setCustomValidity("<?php _e("Invalid email")?>. <?php _e("Expected format")?> : dupont@exemple.com")
 			}, false);
 			email.addEventListener("input", function() {
 				email.setCustomValidity("");
@@ -1000,8 +1000,12 @@ switch($_GET['mode'])
 
 			// Mail avec le mdp
 			$subject = "[".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())."] ".__("New Password");
-			$message = "Bonjour,<br><br>Voici votre nouveau mot de passe pour vous connecter au site ".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())." : ".($pwd);
-			$header="Content-type:text/html; charset=utf-8\r\nFrom:".$GLOBALS['email_contact'];
+			
+			$message = "Bonjour,\r\n\r\nVoici votre nouveau mot de passe pour vous connecter au site ".mb_convert_encoding(htmlspecialchars($_SERVER['HTTP_HOST']), 'UTF-8', mb_list_encodings())." : ".($pwd);
+			
+			$header = "From:".$GLOBALS['email_contact']."\r\n";// Pour une meilleure délivrabilité des mails
+			$header.= "Reply-To: ".$GLOBALS['email_contact']."\r\n";
+			$header.= "Content-Type: text/plain; charset=utf-8\r\n";// utf-8 ISO-8859-1
 
 			if(mail($_REQUEST['email'], $subject, stripslashes($message), $header))
 			{?>
