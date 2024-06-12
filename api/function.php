@@ -674,12 +674,17 @@ function module($module = "module", $content = null)
 // Contenu champ checkbox
 function checkbox($key = null, $filter = array())
 {
-	$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
-
 	// fa-check/fa-close => fa-ok/fa-cancel
-	echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." fa fa-fw ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "fa-ok yes" : "fa-cancel no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
-	
-	$GLOBALS['editkey']++;
+	if(@$filter['fa'] !== false)
+	{
+		$key = ($key ? $key : "checkbox-".$GLOBALS['editkey']);
+
+		echo"<i class='".(isset($filter['editable'])?$filter['editable']:"editable-checkbox")." fa fa-fw ".((isset($GLOBALS['content'][$key]) and $GLOBALS['content'][$key] == true) ? "fa-ok yes" : "fa-cancel no") . (isset($filter['class'])?" ".$filter['class']:"")."' id='".encode($key)."'></i>";
+
+		$GLOBALS['editkey']++;
+	}
+	else 
+		input($key, array('type' => 'checkbox', 'class' => @$filter['class']));
 }
 
 // Contenu champ radio / si checked = true => checked par défaut si pas de radio selectionné
