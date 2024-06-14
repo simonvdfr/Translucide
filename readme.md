@@ -132,7 +132,7 @@ Pour activer la fonction dans l'administration (mesure lors de la sauvegarde de 
 Les fonctions de calcul viennent de [GreenIT-Analysis](https://github.com/cnumr/GreenIT-Analysis/).
 `Copyright (C) 2019 didierfred@gmail.com / GNU Affero General Public License AGPL v3`
 
-L'algorithme [EcoIndex](http://www.ecoindex.fr/quest-ce-que-ecoindex/) est sous [Licence Creative Commons CC-By-NC-ND](https://creativecommons.org/licenses/by-nc-nd/2.0/fr/)
+L'algorithme [EcoIndex](https://www.ecoindex.fr/comment-ca-marche/) est sous [Licence Creative Commons CC-By-NC-ND](https://creativecommons.org/licenses/by-nc-nd/2.0/fr/)
 
 ## Wordpress VS Translucide
 J'ai tenté de passer un site que j'avais fait sous Wordpress sous Translucide avec les mêmes fonctionnalités et aspect visuel et le résultat était plutôt édifiant.
