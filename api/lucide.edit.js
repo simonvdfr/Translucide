@@ -4374,6 +4374,7 @@ $(function()
 		// Dialog de suppression
 		$(".dialog-del").dialog({
 			modal: true,
+			dialogClass: "dialog-alert",
 			buttons: 
 			[{
             	text: __("Cancel"),

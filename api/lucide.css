@@ -933,6 +933,8 @@ nav ul li i.fa-cancel {
 		margin-top: 0.5rem;
 	}
 
+	.dialog-alert { border: 5px solid red !important; }
+
 
 	/* Image à moitié transparante */
 	.to50 {
