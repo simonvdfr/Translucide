@@ -18,6 +18,7 @@ Je voulais un CMS plus simple d'approche que Wordpress, plus facilement customis
 
 ### PHP
 PHP est un langage de script plutôt efficient, même si ce n'est pas le meilleur. Par contre, c'est le plus répandu et disponible sur la plupart des hébergements grand public. Il est maintenu, ne bouge pas trop. Son ancienneté pour moi est un gage de qualité et sa longévité est impressionnante (je l'utilise depuis plus de 20 ans). Ce n'est pas une technologie trop éphémère, elle ne subit pas trop les effets de mode.
+
 Le CMS se concentre sur les fonctionnalités de base de PHP et si possible celles qui consomment peu de ressources, sans aller dans la sur-optimisation. PHP concentre 50 % du code du CMS et sert surtout à faire des actions d'appel aux données ou leur sauvegarde. PHP n'est généralement pas le facteur limitant en termes de performances. C'est plus les bases de données qui peuvent être un problème quand il y a de fortes charges.
 
 ### Mysql / MariaDB
@@ -30,10 +31,15 @@ La base de données est composée de 4 tables.
 
 ### Javascript
 Historiquement, la plus grosse dépendance du CMS est JQuery. C'est une librairie puissante pour faire des requêtes Ajax et avoir une simplification des sélecteurs.
+
 C'est une librairie qui change peu, stable et éprouvée (je l'utilise depuis 20 ans). Contenue dans 30ko compressée, elle permet une souplesse dans le développement pour un poids très contenu.
+
 Un objectif à long terme est de la supprimer en front.
+
 En mode édition, elle permet une manipulation du contenu. jQuery UI est également présenté, pour rendre plus confortables les fonctions d'autocomplétion et de modal. J'ai développé toutes les fonctionnalités d'un éditeur Wysiwyg sans la lourdeur des librairies existantes. Aussi, pour connaître les enjeux et n'avoir aucune dépendance à des systèmes qui ne font que s'alourdir et présenter trop de fonctionnalités inutilisées.
+
 Globalement, la dette technique est très faible et ne nécessite pas de mise à jour, car nous n'avons quasiment pas de dépendance comparée à d'autres systèmes qui aggloméraient les développements externes. On peut se concentrer sur les besoins de nos clients et ne pas passer du temps à juste continuer à faire fonctionner ce qui fonctionne déjà. Ici, nous faisons globalement maximum une révision annuelle pour le suivi des versions de PHP et Jquery.
+
 Enfin un front en fichier JavaScript est utilisé pour des fonctions de base, tel l'affichage de messages d'erreur, du multilingue, la gestion de cookies, le lazyloading, l'affichage mobile et le lancement du mode édition, le tout pour 10ko (4ko compressé).
 
 ### CSS
@@ -41,8 +47,11 @@ Un seul fichier en front pour le style du site. Basé sur Knacss, en version all
 
 ### Poids et arborecence
 Le moteur du site tient dans très peu de fichiers, moins de 50 fichiers, il pèse 1 mo avec le thème par défauts, et pourtant gère le multilingue, permet d'éditer le contenu en direct, sans administration complexe. Il propose aussi les outils de base pour un bon SEO, pour optimiser les images et contrôler l'accessibilité du contenu, ceci sans plugins externes.
+
 Le CMS se décompose en une API, qui à travers principalement des requêtes Ajax permet l'ajouts, la sauvegarde et l'affichage de contenus.
+
 D'un autre côté, un dossier avec le thème qui contient les modèles de page type. Ces modèles font appel à des fonctions de l'API pour créer des zones éditables types (textes, images).
+
 Enfin l'Index fait le travail d'aller chercher le contenu et de l'afficher en fonction des URL.
 
 Un site de base comprend donc 5 requêtes HTTP : la page HTML (5 à 10ko), le CSS (6ko), 2 JavaScript (34ko), une police d'icône (20ko). Pour 70 ko et 5 requêtes de fichiers, 2 requêtes à la base de données MySQL, sans image, nous pouvons servir un site, éditable par les clients.
