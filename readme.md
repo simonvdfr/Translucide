@@ -25,53 +25,58 @@ Le CMS se concentre sur les fonctionnalités de base de PHP et si possible celle
 Pour l'affichage d'une page classique (les modèles de page les plus répandus sur un site) il y a seulement 2 requêtes à la base de données, une pour rapatrier le contenu et une autre pour l'entête et pied de page.
 La base de données est composée de 4 tables.
 - Celle des contenus.
-- Une pour les méta donnée (typiquement les contenus de la tête et pied de page.
+- Une pour les méta données (typiquement les contenus de l'entête et pied de page.
 - Une autre pour les tags s'ils sont utilisés (pour des filtrages des actualités par exemple).
-- Enfin une table d'utilisateurs (pour administrer le site). Le tout est optimisé pour ne pas grossir trop vite, un site classique pouvant tenir facilement dans moins de 1 mo de base de données sans complexité pour atteindre les données.
+- Enfin une table d'utilisateurs (pour administrer le site).
+Le tout est optimisé pour ne pas grossir trop vite, un site classique pouvant tenir facilement dans moins de 1 Mo de base de données sans complexité pour atteindre les données.
 
 ### Javascript
 Historiquement, la plus grosse dépendance du CMS est JQuery. C'est une librairie puissante pour faire des requêtes Ajax et avoir une simplification des sélecteurs.
 
-C'est une librairie qui change peu, stable et éprouvée (je l'utilise depuis 20 ans). Contenue dans 30ko compressée, elle permet une souplesse dans le développement pour un poids très contenu.
+C'est une librairie qui change peu, stable et éprouvée (je l'utilise depuis 20 ans). Contenue dans 30ko compressés, elle permet une souplesse dans le développement pour un poids très contenu.
 
 Un objectif à long terme est de la supprimer en front.
 
 En mode édition, elle permet une manipulation du contenu. jQuery UI est également présenté, pour rendre plus confortables les fonctions d'autocomplétion et de modal. J'ai développé toutes les fonctionnalités d'un éditeur Wysiwyg sans la lourdeur des librairies existantes. Aussi, pour connaître les enjeux et n'avoir aucune dépendance à des systèmes qui ne font que s'alourdir et présenter trop de fonctionnalités inutilisées.
 
-Globalement, la dette technique est très faible et ne nécessite pas de mise à jour, car nous n'avons quasiment pas de dépendance comparée à d'autres systèmes qui aggloméraient les développements externes. On peut se concentrer sur les besoins de nos clients et ne pas passer du temps à juste continuer à faire fonctionner ce qui fonctionne déjà. Ici, nous faisons globalement maximum une révision annuelle pour le suivi des versions de PHP et Jquery.
+Globalement, la dette technique est très faible et ne nécessite pas de mise à jour, car nous n'avons quasiment pas de dépendances comparé à d'autres systèmes qui aggloméraient les développements externes. On peut se concentrer sur les besoins de nos clients et ne pas passer du temps à juste continuer à faire fonctionner ce qui fonctionne déjà. Ici, nous faisons globalement au maximum une révision annuelle pour le suivi des versions de PHP et Jquery.
 
 Enfin un front en fichier JavaScript est utilisé pour des fonctions de base, tel l'affichage de messages d'erreur, du multilingue, la gestion de cookies, le lazyloading, l'affichage mobile et le lancement du mode édition, le tout pour 10ko (4ko compressé).
 
 ### CSS
-Un seul fichier en front pour le style du site. Basé sur Knacss, en version allégée. Il contient donc un reste, un système basique de grille, des conditions de responsive et une librairie d'icônes. Dernièrement, nous avons ajouté des Class pour parfaire l'accessibilité avec un mode contraste renforcé (issu d'un plugin réalisé par Access42). Le tout dans moins de 25ko (6ko compressés). En mode édition, un cas spécifique est chargé.
+Un seul fichier en front pour le style du site. Basé sur Knacss, en version allégée. Il contient donc un reste, un système basique de grilles, des conditions de responsive et une librairie d'icônes. Dernièrement, nous avons ajouté des Class pour parfaire l'accessibilité avec un mode contraste renforcé (issu d'un plugin réalisé par Access42). Le tout dans moins de 25ko (6ko compressés). En mode édition, un cas spécifique est chargé.
 
-### Poids et arborecence
-Le moteur du site tient dans très peu de fichiers, moins de 50 fichiers, il pèse 1 mo avec le thème par défauts, et pourtant gère le multilingue, permet d'éditer le contenu en direct, sans administration complexe. Il propose aussi les outils de base pour un bon SEO, pour optimiser les images et contrôler l'accessibilité du contenu, ceci sans plugins externes.
+### Poids et arborescence
+Le moteur du site tient dans très peu de fichiers (moins de 50), il pèse 1 Mo avec le thème par défaut, et pourtant gère le multilingue, permet d'éditer le contenu en direct, sans administration complexe. Il propose aussi les outils de base pour un bon SEO, pour optimiser les images et contrôler l'accessibilité du contenu, ceci sans plugins externes.
 
-Le CMS se décompose en une API, qui à travers principalement des requêtes Ajax permet l'ajouts, la sauvegarde et l'affichage de contenus.
+Le CMS est composé de :
+- une API qui, à travers principalement des requêtes Ajax, permet l'ajout, la sauvegarde et l'affichage de contenus.
+- un dossier avec le thème qui contient les modèles de page type. Ces modèles font appel à des fonctions de l'API pour créer des zones éditables types (textes, images).
+- un fichier Index qui va chercher le contenu et l'affiche en fonction des URL.
 
-D'un autre côté, un dossier avec le thème qui contient les modèles de page type. Ces modèles font appel à des fonctions de l'API pour créer des zones éditables types (textes, images).
-
-Enfin l'Index fait le travail d'aller chercher le contenu et de l'afficher en fonction des URL.
-
-Un site de base comprend donc 5 requêtes HTTP : la page HTML (5 à 10ko), le CSS (6ko), 2 JavaScript (34ko), une police d'icône (20ko). Pour 70 ko et 5 requêtes de fichiers, 2 requêtes à la base de données MySQL, sans image, nous pouvons servir un site, éditable par les clients.
+Un site de base comprend donc 5 requêtes HTTP : 
+- la page HTML (5 à 10ko),
+- le CSS (6ko),
+- 2 JavaScript (34ko),
+- une police d'icônes (20ko). 
+Pour 70ko et 5 requêtes de fichiers, 2 requêtes à la base de données MySQL, sans image, nous pouvons servir un site, éditable par les clients.
 
 ## Installation
 - Décompressez les fichiers du site sur votre FTP et avec votre navigateur allez à l'adresse où se trouve `index.php` (Attention, si vous copiez-collez ces fichiers, pensez à copier également les fichiers cachés)
-- Entrez les infos de connexion à la base de données, sélectionnez votre template de site (graphisme) et enfin entrez le mail et le mot de passe qui serviront à administrer le site au lancement.
+- Entrez les infos de connexion à la base de données, sélectionnez votre template de site (graphisme) et enfin entrez le mail et le mot de passe qui serviront à administrer le site au lancement
 - Copiez-collez le dossier theme 'default' et renommez-le
 
 Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, généré à la suite de l'installation. Il contient les informations uniques et cruciales au bon fonctionnement du CMS :
 - modifiez la valeur de `$GLOBALS['theme']` avec le nom de votre thème
 - modifiez les valeurs de `$GLOBALS['domain']` avec les noms de votre site local et de votre site en ligne
-- modifier les valeurs de `$GLOBALS['db*']` hors dev local aves les infos de connexion de la BDD de votre hébergeur.
-- décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion).
+- modifier les valeurs de `$GLOBALS['db*']` hors dev local aves les infos de connexion de la BDD de votre hébergeur
+- décommentez les valeurs de `$GLOBALS['add_content']` dont vous aurez besoin (product, article, event, video, media, page). Ils correspondent aux types de contenus. Vous pouvez en ajouter d'autres personnalisés. Attention, il faut également les activer en les sélectionnant dans le ou les profils d'administration concernés en mode édition (seront visibles après reconnexion)
 - décommentez les valeurs de `$GLOBALS['toolbox']` dont vous aurez besoin (titres, mise en forme...). Ils apparaitront dans une barre d'outils lors de l'édition d'un contenu.
 
 ### Prérequis de configuration de PHP
 Dans la configuration de PHP (php.ini) short_open_tag doit être en On `short_open_tag = On`. Il faut que les extensions PHP suivantes soient installées : php-mbstring, php-mysql, php-curl et php-gd.
 
-Le CMS est utilisé depuis plusieur année avec les versions PHP de la 7.2 à la 8.1, où il semble intégralement fonctionnel.
+Le CMS est utilisé depuis plusieur années avec les versions PHP de la 7.2 à la 8.1, où il semble intégralement fonctionnel.
 Nous n'avons pas relevé de dysfonctionnements sous PHP 8.2 et 8.3 mais il peut subsister des anomalies que nous vous invitons à nous partager si vous en rencontrez.
 
 ### Configurations spécifiques
@@ -84,10 +89,11 @@ Pour 2 class comme dans l'exemple il faut dans votre fichier `style.css` :
 ~~~~
 
 ## Premier pas
-- Descendez tout en bas du site, sur la gauche doit apparaître un bouton avec un petit crayon pour éditer la page courante, au survol de ce dernier un autre bouton `+` apparaît pour ajouter une page. Choisissez l'onglet correspondant à votre type de contenu, choisissez la template souhaitée dans le menu déroulant et saisissez le nom de la page.
-- Une fois la page créée (vous lui avez donné un titre et une template), vous pouvez l'éditer en cliquant en bas à gauche sur le crayon d'édition.
+- Descendez tout en bas du site, au centre doit apparaître un bouton avec une clé, cliquez sur cette clé et un pop up de connexion apparaitra. Connectez-vous avec l'identifiant et mot de passe choisis précédemment lors de l'installation
+- Une fois connecté, descendez tout en bas du site, sur la gauche doit apparaître un bouton avec un petit crayon pour éditer la page courante, au survol de ce dernier un autre bouton `+` apparaît pour ajouter une page. Choisissez l'onglet correspondant à votre type de contenu, choisissez la template souhaitée dans le menu déroulant et saisissez le nom de la page.
+- Une fois la page créée (vous lui avez donné un titre et choisi une template), vous pouvez l'éditer en cliquant en bas à gauche sur le crayon d'édition.
 - Pour créer une nouvelle template, ajoutez un fichier php dans le dossier `tpl` de votre thème. Créez la trame avec la structure html de votre choix et ajoutez les contenus éditables à l'aide des fonctions existantes (cf. plus loin). Ajoutez le contenu directement sur le site en mode édition, ceci alimentera directement la BDD.
-- Normalement après votre installation vous êtes redirigé vers la page d'accueil déjà créer et non activé (pensez à l'activer pour rendre votre site visible). Cette page d'accueil avec normalement la template `home` a la particularité d'avoir comme permalien `index` pour être défini comme page de défaut quand on tape le nom de domaine de votre site sans URL spécifique.
+- Normalement après votre installation vous êtes redirigé vers la page d'accueil déjà créée et non activée (pensez à l'activer pour rendre votre site visible). Cette page d'accueil avec normalement la template `home` a la particularité d'avoir comme permalien `index` pour être défini comme page de défaut quand on tape le nom de domaine de votre site sans URL spécifique.
 
 ## Raccourcis clavier (sur Chrome)
 - <kbd>ctrl + e</kbd> Lance le mode édition
@@ -103,9 +109,9 @@ Note : pour un site accessible (RGAA) vous devez désactiver les raccourcis clav
 
 ## Utilisation de l'éditeur du menu de navigation
 - Lorsque vous modifiez du contenu qui se trouve dans `<header>` ou `<footer>`, ça le modifie pour toutes les pages du site.
-- Lorsque vous passez la souris dans le header une boîte s'ouvre vous proposant les pages pas encore présentes dans le menu.
-- Un clic sur le `+` vous permet d'ajouter l'élément au menu, ou sinon vous pouvez faire un drag&drop
-- Une fois dans le menu, au survol d'un élément une zone en pointillés apparaît au-dessus pour pouvoir le déplacer en drag&drop.
+- Lorsque vous cliquez sur l'icône du crayon dans le header une boîte s'ouvre vous proposant les pages pas encore présentes dans le menu.
+- Un clic sur le `+` vous permet d'ajouter l'élément au menu, ou sinon vous pouvez faire un drag and drop
+- Une fois dans le menu, au survol d'un élément une zone en pointillés apparaît au-dessus pour pouvoir le déplacer en drag and drop et une croix pour pouvoir le supprimer.
 - Si vous saisissez un élément et que vous le glissez dans la boîte d'ajout, ça se transforme en poubelle, pour supprimer l’élément du menu.
 
 ## Fonctions pour rendre éditables des zones
@@ -163,14 +169,13 @@ Le CMS est prévu pour accueillir des traductions mais tout n'est pas fini/test�
 Vous pouvez customiser les pages 404 (not found) & 503 (Service Unavailable) en créant une page avec comme permalien `404` ou `503`
 
 ## Option fermeture du site
-Vous pouvez fermer le site dans une tranche horaire définit dans la variable `$GLOBALS['offline'] = '20:00-06:00 +1 day';`. dans cet exemple le site serra fermer entre 20h et 6h du matin. C'est la page 503 qui serra charger.
+Vous pouvez fermer le site dans une tranche horaire définit dans la variable `$GLOBALS['offline'] = '20:00-06:00 +1 day';`. dans cet exemple le site serra fermer entre 20h et 6h du matin. C'est la page 503 qui sera chargée.
 
 ## Version bêta de l'intégration de ecoIndex
-Pour permettre de prendre conscience de l'impact environnemental de l'intégration des contenus dans le CMS j'ai intégré de façon simplifier la note ecoIndex.
-L'idée est en un minimum de code Javascript (pour un minimum de dettes techniques) d'obtenir une mensure se rapprochant le plus possible de l'ecoIndex original. J'utilise la méthode de calcul original sans modification.
+Pour permettre de prendre conscience de l'impact environnemental de l'intégration des contenus dans le CMS j'ai intégré de façon simplifiée la note ecoIndex.
+L'idée est qu'en un minimum de code Javascript (pour un minimum de dettes techniques) d'obtenir une mesure se rapprochant le plus possible de l'ecoIndex original. J'utilise la méthode de calcul originale sans modification.
 Le Javascript audite la taille de la DOM, le nombre de fichiers et leur poids. Ces 2 derniers éléments étant parfois moins fiables, les résultats peuvent légèrement différer des mesures ecoIndex originales.
-Pour activer la fonction dans l'administration (mesure lors de la sauvegarde de vos modifications) il faut 
-`$GLOBALS['ecoindex'] = true;` dans le fichier `config.php`
+Pour activer la fonction dans l'administration (mesure lors de la sauvegarde de vos modifications) il faut mettre `$GLOBALS['ecoindex'] = true;` dans le fichier `config.php`
 
 Les fonctions de calcul viennent de [GreenIT-Analysis](https://github.com/cnumr/GreenIT-Analysis/).
 `Copyright (C) 2019 didierfred@gmail.com / GNU Affero General Public License AGPL v3`
