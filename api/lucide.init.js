@@ -372,7 +372,7 @@ $(function()
 		// Si la page n'est pas activée et que l'on n'est pas admin on callback un reload
 		edit_launcher(((state != "active" && get_cookie("auth").indexOf("edit-page") < 0) ? "reload_edit":"edit_launcher"));
 
-		$(".bt.fixed.edit").fadeOut();
+		//$(".bt.fixed.edit").fadeOut();//@todo 07/2024 supp  car créer une non-conformité RGAA => retour de focus si close fenêtre de login
 
 		// Force l'affichage du bouton  +
 		$(".bt.fixed.add").show().css({"bottom":"10px"});//, "opacity":".7"

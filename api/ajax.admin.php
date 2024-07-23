@@ -215,6 +215,9 @@ switch($_GET['mode'])
 			        cache: true,
 					success: function()
 					{ 		
+						// Masque le bouton d'edition/connexion
+						$(".bt.fixed.edit").fadeOut();
+
 						// Chargement de la css d'edition		
 						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css'>");
 						
