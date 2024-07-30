@@ -625,8 +625,9 @@ $(function()
 		burger.setAttribute('aria-expanded', burgerExpand);
 
 		// Etat accessible des textes du bouton
-		document.querySelector(".burger .open").classList.toggle('none');
-		document.querySelector(".burger .close").classList.toggle('none');
+		// @supp 30/07/2024 car l'état du menu est déjà donner par le lecteur d'écran
+		//document.querySelector(".burger .open").classList.toggle('none');
+		//document.querySelector(".burger .close").classList.toggle('none');
 
 		// Focus a la fermeture sur le bouton d'ouverture
 		if(burgerExpand == 'false') $(".burger").focus();
