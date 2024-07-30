@@ -1038,6 +1038,14 @@ nav ul li i.fa-cancel {
 
 .ui-dialog-content { border: none !important; }
 
+/* force la couleur de fond pour access */
+.ui-button { 
+	background: #e6e6e6 !important;
+	color: #555 !important;
+}
+	.ui-button:hover { background: #dadada !important; }
+	.ui-button .ui-icon { background-color: initial !important; }
+
 .ui-effects-transfer {
     border: 4px dashed #7AD2D9;
 	background: rgba(122, 210, 217, 0.2);
@@ -1246,14 +1254,6 @@ nav ul li i.fa-cancel {
 
 
 #unlink { color: #9E1E1E; }
-
-
-/* Couleur de sélection de textes */
-*::-moz-selection {/* @TODO FAIRE FONCTIONNER */
-    background: #6FCDD5;
-    color: white;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-}
 
 
 /*header:hover { box-shadow: 0 0 0 2px rgba(122, 210, 217, 0.7) inset; }
