@@ -251,207 +251,213 @@ switch($_GET['mode'])
 		// @todo metre en none, chaché les options avancé (permalien, regen, home)
 
 		// Dialog : titre, template, langue
-		?>
-		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?<?=$GLOBALS['cache']?>">
+		// Si on a des droits d'ajout de contenu, on affiche la dialog
+		if(stripos(json_encode($_SESSION['auth']),'add-') !== false)
+		{
+			?>
+			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-
-		<div class="dialog-add" title="<?php _e("Add content")?>">
-			
-			<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
-
-			<ul class="smaller">
-				<?php 
-				foreach($GLOBALS['add_content'] as $cle => $array)
-				{
-					if(isset($_SESSION['auth']['add-'.$cle])){
-						echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
-					}
-				}
-				?>
-			</ul>					
-
-			<div class="none">
-				<?php 
-				reset($GLOBALS['add_content']);
-				foreach($GLOBALS['add_content'] as $cle => $array)
-				{
-					if(isset($_SESSION['auth']['add-'.$cle])) echo'<div id="add-'.$cle.'"></div>';
-				}
-				?>
-			</div>
-			
-
-			<div>
+			<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?<?=$GLOBALS['cache']?>">
 
 
-				<div class="mas">
-					<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="255" class="w60 bold">
-					
-					<select id="tpl" required class="w30">
-						<option value=""><?php _e("Select template")?></option>
-						<?php 
-						$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
-
-						// Tableau des nom lisible, si dans config
-						foreach($scandir as $cle => $filename)
-						{
-							$pathinfo = pathinfo($filename);
-
-							if($pathinfo['extension'])
-							{
-								// Si des noms sont spécifiés pour les templates
-								if(isset($GLOBALS['tpl_name'][$pathinfo['filename']]))
-									$readdir[$pathinfo['filename']] = ucfirst($GLOBALS['tpl_name'][$pathinfo['filename']]);
-								else 
-									$readdir[$pathinfo['filename']] =  ucfirst($pathinfo['filename']);
-							}
-						}
-
-						// Affiche les options par ordre alpha name
-						asort($readdir);
-						foreach($readdir as $filename => $name)
-						{			
-							echo'<option value="'.$filename.'">'.$name.'</option>';
-						}
-						?>					
-					</select>
-				</div>
-
-
-				<div class="mas mtm">
-
-					<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="255" class="w50 mrm">
-
-					<!-- <label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label> -->
-
-					<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
-
-				</div>
-
-
-			</div>
-
-
-			<script>
-			$(function()
-			{
-				// Update les nonces dans la page courante pour éviter de perdre le nonce
-				$("#nonce").val('<?=$_SESSION['nonce']?>');			
-
-				// Au click sur un onglet
-				$(".dialog-add ul li").click(function(event) {
-					var filter = $(this).data("filter");
-
-					// Affiche ou masque le bt permalink home
-					if(filter == "page") $("label[for='homepage']").show();
-					else $("label[for='homepage']").hide();
-
-					// Force la template du type
-					$(".dialog-add #tpl").val($(this).data("tpl"));
-
-					// Affiche ou masque le select des tpl
-					if($(this).data("tpl") == "page") $(".dialog-add #tpl").show();
-					else $(".dialog-add #tpl").hide();
-
-					// Reconstruit le permalink
-					refresh_permalink(".dialog-add");
-				});
-
-				// Changement au click de la checkbox homepage
-				$(".dialog-add #homepage").change(function() {
-					if(this.checked) $(".dialog-add #permalink").val("index");
-					else refresh_permalink(".dialog-add");
-				});
-
-				// Click refresh permalink
-				$(".dialog-add #refresh-permalink").click(function() {
-					refresh_permalink(".dialog-add");
-				});
-
-				// Création du permalink lors de la saisie du title
-				var timer = null;
-				$(".dialog-add #title").keyup(function() 
-				{
-					if(timer != null) clearTimeout(timer);
-
-					timer = setTimeout(function() {
-						timer = null;
-						refresh_permalink(".dialog-add");
-					}, '500');
-				});
-
-				// Chargement de Jquery UI
-				$.ajax({
-			        url: "<?=$GLOBALS['jquery_ui']?>",
-			        dataType: 'script',
-			        cache: true,
-			        async: true,
-					success: function()// Si Jquery UI bien charger on ouvre la dialog
-					{				
-						// Fermeture de la dialog de connexion
-						$("#dialog-connect").dialog("close");
-
-						// Création de la dialog d'ajout
-						$(".dialog-add").dialog({
-							modal: true,
-							width: "60%",
-							buttons: {
-								"OK": function() 
-								{								
-									// Dans quel onglet on se situe
-									type = $(".ui-tabs-nav .ui-state-active").data("filter");
-
-									if(!$(".dialog-add #tpl").val()) error(__("Thank you to select a template"));
-									else {
-										$.ajax({
-											type: "POST",
-											url: path + "api/ajax.admin.php?mode=insert",
-											data: {
-												"title": $(".dialog-add #title").val(),
-												"tpl": $(".dialog-add #tpl").val(),
-												"permalink": $(".dialog-add #permalink").val(),
-												"type": type,
-												"nonce": $("#nonce").val()// Pour la signature du formulaire
-											}
-										})
-										.done(function(html) {		
-											$(".dialog-add").dialog("close");
-											$("body").append(html);
-										});
-									}
-								}
-							},
-							create: function() 
-							{						
-								// Création des onglets
-								$(".dialog-add").tabs();
-
-								// Place les onglets à la place du titre de la dialog
-								$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
-
-								// Template sélectionnée par défaut
-								$(".dialog-add #tpl").val($(".ui-dialog ul li[aria-selected='true']").data("tpl"));
-
-								// Affiche ou masque le select des tpl
-								if($(".ui-dialog ul li[aria-selected='true']").data("tpl") == "page")
-									$(".dialog-add #tpl").show();
-								else
-									$(".dialog-add #tpl").hide();
-							},
-							close: function() {
-								$(".dialog-add").remove();					
-							}
-						});
-					}
-			    });	
+			<div class="dialog-add" title="<?php _e("Add content")?>">
 				
-			});
-			</script>
+				<input type="hidden" id="nonce" value="<?=nonce("nonce");?>">
 
-		</div>
-		<?php 				
+				<ul class="smaller">
+					<?php 
+					// Onglet
+					foreach($GLOBALS['add_content'] as $cle => $array)
+					{
+						if(isset($_SESSION['auth']['add-'.$cle])){
+							echo'<li data-filter="'.$cle.'" data-tpl="'.$array['tpl'].'"><a href="#add-'.$cle.'"><i class="fa '.$array['fa'].'"></i> <span>'.__("Add ".$cle).'</span></a></li>';
+						}
+					}
+					?>
+				</ul>					
+
+				<div class="none">
+					<?php 
+					reset($GLOBALS['add_content']);
+					foreach($GLOBALS['add_content'] as $cle => $array)
+					{
+						if(isset($_SESSION['auth']['add-'.$cle])) echo'<div id="add-'.$cle.'"></div>';
+					}
+					?>
+				</div>
+				
+
+				<div>
+
+
+					<div class="mas">
+						<input type="text" id="title" placeholder="<?php _e("Title")?>" maxlength="255" class="w60 bold">
+						
+						<select id="tpl" required class="w30">
+							<option value=""><?php _e("Select template")?></option>
+							<?php 
+							$scandir = array_diff(scandir($_SERVER['DOCUMENT_ROOT'].$GLOBALS['path']."theme/".$GLOBALS['theme'].($GLOBALS['theme']?"/":"")."tpl/"), array('..', '.'));
+
+							// Tableau des nom lisible, si dans config
+							foreach($scandir as $cle => $filename)
+							{
+								$pathinfo = pathinfo($filename);
+
+								if($pathinfo['extension'])
+								{
+									// Si des noms sont spécifiés pour les templates
+									if(isset($GLOBALS['tpl_name'][$pathinfo['filename']]))
+										$readdir[$pathinfo['filename']] = ucfirst($GLOBALS['tpl_name'][$pathinfo['filename']]);
+									else 
+										$readdir[$pathinfo['filename']] =  ucfirst($pathinfo['filename']);
+								}
+							}
+
+							// Affiche les options par ordre alpha name
+							asort($readdir);
+							foreach($readdir as $filename => $name)
+							{			
+								echo'<option value="'.$filename.'">'.$name.'</option>';
+							}
+							?>					
+						</select>
+					</div>
+
+
+					<div class="mas mtm">
+
+						<input type="text" id="permalink" placeholder="<?php _e("Permanent link")?>" maxlength="255" class="w50 mrm">
+
+						<!-- <label for="homepage" class="mrs mtn none"><input type="checkbox" id="homepage"> <?php _e("Home page")?></label> -->
+
+						<label id="refresh-permalink" class="mtn"><i class="fa fa-fw fa-arrows-cw"></i><?php _e("Regenerate address")?></label>
+
+					</div>
+
+
+				</div>
+
+
+				<script>
+				$(function()
+				{
+					// Update les nonces dans la page courante pour éviter de perdre le nonce
+					$("#nonce").val('<?=$_SESSION['nonce']?>');			
+
+					// Au click sur un onglet
+					$(".dialog-add ul li").click(function(event) {
+						var filter = $(this).data("filter");
+
+						// Affiche ou masque le bt permalink home
+						if(filter == "page") $("label[for='homepage']").show();
+						else $("label[for='homepage']").hide();
+
+						// Force la template du type
+						$(".dialog-add #tpl").val($(this).data("tpl"));
+
+						// Affiche ou masque le select des tpl
+						if($(this).data("tpl") == "page") $(".dialog-add #tpl").show();
+						else $(".dialog-add #tpl").hide();
+
+						// Reconstruit le permalink
+						refresh_permalink(".dialog-add");
+					});
+
+					// Changement au click de la checkbox homepage
+					$(".dialog-add #homepage").change(function() {
+						if(this.checked) $(".dialog-add #permalink").val("index");
+						else refresh_permalink(".dialog-add");
+					});
+
+					// Click refresh permalink
+					$(".dialog-add #refresh-permalink").click(function() {
+						refresh_permalink(".dialog-add");
+					});
+
+					// Création du permalink lors de la saisie du title
+					var timer = null;
+					$(".dialog-add #title").keyup(function() 
+					{
+						if(timer != null) clearTimeout(timer);
+
+						timer = setTimeout(function() {
+							timer = null;
+							refresh_permalink(".dialog-add");
+						}, '500');
+					});
+
+					// Chargement de Jquery UI
+					$.ajax({
+						url: "<?=$GLOBALS['jquery_ui']?>",
+						dataType: 'script',
+						cache: true,
+						async: true,
+						success: function()// Si Jquery UI bien charger on ouvre la dialog
+						{				
+							// Fermeture de la dialog de connexion
+							$("#dialog-connect").dialog("close");
+
+							// Création de la dialog d'ajout
+							$(".dialog-add").dialog({
+								modal: true,
+								width: "60%",
+								buttons: {
+									"OK": function() 
+									{								
+										// Dans quel onglet on se situe
+										type = $(".ui-tabs-nav .ui-state-active").data("filter");
+
+										if(!$(".dialog-add #tpl").val()) error(__("Thank you to select a template"));
+										else {
+											$.ajax({
+												type: "POST",
+												url: path + "api/ajax.admin.php?mode=insert",
+												data: {
+													"title": $(".dialog-add #title").val(),
+													"tpl": $(".dialog-add #tpl").val(),
+													"permalink": $(".dialog-add #permalink").val(),
+													"type": type,
+													"nonce": $("#nonce").val()// Pour la signature du formulaire
+												}
+											})
+											.done(function(html) {		
+												$(".dialog-add").dialog("close");
+												$("body").append(html);
+											});
+										}
+									}
+								},
+								create: function() 
+								{						
+									// Création des onglets
+									$(".dialog-add").tabs();
+
+									// Place les onglets à la place du titre de la dialog
+									$(".ui-dialog-title").html($(".ui-tabs-nav")).parent().addClass("ui-tabs");
+
+									// Template sélectionnée par défaut
+									$(".dialog-add #tpl").val($(".ui-dialog ul li[aria-selected='true']").data("tpl"));
+
+									// Affiche ou masque le select des tpl
+									if($(".ui-dialog ul li[aria-selected='true']").data("tpl") == "page")
+										$(".dialog-add #tpl").show();
+									else
+										$(".dialog-add #tpl").hide();
+								},
+								close: function() {
+									$(".dialog-add").remove();					
+								}
+							});
+						}
+					});	
+					
+				});
+				</script>
+
+			</div>
+			<?php 				
+		}
 	break;
 
 

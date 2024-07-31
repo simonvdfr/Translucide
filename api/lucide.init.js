@@ -382,7 +382,7 @@ $(function()
 
 
 	// BOUTON AJOUT de page/article
-	if(get_cookie("auth"))
+	if(get_cookie("auth").indexOf('add-') > -1)
 	$("body").append("<button class='bt fixed add' title='"+ __("Add content") +"' aria-label='"+ __("Add content") +"'><i class='fa fa-fw fa-plus bigger vam' aria-hidden='true'></i></button>");
 
 	// Bind le bouton d'ajout
