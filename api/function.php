@@ -1213,7 +1213,7 @@ function login($level = 'low', $auth = null, $quiet = null)
 		?>
 		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css">
+		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?<?=$GLOBALS['cache']?>">
 
 		<script>
 			// Ouverture de la dialog de connexion

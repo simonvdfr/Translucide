@@ -219,7 +219,7 @@ switch($_GET['mode'])
 						$(".bt.fixed.edit").fadeOut();
 
 						// Chargement de la css d'edition		
-						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css'>");
+						$("body").append("<link rel='stylesheet' href='<?=$GLOBALS['path']?>api/lucide.css?<?=$GLOBALS['cache']?>'>");
 						
 						// Affichage de la barre d'admin
 						$("#admin-bar").show();				
@@ -254,7 +254,7 @@ switch($_GET['mode'])
 		?>
 		<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css']?>">
 
-		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?0.1">
+		<link rel="stylesheet" href="<?=$GLOBALS['path']?>api/lucide.css?<?=$GLOBALS['cache']?>">
 
 
 		<div class="dialog-add" title="<?php _e("Add content")?>">
