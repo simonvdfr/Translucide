@@ -1040,7 +1040,7 @@ nav ul li i.fa-cancel {
 
 /* force la couleur de fond pour access */
 .ui-button { 
-	background: #e6e6e6 !important;
+	background: #fff !important;
 	color: #555 !important;
 }
 	.ui-button:hover { background: #dadada !important; }
