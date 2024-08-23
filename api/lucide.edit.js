@@ -3921,8 +3921,10 @@ $(function()
 		// Active ou désactive les checkbox custom
 		if(id && $("#"+id).attr('type') != 'radio') 
 		{
-			if($("#"+id).hasClass("fa-ok")) $("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
-			else $("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+			if($("#"+id).hasClass("fa-ok")) 
+				$("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
+			else 
+				$("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
 		}
 	})
 
