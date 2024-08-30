@@ -3914,19 +3914,25 @@ $(function()
 
 
 	/************** CHAMPS CHECKBOX **************/
-	$(".editable-checkbox, .lucide [for]").not(".lucide #admin-bar [for]").on("click", function(event) {
-		if($(this).attr("for")) var id = $(this).attr("for");
-		else var id = this.id;
-		
-		// Active ou désactive les checkbox custom
-		if(id && $("#"+id).attr('type') != 'radio') 
-		{
-			if($("#"+id).hasClass("fa-ok")) 
-				$("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
-			else 
-				$("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
-		}
-	})
+	editable_checkbox_event = function()
+	{	
+		$(".editable-checkbox, .lucide [for]").not(".lucide #admin-bar [for]").on("click", function(event) {
+			if($(this).attr("for")) var id = $(this).attr("for");
+			else var id = this.id;
+
+			// Active ou désactive les checkbox custom
+			if(id && $("#"+id).attr('type') != 'radio') 
+			{
+				if($("#"+id).hasClass("fa-ok")) 
+					$("#"+id).removeClass("fa-ok yes").addClass("fa-cancel no");
+				else 
+					$("#"+id).removeClass("fa-cancel no").addClass("fa-ok yes");
+			}
+		})
+	};
+
+	// Exécute l'event sur les checkbox éditables
+	editable_checkbox_event();
 
 
 
