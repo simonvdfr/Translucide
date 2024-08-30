@@ -753,15 +753,21 @@ function input($key = null, $filter = null)
 		echo' checked="checked"';
 
 	if(isset($filter['placeholder'])) echo' placeholder="'.$filter['placeholder'].'"';
-	if(@$filter['autocomplete'] == 'off') echo' autocomplete="off"';
+
+	// Si autocomplete simple spécifiée pour le navigateur
+	if(isset($filter['autocomplete']) and !strstr($filter['autocomplete'], ",")) 
+		echo' autocomplete="'.$filter['autocomplete'].'"';
+
+	if(isset($filter['aria-describedby'])) echo' aria-describedby="'.$filter['aria-describedby'].'"';
 	
 	if(@$filter['readonly']) echo' readonly';
 	if(@$filter['required']) echo' required';
 
 	echo'>';
 
-	// Si autocomplete
-	if(isset($filter['autocomplete']) and $filter['autocomplete'] != 'off') {?>
+	// Si autocomplete avec liste spécifiée
+	if(isset($filter['autocomplete']) and strstr($filter['autocomplete'], ",")) {
+		?>
 		<script>
 			edit.push(function() {	
 				$("#<?=encode($key)?>").autocomplete({
@@ -772,7 +778,8 @@ function input($key = null, $filter = null)
 				});
 			});
 		</script>
-	<?php }
+		<?php
+	}
 	
 	$GLOBALS['editkey']++;
 }
