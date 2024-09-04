@@ -712,12 +712,17 @@ function select($key = null, $filter = array())
 		$selected_key = $GLOBALS['content'][$key];
 		$selected_option = $option_decode[$GLOBALS['content'][$key]];
 	}
-	else {
+	elseif($option_decode) {
 		$selected_key = key($option_decode);
 		if($selected_key) $selected_option = $option_decode[$selected_key];
 	}
 
-	echo"<".(isset($filter['tag'])?$filter['tag']:"span").(isset($filter['href'])?' href="'.$filter['href'].'"':'')." id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select") . (isset($filter['class'])?" ".$filter['class']:"")."' data-option='".str_ireplace("'",  "&apos;", $filter['option'])."' data-selected=\"".$selected_key."\">".@$selected_option."</".(isset($filter['tag'])?$filter['tag']:"span").">";
+	echo"<".
+	(isset($filter['tag'])?$filter['tag']:"span").
+	(isset($filter['href'])?' href="'.$filter['href'].'"':'').
+	" id='".encode($key)."' class='".(isset($filter['editable'])?$filter['editable']:"editable-select") . (isset($filter['class'])?" ".$filter['class']:"")."' data-option='".str_ireplace("'",  "&apos;", $filter['option'])."' data-selected=\"".@$selected_key."\">".
+		@$selected_option.
+	"</".(isset($filter['tag'])?$filter['tag']:"span").">";
 	
 	$GLOBALS['editkey']++;
 }
