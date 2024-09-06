@@ -306,7 +306,7 @@ switch($_GET['mode'])
 		// L'utilisateur n'a pas les droits admins donc il ne peut pas éditer les fiches des administrateurs
 		//if(!$_SESSION['auth']['edit-admin']) $sql .= "AND FIND_IN_SET('edit-admin', auth)=0 ";
 		// @todo verifier que ça marche !!
-		if(!$_SESSION['auth']['edit-admin']) $sql .= "AND auth NOT LIKE '%edit-admin%' ";
+		if(!@$_SESSION['auth']['edit-admin']) $sql .= "AND auth NOT LIKE '%edit-admin%' ";
 
 		if($search)
 		{
