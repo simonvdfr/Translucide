@@ -730,7 +730,7 @@ function select($key = null, $filter = array())
 // Contenu champ input
 function input($key = null, $filter = null)
 {
-	$key = ($key ? $key : "input-".$GLOBALS['editkey']);
+	$key = ($key ? $key : (isset($filter['type'])?$filter['type']:'input').'-'.$GLOBALS['editkey']);
 
 	if(!is_array($filter)) $filter = array("class" => $filter);
 	if(!isset($filter['type'])) $filter['type'] = "text";
