@@ -1033,6 +1033,9 @@ function login($level = 'low', $auth = null, $quiet = null)
 	//echo"_SESSION"; highlight_string(print_r($_SESSION, true));
 	//echo"_REQUEST"; highlight_string(print_r($_REQUEST, true));
 
+	// Login qui n'ouvre pas la dialog en cas d'erreur
+	if(isset($_REQUEST['quiet'])) $quiet = encode($_REQUEST['quiet']);
+
 	// Vérifie que la personne qui a posté le formulaire a bien la variable de session de protection contre les CSRF
 	$csrf = false;
 	if(isset($_SESSION['nonce']) and $_SESSION['nonce'] != @$_REQUEST['nonce']) $csrf = true;
@@ -1258,33 +1261,67 @@ function login($level = 'low', $auth = null, $quiet = null)
 							
 							// Effet sur la dialog
 							$("#dialog-connect").dialog({
-								//modal: true, // Fond gris lors du login
+								modal: true, // Fond gris lors du login
+								//autoOpen: false,
 								width: 'auto',
-								minHeight: 0,
+								minHeight: 0,								
 								show: {effect: "fadeIn"},
 								//hide: {effect: "fadeOut"},// Bug collateral : empèche la re-ouverture rapide de la dialog de connexion
-								create: function() 
+								create: function(that) 
 								{	
 									// Change le title en H1 pour l'accessibilitée
 									$(".ui-dialog-title").attr("role","heading").attr("aria-level","1");
+
+									// Ajout aria-modal pour focus trap sur mobile
+									$(".ui-dialog").attr("aria-modal","true");
+
+									// Clean les attributs non utile avec <dialog> //.removeAttr("role")
+									//$(".ui-dialog").removeAttr("tabindex");
+
+									// Changement du tag div > dialog en conservant les attributs
+									// var $old = $(".ui-dialog");
+									// var $new = $('<dialog/>');
+									// $.each($old[0].attributes, function(index) {
+									// 	$new.attr($old[0].attributes[index].name, $old[0].attributes[index].value);
+									// });
+									// $old.wrapInner($new).children().first().unwrap();
 								},
 								closeText: __("Close"),
-								close: function() {
+								close: function() 
+								{
 									$("#dialog-connect").remove();
+
+									//$(".ui-dialog")[0].close();// fermeture de <dialog>
+									//$(".ui-dialog").remove();
 								}
 							});
+
+							// @todo Ajouter un écouteur pour la touche échape et forcer le close
+
+							// Affichage de la dialog
+							//$(".ui-dialog").css("display","inherit");// initial inherit
+							//$(".ui-dialog")[0].showModal();// ouverture de <dialog>
 						});
 					},
 			        async: true
-			    });		
-
-				
+			    });					
 			});
 		</script>
 		<?php
 		exit;
 	}
-	elseif ($quiet == 'error') {?><script>$(function() {error("<?=$msg?>", 4000); });</script><?php }
+	elseif($quiet == 'error' and isset($msg)) 
+	{
+		?>
+		<script>
+			callback = null;// Annule le callback
+
+			$(function() {
+				error("<?=$msg?>");// Message d'erreur
+			});
+		</script>
+		<?php
+	}
 }
 
 function logout($redirect = null)
