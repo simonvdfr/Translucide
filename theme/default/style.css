@@ -634,7 +634,7 @@ input[type="reset"].unstyled:focus {
 .bt.fixed {
 	display: none;	
 	position: fixed;
-	z-index: 999;
+	z-index: 99;/*999*/
 
 	width: auto;
 	left: 20px;/* right */
