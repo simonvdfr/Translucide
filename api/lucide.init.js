@@ -99,13 +99,22 @@ popin = function(txt, fadeout, mode, focus){
 	$("#popin, #light, #error, #under-popin").remove();
 
 	
-	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' // __("Information message")
-	$("body").append("<div id='"+mode+"' role='dialog' tabindex='-1' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></div>");
+	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' // __("Information message")// tabindex='-1' open dialog
+	$("body").append("<dialog id='"+mode+"' role='dialog' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></dialog>");
+
+
+	// Affichage de la dialog avec méthode showModal() ==> supp "open" de la dialog ^^
+	// Pour une compatibilité d'access de focus trap sur mobile
+	if($("#"+mode).is('dialog')) $("#"+mode)[0].showModal();
+
+
+	// Hauteur
 	var height = $("#"+mode).outerHeight();
 
-	// Ajout de la croix pour fermer
+
+	// Ajout de la croix pour fermer -8px
 	if(mode == 'popin' || mode == 'error')
-		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: -8px; right: -8px;' title='"+__("Close")+"' aria-label='"+ __("Close") +"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
+		$("#"+mode).append("<button id='close-popin' class='absolute unstyled' style='top: 0; right: 2px;' title='"+__("Close")+"' aria-label='"+ __("Close") +"'><i class='fa fa-cancel big grey o80' aria-hidden='true'></i></button>");
 		
 
 	// Fond gris
@@ -123,13 +132,14 @@ popin = function(txt, fadeout, mode, focus){
 		.fadeIn();
 	}
 
-	// Affichage
+
+	// Affichage avec animation
 	$("#"+mode)
 		.css({
 			zIndex: 1002,
 			opacity: 0,
 			top: -height,
-			left: (($(window).width() - $("#"+mode).outerWidth()) / 2),
+			//left: (($(window).width() - $("#"+mode).outerWidth()) / 2),// Pas utile avec les dialog
 		})
 		.animate({
 				opacity: 1,
@@ -141,6 +151,8 @@ popin = function(txt, fadeout, mode, focus){
 		.on("click", function(){ 
 			close_popin(focus);
 		});
+
+	
 
 	// Fermeture si echap
 	//$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
