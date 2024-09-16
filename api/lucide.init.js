@@ -98,14 +98,21 @@ popin = function(txt, fadeout, mode, focus){
 	// Supprimer les anciennes popin ouverte
 	$("#popin, #light, #error, #under-popin").remove();
 
+
+	// Si navigateur non compatible avec <dialog> on met <div>
+	if(typeof HTMLDialogElement === 'function')
+		var dialogTag = "dialog";
+	else 
+		var dialogTag = "div";
+
 	
-	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' // __("Information message")// tabindex='-1' open dialog
-	$("body").append("<dialog id='"+mode+"' role='dialog' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></dialog>");
+	// Box avec le message d'information // aria-live='assertive|polite' aria-atomic='true' // __("Information message")// tabindex='-1' open
+	$("body").append("<"+dialogTag+" id='"+mode+"' role='dialog' class='pointer pam absolute tc' aria-describedby='message-popin'><span id='message-popin'>" + txt + "</span></"+dialogTag+">");
 
 
 	// Affichage de la dialog avec méthode showModal() ==> supp "open" de la dialog ^^
 	// Pour une compatibilité d'access de focus trap sur mobile
-	if($("#"+mode).is('dialog')) $("#"+mode)[0].showModal();
+	if(dialogTag == "dialog") $("#"+mode)[0].showModal();
 
 
 	// Hauteur
@@ -138,21 +145,21 @@ popin = function(txt, fadeout, mode, focus){
 		.css({
 			zIndex: 1002,
 			opacity: 0,
-			top: -height,
-			//left: (($(window).width() - $("#"+mode).outerWidth()) / 2),// Pas utile avec les dialog
+			//top: -height,
+			left: (dialogTag == "dialog"? 0 : (($(window).width() - $("#"+mode).outerWidth()) / 2)),
 		})
 		.animate({
 				opacity: 1,
-				top: ($(window).scrollTop() + (($(window).height() - height) / 2))
+				top: ($(window).scrollTop() + (($(window).height() - height) / 2)),
+				scrollTop: $(window).scrollTop()
 			}, 500, function() {
 				// Focus sur le bouton de fermeture
-				if(mode == 'popin' || mode == 'error') $("#close-popin").focus();
+				//if(mode == 'popin' || mode == 'error') $("#close-popin").focus();
 		})
 		.on("click", function(){ 
 			close_popin(focus);
 		});
 
-	
 
 	// Fermeture si echap
 	//$(document).keydown(function(event) { if(event.keyCode === 27) close_popin(focus); });
@@ -173,15 +180,19 @@ popin = function(txt, fadeout, mode, focus){
 		}
 	}, false);
 
+	// Action si on ferme la <dialog> avec echap (FF)
+	document.querySelector("#"+mode).addEventListener("close", function(event)
+	{	
+		close_popin(focus);
+	}, false);
+
 	// Disparition au bout de x seconde
 	if($.isNumeric(fadeout))
 	{
 		window.setTimeout(function(){ 
 			close_popin(focus);
 		}, fadeout);
-	}
-
-	
+	}	
 }
 error = function(txt, fadeout, focus) { popin(txt, fadeout, 'error', focus); }		
 light = function(txt, fadeout, focus) { popin(txt, fadeout, 'light', focus); }		
