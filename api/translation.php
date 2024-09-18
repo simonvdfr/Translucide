@@ -72,7 +72,7 @@ $add_translation = array(
 
 	"Page title" => array("fr" => "Titre de la page"),
 	"Description for search engines" => array("fr" => "Description pour les moteurs de recherche"),
-	"Formatted web address" => array("fr" => "Adresse web formaté"),
+	"Formatted web address" => array("fr" => "Adresse web formaté (permalien)"),
 	
 	"Template" => array("fr" => "Modèle de page"),
 	"Type of page" => array("fr" => "Type de page"),

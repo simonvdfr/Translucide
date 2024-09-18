@@ -487,9 +487,13 @@ switch($_GET['mode'])
 			
 			$connect->query($sql);
 			
-			if($connect->error)// Si il y a une erreur
-				echo htmlspecialchars($sql)."\n<script>error(\"".htmlspecialchars($connect->error)."\");</script>";
-
+			
+			if($connect->errno == '1062')// Si il y a une erreur de duplicate
+				echo htmlspecialchars($sql).
+				'\n<script>error("Une page avec le permalien \"'.htmlspecialchars($url).'\" existe déjà !");</script>';
+			elseif($connect->error)// Si il y a une autre erreur
+				echo htmlspecialchars($sql).
+				'\n<script>error("'.htmlspecialchars($connect->error).' ('.$connect->errno.')");</script>';
 			else // Sauvegarde réussit
 			{
 				// Pose un cookie pour demander l'ouverture de l'admin automatiquement au chargement
