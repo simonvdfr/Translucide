@@ -325,7 +325,7 @@ function txt($key = null, $filter = array())
 		if(isset($filter['lazy'])) echo" lazy";
 		echo"'";
 
-		if(isset($filter['placeholder'])) echo" placeholder=\"".$filter['placeholder']."\"";
+		if(isset($filter['placeholder'])) echo" data-placeholder=\"".$filter['placeholder']."\"";
 
 		if(isset($filter['itemprop'])) echo" itemprop=\"".$filter['itemprop']."\"";
 

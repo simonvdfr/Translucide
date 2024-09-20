@@ -2332,6 +2332,7 @@ $(function()
 			style: style,
 			"data-dir": $(this).data("dir"),
 			"data-builder": $(this).data("builder"),
+			"data-placeholder": $(this).data("placeholder"),
 			placeholder: $(this).attr("placeholder")
 		});
 	});
@@ -2925,6 +2926,11 @@ $(function()
 	// Action sur les champs éditables
 	editable_event = function()
 	{	
+		// Met en place le placeholder si dans data
+		$(".editable[data-placeholder]").each(function(){
+			$(this).attr("placeholder", $(this).attr("data-placeholder"));
+		});
+
 		// Rends les textes éditables
 		$(".editable").attr("contenteditable","true");
 
