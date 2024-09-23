@@ -2358,9 +2358,6 @@ $(function()
 	// Place les contenus au-dessus pour les rendre éditables à coup sur
 	$(".editable").parent().css("z-index", "1");//10 avant => bug avec datepicker
 
-	// Pour pouvoir éditer un contenu dans un label
-	$(".editable").parent("label").attr("for","");
-
 
 	// Rends communiquant les champs titles dans l'édition et l'admin-bar
 	$("#admin-bar #title").on("keyup", function(event){
@@ -2936,6 +2933,9 @@ $(function()
 
 		// Désactive les liens qui entourent un élément éditable
 		$(".editable").closest("a").on("click", function(event) { event.preventDefault(); });
+
+		// Pour pouvoir éditer un contenu dans un label
+		$(".editable").parent("label").attr("for","");
 
 		//@todo supp ? car finalement on ajoute le <p> au focus et keyup
 		// Ajoute un paragraphe si champs vide au lancement de l'edition
