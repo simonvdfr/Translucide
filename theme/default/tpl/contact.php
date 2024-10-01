@@ -24,7 +24,7 @@ switch(@$_GET['mode'])
 
 			<article class="w80 center">
 
-				<?php h1('titre', 'tc')?>
+				<?php h1('title', 'tc')?>
 
 				<?php txt('texte', 'mbl')?>
 
@@ -189,11 +189,16 @@ switch(@$_GET['mode'])
 				{
 					if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
 					{
+						// From
 						$from = ($_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $GLOBALS['email_contact']);
 
-
+						// header
+						$header = 'From:'.$GLOBALS['email_contact'].'\r\n';// Pour une meilleure délivrabilité des mails
+						$header.= 'Reply-To:'.$from.'\r\n';
+						$header.= 'Content-Type: text/plain; charset=utf-8\r\n';// utf-8 ISO-8859-1
+						
+						// Sujet
 						$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email-from"]);
-
 
 						// Message
 						$message = (strip_tags($_POST["message"]));
@@ -208,14 +213,96 @@ switch(@$_GET['mode'])
 						$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."\n";
 						$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."\n";
 
+						$send = false;
 
-						// header
-						$header = "From:".$GLOBALS['email_contact']."\r\n";// Pour une meilleure délivrabilité des mails
-						$header.= "Reply-To: ".$from."\r\n";
-						$header.= "Content-Type: text/plain; charset=utf-8\r\n";// utf-8 ISO-8859-1
+						// SMTP		
+						if(
+						$GLOBALS['smtp_server'] and
+						$GLOBALS['smtp_port'] and
+						$GLOBALS['smtp_username'] and
+						$GLOBALS['smtp_pwd'] and
+						$GLOBALS['smtp_from'])			
+						{
+							// Récupère les réponses
+							function getResponse()
+							{
+								$response = '';
+
+								// Response Timeout = 8
+								stream_set_timeout($GLOBALS['socket'], 8);
+								while(($line = fgets($GLOBALS['socket'], 515)) !== false) 
+								{
+									$response .= trim($line).'\n';
+									if(substr($line, 3, 1) == ' ') break;								
+								}
+
+								return trim($response);
+							}
+							// Envoi une commande
+							function sendCommand($command)
+							{
+								fputs($GLOBALS['socket'], $command.'\r\n');
+
+								return getResponse();
+							}
+
+							// Connexion // Connection Timeout = 30
+							$GLOBALS['socket'] = fsockopen(
+								'tcp://'.$GLOBALS['smtp_server'],
+								$GLOBALS['smtp_port'],
+								$errorNumber,
+								$errorMessage,
+								30
+							);
+
+							$log['CONNECTION'] = getResponse();
+
+							$hostname = gethostname();
+
+							$log['HELLO'][1] = sendCommand('EHLO '.$hostname);
+
+							// TLS
+							$log['STARTTLS'] = sendCommand('STARTTLS');
+							stream_socket_enable_crypto($GLOBALS['socket'], true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+							$log['HELLO'][2] = sendCommand('EHLO '.$hostname);
+
+							// Auth
+							$log['AUTH'] = sendCommand('AUTH LOGIN');
+							$log['USERNAME'] = sendCommand(base64_encode($GLOBALS['smtp_username']));
+							$log['PASSWORD'] = sendCommand(base64_encode($GLOBALS['smtp_pwd']));
+							$log['MAIL_FROM'] = sendCommand('MAIL FROM: <'.$GLOBALS['smtp_from'].'>');
+
+							// TO
+							$log['RECIPIENTS'][] = sendCommand('RCPT TO: <'.$GLOBALS['email_contact'].'>');				
+
+							// Envoi des données
+							$log['HEADERS'] = $header;
+							$log['MESSAGE'] = $message;
+							$log['DATA'][1] = sendCommand('DATA');
+							$log['DATA'][2] = sendCommand($header.'\r\n'.$message.'\r\n.');
+
+							// Déconnexion
+							$log['QUIT'] = sendCommand('QUIT');
+							fclose($GLOBALS['socket']);
+
+							// Retour SMTP
+							highlight_string(print_r($log, true));
+
+							// Code d'envoi réussit = 250
+							if(substr($log['DATA'][2], 0, 3) == '250')
+								$send = true;
+						}
+						else 		
+						{
+							// Envoi classique avec la fonction mail()
+							if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))
+								$send = true;
+						}	
 
 
-						if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))
+
+						// Envoi réussit ?
+						if($send)
 						{
 							?>
 							<script>
@@ -227,7 +314,9 @@ switch(@$_GET['mode'])
 							</script>
 							<?php 
 						}
-						else {
+						// Erreur lors de l'envoi
+						else 
+						{
 							?>
 							<script>
 								error(__("Error sending email"), 'nofade', $("#send"));
@@ -237,7 +326,7 @@ switch(@$_GET['mode'])
 							</script>
 							<?php 
 							//echo error_get_last()['message']; print_r(error_get_last());
-						}
+						}						
 					}
 					else
 					{
