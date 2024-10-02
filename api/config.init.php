@@ -108,7 +108,15 @@ $GLOBALS['path'] = '';
 $GLOBALS['replace_path'] = '';// "/" Pour les chemins des média sur les sites avec dossier dans les url (filtre)
 
 
+// Courriel du destinataire du formulaire de contact
 $GLOBALS['email_contact'] = '';
+
+// Config SMTP
+$GLOBALS['smtp_server'] = '';// mail.infomaniak.com
+$GLOBALS['smtp_port'] = '';// 465
+$GLOBALS['smtp_username'] = '';
+$GLOBALS['smtp_pwd'] = '';
+$GLOBALS['smtp_from'] = $GLOBALS['smtp_username'];
 
 
 // false => noindex, nofollow | true => index, follow
