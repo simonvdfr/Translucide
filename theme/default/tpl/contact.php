@@ -195,8 +195,9 @@ switch(@$_GET['mode'])
 						$GLOBALS['CRLF'] = "\r\n";// \r\n
 
 						// Les mails
-						$replyto = (@$_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $GLOBALS['email_contact']);
-						$from = (isset($GLOBALS['smtp_from'])?$GLOBALS['smtp_from']:$GLOBALS['email_contact']);
+						$to = $GLOBALS['email_contact'];
+						$replyto = (@$_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $to);
+						$from = (isset($GLOBALS['smtp_from']) ? $GLOBALS['smtp_from'] : $to);
 
 						// SUJET
 						$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email-from"]);
@@ -218,12 +219,12 @@ switch(@$_GET['mode'])
 						$header = 'X-Mailer: PHP/'. phpversion() . $CRLF;
 						$header.= 'MIME-Version: 1.0'. $CRLF;
 						$header.= 'Date: '. date('r') . $CRLF;
-						$header.= 'Content-Type: text/plain; charset=utf-8'. $CRLF;// utf-8 ISO-8859-1
 						$header.= 'From: '. $from . $CRLF;// Pour une meilleure délivrabilité des mails
 						$header.= 'Return-Path: '. $from . $CRLF;
 						$header.= 'Reply-To: '. $replyto . $CRLF;// Mail de la personnes
-						$header.= 'To: '. $GLOBALS['email_contact'] . $CRLF;// Destinataire webmaster/admin
+						$header.= 'To: '. $to . $CRLF;// Destinataire webmaster/admin
 						$header.= 'Subject: '. $subject . $CRLF;
+						$header.= 'Content-Type: text/plain; charset=utf-8'. $CRLF;// utf-8 ISO-8859-1
 
 
 
@@ -303,7 +304,7 @@ switch(@$_GET['mode'])
 							$log['MAIL_FROM'] = sendCommand('MAIL FROM: <'.$GLOBALS['smtp_from'].'>');
 
 							// TO
-							$log['RECIPIENTS'][] = sendCommand('RCPT TO: <'.$GLOBALS['email_contact'].'>');				
+							$log['RECIPIENTS'][] = sendCommand('RCPT TO: <'.$to.'>');				
 
 							// Envoi des données
 							$log['HEADERS'] = $header;
@@ -324,8 +325,8 @@ switch(@$_GET['mode'])
 						}
 						else 		
 						{
-							// Envoi classique avec la fonction mail()
-							if(mail($GLOBALS['email_contact'], $subject, stripslashes($message), $header))
+							// ENVOI CLASSIQUE avec la fonction mail()
+							if(mail($to, $subject, stripslashes($message), $header))
 								$send = true;
 						}	
 
