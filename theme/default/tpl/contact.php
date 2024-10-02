@@ -217,7 +217,7 @@ switch(@$_GET['mode'])
 
 						// HEADER
 						$header = 'X-Mailer: PHP/'. phpversion() . $CRLF;
-						$header.= 'MIME-Version: 1.0'. $CRLF;
+						//$header.= 'MIME-Version: 1.0'. $CRLF;
 						$header.= 'Date: '. date('r') . $CRLF;
 						$header.= 'From: '. $from . $CRLF;// Pour une meilleure délivrabilité des mails
 						$header.= 'Return-Path: '. $from . $CRLF;
