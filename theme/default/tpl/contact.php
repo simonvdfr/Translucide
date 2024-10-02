@@ -189,18 +189,18 @@ switch(@$_GET['mode'])
 				{
 					if(hash('sha256', $_POST["question"].$GLOBALS['pub_hash']) == $_POST["question_hash"])// Captcha valide
 					{
-						// From
-						$from = ($_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $GLOBALS['email_contact']);
+						$GLOBALS['clear'] = "\r\n";// \r\n
 
-						// header
-						$header = 'From:'.$GLOBALS['email_contact'].'\r\n';// Pour une meilleure délivrabilité des mails
-						$header.= 'Reply-To:'.$from.'\r\n';
-						$header.= 'Content-Type: text/plain; charset=utf-8\r\n';// utf-8 ISO-8859-1
-						
-						// Sujet
+						// Les mails
+						$replyto = (@$_POST["email-from"] ? htmlspecialchars($_POST["email-from"]) : $GLOBALS['email_contact']);
+
+						$from = (isset($GLOBALS['smtp_from'])?$GLOBALS['smtp_from']:$GLOBALS['email_contact']);
+
+
+						// SUJET
 						$subject = "[".htmlspecialchars($_SERVER['HTTP_HOST'])."] ".htmlspecialchars($_POST["email-from"]);
 
-						// Message
+						// MESSAGE
 						$message = (strip_tags($_POST["message"]));
 
 						$message .= "\n\n-------------------------------------------------------\n";
@@ -213,9 +213,33 @@ switch(@$_GET['mode'])
 						$message .= "IP du Serveur : ".getenv("SERVER_ADDR")."\n";
 						$message .= "User Agent : ".getenv("HTTP_USER_AGENT")."\n";
 
+						// HEADER
+						
+						$header = 'X-Mailer: PHP/'.phpversion().$clear;
+
+						$header.= 'MIME-Version: 1.0'.$clear;
+
+						$header.= 'Date: '.date('r').$clear;
+
+						$header.= 'Content-Type: text/plain; charset=utf-8'.$clear;// utf-8 ISO-8859-1
+
+						$header.= 'From: '.$from.$clear;// Pour une meilleure délivrabilité des mails
+
+						$header.= 'Return-Path: '.$from.$clear;
+
+						$header.= 'Reply-To: '.$replyto.$clear;// Mail de la personnes
+
+						$header.= 'To: '.$GLOBALS['email_contact'].$clear;// Destinataire webmaster/admin
+
+						$header.= 'Subject: '.$subject.$clear;
+						
+
 						$send = false;
 
+
+
 						// SMTP		
+						// Inspiré de snipworks/php-smtp
 						if(
 						$GLOBALS['smtp_server'] and
 						$GLOBALS['smtp_port'] and
@@ -238,33 +262,50 @@ switch(@$_GET['mode'])
 
 								return trim($response);
 							}
+
 							// Envoi une commande
 							function sendCommand($command)
 							{
-								fputs($GLOBALS['socket'], $command.'\r\n');
+								fputs($GLOBALS['socket'], $command . $GLOBALS['clear']);
 
 								return getResponse();
 							}
 
+
+							//$local = gethostname(); // $GLOBALS['domain']
+							if(!empty($_SERVER['HTTP_HOST'])) $local = $_SERVER['HTTP_HOST'];
+							elseif(!empty($_SERVER['SERVER_NAME'])) $local = $_SERVER['SERVER_NAME'];
+							else $local = $_SERVER['SERVER_ADDR'];
+
+							// tls => tcp || ssl
+							$secure = 'ssl';
+
 							// Connexion // Connection Timeout = 30
 							$GLOBALS['socket'] = fsockopen(
-								'tcp://'.$GLOBALS['smtp_server'],
+								$secure.'://'.$GLOBALS['smtp_server'],
 								$GLOBALS['smtp_port'],
 								$errorNumber,
 								$errorMessage,
 								30
 							);
 
-							$log['CONNECTION'] = getResponse();
+							/*print_r('smtp_server : '.$secure.'://'.$GLOBALS['smtp_server'].'<br>');
+							print_r('smtp_port : '.$GLOBALS['smtp_port'].'<br>');
+							print_r('errorNumber : '.$errorNumber.'<br>');
+							print_r('errorMessage : '.$errorMessage.'<br>');
+							print_r('hostname : '.$local.'<br>');*/
 
-							$hostname = gethostname();
+							$log['CONNECTION'] = getResponse();						
 
-							$log['HELLO'][1] = sendCommand('EHLO '.$hostname);
+							$log['HELLO'][1] = sendCommand('EHLO '.$local);
 
 							// TLS
-							$log['STARTTLS'] = sendCommand('STARTTLS');
-							stream_socket_enable_crypto($GLOBALS['socket'], true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
-							$log['HELLO'][2] = sendCommand('EHLO '.$hostname);
+							/*if($secure == 'tcp')
+							{
+								$log['STARTTLS'] = sendCommand('STARTTLS');
+								stream_socket_enable_crypto($GLOBALS['socket'], true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+								$log['HELLO'][2] = sendCommand('EHLO '.$local);
+							}*/
 
 							// Auth
 							$log['AUTH'] = sendCommand('AUTH LOGIN');
@@ -279,14 +320,14 @@ switch(@$_GET['mode'])
 							$log['HEADERS'] = $header;
 							$log['MESSAGE'] = $message;
 							$log['DATA'][1] = sendCommand('DATA');
-							$log['DATA'][2] = sendCommand($header.'\r\n'.$message.'\r\n.');
+							$log['DATA'][2] = sendCommand($header.$clear.$message.$clear.'.');
 
 							// Déconnexion
 							$log['QUIT'] = sendCommand('QUIT');
 							fclose($GLOBALS['socket']);
 
 							// Retour SMTP
-							highlight_string(print_r($log, true));
+							//highlight_string(print_r($log, true));
 
 							// Code d'envoi réussit = 250
 							if(substr($log['DATA'][2], 0, 3) == '250')
