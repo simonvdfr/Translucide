@@ -2,6 +2,9 @@
 // Connexion a la base de données
 if(isset($GLOBALS['db_server']) and $GLOBALS['db_user'] and $GLOBALS['db'])
 {
+	// Rend silencieux les retours d'erreur (php>8.0)
+	mysqli_report(MYSQLI_REPORT_OFF);
+
 	// Connexion
 	$GLOBALS['connect'] = @new mysqli($GLOBALS['db_server'], $GLOBALS['db_user'], $GLOBALS['db_pwd'], $GLOBALS['db']);
 
