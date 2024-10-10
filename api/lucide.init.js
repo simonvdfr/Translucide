@@ -453,13 +453,13 @@ $(function()
 		}
 	);
 	
-		// Onhover bouton add on le conserve visible
-		$(".bt.fixed.add").hover(
-			function() { hover_add = true; },
-			function() {
-				hover_add = false;
-				setTimeout(function() { if(!hover_add && !edit_on && $(".bt.fixed.edit").length) $(".bt.fixed.add").fadeOut("fast");	}, 1000);
-		});
+	// Onhover bouton add on le conserve visible
+	$(".bt.fixed.add").hover(
+		function() { hover_add = true; },
+		function() {
+			hover_add = false;
+			setTimeout(function() { if(!hover_add && !edit_on && $(".bt.fixed.edit").length) $(".bt.fixed.add").fadeOut("fast");	}, 1000);
+	});
 
 
 
