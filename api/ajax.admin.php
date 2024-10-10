@@ -360,8 +360,9 @@ switch($_GET['mode'])
 						if($(this).data("tpl") == "page") $(".dialog-add #tpl").show();
 						else $(".dialog-add #tpl").hide();
 
+						//@todo voir si encore utile, car on change juste d'onglet de type de page
 						// Reconstruit le permalink
-						refresh_permalink(".dialog-add");
+						//refresh_permalink(".dialog-add");
 					});
 
 					// Changement au click de la checkbox homepage
@@ -1079,7 +1080,9 @@ switch($_GET['mode'])
 
 		//@todo Vérifier qu'il n'y a pas déjà un contenu avec la même URL
 	
-		login('medium', 'edit-'.($_POST['type']?encode($_POST['type']):"page"));// Vérifie que l'on a le droit d'éditer une page
+		//@todo Voir si utile sur la vérification de login, car créer des problèmes d'accès à la création de page d'un autre type que la page courante :
+		// , 'edit-'.(@$_POST['type']?encode($_POST['type']):"page") Vérifie que l'on a le droit d'éditer une page :
+		login('medium');
 
 		echo encode($_POST['title']);
 
