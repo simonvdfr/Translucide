@@ -304,7 +304,7 @@ switch($_GET['mode'])
 							{
 								$pathinfo = pathinfo($filename);
 
-								if($pathinfo['extension'])
+								if(@$pathinfo['extension'])
 								{
 									// Si des noms sont spécifiés pour les templates
 									if(isset($GLOBALS['tpl_name'][$pathinfo['filename']]))
