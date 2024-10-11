@@ -134,7 +134,7 @@ switch(@$_GET['mode'])
 
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 
-			<link rel="shortcut icon" type="image/x-icon" href="about:blank">
+			<link rel="shortcut icon" type="image/x-icon" href="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
 			<!-- Pour eviter de charger un ico 404 qui recharge la config -->
 
 			<link rel="stylesheet" href="<?=$GLOBALS['jquery_ui_css'];?>">

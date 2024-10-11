@@ -371,7 +371,7 @@ $(function()
 	// BOUTON EDITION | AJOUT
 
 	// BOUTON D'ÉDITION ou de connexion si la page existe dans la base
-	if(get_cookie("auth").indexOf("edit-"+type) > 0) 
+	if(get_cookie("auth") && get_cookie("auth").indexOf("edit-"+type) > 0) 
 		var icon_edit = "pencil"; else var icon_edit = "key";// logé ou pas ?
 
 	// Placement du bouton de connexion

@@ -19,10 +19,21 @@ if(!isset($_SESSION))
 
 	ini_set('session.cookie_httponly', true);// Le cookie ne sera accessible que par le protocole HTTP. Le cookie ne sera pas accessible via des langages de scripts, comme Javascript 
 	
+	
 	// Si site en https on créer le cookie de session en mode secure
-	if(strpos(@$_SERVER['SCRIPT_URI'], 'https') === 0 or @$_SERVER['REQUEST_SCHEME'] == 'https' or
-	isset($_SERVER['HTTPS']))
-	ini_set('session.cookie_secure', true); // Indique si le cookie doit uniquement être transmis à travers une connexion sécurisée HTTPS depuis le client. Fonction qu'en https
+	if(isset($_SERVER['SCRIPT_URI'])) 
+		$script_uri = strpos($_SERVER['SCRIPT_URI'], 'https') === 0;
+	else
+		$script_uri = false;
+
+	if(
+		$script_uri or
+		@$_SERVER['REQUEST_SCHEME'] == 'https' or
+		isset($_SERVER['HTTPS'])
+	)
+		// Indique si le cookie doit uniquement être transmis à travers une connexion sécurisée HTTPS depuis le client. Fonctionne qu'en https
+		ini_set('session.cookie_secure', true); 
+
 
 	if(!isset($cron)) session_start();
 }
