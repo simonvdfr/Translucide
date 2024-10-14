@@ -21,16 +21,8 @@ if(!isset($_SESSION))
 	
 	
 	// Si site en https on créer le cookie de session en mode secure
-	if(isset($_SERVER['SCRIPT_URI'])) 
-		$script_uri = strpos($_SERVER['SCRIPT_URI'], 'https') === 0;
-	else
-		$script_uri = false;
-
-	if(
-		$script_uri or
-		@$_SERVER['REQUEST_SCHEME'] == 'https' or
-		isset($_SERVER['HTTPS'])
-	)
+	if(strpos((isset($_SERVER['SCRIPT_URI'])?$_SERVER['SCRIPT_URI']:''), 'https') === 0 or @$_SERVER['REQUEST_SCHEME'] == 'https' or
+	isset($_SERVER['HTTPS']))
 		// Indique si le cookie doit uniquement être transmis à travers une connexion sécurisée HTTPS depuis le client. Fonctionne qu'en https
 		ini_set('session.cookie_secure', true); 
 
