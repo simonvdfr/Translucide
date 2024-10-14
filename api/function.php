@@ -808,6 +808,7 @@ function tag($key = null, $filter = array())
 {
 	$key = encode($key ? $key : "tag");
 
+	// $filter['content'] =>  true >> ajoute les tags au json content de la page en plus de la table tag
 	echo'<'
 	.(isset($filter['tag'])?$filter['tag']:"nav")
 	.' id="'.$key.'" class="editable-tag'.(isset($filter['content'])?' add-to-content': '').(isset($filter['class'])?' '.$filter['class'] : '').'"'
