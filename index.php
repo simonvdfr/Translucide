@@ -237,8 +237,12 @@ if(isset($GLOBALS['filter']['page'])) $title.= ' - '.__('Page').' '.(int)$GLOBAL
 
 // SI CONTENU
 
-// Si un NOM DE SITE est défini et pas déjà dans le title
-if(isset($GLOBALS['sitename']) and substr($title, -strlen($GLOBALS['sitename'])) !== $GLOBALS['sitename'])
+// Si un NOM DE SITE est défini et pas dans le title (au début ou à la fin)
+if(
+	isset($GLOBALS['sitename']) and
+	substr($title, 0, strlen($GLOBALS['sitename'])) !== $GLOBALS['sitename'] and
+	substr($title, -strlen($GLOBALS['sitename'])) !== $GLOBALS['sitename']	
+)
 	$title .= ' - '.$GLOBALS['sitename'];
 
 // Description
