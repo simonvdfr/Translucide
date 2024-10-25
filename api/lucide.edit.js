@@ -3021,7 +3021,7 @@ $(function()
 					var node = $(memo_node)[0].childNodes;
 
 					// Si le node contien que un <br>+nobr on le supp
-					if(node[0].nodeName == "BR" && node[1])
+					if(node[0] != undefined && node[0].nodeName == "BR" && node[1])
 						if(node[1].nodeName == "BR" && node[1].className == "nobr")
 						{
 							if(dev) console.log("remove <br>");
@@ -4511,8 +4511,9 @@ $(function()
 	});
 
 
+	// @todo 25/10/2024 Supp car DOMNodeInserted est déprécié et visiblement plus utile avec les champs div editable qui contiennent des <p> au lieu de <div> pour les contenus textes
 	// Si Chrome on supprime les span qui s'ajoutent lors des suppressions de retour à la ligne (ajoute une font-size)
-	if($.browser.webkit) {
+	/*if($.browser.webkit) {
 		$("[contenteditable=true]").on("DOMNodeInserted", function(event) {
 			// Si c'est un span, sans langue, sans editable
 			if(
@@ -4524,7 +4525,7 @@ $(function()
 				event.target.outerHTML = event.target.innerHTML;			
 			}
 		});
-	}
+	}*/
 
 
 	// Désactive le click pour ne pas relancer l'admin

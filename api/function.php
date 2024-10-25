@@ -254,7 +254,7 @@ function add_translation($add_translation)
 	$add_translation = array_change_key_case($add_translation, CASE_LOWER);
 
 	// Encodage des clés avec accent => ne fonctionne pas / a peaufiné pour les traductions à partir du Français
-	//foreach($add_translation as $cle => $val) $add_translation_encode[utf8_encode($cle)] = $val;
+	//foreach($add_translation as $cle => $val) $add_translation_encode[mb_convert_encoding($cle, 'UTF-8', mb_list_encodings())] = $val;
 	//$add_translation = $add_translation_encode;
 
 	// On ajoute la nouvelle traduction au tableau de toutes les traductions
