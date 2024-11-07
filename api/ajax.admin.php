@@ -1018,6 +1018,14 @@ switch($_GET['mode'])
 		}
 
 
+		// SUPPRESSION DES ENREGISTREMENT DANS LA TABLE META
+		if(isset($_POST['metas']))
+		{
+			//foreach($_POST['metas'] as $cle => $meta)// $meta => type
+				$connect->query("DELETE FROM ".$table_meta." WHERE id='".(int)$_POST['id']."'");
+		}
+
+
 		if($connect->error) echo $connect->error."\nSQL:\n".$sql;// S'il y a une erreur
 		else // Suppression réussit
 		{

@@ -402,7 +402,7 @@ if(!$ajax)
 			<?php } 
 
 
-			if(isset($_COOKIE['autoload_edit']) and $_SESSION['auth']['edit-'.$res['type']]){?>
+			if(isset($_COOKIE['autoload_edit']) and @$_SESSION['auth']['edit-'.$res['type']]){?>
 				// Si demande l'autoload du mode édition et si admin
 				$(function()
 				{

@@ -4406,6 +4406,12 @@ $(function()
 					    medias_post.push($(this).attr("id"));
 					});
 
+					// Récupère toutes les données enregistrées dans les metas
+					metas = [];
+					$(".meta").each(function() {
+						metas.push($(this).attr("id"));
+					});
+
 					// Requete de suppression
 					$.ajax({
 						type: "POST",
@@ -4415,6 +4421,7 @@ $(function()
 							"type": type,
 							"id": id,
 							"medias": medias_post,
+							"metas": metas,
 							"nonce": $("#nonce").val()// Pour la signature du formulaire
 						}
 					})
