@@ -1431,6 +1431,7 @@ header #logo { transition: opacity .5s; }
 .fa-superscript:before { content: '\f12b'; } /* '' */
 .fa-calendar-empty:before { content: '\f133'; } /* '' */
 .fa-play-circled:before { content: '\f144'; } /* '' */
+.fa-ticket:before { content: '\f145'; } /* '' */
 .fa-doc-inv:before { content: '\f15b'; } /* '' */
 .fa-youtube:before { content: '\f167'; } /* '' */
 .fa-instagram:before { content: '\f16d'; } /* '' */
