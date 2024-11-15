@@ -1,4 +1,4 @@
-# [CMS Translucide](https://www.translucide.net) - Léger et puissant
+# [CMS Translucide](https://translucide.net) - Léger et puissant
 
 [![jQuery](https://img.shields.io/badge/Licence-MIT-green.svg)]()
 [![jQuery](https://img.shields.io/badge/PHP-7.2_to_8.2-lightgrey.svg?colorB=8892bf)](http://php.net/)
@@ -9,61 +9,15 @@
 [![jQuery](https://img.shields.io/badge/jQuery_UI-1.13.2-yellow.svg?colorB=faa523)](http://jqueryui.com/)
 [![jQuery](https://img.shields.io/badge/FortAwesome-4.7.0-lightgrey.svg?colorB=1e9f75)](https://github.com/FortAwesome/Font-Awesome)
 
-J'ai créé le CMS Translucide pour répondre à certains besoins personnels que j'ai en tant que développeur et intégrateur, mais aussi pour permettre aux clients de modifier plus simplement leur site sans casser le travail graphique fait en amont.
+## À qui s'adresse ce CMS ?
 
-## En quoi Translucide est plus écoconçu ?
-Le CMS est fait dans une démarche d'écoconception, toujours perfectible. En numérique le service le plus écoconçu est celui qui n'existe pas, qui n'a donc pas d'impact.
+Ce CMS est à destination des développeurs et développeuses, intégrateurs et intégratrices, graphistes qui connaissent les bases du HTML et CSS. Connaitre un peu le PHP est un plus. Vous pouvez demander une démo technique avec le formulaire de contact sur le site [Translucide.net](https://translucide.net/#contact).
 
-Je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel, le tout avec le moins de dépendance possible. L'objectif est d'avoir un système léger, avec une arborescence simple, qui peut rendre un maximum de services.
-
-### PHP
-PHP est un langage de script plutôt efficient, même si ce n'est pas le meilleur. Par contre, c'est le plus répandu et disponible sur la plupart des hébergements grand public. Il est maintenu, ne bouge pas trop. Son ancienneté pour moi est un gage de qualité et sa longévité est impressionnante (je l'utilise depuis plus de 20 ans). Ce n'est pas une technologie trop éphémère, elle ne subit pas trop les effets de mode.
-
-Le CMS se concentre sur les fonctionnalités de base de PHP et si possible celles qui consomment peu de ressources, sans aller dans la sur-optimisation. PHP concentre 50 % du code du CMS et sert surtout à faire des actions d'appel aux données ou leur sauvegarde. PHP n'est généralement pas le facteur limitant en termes de performances. C'est plus les bases de données qui peuvent être un problème quand il y a de fortes charges.
-
-### Mysql / MariaDB
-Pour l'affichage d'une page classique (les modèles de page les plus répandus sur un site) il y a seulement 2 requêtes à la base de données, une pour rapatrier le contenu et une autre pour l'entête et pied de page.
-La base de données est composée de 4 tables.
-- Celle des contenus.
-- Une pour les méta données (typiquement les contenus de l'entête et pied de page.
-- Une autre pour les tags s'ils sont utilisés (pour des filtrages des actualités par exemple).
-- Enfin une table d'utilisateurs (pour administrer le site).
-Le tout est optimisé pour ne pas grossir trop vite, un site classique pouvant tenir facilement dans moins de 1 Mo de base de données sans complexité pour atteindre les données.
-
-### Javascript
-Historiquement, la plus grosse dépendance du CMS est JQuery. C'est une librairie puissante pour faire des requêtes Ajax et avoir une simplification des sélecteurs.
-
-C'est une librairie qui change peu, stable et éprouvée (je l'utilise depuis 20 ans). Contenue dans 30ko compressés, elle permet une souplesse dans le développement pour un poids très contenu.
-
-Un objectif à long terme est de la supprimer en front.
-
-En mode édition, elle permet une manipulation du contenu. jQuery UI est également présenté, pour rendre plus confortables les fonctions d'autocomplétion et de modal. J'ai développé toutes les fonctionnalités d'un éditeur Wysiwyg sans la lourdeur des librairies existantes. Aussi, pour connaître les enjeux et n'avoir aucune dépendance à des systèmes qui ne font que s'alourdir et présenter trop de fonctionnalités inutilisées.
-
-Globalement, la dette technique est très faible et ne nécessite pas de mise à jour, car nous n'avons quasiment pas de dépendances comparé à d'autres systèmes qui aggloméraient les développements externes. On peut se concentrer sur les besoins de nos clients et ne pas passer du temps à juste continuer à faire fonctionner ce qui fonctionne déjà. Ici, nous faisons globalement au maximum une révision annuelle pour le suivi des versions de PHP et Jquery.
-
-Enfin un front en fichier JavaScript est utilisé pour des fonctions de base, tel l'affichage de messages d'erreur, du multilingue, la gestion de cookies, le lazyloading, l'affichage mobile et le lancement du mode édition, le tout pour 10ko (4ko compressé).
-
-### CSS
-Un seul fichier en front pour le style du site. Basé sur Knacss, en version allégée. Il contient donc un reste, un système basique de grilles, des conditions de responsive et une librairie d'icônes. Dernièrement, nous avons ajouté des Class pour parfaire l'accessibilité avec un mode contraste renforcé (issu d'un plugin réalisé par Access42). Le tout dans moins de 25ko (6ko compressés). En mode édition, un cas spécifique est chargé.
-
-### Poids et arborescence
-Le moteur du site tient dans très peu de fichiers (moins de 50), il pèse 1 Mo avec le thème par défaut, et pourtant gère le multilingue, permet d'éditer le contenu en direct, sans administration complexe. Il propose aussi les outils de base pour un bon SEO, pour optimiser les images et contrôler l'accessibilité du contenu, ceci sans plugins externes.
-
-Le CMS est composé de :
-- une API qui, à travers principalement des requêtes Ajax, permet l'ajout, la sauvegarde et l'affichage de contenus.
-- un dossier avec le thème qui contient les modèles de page type. Ces modèles font appel à des fonctions de l'API pour créer des zones éditables types (textes, images).
-- un fichier Index qui va chercher le contenu et l'affiche en fonction des URL.
-
-Un site de base comprend donc 5 requêtes HTTP : 
-- la page HTML (5 à 10ko),
-- le CSS (6ko),
-- 2 JavaScript (34ko),
-- une police d'icônes (20ko). 
-Pour 70ko et 5 requêtes de fichiers, 2 requêtes à la base de données MySQL, sans image, nous pouvons servir un site, éditable par les clients.
+Techniquement, il est plus simple de l'installer sur un hébergement mutualisé en ligne si vous ne maîtrisez pas l'installation en local sur votre ordinateur d'Apache, PHP, MySQL.
 
 ## Installation
 - Décompressez les fichiers du site sur votre FTP et avec votre navigateur allez à l'adresse où se trouve `index.php` (Attention, si vous copiez-collez ces fichiers, pensez à copier également les fichiers cachés)
-- Entrez les infos de connexion à la base de données, sélectionnez votre template de site (graphisme) et enfin entrez le mail et le mot de passe qui serviront à administrer le site au lancement
+- Entrez les infos de connexion à la base de données (vous devez avoir une base de données créée au préalable), sélectionnez votre thème de site (graphisme) et enfin entrez le mail et le mot de passe qui serviront à administrer le site au lancement
 - Copiez-collez le dossier theme 'default' et renommez-le
 
 Après, au besoin, vous pouvez éditer manuellement le fichier `config.php`, généré à la suite de l'installation. Il contient les informations uniques et cruciales au bon fonctionnement du CMS :
@@ -182,6 +136,56 @@ Les fonctions de calcul viennent de [GreenIT-Analysis](https://github.com/cnumr/
 
 L'algorithme [EcoIndex](https://www.ecoindex.fr/comment-ca-marche/) est sous [Licence Creative Commons CC-By-NC-ND](https://creativecommons.org/licenses/by-nc-nd/2.0/fr/)
 
+## En quoi Translucide est plus écoconçu ?
+Le CMS est fait dans une démarche d'écoconception, toujours perfectible. En numérique le service le plus écoconçu est celui qui n'existe pas, qui n'a donc pas d'impact.
+
+Je voulais un CMS plus simple d'approche que Wordpress, plus facilement customisable, plus léger, plus rapide à l'exécution, qui va plus à l'essentiel, le tout avec le moins de dépendance possible. L'objectif est d'avoir un système léger, avec une arborescence simple, qui peut rendre un maximum de services.
+
+### PHP
+PHP est un langage de script plutôt efficient, même si ce n'est pas le meilleur. Par contre, c'est le plus répandu et disponible sur la plupart des hébergements grand public. Il est maintenu, ne bouge pas trop. Son ancienneté pour moi est un gage de qualité et sa longévité est impressionnante (je l'utilise depuis plus de 20 ans). Ce n'est pas une technologie trop éphémère, elle ne subit pas trop les effets de mode.
+
+Le CMS se concentre sur les fonctionnalités de base de PHP et si possible celles qui consomment peu de ressources, sans aller dans la sur-optimisation. PHP concentre 50 % du code du CMS et sert surtout à faire des actions d'appel aux données ou leur sauvegarde. PHP n'est généralement pas le facteur limitant en termes de performances. C'est plus les bases de données qui peuvent être un problème quand il y a de fortes charges.
+
+### Mysql / MariaDB
+Pour l'affichage d'une page classique (les modèles de page les plus répandus sur un site) il y a seulement 2 requêtes à la base de données, une pour rapatrier le contenu et une autre pour l'entête et pied de page.
+La base de données est composée de 4 tables.
+- Celle des contenus.
+- Une pour les méta données (typiquement les contenus de l'entête et pied de page.
+- Une autre pour les tags s'ils sont utilisés (pour des filtrages des actualités par exemple).
+- Enfin une table d'utilisateurs (pour administrer le site).
+Le tout est optimisé pour ne pas grossir trop vite, un site classique pouvant tenir facilement dans moins de 1 Mo de base de données sans complexité pour atteindre les données.
+
+### Javascript
+Historiquement, la plus grosse dépendance du CMS est JQuery. C'est une librairie puissante pour faire des requêtes Ajax et avoir une simplification des sélecteurs.
+
+C'est une librairie qui change peu, stable et éprouvée (je l'utilise depuis 20 ans). Contenue dans 30ko compressés, elle permet une souplesse dans le développement pour un poids très contenu.
+
+Un objectif à long terme est de la supprimer en front.
+
+En mode édition, elle permet une manipulation du contenu. jQuery UI est également présenté, pour rendre plus confortables les fonctions d'autocomplétion et de modal. J'ai développé toutes les fonctionnalités d'un éditeur Wysiwyg sans la lourdeur des librairies existantes. Aussi, pour connaître les enjeux et n'avoir aucune dépendance à des systèmes qui ne font que s'alourdir et présenter trop de fonctionnalités inutilisées.
+
+Globalement, la dette technique est très faible et ne nécessite pas de mise à jour, car nous n'avons quasiment pas de dépendances comparé à d'autres systèmes qui aggloméraient les développements externes. On peut se concentrer sur les besoins de nos clients et ne pas passer du temps à juste continuer à faire fonctionner ce qui fonctionne déjà. Ici, nous faisons globalement au maximum une révision annuelle pour le suivi des versions de PHP et Jquery.
+
+Enfin un front en fichier JavaScript est utilisé pour des fonctions de base, tel l'affichage de messages d'erreur, du multilingue, la gestion de cookies, le lazyloading, l'affichage mobile et le lancement du mode édition, le tout pour 10ko (4ko compressé).
+
+### CSS
+Un seul fichier en front pour le style du site. Basé sur Knacss, en version allégée. Il contient donc un reste, un système basique de grilles, des conditions de responsive et une librairie d'icônes. Dernièrement, nous avons ajouté des Class pour parfaire l'accessibilité avec un mode contraste renforcé (issu d'un plugin réalisé par Access42). Le tout dans moins de 25ko (6ko compressés). En mode édition, un cas spécifique est chargé.
+
+### Poids et arborescence
+Le moteur du site tient dans très peu de fichiers (moins de 50), il pèse 1 Mo avec le thème par défaut, et pourtant gère le multilingue, permet d'éditer le contenu en direct, sans administration complexe. Il propose aussi les outils de base pour un bon SEO, pour optimiser les images et contrôler l'accessibilité du contenu, ceci sans plugins externes.
+
+Le CMS est composé de :
+- une API qui, à travers principalement des requêtes Ajax, permet l'ajout, la sauvegarde et l'affichage de contenus.
+- un dossier avec le thème qui contient les modèles de page type. Ces modèles font appel à des fonctions de l'API pour créer des zones éditables types (textes, images).
+- un fichier Index qui va chercher le contenu et l'affiche en fonction des URL.
+
+Un site de base comprend donc 5 requêtes HTTP : 
+- la page HTML (5 à 10ko),
+- le CSS (6ko),
+- 2 JavaScript (34ko),
+- une police d'icônes (20ko). 
+Pour 70ko et 5 requêtes de fichiers, 2 requêtes à la base de données MySQL, sans image, nous pouvons servir un site, éditable par les clients.
+
 ## Wordpress VS Translucide
 J'ai tenté de passer un site que j'avais fait sous Wordpress sous Translucide avec les mêmes fonctionnalités et aspect visuel et le résultat était plutôt édifiant.
 Pour le même site on est passé de plus de 1000 fichiers avec Wordpress à moins de 100, images comprises, pour Translucide. Et de 50 mégaoctet à 5 mégaoctet pour la version CMS Translucide. Niveau temps d'exécution en général on divise par 2 le temps de chargement d'une page et ceci sans utiliser de système de cache spécifique. Combattons l'obésiciel ensemble :)
@@ -199,6 +203,8 @@ Pour ça j'ai créé un moteur de site qui permet d'éditer en live les contenus
 Parce que le CMS est plus fait à la base pour des développeurs débutants, intégrateurs, graphistes, qui peuvent modifier directement le HTML pour faire des mises en page complexes, et après l'utilisateur final modifie les contenus.
 
 Peut-être qu'un jour je coderai un builder qui permet de tout modifier, mais le temps à coder ça, et l'utilisation qui en sera faite au final n'est pas forcément très rentable et le rendu ne sera jamais aussi impressionnant et propre que si c'est fait en dur dans le code HTML.
+
+Ce cadre contraint permet aussi de contenir le niveau d'écoconception sans trop de débordement.
 
 ### Comment modifier les contenus ?
 Pour passer en mode édition il faut cliquer en bas à gauche sur l'icône avec le crayon. S'il n'est pas visible descendez jusqu'en bas du site ou appuyez sur la touche <kbd>⇧</kbd> du clavier pour le faire apparaître.
