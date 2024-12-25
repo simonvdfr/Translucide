@@ -3719,11 +3719,22 @@ $(function()
 	// Change la clé
 	edit_key = function()
 	{		
-		// Modifie les cles
-		$("[class*='editable']", this).each(function() {
+		console.log(this)
+
+		// Change les id des modules dans le module
+		if($(".module", this).attr("id"))
+			$(".module", this).attr("id", $(".module", this).attr("id").replace("-0", "-"+ new_key))
+
+		// Modifie les cles des zone éditables
+		$("[class*='editable']", this).each(function() 
+		{
 			old_key = $(this).attr("id");
+			
 			if(old_key == undefined) 
-				old_key = $("[id*='" + module + "-']", this).attr("id");
+				old_key = $("[id*='"+module+"-']", this).attr("id");
+			
+			//console.log(old_key)
+			//console.log(old_key.replace("-0", "-"+ new_key))
 
 			// Pour les inputs editable
 			if($(this).attr("placeholder") != undefined) 
@@ -3737,7 +3748,7 @@ $(function()
 					'data-id': old_key.replace("-0", "-"+ new_key)
 				});
 			}
-			
+
 			// Change l'id
 			$("#" + old_key).attr({
 				id: old_key.replace("-0", "-"+ new_key),
@@ -3757,11 +3768,15 @@ $(function()
 	{
 		module = $(event).parent().prev("ul, ol").attr("id");
 
+		console.log(module)
+
 		// On regarde qu'elle type d’élément éditable existe pour récupérer l'id le plus grand
-		if($("#" + module + " li .editable").length) 
-			var elem = $("#" + module + " li .editable");
-		else if($("#" + module + " li .editable-media").length) 
-			var elem = $("#" + module + " li .editable-media");
+		if($("#"+module+" li .editable").length) 
+			var elem = $("#"+module+" li .editable");
+		else if($("#"+module+" li .editable-media").length) 
+			var elem = $("#"+module+" li .editable-media");
+
+		//console.log(elem)
 
 		// Crée un id unique (dernier id le plus grand + 1)
 		//key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1; Ne tien pas compte de l'ordre des id
@@ -3771,6 +3786,8 @@ $(function()
 			return(b-a); // reverse sort : tri les id pour prendre le dernier (le plus grand)
 		})[0] + 1;
 
+		//console.log($("#"+module+" > li:last-child"))
+
 		// Unbind les events d'edition
 		$(".editable").off();
 		$(".editable-media").off(".editable-media");
@@ -3779,10 +3796,10 @@ $(function()
 
 		if($("#"+module).hasClass("end"))
 			// Crée un block à la fin
-			$("#" + module + " > li:last-child").clone().insertBefore("#" + module + " > li:last-child").show("400", edit_key);
+			$("#"+module+" > li:last-child").last().clone().insertBefore("#"+module+":first > li:last-child").show("400", edit_key);
 		else
 			// Crée un block au début
-			$("#" + module + " > li:last-child").clone().prependTo("#" + module).show("400", edit_key);
+			$("#"+module+" > li:last-child").clone().prependTo("#"+module).show("400", edit_key);
 	}
 
 	// Rends déplaçables les blocs
