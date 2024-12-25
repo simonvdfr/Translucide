@@ -3734,8 +3734,6 @@ $(function()
 	// Change la clé
 	edit_key = function()
 	{		
-		console.log(this)
-
 		// Change les id des modules dans le module
 		if($(".module", this).attr("id"))
 			$(".module", this).attr("id", $(".module", this).attr("id").replace("-0", "-"+ new_key))
@@ -3747,9 +3745,6 @@ $(function()
 			
 			if(old_key == undefined) 
 				old_key = $("[id*='"+module+"-']", this).attr("id");
-			
-			//console.log(old_key)
-			//console.log(old_key.replace("-0", "-"+ new_key))
 
 			// Pour les inputs editable
 			if($(this).attr("placeholder") != undefined) 
@@ -3783,15 +3778,11 @@ $(function()
 	{
 		module = $(event).parent().prev("ul, ol").attr("id");
 
-		console.log(module)
-
 		// On regarde qu'elle type d’élément éditable existe pour récupérer l'id le plus grand
 		if($("#"+module+" li .editable").length) 
 			var elem = $("#"+module+" li .editable");
 		else if($("#"+module+" li .editable-media").length) 
 			var elem = $("#"+module+" li .editable-media");
-
-		//console.log(elem)
 
 		// Crée un id unique (dernier id le plus grand + 1)
 		//key = parseInt($("#" + module + " li:first-child .editable").attr("id").split("-").pop()) + 1; Ne tien pas compte de l'ordre des id
@@ -3800,8 +3791,6 @@ $(function()
 		}).sort(function(a, b) {
 			return(b-a); // reverse sort : tri les id pour prendre le dernier (le plus grand)
 		})[0] + 1;
-
-		//console.log($("#"+module+" > li:last-child"))
 
 		// Unbind les events d'edition
 		$(".editable").off();
@@ -3887,7 +3876,6 @@ $(function()
 
 	// Fonction pour supprimer un bloc
 	remove_module = function(that) {
-		//console.log($(that).closest("li"));
 		$(that).closest("li").fadeOut("slow", function() {
 			this.remove();
 		});
