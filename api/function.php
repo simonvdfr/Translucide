@@ -879,7 +879,7 @@ function curl($url, $params = null)
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36');
-	if($params) curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params, null, '&'));
+	if($params) curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params, '', '&'));
 	$return = curl_exec($curl);
 	$getinfo = curl_getinfo($curl);
 	curl_close($curl);
