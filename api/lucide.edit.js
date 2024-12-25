@@ -2964,7 +2964,12 @@ $(function()
 				}
 
 				// Supprime là class qui indique dans quel paragraphe on édite
-				$(memo_node).closest("p").removeClass("focus");
+				$(memo_node).closest("p").removeClass((function() {						
+					$(this).removeClass("focus");
+
+					// Si pas de class on supp l'attribu class
+					if(!$(this).attr("class")) $(this).removeAttr("class");
+				}));
 
 				//clean_editable(this);// Nétoie le champ
 
@@ -3013,7 +3018,12 @@ $(function()
 				if(!$(this).hasClass("view-source"))
 				{			
 					// Mets en évidence le paragraphe éditer
-					$("p", this).removeClass("focus");
+					$("p", this).removeClass(function() {						
+						$(this).removeClass("focus");
+
+						// Si pas de class on supp l'attribu class
+						if(!$(this).attr("class")) $(this).removeAttr("class");
+					});
 					$(memo_node).closest("p").addClass("focus");
 
 
@@ -3213,9 +3223,14 @@ $(function()
 
 
 				// Mets en évidence le paragraphe éditer
-				$("p", this).removeClass("focus");
+				$("p", this).removeClass((function() {						
+					$(this).removeClass("focus");
+
+					// Si pas de class on supp l'attribu class
+					if(!$(this).attr("class")) $(this).removeAttr("class");
+				}));
 				$(memo_node).closest("p").addClass("focus");
-					
+
 
 				// Désélectionne les alignements
 				$("[class*='fa-align']").parent().removeClass("checked");
